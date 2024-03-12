@@ -1,0 +1,10 @@
+export { default as MasterSlide } from "./MasterSlide";
+export { default as SalonSlide } from "./SalonSlide";
+export { default as BrandSlide } from "./BrandSlide";
+export { default as GoodSlide } from "./GoodSlide";
+export { default as PortfolioSlide } from "./PortfolioSlide";
+export { default as RibbonSlide } from "./RibbonSlide";
+export { default as VacancySlide } from "./VacancySlide";
+export { default as AdSlide } from "./AdSlide";
+export { default as RentSalonSlide } from "./RentSalonSlide";
+export { default as WorkplaceSlide } from "./WorkplaceSlide";

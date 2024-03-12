@@ -1,0 +1,82 @@
+stages:
+#  - build
+  - package
+  - deploy
+
+.common:
+#  only:
+#    - master
+#    - /^feature\/.+$/
+  tags:
+    - docker
+
+#build:
+#  extends: .common
+#  stage: build
+#  image: node:14.17.5-slim
+#  script:
+#    - ls -l
+##    - yarn install
+##    - yarn build
+#  artifacts:
+#    paths:
+##      - build/
+#      - deploy/
+#      - Dockerfile
+##  cache:
+##    key: $CI_COMMIT_REF_SLUG
+##    paths:
+##      - node_modules/
+
+package:
+  extends: .common
+  stage: package
+  image: docker
+  services:
+    - docker:18-dind
+  variables:
+#    GIT_STRATEGY: none
+    DOCKER_HOST: "tcp://docker:2375"
+    DOCKER_DRIVER: overlay2
+#  before_script:
+#    - |
+#      echo "Authenticating with the shared registry..."
+#      echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+  script:
+  - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+  - docker build -t $CI_REGISTRY/moi_salon/platform-frontend-2021:$CI_COMMIT_SHA --output type=docker .
+  - docker push $CI_REGISTRY/moi_salon/platform-frontend-2021:$CI_COMMIT_SHA
+#  dependencies:
+#    - build
+
+deploy_prod:
+  stage: deploy
+  only:
+  - master
+  image: dtzar/helm-kubectl
+  when: manual
+  script:
+    - kubectl config set-cluster k8s --server="${K8S_NEW_URL}"
+    - kubectl config set clusters.k8s.certificate-authority-data ${K8S_NEW_CERTIFICATE_AUTHORITY_DATA}
+    - kubectl config set-credentials gitlab-admin --token="${GITLABADMIN_TOKEN_NEW}"
+    - kubectl config set-context default --cluster=k8s --user=gitlab-admin
+    - kubectl config use-context default
+    - sed -i "s/__VERSION__/${CI_COMMIT_SHA}/g" k8s.yaml
+    - sed -i "s/__NAMESPACE__/${NS_PROD}/g" k8s.yaml
+    - kubectl apply -f k8s.yaml
+
+deploy_stage:
+  stage: deploy
+#  only:
+#  - master
+  image: dtzar/helm-kubectl
+  when: manual
+  script:
+    - kubectl config set-cluster k8s --server="${K8S_NEW_URL}"
+    - kubectl config set clusters.k8s.certificate-authority-data ${K8S_NEW_CERTIFICATE_AUTHORITY_DATA}
+    - kubectl config set-credentials gitlab-admin --token="${GITLABADMIN_TOKEN_NEW}"
+    - kubectl config set-context default --cluster=k8s --user=gitlab-admin
+    - kubectl config use-context default
+    - sed -i "s/__VERSION__/${CI_COMMIT_SHA}/g" k8s.yaml
+    - sed -i "s/__NAMESPACE__/${NS_STAGE}/g" k8s.yaml
+    - kubectl apply -f k8s.yaml

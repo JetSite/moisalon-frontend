@@ -1,0 +1,4347 @@
+"""The cost directives is used to express the complexity of a field."""
+directive @cost(
+  """Defines the complexity of the field."""
+  complexity: Int! = 1
+
+  """Defines field arguments that act as complexity multipliers."""
+  multipliers: [MultiplierPath!]
+) on FIELD_DEFINITION
+
+directive @delegate(
+  path: String
+
+  """The name of the schema to which this field shall be delegated to."""
+  schema: Name!
+) on FIELD_DEFINITION
+
+directive @computed(
+  """Specifies the fields on which a computed field is dependent on."""
+  dependantOn: [Name!]
+) on FIELD_DEFINITION
+
+"""Annotates the original name of a type."""
+directive @source(
+  """The original name of the annotated type."""
+  name: Name!
+
+  """The name of the schema to which this type belongs to."""
+  schema: Name!
+) on ENUM | OBJECT | INTERFACE | UNION | INPUT_OBJECT | FIELD_DEFINITION | INPUT_FIELD_DEFINITION | ARGUMENT_DEFINITION | ENUM_VALUE
+
+directive @authorize(
+  """
+  The name of the authorization policy that determines access to the annotated resource.
+  """
+  policy: String
+
+  """Roles that are allowed to access to the annotated resource."""
+  roles: [String!]
+) on OBJECT | FIELD_DEFINITION
+
+directive @visibleOnlyToOwner(systemAdministrator: Boolean!) on OBJECT | FIELD_DEFINITION
+
+directive @visibleOnlyToMasterOwner(systemAdministrator: Boolean!) on FIELD_DEFINITION
+
+directive @requireMasterOwner on FIELD_DEFINITION
+
+directive @requireMaster on FIELD_DEFINITION
+
+directive @visibleOnlyToSalonOwner(administrator: Boolean!, systemAdministrator: Boolean!) on FIELD_DEFINITION
+
+directive @visibleOnlyToReviewOwner(administrator: Boolean!, systemAdministrator: Boolean!) on OBJECT | FIELD_DEFINITION
+
+directive @requireSalonOwner on FIELD_DEFINITION
+
+input AddBrandProductsFormInput {
+  id: ID!
+  photosProductsFilesExternal: String
+  priceProductsFileExternal: String
+}
+
+input AddBrandProductsPhotosInput {
+  id: ID!
+  photosProductsFile: String
+}
+
+input AddBrandProductsPriceInput {
+  id: ID!
+  priceProductsFile: String
+}
+
+type Address {
+  area: String
+  areaFiasId: String
+  areaKladrId: String
+  areaType: String
+  areaTypeFull: String
+  areaWithType: String
+  beltwayDistance: String
+  beltwayHit: String
+  block: String
+  blockType: String
+  blockTypeFull: String
+  capitalMarker: String
+  city: String
+  cityArea: String
+  cityDistrict: String
+  cityDistrictFiasId: String
+  cityDistrictKladrId: String
+  cityDistrictType: String
+  cityDistrictTypeFull: String
+  cityDistrictWithType: String
+  cityFiasId: String
+  cityKladrId: String
+  cityType: String
+  cityTypeFull: String
+  cityWithType: String
+  country: String
+  fiasActualityState: String
+  fiasCode: String
+  fiasId: String
+  fiasLevel: String
+  flat: String
+  flatArea: String
+  flatPrice: String
+  flatType: String
+  flatTypeFull: String
+  geoLat: String
+  geoLon: String
+  geonameId: String
+  historyValues: [String]
+  house: String
+  houseFiasId: String
+  houseKladrId: String
+  houseType: String
+  houseTypeFull: String
+  kladrId: String
+  metro: [SubwayStationProximity!]
+  okato: String
+  oktmo: String
+  postalBox: String
+  postalCode: String
+  qc: String
+  qcComplete: String
+  qcGeo: String
+  qcHouse: String
+  region: String
+  regionFiasId: String
+  regionKladrId: String
+  regionType: String
+  regionTypeFull: String
+  regionWithType: String
+  settlement: String
+  settlementFiasId: String
+  settlementKladrId: String
+  settlementType: String
+  settlementTypeFull: String
+  settlementWithType: String
+  source: String
+  squareMeterPrice: String
+  street: String
+  streetFiasId: String
+  streetKladrId: String
+  streetType: String
+  streetTypeFull: String
+  streetWithType: String
+  taxOffice: String
+  taxOfficeLegal: String
+  timezone: String
+  unparsedParts: String
+}
+
+type AddressSuggestion {
+  data: Address
+  unrestrictedValue: String
+  value: String
+}
+
+input AddToCartInput {
+  """ИД продукта"""
+  productId: String
+
+  """Количество"""
+  quantity: Int!
+}
+
+type Banner {
+  createAt: DateTime!
+
+  """Удален"""
+  deleted: Boolean!
+
+  """Идентификатор Хука"""
+  hookId: ID
+
+  """Идентификатор"""
+  id: ID!
+
+  """Ссылка"""
+  link: String
+  photo(kind: ID): Photo
+
+  """Идентификатор фотографии"""
+  photoId: ID
+
+  """ПодЗаголовок"""
+  subTitle: String
+
+  """Заголовок"""
+  title: String
+
+  """Текст на ссылке"""
+  titleLink: String
+  updatedAt: DateTime!
+}
+
+type BannerHook {
+  """Код"""
+  code: String
+  createAt: DateTime!
+
+  """Идентификатор"""
+  id: ID!
+
+  """Наименование"""
+  title: String
+  updatedAt: DateTime!
+}
+
+type Brand {
+  """Адресс бренда"""
+  address: String
+
+  """Адрес бренда полный"""
+  addressFull: BrandAddress
+
+  """средняя оценка"""
+  averageScore: Float!
+  brandCategory: [BrandCategories]
+
+  """Идентификаторы категории"""
+  categoryId: [String]
+
+  """страна происхождения бренда"""
+  country: ID
+  createAt: DateTime!
+
+  """Удален"""
+  deleted: Boolean!
+
+  """Описание"""
+  description: ID
+
+  """Не показывать цены незарегистрированным пользователям"""
+  dontShowPrice: Boolean!
+
+  """Адрес электронной почты"""
+  email: String
+  history: String
+
+  """Идентификатор профиля мастера"""
+  id: ID!
+  logo(kind: ID): Photo
+
+  """логотип бренда"""
+  logoId: ID
+  manufacture: String
+  masters: [Master]
+
+  """Мастера, которые используют этот бренд"""
+  mastersIds: [ID!]
+  minimalOrderPrice: String
+
+  """Наименование"""
+  name: String!
+
+  """Количество оценок"""
+  numberScore: Int!
+
+  """Идентификатор пользователя, создавшего бренд"""
+  ownerId: ID!
+
+  """Контактный телефон"""
+  phone: Phone
+  photo(kind: ID): Photo
+
+  """фото в шапку бренда"""
+  photoId: ID
+  photosProducts: Files
+  photosProductsFile: ID
+  photosProductsFilesExternal: String
+  priceProducts: Files
+  priceProductsFile: ID
+  priceProductsFileExternal: String
+
+  """Вопросы ответы"""
+  questions: [Question]
+
+  """Рейтинг"""
+  rating: Int!
+
+  """Список отзывов"""
+  reviewIds: [ID!]!
+
+  """Акции"""
+  sales: [Sales]
+
+  """Салоны, которые используют этот бренд"""
+  salonIds: [ID!]
+
+  """Оценки"""
+  scores: [Score]
+
+  """SEO"""
+  seo: SeoParams
+
+  """Web-адреса внешних страниц"""
+  socialNetworkUrls: SocialNetworkUrls
+
+  """Сумма оценок"""
+  sumScore: Float!
+  synonyms: String
+  termsDeliveryPrice: String
+  updatedAt: DateTime!
+}
+
+type BrandAddress {
+  """Номер здания (включая номер строения и/или литеру)"""
+  building: String
+
+  """Название города"""
+  city: String
+
+  """Идентификатор города в базе ФИАС"""
+  cityFiasId: String
+
+  """Полный адрес"""
+  full: String
+
+  """ Географическая широта"""
+  latitude: Float!
+
+  """Географическая долгота"""
+  longitude: Float!
+
+  """ Номер или название офиса/квартиры"""
+  office: String
+
+  """Название поселения"""
+  settlement: String
+
+  """ Идентификатор поселения в базе ФИАС"""
+  settlementFiasId: String
+
+  """Идентификатор улицы в базе ФИАС"""
+  streetFiasId: String
+}
+
+type BrandCategories {
+  createAt: DateTime!
+
+  """Удален"""
+  deleted: Boolean!
+
+  """Идентификатор"""
+  id: ID!
+
+  """Заголовок"""
+  title: String
+  updatedAt: DateTime!
+}
+
+"""A connection to a list of items."""
+type BrandConnection {
+  """A list of edges."""
+  edges: [BrandEdge!]
+
+  """A flattened list of the nodes."""
+  nodes: [Brand!]
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"""An edge in a connection."""
+type BrandEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of the edge."""
+  node: Brand!
+}
+
+type BrandSearchResult {
+  """Найденные бренды"""
+  brands: [Brand!]!
+  connection(after: String, before: String, first: PaginationAmount, last: PaginationAmount): BrandConnection
+
+  """Фильтр для дальнейшего поиска мест"""
+  filterDefinition: ID!
+}
+
+"""
+The `Byte` scalar type represents non-fractional whole numeric values. Byte can represent values between 0 and 255.
+"""
+scalar Byte
+
+type CartContent {
+  """Ключ"""
+  key: String
+  product: Products
+
+  """ИД товара"""
+  productId: String
+
+  """Количество"""
+  quantity: Int!
+}
+
+type Carts {
+  """Содержание"""
+  contents: [CartContent]
+  createAt: DateTime!
+  id: ID!
+  ownerId: String
+
+  """Стоимость"""
+  shippingTotal: Float!
+
+  """Сумма заказа"""
+  total: Float!
+  updatedAt: DateTime!
+}
+
+type Categories {
+  createAt: DateTime!
+
+  """Удален"""
+  deleted: Boolean!
+
+  """Идентификатор"""
+  id: ID!
+
+  """Идентификатор Родительской категории"""
+  parentId: ID
+
+  """Заголовок"""
+  title: String
+  updatedAt: DateTime!
+}
+
+input ChangeOwnerRequestInput {
+  """Идентификатор заявки"""
+  id: ID!
+
+  """Новый статус заявки"""
+  status: OwnerRequestStatus!
+}
+
+input ChangeRentalRequestStatusInput {
+  """Идентификатор заявки"""
+  id: ID!
+
+  """Новый статус заявки"""
+  status: RentalRequestStatus!
+}
+
+enum ChatOrigin {
+  NOT
+  PRODUCT
+  MASTER
+  BRAND
+  SALON
+}
+
+type Comments {
+  createAt: DateTime!
+
+  """Удален"""
+  deleted: Boolean!
+
+  """Контент"""
+  description: String
+
+  """Идентификатор"""
+  id: ID!
+
+  """ID Origin"""
+  originId: String
+
+  """Идентификатор пользователя, создавшего профиль"""
+  ownerId: ID!
+  updatedAt: DateTime!
+  user: User
+}
+
+input Content_CreateCategoriesInput {
+  parentId: String
+  title: String
+}
+
+input Content_UpdateCategoriesInput {
+  id: String
+  parentId: String
+  title: String
+}
+
+input CreateBannerHookInput {
+  code: String
+  title: String
+}
+
+input CreateBannerInput {
+  hookId: String
+  link: String
+  photoId: ID!
+  subTitle: String
+  title: String
+  titleLink: String
+}
+
+input CreateBrandInput {
+  address: String
+  categoryId: [String]
+  country: String
+  description: String
+  email: String
+  history: String
+  logoId: String
+  manufacture: String
+  name: String
+  phone: PhoneInput
+  photoId: String
+  socialNetworkUrls: SocialNetworkUrlsInput
+}
+
+input CreateCategoriesInput {
+  title: String
+}
+
+input CreateCommentsInput {
+  """Контент"""
+  description: String
+
+  """ID Origin"""
+  originId: String
+}
+
+input CreateEducationInput {
+  """Стоимость"""
+  amount: String
+
+  """Дата конца акции """
+  dateEnd: String
+
+  """Дата начала акции """
+  dateStart: String
+
+  """Контент"""
+  desc: String
+
+  """Статус публикации"""
+  isPublished: Boolean!
+
+  """К чему относится Акция - тип"""
+  origin: ReviewOrigin!
+
+  """К чему относится Акция - ID"""
+  originId: String
+
+  """Идентификатор фотографии """
+  photoId: ID!
+
+  """Краткое содержание записи"""
+  short_desc: String
+
+  """Заголовок"""
+  title: String
+}
+
+input CreateEventsInput {
+  """Адрес проведения"""
+  address: String
+
+  """Дата конца акции """
+  dateEnd: String
+
+  """Дата начала акции """
+  dateStart: String
+
+  """Контент"""
+  desc: String
+
+  """Статус публикации"""
+  isPublished: Boolean!
+
+  """К чему относится Акция - тип"""
+  origin: ReviewOrigin!
+
+  """К чему относится Акция - ID"""
+  originId: String
+
+  """Идентификатор фотографии """
+  photoId: ID!
+
+  """Краткое содержание записи"""
+  short_desc: String
+
+  """Заголовок"""
+  title: String
+}
+
+input CreateMasterInput {
+  address: String
+  description: String
+  email: String
+  experience: String
+  name: String!
+  onlineBookingUrl: String
+  phone: PhoneInput!
+  photoId: String
+  socialNetworkUrls: SocialNetworkUrlsInput
+  specializations: [ID!]!
+  specializationsServices: [String]
+  webSiteUrl: String
+}
+
+input CreateMasterworkInput {
+  description: String
+  examples: [MasterworkExampleInput!]!
+  services: [ID!]!
+  title: String!
+  videos: [VideoInput!]!
+}
+
+input CreateMessageInput {
+  message: String
+
+  """ИД пользователя"""
+  roomId: String
+}
+
+input CreateMessageNewInput {
+  message: String
+
+  """ИД пользователя"""
+  userId: String
+}
+
+input CreateOrUpdateSalonRoomInput {
+  defaultPhotoId: String
+  description: String
+  floor: Int!
+  hasWindows: Boolean!
+  photoIds: [ID!]!
+  schemaId: String
+  seatCount: Int!
+  services: [ServiceCatalogEntryInput!]!
+  space: Int!
+  title: String!
+  videoLink: Url
+  wetPointsHands: Int!
+  wetPointsHead: Int!
+  wetPointsShower: Int!
+}
+
+input CreateOrUpdateSalonRoomSeatInput {
+  """Доступные виды деятельности"""
+  activities: [String!]!
+
+  """Признак доступности совместной аренды"""
+  allowJointRental: Boolean!
+
+  """Признак возможности сдавать место в субаренду"""
+  allowSublease: Boolean!
+
+  """Доступность этого рабочего места для аренды"""
+  isAvailableForRent: Boolean!
+
+  """Фотография рабочего места"""
+  photoId: String
+
+  """Способы оплаты аренды"""
+  rentalPaymentMethods: SeatRentalPaymentMethodsInput!
+
+  """Стоимость аренды места"""
+  rentalPricing: SeatRentalPricingInput!
+
+  """Номер рабочего места на плане помещения"""
+  seatNumber: String
+
+  """Выбранные услуги"""
+  services: [ServiceCatalogEntryInput!]!
+}
+
+input CreateOwnerRequestInput {
+  """Идентификатор салона, в котором арендуется рабочее место"""
+  salonId: ID!
+}
+
+input CreatePagesInput {
+  categoryId: String
+  desc: String
+  photoId: ID!
+  short_desc: String
+  title: String
+}
+
+input CreateProductsCategoriesInput {
+  parentId: String
+  title: String
+}
+
+input CreateProductsInput {
+  """Цена"""
+  amount: Float!
+
+  """Цена со скидкой"""
+  amountSales: Float!
+
+  """Бренд"""
+  brandId: String
+
+  """Категория"""
+  categoryId: String
+
+  """Страна"""
+  country: String
+
+  """Описание"""
+  description: String
+  photoIds: [ID!]!
+
+  """Рейтинг"""
+  rating: Int!
+
+  """SEO"""
+  seo: SeoParamsInput
+
+  """Короткое Описание"""
+  shortDescription: String
+
+  """Артикул"""
+  sku: String
+
+  """Название"""
+  title: String
+
+  """URL - источник"""
+  url: String
+}
+
+input CreateRentalRequestInput {
+  """Email"""
+  email: String
+
+  """Телефон"""
+  phone: String
+
+  """Идентификатор помещения, в котором арендуется рабочее место"""
+  roomId: ID!
+
+  """Идентификатор салона, в котором арендуется рабочее место"""
+  salonId: ID!
+
+  """Идентификатор арендуемого рабочего места"""
+  seatId: ID!
+}
+
+input CreateRequestBannerInput {
+  """Заголовок баннера"""
+  adHeader: String
+
+  """Идентификатор фотографии"""
+  adImage: ID
+
+  """текст баннера"""
+  adText: String
+
+  """Комметарий"""
+  requestComment: String
+}
+
+input CreateRequestEducationInput {
+  """Стоимость"""
+  amount: String
+
+  """Дата конца акции """
+  dateEnd: String
+
+  """Дата начала акции """
+  dateStart: String
+
+  """Контент"""
+  desc: String
+
+  """К чему относится Акция - тип"""
+  origin: ReviewOrigin!
+
+  """К чему относится Акция - ID"""
+  originId: String
+
+  """Идентификатор фотографии """
+  photoId: ID!
+
+  """Краткое содержание записи"""
+  short_desc: String
+
+  """Заголовок"""
+  title: String
+}
+
+input CreateRequestEventsInput {
+  """Адрес проведения"""
+  address: String
+
+  """Дата конца акции """
+  dateEnd: String
+
+  """Дата начала акции """
+  dateStart: String
+
+  """Контент"""
+  desc: String
+
+  """К чему относится Акция - тип"""
+  origin: ReviewOrigin!
+
+  """К чему относится Акция - ID"""
+  originId: String
+
+  """Идентификатор фотографии """
+  photoId: ID!
+
+  """Краткое содержание записи"""
+  short_desc: String
+
+  """Заголовок"""
+  title: String
+}
+
+input CreateRequestPriorityInput {
+  """К чему относится Акция - тип"""
+  origin: ReviewOrigin!
+
+  """К чему относится Акция - ID"""
+  originId: ID!
+  requestComment: String
+}
+
+input CreateRequestSalesInput {
+  """Дата конца акции """
+  dateEnd: String
+
+  """Дата начала акции """
+  dateStart: String
+
+  """Контент"""
+  desc: String
+
+  """К чему относится Акция - тип"""
+  origin: ReviewOrigin!
+
+  """К чему относится Акция - ID"""
+  originId: String
+
+  """Идентификатор фотографии """
+  photoId: ID!
+
+  """Краткое содержание записи"""
+  short_desc: String
+
+  """Заголовок"""
+  title: String
+
+  """Промокод/размер скидки"""
+  value: String
+}
+
+input CreateRequestToSalonInput {
+  email: String
+  message: String
+  name: String
+  phone: String
+  salonId: ID!
+}
+
+input CreateRequestVacanciesInput {
+  """Сумма от"""
+  amountFrom: Float!
+
+  """Сумма до"""
+  amountTo: Float!
+
+  """Дата конца акции """
+  dateEnd: String
+
+  """Дата начала акции """
+  dateStart: String
+
+  """Контент"""
+  desc: String
+
+  """Статус публикации"""
+  isPublished: Boolean!
+
+  """К чему относится"""
+  origin: VacanciesOrigin!
+
+  """ID"""
+  originId: ID!
+
+  """Идентификатор фотографии """
+  photoId: ID!
+
+  """Краткое содержание записи"""
+  short_desc: String
+
+  """Заголовок"""
+  title: String
+}
+
+input CreateReviewInput {
+  description: String
+  name: String
+  origin: Reviews_ReviewOrigin!
+  originId: String
+}
+
+input CreateRoomsInput {
+  """К чему относится отзыв"""
+  origin: ChatOrigin!
+  originId: String
+
+  """ИД пользователя"""
+  userId: String
+}
+
+input CreateSalesInput {
+  """Дата конца акции """
+  dateEnd: String
+
+  """Дата начала акции """
+  dateStart: String
+
+  """Контент"""
+  desc: String
+
+  """Статус публикации"""
+  isPublished: Boolean!
+
+  """К чему относится Акция - тип"""
+  origin: ReviewOrigin!
+
+  """К чему относится Акция - ID"""
+  originId: String
+
+  """Идентификатор фотографии """
+  photoId: ID!
+
+  """Краткое содержание записи"""
+  short_desc: String
+
+  """Заголовок"""
+  title: String
+
+  """Промокод/размер скидки"""
+  value: String
+}
+
+input CreateSalonInput {
+  activities: [String]
+
+  """Адрес салона"""
+  address: String
+  contactPersonEmail: String
+  contactPersonName: String
+  contactPersonPhone: PhoneInput
+  contactPersonWorkingHours: [WorkingHoursEntryInput]
+  defaultPhotoId: String
+  description: String
+  email: String
+  lessor: Boolean!
+  locationDirections: String
+  logoId: String
+
+  """Название салона"""
+  name: String
+  onlineBookingUrl: String
+  phones: [PhoneInput]
+  photoIds: [String]
+  services: [ServiceCatalogEntryInput]
+  socialNetworkUrls: SocialNetworkUrlsInput
+  webSiteUrl: String
+  workingHours: [WorkingHoursEntryInput]
+}
+
+input CreateSpecialistInput {
+  address: String
+  description: String
+  email: String
+  experience: String
+  name: String
+  onlineBookingUrl: String
+  phone: PhoneInput!
+  photoId: String
+  socialNetworkUrls: SocialNetworkUrlsInput
+  webSiteUrl: String
+}
+
+input CreateVacanciesInput {
+  """Сумма от"""
+  amountFrom: Float!
+
+  """Сумма до"""
+  amountTo: Float!
+
+  """Дата конца акции """
+  dateEnd: String
+
+  """Дата начала акции """
+  dateStart: String
+
+  """Контент"""
+  desc: String
+
+  """Статус публикации"""
+  isPublished: Boolean!
+
+  """К чему относится"""
+  origin: VacanciesOrigin!
+
+  """ID"""
+  originId: ID!
+
+  """Идентификатор фотографии """
+  photoId: ID!
+
+  """Краткое содержание записи"""
+  short_desc: String
+
+  """Заголовок"""
+  title: String
+}
+
+"""The `Date` scalar represents an ISO-8601 compliant date type."""
+scalar Date
+
+"""The `DateTime` scalar represents an ISO-8601 compliant date time type."""
+scalar DateTime
+
+enum DayOfWeek {
+  SUNDAY
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+}
+
+"""The built-in `Decimal` scalar type."""
+scalar Decimal
+
+input DeleteEducationInput {
+  id: String
+}
+
+input DeleteEventsInput {
+  id: String
+}
+
+input DeletePagesInput {
+  id: String
+}
+
+input DeleteReviewInput {
+  deleted: Boolean!
+  reviewId: String
+}
+
+input DeleteSalesInput {
+  id: String
+}
+
+input DeleteVacanciesInput {
+  id: String
+}
+
+type Education {
+  """Стоимость"""
+  amount: String
+
+  """средняя оценка"""
+  averageScore: Float!
+  brandOrigin: Brand
+  createAt: DateTime!
+
+  """Дата конца"""
+  dateEnd: DateTime!
+
+  """Дата начала"""
+  dateStart: DateTime!
+
+  """Удален"""
+  deleted: Boolean!
+
+  """Контент"""
+  desc: String
+
+  """Идентификатор"""
+  id: ID!
+
+  """Статус"""
+  isPublished: Boolean!
+  like: Boolean
+  masterOrigin: Master
+
+  """Количество оценок"""
+  numberScore: Int!
+
+  """К чему относится мероприятие - салон, бренд, мастер"""
+  origin: ReviewOrigin!
+
+  """К чему относится Акция - ID"""
+  originId: ID!
+
+  """Идентификатор пользователя, создавшего профиль"""
+  ownerId: String
+
+  """Идентификатор фотографии (обложки)"""
+  photoId: ID
+  salonOrigin: Salon
+
+  """Оценки"""
+  scores: [Score]
+
+  """Краткое содержание записи"""
+  short_desc: String
+
+  """Сумма оценок"""
+  sumScore: Float!
+
+  """Заголовок"""
+  title: String
+  updatedAt: DateTime!
+}
+
+"""A connection to a list of items."""
+type EducationConnection {
+  """A list of edges."""
+  edges: [EducationEdge!]
+
+  """A flattened list of the nodes."""
+  nodes: [Education!]
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"""An edge in a connection."""
+type EducationEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of the edge."""
+  node: Education!
+}
+
+type EducationSearchResult {
+  connection(after: String, before: String, first: PaginationAmount, last: PaginationAmount): EducationConnection
+
+  """Найденные """
+  education: [Education!]!
+
+  """Фильтр для дальнейшего поиска мест"""
+  filterDefinition: ID!
+}
+
+type Events {
+  """Адрес проведения"""
+  address: String
+  brandOrigin: Brand
+  createAt: DateTime!
+
+  """Дата конца  """
+  dateEnd: DateTime!
+
+  """Дата начала  """
+  dateStart: DateTime!
+
+  """Удален"""
+  deleted: Boolean!
+
+  """Контент"""
+  desc: String
+
+  """Идентификатор"""
+  id: ID!
+
+  """Статус"""
+  isPublished: Boolean!
+  masterOrigin: Master
+
+  """К чему относится мероприятие - салон, бренд, мастер"""
+  origin: ReviewOrigin!
+
+  """ID Origin"""
+  originId: String
+
+  """Идентификатор пользователя, создавшего профиль"""
+  ownerId: String
+
+  """Идентификатор фотографии (обложки)"""
+  photoId: ID
+  salonOrigin: Salon
+
+  """Краткое содержание записи"""
+  short_desc: String
+
+  """Заголовок"""
+  title: String
+  updatedAt: DateTime!
+}
+
+"""A connection to a list of items."""
+type EventsConnection {
+  """A list of edges."""
+  edges: [EventsEdge!]
+
+  """A flattened list of the nodes."""
+  nodes: [Events!]
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"""An edge in a connection."""
+type EventsEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of the edge."""
+  node: Events!
+}
+
+type EventsSearchResult {
+  connection(after: String, before: String, first: PaginationAmount, last: PaginationAmount): EventsConnection
+
+  """Events """
+  events: [Events!]!
+
+  """Фильтр для дальнейшего поиска мест"""
+  filterDefinition: ID!
+}
+
+type Favourites {
+  createAt: DateTime!
+
+  """Идентификатор"""
+  id: ID!
+  origin: Education
+
+  """ID Origin"""
+  originId: String
+
+  """Идентификатор пользователя, создавшего профиль"""
+  ownerId: ID!
+  updatedAt: DateTime!
+}
+
+"""A file"""
+type Files {
+  """The file id"""
+  id: ID!
+
+  """The file url with respect to kind"""
+  url: Url!
+}
+
+type KeyValuePairOfStringAndDouble {
+  key: String
+  value: Float!
+}
+
+type Likes {
+  createAt: DateTime!
+
+  """Удален"""
+  deleted: Boolean!
+
+  """Идентификатор"""
+  id: ID!
+
+  """ID Origin"""
+  originId: String
+
+  """Идентификатор пользователя, создавшего профиль"""
+  ownerId: ID!
+  updatedAt: DateTime!
+}
+
+"""
+The `Long` scalar type represents non-fractional signed whole 64-bit numeric
+values. Long can represent values between -(2^63) and 2^63 - 1.
+"""
+scalar Long
+
+type Master {
+  """Адрес мастера"""
+  address: String
+
+  """Адрес мастера полный"""
+  addressFull: MasterAddress
+
+  """средняя оценка"""
+  averageScore: Float!
+  bornDate: DateTime!
+  createAt: DateTime!
+
+  """Удален"""
+  deleted: Boolean!
+  description: String
+
+  """Адрес электронной почты мастера"""
+  email: String
+
+  """Опыт работы (период)"""
+  experience: String
+
+  """Идентификатор профиля мастера"""
+  id: ID!
+
+  """ФИО мастера"""
+  name: String!
+
+  """Количество оценок"""
+  numberScore: Int!
+
+  """Адрес страницы с онлайн-записью"""
+  onlineBookingUrl: String
+
+  """Контактный телефон мастера"""
+  phone: Phone
+  photo(kind: ID): Photo
+  photoDiplomaIds: [ID!]!
+
+  """Идентификатор фотографии мастера"""
+  photoId: ID
+  photoWorksIds: [ID!]!
+  photosDiploma(kind: ID): [Photo]!
+  photosWorks(kind: ID): [Photo]!
+
+  """Рейтинг"""
+  rating: Int!
+
+  """Резюме"""
+  resume: String
+
+  """Салоны, в которых работал мастер"""
+  salonIds: [ID!]
+
+  """Оценки"""
+  scores: [Score]
+
+  """Ищу работу"""
+  searchWork: Boolean!
+
+  """SEO"""
+  seo: SeoParams
+  servicesMaster: [ServiceMasterCatalogEntry!]!
+
+  """Web-адреса внешних страниц мастера"""
+  socialNetworkUrls: SocialNetworkUrls
+
+  """Список идентификаторов специализаций мастера"""
+  specializations: [ID!]!
+
+  """Список идентификаторов услуг мастера"""
+  specializationsServices: [ID!]!
+
+  """Сумма оценок"""
+  sumScore: Float!
+  synonyms: String
+  updatedAt: DateTime!
+  user: User!
+
+  """Идентификатор пользователя, создавшего профиль"""
+  userId: ID!
+
+  """Адрес сайта мастера"""
+  webSiteUrl: String
+}
+
+type MasterAddress {
+  building: String
+  city: String
+  cityFiasId: ID
+  full: String!
+  latitude: Float!
+  longitude: Float!
+  office: String
+  streetFiasId: ID!
+}
+
+"""A connection to a list of items."""
+type MasterConnection {
+  """A list of edges."""
+  edges: [MasterEdge!]
+
+  """A flattened list of the nodes."""
+  nodes: [Masters_Master!]
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"""An edge in a connection."""
+type MasterEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of the edge."""
+  node: Masters_Master!
+}
+
+type Masters_Master {
+  """Адрес мастера"""
+  address: String
+
+  """Адрес мастера полный"""
+  addressFull: MasterAddress
+
+  """средняя оценка"""
+  averageScore: Float!
+  bornDate: DateTime!
+  createAt: DateTime!
+
+  """Удален"""
+  deleted: Boolean!
+  description: String
+
+  """Адрес электронной почты мастера"""
+  email: String
+
+  """Опыт работы (период)"""
+  experience: String
+
+  """Идентификатор профиля мастера"""
+  id: ID!
+
+  """ФИО мастера"""
+  name: String!
+
+  """Количество оценок"""
+  numberScore: Int!
+
+  """Адрес страницы с онлайн-записью"""
+  onlineBookingUrl: String
+
+  """Контактный телефон мастера"""
+  phone: Phone
+  photo(kind: ID): Photo
+  photoDiplomaIds: [ID!]!
+
+  """Идентификатор фотографии мастера"""
+  photoId: ID
+  photoWorksIds: [ID!]!
+  photosDiploma(kind: ID): [Photo]!
+  photosWorks(kind: ID): [Photo]!
+
+  """Рейтинг"""
+  rating: Int!
+
+  """Резюме"""
+  resume: String
+
+  """Салоны, в которых работал мастер"""
+  salonIds: [ID!]
+
+  """Оценки"""
+  scores: [Score]
+
+  """Ищу работу"""
+  searchWork: Boolean!
+
+  """SEO"""
+  seo: SeoParams
+  servicesMaster: [KeyValuePairOfStringAndDouble!]
+
+  """Web-адреса внешних страниц мастера"""
+  socialNetworkUrls: SocialNetworkUrls
+
+  """Список идентификаторов специализаций мастера"""
+  specializations: [ID!]!
+
+  """Список идентификаторов услуг мастера"""
+  specializationsServices: [ID!]!
+
+  """Сумма оценок"""
+  sumScore: Float!
+  synonyms: String
+  updatedAt: DateTime!
+  user: User!
+
+  """Идентификатор пользователя, создавшего профиль"""
+  userId: ID!
+
+  """Адрес сайта мастера"""
+  webSiteUrl: String
+}
+
+input MasterSearchInput {
+  """Город"""
+  city: String
+
+  """Строка поиска"""
+  query: String
+
+  """Ищет работу"""
+  searchWork: Boolean
+
+  """Порядок сортировки"""
+  sortOrder: MasterSearchSortOrder
+
+  """Свойство для сортировки"""
+  sortProperty: MasterSearchSortProperty
+}
+
+type MasterSearchResult {
+  connection(after: String, before: String, first: PaginationAmount, last: PaginationAmount): MasterConnection
+
+  """Фильтр для дальнейшего поиска мест"""
+  filterDefinition: ID!
+
+  """Найденные мастера"""
+  masters: [Masters_Master!]!
+}
+
+enum MasterSearchSortOrder {
+  ASCENDING
+  DESCENDING
+}
+
+enum MasterSearchSortProperty {
+  RATING
+  AVERAGESCORE
+  CREATEAT
+}
+
+type Masterwork {
+  """Описание"""
+  description: String
+
+  """Фотографии"""
+  examples: [MasterworkExample!]!
+
+  """Идентификатор работы мастера"""
+  id: ID!
+
+  """Идентификатор мастера, создавшего работу"""
+  masterId: ID!
+
+  """Услуги"""
+  services: [ID!]!
+
+  """Название"""
+  title: String!
+
+  """Видео"""
+  videos: [Video!]!
+}
+
+type MasterworkExample {
+  """Описание"""
+  description: String!
+  photo(kind: ID): Photo
+  photoId: ID!
+}
+
+input MasterworkExampleInput {
+  """Описание"""
+  description: String!
+  photoId: ID!
+}
+
+type Me {
+  info: User
+  master: Master
+  rentalRequests: [RentalRequest!]!
+  salons: [Salon!]
+}
+
+type Messages {
+  authorUserId: String
+  createAt: DateTime!
+  id: ID!
+  message: String
+  read: Boolean!
+  roomId: String
+  updatedAt: DateTime!
+  user: User!
+  userAuthor: User!
+  userId: String
+}
+
+"""
+The multiplier path scalar represents a valid GraphQL multiplier path string.
+"""
+scalar MultiplierPath
+
+type Mutation {
+  """Изменить данные по товарам с формы"""
+  addBrandProductsForm(input: AddBrandProductsFormInput!, ownerId: String): Brand!
+
+  """Изменить картинки товаров"""
+  addBrandProductsPhotos(input: AddBrandProductsPhotosInput!, ownerId: String): Brand!
+
+  """Изменить файла прайса товаров"""
+  addBrandProductsPrice(input: AddBrandProductsPriceInput!, ownerId: String): Brand!
+  addFavorites(input: OriginIdInput!): Favourites!
+  addLikes(input: OriginIdInput!): Likes!
+  addSalonBrands(
+    """List of Brands identifiers"""
+    ids: [ID]!
+
+    """Идентификатор салона"""
+    salonId: ID!
+  ): Boolean!
+  addSalonToMasters(
+    """List of salons identifiers"""
+    ids: [ID]!
+
+    """Идентификатор профиля мастера"""
+    masterId: ID!
+  ): Boolean!
+  addToCart(input: AddToCartInput!): Carts!
+  addUserBrands(
+    """List of Brands  identifiers"""
+    ids: [ID]!
+
+    """Идентификатор профиля мастера"""
+    masterId: ID!
+  ): Boolean!
+  changeCity(city: String): Boolean!
+  changeData(input: UserDataInput!): Boolean!
+
+  """Меняет статус заявки"""
+  changeOwnerRequest(input: ChangeOwnerRequestInput!): OwnerRequest!
+
+  """Меняет статус заявки"""
+  changeRentalRequestStatus(input: ChangeRentalRequestStatusInput!): RentalRequest!
+
+  """Клонирует указанное рабочее место"""
+  cloneSalonRoomSeat(roomId: ID!, salonId: ID!, seatId: ID!): Seat!
+  createBanner(input: CreateBannerInput!): Banner!
+  createBannerHook(input: CreateBannerHookInput!): BannerHook!
+  createBrand(input: CreateBrandInput!, ownerId: String): Brand!
+  createBrandCategories(input: CreateCategoriesInput!): BrandCategories!
+  createCategories(input: CreateCategoriesInput!): Categories!
+  createComments(input: CreateCommentsInput!): Comments!
+  createEducation(input: CreateEducationInput!): Education!
+  createEvents(input: CreateEventsInput!): Events!
+
+  """Создаёт профиль мастера для текущего пользователя"""
+  createMaster(
+    """Параметры создаваемого профиля"""
+    input: CreateMasterInput!
+  ): Master!
+
+  """Создаёт профиль мастера """
+  createMasterAdmin(
+    """Параметры создаваемого профиля"""
+    input: CreateMasterInput!
+    userId: String
+  ): Master!
+
+  """Создаёт работу мастера для текущего пользователя"""
+  createMasterwork(input: CreateMasterworkInput!): Masterwork!
+  createMessage(input: CreateMessageInput!): Messages!
+  createMessageNew(input: CreateMessageNewInput!): Messages!
+
+  """Создаёт новую заявку на владельца"""
+  createOwnerRequest(input: CreateOwnerRequestInput!): OwnerRequest!
+  createPages(input: CreatePagesInput!): Pages!
+  createProducts(input: CreateProductsInput!): Products!
+  createProductsCategories(input: CreateProductsCategoriesInput!): ProductsCategories!
+
+  """Создаёт новую заявку на аренду рабочего места"""
+  createRentalRequest(input: CreateRentalRequestInput!): RentalRequest!
+  createRequestBanner(input: CreateRequestBannerInput!): RequestBanner!
+  createRequestEducation(input: CreateRequestEducationInput!): Education!
+  createRequestEvents(input: CreateRequestEventsInput!): Events!
+  createRequestPriority(input: CreateRequestPriorityInput!): RequestPriority!
+  createRequestSales(input: CreateRequestSalesInput!): SalesRow!
+  createRequestToSalon(input: CreateRequestToSalonInput!): Boolean!
+  createRequestVacancies(input: CreateRequestVacanciesInput!): Vacancies!
+  createReview(input: CreateReviewInput!, ownerId: String): Review!
+  createRooms(input: CreateRoomsInput!): Rooms!
+  createSales(input: CreateSalesInput!): SalesRow!
+
+  """Создаёт новый салон"""
+  createSalon(
+    """Параметры создаваемого салона"""
+    input: CreateSalonInput!
+    ownerId: String
+  ): Salon!
+  createSalonRoom(input: CreateOrUpdateSalonRoomInput!, salonId: ID!): Room!
+  createSalonRoomSeat(input: CreateOrUpdateSalonRoomSeatInput!, roomId: ID!, salonId: ID!): Seat!
+  createScopesBrand(
+    """Идентификатор бренда"""
+    brandId: ID!
+    value: Float!
+  ): Boolean!
+  createScopesEducation(
+    """Идентификатор записи"""
+    id: ID!
+    value: Float!
+  ): Boolean!
+  createScopesMaster(
+    """Идентификатор профиля мастера"""
+    masterId: ID!
+    value: Float!
+  ): Boolean!
+  createScopesSalon(
+    """Идентификатор бренда"""
+    salonId: ID!
+    value: Float!
+  ): Boolean!
+
+  """Создаёт профиль специалиста """
+  createSpecialistAdmin(
+    """Параметры создаваемого профиля"""
+    input: CreateSpecialistInput!
+    userId: String
+  ): Specialist!
+  createVacancies(input: CreateVacanciesInput!): Vacancies!
+
+  """Удаляет заявку"""
+  deleteRentalRequest(input: RentalRequestInput!): Boolean!
+  deleteReview(input: DeleteReviewInput!, ownerId: String): Review!
+
+  """Удаляет указанное помещение салона"""
+  deleteSalonRoom(
+    """Идентификатор помещения для удаления"""
+    roomId: ID!
+
+    """Идентификатор салона, содержащего помещение для удаления"""
+    salonId: ID!
+  ): SalonMoniker!
+
+  """Удаляет указанное рабочее место"""
+  deleteSalonRoomSeat(roomId: ID!, salonId: ID!, seatId: ID!): RoomMoniker!
+  deletedEducation(input: DeleteEducationInput!): Education!
+  deletedEvents(input: DeleteEventsInput!): Events!
+  deletedPage(input: DeletePagesInput!): Pages!
+  deletedRequestBanner(id: String!): RequestBanner!
+  deletedRequestPriority(id: String!): RequestPriority!
+  deletedSale(input: DeleteSalesInput!): SalesRow!
+  deletedVacancies(input: DeleteVacanciesInput!): Vacancies!
+  removeFavorites(input: OriginIdInput!): Boolean!
+  removeLikes(input: OriginIdInput!): Boolean!
+  removeSalonBrands(
+    """List of Brands  identifiers"""
+    ids: [ID]!
+
+    """Идентификатор проиля салона"""
+    salonId: ID!
+  ): Boolean!
+  removeSalonToMasters(
+    """List of salons identifiers"""
+    ids: [ID]!
+
+    """Идентификатор профиля мастера"""
+    masterId: ID!
+  ): Boolean!
+  removeUserBrands(
+    """List of Brands  identifiers"""
+    ids: [ID]!
+
+    """Идентификатор профиля мастера"""
+    masterId: ID!
+  ): Boolean!
+  sendOrderBrand(input: SendOrderBrandInput!): Boolean!
+  updateBanner(input: UpdateBannerInput!): Banner!
+  updateBannerHook(input: UpdateBannerHookInput!): BannerHook!
+  updateBrandCategories(input: UpdateCategoriesInput!): BrandCategories!
+
+  """Удаляет бренд"""
+  updateBrandDeleted(input: UpdateBrandDeletedInput!, ownerId: String): Brand!
+
+  """Обновляет основную информацию о бренде"""
+  updateBrandInformation(input: UpdateBrandInformationInput!, ownerId: String): Brand!
+
+  """Обновляет логотип"""
+  updateBrandLogo(input: UpdateBrandLogoInput!, ownerId: String): Brand!
+
+  """Обновляет Имя"""
+  updateBrandName(input: UpdateBrandNameInput!, ownerId: String): Brand!
+
+  """Обновляет владельца"""
+  updateBrandOwner(input: UpdateBrandOwnerInput!, ownerId: String): Brand!
+
+  """Обновляет логотип фото в шапке"""
+  updateBrandPhoto(input: UpdateBrandPhotoInput!, ownerId: String): Brand!
+
+  """Обновляет  рейтинг сортировки"""
+  updateBrandRating(input: UpdateBrandRatingInput!, ownerId: String): Brand!
+  updateCategories(input: UpdateCategoriesInput!): Categories!
+  updateEducation(input: UpdateEducationInput!): Education!
+  updateEvents(input: UpdateEventsInput!): Events!
+  updateItemQuantities(input: UpdateToCartInput!): Carts!
+
+  """Обновляет  видимость мастера"""
+  updateMasterDeleted(input: UpdateMasterDeletedInput!, userId: String): Master!
+
+  """Смена пользователя"""
+  updateMasterOwnerAdmin(input: UpdateMasterOwnerInput!, userId: String): Master!
+
+  """Обновляет фотографию мастера для текущего пользователя"""
+  updateMasterPhoto(input: UpdateMasterPhotoInput!, ownerId: String): Master!
+
+  """Обновляет фотографию мастера"""
+  updateMasterPhotoAdmin(input: UpdateMasterPhotoInput!, userId: String): Master!
+
+  """Обновляет фотографии дипломов"""
+  updateMasterPhotoDiploma(input: UpdateMasterPhotoDiplomaInput!, ownerId: String): Master!
+
+  """Обновляет фотографии работ мастера"""
+  updateMasterPhotoWorks(input: UpdateMasterPhotoWorksInput!, ownerId: String): Master!
+
+  """Обновляет профиль мастера для текущего пользователя"""
+  updateMasterProfile(input: UpdateMasterProfileInput!, ownerId: String): Master!
+
+  """Обновляет профиль мастера """
+  updateMasterProfileAdmin(input: UpdateMasterProfileInput!, userId: String): Master!
+
+  """Обновляет рейтинг мастера"""
+  updateMasterRating(input: UpdateMasterRatingInput!, userId: String): Master!
+
+  """Обновляет список услуг мастера для текущего пользователя"""
+  updateMasterServices(input: UpdateMasterServicesInput!, ownerId: String): Master!
+
+  """Обновляет  список услуг мастера"""
+  updateMasterServicesAdmin(input: UpdateMasterServicesInput!, userId: String): Master!
+
+  """Обновляет указанную работу мастера"""
+  updateMasterwork(input: UpdateMasterworkInput!): Masterwork!
+  updatePages(input: UpdatePagesInput!): Pages!
+  updateProducts(input: UpdateProductsInput!): Products!
+  updateProductsCategories(input: UpdateProductsCategoriesInput!): ProductsCategories!
+  updateRequestBanner(input: UpdateRequestBannerInput!): RequestBanner!
+  updateRequestPriority(input: UpdateRequestPriorityInput!): RequestPriority!
+  updateReview(input: UpdateReviewInput!, ownerId: String): Review!
+  updateSales(input: UpdateSalesInput!): SalesRow!
+
+  """Обновляет название и адрес салона"""
+  updateSalonIdentity(input: UpdateSalonIdentityInput!, ownerId: String): Salon!
+
+  """Обновляет основную информацию о салоне"""
+  updateSalonInformation(input: UpdateSalonInformationInput!, ownerId: String): Salon!
+
+  """Обновляет логотип салона"""
+  updateSalonLogo(input: UpdateSalonLogoInput!, ownerId: String): Salon!
+
+  """Обновляет владельца"""
+  updateSalonOwner(input: UpdateSalonOwnerInput!, ownerId: String): Salon!
+
+  """Обновляет статус публикации"""
+  updateSalonPublishingStatus(input: UpdateSalonPublishingStatusInput!, ownerId: String): Salon!
+
+  """Обновляет рейтинг сортировки салона"""
+  updateSalonRating(input: UpdateSalonRatingInput!, ownerId: String): Salon!
+  updateSalonRoom(input: CreateOrUpdateSalonRoomInput!, roomId: ID!, salonId: ID!): Room!
+  updateSalonRoomSeat(input: CreateOrUpdateSalonRoomSeatInput!, roomId: ID!, salonId: ID!, seatId: ID!): Seat!
+
+  """Обновляет услуги мастеров в салоне"""
+  updateSalonServiceMaster(input: UpdateSalonServiceMasterInput!, ownerId: String): Salon!
+  updateSalonServices(input: UpdateSalonServicesInput!, salonId: ID!): [ServiceCatalogEntry!]!
+
+  """Обновляет услуги мастеров"""
+  updateServicesMaster(input: UpdateServicesMasterInput!, ownerId: String): Master!
+
+  """Обновляет фотографию специалиста"""
+  updateSpecialistPhoto(input: UpdateSpecialistPhotoInput!, userId: String): Specialist!
+
+  """Обновляет профиль специалиста """
+  updateSpecialistProfile(input: UpdateSpecialistInput!, userId: String): Specialist!
+  updateVacancies(input: UpdateVacanciesInput!): Vacancies!
+}
+
+"""
+The name scalar represents a valid GraphQL name as specified in the spec and can be used to refer to fields or types.
+"""
+scalar Name
+
+type OrderPosition {
+  """Имя бренда"""
+  brandName: String
+
+  """Количество товара"""
+  count: Int!
+
+  """Наименование"""
+  description: String!
+
+  """Идентификатор товара"""
+  id: String!
+
+  """Стоимоть товара"""
+  price: Float!
+}
+
+input OrderPositionInput {
+  """Имя бренда"""
+  brandName: String
+
+  """Количество товара"""
+  count: Int!
+
+  """Наименование"""
+  description: String!
+
+  """Идентификатор товара"""
+  id: String!
+
+  """Стоимоть товара"""
+  price: Float!
+}
+
+type Orders {
+  """Адрес"""
+  address: String
+
+  """ID брендов"""
+  brandsIds: [String]
+
+  """Комментарий"""
+  comment: String
+  createAt: DateTime!
+
+  """Удален"""
+  deleted: Boolean!
+
+  """Тип доставки"""
+  delivery: Int!
+
+  """E-mail"""
+  email: String
+
+  """Идентификатор заказа"""
+  id: ID!
+
+  """ИНН"""
+  inn: String
+
+  """Имя фамилия"""
+  name: String
+  number: Int!
+
+  """Идентификатор пользователя, создавшего заказ"""
+  ownerId: ID!
+
+  """Способ оплаты"""
+  payment: Int!
+
+  """Телефон"""
+  phone: String
+
+  """Товары"""
+  product: [OrderPosition]
+
+  """Специализация"""
+  specialization: String
+  updatedAt: DateTime!
+}
+
+input OriginIdInput {
+  """ID Origin"""
+  originId: String
+}
+
+type OwnerRequest {
+  id: ID!
+  salonId: ID!
+  status: OwnerRequestStatus!
+  updatedAt: DateTime!
+  userId: ID!
+}
+
+enum OwnerRequestStatus {
+  NOTVIEWED
+  VIEWED
+  ACCEPTED
+  REJECTED
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+
+  """
+  Indicates whether more edges exist following the set defined by the clients arguments.
+  """
+  hasNextPage: Boolean!
+
+  """
+  Indicates whether more edges exist prior the set defined by the clients arguments.
+  """
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+}
+
+type Pages {
+  """Идентификатор категории"""
+  categoryId: ID
+  createAt: DateTime!
+
+  """Удален"""
+  deleted: Boolean!
+
+  """Контент"""
+  desc: String
+
+  """Идентификатор"""
+  id: ID!
+
+  """Идентификатор фотографии """
+  photoId: ID
+
+  """Краткое содержание записи"""
+  short_desc: String
+
+  """Заголовок"""
+  title: String
+  updatedAt: DateTime!
+}
+
+"""A connection to a list of items."""
+type PagesConnection {
+  """A list of edges."""
+  edges: [PagesEdge!]
+
+  """A flattened list of the nodes."""
+  nodes: [Pages!]
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"""An edge in a connection."""
+type PagesEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of the edge."""
+  node: Pages!
+}
+
+type PagesSearchResult {
+  connection(after: String, before: String, first: PaginationAmount, last: PaginationAmount): PagesConnection
+
+  """Фильтр для дальнейшего поиска мест"""
+  filterDefinition: ID!
+
+  """Найденные """
+  pages: [Pages!]!
+}
+
+scalar PaginationAmount
+
+type Permissions {
+  canDelete: Boolean!
+  canEdit: Boolean!
+}
+
+type Phone {
+  """Данный номер телефона используется для идентификации в Telegram"""
+  haveTelegram: Boolean!
+
+  """Данный номер телефона используется для идентификации в Viber"""
+  haveViber: Boolean!
+
+  """Данный номер телефона используется для идентификации в WhatsApp"""
+  haveWhatsApp: Boolean!
+
+  """Номер телефона"""
+  phoneNumber: String
+}
+
+input PhoneInput {
+  """Данный номер телефона используется для идентификации в Telegram"""
+  haveTelegram: Boolean!
+
+  """Данный номер телефона используется для идентификации в Viber"""
+  haveViber: Boolean!
+
+  """Данный номер телефона используется для идентификации в WhatsApp"""
+  haveWhatsApp: Boolean!
+
+  """Номер телефона"""
+  phoneNumber: String
+}
+
+"""A photo"""
+type Photo {
+  """The photo id"""
+  id: ID!
+
+  """The resulting photo kind (may not be equal to a requested one)"""
+  kind: ID!
+
+  """The photo url with respect to kind"""
+  url: Url!
+}
+
+type Products {
+  """Цена"""
+  amount: Float!
+
+  """Цена со скидкой"""
+  amountSales: Float!
+  brand: Brand
+
+  """Бренд"""
+  brandId: ID!
+
+  """Категория"""
+  categoryId: ID!
+
+  """Страна"""
+  country: String
+  createAt: DateTime!
+  currentAmount: Float!
+
+  """Удален"""
+  deleted: Boolean!
+
+  """Описание"""
+  description: String
+  id: ID!
+  photoIds: [ID!]!
+  photos(kind: ID): [Photo]!
+
+  """Рейтинг"""
+  rating: Int!
+
+  """SEO"""
+  seo: SeoParams
+
+  """Короткое Описание"""
+  shortDescription: String
+
+  """Артикул"""
+  sku: String
+
+  """Название"""
+  title: String
+  updatedAt: DateTime!
+
+  """URL - источник"""
+  url: String
+}
+
+type ProductsCategories {
+  createAt: DateTime!
+
+  """Удален"""
+  deleted: Boolean!
+
+  """Идентификатор"""
+  id: ID!
+
+  """Идентификатор Родительской категории"""
+  parentId: ID
+
+  """Заголовок"""
+  title: String
+  updatedAt: DateTime!
+}
+
+"""A connection to a list of items."""
+type ProductsConnection {
+  """A list of edges."""
+  edges: [ProductsEdge!]
+
+  """A flattened list of the nodes."""
+  nodes: [Products!]
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"""An edge in a connection."""
+type ProductsEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of the edge."""
+  node: Products!
+}
+
+input ProductsLoadInput {
+  """Тип"""
+  type: String
+
+  """Url"""
+  url: String
+}
+
+input ProductsSearchInput {
+  """Бренд"""
+  brandId: [String]
+
+  """Категории"""
+  categoryId: [String]
+
+  """Страна"""
+  country: String
+
+  """Название салона, адрес, метро"""
+  query: String
+
+  """Со скидкой"""
+  sales: Boolean
+
+  """Порядок сортировки"""
+  sortOrder: ProductsSearchSortOrder
+
+  """Свойство для сортировки"""
+  sortProperty: ProductsSearchSortProperty
+}
+
+type ProductsSearchResult {
+  connection(after: String, before: String, first: PaginationAmount, last: PaginationAmount): ProductsConnection
+
+  """Фильтр для дальнейшего поиска мест"""
+  filterDefinition: ID!
+
+  """Найденные товары"""
+  products: [Products!]!
+}
+
+enum ProductsSearchSortOrder {
+  ASCENDING
+  DESCENDING
+}
+
+enum ProductsSearchSortProperty {
+  AMOUNT
+}
+
+type Query {
+  """Returns address suggestions for provided query"""
+  addressSuggestions(
+    """Number of suggestions to return"""
+    count: Int = 10
+
+    """Query string"""
+    query: String!
+  ): [AddressSuggestion!]!
+
+  """Возвращает баннеры"""
+  banners: [Banner]
+
+  """Возвращает баннеры по коду хука"""
+  bannersByHookCode(hookCode: String!): [Banner]
+
+  """Возвращает бренд с указанным идентификатором"""
+  brand(
+    """Идентификатор бренд"""
+    id: ID!
+  ): Brand
+
+  """Возвращает список категорий брендов"""
+  brandCategories: [BrandCategories]
+
+  """Возвращает список категорий брендов"""
+  brandCategoriesIds(ids: [String]): [BrandCategories]
+
+  """Возвращает  категорию бренда"""
+  brandCategory(id: String): BrandCategories
+
+  """Возвращает профиль бренда по slug"""
+  brandSlug(
+    """slug"""
+    slug: String
+  ): Brand
+
+  """Список брендов мастера"""
+  brandsMaster(
+    """ИД мастера"""
+    masterId: ID!
+  ): [Brand!]!
+
+  """Случайный список брендов"""
+  brandsRandom(
+    """Количество"""
+    count: Int!
+  ): [Brand!]!
+
+  """Список брендов салона"""
+  brandsSalon(
+    """ИД Салона"""
+    salonId: ID!
+  ): [Brand!]!
+
+  """Поиск брендов ES"""
+  brandsSearch(
+    categoryId: String
+
+    """Строка поиска"""
+    query: String
+  ): BrandSearchResult!
+
+  """Поиск брендов"""
+  brandsSearchOld(
+    """Строка поиска"""
+    query: ID!
+  ): [Brand!]!
+
+  """Возвращает список категорий"""
+  catagories: [Categories]
+
+  """Returns city suggestions for provided query"""
+  citySuggestions(
+    """Number of suggestions to return"""
+    count: Int
+
+    """Query string"""
+    query: String!
+  ): [AddressSuggestion!]!
+
+  """Возвращает комменты"""
+  comments(id: String): [Comments]
+
+  """
+  Возвращает Образовательные программы по originId (салон, мастер, бренд)
+  """
+  currentEducation(originId: String!): [Education]
+
+  """Возвращает Мероприятия/события  по originId (салон, мастер, бренд)"""
+  currentEvents(originId: String!): [Events]
+
+  """Возвращает запросы на приоритетное  по originId (салон, мастер, бренд)"""
+  currentRequestPriority(originId: String!): [RequestPriority]
+
+  """Возвращает акции по originId (салон, мастер, бренд)"""
+  currentSales(originId: String!): [SalesRow]
+
+  """Возвращает Вакансии  по originId (салон, мастер, бренд)"""
+  currentVacancies(originId: String!): [Vacancies]
+
+  """Возвращает  по id """
+  edu(id: String): Education
+
+  """Возвращает Образовательные программы все"""
+  education: [Education]
+
+  """Возвращает  все активные Образовательные программы"""
+  educationActive: [Education]
+
+  """Возвращает Образовательные программы по источникам"""
+  educationActiveOrigin(origin: String): [Education]
+
+  """Поиск по Образование"""
+  educationSearch(query: String): EducationSearchResult!
+
+  """Возвращает Мероприятие по id """
+  event(id: String): Events
+
+  """Возвращает Мероприятия/события все"""
+  events: [Events]
+
+  """Возвращает  все активные Мероприятия/события"""
+  eventsActive: [Events]
+
+  """Возвращает Мероприятия/события по источникам"""
+  eventsActiveOrigin(origin: String): [Events]
+
+  """Поиск по вакансии"""
+  eventsSearch(query: String): EventsSearchResult!
+
+  """Возвращает список избранного"""
+  favourites: [Favourites]
+
+  """Get a particular file by Id"""
+  file(
+    """The Id of the photo"""
+    id: ID
+  ): Files
+
+  """
+  Converts a list of files identifiers into the list of photos of a specified kind
+  """
+  files(
+    """List of files identifiers"""
+    ids: [ID]!
+  ): [Files]!
+
+  """Корзина"""
+  getCart: Carts!
+
+  """Загрузка Товаров"""
+  goodsLoad(input: ProductsLoadInput!): Boolean!
+
+  """Поиск Товаров"""
+  goodsSearch(input: ProductsSearchInput!): ProductsSearchResult!
+
+  """Возвращает список хуков"""
+  hooks: [BannerHook]
+
+  """Индексация"""
+  indexBrand: Boolean!
+
+  """Индексация"""
+  indexEducation: Boolean!
+
+  """Индексация"""
+  indexEvents: Boolean!
+
+  """Индексация"""
+  indexGoods: Boolean!
+
+  """Индексация"""
+  indexMaster: Boolean!
+
+  """Индексация"""
+  indexPages: Boolean!
+
+  """Индексация"""
+  indexSales: Boolean!
+
+  """Индексация"""
+  indexSalon: Boolean!
+
+  """Индексация"""
+  indexVacancies: Boolean!
+
+  """Возвращает лайк для записи"""
+  likeEducation(id: ID!): Boolean!
+
+  """Возвращает список мастеров по сервису"""
+  listMastersByService(city: String, serviceId: String): [Master]
+
+  """Возвращает список салонов по сервису"""
+  listSalonsByService(city: String, serviceId: String): [Salon]
+
+  """Returns address (city) detected by the IP address of the current user"""
+  locationByIp: AddressSuggestion
+
+  """Возвращает список сообщений пользователя по ИД комнаты"""
+  massages(roomId: String): [Messages]
+
+  """Возвращает профиль мастера по идентификатору"""
+  master(
+    """Идентификатор профиля мастера"""
+    id: ID
+  ): Master
+
+  """Поиск брендов ES"""
+  masterSearch(input: MasterSearchInput!): MasterSearchResult!
+
+  """Поиск Мастеров"""
+  masterSearchOld(
+    """Строка поиска ФИО и т.д."""
+    query: ID!
+  ): [Master!]!
+
+  """Возвращает профиль мастера по slug"""
+  masterSlug(
+    """slug"""
+    slug: String
+  ): Master
+
+  """Возвращает список специализаций мастеров"""
+  masterSpecializationsCatalog: ServiceCatalog!
+
+  """Поиск мастеров по списку id"""
+  masters(
+    """List of master identifiers"""
+    ids: [ID]!
+  ): [Master!]!
+
+  """Случайный список Мастеров"""
+  mastersRandom(
+    """Город"""
+    city: String
+
+    """Количество"""
+    count: Int!
+  ): [Master!]!
+
+  """Возвращает список услуг с количеством"""
+  mastersServicesCount(city: String): ServiceCatalog
+
+  """Возвращает работу мастера по идентификатору"""
+  masterwork(id: ID!): Masterwork
+
+  """Возвращает работы мастера для текущего пользователя"""
+  masterworks: [Masterwork!]!
+  me: Me!
+
+  """Заказы"""
+  orders: [Orders!]!
+
+  """Заказы пользоателя"""
+  ordersUser: [Orders!]!
+
+  """Возвращает список запросов"""
+  ownerRequests: [OwnerRequest!]!
+
+  """Возвращает страницу по ID"""
+  page(
+    """Идентификатор """
+    id: ID!
+  ): Pages
+
+  """Возвращает страницы"""
+  pages: [Pages]
+
+  """Возвращает страницы по категории"""
+  pagesCategory(catId: String!): [Pages]
+
+  """Поиск по страницам"""
+  pagesSearch(query: String): PagesSearchResult!
+
+  """Возвращает товар"""
+  product(id: String): Products
+
+  """Возвращает список товаров"""
+  products: [Products]
+
+  """Возвращает список категорий"""
+  productsCatagories: [ProductsCategories]
+
+  """Возвращает заявку на аренду рабочего места"""
+  rentalRequest(id: ID!): RentalRequest!
+
+  """Возвращает запросы на размещения баннеров"""
+  requestBanner: [RequestBanner]
+
+  """Возвращает запросы на размещения баннеров текущего пользователя"""
+  requestBannerUser: [RequestBanner]
+
+  """Возвращает запрос на приоритетное размещение"""
+  requestOnePriority(id: String): RequestPriority
+
+  """Возвращает запросы на приоритетное размещение"""
+  requestPriority: [RequestPriority]
+
+  """Возвращает  запроса на приоритетное размещение пользователя"""
+  requestPriorityUser: [RequestPriority]
+
+  """Возвращает отзыв с указанным идентификатором"""
+  review(
+    """Идентификатор отзыва"""
+    id: ID!
+  ): Review
+
+  """Возвращает все отзывы"""
+  reviews: [Review!]!
+
+  """Возвращает существующие отзывов по указаному бренду"""
+  reviewsForBrand(originId: String!): [Review!]!
+
+  """Возвращает существующие отзывов по указаному мастеру"""
+  reviewsForMaster(originId: String!): [Review!]!
+
+  """Возвращает существующие отзывов по указаному Товару"""
+  reviewsForProduct(originId: String!): [Review!]!
+
+  """Возвращает существующие отзывов по указаному салону"""
+  reviewsForSalon(originId: String!): [Review!]!
+
+  """Возвращает  комнату (чат) пользователя"""
+  room(roomId: String): Rooms
+
+  """Возвращает список комнат (чатов) пользователя"""
+  rooms: [Rooms]
+
+  """Возвращает Акцию по id """
+  sale(id: String): SalesRow
+
+  """Возвращает Акции все"""
+  sales: [SalesRow]
+
+  """Возвращает Акции все активные акции"""
+  salesActive: [SalesRow]
+
+  """Возвращает Акции все по источникам"""
+  salesActiveOrigin(origin: String): [SalesRow]
+
+  """Поиск по скидкам"""
+  salesSearch(query: String): SalesSearchResult!
+
+  """Возвращает салон с указанным идентификатором"""
+  salon(
+    """Идентификатор салона"""
+    id: ID!
+  ): Salon
+
+  """Возвращает список видов деятельности салонов"""
+  salonActivitiesCatalog: ServiceCatalog!
+
+  """Cписок Мастеров салона"""
+  salonMasters(
+    """ID салона"""
+    salonId: ID!
+  ): [Master!]!
+
+  """Возвращает каталог услуг помещения салона"""
+  salonRoomServicesCatalog: ServiceCatalog!
+
+  """Поиск салонов"""
+  salonSearch(input: WorkplacesSearchInput!): SalonsSearchResult!
+
+  """Возвращает каталог услуг рабочего места салона"""
+  salonSeatServicesCatalog: ServiceCatalog!
+  salonSeats(ids: [ID]!, input: WorkplacesSearchInput!): [Salon]
+  salonSeatsCount(salonId: ID!): SeatsCount!
+
+  """Возвращает каталог услуг салонов"""
+  salonServicesCatalog: ServiceCatalog!
+
+  """Возвращает список услуг с количеством"""
+  salonServicesCount(city: String): ServiceCatalog
+
+  """Возвращает каталог услуг салонов"""
+  salonServicesMasterCatalog: ServiceCatalog!
+
+  """Возвращает профиль салона по slug"""
+  salonSlug(
+    """slug"""
+    slug: String
+  ): Salon
+
+  """Возвращает каталог услуг салонов"""
+  salonWorkplacesServicesCatalog: ServiceCatalog!
+
+  """Возвращает все зарегистрированные салоны"""
+  salons: [Salon!]!
+
+  """Поиск салонов по списку id"""
+  salonsList(
+    """List of salon identifiers"""
+    ids: [ID]!
+  ): [Salon!]!
+
+  """Случайный список салонов"""
+  salonsRandom(
+    """Город"""
+    city: String
+
+    """Количество"""
+    count: Int!
+  ): [Salon!]!
+
+  """Возвращает оценку по идентификатору"""
+  scoreBrand(
+    """Идентификатор бренда"""
+    id: ID
+  ): Score
+
+  """Возвращает оценку по идентификатору"""
+  scoreEducation(
+    """Идентификатор записи"""
+    id: ID
+  ): Score
+
+  """Возвращает оценку по идентификатору"""
+  scoreMaster(
+    """Идентификатор профиля мастера"""
+    id: ID
+  ): Score
+
+  """Возвращает оценку по идентификатору"""
+  scoreSalon(
+    """Идентификатор салона"""
+    id: ID
+  ): Score
+
+  """Возвращает список исковых запросов"""
+  searchLog: [SearchLog!]!
+
+  """Поиск специалистов"""
+  specialists: [Specialist!]!
+  totalBrands: Long!
+  totalMasters: Long!
+  totalSalons: Long!
+
+  """Возвращает пользователя с указанным идентификатором"""
+  user(id: ID): User
+
+  """
+  Возвращает список брендов, в которых текущий пользователь является владельцем или администратором
+  """
+  userBrands: [Brand!]!
+
+  """Возвращает все Образовательные программы текущего пользователя"""
+  userEducation: [Education]
+
+  """Возвращает все Мероприятия/события текущего пользователя"""
+  userEvents: [Events]
+
+  """
+  Возвращает список отзывов, в которых текущий пользователь является владельцем
+  """
+  userReviews: [Review!]!
+
+  """Возвращает все акции текущего пользователя"""
+  userSales: [SalesRow]
+
+  """Возвращает все Вакансии текущего пользователя"""
+  userVacancies: [Vacancies]
+
+  """Возвращает пользователей для указанных идентификаторов"""
+  users(ids: [ID!]): [User]!
+
+  """Возвращает вакансии все"""
+  vacancies: [Vacancies]
+
+  """Возвращает  все активные Вакансии"""
+  vacanciesActive: [Vacancies]
+
+  """Возвращает Вакансии по источникам"""
+  vacanciesActiveOrigin(origin: String): [Vacancies]
+
+  """Поиск по вакансии"""
+  vacanciesSearch(query: String): VacanciesSearchResult!
+
+  """Возвращает Вакансию по id """
+  vacancy(id: String): Vacancies
+
+  """Возвращает существующие салоны по указанному адресу"""
+  whatsThere(addressText: String!): [Salon!]!
+
+  """Поиск салонов"""
+  workplacesSearch1(input: WorkplacesSearchInput!): SalonsSearchResult!
+
+  """Поиск рабочих мест в салоне"""
+  workplacesSearch2(
+    """Оригинальный фильтр, полученный из запроса поиска салонов"""
+    filterDefinition: ID
+
+    """Идентификатор салона, для которого производить поиск мест"""
+    salonId: ID!
+  ): [ID!]
+}
+
+type Question {
+  """Ответ"""
+  answer: String
+
+  """Вопрос"""
+  question: String
+}
+
+input QuestionInput {
+  """Ответ"""
+  answer: String
+
+  """Вопрос"""
+  question: String
+}
+
+input RentalPricingInput {
+  """Цена"""
+  price: Int!
+
+  """Тип цены"""
+  type: RentalPricingType!
+}
+
+enum RentalPricingType {
+  HOUR
+  DAY
+  WEEK
+  MONTH
+  YEAR
+}
+
+type RentalRequest {
+  id: ID!
+  master: Master
+  masterId: ID
+  room: Room!
+  roomId: ID!
+  salon: Salon!
+  salonId: ID!
+  seat: Seat!
+  seatId: ID!
+  status: RentalRequestStatus!
+  updatedAt: DateTime!
+  user: User
+  userId: ID
+}
+
+input RentalRequestInput {
+  """Идентификатор заявки"""
+  id: ID!
+}
+
+enum RentalRequestStatus {
+  NOTVIEWED
+  VIEWED
+  ACCEPTED
+  REJECTED
+}
+
+type RequestBanner {
+  """Заголовок баннера"""
+  adHeader: String
+
+  """Идентификатор фотографии"""
+  adImage: ID
+
+  """текст баннера"""
+  adText: String
+  createAt: DateTime!
+  getTextStatus: String
+
+  """Идентификатор"""
+  id: ID!
+
+  """Идентификатор пользователя, создавшего профиль"""
+  ownerId: ID!
+
+  """Комметарий"""
+  requestComment: String
+
+  """Статус"""
+  status: StatusRequestBanner!
+  updatedAt: DateTime!
+}
+
+type RequestPriority {
+  brandOrigin: Brand
+  createAt: DateTime!
+  getTextStatus: String
+
+  """Идентификатор"""
+  id: ID!
+  masterOrigin: Master
+
+  """К чему относится - тип"""
+  origin: ReviewOrigin!
+
+  """ID Origin"""
+  originId: ID!
+
+  """Идентификатор пользователя, создавшего профиль"""
+  ownerId: ID!
+
+  """Комметарий"""
+  requestComment: String
+  salonOrigin: Salon
+
+  """Статус"""
+  status: StatusRequestBanner!
+  updatedAt: DateTime!
+}
+
+type Review {
+  brandOrigin: Brand
+  createAt: DateTime!
+
+  """Идентификатор пользователя, создавшего отзыв"""
+  createUserId: ID
+
+  """Удален"""
+  deleted: Boolean!
+
+  """Описание"""
+  description: String!
+
+  """Идентификатор отзыва"""
+  id: ID!
+  isPublished: Boolean!
+  master: Master
+  masterOrigin: Master
+
+  """Имя пользователя"""
+  name: String
+
+  """К чему относится отзыв"""
+  origin: Reviews_ReviewOrigin!
+
+  """К чему относится отзыв ID"""
+  originId: ID!
+
+  """Идентификатор пользователя, оставившего отзыв"""
+  ownerId: ID
+  salonOrigin: Salon
+
+  """Оценка"""
+  scores: Float!
+  updatedAt: DateTime!
+}
+
+enum ReviewOrigin {
+  NOT
+  MASTER
+  BRAND
+  SALON
+}
+
+enum Reviews_ReviewOrigin {
+  NOT
+  PRODUCT
+  MASTER
+  BRAND
+  SALON
+}
+
+type Room {
+  defaultPhoto(kind: ID): Photo
+  defaultPhotoId: ID
+  description: String
+
+  """Этаж помещения"""
+  floor: Int!
+
+  """Есть окна"""
+  hasWindows: Boolean!
+
+  """Идентификатор помещения"""
+  id: ID!
+
+  """Фотографии помещения"""
+  photoIds: [ID!]!
+  photos(kind: ID): [Photo]!
+  salon: Salon!
+
+  """Идентификатор салона"""
+  salonId: ID!
+  schema(kind: ID): Photo
+
+  """Поэтажный план"""
+  schemaId: ID
+
+  """Возвращает рабочее место с указанным идентификатором"""
+  seat(
+    """идентификатор рабочего места"""
+    id: ID!
+  ): Seat
+
+  """Всего мест"""
+  seatCount: Int!
+  seats: [Seat!]!
+
+  """Выбранные сервисы"""
+  services: [ServiceCatalogEntry!]!
+
+  """Площадь помещения"""
+  space: Int!
+  title: String!
+
+  """Ссылка на видеообзор помещения"""
+  videoLink: Url
+
+  """Мокрые точки для мытья рук"""
+  wetPointsHands: Int!
+
+  """Мокрые точки для мытья головы"""
+  wetPointsHead: Int!
+
+  """Мокрые точки: душевые"""
+  wetPointsShower: Int!
+}
+
+type RoomMoniker {
+  room: Room!
+
+  """Идентификатор помещения"""
+  roomId: ID!
+  salon: Salon!
+
+  """Идентификатор салона"""
+  salonId: ID!
+}
+
+type Rooms {
+  authorUserId: String
+  createAt: DateTime!
+  id: ID!
+
+  """К чему относится отзыв"""
+  origin: ChatOrigin!
+  originId: String
+  updatedAt: DateTime!
+  user: User!
+  userId: ID!
+}
+
+type Sales {
+  """Начало акции"""
+  dateBegin: String
+
+  """Конец акции"""
+  dateEnd: String
+
+  """Описание"""
+  description: String
+}
+
+input SalesInput {
+  """Начало акции"""
+  dateBegin: String
+
+  """Конец акции"""
+  dateEnd: String
+
+  """Описание"""
+  description: String
+}
+
+type SalesRow {
+  brandOrigin: Brand
+  createAt: DateTime!
+
+  """Дата конца акции """
+  dateEnd: DateTime!
+
+  """Дата начала акции """
+  dateStart: DateTime!
+
+  """Удален"""
+  deleted: Boolean!
+
+  """Контент"""
+  desc: String
+
+  """Идентификатор"""
+  id: ID!
+
+  """Статус"""
+  isPublished: Boolean!
+  masterOrigin: Master
+
+  """К чему относится мероприятие - салон, бренд, мастер"""
+  origin: ReviewOrigin!
+
+  """К чему относится Акция - ID"""
+  originId: ID!
+
+  """Идентификатор пользователя, создавшего профиль"""
+  ownerId: String
+
+  """Идентификатор фотографии """
+  photoId: ID
+  salonOrigin: Salon
+
+  """Краткое содержание записи"""
+  short_desc: String
+
+  """Заголовок"""
+  title: String
+  updatedAt: DateTime!
+
+  """Промокод/размер скидки"""
+  value: String
+}
+
+"""A connection to a list of items."""
+type SalesRowConnection {
+  """A list of edges."""
+  edges: [SalesRowEdge!]
+
+  """A flattened list of the nodes."""
+  nodes: [SalesRow!]
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"""An edge in a connection."""
+type SalesRowEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of the edge."""
+  node: SalesRow!
+}
+
+type SalesSearchResult {
+  connection(after: String, before: String, first: PaginationAmount, last: PaginationAmount): SalesRowConnection
+
+  """Фильтр для дальнейшего поиска мест"""
+  filterDefinition: ID!
+
+  """Найденные """
+  sales: [SalesRow!]!
+}
+
+type Salon {
+  activities: [ID!]!
+  address: SalonAddress!
+  administratorIds: [ID!]
+  administrators: [User]
+
+  """средняя оценка"""
+  averageScore: Float!
+  contactPersonEmail: String
+  contactPersonName: String
+  contactPersonPhone: Phone
+  contactPersonWorkingHours: [WorkingHoursEntry!]!
+  createAt: DateTime!
+  defaultPhoto(kind: ID): Photo
+  defaultPhotoId: ID
+  description: String
+  email: String
+  id: ID!
+  isNotRent: Boolean!
+
+  """Подтвержден владелец"""
+  isOwnerConfirmed: Boolean!
+  isPublished: Boolean!
+
+  """Арендодатель"""
+  lessor: Boolean!
+  locationDirections: String
+  logo(kind: ID): Photo
+  logoId: ID
+  name: String!
+
+  """Количество оценок"""
+  numberScore: Int!
+  onlineBookingUrl: String
+  owner: User!
+  ownerId: ID!
+  permissions: Permissions!
+  phones: [Phone!]!
+  photoIds: [ID!]!
+  photos(kind: ID): [Photo]!
+
+  """Рейтинг"""
+  rating: Int!
+  room(id: ID!): Room!
+  rooms: [Room!]!
+
+  """Оценки"""
+  scores: [Score]
+  seatsCount: SeatsCount!
+
+  """SEO"""
+  seo: SeoParams
+  services: [ServiceCatalogEntry!]!
+  servicesMaster: [ServiceMasterCatalogEntry!]!
+  socialNetworkUrls: SocialNetworkUrls
+
+  """Сумма оценок"""
+  sumScore: Float!
+  synonyms: String
+  updatedAt: DateTime!
+  webSiteUrl: String
+  workingHours: [WorkingHoursEntry!]!
+  workplacesServices: [ServiceCatalogEntry!]!
+}
+
+type SalonAddress {
+  building: String
+  city: String
+  cityFiasId: ID
+  full: String!
+  latitude: Float!
+  longitude: Float!
+  office: String
+  settlement: String
+  settlementFiasId: ID
+  streetFiasId: ID!
+  subwayStations: [SubwayStation!]
+}
+
+type SalonMoniker {
+  salon: Salon!
+
+  """Идентификатор салона"""
+  salonId: ID!
+}
+
+type SalonProfiles_ServiceCatalogSubGroup {
+  count: Int!
+
+  """Описание подгруппы"""
+  description: String
+
+  """Идентификатор группы или элемента каталога"""
+  id: ID!
+
+  """Список элементов подгруппы"""
+  items: [ServiceCatalogItem!]
+
+  """Заголовок группы или элемента каталога"""
+  title: String!
+}
+
+type SalonSearchResult {
+  """Минимальная цена аренды"""
+  minPrice: SeatRentalPricing!
+  salon: Salon!
+
+  """Идентификатор салона"""
+  salonId: ID!
+
+  """Количество подходящих мест в салоне"""
+  seatCount: Int!
+}
+
+"""A connection to a list of items."""
+type SalonSearchResultConnection {
+  """A list of edges."""
+  edges: [SalonSearchResultEdge!]
+
+  """A flattened list of the nodes."""
+  nodes: [SalonSearchResult!]
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"""An edge in a connection."""
+type SalonSearchResultEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of the edge."""
+  node: SalonSearchResult!
+}
+
+type SalonsSearchResult {
+  """Фильтр для дальнейшего поиска мест"""
+  filterDefinition: ID!
+
+  """Найденные салоны"""
+  salons: [SalonSearchResult!]!
+  salonsConnection(after: String, before: String, first: PaginationAmount, last: PaginationAmount): SalonSearchResultConnection
+}
+
+type Score {
+  """ID пользователя"""
+  id: String
+
+  """оценка"""
+  value: Float!
+}
+
+type SearchLog {
+  """Город"""
+  city: String
+  createdAt: DateTime!
+  id: ID!
+
+  """Где поиск"""
+  owner: String
+
+  """Поисковая строка"""
+  query: String
+}
+
+type Seat {
+  """Доступные виды деятельности"""
+  activities: [ID!]!
+
+  """Признак доступности совместной аренды"""
+  allowJointRental: Boolean!
+
+  """Признак возможности сдавать место в субаренду"""
+  allowSublease: Boolean!
+
+  """Идентификатор рабочего места"""
+  id: ID!
+
+  """Признак доступности места для аренды"""
+  isAvailableForRent: Boolean!
+  photo(kind: ID): Photo
+
+  """Заглавное фото"""
+  photoId: ID
+
+  """Способы оплаты аренды"""
+  rentalPaymentMethods: SeatRentalPaymentMethods!
+
+  """Стоимость аренды места"""
+  rentalPricing: SeatRentalPricing!
+  rentalRequestOfMaster: RentalRequest
+  room: Room!
+
+  """Идентификатор помещения"""
+  roomId: ID!
+  salon: Salon!
+
+  """Идентификатор салона"""
+  salonId: ID!
+
+  """Номер места на плане"""
+  seatNumber: String
+
+  """Выбранные сервисы"""
+  services: [ServiceCatalogEntry!]!
+}
+
+"""Доступные способы оплаты аренды"""
+type SeatRentalPaymentMethods {
+  """Возможность оплаты Apple Pay/Google Pay"""
+  appleOrGooglePay: Boolean!
+
+  """Возможность оплаты банковской картой"""
+  bankingCard: Boolean!
+
+  """Возможность оплаты наличными"""
+  cash: Boolean!
+
+  """Возможность оплаты банковским переводом"""
+  wireTransfer: Boolean!
+}
+
+input SeatRentalPaymentMethodsInput {
+  appleOrGooglePay: Boolean!
+  bankingCard: Boolean!
+  cash: Boolean!
+  wireTransfer: Boolean!
+}
+
+type SeatRentalPricing {
+  day: Int
+  hour: Int
+  month: Int
+  week: Int
+  year: Int
+}
+
+input SeatRentalPricingInput {
+  """Стоимость аренды в день"""
+  day: Int
+
+  """Стоимость аренды в час"""
+  hour: Int
+
+  """Стоимость аренды в месяц"""
+  month: Int
+
+  """Стоимость аренды в неделю"""
+  week: Int
+
+  """Стоимость аренды в год"""
+  year: Int
+}
+
+type SeatsCount {
+  availableForRent: Int!
+  total: Int!
+}
+
+input SendOrderBrandInput {
+  """Адрес"""
+  address: String
+
+  """ID брендов"""
+  brandsIds: [String]
+
+  """Комментарий"""
+  comment: String
+
+  """Тип доставки"""
+  delivery: Int!
+
+  """E-mail"""
+  email: String
+
+  """ИНН"""
+  inn: String
+
+  """Имя фамилия"""
+  name: String
+
+  """Тип оплаты"""
+  payment: Int!
+
+  """Телефон"""
+  phone: String
+  product: [OrderPositionInput]
+
+  """Специализация"""
+  specialization: String
+}
+
+type SeoParams {
+  """Description """
+  description: String
+
+  """Slug """
+  slug: String
+
+  """Заголовок """
+  title: String
+}
+
+input SeoParamsInput {
+  """Description """
+  description: String
+
+  """Slug """
+  slug: String
+
+  """Заголовок """
+  title: String
+}
+
+type ServiceCatalog {
+  """Список групп каталога"""
+  groups: [ServiceCatalogGroup!]!
+}
+
+type ServiceCatalogEntry {
+  """Идентификатор услуги из каталога"""
+  id: ID!
+
+  """Значение (количественное или качественное)"""
+  value: Int!
+}
+
+input ServiceCatalogEntryInput {
+  """Идентификатор услуги из каталога"""
+  id: ID!
+
+  """Значение (количественное или качественное)"""
+  value: Int!
+}
+
+type ServiceCatalogGroup {
+  count: Int!
+  description: String
+
+  """Идентификатор группы или элемента каталога"""
+  id: ID!
+  items: [ServiceCatalogItem!]
+  subGroups: [SalonProfiles_ServiceCatalogSubGroup!]
+
+  """Заголовок группы или элемента каталога"""
+  title: String!
+}
+
+type ServiceCatalogItem {
+  count: Int!
+
+  """Идентификатор группы или элемента каталога"""
+  id: ID!
+
+  """Тип элемента каталога, по умолчанию BOOLEAN"""
+  kind: ServiceCatalogItemKind!
+
+  """Заголовок группы или элемента каталога"""
+  title: String!
+}
+
+enum ServiceCatalogItemKind {
+  BOOLEAN
+  INTEGER
+}
+
+type ServiceCatalogSubGroup {
+  count: Int!
+
+  """Описание подгруппы"""
+  description: String
+
+  """Идентификатор группы или элемента каталога"""
+  id: ID!
+
+  """Список элементов подгруппы"""
+  items: [ServiceCatalogItem]
+
+  """Заголовок группы или элемента каталога"""
+  title: String!
+}
+
+type ServiceMasterCatalogEntry {
+  id: ID!
+  price: Float!
+}
+
+input ServiceMasterCatalogEntryInput {
+  id: ID!
+  price: Float!
+}
+
+"""
+The `Short` scalar type represents non-fractional signed whole 16-bit numeric
+values. Short can represent values between -(2^15) and 2^15 - 1.
+"""
+scalar Short
+
+type SocialNetworkUrls {
+  """Адрес страницы в Facebook"""
+  facebook: String
+
+  """Адрес страницы в Instagram"""
+  instagram: String
+
+  """Адрес страницы в Одноклассниках"""
+  odnoklassniki: String
+
+  """Адрес страницы в VKontakte"""
+  vKontakte: String
+
+  """Адрес страницы на YouTube"""
+  youTube: String
+}
+
+input SocialNetworkUrlsInput {
+  """Адрес страницы в Facebook"""
+  facebook: String
+
+  """Адрес страницы в Instagram"""
+  instagram: String
+
+  """Адрес страницы в Одноклассниках"""
+  odnoklassniki: String
+
+  """Адрес страницы в VKontakte"""
+  vKontakte: String
+
+  """Адрес страницы на YouTube"""
+  youTube: String
+}
+
+type Specialist {
+  """Адрес мастера"""
+  address: String
+
+  """Адрес  полный"""
+  addressFull: MasterAddress
+
+  """средняя оценка"""
+  averageScore: Float!
+  bornDate: DateTime!
+  createAt: DateTime!
+
+  """Удален"""
+  deleted: Boolean!
+  description: String
+
+  """Адрес электронной почты """
+  email: String
+
+  """Опыт работы (период)"""
+  experience: String
+
+  """Идентификатор профиля """
+  id: ID!
+
+  """ФИО мастера"""
+  name: String!
+
+  """Количество оценок"""
+  numberScore: Int!
+
+  """Адрес страницы с онлайн-записью"""
+  onlineBookingUrl: String
+
+  """Контактный телефон """
+  phone: Phone
+
+  """Идентификатор фотографии """
+  photoId: ID
+  photoWorksIds: [ID!]!
+
+  """Рейтинг"""
+  rating: Int!
+
+  """Салоны, в которых работал специалист"""
+  salonIds: [ID!]
+
+  """Оценки"""
+  scores: [Score]
+
+  """SEO"""
+  seo: SeoParams
+
+  """Web-адреса внешних страниц мастера"""
+  socialNetworkUrls: SocialNetworkUrls
+
+  """Сумма оценок"""
+  sumScore: Float!
+  synonyms: String
+  updatedAt: DateTime!
+
+  """Идентификатор пользователя, создавшего профиль"""
+  userId: ID!
+
+  """Адрес сайта"""
+  webSiteUrl: String
+}
+
+enum StatusRequestBanner {
+  NEW
+  CONFIRMED
+  DELETED
+}
+
+type SubwayStation {
+  distance: Float!
+  lineAlias: String
+  lineColor: String
+  lineName: String!
+  name: String!
+}
+
+type SubwayStationProximity {
+  distance: Float!
+  lineAlias: String
+  lineColor: String
+  lineName: String
+  name: String
+}
+
+input UpdateBannerHookInput {
+  code: String
+  id: String
+  title: String
+}
+
+input UpdateBannerInput {
+  hookId: String
+  id: String
+  link: String
+  photoId: ID!
+  subTitle: String
+  title: String
+  titleLink: String
+}
+
+input UpdateBrandDeletedInput {
+  deleted: Boolean!
+  id: ID!
+}
+
+input UpdateBrandInformationInput {
+  address: String
+  categoryId: [String]
+  country: String
+  description: String
+  dontShowPrice: Boolean!
+  email: String
+  history: String
+  id: ID!
+  manufacture: String
+  mastersIds: [String]
+  minimalOrderPrice: String
+  phone: PhoneInput!
+  questions: [QuestionInput]
+  sales: [SalesInput]
+  salonIds: [String]
+  seo: SeoParamsInput
+  socialNetworkUrls: SocialNetworkUrlsInput
+  synonyms: String
+  termsDeliveryPrice: String
+}
+
+input UpdateBrandLogoInput {
+  id: ID!
+  logoId: ID!
+}
+
+input UpdateBrandNameInput {
+  id: ID!
+  name: ID!
+}
+
+input UpdateBrandOwnerInput {
+  id: ID!
+  ownerId: ID!
+}
+
+input UpdateBrandPhotoInput {
+  id: ID!
+  photoId: ID!
+}
+
+input UpdateBrandRatingInput {
+  id: ID!
+  rating: Int!
+}
+
+input UpdateCategoriesInput {
+  id: String
+  title: String
+}
+
+input UpdateEducationInput {
+  """Стоимость"""
+  amount: String
+
+  """Дата конца акции """
+  dateEnd: String
+
+  """Дата начала акции """
+  dateStart: String
+
+  """Контент"""
+  desc: String
+  id: String
+
+  """Статус публикации"""
+  isPublished: Boolean!
+
+  """К чему относится Акция - тип"""
+  origin: ReviewOrigin!
+
+  """К чему относится Акция - ID"""
+  originId: String
+
+  """Идентификатор фотографии """
+  photoId: ID!
+
+  """Краткое содержание записи"""
+  short_desc: String
+
+  """Заголовок"""
+  title: String
+}
+
+input UpdateEventsInput {
+  """Адрес проведения"""
+  address: String
+
+  """Дата конца акции """
+  dateEnd: String
+
+  """Дата начала акции """
+  dateStart: String
+
+  """Контент"""
+  desc: String
+  id: String
+
+  """Статус публикации"""
+  isPublished: Boolean!
+
+  """К чему относится Акция - тип"""
+  origin: ReviewOrigin!
+
+  """К чему относится Акция - ID"""
+  originId: String
+
+  """Идентификатор фотографии """
+  photoId: ID!
+
+  """Краткое содержание записи"""
+  short_desc: String
+
+  """Заголовок"""
+  title: String
+}
+
+input UpdateMasterDeletedInput {
+  deleted: Boolean!
+}
+
+input UpdateMasterOwnerInput {
+  userId: ID!
+}
+
+input UpdateMasterPhotoDiplomaInput {
+  photoDiplomaIds: [ID!]!
+}
+
+input UpdateMasterPhotoInput {
+  photoId: ID!
+}
+
+input UpdateMasterPhotoWorksInput {
+  photoWorksIds: [ID!]!
+}
+
+input UpdateMasterProfileInput {
+  address: String
+  bornDate: String
+  description: String
+  email: String
+  experience: String
+  name: String!
+  onlineBookingUrl: String
+  phone: PhoneInput!
+  photoDiplomaIds: [ID!]
+  photoId: String
+  photoWorksIds: [ID!]
+  resume: String
+  searchWork: Boolean!
+  seo: SeoParamsInput
+  socialNetworkUrls: SocialNetworkUrlsInput
+  specializations: [ID!]!
+  specializationsServices: [String]
+  synonyms: String
+  webSiteUrl: String
+}
+
+input UpdateMasterRatingInput {
+  rating: ID!
+}
+
+input UpdateMasterServicesInput {
+  specializationsServices: [ID!]!
+}
+
+input UpdateMasterworkInput {
+  description: String
+  examples: [MasterworkExampleInput!]!
+  id: String
+  services: [ID!]!
+  title: String!
+  videos: [VideoInput!]!
+}
+
+input UpdatePagesInput {
+  categoryId: String
+  desc: String
+  id: String
+  photoId: ID!
+  short_desc: String
+  title: String
+}
+
+input UpdateProductsCategoriesInput {
+  id: String
+  parentId: String
+  title: String
+}
+
+input UpdateProductsInput {
+  """Цена"""
+  amount: Float!
+
+  """Цена со скидкой"""
+  amountSales: Float!
+
+  """Бренд"""
+  brandId: String
+
+  """Категория"""
+  categoryId: String
+
+  """Страна"""
+  country: String
+
+  """Описание"""
+  description: String
+  id: String
+  photoIds: [ID!]!
+
+  """Рейтинг"""
+  rating: Int!
+
+  """SEO"""
+  seo: SeoParamsInput
+
+  """Короткое Описание"""
+  shortDescription: String
+
+  """Артикул"""
+  sku: String
+
+  """Название"""
+  title: String
+
+  """URL - источник"""
+  url: String
+}
+
+input UpdateRequestBannerInput {
+  """Заголовок баннера"""
+  adHeader: String
+
+  """Идентификатор фотографии"""
+  adImage: ID
+
+  """текст баннера"""
+  adText: String
+  id: String
+
+  """Комметарий"""
+  requestComment: String
+  status: StatusRequestBanner!
+}
+
+input UpdateRequestPriorityInput {
+  id: String
+
+  """К чему относится Акция - тип"""
+  origin: ReviewOrigin!
+
+  """К чему относится Акция - ID"""
+  originId: ID!
+  requestComment: String
+  status: StatusRequestBanner!
+}
+
+input UpdateReviewInput {
+  deleted: Boolean!
+  description: String
+  isPublished: Boolean!
+  name: String
+  reviewId: String
+}
+
+input UpdateSalesInput {
+  """Дата конца акции """
+  dateEnd: String
+
+  """Дата начала акции """
+  dateStart: String
+
+  """Контент"""
+  desc: String
+  id: String
+
+  """Статус публикации"""
+  isPublished: Boolean!
+
+  """К чему относится Акция - тип"""
+  origin: ReviewOrigin!
+
+  """К чему относится Акция - ID"""
+  originId: String
+
+  """Идентификатор фотографии """
+  photoId: ID!
+
+  """Краткое содержание записи"""
+  short_desc: String
+
+  """Заголовок"""
+  title: String
+
+  """Промокод/размер скидки"""
+  value: String
+}
+
+input UpdateSalonIdentityInput {
+  """Адрес салона"""
+  address: String
+
+  """Название салона"""
+  name: String
+  salonId: ID!
+}
+
+input UpdateSalonInformationInput {
+  activities: [ID!]!
+  contactPersonEmail: String
+  contactPersonName: String
+  contactPersonPhone: PhoneInput
+  contactPersonWorkingHours: [WorkingHoursEntryInput!]!
+  defaultPhotoId: String
+  description: String
+  email: String
+  isNotRent: Boolean!
+  lessor: Boolean!
+  locationDirections: String
+  onlineBookingUrl: String
+  phones: [PhoneInput!]!
+  photoIds: [ID!]!
+  salonId: ID!
+  seo: SeoParamsInput
+  services: [ServiceCatalogEntryInput!]!
+  socialNetworkUrls: SocialNetworkUrlsInput
+  synonyms: String
+  webSiteUrl: String
+  workingHours: [WorkingHoursEntryInput!]!
+}
+
+input UpdateSalonLogoInput {
+  logoId: ID!
+  salonId: ID!
+}
+
+input UpdateSalonOwnerInput {
+  isOwnerConfirmed: Boolean!
+  ownerId: ID!
+  salonId: ID!
+}
+
+input UpdateSalonPublishingStatusInput {
+  isPublished: Boolean!
+  salonId: ID!
+}
+
+input UpdateSalonRatingInput {
+  rating: Int!
+  salonId: ID!
+}
+
+input UpdateSalonServiceMasterInput {
+  salonId: ID!
+  serviceMaster: [ServiceMasterCatalogEntryInput!]!
+}
+
+input UpdateSalonServicesInput {
+  services: [ServiceCatalogEntryInput!]!
+}
+
+input UpdateServicesMasterInput {
+  serviceMaster: [ServiceMasterCatalogEntryInput!]!
+}
+
+input UpdateSpecialistInput {
+  address: String
+  bornDate: String
+  description: String
+  email: String
+  experience: String
+  name: String
+  onlineBookingUrl: String
+  phone: PhoneInput!
+  photoId: String
+  photoWorksIds: [ID!]
+  seo: SeoParamsInput
+  socialNetworkUrls: SocialNetworkUrlsInput
+  synonyms: String
+  webSiteUrl: String
+}
+
+input UpdateSpecialistPhotoInput {
+  photoId: ID!
+}
+
+input UpdateToCartInput {
+  """Товары"""
+  items: [UpdateToCartOneInput]
+}
+
+input UpdateToCartOneInput {
+  key: String
+  quantity: Int!
+}
+
+input UpdateVacanciesInput {
+  """Сумма от"""
+  amountFrom: Float!
+
+  """Сумма до"""
+  amountTo: Float!
+
+  """Дата конца акции """
+  dateEnd: String
+
+  """Дата начала акции """
+  dateStart: String
+
+  """Контент"""
+  desc: String
+  id: String
+
+  """Статус публикации"""
+  isPublished: Boolean!
+
+  """К чему относится"""
+  origin: VacanciesOrigin!
+
+  """ID"""
+  originId: ID!
+
+  """Идентификатор фотографии"""
+  photoId: ID!
+
+  """Краткое содержание записи"""
+  short_desc: String
+
+  """Заголовок"""
+  title: String
+}
+
+scalar Url
+
+type User {
+  avatar: String
+  city: String
+  defaultCity: String
+  displayName: String
+  email: String
+  emailConfirmed: Boolean
+  id: ID!
+  normalizedPhoneNumber: String
+  phoneNumber: String
+  phoneNumberConfirmed: Boolean
+  photo(kind: ID): Photo
+  profilePictureUrl: Url
+}
+
+input UserDataInput {
+  avatar: ID!
+  defaultCity: String
+  displayName: String
+  email: String
+  phoneNumber: String
+}
+
+scalar Uuid
+
+type Vacancies {
+  """Сумма от"""
+  amountFrom: Float!
+
+  """Сумма до"""
+  amountTo: Float!
+  brandOrigin: Brand
+  createAt: DateTime!
+
+  """Удален"""
+  deleted: Boolean!
+
+  """Контент"""
+  desc: String
+
+  """Идентификатор"""
+  id: ID!
+
+  """Статус"""
+  isPublished: Boolean!
+
+  """К чему относится вакансия - салон, бренд"""
+  origin: VacanciesOrigin!
+
+  """ID Origin"""
+  originId: ID!
+
+  """Идентификатор пользователя, создавшего профиль"""
+  ownerId: ID!
+
+  """Идентификатор фотографии (обложки)"""
+  photoId: ID
+  salonOrigin: Salon
+
+  """Краткое содержание записи"""
+  short_desc: String
+
+  """Заголовок"""
+  title: String
+  updatedAt: DateTime!
+}
+
+"""A connection to a list of items."""
+type VacanciesConnection {
+  """A list of edges."""
+  edges: [VacanciesEdge!]
+
+  """A flattened list of the nodes."""
+  nodes: [Vacancies!]
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"""An edge in a connection."""
+type VacanciesEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of the edge."""
+  node: Vacancies!
+}
+
+enum VacanciesOrigin {
+  NOT
+  BRAND
+  SALON
+}
+
+type VacanciesSearchResult {
+  connection(after: String, before: String, first: PaginationAmount, last: PaginationAmount): VacanciesConnection
+
+  """Фильтр для дальнейшего поиска мест"""
+  filterDefinition: ID!
+
+  """Найденные """
+  vacancies: [Vacancies!]!
+}
+
+type Video {
+  """Описание видео"""
+  description: String!
+
+  """Ссылка на видео"""
+  link: Url!
+}
+
+input VideoInput {
+  """Описание видео"""
+  description: String!
+
+  """Ссылка на видео"""
+  link: Url!
+}
+
+type WorkingHoursEntry {
+  endDayOfWeek: DayOfWeek!
+  endHour: Int!
+  endMinute: Int!
+  startDayOfWeek: DayOfWeek!
+  startHour: Int!
+  startMinute: Int!
+}
+
+input WorkingHoursEntryInput {
+  endDayOfWeek: DayOfWeek!
+  endHour: Int!
+  endMinute: Int!
+  startDayOfWeek: DayOfWeek!
+  startHour: Int!
+  startMinute: Int!
+}
+
+type Workplaces_Salon {
+  id: ID!
+  rooms: [Room!]!
+  services: [ServiceCatalogEntry!]!
+}
+
+type Workplaces_ServiceCatalogSubGroup {
+  count: Int!
+
+  """Описание подгруппы"""
+  description: String
+
+  """Идентификатор группы или элемента каталога"""
+  id: ID!
+
+  """Список элементов подгруппы"""
+  items: [ServiceCatalogItem!]!
+
+  """Заголовок группы или элемента каталога"""
+  title: String!
+}
+
+input Workplaces_WorkplacesSearchInput {
+  """Вид деятельности рабочего места"""
+  activities: [String!]!
+
+  """Вид аренды"""
+  allowJointRental: Boolean
+
+  """Вид аренды"""
+  allowSublease: Boolean
+
+  """Город"""
+  city: String
+
+  """Окна"""
+  hasWindows: Boolean
+
+  """Способ оплаты"""
+  paymentMethods: SeatRentalPaymentMethodsInput!
+
+  """Стоимость аренды"""
+  pricing: RentalPricingInput
+
+  """Название салона, адрес, метро"""
+  query: String
+
+  """Параметры помещения"""
+  roomServices: [ServiceCatalogEntryInput!]!
+
+  """Сервис для посетителей"""
+  salonServices: [ServiceCatalogEntryInput!]!
+
+  """Услуги рабочего места"""
+  seatServices: [ServiceCatalogEntryInput!]!
+
+  """Порядок сортировки"""
+  sortOrder: WorkplacesSearchSortOrder
+
+  """Свойство для сортировки"""
+  sortProperty: WorkplacesSearchSortProperty
+
+  """Точки для мытья рук"""
+  wetPointsHands: Int
+
+  """Точки для мытья головы"""
+  wetPointsHead: Int
+
+  """Душевые"""
+  wetPointsShower: Int
+
+  """Услуги и материалы (для мастеров)"""
+  workplaceServices: [ServiceCatalogEntryInput!]!
+}
+
+input WorkplacesSearchInput {
+  """Вид деятельности рабочего места"""
+  activities: [String!]!
+
+  """Вид аренды"""
+  allowJointRental: Boolean
+
+  """Вид аренды"""
+  allowSublease: Boolean
+
+  """Город"""
+  city: String
+
+  """Окна"""
+  hasWindows: Boolean
+  latitudeMax: Float
+  latitudeMin: Float
+
+  """Арендодатель"""
+  lessor: Boolean
+  longitudeMax: Float
+  longitudeMin: Float
+
+  """Способ оплаты"""
+  paymentMethods: SeatRentalPaymentMethodsInput!
+
+  """Стоимость аренды"""
+  pricing: RentalPricingInput
+
+  """Название салона, адрес, метро"""
+  query: String
+
+  """Параметры помещения"""
+  roomServices: [ServiceCatalogEntryInput!]!
+
+  """Сервис для посетителей"""
+  salonServices: [ServiceCatalogEntryInput!]!
+
+  """Услуги рабочего места"""
+  seatServices: [ServiceCatalogEntryInput!]!
+
+  """Порядок сортировки"""
+  sortOrder: WorkplacesSearchSortOrder
+
+  """Свойство для сортировки"""
+  sortProperty: WorkplacesSearchSortProperty
+
+  """Точки для мытья рук"""
+  wetPointsHands: Int
+
+  """Точки для мытья головы"""
+  wetPointsHead: Int
+
+  """Душевые"""
+  wetPointsShower: Int
+
+  """Услуги и материалы (для мастеров)"""
+  workplaceServices: [ServiceCatalogEntryInput!]!
+}
+
+enum WorkplacesSearchSortOrder {
+  ASCENDING
+  DESCENDING
+}
+
+enum WorkplacesSearchSortProperty {
+  PRICING
+}

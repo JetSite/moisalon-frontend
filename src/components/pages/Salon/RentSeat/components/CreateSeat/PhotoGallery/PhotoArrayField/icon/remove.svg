@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="22px" height="24px" viewBox="0 0 22 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g id="Page-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+        <g id="my-salon---salon_edit_primary---first-stage-320-hover" transform="translate(-274.000000, -1946.000000)" stroke="#FFFFFF">
+            <g id="Group-5" transform="translate(0.000000, 390.000000)">
+                <g id="Group-4" transform="translate(0.000000, 65.000000)">
+                    <g id="Group-12" transform="translate(15.000000, 1234.000000)">
+                        <g id="photo-/-1-copy-3" transform="translate(0.000000, 250.000000)">
+                            <g id="icon-/-&gt;-delete-/-w" transform="translate(256.000000, 5.000000)">
+                                <path d="M9,7 L9,5 C9,3.8954305 9.8954305,3 11,3 L17,3 C18.1045695,3 19,3.8954305 19,5 L19,7" id="Path-29" strokeWidth="2" stroke-linecap="round"></path>
+                                <g id="Group" strokeWidth="1" fillRule="evenodd" transform="translate(5.265354, 7.000000)" stroke-linecap="round">
+                                    <path d="M16.7346461,0 L16.7346461,15.8181818 C16.7346461,17.0231667 15.8392156,18 14.7346461,18 L2.73464614,18 C1.63007664,18 0.734646137,17.0231667 0.734646137,15.8181818 L0.734646137,0" id="Path" strokeWidth="2"></path>
+                                </g>
+                                <path d="M4,7 L24,7" id="Shape" strokeWidth="2" stroke-linecap="round"></path>
+                                <g id="Group-2" strokeWidth="1" fillRule="evenodd" transform="translate(11.000000, 13.000000)">
+                                    <path d="M0,0 L6,6" id="Path-28" strokeWidth="2"></path>
+                                    <path d="M0,0 L6,6" id="Path-28-Copy" strokeWidth="2" transform="translate(3.000000, 3.000000) scale(-1, 1) translate(-3.000000, -3.000000) "></path>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,58 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: __NAMESPACE__
+---
+apiVersion: v1
+data:
+  .dockerconfigjson: eyJhdXRocyI6eyJyZWdpc3RyeS5naXRsYWIuY29tIjp7InVzZXJuYW1lIjoibW9pc2Fsb24iLCJwYXNzd29yZCI6Im1vaTFxYXpAV1NYIiwiYXV0aCI6ImJXOXBjMkZzYjI0NmJXOXBNWEZoZWtCWFUxZz0ifX19
+kind: Secret
+metadata:
+  name: gitlab-registry
+  namespace: __NAMESPACE__
+type: kubernetes.io/dockerconfigjson
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: platform-frontend-2021
+  namespace: __NAMESPACE__
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
+  selector:
+    component: frontend-2021
+    feature: platform-frontend-2021
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: platform-frontend-2021
+  namespace: __NAMESPACE__
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: frontend-2021
+      feature: platform-frontend-2021
+  template:
+    metadata:
+      namespace: __NAMESPACE__
+      labels:
+        component: frontend-2021
+        feature: platform-frontend-2021
+    spec:
+      containers:
+        - name: platform-frontend-2021
+#          image: registry.gitlab.com/moi_salon/business-frontend:a7494f0d2955cf9088253d701cac971e05867874
+          image: registry.gitlab.com/moi_salon/platform-frontend-2021:__VERSION__
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: frontend
+      imagePullSecrets:
+        - name: gitlab-registry
