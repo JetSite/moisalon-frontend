@@ -44,15 +44,15 @@ const progress = new ProgressBar({
 
 const AppContainer = ({ Component, pageProps }) => {
   // const router = useRouter();
-  // const [getInfo, { data }] = useLazyQuery(currentUserSalonsAndMasterQuery);
+  const [getInfo, { data }] = useLazyQuery(currentUserSalonsAndMasterQuery);
   // const [getCatalogs, { data: catalogsData }] = useLazyQuery(catalogsQuery);
-  // const [meInfo, setMeInfo] = useState({});
+  const [meInfo, setMeInfo] = useState({});
   const [catalogs, setCatalogs] = useState([]);
-  // const productsState = useState([]);
-  // const cartQuantityState = useState(0);
+  const productsState = useState([]);
+  const cartQuantityState = useState(0);
   const me = useState(null);
-  // const productsGetStatus = useState(false);
-  // const cityContext = useState("");
+  const productsGetStatus = useState(false);
+  const cityContext = useState("");
 
   // useEffect(() => {
   //   if (data?.me) {
@@ -76,18 +76,18 @@ const AppContainer = ({ Component, pageProps }) => {
   //   }
   // }, [catalogsData]);
 
-  // const queryMainState = useState({
-  //   ...MainSearchQuery,
-  //   city: meInfo?.info?.city
-  //     ? meInfo.info.city
-  //     : data?.locationByIp
-  //     ? data?.locationByIp?.data?.city
-  //     : "Москва",
-  // });
+  const queryMainState = useState({
+    ...MainSearchQuery,
+    city: meInfo?.info?.city
+      ? meInfo.info.city
+      : data?.locationByIp
+      ? data?.locationByIp?.data?.city
+      : "Москва",
+  });
 
-  // const queryCategoryPageState = useState({
-  //   query: "",
-  // });
+  const queryCategoryPageState = useState({
+    query: "",
+  });
 
   // useEffect(() => {
   //   router.events.on("routeChangeStart", progress.start);
