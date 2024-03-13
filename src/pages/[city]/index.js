@@ -24,6 +24,10 @@ import { changeCityMutation } from "../../_graphql-legacy/city/changeCityMutatio
 import { cyrToTranslit } from "../../utils/translit";
 import { pluralize } from "../../utils/pluralize";
 import { getSalons } from "../../graphql/salon/queries/getSalons";
+import { getBannerHooks } from "../../graphql/banner/queries/getBannerHooks";
+import { getFeeds } from "../../graphql/feed/queries/getFeeds";
+import { getServiceCategories } from "../../graphql/service/queries/getServiceCategories";
+import { getProductCategories } from "../../graphql/product/queries/getProductCategories";
 
 export default function AppContent({
   // totalSalons,
@@ -56,7 +60,7 @@ export default function AppContent({
   //   },
   // });
 
-  const { data } = useQuery(getSalons);
+  const { data } = useQuery(getProductCategories);
 
   console.log(data);
 
@@ -112,9 +116,6 @@ export default function AppContent({
         // totalBrands={totalBrands}
         // beautyCategories={beautyCategories}
         // beautyAllContent={beautyAllContent}
-        // bannersByHookWide={bannersByHookWide}
-        // bannersByHookSmall1={bannersByHookSmall1}
-        // bannersByHookSmall2={bannersByHookSmall2}
         // sales={sales}
         cityData={cityData}
       />
@@ -148,24 +149,6 @@ export async function getServerSideProps(ctx) {
     // apolloClient.query({
     //   query: getAll,
     //   context: { uri: "https://moi.salon/graphql" },
-    // }),
-    // apolloClient.query({
-    //   query: bannersByHookCodeQuery,
-    //   variables: {
-    //     hookCode: "shop-slider-wide",
-    //   },
-    // }),
-    // apolloClient.query({
-    //   query: bannersByHookCodeQuery,
-    //   variables: {
-    //     hookCode: "shop-slider-small1",
-    //   },
-    // }),
-    // apolloClient.query({
-    //   query: bannersByHookCodeQuery,
-    //   variables: {
-    //     hookCode: "shop-slider-small2",
-    //   },
     // }),
     // apolloClient.query({
     //   query: salesSearch,

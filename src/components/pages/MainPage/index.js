@@ -45,9 +45,6 @@ const MainPage = ({
   totalBrands,
   beautyCategories,
   beautyAllContent,
-  bannersByHookWide,
-  bannersByHookSmall1,
-  bannersByHookSmall2,
   sales,
   cityData,
 }) => {
