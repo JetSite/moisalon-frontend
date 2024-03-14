@@ -1,20 +1,17 @@
-import { useContext, useState } from "react";
-import {
-  addApolloState,
-  initializeApollo,
-} from "../../../../../../apollo-client";
-import { brandQuery } from "../../../../../_graphql-legacy/brand/brandQuery";
-import { useQuery } from "@apollo/client";
-import { goodsCatalogQuery } from "../../../../../_graphql-legacy/goodsCatalog";
-import { goodSearch } from "../../../../../_graphql-legacy/goodSearch";
-import MainLayout from "../../../../../layouts/MainLayout";
-import { MainContainer } from "../../../../../styles/common";
-import BrandProductsPage from "../../../../../components/pages/Brand/BrandProducts";
-import { brandSlugQuery } from "../../../../../_graphql-legacy/brand/brandSlugQuery";
-import { getProductCategories } from "../../../../../_graphql-legacy/getProductCategories";
-import { scoreBrand } from "../../../../../_graphql-legacy/brand/scoreBrand";
-import { MeContext } from "../../../../../searchContext";
-import { citySuggestionsQuery } from "../../../../../_graphql-legacy/city/citySuggestionsQuery";
+import { useContext, useState } from 'react'
+import { addApolloState, initializeApollo } from '../../../../../apollo-client'
+import { brandQuery } from '../../../../../_graphql-legacy/brand/brandQuery'
+import { useQuery } from '@apollo/client'
+import { goodsCatalogQuery } from '../../../../../_graphql-legacy/goodsCatalog'
+import { goodSearch } from '../../../../../_graphql-legacy/goodSearch'
+import MainLayout from '../../../../../layouts/MainLayout'
+import { MainContainer } from '../../../../../styles/common'
+import BrandProductsPage from '../../../../../components/pages/Brand/BrandProducts'
+import { brandSlugQuery } from '../../../../../_graphql-legacy/brand/brandSlugQuery'
+import { getProductCategories } from '../../../../../_graphql-legacy/getProductCategories'
+import { scoreBrand } from '../../../../../_graphql-legacy/brand/scoreBrand'
+import { MeContext } from '../../../../../searchContext'
+import { citySuggestionsQuery } from '../../../../../_graphql-legacy/city/citySuggestionsQuery'
 
 const BrandProducts = ({
   brandData,
@@ -22,25 +19,25 @@ const BrandProducts = ({
   dataScoreRes,
   goods,
 }) => {
-  const [brand, setBrand] = useState(brandData);
-  const [dataScore, setDataScore] = useState(dataScoreRes);
-  const [me, setMe] = useContext(MeContext);
+  const [brand, setBrand] = useState(brandData)
+  const [dataScore, setDataScore] = useState(dataScoreRes)
+  const [me, setMe] = useContext(MeContext)
 
   const { refetch: refetchBrand } = useQuery(brandQuery, {
     variables: { id: brand.id },
     skip: true,
-    onCompleted: (res) => {
-      setBrand(res.brand);
+    onCompleted: res => {
+      setBrand(res.brand)
     },
-  });
+  })
 
   const { refetch: refetchScore } = useQuery(scoreBrand, {
     variables: { id: brand.id },
     skip: true,
-    onCompleted: (res) => {
-      setDataScore(res.scoreBrand);
+    onCompleted: res => {
+      setDataScore(res.scoreBrand)
     },
-  });
+  })
 
   return (
     <MainLayout MainLayout me={me}>
@@ -56,31 +53,31 @@ const BrandProducts = ({
         />
       </MainContainer>
     </MainLayout>
-  );
-};
+  )
+}
 
 export async function getServerSideProps({ params, query }) {
-  const apolloClient = initializeApollo();
+  const apolloClient = initializeApollo()
 
   const brandQueryRes = await apolloClient.query({
     query: brandSlugQuery,
     variables: { slug: params.id },
-  });
+  })
 
   const city = await apolloClient.query({
     query: citySuggestionsQuery,
     variables: {
-      city: query?.city || "",
+      city: query?.city || '',
       count: 1,
     },
-  });
+  })
 
-  const brand = brandQueryRes.data.brandSlug;
+  const brand = brandQueryRes.data.brandSlug
 
   if (!city?.data?.citySuggestions[0]?.data?.city) {
     return {
       notFound: true,
-    };
+    }
   }
 
   const data = await Promise.all([
@@ -98,7 +95,7 @@ export async function getServerSideProps({ params, query }) {
       variables: {
         input: {
           brandId: [brand.id],
-          query: "",
+          query: '',
           isB2b: true,
         },
       },
@@ -112,7 +109,7 @@ export async function getServerSideProps({ params, query }) {
         id: brand.id,
       },
     }),
-  ]);
+  ])
   return addApolloState(apolloClient, {
     props: {
       brandData: brand,
@@ -120,7 +117,7 @@ export async function getServerSideProps({ params, query }) {
       dataProductCategories: data[1]?.data?.productsCatagoriesB2b,
       dataScoreRes: data[2].data,
     },
-  });
+  })
 }
 
-export default BrandProducts;
+export default BrandProducts

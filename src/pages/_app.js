@@ -1,15 +1,15 @@
-import { useState, useEffect } from "react";
-import Head from "next/head";
-import { StylesProvider } from "@material-ui/core/styles";
-import { ThemeProvider } from "@material-ui/styles";
-import { ApolloProvider, useLazyQuery } from "@apollo/client";
-import ProgressBar from "@badrap/bar-of-progress";
-import globalStyle from "../../styles/global";
-import normalizeStyle from "../../styles/normalize";
-import { useApollo } from "../../apollo-client";
-import "swiper/css";
-import "swiper/css/navigation";
-import { currentUserSalonsAndMasterQuery } from "../_graphql-legacy/master/currentUserSalonsAndMasterQuery";
+import { useState, useEffect } from 'react'
+import Head from 'next/head'
+import { StylesProvider } from '@material-ui/core/styles'
+import { ThemeProvider } from '@material-ui/styles'
+import { ApolloProvider, useLazyQuery } from '@apollo/client'
+import ProgressBar from '@badrap/bar-of-progress'
+import globalStyle from '../../styles/global'
+import normalizeStyle from '../../styles/normalize'
+import { useApollo } from '../apollo-client'
+import 'swiper/css'
+import 'swiper/css/navigation'
+import { currentUserSalonsAndMasterQuery } from '../_graphql-legacy/master/currentUserSalonsAndMasterQuery'
 import {
   CartContext,
   MainSearchQuery,
@@ -38,9 +38,9 @@ import { SearchHistoryProvider } from "../searchHistoryContext";
 const progress = new ProgressBar({
   size: 2,
   color: red,
-  className: "bar-of-progress",
+  className: 'bar-of-progress',
   delay: 100,
-});
+})
 
 const AppContainer = ({ Component, pageProps }) => {
   const router = useRouter();
@@ -83,12 +83,12 @@ const AppContainer = ({ Component, pageProps }) => {
       ? meInfo.info.city
       : data?.locationByIp
       ? data?.locationByIp?.data?.city
-      : "Москва",
-  });
+      : 'Москва',
+  })
 
   const queryCategoryPageState = useState({
-    query: "",
-  });
+    query: '',
+  })
 
   useEffect(() => {
     router.events.on("routeChangeStart", progress.start);
@@ -134,32 +134,32 @@ const AppContainer = ({ Component, pageProps }) => {
         </SearchHistoryProvider>
       </HistoryProvider>
     </MeContext.Provider>
-  );
-};
+  )
+}
 
 function MyApp({ Component, pageProps }) {
-  const mobileMedia = useMedia({ maxWidth: 768 });
-  const apolloClient = useApollo(pageProps);
-  const router = useRouter();
+  const mobileMedia = useMedia({ maxWidth: 768 })
+  const apolloClient = useApollo(pageProps)
+  const router = useRouter()
   useEffect(() => {
-    const handleRouteChange = (url) => {
-      gtag.pageview(url);
-    };
-    router.events.on("routeChangeComplete", handleRouteChange);
+    const handleRouteChange = url => {
+      gtag.pageview(url)
+    }
+    router.events.on('routeChangeComplete', handleRouteChange)
     return () => {
-      router.events.off("routeChangeComplete", handleRouteChange);
-    };
-  }, [router.events]);
+      router.events.off('routeChangeComplete', handleRouteChange)
+    }
+  }, [router.events])
 
   useEffect(() => {
-    const jssStyles = document.querySelector("#jss-server-side");
+    const jssStyles = document.querySelector('#jss-server-side')
     if (jssStyles) {
-      jssStyles.parentNode.removeChild(jssStyles);
+      jssStyles.parentNode.removeChild(jssStyles)
     }
-  }, []);
+  }, [])
 
   return (
-    <div style={{ overflowX: mobileMedia ? "hidden" : null }}>
+    <div style={{ overflowX: mobileMedia ? 'hidden' : null }}>
       <Head>
         <title>MOI salon</title>
         <meta name="theme-color" content="#000000" />
@@ -216,7 +216,7 @@ function MyApp({ Component, pageProps }) {
         </ThemeProvider>
       </ApolloProvider>
     </div>
-  );
+  )
 }
 
-export default MyApp;
+export default MyApp

@@ -1,29 +1,29 @@
-import { useContext, useEffect, useState } from "react";
-import Head from "next/head";
-import { useQuery } from "@apollo/client";
-import MainLayout from "../../../../layouts/MainLayout";
-import { salonQuery } from "../../../../_graphql-legacy/salon/salonQuery";
-import { salonSlugQuery } from "../../../../_graphql-legacy/salon/salonSlugQuery";
-import { addApolloState, initializeApollo } from "../../../../../apollo-client";
-import SearchBlock from "../../../../components/blocks/SearchBlock";
-import TabsSlider from "../../../../components/ui/TabsSlider";
-import About from "../../../../components/pages/Salon/ViewSalon/components/About";
-import { reviewsForSalon } from "../../../../_graphql-legacy/salon/reviewsForSalon";
-import Contacts from "../../../../components/pages/Salon/ViewSalon/components/Contacts";
-import SalonReviews from "../../../../components/pages/Salon/ViewSalon/components/SalonReviews";
-import catalogOrDefault from "../../../../utils/catalogOrDefault";
-import { CatalogsContext, MeContext } from "../../../../searchContext";
-import { citySuggestionsQuery } from "../../../../_graphql-legacy/city/citySuggestionsQuery";
-import { cyrToTranslit } from "../../../../utils/translit";
-import Header from "../../../../components/pages/Rent/ViewRent/components/Header";
-import Ribbon from "../../../../components/pages/MainPage/components/Ribbon";
-import RentSlider from "../../../../components/pages/Rent/ViewRent/components/RentSlider";
-import Service from "../../../../components/pages/Rent/ViewRent/components/Service";
-import { currentVacancies } from "../../../../_graphql-legacy/vacancies/currentVacancies";
-import { getCategories } from "../../../../_graphql-legacy/advices/getCategories";
-import { getAll } from "../../../../_graphql-legacy/advices/getAll";
-import Slider from "../../../../components/blocks/Slider";
-import { scoreSalon } from "../../../../_graphql-legacy/salon/scoreSalon";
+import { useContext, useEffect, useState } from 'react'
+import Head from 'next/head'
+import { useQuery } from '@apollo/client'
+import MainLayout from '../../../../layouts/MainLayout'
+import { salonQuery } from '../../../../_graphql-legacy/salon/salonQuery'
+import { salonSlugQuery } from '../../../../_graphql-legacy/salon/salonSlugQuery'
+import { addApolloState, initializeApollo } from '../../../../apollo-client'
+import SearchBlock from '../../../../components/blocks/SearchBlock'
+import TabsSlider from '../../../../components/ui/TabsSlider'
+import About from '../../../../components/pages/Salon/ViewSalon/components/About'
+import { reviewsForSalon } from '../../../../_graphql-legacy/salon/reviewsForSalon'
+import Contacts from '../../../../components/pages/Salon/ViewSalon/components/Contacts'
+import SalonReviews from '../../../../components/pages/Salon/ViewSalon/components/SalonReviews'
+import catalogOrDefault from '../../../../utils/catalogOrDefault'
+import { CatalogsContext, MeContext } from '../../../../searchContext'
+import { citySuggestionsQuery } from '../../../../_graphql-legacy/city/citySuggestionsQuery'
+import { cyrToTranslit } from '../../../../utils/translit'
+import Header from '../../../../components/pages/Rent/ViewRent/components/Header'
+import Ribbon from '../../../../components/pages/MainPage/components/Ribbon'
+import RentSlider from '../../../../components/pages/Rent/ViewRent/components/RentSlider'
+import Service from '../../../../components/pages/Rent/ViewRent/components/Service'
+import { currentVacancies } from '../../../../_graphql-legacy/vacancies/currentVacancies'
+import { getCategories } from '../../../../_graphql-legacy/advices/getCategories'
+import { getAll } from '../../../../_graphql-legacy/advices/getAll'
+import Slider from '../../../../components/blocks/Slider'
+import { scoreSalon } from '../../../../_graphql-legacy/salon/scoreSalon'
 
 const Rent = ({
   salonData,
@@ -33,80 +33,78 @@ const Rent = ({
   beautyAllContent,
   dataScoreRes,
 }) => {
-  const [activeTab, setActiveTab] = useState(0);
-  const [dataScore, setDataScore] = useState(dataScoreRes);
-  const [reviews, setReviews] = useState(dataReviews);
-  const [salon, setSalon] = useState(salonData);
-  const [me, setMe] = useContext(MeContext);
-  const catalogs = useContext(CatalogsContext);
-  const [seats, setSeats] = useState([]);
+  const [activeTab, setActiveTab] = useState(0)
+  const [dataScore, setDataScore] = useState(dataScoreRes)
+  const [reviews, setReviews] = useState(dataReviews)
+  const [salon, setSalon] = useState(salonData)
+  const [me, setMe] = useContext(MeContext)
+  const catalogs = useContext(CatalogsContext)
+  const [seats, setSeats] = useState([])
 
   useEffect(() => {
-    setSeats([]);
-    let arrSeats = [];
-    salon?.rooms?.map((item) =>
-      item?.seats?.forEach((el) => arrSeats?.push(el))
-    );
-    setSeats(arrSeats);
-  }, [salonData]);
+    setSeats([])
+    let arrSeats = []
+    salon?.rooms?.map(item => item?.seats?.forEach(el => arrSeats?.push(el)))
+    setSeats(arrSeats)
+  }, [salonData])
 
-  let cityInStorage;
-  if (typeof window !== "undefined") {
-    cityInStorage = localStorage.getItem("citySalon");
+  let cityInStorage
+  if (typeof window !== 'undefined') {
+    cityInStorage = localStorage.getItem('citySalon')
   }
 
   useEffect(() => {
-    setSalon(salonData);
-    setReviews(dataReviews);
-    setDataScore(dataScoreRes);
-  }, [salonData, dataReviews, dataScoreRes]);
+    setSalon(salonData)
+    setReviews(dataReviews)
+    setDataScore(dataScoreRes)
+  }, [salonData, dataReviews, dataScoreRes])
 
   const { refetch: refetchScore, loading: loadingScore } = useQuery(
     scoreSalon,
     {
       variables: { id: salon.id },
-      onCompleted: (res) => {
-        setDataScore(res.scoreSalon);
+      onCompleted: res => {
+        setDataScore(res.scoreSalon)
       },
-    }
-  );
+    },
+  )
 
   const { refetch: refetchSalon } = useQuery(salonQuery, {
     variables: { id: salon.id },
     skip: true,
-    onCompleted: (res) => {
-      setSalon(res.salon);
+    onCompleted: res => {
+      setSalon(res.salon)
     },
-  });
+  })
 
   const { refetch: refetchReviews } = useQuery(reviewsForSalon, {
     variables: { originId: salon.id },
     skip: true,
-    onCompleted: (res) => {
-      setReviews(res.reviewsForSalon);
+    onCompleted: res => {
+      setReviews(res.reviewsForSalon)
     },
-  });
+  })
 
-  const salonServicesCatalog = catalogOrDefault(catalogs?.salonServicesCatalog);
+  const salonServicesCatalog = catalogOrDefault(catalogs?.salonServicesCatalog)
 
-  const isOwner = me?.salons?.find((item) => item.id === salon.id);
+  const isOwner = me?.salons?.find(item => item.id === salon.id)
   const groupsServices = salonServicesCatalog?.groups
-    .map((group) => {
+    .map(group => {
       if (group.items === undefined) {
-        return null;
+        return null
       }
 
-      const items = group.items.filter((item) =>
-        salon?.services?.find((entry) => entry.id === item.id)
-      );
+      const items = group.items.filter(item =>
+        salon?.services?.find(entry => entry.id === item.id),
+      )
 
       if (items?.length === 0) {
-        return null;
+        return null
       }
-      return items;
+      return items
     })
-    .filter((element) => element !== null)
-    .flat(1);
+    .filter(element => element !== null)
+    .flat(1)
   return (
     <MainLayout>
       <Head>
@@ -137,29 +135,29 @@ const Rent = ({
           rent
           salon={salon}
           tabs={[
-            { id: 1, text: "О салоне", link: "#about", show: true },
+            { id: 1, text: 'О салоне', link: '#about', show: true },
             {
               id: 2,
-              text: "Аренда",
-              link: "#rent",
+              text: 'Аренда',
+              link: '#rent',
               count: seats?.length,
               show: seats?.length,
             },
             {
               id: 3,
-              text: "Сервис",
-              link: "#service",
+              text: 'Сервис',
+              link: '#service',
               count: groupsServices?.length,
               show: groupsServices?.length,
             },
             {
               id: 5,
-              text: "Отзывы",
-              link: "#reviews",
+              text: 'Отзывы',
+              link: '#reviews',
               count: reviews?.length || 0,
               show: true,
             },
-            { id: 6, text: "Контакты", link: "#contacts", show: true },
+            { id: 6, text: 'Контакты', link: '#contacts', show: true },
           ]}
         />
         <About salon={salon} />
@@ -190,31 +188,31 @@ const Rent = ({
         />
       </>
     </MainLayout>
-  );
-};
+  )
+}
 
 export async function getServerSideProps({ params, query }) {
-  const apolloClient = initializeApollo();
+  const apolloClient = initializeApollo()
 
   const salonQueryRes = await apolloClient.query({
     query: salonSlugQuery,
     variables: { slug: params.id },
-  });
+  })
 
   const city = await apolloClient.query({
     query: citySuggestionsQuery,
     variables: {
-      city: query?.city || "",
+      city: query?.city || '',
       count: 1,
     },
-  });
+  })
 
-  const id = salonQueryRes?.data?.salonSlug?.id;
+  const id = salonQueryRes?.data?.salonSlug?.id
 
   const data = await Promise.all([
     apolloClient.query({
       query: salonQuery,
-      variables: { id: id, filterDefinition: "" },
+      variables: { id: id, filterDefinition: '' },
     }),
     apolloClient.query({
       query: reviewsForSalon,
@@ -230,11 +228,11 @@ export async function getServerSideProps({ params, query }) {
     }),
     apolloClient.query({
       query: getCategories,
-      context: { uri: "https://moi.salon/graphql" },
+      context: { uri: 'https://moi.salon/graphql' },
     }),
     apolloClient.query({
       query: getAll,
-      context: { uri: "https://moi.salon/graphql" },
+      context: { uri: 'https://moi.salon/graphql' },
     }),
     apolloClient.query({
       query: scoreSalon,
@@ -242,7 +240,7 @@ export async function getServerSideProps({ params, query }) {
         id: id,
       },
     }),
-  ]);
+  ])
 
   if (
     !id ||
@@ -252,7 +250,7 @@ export async function getServerSideProps({ params, query }) {
   ) {
     return {
       notFound: true,
-    };
+    }
   }
 
   return addApolloState(apolloClient, {
@@ -264,7 +262,7 @@ export async function getServerSideProps({ params, query }) {
       beautyAllContent: data[4]?.data?.pages,
       dataScoreRes: data[5]?.data,
     },
-  });
+  })
 }
 
-export default Rent;
+export default Rent

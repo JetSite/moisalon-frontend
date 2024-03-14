@@ -1,12 +1,12 @@
-import { addApolloState, initializeApollo } from "../../../apollo-client";
-import { brandSearchQuery } from "../../_graphql-legacy/search/brandSearch";
-import CatalogB2cPage from "../../components/pages/CatalogB2cPage";
-import { bannersByHookCodeQuery } from "../../_graphql-legacy/baners/bannersHooks";
-import { productsCatagories } from "../../_graphql-legacy/productCatagories";
-import { goodSearch } from "../../_graphql-legacy/goodSearch";
-import { totalSalons } from "../../_graphql-legacy/salon/totalSalons";
-import { totalBrands } from "../../_graphql-legacy/brand/totalBrands";
-import { totalMasters } from "../../_graphql-legacy/master/totalMasters";
+import { addApolloState, initializeApollo } from '../../apollo-client'
+import { brandSearchQuery } from '../../_graphql-legacy/search/brandSearch'
+import CatalogB2cPage from '../../components/pages/CatalogB2cPage'
+import { bannersByHookCodeQuery } from '../../_graphql-legacy/baners/bannersHooks'
+import { productsCatagories } from '../../_graphql-legacy/productCatagories'
+import { goodSearch } from '../../_graphql-legacy/goodSearch'
+import { totalSalons } from '../../_graphql-legacy/salon/totalSalons'
+import { totalBrands } from '../../_graphql-legacy/brand/totalBrands'
+import { totalMasters } from '../../_graphql-legacy/master/totalMasters'
 
 const CatalogB2c = ({
   bannersByHookWide,
@@ -34,35 +34,35 @@ const CatalogB2c = ({
       totalBrands={totalBrands}
       totalMasters={totalMasters}
     />
-  );
-};
+  )
+}
 
 export async function getServerSideProps() {
-  const apolloClient = initializeApollo();
+  const apolloClient = initializeApollo()
 
   const data = await Promise.all([
     apolloClient.query({
       query: brandSearchQuery,
       variables: {
-        query: "",
+        query: '',
       },
     }),
     apolloClient.query({
       query: bannersByHookCodeQuery,
       variables: {
-        hookCode: "shop-slider-wide",
+        hookCode: 'shop-slider-wide',
       },
     }),
     apolloClient.query({
       query: bannersByHookCodeQuery,
       variables: {
-        hookCode: "shop-slider-small1",
+        hookCode: 'shop-slider-small1',
       },
     }),
     apolloClient.query({
       query: bannersByHookCodeQuery,
       variables: {
-        hookCode: "shop-slider-small2",
+        hookCode: 'shop-slider-small2',
       },
     }),
     apolloClient.query({
@@ -72,7 +72,7 @@ export async function getServerSideProps() {
       query: goodSearch,
       variables: {
         input: {
-          query: "",
+          query: '',
         },
       },
     }),
@@ -80,7 +80,7 @@ export async function getServerSideProps() {
       query: goodSearch,
       variables: {
         input: {
-          query: "",
+          query: '',
           sales: true,
         },
       },
@@ -88,22 +88,22 @@ export async function getServerSideProps() {
     apolloClient.query({
       query: totalSalons,
       variables: {
-        catId: "",
+        catId: '',
       },
     }),
     apolloClient.query({
       query: totalBrands,
       variables: {
-        catId: "",
+        catId: '',
       },
     }),
     apolloClient.query({
       query: totalMasters,
       variables: {
-        catId: "",
+        catId: '',
       },
     }),
-  ]);
+  ])
 
   return addApolloState(apolloClient, {
     props: {
@@ -118,7 +118,7 @@ export async function getServerSideProps() {
       totalBrands: data[8].data.totalBrands,
       totalMasters: data[9].data.totalMasters,
     },
-  });
+  })
 }
 
-export default CatalogB2c;
+export default CatalogB2c

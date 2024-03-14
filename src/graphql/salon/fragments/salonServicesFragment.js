@@ -1,9 +1,9 @@
 const salonServicesFragment = `
-  salon_services {
+  services {
     data {
       id
       attributes {
-        salonServiceName
+        serviceName
       }
     }
   }

@@ -1,10 +1,10 @@
-import { initializeApollo } from "../../apollo-client";
-import { citySuggestionsQuery } from "../_graphql-legacy/city/citySuggestionsQuery";
+import { initializeApollo } from '../apollo-client'
+import { citySuggestionsQuery } from '../_graphql-legacy/city/citySuggestionsQuery'
 
-const AppContent = () => {};
+const AppContent = () => {}
 
 export async function getServerSideProps(ctx) {
-  const apolloClient = initializeApollo();
+  const apolloClient = initializeApollo()
   // const city = await apolloClient.query({
   //   query: citySuggestionsQuery,
   //   variables: {
@@ -14,10 +14,10 @@ export async function getServerSideProps(ctx) {
   // });
   return {
     redirect: {
-      destination: "moskva",
+      destination: 'moskva',
       permanent: true,
     },
-  };
+  }
 }
 
-export default AppContent;
+export default AppContent

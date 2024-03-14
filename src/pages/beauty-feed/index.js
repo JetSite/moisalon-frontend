@@ -1,11 +1,11 @@
-import { addApolloState, initializeApollo } from "../../../apollo-client";
-import { getCategories } from "../../_graphql-legacy/advices/getCategories";
-import { getAll } from "../../_graphql-legacy/advices/getAll";
-import { getAdvices } from "../../_graphql-legacy/advices/getAdvices";
-import AdvicesPage from "../../components/pages/AdvicesPage";
-import { totalSalons } from "../../_graphql-legacy/salon/totalSalons";
-import { totalBrands } from "../../_graphql-legacy/brand/totalBrands";
-import { totalMasters } from "../../_graphql-legacy/master/totalMasters";
+import { addApolloState, initializeApollo } from '../../apollo-client'
+import { getCategories } from '../../_graphql-legacy/advices/getCategories'
+import { getAll } from '../../_graphql-legacy/advices/getAll'
+import { getAdvices } from '../../_graphql-legacy/advices/getAdvices'
+import AdvicesPage from '../../components/pages/AdvicesPage'
+import { totalSalons } from '../../_graphql-legacy/salon/totalSalons'
+import { totalBrands } from '../../_graphql-legacy/brand/totalBrands'
+import { totalMasters } from '../../_graphql-legacy/master/totalMasters'
 
 const Trends = ({
   categories,
@@ -25,47 +25,47 @@ const Trends = ({
       totalBrands={totalBrands}
       totalMasters={totalMasters}
     />
-  );
-};
+  )
+}
 
 export async function getServerSideProps() {
-  const apolloClient = initializeApollo();
+  const apolloClient = initializeApollo()
 
   const data = await Promise.all([
     apolloClient.query({
       query: getCategories,
-      context: { uri: "https://moi.salon/graphql" },
+      context: { uri: 'https://moi.salon/graphql' },
     }),
     apolloClient.query({
       query: getAll,
-      context: { uri: "https://moi.salon/graphql" },
+      context: { uri: 'https://moi.salon/graphql' },
     }),
     apolloClient.query({
       query: getAdvices,
-      context: { uri: "https://moi.salon/graphql" },
+      context: { uri: 'https://moi.salon/graphql' },
       variables: {
-        catId: "",
+        catId: '',
       },
     }),
     apolloClient.query({
       query: totalSalons,
       variables: {
-        catId: "",
+        catId: '',
       },
     }),
     apolloClient.query({
       query: totalBrands,
       variables: {
-        catId: "",
+        catId: '',
       },
     }),
     apolloClient.query({
       query: totalMasters,
       variables: {
-        catId: "",
+        catId: '',
       },
     }),
-  ]);
+  ])
 
   return addApolloState(apolloClient, {
     props: {
@@ -76,7 +76,7 @@ export async function getServerSideProps() {
       totalBrands: data[4].data.totalBrands,
       totalMasters: data[5].data.totalMasters,
     },
-  });
+  })
 }
 
-export default Trends;
+export default Trends

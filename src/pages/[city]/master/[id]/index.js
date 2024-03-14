@@ -1,57 +1,57 @@
-import { useContext, useEffect, useState } from "react";
-import Head from "next/head";
-import { addApolloState, initializeApollo } from "../../../../../apollo-client";
-import { useQuery, useMutation } from "@apollo/client";
-import { masterQuery } from "../../../../_graphql-legacy/master/masterQuery";
-import { brandQuery } from "../../../../_graphql-legacy/master/brandQuery";
-import { reviewsForMaster } from "../../../../_graphql-legacy/master/reviewsForMaster";
-import MainLayout from "../../../../layouts/MainLayout";
-import SearchBlock from "../../../../components/blocks/SearchBlock";
-import Header from "../../../../components/pages/Master/ViewMaster/components/Header";
-import TabsSlider from "../../../../components/ui/TabsSlider";
-import About from "../../../../components/pages/Master/ViewMaster/components/About";
-import MobileServicesForClient from "../../../../components/pages/Master/ViewMaster/components/MobileServicesComponent/MobileServicesForClient";
-import Resume from "../../../../components/pages/Master/ViewMaster/components/Resume";
-import ReviewsMaster from "../../../../components/pages/Master/ViewMaster/components/MasterReviews";
-import Line from "../../../../components/pages/MainPage/components/Line";
-import InviteMaster from "../../../../components/pages/Master/ViewMaster/components/Invite";
-import catalogOrDefault from "../../../../utils/catalogOrDefault";
-import { scoreMaster } from "../../../../_graphql-legacy/master/scoreMaster";
-import { updateMasterPhotoWorksMutation } from "../../../../_graphql-legacy/master/updateMasterPhotoWorksMutation";
-import { updateMasterPhotoDiplomaMutation } from "../../../../_graphql-legacy/master/updateMasterPhotoDiplomaMutation";
-import { removeUserBrandsMutation } from "../../../../_graphql-legacy/master/removeUserBrandsMutation";
-import { removeUserSalonsMutation } from "../../../../_graphql-legacy/master/removeUserSalonsMutation";
-import Contacts from "../../../../components/pages/Master/ViewMaster/components/Contacts";
-import ServicesForClient from "../../../../components/pages/Master/ViewMaster/components/ServicesForClient";
-import { masterSlugQuery } from "../../../../_graphql-legacy/master/masterSlugQuery";
-import { CatalogsContext, MeContext } from "../../../../searchContext";
-import { mastersRandomQuery } from "../../../../_graphql-legacy/mastersRandomQuery";
-import { citySuggestionsQuery } from "../../../../_graphql-legacy/city/citySuggestionsQuery";
-import Slider from "../../../../components/blocks/Slider";
-import AddBrands from "../../../../components/pages/Master/AddBrands";
-import AddSalons from "../../../../components/pages/Master/AddSalons";
-import PhotoAdd from "../../../../components/pages/Master/ViewMaster/components/PhotoAdd";
-import { NoItemsText } from "../../../../styles/common";
-import { useSearchHistory } from "../../../../hooks/useSearchHistory";
-import { useSearchHistoryContext } from "../../../../searchHistoryContext";
+import { useContext, useEffect, useState } from 'react'
+import Head from 'next/head'
+import { addApolloState, initializeApollo } from '../../../../apollo-client'
+import { useQuery, useMutation } from '@apollo/client'
+import { masterQuery } from '../../../../_graphql-legacy/master/masterQuery'
+import { brandQuery } from '../../../../_graphql-legacy/master/brandQuery'
+import { reviewsForMaster } from '../../../../_graphql-legacy/master/reviewsForMaster'
+import MainLayout from '../../../../layouts/MainLayout'
+import SearchBlock from '../../../../components/blocks/SearchBlock'
+import Header from '../../../../components/pages/Master/ViewMaster/components/Header'
+import TabsSlider from '../../../../components/ui/TabsSlider'
+import About from '../../../../components/pages/Master/ViewMaster/components/About'
+import MobileServicesForClient from '../../../../components/pages/Master/ViewMaster/components/MobileServicesComponent/MobileServicesForClient'
+import Resume from '../../../../components/pages/Master/ViewMaster/components/Resume'
+import ReviewsMaster from '../../../../components/pages/Master/ViewMaster/components/MasterReviews'
+import Line from '../../../../components/pages/MainPage/components/Line'
+import InviteMaster from '../../../../components/pages/Master/ViewMaster/components/Invite'
+import catalogOrDefault from '../../../../utils/catalogOrDefault'
+import { scoreMaster } from '../../../../_graphql-legacy/master/scoreMaster'
+import { updateMasterPhotoWorksMutation } from '../../../../_graphql-legacy/master/updateMasterPhotoWorksMutation'
+import { updateMasterPhotoDiplomaMutation } from '../../../../_graphql-legacy/master/updateMasterPhotoDiplomaMutation'
+import { removeUserBrandsMutation } from '../../../../_graphql-legacy/master/removeUserBrandsMutation'
+import { removeUserSalonsMutation } from '../../../../_graphql-legacy/master/removeUserSalonsMutation'
+import Contacts from '../../../../components/pages/Master/ViewMaster/components/Contacts'
+import ServicesForClient from '../../../../components/pages/Master/ViewMaster/components/ServicesForClient'
+import { masterSlugQuery } from '../../../../_graphql-legacy/master/masterSlugQuery'
+import { CatalogsContext, MeContext } from '../../../../searchContext'
+import { mastersRandomQuery } from '../../../../_graphql-legacy/mastersRandomQuery'
+import { citySuggestionsQuery } from '../../../../_graphql-legacy/city/citySuggestionsQuery'
+import Slider from '../../../../components/blocks/Slider'
+import AddBrands from '../../../../components/pages/Master/AddBrands'
+import AddSalons from '../../../../components/pages/Master/AddSalons'
+import PhotoAdd from '../../../../components/pages/Master/ViewMaster/components/PhotoAdd'
+import { NoItemsText } from '../../../../styles/common'
+import { useSearchHistory } from '../../../../hooks/useSearchHistory'
+import { useSearchHistoryContext } from '../../../../searchHistoryContext'
 
 const Master = ({ masterData, brandsData, dataReviews, dataScoreRes }) => {
-  const [brands, setBrands] = useState(brandsData);
-  const [master, setMaster] = useState(masterData);
-  const [me, setMe] = useContext(MeContext);
-  const [dataScore, setDataScore] = useState(dataScoreRes);
-  const catalogs = useContext(CatalogsContext);
-  const [reviews, setReviews] = useState(dataReviews);
-  const [editClientServices, setEditClientServices] = useState(false);
-  const [activeTab, setActiveTab] = useState(0);
-  const [isBrandsEditing, setIsBrandsEditing] = useState(false);
-  const [isSalonsEditing, setIsSalonsEditing] = useState(false);
-  const [isPortfolioEditing, setIsPortfolioEditing] = useState(false);
-  const [isDiplomsEditing, setIsDiplomsEditing] = useState(false);
+  const [brands, setBrands] = useState(brandsData)
+  const [master, setMaster] = useState(masterData)
+  const [me, setMe] = useContext(MeContext)
+  const [dataScore, setDataScore] = useState(dataScoreRes)
+  const catalogs = useContext(CatalogsContext)
+  const [reviews, setReviews] = useState(dataReviews)
+  const [editClientServices, setEditClientServices] = useState(false)
+  const [activeTab, setActiveTab] = useState(0)
+  const [isBrandsEditing, setIsBrandsEditing] = useState(false)
+  const [isSalonsEditing, setIsSalonsEditing] = useState(false)
+  const [isPortfolioEditing, setIsPortfolioEditing] = useState(false)
+  const [isDiplomsEditing, setIsDiplomsEditing] = useState(false)
 
-  let cityInStorage;
-  if (typeof window !== "undefined") {
-    cityInStorage = localStorage.getItem("citySalon");
+  let cityInStorage
+  if (typeof window !== 'undefined') {
+    cityInStorage = localStorage.getItem('citySalon')
   }
   const { data, loading, refetch } = useQuery(mastersRandomQuery, {
     variables: {
@@ -61,156 +61,156 @@ const Master = ({ masterData, brandsData, dataReviews, dataScoreRes }) => {
           ? me?.info?.city
           : cityInStorage
           ? cityInStorage
-          : "",
+          : '',
     },
-  });
+  })
 
   useEffect(() => {
-    setMaster(masterData);
-    setBrands(brandsData);
-    setDataScore(dataScoreRes);
-    setReviews(dataReviews);
-    refetch();
-  }, [masterData, brandsData, dataScoreRes, dataReviews]);
+    setMaster(masterData)
+    setBrands(brandsData)
+    setDataScore(dataScoreRes)
+    setReviews(dataReviews)
+    refetch()
+  }, [masterData, brandsData, dataScoreRes, dataReviews])
 
-  const { setChosenItemId } = useSearchHistoryContext();
+  const { setChosenItemId } = useSearchHistoryContext()
 
   useEffect(() => {
-    setChosenItemId(master.id);
-  }, []);
+    setChosenItemId(master.id)
+  }, [])
 
   const { refetch: refetchMaster } = useQuery(masterQuery, {
     variables: { id: master.id },
     skip: true,
-    onCompleted: (res) => {
-      setMaster(res.master);
+    onCompleted: res => {
+      setMaster(res.master)
     },
-  });
+  })
 
   const [updateMasterPhotoWorks] = useMutation(updateMasterPhotoWorksMutation, {
     onCompleted: () => {
-      refetchMaster();
+      refetchMaster()
     },
-  });
+  })
 
   const [updateMasterPhotoDiploma] = useMutation(
     updateMasterPhotoDiplomaMutation,
     {
       onCompleted: () => {
-        refetchMaster();
+        refetchMaster()
       },
-    }
-  );
+    },
+  )
 
   const { refetch: refetchReviews } = useQuery(reviewsForMaster, {
     variables: { originId: master.id },
     skip: true,
-    onCompleted: (res) => {
-      setReviews(res.reviewsForMaster);
+    onCompleted: res => {
+      setReviews(res.reviewsForMaster)
     },
-  });
+  })
 
   const { refetch: refetchBrands } = useQuery(brandQuery, {
     variables: { id: master.id },
     skip: true,
-    onCompleted: (res) => {
+    onCompleted: res => {
       if (res) {
-        setBrands(res.brandsMaster);
+        setBrands(res.brandsMaster)
       }
     },
-  });
+  })
 
   const masterSpecializationsCatalog = catalogOrDefault(
-    catalogs?.masterSpecializationsCatalog
-  );
+    catalogs?.masterSpecializationsCatalog,
+  )
 
   const salonServicesMasterCatalog = catalogOrDefault(
-    catalogs?.salonServicesMasterCatalog
-  );
+    catalogs?.salonServicesMasterCatalog,
+  )
 
-  const salonsId = master?.salonIds || [];
+  const salonsId = master?.salonIds || []
 
   const { refetch: refetchScore, loading: loadingScore } = useQuery(
     scoreMaster,
     {
       variables: { id: master.id },
-      onCompleted: (res) => {
-        setDataScore(res.scoreMaster);
+      onCompleted: res => {
+        setDataScore(res.scoreMaster)
       },
-    }
-  );
+    },
+  )
 
-  const onAdd = (photoId) => {
+  const onAdd = photoId => {
     const oldArr = master?.photosWorks
-      ? master?.photosWorks.map((item) => item.id)
-      : [];
-    const newArr = [...oldArr, photoId];
+      ? master?.photosWorks.map(item => item.id)
+      : []
+    const newArr = [...oldArr, photoId]
     updateMasterPhotoWorks({
       variables: { input: { photoWorksIds: newArr, id: master?.id } },
-    });
-  };
+    })
+  }
 
-  const onDelete = (photoId) => {
+  const onDelete = photoId => {
     const oldArr = master?.photosWorks
-      ? master?.photosWorks.map((item) => item.id)
-      : [];
-    const newArr = oldArr.filter((item) => item !== photoId);
+      ? master?.photosWorks.map(item => item.id)
+      : []
+    const newArr = oldArr.filter(item => item !== photoId)
     updateMasterPhotoWorks({
       variables: { input: { photoWorksIds: newArr, id: master?.id } },
-    });
-  };
+    })
+  }
 
-  const onAddDiploma = (photoId) => {
+  const onAddDiploma = photoId => {
     const oldArr = master?.photosDiploma
-      ? master?.photosDiploma.map((item) => item.id)
-      : [];
-    const newArr = [...oldArr, photoId];
+      ? master?.photosDiploma.map(item => item.id)
+      : []
+    const newArr = [...oldArr, photoId]
     updateMasterPhotoDiploma({
       variables: { input: { photoDiplomaIds: newArr, id: master?.id } },
-    });
-  };
+    })
+  }
 
-  const onDeleteDiploma = (photoId) => {
+  const onDeleteDiploma = photoId => {
     const oldArr = master?.photosDiploma
-      ? master?.photosDiploma.map((item) => item.id)
-      : [];
-    const newArr = oldArr.filter((item) => item !== photoId);
+      ? master?.photosDiploma.map(item => item.id)
+      : []
+    const newArr = oldArr.filter(item => item !== photoId)
     updateMasterPhotoDiploma({
       variables: { input: { photoDiplomaIds: newArr, id: master?.id } },
-    });
-  };
+    })
+  }
 
   const [removeBrands] = useMutation(removeUserBrandsMutation, {
     onCompleted: () => {
-      refetchBrands();
+      refetchBrands()
     },
-  });
+  })
 
-  const handleRemoveBrand = (id) => {
+  const handleRemoveBrand = id => {
     removeBrands({
       variables: {
         ids: [id],
         masterId: me?.master?.id,
       },
-    });
-  };
+    })
+  }
 
   const [removeSalons] = useMutation(removeUserSalonsMutation, {
     onCompleted: () => {
-      refetchMaster();
+      refetchMaster()
     },
-  });
+  })
 
-  const handleRemoveSalon = (id) => {
+  const handleRemoveSalon = id => {
     removeSalons({
       variables: {
         ids: [id],
         masterId: me?.master?.id,
       },
-    });
-  };
+    })
+  }
 
-  const isOwner = me?.master?.id === master?.id;
+  const isOwner = me?.master?.id === master?.id
 
   return (
     <MainLayout>
@@ -240,43 +240,43 @@ const Master = ({ masterData, brandsData, dataReviews, dataScoreRes }) => {
           setActiveTab={setActiveTab}
           noPadding
           tabs={[
-            { id: 1, text: "О себе", link: "#about", show: true },
+            { id: 1, text: 'О себе', link: '#about', show: true },
             {
               id: 2,
-              text: "Услуги",
-              link: "#services",
+              text: 'Услуги',
+              link: '#services',
               count: master?.servicesMaster?.length,
               show: master?.servicesMaster?.length || isOwner,
             },
             {
               id: 3,
-              text: "Примеры",
-              link: "#portfolio",
+              text: 'Примеры',
+              link: '#portfolio',
               count: master?.photosWorks?.length,
               show: master?.photosWorks?.length || isOwner,
             },
             {
               id: 4,
-              text: "Дипломы",
-              link: "#diploms",
+              text: 'Дипломы',
+              link: '#diploms',
               count: master?.photosDiploma?.length,
               show: master?.photosDiploma?.length || isOwner,
             },
             {
               id: 5,
-              text: "Бренды",
-              link: "#brands",
+              text: 'Бренды',
+              link: '#brands',
               count: brands?.length,
               show: brands?.length || isOwner,
             },
             {
               id: 6,
-              text: "Отзывы",
-              link: "#reviews",
+              text: 'Отзывы',
+              link: '#reviews',
               count: reviews.length,
               show: true,
             },
-            { id: 7, text: "Контакты", link: "#contacts", show: true },
+            { id: 7, text: 'Контакты', link: '#contacts', show: true },
           ]}
         />
         <About master={master} />
@@ -450,31 +450,31 @@ const Master = ({ masterData, brandsData, dataReviews, dataScoreRes }) => {
         />
       </>
     </MainLayout>
-  );
-};
+  )
+}
 
 export async function getServerSideProps({ params, query }) {
-  const apolloClient = initializeApollo();
+  const apolloClient = initializeApollo()
   const masterQueryRes = await apolloClient.query({
     query: masterSlugQuery,
     variables: { slug: params.id },
-  });
+  })
 
-  const id = masterQueryRes?.data?.masterSlug?.id;
-  const master = masterQueryRes?.data?.masterSlug;
+  const id = masterQueryRes?.data?.masterSlug?.id
+  const master = masterQueryRes?.data?.masterSlug
 
   const city = await apolloClient.query({
     query: citySuggestionsQuery,
     variables: {
-      city: query?.city || "",
+      city: query?.city || '',
       count: 1,
     },
-  });
+  })
 
   if (!id || !city?.data?.citySuggestions[0]?.data?.city) {
     return {
       notFound: true,
-    };
+    }
   }
 
   const data = await Promise.all([
@@ -496,7 +496,7 @@ export async function getServerSideProps({ params, query }) {
         id: id,
       },
     }),
-  ]);
+  ])
 
   return addApolloState(apolloClient, {
     props: {
@@ -505,7 +505,7 @@ export async function getServerSideProps({ params, query }) {
       dataReviews: data[1]?.data?.reviewsForMaster,
       dataScoreRes: data[2].data,
     },
-  });
+  })
 }
 
-export default Master;
+export default Master

@@ -1,37 +1,37 @@
-import { useContext, useEffect, useState } from "react";
-import Head from "next/head";
-import { useQuery, useMutation } from "@apollo/client";
-import MainLayout from "../../../../layouts/MainLayout";
-import { salonQuery } from "../../../../_graphql-legacy/salon/salonQuery";
-import { salonSlugQuery } from "../../../../_graphql-legacy/salon/salonSlugQuery";
-import { scoreSalon } from "../../../../_graphql-legacy/salon/scoreSalon";
-import { addApolloState, initializeApollo } from "../../../../../apollo-client";
-import SearchBlock from "../../../../components/blocks/SearchBlock";
-import Header from "../../../../components/pages/Salon/ViewSalon/components/Header";
-import TabsSlider from "../../../../components/ui/TabsSlider";
-import About from "../../../../components/pages/Salon/ViewSalon/components/About";
-import Services from "../../../../components/pages/Salon/ViewSalon/components/Services";
-import ServicesForClient from "../../../../components/pages/Salon/ViewSalon/components/ServicesForClient";
-import { brandsSalon } from "../../../../_graphql-legacy/salon/brandsSalon";
-import { reviewsForSalon } from "../../../../_graphql-legacy/salon/reviewsForSalon";
-import Contacts from "../../../../components/pages/Salon/ViewSalon/components/Contacts";
-import SalonReviews from "../../../../components/pages/Salon/ViewSalon/components/SalonReviews";
-import InviteSalon from "../../../../components/pages/Salon/ViewSalon/components/Invite";
-import MobileServicesComponent from "../../../../components/pages/Salon/ViewSalon/components/MobileServicesComponent/MobileServicesComponent";
-import MobileServicesForClient from "../../../../components/pages/Salon/ViewSalon/components/MobileServicesComponent/MobileServicesForClient";
-import MobileSalonPhotos from "../../../../components/pages/Salon/ViewSalon/components/MobileSalonPhotos";
-import catalogOrDefault from "../../../../utils/catalogOrDefault";
-import { mastersSalon } from "../../../../_graphql-legacy/salon/mastersSalon";
-import { CatalogsContext, MeContext } from "../../../../searchContext";
-import { salonsRandom } from "../../../../_graphql-legacy/salon/salonsRandom";
-import { citySuggestionsQuery } from "../../../../_graphql-legacy/city/citySuggestionsQuery";
-import { cyrToTranslit } from "../../../../utils/translit";
-import { currentVacancies } from "../../../../_graphql-legacy/vacancies/currentVacancies";
-import { removeSalonBrandsMutation } from "../../../../_graphql-legacy/salon/removeSalonBrandsMutation";
-import Slider from "../../../../components/blocks/Slider";
-import AddBrands from "../../../../components/pages/Salon/AddBrands";
-import { NoItemsText } from "../../../../styles/common";
-import { useSearchHistoryContext } from "../../../../searchHistoryContext";
+import { useContext, useEffect, useState } from 'react'
+import Head from 'next/head'
+import { useQuery, useMutation } from '@apollo/client'
+import MainLayout from '../../../../layouts/MainLayout'
+import { salonQuery } from '../../../../_graphql-legacy/salon/salonQuery'
+import { salonSlugQuery } from '../../../../_graphql-legacy/salon/salonSlugQuery'
+import { scoreSalon } from '../../../../_graphql-legacy/salon/scoreSalon'
+import { addApolloState, initializeApollo } from '../../../../apollo-client'
+import SearchBlock from '../../../../components/blocks/SearchBlock'
+import Header from '../../../../components/pages/Salon/ViewSalon/components/Header'
+import TabsSlider from '../../../../components/ui/TabsSlider'
+import About from '../../../../components/pages/Salon/ViewSalon/components/About'
+import Services from '../../../../components/pages/Salon/ViewSalon/components/Services'
+import ServicesForClient from '../../../../components/pages/Salon/ViewSalon/components/ServicesForClient'
+import { brandsSalon } from '../../../../_graphql-legacy/salon/brandsSalon'
+import { reviewsForSalon } from '../../../../_graphql-legacy/salon/reviewsForSalon'
+import Contacts from '../../../../components/pages/Salon/ViewSalon/components/Contacts'
+import SalonReviews from '../../../../components/pages/Salon/ViewSalon/components/SalonReviews'
+import InviteSalon from '../../../../components/pages/Salon/ViewSalon/components/Invite'
+import MobileServicesComponent from '../../../../components/pages/Salon/ViewSalon/components/MobileServicesComponent/MobileServicesComponent'
+import MobileServicesForClient from '../../../../components/pages/Salon/ViewSalon/components/MobileServicesComponent/MobileServicesForClient'
+import MobileSalonPhotos from '../../../../components/pages/Salon/ViewSalon/components/MobileSalonPhotos'
+import catalogOrDefault from '../../../../utils/catalogOrDefault'
+import { mastersSalon } from '../../../../_graphql-legacy/salon/mastersSalon'
+import { CatalogsContext, MeContext } from '../../../../searchContext'
+import { salonsRandom } from '../../../../_graphql-legacy/salon/salonsRandom'
+import { citySuggestionsQuery } from '../../../../_graphql-legacy/city/citySuggestionsQuery'
+import { cyrToTranslit } from '../../../../utils/translit'
+import { currentVacancies } from '../../../../_graphql-legacy/vacancies/currentVacancies'
+import { removeSalonBrandsMutation } from '../../../../_graphql-legacy/salon/removeSalonBrandsMutation'
+import Slider from '../../../../components/blocks/Slider'
+import AddBrands from '../../../../components/pages/Salon/AddBrands'
+import { NoItemsText } from '../../../../styles/common'
+import { useSearchHistoryContext } from '../../../../searchHistoryContext'
 
 const Salon = ({
   salonData,
@@ -41,27 +41,27 @@ const Salon = ({
   mastersData,
   vacancies,
 }) => {
-  const [activeTab, setActiveTab] = useState(0);
-  const [edit, setEdit] = useState(false);
-  const [editClientServices, setEditClientServices] = useState(false);
-  const [reviews, setReviews] = useState(dataReviews);
-  const [dataScore, setDataScore] = useState(dataScoreRes);
-  const [salon, setSalon] = useState(salonData);
-  const [me, setMe] = useContext(MeContext);
-  const catalogs = useContext(CatalogsContext);
-  const [brands, setBrands] = useState(brandsData);
-  const [isBrandsEditing, setIsBrandsEditing] = useState(false);
+  const [activeTab, setActiveTab] = useState(0)
+  const [edit, setEdit] = useState(false)
+  const [editClientServices, setEditClientServices] = useState(false)
+  const [reviews, setReviews] = useState(dataReviews)
+  const [dataScore, setDataScore] = useState(dataScoreRes)
+  const [salon, setSalon] = useState(salonData)
+  const [me, setMe] = useContext(MeContext)
+  const catalogs = useContext(CatalogsContext)
+  const [brands, setBrands] = useState(brandsData)
+  const [isBrandsEditing, setIsBrandsEditing] = useState(false)
 
-  let cityInStorage;
-  if (typeof window !== "undefined") {
-    cityInStorage = localStorage.getItem("citySalon");
+  let cityInStorage
+  if (typeof window !== 'undefined') {
+    cityInStorage = localStorage.getItem('citySalon')
   }
 
-  const { setChosenItemId } = useSearchHistoryContext();
+  const { setChosenItemId } = useSearchHistoryContext()
 
   useEffect(() => {
-    setChosenItemId(salon.id);
-  }, []);
+    setChosenItemId(salon.id)
+  }, [])
 
   const { data, loading, refetch } = useQuery(salonsRandom, {
     variables: {
@@ -71,103 +71,103 @@ const Salon = ({
           ? me?.info?.city
           : cityInStorage
           ? cityInStorage
-          : "",
+          : '',
     },
-    fetchPolicy: "network-only",
-  });
+    fetchPolicy: 'network-only',
+  })
 
   useEffect(() => {
-    setSalon(salonData);
-    setBrands(brandsData);
-    setReviews(dataReviews);
-    setDataScore(dataScoreRes);
-    refetch();
-  }, [salonData, brandsData, dataReviews, dataScoreRes]);
+    setSalon(salonData)
+    setBrands(brandsData)
+    setReviews(dataReviews)
+    setDataScore(dataScoreRes)
+    refetch()
+  }, [salonData, brandsData, dataReviews, dataScoreRes])
 
   const { refetch: refetchSalon } = useQuery(salonQuery, {
     variables: { id: salon.id },
     skip: true,
-    onCompleted: (res) => {
-      setSalon(res.salon);
+    onCompleted: res => {
+      setSalon(res.salon)
     },
-  });
+  })
 
   const { refetch: refetchScore, loading: loadingScore } = useQuery(
     scoreSalon,
     {
       variables: { id: salon.id },
-      onCompleted: (res) => {
-        setDataScore(res.scoreSalon);
+      onCompleted: res => {
+        setDataScore(res.scoreSalon)
       },
-    }
-  );
+    },
+  )
 
   const { refetch: refetchReviews } = useQuery(reviewsForSalon, {
     variables: { originId: salon.id },
     skip: true,
-    onCompleted: (res) => {
-      setReviews(res.reviewsForSalon);
+    onCompleted: res => {
+      setReviews(res.reviewsForSalon)
     },
-  });
+  })
 
   const { refetch: refetchBrands } = useQuery(brandsSalon, {
     variables: { id: salon.id },
     skip: true,
-    onCompleted: (res) => {
+    onCompleted: res => {
       if (res) {
-        setBrands(res.brandsSalon);
+        setBrands(res.brandsSalon)
       }
     },
-  });
+  })
 
   const salonActivitiesCatalog = catalogOrDefault(
-    catalogs?.salonActivitiesCatalog
-  );
+    catalogs?.salonActivitiesCatalog,
+  )
   const salonWorkplacesServicesCatalog = catalogOrDefault(
-    catalogs?.salonWorkplacesServicesCatalog
-  );
+    catalogs?.salonWorkplacesServicesCatalog,
+  )
   const masterSpecializationsCatalog = catalogOrDefault(
-    catalogs?.masterSpecializationsCatalog
-  );
+    catalogs?.masterSpecializationsCatalog,
+  )
 
   const salonServicesMasterCatalog = catalogOrDefault(
-    catalogs?.salonServicesMasterCatalog
-  );
+    catalogs?.salonServicesMasterCatalog,
+  )
 
-  const isOwner = me?.salons?.find((item) => item.id === salon.id);
+  const isOwner = me?.salons?.find(item => item.id === salon.id)
 
   const groupsServices = salonWorkplacesServicesCatalog?.groups
-    .map((group) => {
+    .map(group => {
       if (group.items === undefined) {
-        return null;
+        return null
       }
 
-      const items = group.items.filter((item) =>
-        salon?.workplacesServices?.find((entry) => entry.id === item.id)
-      );
+      const items = group.items.filter(item =>
+        salon?.workplacesServices?.find(entry => entry.id === item.id),
+      )
 
       if (items?.length === 0) {
-        return null;
+        return null
       }
-      return items;
+      return items
     })
-    .filter((element) => element !== null)
-    .flat(1);
+    .filter(element => element !== null)
+    .flat(1)
 
   const [removeBrands] = useMutation(removeSalonBrandsMutation, {
     onCompleted: () => {
-      refetchBrands();
+      refetchBrands()
     },
-  });
+  })
 
-  const handleRemoveBrand = (id) => {
+  const handleRemoveBrand = id => {
     removeBrands({
       variables: {
         ids: [id],
         salonId: salon.id,
       },
-    });
-  };
+    })
+  }
 
   return (
     <MainLayout>
@@ -196,36 +196,36 @@ const Salon = ({
           activeTab={activeTab}
           setActiveTab={setActiveTab}
           tabs={[
-            { id: 1, text: "О салоне", link: "#about", show: true },
+            { id: 1, text: 'О салоне', link: '#about', show: true },
             {
               id: 2,
-              text: "Услуги",
-              link: "#services",
+              text: 'Услуги',
+              link: '#services',
               count: salon?.servicesMaster?.length,
               show: salon?.servicesMaster?.length || isOwner,
             },
             {
               id: 3,
-              text: "Бренды",
-              link: "#brands",
+              text: 'Бренды',
+              link: '#brands',
               count: brands?.length,
               show: brands?.length || isOwner,
             },
             {
               id: 4,
-              text: "Мастера",
-              link: "#masters",
+              text: 'Мастера',
+              link: '#masters',
               count: mastersData?.length,
               show: mastersData?.length,
             },
             {
               id: 5,
-              text: "Отзывы",
-              link: "#reviews",
+              text: 'Отзывы',
+              link: '#reviews',
               count: reviews?.length || 0,
               show: true,
             },
-            { id: 6, text: "Контакты", link: "#contacts", show: true },
+            { id: 6, text: 'Контакты', link: '#contacts', show: true },
           ]}
         />
         <About salon={salon} />
@@ -345,30 +345,30 @@ const Salon = ({
         />
       </>
     </MainLayout>
-  );
-};
+  )
+}
 
 export async function getServerSideProps({ params, query }) {
-  const apolloClient = initializeApollo();
+  const apolloClient = initializeApollo()
 
   const salonQueryRes = await apolloClient.query({
     query: salonSlugQuery,
     variables: { slug: params.id },
-  });
+  })
 
   const city = await apolloClient.query({
     query: citySuggestionsQuery,
     variables: {
-      city: query?.city || "",
+      city: query?.city || '',
       count: 1,
     },
-  });
+  })
 
-  const id = salonQueryRes?.data?.salonSlug?.id;
+  const id = salonQueryRes?.data?.salonSlug?.id
   const data = await Promise.all([
     apolloClient.query({
       query: salonQuery,
-      variables: { id: id, filterDefinition: "" },
+      variables: { id: id, filterDefinition: '' },
     }),
     apolloClient.query({
       query: brandsSalon,
@@ -398,7 +398,7 @@ export async function getServerSideProps({ params, query }) {
         originId: id,
       },
     }),
-  ]);
+  ])
   if (
     !id ||
     !city?.data?.citySuggestions[0]?.data?.city ||
@@ -407,7 +407,7 @@ export async function getServerSideProps({ params, query }) {
   ) {
     return {
       notFound: true,
-    };
+    }
   }
 
   return addApolloState(apolloClient, {
@@ -419,7 +419,7 @@ export async function getServerSideProps({ params, query }) {
       mastersData: data[4]?.data?.salonMasters || [],
       vacancies: data[5]?.data?.currentVacancies || [],
     },
-  });
+  })
 }
 
-export default Salon;
+export default Salon
