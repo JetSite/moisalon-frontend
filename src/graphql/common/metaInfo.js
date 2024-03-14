@@ -1,5 +1,3 @@
-import { gql } from "@apollo/client";
-
 export const metaInfo = `
     meta {
         pagination {

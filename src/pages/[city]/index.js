@@ -1,29 +1,33 @@
-import { useEffect, useContext } from "react";
-import Head from "next/head";
-import { addApolloState, initializeApollo } from "../../../apollo-client";
-import MainPage from "../../components/pages/MainPage";
-import { totalSalons } from "../../_graphql-legacy/salon/totalSalons";
-import { totalMasters } from "../../_graphql-legacy/master/totalMasters";
-import { totalBrands } from "../../_graphql-legacy/brand/totalBrands";
-import { getCategories } from "../../_graphql-legacy/advices/getCategories";
-import { getAll } from "../../_graphql-legacy/advices/getAll";
-import { bannersByHookCodeQuery } from "../../_graphql-legacy/baners/bannersHooks";
-import { citySuggestionsQuery } from "../../_graphql-legacy/city/citySuggestionsQuery";
+import { useEffect, useContext } from 'react'
+import Head from 'next/head'
+import { addApolloState, initializeApollo } from '../../apollo-client'
+import MainPage from '../../components/pages/MainPage'
+import { totalSalons } from '../../_graphql-legacy/salon/totalSalons'
+import { totalMasters } from '../../_graphql-legacy/master/totalMasters'
+import { totalBrands } from '../../_graphql-legacy/brand/totalBrands'
+import { getCategories } from '../../_graphql-legacy/advices/getCategories'
+import { getAll } from '../../_graphql-legacy/advices/getAll'
+import { bannersByHookCodeQuery } from '../../_graphql-legacy/baners/bannersHooks'
+import { citySuggestionsQuery } from '../../_graphql-legacy/city/citySuggestionsQuery'
 import {
   MeContext,
   CityContext,
   SearchMainQueryContext,
   EmptySearchQuery,
-} from "../../searchContext";
-import { salesSearch } from "../../_graphql-legacy/sales/salesSearch";
-import { searchQuery } from "../../_graphql-legacy/search/searchQuery";
-import { useMutation, useQuery } from "@apollo/client";
-import { useRouter } from "next/router";
-import { currentUserSalonsAndMasterQuery } from "../../_graphql-legacy/master/currentUserSalonsAndMasterQuery";
-import { changeCityMutation } from "../../_graphql-legacy/city/changeCityMutation";
-import { cyrToTranslit } from "../../utils/translit";
-import { pluralize } from "../../utils/pluralize";
-import { getSalons } from "../../graphql/salon/queries/getSalons";
+} from '../../searchContext'
+import { salesSearch } from '../../_graphql-legacy/sales/salesSearch'
+import { searchQuery } from '../../_graphql-legacy/search/searchQuery'
+import { useMutation, useQuery } from '@apollo/client'
+import { useRouter } from 'next/router'
+import { currentUserSalonsAndMasterQuery } from '../../_graphql-legacy/master/currentUserSalonsAndMasterQuery'
+import { changeCityMutation } from '../../_graphql-legacy/city/changeCityMutation'
+import { cyrToTranslit } from '../../utils/translit'
+import { pluralize } from '../../utils/pluralize'
+import { getSalons } from '../../graphql/salon/queries/getSalons'
+import { getBannerHooks } from '../../graphql/banner/queries/getBannerHooks'
+import { getFeeds } from '../../graphql/feed/queries/getFeeds'
+import { getServiceCategories } from '../../graphql/service/queries/getServiceCategories'
+import { getProductCategories } from '../../graphql/product/queries/getProductCategories'
 
 export default function AppContent({
   // totalSalons,
@@ -56,9 +60,9 @@ export default function AppContent({
   //   },
   // });
 
-  const { data } = useQuery(getSalons);
+  const { data } = useQuery(totalSalons)
 
-  console.log(data);
+  console.log(data)
 
   // const [changeCityFunc] = useMutation(changeCityMutation, {
   //   onCompleted: () => {
@@ -112,18 +116,15 @@ export default function AppContent({
         // totalBrands={totalBrands}
         // beautyCategories={beautyCategories}
         // beautyAllContent={beautyAllContent}
-        // bannersByHookWide={bannersByHookWide}
-        // bannersByHookSmall1={bannersByHookSmall1}
-        // bannersByHookSmall2={bannersByHookSmall2}
         // sales={sales}
         cityData={cityData}
       />
     </>
-  );
+  )
 }
 
 export async function getServerSideProps(ctx) {
-  const apolloClient = initializeApollo();
+  const apolloClient = initializeApollo()
   // const city = await apolloClient.query({
   //   query: citySuggestionsQuery,
   //   variables: {
@@ -150,24 +151,6 @@ export async function getServerSideProps(ctx) {
     //   context: { uri: "https://moi.salon/graphql" },
     // }),
     // apolloClient.query({
-    //   query: bannersByHookCodeQuery,
-    //   variables: {
-    //     hookCode: "shop-slider-wide",
-    //   },
-    // }),
-    // apolloClient.query({
-    //   query: bannersByHookCodeQuery,
-    //   variables: {
-    //     hookCode: "shop-slider-small1",
-    //   },
-    // }),
-    // apolloClient.query({
-    //   query: bannersByHookCodeQuery,
-    //   variables: {
-    //     hookCode: "shop-slider-small2",
-    //   },
-    // }),
-    // apolloClient.query({
     //   query: salesSearch,
     //   variables: { query: "" },
     // }),
@@ -182,7 +165,7 @@ export async function getServerSideProps(ctx) {
     //     },
     //   },
     // }),
-  ]);
+  ])
 
   // if (!city?.data?.citySuggestions[0]?.data?.city) {
   //   return {
@@ -205,7 +188,7 @@ export async function getServerSideProps(ctx) {
       // bannersByHookSmall2: data[7]?.data,
       // sales: data[8]?.data,
       // salons: data[9]?.data,
-      cityData: "Москва",
+      cityData: 'Москва',
     },
-  });
+  })
 }

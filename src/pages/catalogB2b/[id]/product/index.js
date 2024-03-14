@@ -1,15 +1,15 @@
-import { addApolloState, initializeApollo } from "../../../../../apollo-client";
-import { goodsCatalogQuery } from "../../../../_graphql-legacy/goodsCatalog";
-import { goodSearch } from "../../../../_graphql-legacy/goodSearch";
-import MainLayout from "../../../../layouts/MainLayout";
-import { MainContainer } from "../../../../styles/common";
-import CatalogProductsPage from "../../../../components/pages/Catalog/components/CatalogProductsPage";
-import Line from "../../../../components/pages/MainPage/components/Line";
-import Ribbon from "../../../../components/pages/MainPage/components/Ribbon";
-import { brandSlugQuery } from "../../../../_graphql-legacy/brand/brandSlugQuery";
-import { getProductCategories } from "../../../../_graphql-legacy/getProductCategories";
-import { getCategories } from "../../../../_graphql-legacy/advices/getCategories";
-import { getAll } from "../../../../_graphql-legacy/advices/getAll";
+import { addApolloState, initializeApollo } from '../../../../apollo-client'
+import { goodsCatalogQuery } from '../../../../_graphql-legacy/goodsCatalog'
+import { goodSearch } from '../../../../_graphql-legacy/goodSearch'
+import MainLayout from '../../../../layouts/MainLayout'
+import { MainContainer } from '../../../../styles/common'
+import CatalogProductsPage from '../../../../components/pages/Catalog/components/CatalogProductsPage'
+import Line from '../../../../components/pages/MainPage/components/Line'
+import Ribbon from '../../../../components/pages/MainPage/components/Ribbon'
+import { brandSlugQuery } from '../../../../_graphql-legacy/brand/brandSlugQuery'
+import { getProductCategories } from '../../../../_graphql-legacy/getProductCategories'
+import { getCategories } from '../../../../_graphql-legacy/advices/getCategories'
+import { getAll } from '../../../../_graphql-legacy/advices/getAll'
 
 const CatalogProducts = ({
   brand,
@@ -35,18 +35,18 @@ const CatalogProducts = ({
         beautyAllContent={beautyAllContent}
       />
     </MainLayout>
-  );
-};
+  )
+}
 
 export async function getServerSideProps({ query }) {
-  const apolloClient = initializeApollo();
+  const apolloClient = initializeApollo()
 
   const brandQueryRes = await apolloClient.query({
     query: brandSlugQuery,
     variables: { slug: query?.id },
-  });
+  })
 
-  const brand = brandQueryRes.data.brandSlug;
+  const brand = brandQueryRes.data.brandSlug
 
   const data = await Promise.all([
     // apolloClient.query({
@@ -63,7 +63,7 @@ export async function getServerSideProps({ query }) {
       variables: {
         input: {
           brandId: [brand.id],
-          query: "",
+          query: '',
           isB2b: true,
         },
       },
@@ -73,13 +73,13 @@ export async function getServerSideProps({ query }) {
     }),
     apolloClient.query({
       query: getCategories,
-      context: { uri: "https://moi.salon/graphql" },
+      context: { uri: 'https://moi.salon/graphql' },
     }),
     apolloClient.query({
       query: getAll,
-      context: { uri: "https://moi.salon/graphql" },
+      context: { uri: 'https://moi.salon/graphql' },
     }),
-  ]);
+  ])
 
   return addApolloState(apolloClient, {
     props: {
@@ -89,7 +89,7 @@ export async function getServerSideProps({ query }) {
       beautyCategories: data[2]?.data?.catagories,
       beautyAllContent: data[3]?.data?.pages,
     },
-  });
+  })
 }
 
-export default CatalogProducts;
+export default CatalogProducts

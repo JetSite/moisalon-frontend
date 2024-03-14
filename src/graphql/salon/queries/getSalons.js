@@ -1,12 +1,10 @@
 import { gql } from "@apollo/client";
 import { metaInfo } from "../../common/metaInfo";
+import { imageInfo } from "../../common/imageInfo";
 import {
   salonAdministratorsFragment,
   salonBrandsFragment,
-  salonCoverFragment,
-  salonLogoFragment,
   salonMastersFragment,
-  salonPhotosFragment,
   salonReviewsFragment,
   salonServicesFragment,
 } from "../fragments";
@@ -46,9 +44,15 @@ export const getSalons = gql`
             createdAt
             updatedAt
             publishedAt
-            ${salonCoverFragment}
-            ${salonPhotosFragment}
-            ${salonLogoFragment}
+            salonCover {
+              ${imageInfo}
+            }
+            salonLogo {
+              ${imageInfo}
+            }
+            salonPhotos {
+              ${imageInfo}
+            }
             ${salonAdministratorsFragment}
             ${salonBrandsFragment}
             ${salonMastersFragment}
