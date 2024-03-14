@@ -1,18 +1,18 @@
-import { useContext } from "react";
-import Head from "next/head";
-import React from "react";
-import { addApolloState, initializeApollo } from "../../../../apollo-client";
-import { EmptySearchQuery } from "../../../searchContext";
-import { searchQuery } from "../../../_graphql-legacy/search/searchQuery";
-import CategoryPageLayout from "../../../layouts/CategoryPageLayout";
-import { totalSalons } from "../../../_graphql-legacy/salon/totalSalons";
-import { totalMasters } from "../../../_graphql-legacy/master/totalMasters";
-import { totalBrands } from "../../../_graphql-legacy/brand/totalBrands";
-import { MeContext } from "../../../searchContext";
-import { citySuggestionsQuery } from "../../../_graphql-legacy/city/citySuggestionsQuery";
-import AllRentPage from "../../../components/pages/Rent/AllRentPage";
-import useCheckCity from "../../../hooks/checkCity";
-import { CityContext } from "../../../searchContext";
+import { useContext } from 'react'
+import Head from 'next/head'
+import React from 'react'
+import { addApolloState, initializeApollo } from '../../../apollo-client'
+import { EmptySearchQuery } from '../../../searchContext'
+import { searchQuery } from '../../../_graphql-legacy/search/searchQuery'
+import CategoryPageLayout from '../../../layouts/CategoryPageLayout'
+import { totalSalons } from '../../../_graphql-legacy/salon/totalSalons'
+import { totalMasters } from '../../../_graphql-legacy/master/totalMasters'
+import { totalBrands } from '../../../_graphql-legacy/brand/totalBrands'
+import { MeContext } from '../../../searchContext'
+import { citySuggestionsQuery } from '../../../_graphql-legacy/city/citySuggestionsQuery'
+import AllRentPage from '../../../components/pages/Rent/AllRentPage'
+import useCheckCity from '../../../hooks/checkCity'
+import { CityContext } from '../../../searchContext'
 
 const AllRent = ({
   salonSearch,
@@ -21,10 +21,10 @@ const AllRent = ({
   totalSalons,
   cityData,
 }) => {
-  const [me, setMe] = useContext(MeContext);
-  const [city] = useContext(CityContext);
+  const [me, setMe] = useContext(MeContext)
+  const [city] = useContext(CityContext)
 
-  useCheckCity(cityData);
+  useCheckCity(cityData)
 
   return (
     <>
@@ -46,18 +46,18 @@ const AllRent = ({
         />
       </CategoryPageLayout>
     </>
-  );
-};
+  )
+}
 
 export async function getServerSideProps(ctx) {
-  const apolloClient = initializeApollo();
+  const apolloClient = initializeApollo()
   const city = await apolloClient.query({
     query: citySuggestionsQuery,
     variables: {
-      city: ctx?.query?.city || "",
+      city: ctx?.query?.city || '',
       count: 1,
     },
-  });
+  })
 
   const data = await Promise.all([
     apolloClient.query({
@@ -65,9 +65,9 @@ export async function getServerSideProps(ctx) {
       variables: {
         input: {
           ...EmptySearchQuery,
-          city: city?.data?.citySuggestions[0]?.data?.city || "",
+          city: city?.data?.citySuggestions[0]?.data?.city || '',
           lessor: true,
-          query: "",
+          query: '',
         },
       },
     }),
@@ -80,15 +80,15 @@ export async function getServerSideProps(ctx) {
     apolloClient.query({
       query: totalSalons,
     }),
-  ]);
+  ])
 
   if (!city?.data?.citySuggestions[0]?.data?.city) {
     return {
       redirect: {
-        destination: "/moskva/rent",
+        destination: '/moskva/rent',
         permanent: true,
       },
-    };
+    }
   }
 
   return addApolloState(apolloClient, {
@@ -97,9 +97,9 @@ export async function getServerSideProps(ctx) {
       totalBrands: data[1]?.data.totalBrands,
       totalMasters: data[2]?.data.totalMasters,
       totalSalons: data[3]?.data.totalSalons,
-      cityData: city?.data?.citySuggestions[0]?.data?.city || "Москва",
+      cityData: city?.data?.citySuggestions[0]?.data?.city || 'Москва',
     },
-  });
+  })
 }
 
-export default AllRent;
+export default AllRent

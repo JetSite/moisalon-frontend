@@ -1,7 +1,7 @@
-import { addApolloState, initializeApollo } from "../../../apollo-client";
-import BusinessCategoryPageLayout from "../../layouts/BusinessCategoryPageLayout";
-import BusinessCategoryPage from "../../components/pages/BusinessCategoryPage";
-import { educationSearch } from "../../_graphql-legacy/education/educationSearch";
+import { addApolloState, initializeApollo } from '../../apollo-client'
+import BusinessCategoryPageLayout from '../../layouts/BusinessCategoryPageLayout'
+import BusinessCategoryPage from '../../components/pages/BusinessCategoryPage'
+import { educationSearch } from '../../_graphql-legacy/education/educationSearch'
 
 const Educations = ({ educations }) => {
   return (
@@ -10,25 +10,25 @@ const Educations = ({ educations }) => {
         title="Обучение"
         type="educations"
         data={educations}
-        link={"/educations"}
+        link={'/educations'}
       />
     </BusinessCategoryPageLayout>
-  );
-};
+  )
+}
 
 export async function getServerSideProps() {
-  const apolloClient = initializeApollo();
+  const apolloClient = initializeApollo()
 
   const eduRes = await apolloClient.query({
     query: educationSearch,
-    variables: { query: "" },
-  });
+    variables: { query: '' },
+  })
 
   return addApolloState(apolloClient, {
     props: {
       educations: eduRes?.data?.educationSearch,
     },
-  });
+  })
 }
 
-export default Educations;
+export default Educations

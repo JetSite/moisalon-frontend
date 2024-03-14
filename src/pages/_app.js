@@ -1,15 +1,15 @@
-import { useState, useEffect } from "react";
-import Head from "next/head";
-import { StylesProvider } from "@material-ui/core/styles";
-import { ThemeProvider } from "@material-ui/styles";
-import { ApolloProvider, useLazyQuery } from "@apollo/client";
-import ProgressBar from "@badrap/bar-of-progress";
-import globalStyle from "../../styles/global";
-import normalizeStyle from "../../styles/normalize";
-import { useApollo } from "../../apollo-client";
-import "swiper/css";
-import "swiper/css/navigation";
-import { currentUserSalonsAndMasterQuery } from "../_graphql-legacy/master/currentUserSalonsAndMasterQuery";
+import { useState, useEffect } from 'react'
+import Head from 'next/head'
+import { StylesProvider } from '@material-ui/core/styles'
+import { ThemeProvider } from '@material-ui/styles'
+import { ApolloProvider, useLazyQuery } from '@apollo/client'
+import ProgressBar from '@badrap/bar-of-progress'
+import globalStyle from '../../styles/global'
+import normalizeStyle from '../../styles/normalize'
+import { useApollo } from '../apollo-client'
+import 'swiper/css'
+import 'swiper/css/navigation'
+import { currentUserSalonsAndMasterQuery } from '../_graphql-legacy/master/currentUserSalonsAndMasterQuery'
 import {
   CartContext,
   MainSearchQuery,
@@ -20,39 +20,39 @@ import {
   ProductsGetStatusContext,
   CatalogsContext,
   CityContext,
-} from "../searchContext";
-import theme from "../theme";
-import { useRouter } from "next/router";
-import Script from "next/script";
-import * as gtag from "../lib/gtag";
-import { YMInitializer } from "react-yandex-metrika";
-import { catalogsQuery } from "../_graphql-legacy/catalogsQuery";
-import { useMedia } from "use-media";
-import { red } from "../../styles/variables";
-import { ChatProvider } from "../chatContext";
-import { HistoryProvider } from "../historyContext";
-import { cyrToTranslit } from "../utils/translit";
-import { useCitySuggestions } from "../components/pages/MainPage/components/CitySelect/useCitySuggestions";
-import { SearchHistoryProvider } from "../searchHistoryContext";
+} from '../searchContext'
+import theme from '../theme'
+import { useRouter } from 'next/router'
+import Script from 'next/script'
+import * as gtag from '../lib/gtag'
+import { YMInitializer } from 'react-yandex-metrika'
+import { catalogsQuery } from '../_graphql-legacy/catalogsQuery'
+import { useMedia } from 'use-media'
+import { red } from '../../styles/variables'
+import { ChatProvider } from '../chatContext'
+import { HistoryProvider } from '../historyContext'
+import { cyrToTranslit } from '../utils/translit'
+import { useCitySuggestions } from '../components/pages/MainPage/components/CitySelect/useCitySuggestions'
+import { SearchHistoryProvider } from '../searchHistoryContext'
 
 const progress = new ProgressBar({
   size: 2,
   color: red,
-  className: "bar-of-progress",
+  className: 'bar-of-progress',
   delay: 100,
-});
+})
 
 const AppContainer = ({ Component, pageProps }) => {
   // const router = useRouter();
-  const [getInfo, { data }] = useLazyQuery(currentUserSalonsAndMasterQuery);
+  const [getInfo, { data }] = useLazyQuery(currentUserSalonsAndMasterQuery)
   // const [getCatalogs, { data: catalogsData }] = useLazyQuery(catalogsQuery);
-  const [meInfo, setMeInfo] = useState({});
-  const [catalogs, setCatalogs] = useState([]);
-  const productsState = useState([]);
-  const cartQuantityState = useState(0);
-  const me = useState(null);
-  const productsGetStatus = useState(false);
-  const cityContext = useState("");
+  const [meInfo, setMeInfo] = useState({})
+  const [catalogs, setCatalogs] = useState([])
+  const productsState = useState([])
+  const cartQuantityState = useState(0)
+  const me = useState(null)
+  const productsGetStatus = useState(false)
+  const cityContext = useState('')
 
   // useEffect(() => {
   //   if (data?.me) {
@@ -82,12 +82,12 @@ const AppContainer = ({ Component, pageProps }) => {
       ? meInfo.info.city
       : data?.locationByIp
       ? data?.locationByIp?.data?.city
-      : "Москва",
-  });
+      : 'Москва',
+  })
 
   const queryCategoryPageState = useState({
-    query: "",
-  });
+    query: '',
+  })
 
   // useEffect(() => {
   //   router.events.on("routeChangeStart", progress.start);
@@ -131,32 +131,32 @@ const AppContainer = ({ Component, pageProps }) => {
         </SearchHistoryProvider>
       </HistoryProvider>
     </MeContext.Provider>
-  );
-};
+  )
+}
 
 function MyApp({ Component, pageProps }) {
-  const mobileMedia = useMedia({ maxWidth: 768 });
-  const apolloClient = useApollo(pageProps);
-  const router = useRouter();
+  const mobileMedia = useMedia({ maxWidth: 768 })
+  const apolloClient = useApollo(pageProps)
+  const router = useRouter()
   useEffect(() => {
-    const handleRouteChange = (url) => {
-      gtag.pageview(url);
-    };
-    router.events.on("routeChangeComplete", handleRouteChange);
+    const handleRouteChange = url => {
+      gtag.pageview(url)
+    }
+    router.events.on('routeChangeComplete', handleRouteChange)
     return () => {
-      router.events.off("routeChangeComplete", handleRouteChange);
-    };
-  }, [router.events]);
+      router.events.off('routeChangeComplete', handleRouteChange)
+    }
+  }, [router.events])
 
   useEffect(() => {
-    const jssStyles = document.querySelector("#jss-server-side");
+    const jssStyles = document.querySelector('#jss-server-side')
     if (jssStyles) {
-      jssStyles.parentNode.removeChild(jssStyles);
+      jssStyles.parentNode.removeChild(jssStyles)
     }
-  }, []);
+  }, [])
 
   return (
-    <div style={{ overflowX: mobileMedia ? "hidden" : null }}>
+    <div style={{ overflowX: mobileMedia ? 'hidden' : null }}>
       <Head>
         <title>MOI salon</title>
         <meta name="theme-color" content="#000000" />
@@ -213,7 +213,7 @@ function MyApp({ Component, pageProps }) {
         </ThemeProvider>
       </ApolloProvider>
     </div>
-  );
+  )
 }
 
-export default MyApp;
+export default MyApp

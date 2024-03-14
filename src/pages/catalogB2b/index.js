@@ -1,11 +1,11 @@
-import { addApolloState, initializeApollo } from "../../../apollo-client";
-import { brandSearchQuery } from "../../_graphql-legacy/search/brandSearch";
-import CatalogPage from "../../components/pages/CatalogPage";
-import { getBrandCategories } from "../../_graphql-legacy/getBrandCategories";
-import { bannersByHookCodeQuery } from "../../_graphql-legacy/baners/bannersHooks";
-import { brandSearchAllName } from "../../_graphql-legacy/search/brandSearchAllName";
-import { getCategories } from "../../_graphql-legacy/advices/getCategories";
-import { getAll } from "../../_graphql-legacy/advices/getAll";
+import { addApolloState, initializeApollo } from '../../apollo-client'
+import { brandSearchQuery } from '../../_graphql-legacy/search/brandSearch'
+import CatalogPage from '../../components/pages/CatalogPage'
+import { getBrandCategories } from '../../_graphql-legacy/getBrandCategories'
+import { bannersByHookCodeQuery } from '../../_graphql-legacy/baners/bannersHooks'
+import { brandSearchAllName } from '../../_graphql-legacy/search/brandSearchAllName'
+import { getCategories } from '../../_graphql-legacy/advices/getCategories'
+import { getAll } from '../../_graphql-legacy/advices/getAll'
 
 const Catalog = ({
   bannersByHookWide,
@@ -17,7 +17,7 @@ const Catalog = ({
   beautyCategories,
   beautyAllContent,
 }) => {
-  const brandCategories = dataBrandCategories?.productsCatagoriesB2b || [];
+  const brandCategories = dataBrandCategories?.productsCatagoriesB2b || []
 
   return (
     <CatalogPage
@@ -31,35 +31,35 @@ const Catalog = ({
       beautyCategories={beautyCategories}
       beautyAllContent={beautyAllContent}
     />
-  );
-};
+  )
+}
 
 export async function getServerSideProps() {
-  const apolloClient = initializeApollo();
+  const apolloClient = initializeApollo()
 
   const data = await Promise.all([
     apolloClient.query({
       query: brandSearchQuery,
       variables: {
-        query: "",
+        query: '',
       },
     }),
     apolloClient.query({
       query: bannersByHookCodeQuery,
       variables: {
-        hookCode: "shop-slider-wide",
+        hookCode: 'shop-slider-wide',
       },
     }),
     apolloClient.query({
       query: bannersByHookCodeQuery,
       variables: {
-        hookCode: "shop-slider-small1",
+        hookCode: 'shop-slider-small1',
       },
     }),
     apolloClient.query({
       query: bannersByHookCodeQuery,
       variables: {
-        hookCode: "shop-slider-small2",
+        hookCode: 'shop-slider-small2',
       },
     }),
     apolloClient.query({
@@ -68,18 +68,18 @@ export async function getServerSideProps() {
     apolloClient.query({
       query: brandSearchAllName,
       variables: {
-        query: "",
+        query: '',
       },
     }),
     apolloClient.query({
       query: getCategories,
-      context: { uri: "https://moi.salon/graphql" },
+      context: { uri: 'https://moi.salon/graphql' },
     }),
     apolloClient.query({
       query: getAll,
-      context: { uri: "https://moi.salon/graphql" },
+      context: { uri: 'https://moi.salon/graphql' },
     }),
-  ]);
+  ])
 
   return addApolloState(apolloClient, {
     props: {
@@ -92,7 +92,7 @@ export async function getServerSideProps() {
       beautyCategories: data[6]?.data?.catagories,
       beautyAllContent: data[7]?.data?.pages,
     },
-  });
+  })
 }
 
-export default Catalog;
+export default Catalog
