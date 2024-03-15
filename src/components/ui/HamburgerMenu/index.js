@@ -1,6 +1,6 @@
-import { useContext, useEffect } from "react";
-import { useRouter } from "next/router";
-import Link from "next/link";
+import { useContext, useEffect } from 'react'
+import { useRouter } from 'next/router'
+import Link from 'next/link'
 import {
   Backdrop,
   Wrapper,
@@ -25,14 +25,14 @@ import {
   ProfileAvatar,
   ProfileName,
   ProfileAvatarImage,
-} from "./styles";
-import SearchIcon from "../../pages/MainPage/components/Header/icons/SearchIcon";
-import CityPingIcon from "../../pages/MainPage/components/Header/icons/CityPingIcon";
-import { CityContext, MeContext } from "../../../searchContext";
-import { cyrToTranslit } from "../../../utils/translit";
-import { useQuery } from "@apollo/client";
-import { currentUserSalonsAndMasterQuery } from "../../../_graphql-legacy/master/currentUserSalonsAndMasterQuery";
-import { PHOTO_URL } from "../../../../variables";
+} from './styles'
+import SearchIcon from '../../pages/MainPage/components/Header/icons/SearchIcon'
+import CityPingIcon from '../../pages/MainPage/components/Header/icons/CityPingIcon'
+import { CityContext, MeContext } from '../../../searchContext'
+import { cyrToTranslit } from '../../../utils/translit'
+import { useQuery } from '@apollo/client'
+import { currentUserSalonsAndMasterQuery } from '../../../_graphql-legacy/master/currentUserSalonsAndMasterQuery'
+import { PHOTO_URL } from '../../../../variables'
 
 const HamburgerMenu = ({
   showHamburgerMenu,
@@ -43,58 +43,58 @@ const HamburgerMenu = ({
 }) => {
   useEffect(() => {
     if (showHamburgerMenu) {
-      document.body.style.overflow = "hidden";
-      document.documentElement.style.overflowY = "hidden";
+      document.body.style.overflow = 'hidden'
+      document.documentElement.style.overflowY = 'hidden'
     }
     return () => {
-      document.body.style.overflow = "unset";
-      document.documentElement.style.overflowY = "scroll";
-    };
-  });
-  const [me, setMe] = useContext(MeContext);
-  const [city] = useContext(CityContext);
-  const dev = process.env.NEXT_PUBLIC_ENV !== "production";
-  const router = useRouter();
-  const isLoggedIn = me?.info !== undefined && me?.info !== null;
+      document.body.style.overflow = 'unset'
+      document.documentElement.style.overflowY = 'scroll'
+    }
+  })
+  const [me, setMe] = useContext(MeContext)
+  const [city] = useContext(CityContext)
+  const dev = process.env.NEXT_PUBLIC_ENV !== 'production'
+  const router = useRouter()
+  const isLoggedIn = me?.info !== undefined && me?.info !== null
 
   const { refetch } = useQuery(currentUserSalonsAndMasterQuery, {
     skip: true,
-    onCompleted: (res) => {
+    onCompleted: res => {
       setMe({
         info: res?.me?.info,
         master: res?.me?.master,
         locationByIp: res?.locationByIp,
         salons: res?.me?.salons,
         rentalRequests: res?.me?.rentalRequests,
-      });
+      })
     },
-  });
+  })
 
   const navLinksTop = [
-    { title: "Объявления", link: "/sales", target: "_self" },
+    { title: 'Объявления', link: '/sales', target: '_self' },
     {
-      title: "Магазин",
+      title: 'Магазин',
       link: `/${cyrToTranslit(city)}/beautyFreeShop`,
-      target: "_self",
+      target: '_self',
     },
     {
-      title: "Сдать",
-      link: isLoggedIn ? "/createLessorSalon" : "/login",
-      target: "_self",
+      title: 'Сдать',
+      link: isLoggedIn ? '/createLessorSalon' : '/login',
+      target: '_self',
     },
-    { title: "Снять", link: `/${cyrToTranslit(city)}/rent`, target: "_self" },
-  ];
+    { title: 'Снять', link: `/${cyrToTranslit(city)}/rent`, target: '_self' },
+  ]
 
   const navLinksBottom = [
     {
-      title: "Мастера",
+      title: 'Мастера',
       link: `/${cyrToTranslit(city)}/master`,
-      target: "_self",
+      target: '_self',
     },
-    { title: "Салоны", link: `/${cyrToTranslit(city)}/salon`, target: "_self" },
-    { title: "Бренды", link: `/${cyrToTranslit(city)}/brand`, target: "_self" },
-    { title: "Бьюти-лента", link: "/beauty-feed", target: "_self" },
-    { title: "О проекте", link: "/about", target: "_self" },
+    { title: 'Салоны', link: `/${cyrToTranslit(city)}/salon`, target: '_self' },
+    { title: 'Бренды', link: `/${cyrToTranslit(city)}/brand`, target: '_self' },
+    { title: 'Бьюти-лента', link: '/beauty-feed', target: '_self' },
+    { title: 'О проекте', link: '/about', target: '_self' },
     // { title: "Советы", link: "/advices", target: "_self" },
     // {
     //   title: "Услуги",
@@ -114,39 +114,39 @@ const HamburgerMenu = ({
     //   link: `${isLoggedIn ? "/masterCabinet" : "/login"}`,
     //   target: "_self",
     // },
-  ];
+  ]
 
   const searchHandler = () => {
-    setShowHamburgerMenu(false);
+    setShowHamburgerMenu(false)
     router.push(
       {
         pathname: `/${cyrToTranslit(city)}`,
-        query: { q: "search" },
+        query: { q: 'search' },
       },
-      `/${cyrToTranslit(city)}`
-    );
-  };
+      `/${cyrToTranslit(city)}`,
+    )
+  }
 
   const closeMenu = () => {
-    setShowHamburgerMenu(false);
-  };
+    setShowHamburgerMenu(false)
+  }
 
   const handleLogout = async () => {
     const resData = await fetch(
       dev
-        ? "https://stage-passport.moi.salon/api/logout"
-        : "https://passport.moi.salon/api/logout",
+        ? 'https://stage-passport.moi.salon/api/logout'
+        : 'https://passport.moi.salon/api/logout',
       {
-        credentials: "include",
-        "Access-Control-Allow-Credentials": true,
-      }
-    );
+        credentials: 'include',
+        'Access-Control-Allow-Credentials': true,
+      },
+    )
 
     if (resData.status === 200) {
-      await refetch();
-      router.push(`/${cyrToTranslit(city)}`);
+      await refetch()
+      router.push(`/${cyrToTranslit(city)}`)
     }
-  };
+  }
 
   return (
     <>
@@ -164,23 +164,21 @@ const HamburgerMenu = ({
           <LogoMobile>
             <MobileLogoLink onClick={closeMenu}>
               <Link href={`/${cyrToTranslit(city)}`}>
-                <a>
-                  <Image alt="logo" src="/logo.svg" />
-                </a>
+                <Image alt="logo" src="/logo.svg" />
               </Link>
             </MobileLogoLink>
           </LogoMobile>
         </Header>
         <Navigation>
           {isLoggedIn ? (
-            <Link href={`${isLoggedIn ? "/masterCabinet" : "/login"}`}>
+            <Link href={`${isLoggedIn ? '/masterCabinet' : '/login'}`}>
               <ProfileBlock>
                 <ProfileAvatar>
                   <ProfileAvatarImage
                     src={
                       me?.info?.avatar
                         ? `${PHOTO_URL}${me?.info?.avatar}/original`
-                        : "/empty-photo.svg"
+                        : '/empty-photo.svg'
                     }
                   />
                 </ProfileAvatar>
@@ -194,13 +192,11 @@ const HamburgerMenu = ({
                 key={i}
                 visible={link?.visible}
                 active={
-                  router?.asPath === link.link && router?.asPath !== "/login"
+                  router?.asPath === link.link && router?.asPath !== '/login'
                 }
               >
-                <Link href={link.link}>
-                  <a target={link.target} onClick={closeMenu}>
-                    {link.title}
-                  </a>
+                <Link href={link.link} target={link.target} onClick={closeMenu}>
+                  {link.title}
                 </Link>
               </LinkWrap>
             ))}
@@ -211,10 +207,8 @@ const HamburgerMenu = ({
                 visible={link?.visible}
                 active={router?.asPath === link.link}
               >
-                <Link href={link.link}>
-                  <a target={link.target} onClick={closeMenu}>
-                    {link.title}
-                  </a>
+                <Link href={link.link} target={link.target} onClick={closeMenu}>
+                  {link.title}
                 </Link>
               </LinkWrap>
             ))}
@@ -227,8 +221,8 @@ const HamburgerMenu = ({
         </Navigation>
         <ChangeCity
           onClick={() => {
-            setShowCitySelect(true);
-            closeMenu();
+            setShowCitySelect(true)
+            closeMenu()
           }}
         >
           <CityPingIcon />
@@ -239,7 +233,7 @@ const HamburgerMenu = ({
         </ChangeCity>
       </Wrapper>
     </>
-  );
-};
+  )
+}
 
-export default HamburgerMenu;
+export default HamburgerMenu

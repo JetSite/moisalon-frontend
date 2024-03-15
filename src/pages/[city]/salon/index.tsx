@@ -66,8 +66,6 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
   //   },
   // });
 
-  console.log(ctx?.query?.city)
-
   const data = await Promise.all([
     // apolloClient.query({
     //   query: searchQuery,

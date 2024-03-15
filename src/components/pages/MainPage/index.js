@@ -1,28 +1,28 @@
-import { useContext } from "react";
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../styles/variables";
-import About from "./components/About";
-import MainLayout from "../../../layouts/MainLayout";
-import MainMasterSlider from "./components/MainMasterSlider";
-import MainSalonsSlider from "./components/MainSalonsSlider";
-import MainBrandsSlider from "./components/MainBrandsSlider";
-import MainAdsSlider from "./components/MainAdsSlider";
-import MainGoodsSlider from "./components/MainGoodsSlider";
-import MainRentSlider from "./components/MainRentSlider";
-import MainWorkplacesSlider from "./components/MainWorkplacesSlider";
-import SearchResults from "./components/SearchMain/SearchResults";
-import MobileViewCards from "./components/MobileViewCards";
-import Ribbon from "./components/Ribbon";
+import { useContext } from 'react'
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../styles/variables'
+import About from './components/About'
+import MainLayout from '../../../layouts/MainLayout'
+import MainMasterSlider from './components/MainMasterSlider'
+import MainSalonsSlider from './components/MainSalonsSlider'
+import MainBrandsSlider from './components/MainBrandsSlider'
+import MainAdsSlider from './components/MainAdsSlider'
+import MainGoodsSlider from './components/MainGoodsSlider'
+import MainRentSlider from './components/MainRentSlider'
+import MainWorkplacesSlider from './components/MainWorkplacesSlider'
+import SearchResults from './components/SearchMain/SearchResults'
+import MobileViewCards from './components/MobileViewCards'
+import Ribbon from './components/Ribbon'
 import {
   MeContext,
   SearchMainQueryContext,
   CityContext,
-} from "../../../searchContext";
-import { MobileHidden, MobileVisible } from "../../../styles/common";
-import SearchBlock from "../../blocks/SearchBlock";
-import Banners from "../Catalog/components/Banners";
-import { CSSTransition } from "react-transition-group";
-import { WrapBanner } from "../Brand/AllBrands/styles";
+} from '../../../searchContext'
+import { MobileHidden, MobileVisible } from '../../../styles/common'
+import SearchBlock from '../../blocks/SearchBlock'
+import Banners from '../Catalog/components/Banners'
+import { CSSTransition } from 'react-transition-group'
+import { WrapBanner } from '../Brand/AllBrands/styles'
 
 const Title = styled.h1`
   max-width: 1440px;
@@ -37,29 +37,29 @@ const Title = styled.h1`
     font-size: 16px;
     text-align: center;
   }
-`;
+`
 
 const MainPage = ({
+  beautyCategories,
+  beautyAllContent,
+  bannerHooks,
   totalSalons,
   totalMasters,
   totalBrands,
-  beautyCategories,
-  beautyAllContent,
-  sales,
   cityData,
 }) => {
-  const [me] = useContext(MeContext);
-  const [query, setQuery] = useContext(SearchMainQueryContext);
-  const [city] = useContext(CityContext);
+  const [me] = useContext(MeContext)
+  const [query, setQuery] = useContext(SearchMainQueryContext)
+  const [city] = useContext(CityContext)
 
   return (
     <MainLayout>
       <>
-        {/* <MobileHidden>
+        <MobileHidden>
           <SearchBlock title="Найти салон / мастер / бренд" />
-        </MobileHidden> */}
+        </MobileHidden>
         <Title>{`Лучшие салоны красоты  и spa (спа) в городе ${cityData}`}</Title>
-        {/* <CSSTransition
+        <CSSTransition
           in={!query?.query}
           timeout={500}
           classNames="banner"
@@ -67,13 +67,12 @@ const MainPage = ({
         >
           <WrapBanner>
             <MobileHidden>
-              {bannersByHookWide?.bannersByHookCode?.length ||
-              bannersByHookSmall1?.bannersByHookCode?.length ||
-              bannersByHookSmall2?.bannersByHookCode?.length ? (
+              {bannerHooks?.data[0]?.attributes?.banners?.data?.length ||
+              bannerHooks?.data[1]?.attributes?.banners?.data?.length ? (
                 <Banners
-                  bannersByHookWide={bannersByHookWide?.bannersByHookCode}
-                  bannersByHookSmall1={bannersByHookSmall1?.bannersByHookCode}
-                  bannersByHookSmall2={bannersByHookSmall2?.bannersByHookCode}
+                  bannersByHookWide={bannerHooks?.data[0]}
+                  bannersByHookSmall1={bannerHooks?.data[1]}
+                  // bannersByHookSmall2={bannersByHookSmall2?.bannersByHookCode}
                 />
               ) : null}
             </MobileHidden>
@@ -83,36 +82,35 @@ const MainPage = ({
           totalSalons={totalSalons}
           totalMasters={totalMasters}
           totalBrands={totalBrands}
-          totalSales={sales?.salesSearch?.connection?.nodes?.length}
+          // totalSales={sales?.salesSearch?.connection?.nodes?.length}
         />
         <MobileVisible>
-          {bannersByHookWide?.bannersByHookCode?.length ||
-          bannersByHookSmall1?.bannersByHookCode?.length ||
-          bannersByHookSmall2?.bannersByHookCode?.length ? (
+          {bannerHooks?.data[0]?.attributes?.banners?.data?.length ||
+          bannerHooks?.data[1]?.attributes?.banners?.data?.length ? (
             <Banners
-              bannersByHookWide={bannersByHookWide?.bannersByHookCode}
-              bannersByHookSmall1={bannersByHookSmall1?.bannersByHookCode}
-              bannersByHookSmall2={bannersByHookSmall2?.bannersByHookCode}
+              bannersByHookWide={bannerHooks?.data[0]}
+              bannersByHookSmall1={bannerHooks?.data[1]}
+              // bannersByHookSmall2={bannersByHookSmall2?.bannersByHookCode}
             />
           ) : null}
         </MobileVisible>
-        {query?.query?.length ? <SearchResults me={me} /> : null} */}
-        {/* <MainAdsSlider me={me} />
-        <MainGoodsSlider me={me} />
-        <MainRentSlider me={me} />
-        <MainWorkplacesSlider me={me} />
+        {/* {query?.query?.length ? <SearchResults me={me} /> : null} */}
+        {/* <MainAdsSlider me={me} /> */}
+        {/* <MainGoodsSlider me={me} /> */}
+        {/* <MainRentSlider me={me} /> */}
+        {/* <MainWorkplacesSlider me={me} /> */}
         <MainMasterSlider me={me} />
         <MainSalonsSlider me={me} />
-        <MainBrandsSlider me={me} /> */}
-        {/* <About me={me} /> */}
-        {/* <Ribbon
+        <MainBrandsSlider me={me} />
+        <About me={me} />
+        <Ribbon
           title="Бьюти-лента"
           beautyCategories={beautyCategories}
           beautyAllContent={beautyAllContent}
-        /> */}
+        />
       </>
     </MainLayout>
-  );
-};
+  )
+}
 
-export default MainPage;
+export default MainPage

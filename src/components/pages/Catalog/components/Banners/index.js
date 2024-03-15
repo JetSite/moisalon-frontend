@@ -1,8 +1,9 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 import {
   tabletBreakpoint,
   laptopBreakpoint,
-} from "../../../../../../styles/variables";
+} from '../../../../../../styles/variables'
+import { PHOTO_URL } from 'variables'
 
 const Wrapper = styled.div`
   display: flex;
@@ -19,19 +20,19 @@ const Wrapper = styled.div`
     padding-bottom: 15px;
     flex-direction: column;
   }
-`;
+`
 
 const Big = styled.a`
   display: flex;
   justify-content: space-between;
   color: #000;
   width: 100%;
-`;
+`
 
 const WrapBig = styled.div`
   width: 785px;
   height: 275px;
-  background: ${(props) => `url(${props.image}) no-repeat center`};
+  background: ${props => `url(${props.image}) no-repeat center`};
   border-radius: 5px;
   display: flex;
   justify-content: space-between;
@@ -53,13 +54,13 @@ const WrapBig = styled.div`
     padding-top: 12px;
     padding-bottom: 12px;
   }
-`;
+`
 
 const WrapSmall = styled.div`
   width: 357px;
   height: 125px;
   color: #000;
-  background: ${(props) => `url(${props.image}) no-repeat center`};
+  background: ${props => `url(${props.image}) no-repeat center`};
   display: flex;
   padding: 15px;
   padding-right: 25px;
@@ -74,14 +75,14 @@ const WrapSmall = styled.div`
     width: 100%;
     background-position: right;
   }
-`;
+`
 
 const Small = styled.a`
   color: #000;
   display: flex;
   justify-content: space-between;
   width: 100%;
-`;
+`
 
 const Right = styled.div`
   display: flex;
@@ -96,21 +97,21 @@ const Right = styled.div`
       width: 49%;
     }
   }
-`;
+`
 
 const LeftBig = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-`;
+`
 
 const LeftSmall = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-`;
+`
 
 const RightBig = styled.div`
   max-width: 290px;
@@ -121,7 +122,7 @@ const RightBig = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     max-width: 45%;
   }
-`;
+`
 
 const RightSmall = styled.div`
   max-width: 120px;
@@ -133,7 +134,7 @@ const RightSmall = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     max-width: 47%;
   }
-`;
+`
 
 const Title = styled.p`
   font-weight: 600;
@@ -146,7 +147,7 @@ const Title = styled.p`
     font-size: 16px;
     text-transform: uppercase;
   }
-`;
+`
 
 const SubTitle = styled.p`
   font-size: 20px;
@@ -157,7 +158,7 @@ const SubTitle = styled.p`
     font-size: 16px;
     text-transform: uppercase;
   }
-`;
+`
 
 const TitleSmall = styled.p`
   font-weight: 600;
@@ -169,7 +170,7 @@ const TitleSmall = styled.p`
     font-size: 12px;
     text-transform: uppercase;
   }
-`;
+`
 
 const Link = styled.a`
   font-weight: 600;
@@ -183,45 +184,48 @@ const Link = styled.a`
   @media (max-width: ${laptopBreakpoint}) {
     font-size: 9px;
   }
-`;
+`
 
 const Image = styled.img`
   width: 100%;
   object-fit: contain;
   height: 100%;
-`;
+`
 
 const Banners = ({
   bannersByHookWide,
   bannersByHookSmall1,
-  bannersByHookSmall2,
+  // bannersByHookSmall2,
 }) => {
+  const bannerWide = bannersByHookWide?.attributes?.banners?.data[0]?.attributes
+  const bannerWideImage = bannerWide?.bannerImage?.data?.attributes?.url
+    ? `${PHOTO_URL}${bannerWide?.bannerImage?.data?.attributes?.url}`
+    : ''
+
+  const bannerSmall1 =
+    bannersByHookSmall1?.attributes?.banners?.data[0]?.attributes
+  const bannerSmall1Image = bannerSmall1?.bannerImage?.data?.attributes?.url
+    ? `${PHOTO_URL}${bannerSmall1?.bannerImage?.data?.attributes?.url}`
+    : ''
+
   return (
     <Wrapper>
-      {bannersByHookWide?.length ? (
+      {bannersByHookWide?.attributes?.banners?.data?.length ? (
         <noindex>
-          <WrapBig image={bannersByHookWide[0]?.photo?.url}>
-            <Big
-              href={bannersByHookWide[0].link}
-              rel="nofollow"
-              target="_blank"
-            >
+          <WrapBig image={bannerWideImage}>
+            <Big href="#" rel="nofollow" target="_blank">
               <LeftBig>
                 <div>
-                  <Title
-                    dangerouslySetInnerHTML={{
-                      __html: bannersByHookWide[0].title,
-                    }}
-                  />
-                  {bannersByHookWide[0]?.subTitle ? (
+                  <Title>{bannerWide?.bannerName}</Title>
+                  {/* {bannersByHookWide[0]?.subTitle ? (
                     <SubTitle
                       dangerouslySetInnerHTML={{
                         __html: bannersByHookWide[0].subTitle,
                       }}
                     />
-                  ) : null}
+                  ) : null} */}
                 </div>
-                {bannersByHookWide[0].link ? (
+                {/* {bannersByHookWide[0].link ? (
                   <Link
                     href={bannersByHookWide[0].link}
                     target="_blank"
@@ -229,7 +233,7 @@ const Banners = ({
                   >
                     {bannersByHookWide[0].titleLink}
                   </Link>
-                ) : null}
+                ) : null} */}
               </LeftBig>
               {/* <RightBig>
             <Image alt="logoBig" src={bannersByHookWide[0]?.photo?.url} />
@@ -238,23 +242,15 @@ const Banners = ({
           </WrapBig>
         </noindex>
       ) : null}
-      {bannersByHookSmall1?.length || bannersByHookSmall2?.length ? (
+      {bannersByHookSmall1?.attributes?.banners?.data?.length ? (
         <Right>
-          {bannersByHookSmall1?.length ? (
+          {bannerSmall1 ? (
             <noindex>
-              <WrapSmall image={bannersByHookSmall1[0]?.photo?.url}>
-                <Small
-                  href={bannersByHookSmall1[0].link}
-                  target="_blank"
-                  rel="nofollow"
-                >
+              <WrapSmall image={bannerSmall1Image}>
+                <Small href="#" target="_blank" rel="nofollow">
                   <LeftSmall>
-                    <TitleSmall
-                      dangerouslySetInnerHTML={{
-                        __html: bannersByHookSmall1[0].title,
-                      }}
-                    />
-                    {bannersByHookSmall1[0].link ? (
+                    <TitleSmall>{bannerSmall1?.bannerName}</TitleSmall>
+                    {/* {bannersByHookSmall1[0].link ? (
                       <Link
                         href={bannersByHookSmall1[0].link}
                         target="_blank"
@@ -262,7 +258,7 @@ const Banners = ({
                       >
                         {bannersByHookSmall1[0].titleLink}
                       </Link>
-                    ) : null}
+                    ) : null} */}
                   </LeftSmall>
                   {/* <RightSmall>
                 <Image
@@ -274,7 +270,7 @@ const Banners = ({
               </WrapSmall>
             </noindex>
           ) : null}
-          {bannersByHookSmall2?.length ? (
+          {/* {bannersByHookSmall2?.length ? (
             <noindex>
               <WrapSmall image={bannersByHookSmall2[0]?.photo?.url}>
                 <Small
@@ -298,20 +294,14 @@ const Banners = ({
                       </Link>
                     ) : null}
                   </LeftSmall>
-                  {/* <RightSmall>
-                <Image
-                  alt="logoSmall"
-                  src={bannersByHookSmall2[0]?.photo?.url}
-                />
-              </RightSmall> */}
                 </Small>
               </WrapSmall>
             </noindex>
-          ) : null}
+          ) : null} */}
         </Right>
       ) : null}
     </Wrapper>
-  );
-};
+  )
+}
 
-export default Banners;
+export default Banners

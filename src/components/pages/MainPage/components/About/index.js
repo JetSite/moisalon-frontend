@@ -1,7 +1,7 @@
-import { useRouter } from "next/router";
-import Link from "next/link";
-import { MainContainer } from "../../../../../styles/common";
-import Button from "../../../../ui/Button";
+import { useRouter } from 'next/router'
+import Link from 'next/link'
+import { MainContainer } from '../../../../../styles/common'
+import Button from '../../../../ui/Button'
 import {
   Wrapper,
   Title,
@@ -23,54 +23,54 @@ import {
   MobileAssetMaster,
   MobileAssetSalon,
   MobileAssetBusiness,
-} from "./styled";
-import goalIdObjects from "../../../../../lib/goalIdObjects";
+} from './styled'
+import goalIdObjects from '../../../../../lib/goalIdObjects'
 
 const About = ({ me }) => {
-  let leftImage;
-  let rightImage;
-  let leftImageWidth;
-  let rightImageWidth;
-  let leftImageHeight;
-  let rightImageHeight;
-  let leftImageTop;
-  let rightImageTop;
-  const router = useRouter();
-  const type = router.pathname.substring(1);
-  if (type == "") {
-    leftImage = "leftMain";
-    leftImageWidth = 337;
-    leftImageHeight = 400;
-    leftImageTop = 401;
-    rightImage = "rightMain";
-    rightImageWidth = 423;
-    rightImageHeight = 358;
-    rightImageTop = 329;
-  } else if (type == "master") {
-    leftImage = "leftMaster";
-    leftImageWidth = 630;
-    leftImageHeight = 426;
-    leftImageTop = 426;
-    rightImage = "rightMaster";
-    rightImageWidth = 490;
-    rightImageHeight = 407;
-    rightImageTop = 353;
+  let leftImage
+  let rightImage
+  let leftImageWidth
+  let rightImageWidth
+  let leftImageHeight
+  let rightImageHeight
+  let leftImageTop
+  let rightImageTop
+  const router = useRouter()
+  const type = router.pathname.substring(1)
+  if (type == '') {
+    leftImage = 'leftMain'
+    leftImageWidth = 337
+    leftImageHeight = 400
+    leftImageTop = 401
+    rightImage = 'rightMain'
+    rightImageWidth = 423
+    rightImageHeight = 358
+    rightImageTop = 329
+  } else if (type == 'master') {
+    leftImage = 'leftMaster'
+    leftImageWidth = 630
+    leftImageHeight = 426
+    leftImageTop = 426
+    rightImage = 'rightMaster'
+    rightImageWidth = 490
+    rightImageHeight = 407
+    rightImageTop = 353
   } else {
-    leftImage = "left";
-    leftImageWidth = 381;
-    leftImageHeight = 452;
-    leftImageTop = 452;
-    rightImage = "right";
-    rightImageWidth = 432;
-    rightImageHeight = 358;
-    rightImageTop = 326;
+    leftImage = 'left'
+    leftImageWidth = 381
+    leftImageHeight = 452
+    leftImageTop = 452
+    rightImage = 'right'
+    rightImageWidth = 432
+    rightImageHeight = 358
+    rightImageTop = 326
   }
 
-  const isLoggedIn = me?.info !== undefined && me?.info !== null;
+  const isLoggedIn = me?.info !== undefined && me?.info !== null
 
   const { regMaster, moreInfoMaster, regSalon, moreInfoSalon } = goalIdObjects(
-    router.pathname
-  );
+    router.pathname,
+  )
 
   return (
     <Wrapper>
@@ -119,42 +119,40 @@ const About = ({ me }) => {
               </BottomContentText>
             </BottomContentLeft>
             <ButtonWrapper>
-              <Link href={isLoggedIn ? "/createMaster" : "/login"}>
+              <Link href={isLoggedIn ? '/createMaster' : '/login'}>
                 <Button
                   size="fullWidth"
                   variant="red"
                   onClick={() => {
                     window.dataLayer.push({
-                      event: "event",
+                      event: 'event',
                       eventProps: {
-                        category: "click",
+                        category: 'click',
                         action: regMaster,
                       },
-                    });
+                    })
                   }}
                 >
                   Зарегистрироваться как мастер
                 </Button>
               </Link>
               <noindex>
-                <Link href="/for_master">
-                  <a target="_blank" rel="nofollow">
-                    <Button
-                      size="fullWidth"
-                      variant="darkTransparent"
-                      onClick={() => {
-                        window.dataLayer.push({
-                          event: "event",
-                          eventProps: {
-                            category: "click",
-                            action: moreInfoMaster,
-                          },
-                        });
-                      }}
-                    >
-                      Больше информации
-                    </Button>
-                  </a>
+                <Link href="/for_master" target="_blank" rel="nofollow">
+                  <Button
+                    size="fullWidth"
+                    variant="darkTransparent"
+                    onClick={() => {
+                      window.dataLayer.push({
+                        event: 'event',
+                        eventProps: {
+                          category: 'click',
+                          action: moreInfoMaster,
+                        },
+                      })
+                    }}
+                  >
+                    Больше информации
+                  </Button>
                 </Link>
               </noindex>
             </ButtonWrapper>
@@ -174,42 +172,40 @@ const About = ({ me }) => {
               </BottomContentText>
             </BottomContentRight>
             <ButtonWrapper>
-              <Link href={isLoggedIn ? "/createSalon" : "/login"}>
+              <Link href={isLoggedIn ? '/createSalon' : '/login'}>
                 <Button
                   size="fullWidth"
                   variant="red"
                   onClick={() => {
                     window.dataLayer.push({
-                      event: "event",
+                      event: 'event',
                       eventProps: {
-                        category: "click",
+                        category: 'click',
                         action: regSalon,
                       },
-                    });
+                    })
                   }}
                 >
                   Зарегистрироваться как салон
                 </Button>
               </Link>
               <noindex>
-                <Link href="/for_salon">
-                  <a target="_blank" rel="nofollow">
-                    <Button
-                      size="fullWidth"
-                      variant="darkBorder"
-                      onClick={() => {
-                        window.dataLayer.push({
-                          event: "event",
-                          eventProps: {
-                            category: "click",
-                            action: moreInfoSalon,
-                          },
-                        });
-                      }}
-                    >
-                      Больше информации
-                    </Button>
-                  </a>
+                <Link href="/for_salon" target="_blank" rel="nofollow">
+                  <Button
+                    size="fullWidth"
+                    variant="darkBorder"
+                    onClick={() => {
+                      window.dataLayer.push({
+                        event: 'event',
+                        eventProps: {
+                          category: 'click',
+                          action: moreInfoSalon,
+                        },
+                      })
+                    }}
+                  >
+                    Больше информации
+                  </Button>
                 </Link>
               </noindex>
             </ButtonWrapper>
@@ -217,7 +213,7 @@ const About = ({ me }) => {
         </Bottom>
       </MainContainer>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default About;
+export default About

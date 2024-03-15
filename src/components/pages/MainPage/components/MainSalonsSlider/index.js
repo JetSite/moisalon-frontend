@@ -1,30 +1,19 @@
-import { useQuery } from "@apollo/client";
-import { salonsRandom } from "../../../../../_graphql-legacy/salon/salonsRandom";
-import Slider from "../../../../blocks/Slider";
+import { useQuery } from '@apollo/client'
+import { getSalons } from '../../../../../graphql/salon/queries/getSalons'
+import Slider from '../../../../blocks/Slider'
 
 const MainSalonsSlider = ({ rent, me }) => {
-  let cityInStorage;
-  if (typeof window !== "undefined") {
-    cityInStorage = localStorage.getItem("citySalon");
+  let cityInStorage
+  if (typeof window !== 'undefined') {
+    cityInStorage = localStorage.getItem('citySalon')
   }
-  const { data: salons, loading } = useQuery(salonsRandom, {
-    variables: {
-      count: 10,
-      lessor: rent ? true : false,
-      city:
-        me && me?.info && me?.info?.city
-          ? me?.info?.city
-          : cityInStorage
-          ? cityInStorage
-          : "",
-    },
-  });
+  const { data: salons, loading } = useQuery(getSalons)
 
   return (
     <Slider
       type="salons"
       loading={loading}
-      items={salons?.salonsRandom || []}
+      items={salons?.salons?.data}
       title="Салоны красоты"
       bgColor="#000"
       pt={102}
@@ -33,7 +22,7 @@ const MainSalonsSlider = ({ rent, me }) => {
       noPadding
       pl={20}
     />
-  );
-};
+  )
+}
 
-export default MainSalonsSlider;
+export default MainSalonsSlider
