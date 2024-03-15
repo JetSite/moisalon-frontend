@@ -1,6 +1,6 @@
-import { useContext, useRef, useState } from "react";
-import { useRouter } from "next/router";
-import { MainContainer, MobileVisible } from "../../../styles/common";
+import { useContext, useRef, useState } from 'react'
+import { useRouter } from 'next/router'
+import { MainContainer, MobileVisible } from '../../../styles/common'
 import {
   Title,
   Wrapper,
@@ -23,17 +23,18 @@ import {
   Text,
   ChangeCity,
   TitleIconWrapper,
-} from "./styles";
-import { Swiper, SwiperSlide } from "swiper/react";
-import SwiperCore, { Navigation } from "swiper/core";
-import Link from "next/link";
+} from './styles'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Navigation, Pagination } from 'swiper/modules'
+import SwiperCore from 'swiper/core'
+import Link from 'next/link'
 import {
   Bottom,
   ButtonNext,
   ButtonPrev,
   NavigationWrapper,
-} from "../../../styles/sliderBlocks";
-import Skeleton from "../../pages/MainPage/components/SearchMain/MainSearchSkeleton";
+} from '../../../styles/sliderBlocks'
+import Skeleton from '../../pages/MainPage/components/SearchMain/MainSearchSkeleton'
 import {
   MasterSlide,
   SalonSlide,
@@ -45,7 +46,7 @@ import {
   AdSlide,
   RentSalonSlide,
   WorkplaceSlide,
-} from "./components/SliderItems";
+} from './components/SliderItems'
 import {
   AllMastersSlide,
   AllSalonsSlide,
@@ -54,7 +55,7 @@ import {
   AllAdsSlide,
   AllRentSalons,
   AllRentWorkplaces,
-} from "./components/ShowAllSlides";
+} from './components/ShowAllSlides'
 import {
   MasterBottomButton,
   SalonBottomButton,
@@ -63,15 +64,15 @@ import {
   RibbonBottomButton,
   AdBottomButton,
   WorkplaceBottomButton,
-} from "./components/BottomButtons";
-import Button from "../../ui/Button";
-import EditIcons from "../../ui/EditIcons";
-import { CityContext, MeContext } from "../../../searchContext";
-import { cyrToTranslit } from "../../../utils/translit";
-import CityPingIcon from "../../pages/MainPage/components/Header/icons/CityPingIcon";
-import CitySelect from "../../pages/MainPage/components/CitySelect/CitySelect";
+} from './components/BottomButtons'
+import Button from '../../ui/Button'
+import EditIcons from '../../ui/EditIcons'
+import { CityContext, MeContext } from '../../../searchContext'
+import { cyrToTranslit } from '../../../utils/translit'
+import CityPingIcon from '../../pages/MainPage/components/Header/icons/CityPingIcon'
+import CitySelect from '../../pages/MainPage/components/CitySelect/CitySelect'
 
-SwiperCore.use([Navigation]);
+SwiperCore.use([Navigation])
 
 const Slider = ({
   children,
@@ -85,7 +86,7 @@ const Slider = ({
   noScroll = false,
   loading = false,
   catalog = null,
-  bgColor = "#fff",
+  bgColor = '#fff',
   isOwner = false,
   isEditing = false,
   setIsEditing,
@@ -106,42 +107,42 @@ const Slider = ({
   noPadding = null,
   chooseProductOneClick = null,
 }) => {
-  const navigationPrevRef = useRef(null);
-  const navigationNextRef = useRef(null);
-  const onBeforeInit = (Swiper) => {
-    if (typeof Swiper.params.navigation !== "boolean") {
-      const navigation = Swiper.params.navigation;
-      navigation.prevEl = navigationPrevRef.current;
-      navigation.nextEl = navigationNextRef.current;
+  const navigationPrevRef = useRef(null)
+  const navigationNextRef = useRef(null)
+  const onBeforeInit = Swiper => {
+    if (typeof Swiper.params.navigation !== 'boolean') {
+      const navigation = Swiper.params.navigation
+      navigation.prevEl = navigationPrevRef.current
+      navigation.nextEl = navigationNextRef.current
     }
-  };
+  }
 
-  const [city] = useContext(CityContext);
-  const [showCitySelect, setShowCitySelect] = useState(false);
-  const [me, setMe] = useContext(MeContext);
-  const router = useRouter();
-  const landingMaster = router.pathname === "/for_master";
-  const landingSalon = router.pathname === "/for_salon";
-  const landingBrand = router.pathname === "/for_brand";
+  const [city] = useContext(CityContext)
+  const [showCitySelect, setShowCitySelect] = useState(false)
+  const [me, setMe] = useContext(MeContext)
+  const router = useRouter()
+  const landingMaster = router.pathname === '/for_master'
+  const landingSalon = router.pathname === '/for_salon'
+  const landingBrand = router.pathname === '/for_brand'
 
-  let defaultCity;
+  let defaultCity
 
-  if (typeof window !== "undefined" && window.localStorage) {
+  if (typeof window !== 'undefined' && window.localStorage) {
     defaultCity = me?.info?.city
       ? me.info.city
-      : localStorage.getItem("citySalon")
-      ? localStorage.getItem("citySalon")
+      : localStorage.getItem('citySalon')
+      ? localStorage.getItem('citySalon')
       : me?.locationByIp
       ? me?.locationByIp?.data?.city
-      : "";
+      : ''
   }
 
   const customProps = (type, item = null, typeObject = null) => {
     switch (type) {
-      case "masters":
+      case 'masters':
         return {
           sliderItem: <MasterSlide item={item} catalog={catalog} />,
-          isAllPage: router.pathname === "/[city]/master",
+          isAllPage: router.pathname === '/[city]/master',
           slidesCountWhenAllShow: 5,
           showAllSlide: <AllMastersSlide />,
           showAllLink: (
@@ -150,8 +151,8 @@ const Slider = ({
             </Link>
           ),
           bottom: <MasterBottomButton bgColor={bgColor} />,
-        };
-      case "salons":
+        }
+      case 'salons':
         return {
           sliderItem: (
             <SalonSlide
@@ -179,7 +180,7 @@ const Slider = ({
             <ButtonWrap>
               <Button
                 style={{ padding: 0 }}
-                onClick={() => router.push("/createLessorSalon")}
+                onClick={() => router.push('/createLessorSalon')}
                 size="medium"
                 variant="red"
                 font="medium"
@@ -188,8 +189,8 @@ const Slider = ({
               </Button>
             </ButtonWrap>
           ),
-        };
-      case "brands":
+        }
+      case 'brands':
         return {
           sliderItem: (
             <BrandSlide
@@ -198,7 +199,7 @@ const Slider = ({
               deleteFunction={deleteFunction}
             />
           ),
-          isAllPage: router.pathname === "/[city]/brand",
+          isAllPage: router.pathname === '/[city]/brand',
           slidesCountWhenAllShow: 6,
           showAllSlide: <AllBrandsSlide />,
           showAllLink: (
@@ -210,7 +211,7 @@ const Slider = ({
           landingItem: (
             <ButtonWrapBrandLanding>
               <Button
-                onClick={() => router.push("/login")}
+                onClick={() => router.push('/login')}
                 size="medium"
                 variant="red"
                 font="medium"
@@ -219,31 +220,29 @@ const Slider = ({
               </Button>
             </ButtonWrapBrandLanding>
           ),
-        };
-      case "goods":
+        }
+      case 'goods':
         return {
           firstSlide: (
             <Link
               href={
-                router.query.id === "62fb9f7884fe720001f6771c"
+                router.query.id === '62fb9f7884fe720001f6771c'
                   ? `/${cyrToTranslit(
-                      typeObject?.addressFull?.city || city
+                      typeObject?.addressFull?.city || city,
                     )}/beautyFreeShop`
                   : `/${cyrToTranslit(
-                      typeObject?.addressFull?.city || city
+                      typeObject?.addressFull?.city || city,
                     )}/brand/${router.query.id}/products`
               }
             >
-              <a>
-                <SeeAllMain>
-                  <SeeAllGoods>
-                    <SeeAllText>Показать все товары бренда</SeeAllText>
-                  </SeeAllGoods>
-                  <SeeAllBody>
-                    <SeeAllBodyText>Перейти в магазин</SeeAllBodyText>
-                  </SeeAllBody>
-                </SeeAllMain>
-              </a>
+              <SeeAllMain>
+                <SeeAllGoods>
+                  <SeeAllText>Показать все товары бренда</SeeAllText>
+                </SeeAllGoods>
+                <SeeAllBody>
+                  <SeeAllBodyText>Перейти в магазин</SeeAllBodyText>
+                </SeeAllBody>
+              </SeeAllMain>
             </Link>
           ),
           sliderItem: (
@@ -260,13 +259,13 @@ const Slider = ({
               <ShowAll bgColor={bgColor}>Показать все</ShowAll>
             </Link>
           ),
-        };
-      case "ribbon":
+        }
+      case 'ribbon':
         return {
           sliderItem: <RibbonSlide item={item} />,
           // bottom: <RibbonBottomButton />,
-        };
-      case "portfolio":
+        }
+      case 'portfolio':
         return {
           sliderItem: (
             <PortfolioSlide
@@ -275,8 +274,8 @@ const Slider = ({
               deleteFunction={deleteFunction}
             />
           ),
-        };
-      case "diploms":
+        }
+      case 'diploms':
         return {
           sliderItem: (
             <PortfolioSlide
@@ -285,12 +284,12 @@ const Slider = ({
               deleteFunction={deleteFunction}
             />
           ),
-        };
-      case "vacancies":
+        }
+      case 'vacancies':
         return {
           sliderItem: <VacancySlide item={item} />,
-        };
-      case "ads":
+        }
+      case 'ads':
         return {
           sliderItem: <AdSlide item={item} />,
           bottom: <AdBottomButton bgColor={bgColor} />,
@@ -301,8 +300,8 @@ const Slider = ({
               <ShowAll bgColor={bgColor}>Показать все</ShowAll>
             </Link>
           ),
-        };
-      case "rentSalons":
+        }
+      case 'rentSalons':
         return {
           showAllLink: (
             <Link href={`/${cyrToTranslit(city)}/rent`}>
@@ -314,8 +313,8 @@ const Slider = ({
           showAllSlide: <AllRentSalons />,
 
           bottom: <SalonBottomButton bgColor={bgColor} />,
-        };
-      case "rentWorkplaces":
+        }
+      case 'rentWorkplaces':
         return {
           sliderItem: <WorkplaceSlide item={item} salon={salon} />,
           slidesCountWhenAllShow: 3,
@@ -330,16 +329,16 @@ const Slider = ({
             </Link>
           ),
           bottom: <WorkplaceBottomButton bgColor={bgColor} />,
-        };
+        }
     }
-  };
+  }
 
   return (
     <Wrapper id={type} $loading={loading} type={type} bgColor={bgColor}>
       <MainContainer>
         {!loading ? (
           <Content
-            bgWithIcons={type === "masters"}
+            bgWithIcons={type === 'masters'}
             pt={pt}
             pb={pb}
             noPadding={noPadding ? noPadding : items?.length === 1}
@@ -349,7 +348,7 @@ const Slider = ({
                 <MobileVisible>
                   <TitleIconWrapper
                     onClick={() => {
-                      setShowCitySelect(true);
+                      setShowCitySelect(true)
                     }}
                   >
                     <CityPingIcon color="#fff" />
@@ -367,11 +366,11 @@ const Slider = ({
                 <NavigationWrapper>
                   <ButtonPrev
                     ref={navigationPrevRef}
-                    color={bgColor === "#000" ? "white" : ""}
+                    color={bgColor === '#000' ? 'white' : ''}
                   />
                   <ButtonNext
                     ref={navigationNextRef}
-                    color={bgColor === "#000" ? "white" : ""}
+                    color={bgColor === '#000' ? 'white' : ''}
                   />
                 </NavigationWrapper>
               )}
@@ -382,7 +381,7 @@ const Slider = ({
                   <Swiper
                     mousewheel={true}
                     pagination={{ clickable: true }}
-                    slidesPerView={"auto"}
+                    slidesPerView={'auto'}
                     initialSlide={0}
                     spaceBetween={18}
                     navigation={{
@@ -402,9 +401,9 @@ const Slider = ({
                     {customProps(type)?.firstSlide && !noFirstSlide && (
                       <SwiperSlide
                         style={{
-                          minHeight: "100%",
-                          height: "auto",
-                          width: "auto",
+                          minHeight: '100%',
+                          height: 'auto',
+                          width: 'auto',
                         }}
                       >
                         {customProps(type, typeObject).firstSlide}
@@ -413,9 +412,9 @@ const Slider = ({
                     {items.map((item, i) => (
                       <SwiperSlide
                         style={{
-                          minHeight: "100%",
-                          height: "auto",
-                          width: "auto",
+                          minHeight: '100%',
+                          height: 'auto',
+                          width: 'auto',
                         }}
                         key={i}
                       >
@@ -427,9 +426,9 @@ const Slider = ({
                       !noAll && (
                         <SwiperSlide
                           style={{
-                            minHeight: "100%",
-                            height: "auto",
-                            width: "auto",
+                            minHeight: '100%',
+                            height: 'auto',
+                            width: 'auto',
                             marginRight: 0,
                           }}
                         >
@@ -466,7 +465,7 @@ const Slider = ({
         setShowCitySelect={setShowCitySelect}
       />
     </Wrapper>
-  );
-};
+  )
+}
 
-export default Slider;
+export default Slider

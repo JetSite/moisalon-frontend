@@ -1,6 +1,7 @@
-import { gql } from "@apollo/client";
-import { metaInfo } from "../../common/metaInfo";
-import { imageInfo } from "../../common/imageInfo";
+import { gql } from '@apollo/client'
+import { metaInfo } from '../../common/metaInfo'
+import { imageInfo } from '../../common/imageInfo'
+import { cityInfo } from 'src/graphql/common/cityInfo'
 
 export const getMasters = gql`
   query masters {
@@ -27,7 +28,9 @@ export const getMasters = gql`
                 }
               }
             }
-            city
+            city {
+              ${cityInfo}
+            }
             masterPhoto {
               ${imageInfo}
             }
@@ -39,4 +42,4 @@ export const getMasters = gql`
       ${metaInfo}
     }
   }
-`;
+`

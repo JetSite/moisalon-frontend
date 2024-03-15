@@ -20,20 +20,20 @@ import {
   ProductsGetStatusContext,
   CatalogsContext,
   CityContext,
-} from "../searchContext";
-import theme from "../theme";
-import { useRouter } from "next/router";
-import Script from "next/script";
-import * as gtag from "../lib/gtag";
-import { YMInitializer } from "react-yandex-metrika";
-import { getServiceCategories } from "../graphql/service/queries/getServiceCategories";
-import { useMedia } from "use-media";
-import { red } from "../../styles/variables";
-import { ChatProvider } from "../chatContext";
-import { HistoryProvider } from "../historyContext";
-import { cyrToTranslit } from "../utils/translit";
-import { useCitySuggestions } from "../components/pages/MainPage/components/CitySelect/useCitySuggestions";
-import { SearchHistoryProvider } from "../searchHistoryContext";
+} from '../searchContext'
+import theme from '../theme'
+import { useRouter } from 'next/router'
+import Script from 'next/script'
+import * as gtag from '../lib/gtag'
+import { YMInitializer } from 'react-yandex-metrika'
+import { getServiceCategories } from '../graphql/service/queries/getServiceCategories'
+import { useMedia } from 'use-media'
+import { red } from '../../styles/variables'
+import { ChatProvider } from '../chatContext'
+import { HistoryProvider } from '../historyContext'
+import { cyrToTranslit } from '../utils/translit'
+import { useCitySuggestions } from '../components/pages/MainPage/components/CitySelect/useCitySuggestions'
+import { SearchHistoryProvider } from '../searchHistoryContext'
 
 const progress = new ProgressBar({
   size: 2,
@@ -43,17 +43,17 @@ const progress = new ProgressBar({
 })
 
 const AppContainer = ({ Component, pageProps }) => {
-  const router = useRouter();
-  const [getInfo, { data }] = useLazyQuery(currentUserSalonsAndMasterQuery);
+  const router = useRouter()
+  const [getInfo, { data }] = useLazyQuery(currentUserSalonsAndMasterQuery)
   const [getCatalogs, { data: catalogsData }] =
-    useLazyQuery(getServiceCategories);
-  const [meInfo, setMeInfo] = useState({});
-  const [catalogs, setCatalogs] = useState([]);
-  const productsState = useState([]);
-  const cartQuantityState = useState(0);
-  const me = useState(null);
-  const productsGetStatus = useState(false);
-  const cityContext = useState("");
+    useLazyQuery(getServiceCategories)
+  const [meInfo, setMeInfo] = useState({})
+  const [catalogs, setCatalogs] = useState([])
+  const productsState = useState([])
+  const cartQuantityState = useState(0)
+  const me = useState(null)
+  const productsGetStatus = useState(false)
+  const cityContext = useState('')
 
   // useEffect(() => {
   //   if (data?.me) {
@@ -71,11 +71,11 @@ const AppContainer = ({ Component, pageProps }) => {
 
   useEffect(() => {
     if (catalogsData) {
-      setCatalogs(catalogsData);
+      setCatalogs(catalogsData)
     } else {
-      getCatalogs();
+      getCatalogs()
     }
-  }, [catalogsData]);
+  }, [catalogsData])
 
   const queryMainState = useState({
     ...MainSearchQuery,
@@ -91,17 +91,15 @@ const AppContainer = ({ Component, pageProps }) => {
   })
 
   useEffect(() => {
-    router.events.on("routeChangeStart", progress.start);
-    router.events.on("routeChangeComplete", progress.finish);
-    router.events.on("routeChangeError", progress.finish);
+    router.events.on('routeChangeStart', progress.start)
+    router.events.on('routeChangeComplete', progress.finish)
+    router.events.on('routeChangeError', progress.finish)
     return () => {
-      router.events.off("routeChangeStart", progress.start);
-      router.events.off("routeChangeComplete", progress.finish);
-      router.events.off("routeChangeError", progress.finish);
-    };
-  }, [router.events]);
-
-  console.log("catalogsData", catalogsData);
+      router.events.off('routeChangeStart', progress.start)
+      router.events.off('routeChangeComplete', progress.finish)
+      router.events.off('routeChangeError', progress.finish)
+    }
+  }, [router.events])
 
   return (
     <MeContext.Provider value={me}>
