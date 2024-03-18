@@ -8,13 +8,15 @@ import AllSalonsPage from '../../../components/pages/Salon/AllSalons'
 import { totalMasters } from '../../../graphql/master/queries/totalMasters'
 import { totalBrands } from '../../../graphql/brand/queries/totalBrands'
 import { MeContext } from '../../../searchContext'
-import { citySuggestionsQuery } from '../../../_graphql-legacy/city/citySuggestionsQuery'
+import { getCities } from '../../../graphql/city/getCities'
 import useCheckCity from '../../../hooks/checkCity'
 import { servicesWithSalonCount } from '../../../_graphql-legacy/services/servicesWithSalonCount'
 import { totalSalons } from '../../../graphql/salon/queries/totalSalons'
 import { useQuery } from '@apollo/client'
 import { getTotalCount } from '../../../utils/getTotalCount'
 import { GetServerSideProps } from 'next'
+import { DocumentNode, TypedDocumentNode } from '@apollo/client/core'
+import { OperationVariables } from '@apollo/react-common'
 
 interface IProps {
   totalBrands: number
@@ -38,7 +40,12 @@ const AllSalons: FC<IProps> = ({
   // const [me, setMe] = useContext(MeContext);
   // useCheckCity(cityData);
 
-  // const { data } = useQuery(totalSalons)
+  const { data: data1 } = useQuery(getCities, {
+    variables: { cityName: ['Москва'] },
+  })
+
+  console.log(data1)
+  console.log(cityData)
 
   return (
     <></>
@@ -58,19 +65,16 @@ const AllSalons: FC<IProps> = ({
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
   const apolloClient = initializeApollo()
-  // const city = await apolloClient.query({
-  //   query: citySuggestionsQuery,
-  //   variables: {
-  //     city: ctx?.query?.city || "",
-  //     count: 1,
-  //   },
-  // });
-
-  console.log(ctx?.query?.city)
+  const { data: city } = await apolloClient.query({
+    query: getCities,
+    variables: { cityName: ['Москва'] },
+  })
+  // variables: { cityName: [ctx?.query?.city] || ['Москва'] },
+  const normalizeCity = city.cities.data[0].attributes.cityName
 
   const data = await Promise.all([
     // apolloClient.query({
-    //   query: searchQuery,
+    // query: searchQuery,
     //   variables: {
     //     input: {
     //       ...EmptySearchQuery,
@@ -112,7 +116,7 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
       totalSalons: getTotalCount(data[2].data.salons),
       // salonServices: data[4]?.data?.salonServicesCount,
       // cityData: city?.data?.citySuggestions[0]?.data?.city || "Москва",
-      cityData: 'Москва',
+      cityData: normalizeCity,
     },
   })
 }

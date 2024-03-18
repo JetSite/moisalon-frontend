@@ -176,6 +176,8 @@ export async function getServerSideProps(ctx) {
   //   };
   // }
 
+  debugger
+
   return addApolloState(apolloClient, {
     props: {
       // totalSalons: data[0]?.data?.totalSalons,

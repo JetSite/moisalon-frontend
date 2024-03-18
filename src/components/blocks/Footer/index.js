@@ -1,6 +1,6 @@
-import { useContext } from "react";
-import Link from "next/link";
-import { MainContainer } from "../../../styles/common";
+import { useContext } from 'react'
+import Link from 'next/link'
+import { MainContainer } from '../../../styles/common'
 import {
   Wrapper,
   Content,
@@ -27,13 +27,13 @@ import {
   NavFooter,
   NavFooterItem,
   LawText,
-} from "./styled";
-import NewsletterSubscribe from "../../blocks/NewsletterSubscribe";
-import { CityContext } from "../../../searchContext";
-import { cyrToTranslit } from "../../../utils/translit";
+} from './styled'
+import NewsletterSubscribe from '../../blocks/NewsletterSubscribe'
+import { CityContext } from '../../../searchContext'
+import { cyrToTranslit } from '../../../utils/translit'
 
 const Footer = ({ landing = false, noMobileFooter }) => {
-  const [city] = useContext(CityContext);
+  const [city] = useContext(CityContext)
   return (
     <Wrapper landing={landing} noMobileFooter={noMobileFooter}>
       <MainContainer>
@@ -60,7 +60,7 @@ const Footer = ({ landing = false, noMobileFooter }) => {
                   <a href="mailto:vog@moi.salon"> vog@moi.salon</a>
                 </Text>
                 <Text>
-                  Техподдержка:{" "}
+                  Техподдержка:{' '}
                   <a href="mailto:support@moi.salon">support@moi.salon</a>
                 </Text>
               </ContactsItem>
@@ -137,18 +137,18 @@ const Footer = ({ landing = false, noMobileFooter }) => {
                 <Link href="/legals">Юридическая информация</Link>
                 <br /> <Link href="/legals">
                   Пользовательское соглашение
-                </Link>{" "}
-                <br />{" "}
+                </Link>{' '}
+                <br />{' '}
                 <Link
                   href={{
-                    pathname: "/legals",
-                    query: { tab: "policy" },
+                    pathname: '/legals',
+                    query: { tab: 'policy' },
                   }}
                   as="/legals"
                 >
                   Политика конфиденциальности
                 </Link>
-                <br /> © 2022{" "}
+                <br /> © 2022{' '}
                 <Link href={`/${cyrToTranslit(city)}`}>MOI SALON</Link> Все
                 права защищены
               </LawText>
@@ -214,9 +214,7 @@ const Footer = ({ landing = false, noMobileFooter }) => {
                 </Left>
                 <Right>
                   <Link href={`/${cyrToTranslit(city)}`}>
-                    <a>
-                      <MobileItemApple />
-                    </a>
+                    <MobileItemApple />
                   </Link>
                 </Right>
               </ContactsItem>
@@ -232,9 +230,7 @@ const Footer = ({ landing = false, noMobileFooter }) => {
                 </Left>
                 <Right>
                   <Link href={`/${cyrToTranslit(city)}`}>
-                    <a>
-                      <MobileItemGoogle />
-                    </a>
+                    <MobileItemGoogle />
                   </Link>
                 </Right>
               </ContactsItem>
@@ -242,18 +238,18 @@ const Footer = ({ landing = false, noMobileFooter }) => {
                 <Left>
                   <Text>
                     Техподдержка:
-                    <br />{" "}
+                    <br />{' '}
                     <a href="mailto:support@moi.salon">support@moi.salon</a>
                   </Text>
                   <Copyright>
-                    © 2022{" "}
-                    <Link href={`/${cyrToTranslit(city)}`}>MOI SALON</Link>{" "}
+                    © 2022{' '}
+                    <Link href={`/${cyrToTranslit(city)}`}>MOI SALON</Link>{' '}
                     <Link href="/legals">Пользовательское соглашение</Link>
                     <br />
                     <Link
                       href={{
-                        pathname: "/legals",
-                        query: { tab: "policy" },
+                        pathname: '/legals',
+                        query: { tab: 'policy' },
                       }}
                       as="/legals"
                     >
@@ -291,7 +287,7 @@ const Footer = ({ landing = false, noMobileFooter }) => {
         </Content>
       </MainContainer>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer

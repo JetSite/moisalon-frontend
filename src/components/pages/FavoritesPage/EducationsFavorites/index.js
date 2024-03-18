@@ -1,5 +1,5 @@
-import { useContext, useRef, useState } from "react";
-import { MainContainer } from "../../../../styles/common";
+import { useContext, useRef, useState } from 'react'
+import { MainContainer } from '../../../../styles/common'
 import {
   Title,
   Wrapper,
@@ -9,19 +9,19 @@ import {
   SliderWrapper,
   Empty,
   ItemToggle,
-} from "./styled";
-import { Swiper, SwiperSlide } from "swiper/react";
-import SwiperCore, { Navigation } from "swiper/core";
-import Link from "next/link";
+} from './styled'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import SwiperCore, { Navigation } from 'swiper/core'
+import Link from 'next/link'
 import {
   ButtonNext,
   ButtonPrev,
   NavigationWrapper,
-} from "../../../../styles/sliderBlocks";
-import { CityContext } from "../../../../searchContext";
-import Education from "../../../blocks/Education";
+} from '../../../../styles/sliderBlocks'
+import { CityContext } from '../../../../searchContext'
+import Education from '../../../blocks/Education'
 
-SwiperCore.use([Navigation]);
+SwiperCore.use([Navigation])
 
 const EducationsFavorites = ({
   title,
@@ -30,27 +30,26 @@ const EducationsFavorites = ({
   mobile = false,
   handleDeleted,
 }) => {
-  const navigationPrevRef = useRef(null);
-  const navigationNextRef = useRef(null);
-  const [city] = useContext(CityContext);
+  const navigationPrevRef = useRef(null)
+  const navigationNextRef = useRef(null)
+  const [city] = useContext(CityContext)
 
-  const onBeforeInit = (Swiper) => {
-    if (typeof Swiper.params.navigation !== "boolean") {
-      const navigation = Swiper.params.navigation;
-      navigation.prevEl = navigationPrevRef.current;
-      navigation.nextEl = navigationNextRef.current;
+  const onBeforeInit = Swiper => {
+    if (typeof Swiper.params.navigation !== 'boolean') {
+      const navigation = Swiper.params.navigation
+      navigation.prevEl = navigationPrevRef.current
+      navigation.nextEl = navigationNextRef.current
     }
-  };
+  }
 
-  const [toggle, setToggle] = useState(mobile && cabinet && true);
-  const [deleteItem, setDeleteItem] = useState(false);
+  const [toggle, setToggle] = useState(mobile && cabinet && true)
+  const [deleteItem, setDeleteItem] = useState(false)
 
-  let educations;
-  if (typeof window !== "undefined") {
-    educations =
-      JSON.parse(localStorage.getItem("favorites"))?.educations || [];
+  let educations
+  if (typeof window !== 'undefined') {
+    educations = JSON.parse(localStorage.getItem('favorites'))?.educations || []
     if (!educations.length) {
-      setEducationsEmpty(true);
+      setEducationsEmpty(true)
     }
   }
   return (
@@ -77,11 +76,11 @@ const EducationsFavorites = ({
             <SliderWrapper>
               <SwiperWrap>
                 <Swiper
-                  style={{ padding: "5px", marginLeft: "-5px" }}
+                  style={{ padding: '5px', marginLeft: '-5px' }}
                   mousewheel={true}
                   pagination={{ clickable: true }}
                   spaceBetween={15}
-                  slidesPerView={cabinet ? 1 : "auto"}
+                  slidesPerView={cabinet ? 1 : 'auto'}
                   navigation={{
                     prevEl: navigationPrevRef.current,
                     nextEl: navigationNextRef.current,
@@ -92,28 +91,26 @@ const EducationsFavorites = ({
                     educations.map((item, i) => (
                       <SwiperSlide
                         style={{
-                          minHeight: "100%",
-                          height: "auto",
-                          width: "auto",
+                          minHeight: '100%',
+                          height: 'auto',
+                          width: 'auto',
                         }}
                         key={i}
                       >
                         <Link href={`/educations/${item.id}`} passHref>
-                          <a>
-                            <Education
-                              averageScore={item.averageScore}
-                              numberScore={item.numberScore}
-                              id={item.id}
-                              title={item.title}
-                              amount={item.amount}
-                              photoId={item.photoId}
-                              dateStart={item.dateStart}
-                              dateEnd={item.dateEnd}
-                              deleteItem={deleteItem}
-                              setDeleteItem={setDeleteItem}
-                              handleDeleted={handleDeleted}
-                            />
-                          </a>
+                          <Education
+                            averageScore={item.averageScore}
+                            numberScore={item.numberScore}
+                            id={item.id}
+                            title={item.title}
+                            amount={item.amount}
+                            photoId={item.photoId}
+                            dateStart={item.dateStart}
+                            dateEnd={item.dateEnd}
+                            deleteItem={deleteItem}
+                            setDeleteItem={setDeleteItem}
+                            handleDeleted={handleDeleted}
+                          />
                         </Link>
                       </SwiperSlide>
                     ))}
@@ -124,7 +121,7 @@ const EducationsFavorites = ({
         ) : null}
       </MainContainer>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default EducationsFavorites;
+export default EducationsFavorites

@@ -1,6 +1,6 @@
-import { useContext, useEffect, useState } from "react";
-import Link from "next/link";
-import { useQuery } from "@apollo/client";
+import { useContext, useEffect, useState } from 'react'
+import Link from 'next/link'
+import { useQuery } from '@apollo/client'
 import {
   HeaderContent,
   Image,
@@ -35,53 +35,53 @@ import {
   CloseBtn,
   UnreadMessages,
   MobileTitle,
-} from "./styled";
-import { red } from "../../../../../../styles/variables";
-import SearchIcon from "./icons/SearchIcon";
-import ProfileIcon from "./icons/ProfileIcon";
-import StarIcon from "./icons/StarIcon";
-import CartIcon from "./icons/CartIcon";
-import CityPingIcon from "./icons/CityPingIcon";
-import HeartIcon from "./icons/HeartIcon";
-import CitySelect from "../CitySelect/CitySelect";
-import { useRouter } from "next/router";
-import ChangeCityPopup from "../../../../blocks/ChangeCityPopup/ChangeCityPopup";
-import HamburgerMenu from "../../../../ui/HamburgerMenu";
-import { getCart } from "../../../../../_graphql-legacy/cart/getCart";
-import CookiePopup from "../../../../blocks/CookiePopup";
+} from './styled'
+import { red } from '../../../../../../styles/variables'
+import SearchIcon from './icons/SearchIcon'
+import ProfileIcon from './icons/ProfileIcon'
+import StarIcon from './icons/StarIcon'
+import CartIcon from './icons/CartIcon'
+import CityPingIcon from './icons/CityPingIcon'
+import HeartIcon from './icons/HeartIcon'
+import CitySelect from '../CitySelect/CitySelect'
+import { useRouter } from 'next/router'
+import ChangeCityPopup from '../../../../blocks/ChangeCityPopup/ChangeCityPopup'
+import HamburgerMenu from '../../../../ui/HamburgerMenu'
+import { getCart } from '../../../../../_graphql-legacy/cart/getCart'
+import CookiePopup from '../../../../blocks/CookiePopup'
 import {
   CartContext,
   CityContext,
   MeContext,
   ProductsContext,
   ProductsGetStatusContext,
-} from "../../../../../searchContext";
-import CountProduct from "../../../../../utils/countProduct";
-import CountProductB2c from "../../../../../utils/countProductB2c";
-import SearchPopup from "../../../../ui/SearchPopup";
-import { currentUserSalonsAndMasterQuery } from "../../../../../_graphql-legacy/master/currentUserSalonsAndMasterQuery";
-import MoreIcon from "./icons/MoreIcon";
-import AdditionalNav from "./components/AdditionalNav";
-import { cyrToTranslit } from "../../../../../utils/translit";
-import { getB2cCart } from "../../../../../_graphql-legacy/cart/getB2cCart";
-import { PHOTO_URL } from "../../../../../../variables";
-import { useChat } from "../../../../../chatContext";
+} from '../../../../../searchContext'
+import CountProduct from '../../../../../utils/countProduct'
+import CountProductB2c from '../../../../../utils/countProductB2c'
+import SearchPopup from '../../../../ui/SearchPopup'
+import { currentUserSalonsAndMasterQuery } from '../../../../../_graphql-legacy/master/currentUserSalonsAndMasterQuery'
+import MoreIcon from './icons/MoreIcon'
+import AdditionalNav from './components/AdditionalNav'
+import { cyrToTranslit } from '../../../../../utils/translit'
+import { getB2cCart } from '../../../../../_graphql-legacy/cart/getB2cCart'
+import { PHOTO_URL } from '../../../../../../variables'
+import { useChat } from '../../../../../chatContext'
 
 const activeLink = (path, link) => {
-  return link?.find((item) => item === path);
-};
+  return link?.find(item => item === path)
+}
 
 const Header = ({ loading = false }) => {
-  let cityInStorage;
-  if (typeof window !== "undefined" && window.localStorage) {
-    cityInStorage = localStorage.getItem("citySalon");
+  let cityInStorage
+  if (typeof window !== 'undefined' && window.localStorage) {
+    cityInStorage = localStorage.getItem('citySalon')
   }
 
-  const [me, setMe] = useContext(MeContext);
-  const [productsGet, setProductsGet] = useContext(ProductsGetStatusContext);
-  const [city, setCity] = useContext(CityContext);
-  const [products, setProducts] = useContext(ProductsContext);
-  const [quantity, setQuantity] = useContext(CartContext);
+  const [me, setMe] = useContext(MeContext)
+  const [productsGet, setProductsGet] = useContext(ProductsGetStatusContext)
+  const [city, setCity] = useContext(CityContext)
+  const [products, setProducts] = useContext(ProductsContext)
+  const [quantity, setQuantity] = useContext(CartContext)
   // const { refetch } = useQuery(currentUserSalonsAndMasterQuery, {
   //   skip: true,
   //   onCompleted: (res) => {
@@ -94,7 +94,7 @@ const Header = ({ loading = false }) => {
   //     });
   //   },
   // });
-  const b2bClient = !!me?.master?.id || !!me?.salons?.length;
+  const b2bClient = !!me?.master?.id || !!me?.salons?.length
   // const { refetch: refetchCart } = useQuery(getCart, {
   //   skip: true,
   //   onCompleted: (res) => {
@@ -132,85 +132,85 @@ const Header = ({ loading = false }) => {
   //   cityInStorage = localStorage.getItem("citySalon");
   // }
 
-  const isLoggedIn = me?.info !== undefined && me?.info !== null;
+  const isLoggedIn = me?.info !== undefined && me?.info !== null
 
   const navLinks = [
     {
-      title: "Магазин",
+      title: 'Магазин',
       link: `/${cyrToTranslit(city)}/beautyFreeShop`,
-      target: "_self",
-      pathArr: ["/[city]/beautyFreeShop"],
+      target: '_self',
+      pathArr: ['/[city]/beautyFreeShop'],
     },
     {
-      title: "Сдать",
-      link: isLoggedIn ? "/createLessorSalon" : "/login",
-      target: "_self",
+      title: 'Сдать',
+      link: isLoggedIn ? '/createLessorSalon' : '/login',
+      target: '_self',
     },
-    { title: "Снять", link: `/${cyrToTranslit(city)}/rent`, target: "_self" },
+    { title: 'Снять', link: `/${cyrToTranslit(city)}/rent`, target: '_self' },
     {
-      title: "Мастер",
+      title: 'Мастер',
       link: `/${cyrToTranslit(city)}/master`,
-      target: "_self",
-      pathArr: ["/[city]/master", "/[city]/master/[id]"],
+      target: '_self',
+      pathArr: ['/[city]/master', '/[city]/master/[id]'],
     },
     {
-      title: "Салон",
+      title: 'Салон',
       link: `/${cyrToTranslit(city)}/salon`,
-      target: "_self",
-      pathArr: ["/[city]/salon", "/[city]/salon/[id]"],
+      target: '_self',
+      pathArr: ['/[city]/salon', '/[city]/salon/[id]'],
     },
-  ];
+  ]
 
   const addNavLinks = [
     {
-      title: "Бренд",
+      title: 'Бренд',
       link: `/${cyrToTranslit(city)}/brand`,
-      target: "_self",
+      target: '_self',
       pathArr: [
-        "/[city]/brand",
-        "/[city]/brand/[id]",
-        "/[city]/brand/[id]/products",
+        '/[city]/brand',
+        '/[city]/brand/[id]',
+        '/[city]/brand/[id]/products',
       ],
     },
     {
-      title: "Услуги",
+      title: 'Услуги',
       link: `/${cyrToTranslit(city)}/services`,
-      target: "_self",
+      target: '_self',
     },
-    { title: "Акции", link: "/sales", target: "_self" },
-    { title: "Обучение", link: "/educations", target: "_self" },
-    { title: "Мероприятия", link: "/events", target: "_self" },
-    { title: "Вакансии", link: "/vacancies", target: "_self" },
-    { title: "Новости", link: "/advices", target: "_self" },
+    { title: 'Акции', link: '/sales', target: '_self' },
+    { title: 'Обучение', link: '/educations', target: '_self' },
+    { title: 'Мероприятия', link: '/events', target: '_self' },
+    { title: 'Вакансии', link: '/vacancies', target: '_self' },
+    { title: 'Новости', link: '/advices', target: '_self' },
     {
-      title: "Тренды",
-      link: "/trends",
-      target: "_self",
+      title: 'Тренды',
+      link: '/trends',
+      target: '_self',
     },
-  ];
+  ]
 
   const addCatalogLinks = [
     {
-      title: "B2B магазин",
+      title: 'B2B магазин',
       link: `/${cyrToTranslit(city)}/beautyFreeShop`,
-      target: "_self",
+      target: '_self',
     },
     {
-      title: "B2C магазин",
+      title: 'B2C магазин',
       link: `/${cyrToTranslit(city)}/beautyFreeShop`,
-      target: "_self",
+      target: '_self',
     },
-  ];
+  ]
 
-  const router = useRouter();
+  const router = useRouter()
 
-  const isAboutPage = router.pathname === "/about";
+  const isAboutPage = router.pathname === '/about'
 
-  const [openPopup, setPopupOpen] = useState(!cityInStorage);
+  const [openPopup, setPopupOpen] = useState(!cityInStorage)
 
   const handlePopupClose = () => {
-    setPopupOpen(false);
-  };
+    setPopupOpen(false)
+  }
 
   // useEffect(() => {
   //   if (!b2bClient) {
@@ -222,84 +222,84 @@ const Header = ({ loading = false }) => {
 
   useEffect(() => {
     if (me) {
-      if (typeof window !== "undefined" && window.localStorage) {
+      if (typeof window !== 'undefined' && window.localStorage) {
         if (!me?.info) {
           localStorage.setItem(
-            "citySalon",
+            'citySalon',
             me?.info?.city
               ? me.info.city
-              : localStorage.getItem("citySalon")
-              ? localStorage.getItem("citySalon")
+              : localStorage.getItem('citySalon')
+              ? localStorage.getItem('citySalon')
               : me?.locationByIp
               ? me?.locationByIp?.data?.city
-              : "Москва"
-          );
+              : 'Москва',
+          )
           setCity(
             me?.info?.city
               ? me.info.city
-              : localStorage.getItem("citySalon")
-              ? localStorage.getItem("citySalon")
+              : localStorage.getItem('citySalon')
+              ? localStorage.getItem('citySalon')
               : me?.locationByIp
               ? me?.locationByIp?.data?.city
-              : "Москва"
-          );
+              : 'Москва',
+          )
         } else {
           setCity(
-            localStorage.getItem("citySalon")
-              ? localStorage.getItem("citySalon")
+            localStorage.getItem('citySalon')
+              ? localStorage.getItem('citySalon')
               : me?.locationByIp
               ? me?.locationByIp?.data?.city
-              : "Москва"
-          );
+              : 'Москва',
+          )
           localStorage.setItem(
-            "citySalon",
-            localStorage.getItem("citySalon")
-              ? localStorage.getItem("citySalon")
+            'citySalon',
+            localStorage.getItem('citySalon')
+              ? localStorage.getItem('citySalon')
               : me?.locationByIp
               ? me?.locationByIp?.data?.city
-              : "Москва"
-          );
+              : 'Москва',
+          )
         }
       }
     }
-  }, [me]);
+  }, [me])
 
   useEffect(() => {
     if (!city) {
       setCity(
         me?.info?.city
           ? me.info.city
-          : localStorage.getItem("citySalon")
-          ? localStorage.getItem("citySalon")
+          : localStorage.getItem('citySalon')
+          ? localStorage.getItem('citySalon')
           : me?.locationByIp
           ? me?.locationByIp?.data?.city
-          : "Москва"
-      );
+          : 'Москва',
+      )
     }
-  }, []);
+  }, [])
 
-  const [fillFav, setFillFav] = useState(isAboutPage ? "#fff" : "#000");
-  const [fillProfile, setFillProfile] = useState(isAboutPage ? "#fff" : "#000");
-  const [fillSearch, setFillSearch] = useState(isAboutPage ? "#fff" : "#000");
-  const [fillCart, setFillCart] = useState(isAboutPage ? "#fff" : "#000");
+  const [fillFav, setFillFav] = useState(isAboutPage ? '#fff' : '#000')
+  const [fillProfile, setFillProfile] = useState(isAboutPage ? '#fff' : '#000')
+  const [fillSearch, setFillSearch] = useState(isAboutPage ? '#fff' : '#000')
+  const [fillCart, setFillCart] = useState(isAboutPage ? '#fff' : '#000')
   const [fillMoreIcon, setFillMoreIcon] = useState(
-    isAboutPage ? "#fff" : "#000"
-  );
-  const [showCitySelect, setShowCitySelect] = useState(false);
-  const [showHamburgerMenu, setShowHamburgerMenu] = useState(false);
-  const [showAdditionalNav, setShowAdditionalNav] = useState(false);
-  const [showCatalogMenu, setShowCatalogMenu] = useState(false);
-  const [showSearchPopup, setShowSearchPopup] = useState(false);
+    isAboutPage ? '#fff' : '#000',
+  )
+  const [showCitySelect, setShowCitySelect] = useState(false)
+  const [showHamburgerMenu, setShowHamburgerMenu] = useState(false)
+  const [showAdditionalNav, setShowAdditionalNav] = useState(false)
+  const [showCatalogMenu, setShowCatalogMenu] = useState(false)
+  const [showSearchPopup, setShowSearchPopup] = useState(false)
   // const { unreadMessagesCount } = useChat();
 
   const logoClickHandler = () => {
-    router.push(`/${cyrToTranslit(city)}`);
-  };
+    router.push(`/${cyrToTranslit(city)}`)
+  }
 
   const searchIconClickHandler = () => {
-    setShowSearchPopup(!showSearchPopup);
-    setFillSearch(red);
-  };
+    setShowSearchPopup(!showSearchPopup)
+    setFillSearch(red)
+  }
 
   return (
     <>
@@ -343,7 +343,7 @@ const Header = ({ loading = false }) => {
             <LogoWrap>
               <Image
                 alt="logo"
-                src={isAboutPage ? "/logo-white-header.svg" : "/logo.svg"}
+                src={isAboutPage ? '/logo-white-header.svg' : '/logo.svg'}
                 onClick={logoClickHandler}
               />
             </LogoWrap>
@@ -356,8 +356,8 @@ const Header = ({ loading = false }) => {
                     isAboutPage={isAboutPage}
                     visible={link?.visible}
                   >
-                    <Link href={link.link}>
-                      <a target={link.target}>{link.title}</a>
+                    <Link href={link.link} target={link.target}>
+                      {link.title}
                     </Link>
                   </NavItem>
                 ))}
@@ -375,7 +375,7 @@ const Header = ({ loading = false }) => {
               <MoreIconWrap
                 onMouseEnter={() => setFillMoreIcon(red)}
                 onMouseLeave={() =>
-                  setFillMoreIcon(isAboutPage ? "#fff" : "#000")
+                  setFillMoreIcon(isAboutPage ? '#fff' : '#000')
                 }
                 onClick={() => setShowAdditionalNav(!showAdditionalNav)}
               >
@@ -408,7 +408,7 @@ const Header = ({ loading = false }) => {
               onMouseMove={() => setFillSearch(red)}
               onMouseLeave={() =>
                 setFillSearch(
-                  isAboutPage ? "#fff" : showSearchPopup ? red : "#000"
+                  isAboutPage ? '#fff' : showSearchPopup ? red : '#000',
                 )
               }
             >
@@ -418,12 +418,12 @@ const Header = ({ loading = false }) => {
               />
             </LinkSearch>
             {isLoggedIn ? (
-              <ProfilePhotoWrap onClick={() => router.push("/masterCabinet")}>
+              <ProfilePhotoWrap onClick={() => router.push('/masterCabinet')}>
                 <ProfilePhoto
                   src={
                     me?.info?.avatar
                       ? `${PHOTO_URL}${me?.info?.avatar}/original`
-                      : "/empty-photo.svg"
+                      : '/empty-photo.svg'
                   }
                 />
                 {/* {unreadMessagesCount > 0 && (
@@ -434,21 +434,21 @@ const Header = ({ loading = false }) => {
               <LinkProfile
                 onMouseMove={() => setFillProfile(red)}
                 onMouseLeave={() =>
-                  setFillProfile(isAboutPage ? "#fff" : "#000")
+                  setFillProfile(isAboutPage ? '#fff' : '#000')
                 }
                 onClick={() => {
                   if (me === null) {
-                    return;
+                    return
                   }
-                  ym("reachGoal", "click_login_head");
+                  ym('reachGoal', 'click_login_head')
                   window.dataLayer.push({
-                    event: "event",
+                    event: 'event',
                     eventProps: {
-                      category: "click",
-                      action: "login_head",
+                      category: 'click',
+                      action: 'login_head',
                     },
-                  });
-                  router.push("/login");
+                  })
+                  router.push('/login')
                 }}
               >
                 <ProfileIcon fill={fillProfile} />
@@ -457,30 +457,30 @@ const Header = ({ loading = false }) => {
 
             <LinkFavorites
               onMouseMove={() => setFillFav(red)}
-              onMouseLeave={() => setFillFav(isAboutPage ? "#fff" : "#000")}
-              onClick={() => router.push("/favorites")}
+              onMouseLeave={() => setFillFav(isAboutPage ? '#fff' : '#000')}
+              onClick={() => router.push('/favorites')}
             >
               <HeartIcon fill={fillFav} />
             </LinkFavorites>
             <CartIconWrap
               onMouseMove={() => setFillCart(red)}
-              onMouseLeave={() => setFillCart(isAboutPage ? "#fff" : "#000")}
+              onMouseLeave={() => setFillCart(isAboutPage ? '#fff' : '#000')}
               onClick={() =>
                 me?.info
                   ? router.push(`/cartB2b`)
                   : router.push(
                       {
-                        pathname: "/login",
-                        query: { error: "notAuthorized" },
+                        pathname: '/login',
+                        query: { error: 'notAuthorized' },
                       },
-                      "login"
+                      'login',
                     )
               }
             >
               <CartIcon fill={fillCart} />
               {quantity != 0 ? (
                 <Count
-                  onClick={() => router.push(me?.info ? `/cartB2b` : "/login")}
+                  onClick={() => router.push(me?.info ? `/cartB2b` : '/login')}
                 >
                   {quantity}
                 </Count>
@@ -504,10 +504,10 @@ const Header = ({ loading = false }) => {
         setShowHamburgerMenu={setShowHamburgerMenu}
       />
     </>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header
 
 // export const MobileHeader = ({
 //   isLoggedIn,

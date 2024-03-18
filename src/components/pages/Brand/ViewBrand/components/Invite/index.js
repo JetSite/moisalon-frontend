@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from 'next/link'
 import {
   Wrapper,
   Image,
@@ -8,11 +8,11 @@ import {
   Text,
   ButtonWrapper,
   ButtonWrapperMobile,
-} from "./styles";
-import Button from "../../../../../ui/Button";
+} from './styles'
+import Button from '../../../../../ui/Button'
 
 const InviteBrand = ({ me }) => {
-  const isLoggedIn = me?.info !== undefined && me?.info !== null;
+  const isLoggedIn = me?.info !== undefined && me?.info !== null
 
   return (
     <Wrapper>
@@ -27,39 +27,35 @@ const InviteBrand = ({ me }) => {
         </ContentWrap>
       </Content>
       <ButtonWrapper>
-        <Link href={isLoggedIn ? "/createBrand" : "/login"}>
+        <Link href={isLoggedIn ? '/createBrand' : '/login'}>
           <Button size="fullWidth" variant="red">
             Зарегистрировать бренд
           </Button>
         </Link>
         <noindex>
-          <Link href="/for_brand">
-            <a target="_blank" rel="nofollow">
-              <Button size="fullWidth" variant="darkBorder">
-                Больше информации
-              </Button>
-            </a>
+          <Link href="/for_brand" target="_blank" rel="nofollow">
+            <Button size="fullWidth" variant="darkBorder">
+              Больше информации
+            </Button>
           </Link>
         </noindex>
       </ButtonWrapper>
       <ButtonWrapperMobile>
-        <Link href={isLoggedIn ? "/createBrand" : "/login"}>
+        <Link href={isLoggedIn ? '/createBrand' : '/login'}>
           <Button size="fullWidth" variant="red" font="small">
             Зарегистрироваться бренд
           </Button>
         </Link>
         <noindex>
-          <Link href="/for_brand">
-            <a target="_blank" rel="nofollow">
-              <Button size="fullWidth" variant="darkBorder" font="small">
-                Больше информации
-              </Button>
-            </a>
+          <Link href="/for_brand" target="_blank" rel="nofollow">
+            <Button size="fullWidth" variant="darkBorder" font="small">
+              Больше информации
+            </Button>
           </Link>
         </noindex>
       </ButtonWrapperMobile>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default InviteBrand;
+export default InviteBrand

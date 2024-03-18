@@ -1,10 +1,10 @@
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useState, useRef } from "react";
-import OutsideClickHandler from "react-outside-click-handler";
-import Button from "../../../../../ui/Button";
-import Popup from "../../../../../ui/Popup";
-import { NavItem, AdditionalNavContent } from "../styled";
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useState, useRef } from 'react'
+import OutsideClickHandler from 'react-outside-click-handler'
+import Button from '../../../../../ui/Button'
+import Popup from '../../../../../ui/Popup'
+import { NavItem, AdditionalNavContent } from '../styled'
 
 const AdditionalNav = ({
   isAboutPage,
@@ -14,19 +14,19 @@ const AdditionalNav = ({
   catalog,
   b2bClient,
 }) => {
-  const router = useRouter();
-  const addNavRef = useRef();
-  const [openPopup, setOpenPopup] = useState(false);
+  const router = useRouter()
+  const addNavRef = useRef()
+  const [openPopup, setOpenPopup] = useState(false)
 
   const closePopup = () => {
-    setOpenPopup(false);
-  };
+    setOpenPopup(false)
+  }
 
   return (
     <>
       <OutsideClickHandler
         onOutsideClick={() => {
-          setShowAdditionalNav(false);
+          setShowAdditionalNav(false)
         }}
       >
         <AdditionalNavContent
@@ -35,7 +35,7 @@ const AdditionalNav = ({
           showAdditionalNav={showAdditionalNav}
         >
           {links.map((link, i) =>
-            !b2bClient && link.link === "/catalogB2b" ? (
+            !b2bClient && link.link === '/catalogB2b' ? (
               <NavItem
                 key={i}
                 active={router.pathname == link.link}
@@ -43,7 +43,7 @@ const AdditionalNav = ({
                 visible={link?.visible}
                 onClick={() => setOpenPopup(true)}
               >
-                <p style={{ cursor: "pointer" }}>B2B магазин</p>
+                <p style={{ cursor: 'pointer' }}>B2B магазин</p>
               </NavItem>
             ) : (
               <NavItem
@@ -52,11 +52,11 @@ const AdditionalNav = ({
                 isAboutPage={isAboutPage}
                 visible={link?.visible}
               >
-                <Link href={link.link}>
-                  <a target={link.target}>{link.title}</a>
+                <Link href={link.link} target={link.target}>
+                  {link.title}
                 </Link>
               </NavItem>
-            )
+            ),
           )}
         </AdditionalNavContent>
       </OutsideClickHandler>
@@ -70,7 +70,7 @@ const AdditionalNav = ({
         </Button>
       </Popup>
     </>
-  );
-};
+  )
+}
 
-export default AdditionalNav;
+export default AdditionalNav

@@ -13,7 +13,7 @@
     "fetch-schema": "node scripts/fetch-schema.js"
   },
   "dependencies": {
-    "@apollo/client": "^3.5.10",
+    "@apollo/client": "^3.7.10",
     "@apollo/react-common": "^3.1.4",
     "@apollo/react-hooks": "^4.0.0",
     "@badrap/bar-of-progress": "^0.1.2",
@@ -29,13 +29,13 @@
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "next": "^13.0.2",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
     "next-share": "^0.14.0",
     "next-sitemap": "^4.0.5",
     "node-fetch": "2.6.0",
     "polished": "^4.1.3",
+    "react": "^18.2.0",
     "react-autosuggest": "^10.1.0",
+    "react-dom": "^18.2.0",
     "react-dropzone": "^11.4.2",
     "react-final-form": "^6.5.9",
     "react-final-form-arrays": "^3.1.3",
@@ -52,16 +52,17 @@
     "use-media": "^1.4.0"
   },
   "devDependencies": {
+    "@types/lodash": "^4.17.0",
     "@types/node": "^12.12.21",
     "@types/react": "^18.0.2",
     "@types/react-dom": "^18.0.1",
-    "prettier": "^2.5.0",
-    "eslint": "^8.5.0",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^6.10.0",
+    "eslint": "^8.5.0",
     "eslint-config-next": "^13.0.2",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.5.0",
     "typescript": "^4.8.4"
   },
   "browserslist": {

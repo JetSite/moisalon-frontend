@@ -1,6 +1,6 @@
-import Link from "next/link";
-import RentCard from "../../../RentCard";
-import { cyrToTranslit } from "../../../../../utils/translit";
+import Link from 'next/link'
+import RentCard from '../../../RentCard'
+import { cyrToTranslit } from '../../../../../utils/translit'
 
 const WorkplaceSlide = ({ item, salon }) => {
   return (
@@ -9,11 +9,9 @@ const WorkplaceSlide = ({ item, salon }) => {
         salon?.seo?.slug || salon?.id
       }`}
     >
-      <a>
-        <RentCard item={item} salon={salon} />
-      </a>
+      <RentCard item={item} salon={salon} />
     </Link>
-  );
-};
+  )
+}
 
-export default WorkplaceSlide;
+export default WorkplaceSlide

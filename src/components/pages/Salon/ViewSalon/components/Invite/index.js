@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from 'next/link'
 import {
   Wrapper,
   Image,
@@ -8,11 +8,11 @@ import {
   Text,
   ButtonWrapper,
   ButtonWrapperMobile,
-} from "./styles";
-import Button from "../../../../../ui/Button";
+} from './styles'
+import Button from '../../../../../ui/Button'
 
 const InviteSalon = ({ me }) => {
-  const isLoggedIn = me?.info !== undefined && me?.info !== null;
+  const isLoggedIn = me?.info !== undefined && me?.info !== null
   return (
     <Wrapper>
       <Image />
@@ -27,39 +27,35 @@ const InviteSalon = ({ me }) => {
         </ContentWrap>
       </Content>
       <ButtonWrapper>
-        <Link href={isLoggedIn ? "/createSalon" : "/login"}>
+        <Link href={isLoggedIn ? '/createSalon' : '/login'}>
           <Button size="fullWidth" variant="red">
             Зарегистрироваться как салон
           </Button>
         </Link>
         <noindex>
-          <Link href="/for_salon">
-            <a target="_blank" rel="nofollow">
-              <Button size="fullWidth" variant="darkBorder">
-                Больше информации
-              </Button>
-            </a>
+          <Link href="/for_salon" target="_blank" rel="nofollow">
+            <Button size="fullWidth" variant="darkBorder">
+              Больше информации
+            </Button>
           </Link>
         </noindex>
       </ButtonWrapper>
       <ButtonWrapperMobile>
-        <Link href={isLoggedIn ? "/createSalon" : "/login"}>
+        <Link href={isLoggedIn ? '/createSalon' : '/login'}>
           <Button size="fullWidth" variant="red" font="small">
             Зарегистрироваться как салон
           </Button>
         </Link>
         <noindex>
-          <Link href="/for_salon">
-            <a target="_blank" rel="nofollow">
-              <Button size="fullWidth" variant="darkTransparent" font="small">
-                Больше информации
-              </Button>
-            </a>
+          <Link href="/for_salon" target="_blank" rel="nofollow">
+            <Button size="fullWidth" variant="darkTransparent" font="small">
+              Больше информации
+            </Button>
           </Link>
         </noindex>
       </ButtonWrapperMobile>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default InviteSalon;
+export default InviteSalon

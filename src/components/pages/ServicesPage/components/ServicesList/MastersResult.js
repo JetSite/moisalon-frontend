@@ -1,24 +1,24 @@
-import React, { useContext } from "react";
-import Link from "next/link";
+import React, { useContext } from 'react'
+import Link from 'next/link'
 import {
   CatalogsContext,
   CityContext,
   MeContext,
-} from "../../../../../searchContext";
-import { pluralize } from "../../../../../utils/pluralize";
-import { WrapperItemsMasters, TitleResults, LinkStyled } from "./styles";
-import catalogOrDefault from "../../../../../utils/catalogOrDefault";
-import MasterItem from "../../../../blocks/MasterCard";
-import { cyrToTranslit } from "../../../../../utils/translit";
+} from '../../../../../searchContext'
+import { pluralize } from '../../../../../utils/pluralize'
+import { WrapperItemsMasters, TitleResults, LinkStyled } from './styles'
+import catalogOrDefault from '../../../../../utils/catalogOrDefault'
+import MasterItem from '../../../../blocks/MasterCard'
+import { cyrToTranslit } from '../../../../../utils/translit'
 
 const MastersResult = ({ mastersData }) => {
-  const catalogs = useContext(CatalogsContext);
-  const [city] = useContext(CityContext);
-  const [me] = useContext(MeContext);
+  const catalogs = useContext(CatalogsContext)
+  const [city] = useContext(CityContext)
+  const [me] = useContext(MeContext)
 
   const masterSpecializationsCatalog = catalogOrDefault(
-    catalogs?.masterSpecializationsCatalog
-  );
+    catalogs?.masterSpecializationsCatalog,
+  )
 
   return (
     <>
@@ -27,35 +27,33 @@ const MastersResult = ({ mastersData }) => {
           <TitleResults>
             {`${pluralize(
               mastersData.length || 0,
-              "Найден",
-              "Найдено",
-              "Найдено"
+              'Найден',
+              'Найдено',
+              'Найдено',
             )} ${mastersData.length || 0} ${pluralize(
               mastersData.length || 0,
-              "мастер",
-              "мастера",
-              "мастеров"
+              'мастер',
+              'мастера',
+              'мастеров',
             )}`}
           </TitleResults>
           <WrapperItemsMasters>
-            {mastersData?.map((master) => (
+            {mastersData?.map(master => (
               <Link
                 href={`/${cyrToTranslit(
-                  master?.addressFull?.city || city
+                  master?.addressFull?.city || city,
                 )}/master/${master?.seo?.slug || master?.id}`}
                 key={master.id}
               >
-                <a>
-                  <LinkStyled>
-                    <MasterItem
-                      master={master}
-                      catalog={masterSpecializationsCatalog}
-                      shareLink={`https://moi.salon/${cyrToTranslit(
-                        master?.addressFull?.city || city
-                      )}/master/${master?.seo?.slug || master?.id}`}
-                    />
-                  </LinkStyled>
-                </a>
+                <LinkStyled>
+                  <MasterItem
+                    master={master}
+                    catalog={masterSpecializationsCatalog}
+                    shareLink={`https://moi.salon/${cyrToTranslit(
+                      master?.addressFull?.city || city,
+                    )}/master/${master?.seo?.slug || master?.id}`}
+                  />
+                </LinkStyled>
               </Link>
             ))}
           </WrapperItemsMasters>
@@ -64,7 +62,7 @@ const MastersResult = ({ mastersData }) => {
         <TitleResults>Мастеров не найдено</TitleResults>
       )}
     </>
-  );
-};
+  )
+}
 
-export default MastersResult;
+export default MastersResult
