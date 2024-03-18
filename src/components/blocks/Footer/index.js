@@ -80,9 +80,7 @@ const Footer = ({ landing = false, noMobileFooter }) => {
                   <NavFooterItem>Бренд</NavFooterItem>
                 </Link>
                 <Link href={`/${cyrToTranslit(city)}/rent`}>
-                  <a>
-                    <NavFooterItem>Аренда</NavFooterItem>
-                  </a>
+                  <NavFooterItem>Аренда</NavFooterItem>
                 </Link>
                 <Link href="/about">
                   <NavFooterItem>О проекте</NavFooterItem>
@@ -266,9 +264,7 @@ const Footer = ({ landing = false, noMobileFooter }) => {
                       <NavFooterItem>Мастер</NavFooterItem>
                     </Link>
                     <Link href={`/${cyrToTranslit(city)}/rent`}>
-                      <a>
-                        <NavFooterItem>Аренда</NavFooterItem>
-                      </a>
+                      <NavFooterItem>Аренда</NavFooterItem>
                     </Link>
                     <Link href={`/${cyrToTranslit(city)}/salon`}>
                       <NavFooterItem>Салон</NavFooterItem>

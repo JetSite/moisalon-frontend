@@ -1,18 +1,16 @@
-import { useQuery } from "@apollo/client";
-import { brandsRandomQuery } from "../../../../../_graphql-legacy/brand/brandSearchRandom";
-import Slider from "../../../../blocks/Slider";
+import { useQuery } from '@apollo/client'
+import { getBrands } from 'src/graphql/brand/queries/getBrands'
+import Slider from '../../../../blocks/Slider'
 
 const MainBrandsSlider = () => {
-  const { data: brands, loading } = useQuery(brandsRandomQuery, {
-    variables: { count: 10 },
-  });
+  const { data: brands, loading } = useQuery(getBrands)
 
   return (
     <Slider
       type="brands"
       noScroll
       loading={loading}
-      items={brands?.brandsRandom || []}
+      items={brands?.brands?.data}
       title="Популярные бренды"
       pt={102}
       pb={91}
@@ -20,7 +18,7 @@ const MainBrandsSlider = () => {
       noPadding
       pl={20}
     />
-  );
-};
+  )
+}
 
-export default MainBrandsSlider;
+export default MainBrandsSlider

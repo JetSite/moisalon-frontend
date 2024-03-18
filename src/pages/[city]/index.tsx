@@ -2,9 +2,6 @@ import { useEffect, useContext } from 'react'
 import Head from 'next/head'
 import { addApolloState, initializeApollo } from '../../apollo-client'
 import MainPage from '../../components/pages/MainPage'
-import { totalSalons } from '../../_graphql-legacy/salon/totalSalons'
-import { totalMasters } from '../../_graphql-legacy/master/totalMasters'
-import { totalBrands } from '../../_graphql-legacy/brand/totalBrands'
 import { getCategories } from '../../_graphql-legacy/advices/getCategories'
 import { getAll } from '../../_graphql-legacy/advices/getAll'
 import { bannersByHookCodeQuery } from '../../_graphql-legacy/baners/bannersHooks'
@@ -26,20 +23,18 @@ import { pluralize } from '../../utils/pluralize'
 import { getSalons } from '../../graphql/salon/queries/getSalons'
 import { getBannerHooks } from '../../graphql/banner/queries/getBannerHooks'
 import { getFeeds } from '../../graphql/feed/queries/getFeeds'
-import { getServiceCategories } from '../../graphql/service/queries/getServiceCategories'
-import { getProductCategories } from '../../graphql/product/queries/getProductCategories'
+import { getFeedCategories } from 'src/graphql/feed/queries/getFeedCategories'
+import { totalSalons } from 'src/graphql/salon/queries/totalSalons'
+import { totalMasters } from 'src/graphql/master/queries/totalMasters'
+import { totalBrands } from 'src/graphql/brand/queries/totalBrands'
 
 export default function AppContent({
-  // totalSalons,
-  // totalMasters,
-  // totalBrands,
-  // beautyCategories,
-  // beautyAllContent,
-  // bannersByHookWide,
-  // bannersByHookSmall1,
-  // bannersByHookSmall2,
-  // sales,
-  // salons,
+  beautyCategories,
+  beautyAllContent,
+  bannerHooks,
+  totalSalons,
+  totalMasters,
+  totalBrands,
   cityData,
 }) {
   // const [me, setMe] = useContext(MeContext);
@@ -59,10 +54,6 @@ export default function AppContent({
   //     });
   //   },
   // });
-
-  const { data } = useQuery(totalSalons)
-
-  console.log(data)
 
   // const [changeCityFunc] = useMutation(changeCityMutation, {
   //   onCompleted: () => {
@@ -111,12 +102,12 @@ export default function AppContent({
         />
       </Head> */}
       <MainPage
-        // totalSalons={totalSalons}
-        // totalMasters={totalMasters}
-        // totalBrands={totalBrands}
-        // beautyCategories={beautyCategories}
-        // beautyAllContent={beautyAllContent}
-        // sales={sales}
+        beautyCategories={beautyCategories}
+        beautyAllContent={beautyAllContent}
+        bannerHooks={bannerHooks}
+        totalSalons={totalSalons}
+        totalMasters={totalMasters}
+        totalBrands={totalBrands}
         cityData={cityData}
       />
     </>
@@ -133,23 +124,24 @@ export async function getServerSideProps(ctx) {
   //   },
   // });
   const data = await Promise.all([
-    // apolloClient.query({
-    //   query: totalSalons,
-    // }),
-    // apolloClient.query({
-    //   query: totalMasters,
-    // }),
-    // apolloClient.query({
-    //   query: totalBrands,
-    // }),
-    // apolloClient.query({
-    //   query: getCategories,
-    //   context: { uri: "https://moi.salon/graphql" },
-    // }),
-    // apolloClient.query({
-    //   query: getAll,
-    //   context: { uri: "https://moi.salon/graphql" },
-    // }),
+    apolloClient.query({
+      query: getFeedCategories,
+    }),
+    apolloClient.query({
+      query: getFeeds,
+    }),
+    apolloClient.query({
+      query: getBannerHooks,
+    }),
+    apolloClient.query({
+      query: totalSalons,
+    }),
+    apolloClient.query({
+      query: totalMasters,
+    }),
+    apolloClient.query({
+      query: totalBrands,
+    }),
     // apolloClient.query({
     //   query: salesSearch,
     //   variables: { query: "" },
@@ -180,14 +172,12 @@ export async function getServerSideProps(ctx) {
 
   return addApolloState(apolloClient, {
     props: {
-      // totalSalons: data[0]?.data?.totalSalons,
-      // totalMasters: data[1]?.data?.totalMasters,
-      // totalBrands: data[2]?.data?.totalBrands,
-      // beautyCategories: data[3]?.data?.catagories,
-      // beautyAllContent: data[4]?.data?.pages,
-      // bannersByHookWide: data[5]?.data,
-      // bannersByHookSmall1: data[6]?.data,
-      // bannersByHookSmall2: data[7]?.data,
+      beautyCategories: data[0]?.data?.feedCategories,
+      beautyAllContent: data[1]?.data?.feeds,
+      bannerHooks: data[2]?.data?.bannerHooks,
+      totalSalons: data[3]?.data?.salons?.meta?.pagination?.total,
+      totalMasters: data[4]?.data?.masters?.meta?.pagination?.total,
+      totalBrands: data[5]?.data?.brands?.meta?.pagination?.total,
       // sales: data[8]?.data,
       // salons: data[9]?.data,
       cityData: 'Москва',

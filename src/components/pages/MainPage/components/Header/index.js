@@ -314,7 +314,7 @@ const Header = ({ loading = false }) => {
           setFillSearch={setFillSearch}
         />
       ) : null}
-      {/* <WrappperMobile>
+      <WrappperMobile>
         <MobileHeader
           quantity={quantity}
           me={me}
@@ -335,7 +335,7 @@ const Header = ({ loading = false }) => {
           setShowSearchPopup={setShowSearchPopup}
           setFillSearch={setFillSearch}
         />
-      </WrappperMobile> */}
+      </WrappperMobile>
       {showSearchPopup ? <FakeWrapper /> : null}
       <Wrapper showSearchPopup={showSearchPopup} isAboutPage={isAboutPage}>
         <HeaderContent>
@@ -509,128 +509,126 @@ const Header = ({ loading = false }) => {
 
 export default Header
 
-// export const MobileHeader = ({
-//   isLoggedIn,
-//   setFillProfile,
-//   setFillCart,
-//   router,
-//   me,
-//   loading = false,
-//   setShowCitySelect,
-//   defaultCity,
-//   showHamburgerMenu,
-//   setShowHamburgerMenu,
-//   quantity,
-//   showSearchPopup,
-//   setShowSearchPopup,
-//   b2bClient,
-// }) => {
-//   useEffect(() => {
-//     if (router.query?.q === "search") {
-//       setShowSearchPopup(true);
-//     }
-//   }, [router.query]);
-//   const [city, setCity] = useContext(CityContext);
+export const MobileHeader = ({
+  isLoggedIn,
+  setFillProfile,
+  setFillCart,
+  router,
+  me,
+  loading = false,
+  setShowCitySelect,
+  defaultCity,
+  showHamburgerMenu,
+  setShowHamburgerMenu,
+  quantity,
+  showSearchPopup,
+  setShowSearchPopup,
+  b2bClient,
+}) => {
+  useEffect(() => {
+    if (router.query?.q === 'search') {
+      setShowSearchPopup(true)
+    }
+  }, [router.query])
+  const [city, setCity] = useContext(CityContext)
 
-//   return (
-//     <>
-//       <HamburgerMenu
-//         loading={loading}
-//         showHamburgerMenu={showHamburgerMenu}
-//         setShowHamburgerMenu={setShowHamburgerMenu}
-//         setShowCitySelect={setShowCitySelect}
-//         defaultCity={defaultCity}
-//       />
-//       <HeaderMobile showSearchPopup={showSearchPopup}>
-//         <LeftMobile>
-//           {!showSearchPopup ? (
-//             <HamburgerMenuIcon
-//               onClick={() => setShowHamburgerMenu(!showHamburgerMenu)}
-//             >
-//               <Line />
-//               <Line />
-//               <Line />
-//             </HamburgerMenuIcon>
-//           ) : (
-//             <CloseBtn
-//               show={showSearchPopup}
-//               onClick={() => setShowSearchPopup(false)}
-//             />
-//           )}
-//           <LinkSearchMobile
-//             onClick={() => setShowSearchPopup(!showSearchPopup)}
-//             showSearchPopup={showSearchPopup}
-//           >
-//             <SearchIcon fill={showSearchPopup ? red : "#000"} />
-//           </LinkSearchMobile>
-//           <LinkSearchMobile
-//             onClick={() => setShowCitySelect(true)}
-//             showSearchPopup={showSearchPopup}
-//           >
-//             <CityPingIcon />
-//           </LinkSearchMobile>
-//         </LeftMobile>
-//         <LogoMobile>
-//           <MobileLogoLink>
-//             <Link
-//               href={`/${cyrToTranslit(city)}`}
-//               onClick={() => setActiveLink("")}
-//             >
-//               <a>
-//                 <Image alt="logo" src="/logo.svg" />
-//               </a>
-//             </Link>
-//           </MobileLogoLink>
-//         </LogoMobile>
-//         <RightMobile>
-//           <LinkProfile onClick={() => router.push("/favorites")}>
-//             <HeartIcon fill="#000" />
-//           </LinkProfile>
-//           {isLoggedIn ? (
-//             <ProfilePhotoWrap onClick={() => router.push("/masterCabinet")}>
-//               <ProfilePhoto
-//                 src={
-//                   me?.info?.avatar
-//                     ? `${PHOTO_URL}${me?.info?.avatar}/original`
-//                     : "/empty-photo.svg"
-//                 }
-//               />
-//             </ProfilePhotoWrap>
-//           ) : (
-//             <LinkProfile
-//               onMouseMove={() => setFillProfile(red)}
-//               onMouseLeave={() => setFillProfile("#000")}
-//               onClick={() => router.push("/login")}
-//             >
-//               <ProfileIcon fill="#000" />
-//             </LinkProfile>
-//           )}
-//           <CartIconWrap
-//             onMouseMove={() => setFillCart(red)}
-//             onMouseLeave={() => setFillCart("#000")}
-//             onClick={() =>
-//               router.push(
-//                 me?.info
-//                   ? `/cartB2b`
-//                   : {
-//                       pathname: "/login",
-//                       query: { error: "notAuthorized" },
-//                     }
-//               )
-//             }
-//           >
-//             <CartIcon fill="#000" />
-//             {quantity != 0 ? (
-//               <Count
-//                 onClick={() => router.push(me?.info ? `/cartB2b` : "/login")}
-//               >
-//                 {quantity}
-//               </Count>
-//             ) : null}
-//           </CartIconWrap>
-//         </RightMobile>
-//       </HeaderMobile>
-//       <MobileTitle>Платформа для мастеров и салонов</MobileTitle>
-//     </>
-//   );
-// };
+  return (
+    <>
+      <HamburgerMenu
+        loading={loading}
+        showHamburgerMenu={showHamburgerMenu}
+        setShowHamburgerMenu={setShowHamburgerMenu}
+        setShowCitySelect={setShowCitySelect}
+        defaultCity={defaultCity}
+      />
+      <HeaderMobile showSearchPopup={showSearchPopup}>
+        <LeftMobile>
+          {!showSearchPopup ? (
+            <HamburgerMenuIcon
+              onClick={() => setShowHamburgerMenu(!showHamburgerMenu)}
+            >
+              <Line />
+              <Line />
+              <Line />
+            </HamburgerMenuIcon>
+          ) : (
+            <CloseBtn
+              show={showSearchPopup}
+              onClick={() => setShowSearchPopup(false)}
+            />
+          )}
+          <LinkSearchMobile
+            onClick={() => setShowSearchPopup(!showSearchPopup)}
+            showSearchPopup={showSearchPopup}
+          >
+            <SearchIcon fill={showSearchPopup ? red : '#000'} />
+          </LinkSearchMobile>
+          <LinkSearchMobile
+            onClick={() => setShowCitySelect(true)}
+            showSearchPopup={showSearchPopup}
+          >
+            <CityPingIcon />
+          </LinkSearchMobile>
+        </LeftMobile>
+        <LogoMobile>
+          <MobileLogoLink>
+            <Link
+              href={`/${cyrToTranslit(city)}`}
+              onClick={() => setActiveLink('')}
+            >
+              <Image alt="logo" src="/logo.svg" />
+            </Link>
+          </MobileLogoLink>
+        </LogoMobile>
+        <RightMobile>
+          <LinkProfile onClick={() => router.push('/favorites')}>
+            <HeartIcon fill="#000" />
+          </LinkProfile>
+          {isLoggedIn ? (
+            <ProfilePhotoWrap onClick={() => router.push('/masterCabinet')}>
+              <ProfilePhoto
+                src={
+                  me?.info?.avatar
+                    ? `${PHOTO_URL}${me?.info?.avatar}/original`
+                    : '/empty-photo.svg'
+                }
+              />
+            </ProfilePhotoWrap>
+          ) : (
+            <LinkProfile
+              onMouseMove={() => setFillProfile(red)}
+              onMouseLeave={() => setFillProfile('#000')}
+              onClick={() => router.push('/login')}
+            >
+              <ProfileIcon fill="#000" />
+            </LinkProfile>
+          )}
+          <CartIconWrap
+            onMouseMove={() => setFillCart(red)}
+            onMouseLeave={() => setFillCart('#000')}
+            onClick={() =>
+              router.push(
+                me?.info
+                  ? `/cartB2b`
+                  : {
+                      pathname: '/login',
+                      query: { error: 'notAuthorized' },
+                    },
+              )
+            }
+          >
+            <CartIcon fill="#000" />
+            {quantity != 0 ? (
+              <Count
+                onClick={() => router.push(me?.info ? `/cartB2b` : '/login')}
+              >
+                {quantity}
+              </Count>
+            ) : null}
+          </CartIconWrap>
+        </RightMobile>
+      </HeaderMobile>
+      <MobileTitle>Платформа для мастеров и салонов</MobileTitle>
+    </>
+  )
+}

@@ -1,12 +1,12 @@
-import React, { useState, useRef, useEffect, useContext } from "react";
-import { useMutation } from "@apollo/react-hooks";
-import { useCitySuggestions } from "./useCitySuggestions";
-import { changeCityMutation } from "../../../../../_graphql-legacy/city/changeCityMutation";
+import React, { useState, useRef, useEffect, useContext } from 'react'
+import { useMutation } from '@apollo/react-hooks'
+import { useCitySuggestions } from './useCitySuggestions'
+import { changeCityMutation } from '../../../../../_graphql-legacy/city/changeCityMutation'
 import {
   CityContext,
   SearchMainQueryContext,
-} from "../../../../../searchContext";
-import CitiesList from "./CitiesList";
+} from '../../../../../searchContext'
+import CitiesList from './CitiesList'
 import {
   Wrapper,
   TitleWrapper,
@@ -16,27 +16,27 @@ import {
   CityInput,
   CityPingWrap,
   Blur,
-} from "./styles";
-import CityPingIcon from "../Header/icons/CityPingIcon";
-import { useQuery } from "@apollo/client";
-import { currentUserSalonsAndMasterQuery } from "../../../../../_graphql-legacy/master/currentUserSalonsAndMasterQuery";
-import { useRouter } from "next/router";
-import { cyrToTranslit } from "../../../../../utils/translit";
+} from './styles'
+import CityPingIcon from '../Header/icons/CityPingIcon'
+import { useQuery } from '@apollo/client'
+import { currentUserSalonsAndMasterQuery } from '../../../../../_graphql-legacy/master/currentUserSalonsAndMasterQuery'
+import { useRouter } from 'next/router'
+import { cyrToTranslit } from '../../../../../utils/translit'
 
 let cities = [
-  "Москва",
-  "Санкт-Петербург",
-  "Екатеринбург",
-  "Новосибирск",
-  "Нижний Новгород",
-  "Казань",
-  "Самара",
-  "Ростов-на-Дону",
-  "Челябинск",
-  "Саратов",
-  "Хабаровск",
-  "Волгоград",
-];
+  'Москва',
+  'Санкт-Петербург',
+  'Екатеринбург',
+  'Новосибирск',
+  'Нижний Новгород',
+  'Казань',
+  'Самара',
+  'Ростов-на-Дону',
+  'Челябинск',
+  'Саратов',
+  'Хабаровск',
+  'Волгоград',
+]
 
 const CitySelect = ({
   showCitySelect,
@@ -45,7 +45,7 @@ const CitySelect = ({
   setMeInfo,
   me,
 }) => {
-  const [city, setCity] = useContext(CityContext);
+  const [city, setCity] = useContext(CityContext)
   // useEffect(() => {
   //   if (showCitySelect) {
   //     document.body.style.overflow = "hidden";
@@ -56,106 +56,106 @@ const CitySelect = ({
   // document.documentElement.style.overflowY = "scroll";
   //   };
   // });
-  const router = useRouter();
+  const router = useRouter()
 
-  const [cityInput, setCityInput] = useState("");
-  const wrapperRef = useRef(null);
-  const [query, setQuery] = useContext(SearchMainQueryContext);
+  const [cityInput, setCityInput] = useState('')
+  const wrapperRef = useRef(null)
+  const [query, setQuery] = useContext(SearchMainQueryContext)
 
   const { refetch } = useQuery(currentUserSalonsAndMasterQuery, {
     skip: true,
-    onCompleted: (res) => {
+    onCompleted: res => {
       setMeInfo({
         info: res?.me?.info,
         master: res?.me?.master,
         locationByIp: res?.locationByIp,
         salons: res?.me?.salons,
         rentalRequests: res?.me?.rentalRequests,
-      });
+      })
     },
-  });
+  })
 
   const [changeCityFunc] = useMutation(changeCityMutation, {
-    onCompleted: (res) => {
-      refetch();
+    onCompleted: res => {
+      // refetch();
     },
-  });
+  })
 
-  const outsideClick = (ref) => {
+  const outsideClick = ref => {
     useEffect(() => {
-      const clickOutsideHandler = (e) => {
+      const clickOutsideHandler = e => {
         if (ref.current && !ref.current.contains(e.target)) {
-          setShowCitySelect(false);
+          setShowCitySelect(false)
         }
-      };
-      document.addEventListener("mousedown", clickOutsideHandler);
+      }
+      document.addEventListener('mousedown', clickOutsideHandler)
       return () => {
-        document.removeEventListener("mousedown", clickOutsideHandler);
-      };
-    }, [ref]);
-  };
-  outsideClick(wrapperRef);
+        document.removeEventListener('mousedown', clickOutsideHandler)
+      }
+    }, [ref])
+  }
+  outsideClick(wrapperRef)
 
-  let citiesList = cities;
+  let citiesList = cities
 
   const closeHandler = () => {
-    setShowCitySelect(false);
-  };
+    setShowCitySelect(false)
+  }
 
-  const changeCity = (e) => {
-    setCityInput(e.target.value);
-  };
+  const changeCity = e => {
+    setCityInput(e.target.value)
+  }
 
-  const cityClickHandler = async (index) => {
-    const city = citiesList.find((city, i) => i == index);
-    setShowCitySelect(false);
-    setShowHamburgerMenu && setShowHamburgerMenu(false);
-    localStorage.setItem("citySalon", city ? city : "Москва");
-    await changeCityFunc({
-      variables: {
-        city: city ? city : "Москва",
-      },
-    });
-    setCity(city ? city : "Москва");
-    setQuery({ ...query, city: city });
-    if (router.pathname === "/[city]/salon/[id]" && router?.query?.city) {
-      router.push(`/${cyrToTranslit(city)}/salon`);
-      return;
+  const cityClickHandler = async index => {
+    const city = citiesList.find((city, i) => i == index)
+    setShowCitySelect(false)
+    setShowHamburgerMenu && setShowHamburgerMenu(false)
+    localStorage.setItem('citySalon', city ? city : 'Москва')
+    // await changeCityFunc({
+    //   variables: {
+    //     city: city ? city : "Москва",
+    //   },
+    // });
+    setCity(city ? city : 'Москва')
+    setQuery({ ...query, city: city })
+    if (router.pathname === '/[city]/salon/[id]' && router?.query?.city) {
+      router.push(`/${cyrToTranslit(city)}/salon`)
+      return
     }
     if (
-      router.pathname === "/[city]/brand/[id]/products" &&
+      router.pathname === '/[city]/brand/[id]/products' &&
       router?.query?.city
     ) {
-      router.push(`/${cyrToTranslit(city)}/brand`);
-      return;
+      router.push(`/${cyrToTranslit(city)}/brand`)
+      return
     }
-    if (router.pathname === "/[city]/rent/[id]" && router?.query?.city) {
-      router.push(`/${cyrToTranslit(city)}/rent`);
-      return;
+    if (router.pathname === '/[city]/rent/[id]' && router?.query?.city) {
+      router.push(`/${cyrToTranslit(city)}/rent`)
+      return
     }
     if (
-      router.pathname === "/[city]/rent/[id]room/[roomId]/seat/[seatId]" &&
+      router.pathname === '/[city]/rent/[id]room/[roomId]/seat/[seatId]' &&
       router?.query?.city
     ) {
-      router.push(`/${cyrToTranslit(city)}/rent`);
-      return;
+      router.push(`/${cyrToTranslit(city)}/rent`)
+      return
     }
-    if (router.pathname === "/[city]/master/[id]" && router?.query?.city) {
-      router.push(`/${cyrToTranslit(city)}/master`);
-      return;
+    if (router.pathname === '/[city]/master/[id]' && router?.query?.city) {
+      router.push(`/${cyrToTranslit(city)}/master`)
+      return
     }
-    if (router.pathname === "/[city]/brand/[id]" && router?.query?.city) {
-      router.push(`/${cyrToTranslit(city)}/brand`);
-      return;
+    if (router.pathname === '/[city]/brand/[id]' && router?.query?.city) {
+      router.push(`/${cyrToTranslit(city)}/brand`)
+      return
     }
     if (router?.query?.city) {
-      router.replace({ query: { ...router.query, city: cyrToTranslit(city) } });
+      router.replace({ query: { ...router.query, city: cyrToTranslit(city) } })
     }
-  };
+  }
 
   let component = (
     <CitiesList cities={citiesList} cityClickHandler={cityClickHandler} />
-  );
+  )
 
   if (cityInput.length > 2) {
     component = (
@@ -167,7 +167,7 @@ const CitySelect = ({
         changeCityFunc={changeCityFunc}
         setShowHamburgerMenu={setShowHamburgerMenu}
       />
-    );
+    )
   }
 
   return (
@@ -197,10 +197,10 @@ const CitySelect = ({
         {component}
       </Wrapper>
     </>
-  );
-};
+  )
+}
 
-export default CitySelect;
+export default CitySelect
 
 const UpdatedList = ({
   cityInput,
@@ -209,64 +209,64 @@ const UpdatedList = ({
   setShowHamburgerMenu,
   changeCityFunc,
 }) => {
-  const [query, setQuery] = useContext(SearchMainQueryContext);
-  const { suggestions } = useCitySuggestions(cityInput);
-  const [city, setCity] = useContext(CityContext);
-  const unicSuggestion = Array.from(new Set(suggestions));
-  const router = useRouter();
+  const [query, setQuery] = useContext(SearchMainQueryContext)
+  const { suggestions } = useCitySuggestions(cityInput)
+  const [city, setCity] = useContext(CityContext)
+  const unicSuggestion = Array.from(new Set(suggestions))
+  const router = useRouter()
 
-  const cityClickHandler = (index) => {
-    const city = unicSuggestion.find((city, i) => i == index);
-    setShowCitySelect(false);
-    setShowHamburgerMenu && setShowHamburgerMenu(false);
-    setCityInput("");
+  const cityClickHandler = index => {
+    const city = unicSuggestion.find((city, i) => i == index)
+    setShowCitySelect(false)
+    setShowHamburgerMenu && setShowHamburgerMenu(false)
+    setCityInput('')
 
-    localStorage.setItem("citySalon", city ? city : "Москва");
+    localStorage.setItem('citySalon', city ? city : 'Москва')
     changeCityFunc({
       variables: {
-        city: city ? city : "Москва",
+        city: city ? city : 'Москва',
       },
-    });
-    setCity(city ? city : "Москва");
-    setQuery({ ...query, city: city });
-    if (router.pathname === "/[city]/salon/[id]" && router?.query?.city) {
-      router.push(`/${cyrToTranslit(city)}/salon`);
-      return;
+    })
+    setCity(city ? city : 'Москва')
+    setQuery({ ...query, city: city })
+    if (router.pathname === '/[city]/salon/[id]' && router?.query?.city) {
+      router.push(`/${cyrToTranslit(city)}/salon`)
+      return
     }
-    if (router.pathname === "/[city]/master/[id]" && router?.query?.city) {
-      router.push(`/${cyrToTranslit(city)}/master`);
-      return;
+    if (router.pathname === '/[city]/master/[id]' && router?.query?.city) {
+      router.push(`/${cyrToTranslit(city)}/master`)
+      return
     }
-    if (router.pathname === "/[city]/brand/[id]" && router?.query?.city) {
-      router.push(`/${cyrToTranslit(city)}/brand`);
-      return;
-    }
-    if (
-      router.pathname === "/[city]/brand/[id]/products" &&
-      router?.query?.city
-    ) {
-      router.push(`/${cyrToTranslit(city)}/brand`);
-      return;
-    }
-    if (router.pathname === "/[city]/rent/[id]" && router?.query?.city) {
-      router.push(`/${cyrToTranslit(city)}/rent`);
-      return;
+    if (router.pathname === '/[city]/brand/[id]' && router?.query?.city) {
+      router.push(`/${cyrToTranslit(city)}/brand`)
+      return
     }
     if (
-      router.pathname === "/[city]/rent/[id]room/[roomId]/seat/[seatId]" &&
+      router.pathname === '/[city]/brand/[id]/products' &&
       router?.query?.city
     ) {
-      router.push(`/${cyrToTranslit(city)}/rent`);
-      return;
+      router.push(`/${cyrToTranslit(city)}/brand`)
+      return
+    }
+    if (router.pathname === '/[city]/rent/[id]' && router?.query?.city) {
+      router.push(`/${cyrToTranslit(city)}/rent`)
+      return
+    }
+    if (
+      router.pathname === '/[city]/rent/[id]room/[roomId]/seat/[seatId]' &&
+      router?.query?.city
+    ) {
+      router.push(`/${cyrToTranslit(city)}/rent`)
+      return
     }
     if (router?.query?.city) {
       router.replace({
         query: { ...router.query, city: cyrToTranslit(city) },
-      });
+      })
     }
-  };
+  }
 
   return (
     <CitiesList cities={unicSuggestion} cityClickHandler={cityClickHandler} />
-  );
-};
+  )
+}

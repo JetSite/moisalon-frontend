@@ -26,7 +26,7 @@ import { useRouter } from 'next/router'
 import Script from 'next/script'
 import * as gtag from '../lib/gtag'
 import { YMInitializer } from 'react-yandex-metrika'
-import { catalogsQuery } from '../_graphql-legacy/catalogsQuery'
+import { getServiceCategories } from '../graphql/service/queries/getServiceCategories'
 import { useMedia } from 'use-media'
 import { red } from '../../styles/variables'
 import { ChatProvider } from '../chatContext'
@@ -43,9 +43,10 @@ const progress = new ProgressBar({
 })
 
 const AppContainer = ({ Component, pageProps }) => {
-  // const router = useRouter();
+  const router = useRouter()
   const [getInfo, { data }] = useLazyQuery(currentUserSalonsAndMasterQuery)
-  // const [getCatalogs, { data: catalogsData }] = useLazyQuery(catalogsQuery);
+  const [getCatalogs, { data: catalogsData }] =
+    useLazyQuery(getServiceCategories)
   const [meInfo, setMeInfo] = useState({})
   const [catalogs, setCatalogs] = useState([])
   const productsState = useState([])
@@ -68,13 +69,13 @@ const AppContainer = ({ Component, pageProps }) => {
   //   }
   // }, [data]);
 
-  // useEffect(() => {
-  //   if (catalogsData) {
-  //     setCatalogs(catalogsData);
-  //   } else {
-  //     getCatalogs();
-  //   }
-  // }, [catalogsData]);
+  useEffect(() => {
+    if (catalogsData) {
+      setCatalogs(catalogsData)
+    } else {
+      getCatalogs()
+    }
+  }, [catalogsData])
 
   const queryMainState = useState({
     ...MainSearchQuery,
@@ -89,16 +90,16 @@ const AppContainer = ({ Component, pageProps }) => {
     query: '',
   })
 
-  // useEffect(() => {
-  //   router.events.on("routeChangeStart", progress.start);
-  //   router.events.on("routeChangeComplete", progress.finish);
-  //   router.events.on("routeChangeError", progress.finish);
-  //   return () => {
-  //     router.events.off("routeChangeStart", progress.start);
-  //     router.events.off("routeChangeComplete", progress.finish);
-  //     router.events.off("routeChangeError", progress.finish);
-  //   };
-  // }, [router.events]);
+  useEffect(() => {
+    router.events.on('routeChangeStart', progress.start)
+    router.events.on('routeChangeComplete', progress.finish)
+    router.events.on('routeChangeError', progress.finish)
+    return () => {
+      router.events.off('routeChangeStart', progress.start)
+      router.events.off('routeChangeComplete', progress.finish)
+      router.events.off('routeChangeError', progress.finish)
+    }
+  }, [router.events])
 
   return (
     <MeContext.Provider value={me}>

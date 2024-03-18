@@ -1,5 +1,5 @@
-import Footer from "../components/blocks/Footer";
-import Header from "../components/pages/MainPage/components/Header";
+import Footer from '../components/blocks/Footer'
+import Header from '../components/pages/MainPage/components/Header'
 
 const MainLayout = ({ children, noMobileFooter = false }) => {
   return (
@@ -8,7 +8,7 @@ const MainLayout = ({ children, noMobileFooter = false }) => {
       {children}
       <Footer noMobileFooter={noMobileFooter} />
     </>
-  );
-};
+  )
+}
 
-export default MainLayout;
+export default MainLayout

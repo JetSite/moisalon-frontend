@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import { useQuery } from "@apollo/react-hooks";
-import { MainContainer } from "../../../../../styles/common";
+import { useState, useEffect } from 'react'
+import { useQuery } from '@apollo/react-hooks'
+import { MainContainer } from '../../../../../styles/common'
 import {
   Wrapper,
   Content,
@@ -8,76 +8,79 @@ import {
   Title,
   SearchIcon,
   NoSearchResults,
-} from "./styled";
-import Tabs from "./components/Tabs";
-import { red } from "../../../../../../styles/variables";
-import { getAdvices } from "../../../../../_graphql-legacy/advices/getAdvices";
-import { beautySearch } from "../../../../../_graphql-legacy/search/beautySearch";
-import Search from "./icons/Search";
-import RibbonSearch from "./components/RibbonSearch";
-import Slider from "../../../../blocks/Slider";
+} from './styled'
+import Tabs from './components/Tabs'
+import { red } from '../../../../../../styles/variables'
+import { getAdvices } from '../../../../../_graphql-legacy/advices/getAdvices'
+import { beautySearch } from '../../../../../_graphql-legacy/search/beautySearch'
+import Search from './icons/Search'
+import RibbonSearch from './components/RibbonSearch'
+import Slider from '../../../../blocks/Slider'
 
 const Ribbon = ({ title, beautyCategories, beautyAllContent }) => {
-  const [activeTab, setActiveTab] = useState("");
-  const [categories, setCategories] = useState(null);
-  const [allContent, setAllContent] = useState(null);
-  const [categoryContent, setCategoryContent] = useState(null);
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [fillSearch, setFillSearch] = useState("#797979");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [activeTab, setActiveTab] = useState('')
+  const [categories, setCategories] = useState(null)
+  const [allContent, setAllContent] = useState(null)
+  const [categoryContent, setCategoryContent] = useState(null)
+  const [searchOpen, setSearchOpen] = useState(false)
+  const [fillSearch, setFillSearch] = useState('#797979')
+  const [searchQuery, setSearchQuery] = useState('')
 
   useEffect(() => {
-    if (beautyCategories?.length > 0) {
-      setCategories([{ id: "", title: "Все" }, ...beautyCategories]);
+    if (beautyCategories?.data?.length > 0) {
+      setCategories([
+        { id: '', attributes: { feedCategoryName: 'Все' } },
+        ...beautyCategories?.data,
+      ])
     }
-    setAllContent(beautyAllContent);
-  }, []);
+    setAllContent(beautyAllContent?.data)
+  }, [])
 
   useEffect(() => {
     if (!activeTab) {
-      setCategoryContent(null);
-      return;
+      setCategoryContent(null)
+      return
     }
-    refetchContent({ catId: activeTab });
-  }, [activeTab]);
+    // refetchContent({ catId: activeTab })
+  }, [activeTab])
 
   useEffect(() => {
     if (searchQuery.length === 0) {
-      setCategoryContent(null);
-      return;
+      setCategoryContent(null)
+      return
     }
-    setActiveTab(null);
-    refetchSearch({ query: searchQuery });
-  }, [searchQuery]);
+    setActiveTab(null)
+    // refetchSearch({ query: searchQuery })
+  }, [searchQuery])
 
-  const { refetch: refetchContent } = useQuery(getAdvices, {
-    context: { uri: "https://moi.salon/graphql" },
-    variables: {
-      catId: activeTab,
-    },
-    skip: true,
-    onCompleted: (res) => {
-      setCategoryContent(res?.pagesCategory);
-    },
-  });
+  // const { refetch: refetchContent } = useQuery(getAdvices, {
+  //   context: { uri: 'https://moi.salon/graphql' },
+  //   variables: {
+  //     catId: activeTab,
+  //   },
+  //   skip: true,
+  //   onCompleted: res => {
+  //     setCategoryContent(res?.pagesCategory)
+  //   },
+  // })
 
-  const { refetch: refetchSearch } = useQuery(beautySearch, {
-    context: { uri: "https://moi.salon/graphql" },
-    variables: {
-      query: searchQuery,
-    },
-    skip: true,
-    onCompleted: (res) => {
-      setCategoryContent(res?.pagesSearch?.connection?.nodes);
-    },
-  });
+  // const { refetch: refetchSearch } = useQuery(beautySearch, {
+  //   context: { uri: 'https://moi.salon/graphql' },
+  //   variables: {
+  //     query: searchQuery,
+  //   },
+  //   skip: true,
+  //   onCompleted: res => {
+  //     setCategoryContent(res?.pagesSearch?.connection?.nodes)
+  //   },
+  // })
 
-  const changeActiveTab = (id) => {
-    setActiveTab(id !== activeTab ? id : null);
-    setSearchQuery("");
-  };
+  const changeActiveTab = id => {
+    setActiveTab(id !== activeTab ? id : null)
+    setSearchQuery('')
+  }
 
-  const renderItems = categoryContent ? categoryContent : allContent;
+  const renderItems = categoryContent ? categoryContent : allContent
 
   return (
     <Wrapper>
@@ -85,30 +88,30 @@ const Ribbon = ({ title, beautyCategories, beautyAllContent }) => {
         <Content>
           <TitleWrapper>
             <Title>{title}</Title>
-            <SearchIcon
+            {/* <SearchIcon
               onClick={() => setSearchOpen(!searchOpen)}
               onMouseEnter={() => setFillSearch(red)}
-              onMouseLeave={() => setFillSearch("#797979")}
+              onMouseLeave={() => setFillSearch('#797979')}
             >
               <Search fillSearch={fillSearch} searchOpen={searchOpen} />
-            </SearchIcon>
+            </SearchIcon> */}
           </TitleWrapper>
-          {searchOpen ? (
+          {/* {searchOpen ? (
             <RibbonSearch
               searchQuery={searchQuery}
               setSearchQuery={setSearchQuery}
             />
-          ) : null}
+          ) : null} */}
           <Tabs
             activeTab={activeTab}
             changeActiveTab={changeActiveTab}
             tabs={categories}
           />
-          {searchQuery.length > 0 && renderItems.length === 0 ? (
+          {/* {searchQuery.length > 0 && renderItems.length === 0 ? (
             <NoSearchResults>
               По вашему запросу ничего не найдено
             </NoSearchResults>
-          ) : null}
+          ) : null} */}
           <Slider
             type="ribbon"
             items={renderItems || []}
@@ -121,7 +124,7 @@ const Ribbon = ({ title, beautyCategories, beautyAllContent }) => {
         </Content>
       </MainContainer>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default Ribbon;
+export default Ribbon
