@@ -36,8 +36,8 @@ const MasterItem = ({
     setIsFavorit(!!isInStorage)
   }, [])
 
-  const photoUrl = master?.attributes?.masterPhoto?.data?.attributes?.url
-    ? `${PHOTO_URL}${master?.attributes?.masterPhoto?.data?.attributes?.url}`
+  const photoUrl = master?.masterPhoto?.url
+    ? `${PHOTO_URL}${master.masterPhoto.url}`
     : null
 
   const addFavorite = (e, master) => {
@@ -58,11 +58,11 @@ const MasterItem = ({
       </FavoriteMaster>
       <Image alt="image" src={photoUrl} />
       <MasterShareWrap>
-        <Share link={shareLink} title={master?.attributes?.masterName} />
+        <Share link={shareLink} title={master?.masterName} />
       </MasterShareWrap>
       <MasterInfo>
         <div>
-          <Name>{master?.attributes?.masterName || ''}</Name>
+          <Name>{master?.masterName || ''}</Name>
         </div>
         {/* <div>
           <Specializations>
@@ -75,9 +75,7 @@ const MasterItem = ({
           </Specializations>
         </div> */}
         <RatingWrapper>
-          {master?.attributes?.city?.data?.attributes?.cityName ? (
-            <City>{master?.attributes?.city?.data?.attributes?.cityName}</City>
-          ) : null}
+          {master?.city?.cityName ? <City>{master.city.cityName}</City> : null}
           <Rating
             averageScore={master?.averageScore}
             numberScore={master?.numberScore}

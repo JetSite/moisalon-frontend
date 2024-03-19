@@ -41,11 +41,11 @@ const SalonCard = ({ item, loading, rent = false, seatCount, shareLink }) => {
   //   catalogs?.salonActivitiesCatalog,
   // )
 
-  const logoUrl = item?.attributes?.salonLogo?.data?.attributes?.url
-    ? `${PHOTO_URL}${item?.attributes?.salonLogo?.data?.attributes?.url}`
+  const logoUrl = item?.salonLogo?.url
+    ? `${PHOTO_URL}${item.salonLogo.url}`
     : ''
-  const imageUrl = item?.attributes?.salonCover?.data?.attributes?.url
-    ? `${PHOTO_URL}${item?.attributes?.salonCover?.data?.attributes?.url}`
+  const imageUrl = item?.salonCover?.url
+    ? `${PHOTO_URL}${item.salonCover.url}`
     : ''
 
   const [isFavorite, setIsFavorit] = useState(false)
@@ -82,7 +82,7 @@ const SalonCard = ({ item, loading, rent = false, seatCount, shareLink }) => {
       <Content>
         <Wrap>
           <Top>
-            <Name>{item?.attributes?.salonName || ''}</Name>
+            <Name>{item?.salonName || ''}</Name>
             <Socials>
               {item?.attributes?.salonPhones &&
               item?.attributes?.salonPhones.length ? (
@@ -91,10 +91,10 @@ const SalonCard = ({ item, loading, rent = false, seatCount, shareLink }) => {
                   href={`tel:${item.attributes.salonPhones[0].phoneNumber}`}
                 />
               ) : null}
-              {item?.attributes?.salonEmail ? (
+              {item?.salonEmail ? (
                 <EmailLink
                   onClick={e => e.stopPropagation()}
-                  href={`mailto:${item?.attributes?.salonEmail}`}
+                  href={`mailto:${item.salonEmail}`}
                 />
               ) : null}
             </Socials>
@@ -110,14 +110,12 @@ const SalonCard = ({ item, loading, rent = false, seatCount, shareLink }) => {
                 )}
               </Activities>
             </SalonInfo> */}
-            {item?.attributes?.salonAddress ? (
-              <Address>{item.attributes.salonAddress}</Address>
-            ) : null}
+            {item?.salonAddress ? <Address>{item.salonAddress}</Address> : null}
           </Info>
         </Wrap>
         <Rating
-          averageScore={item?.attributes?.salonAverageScore}
-          numberScore={item?.attributes?.salonSumScore}
+          averageScore={item?.salonAverageScore}
+          numberScore={item?.salonSumScore}
           position={!mobileMedia ? 'justify' : 'start'}
           fontSize={!mobileMedia ? '14px' : '10px'}
           fontWeight={600}
@@ -127,7 +125,7 @@ const SalonCard = ({ item, loading, rent = false, seatCount, shareLink }) => {
         <HeartFullFill fill={isFavorite} />
       </FavoriteIcon>
       <SalonShareWrap>
-        <Share link={shareLink} title={item?.attributes?.salonName} />
+        <Share link={shareLink} title={item?.salonName} />
       </SalonShareWrap>
     </Wrapper>
   )

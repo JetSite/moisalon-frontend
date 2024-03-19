@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { useMutation } from "@apollo/client";
-import { CatalogGroupForClient } from "./components/CatalogGroupForClient";
-import { MainContainer } from "../../../../../../styles/common";
+import { useState } from 'react'
+import { useMutation } from '@apollo/client'
+import { CatalogGroupForClient } from './components/CatalogGroupForClient'
+import { MainContainer } from '../../../../../../styles/common'
 import {
   Wrapper,
   Top,
@@ -12,10 +12,10 @@ import {
   LeftColumn,
   RightColumn,
   NoServicesText,
-} from "./styled";
-import EditIcons from "../../../../../ui/EditIcons";
-import EditSalonServicesForClient from "../../../../../pages/Salon/EditSalonServicesForClient";
-import { updateServiceMasterMutation } from "../../../../../../_graphql-legacy/master/updateServiceMasterMutation";
+} from './styled'
+import EditIcons from '../../../../../ui/EditIcons'
+import EditSalonServicesForClient from '../../../../../pages/Salon/EditSalonServicesForClient'
+import { updateServiceMasterMutation } from '../../../../../../_graphql-legacy/master/updateServiceMasterMutation'
 
 const Services = ({
   services,
@@ -27,15 +27,15 @@ const Services = ({
   salonServicesMasterCatalog,
   masterDataQuery,
 }) => {
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(false)
 
-  const [entriesItems, setEntriesItems] = useState(services);
+  const [entriesItems, setEntriesItems] = useState(services)
 
   const [updateServices] = useMutation(updateServiceMasterMutation, {
     onCompleted: () => {
-      masterDataQuery();
+      masterDataQuery()
     },
-  });
+  })
 
   const handleEditConfirm = () => {
     updateServices({
@@ -45,42 +45,23 @@ const Services = ({
           serviceMaster: entriesItems,
         },
       },
-    });
-  };
-
-  const groups = salonServicesMasterCatalog?.groups
-    ?.map((group, idx) => {
-      if (
-        entriesItems.find((item) => {
-          for (let i = 0; i < group?.subGroups?.length; i++) {
-            if (item?.id === group?.subGroups[i]?.id) {
-              return item;
-            }
-            for (let j = 0; j < group?.subGroups[i]?.items?.length; j++) {
-              if (item?.id === group?.subGroups[i]?.items[j]?.id) {
-                return item;
-              }
-            }
-          }
-        })
-      ) {
-        return (
-          <CatalogGroupForClient
-            entriesItems={entriesItems}
-            withPrice
-            key={idx}
-            group={group}
-          />
-        );
-      } else {
-        return null;
-      }
     })
-    .filter((element) => element !== null);
+  }
 
-  const secondColumnStart = Math.round(groups.length / 2);
+  const groups = services?.map((service, idx) => {
+    return (
+      <CatalogGroupForClient
+        entriesItems={entriesItems}
+        withPrice
+        key={idx}
+        service={service}
+      />
+    )
+  })
 
-  const phone = master?.phone?.phoneNumber;
+  const secondColumnStart = Math.round(groups?.length / 2)
+
+  const phone = master?.masterPhone
 
   return (
     <MainContainer id="services">
@@ -131,7 +112,7 @@ const Services = ({
         </noindex>
       </Wrapper>
     </MainContainer>
-  );
-};
+  )
+}
 
-export default Services;
+export default Services

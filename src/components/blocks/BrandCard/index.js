@@ -30,8 +30,8 @@ const BrandItem = ({
     setIsFavorit(!!isInStorage)
   }, [])
 
-  const logoUrl = brand?.attributes?.brandLogo?.data?.attributes?.url
-    ? `${PHOTO_URL}${brand?.attributes?.brandLogo?.data?.attributes?.url}`
+  const logoUrl = brand?.brandLogo?.url
+    ? `${PHOTO_URL}${brand.brandLogo.url}`
     : ''
 
   const addFavorite = (e, brand) => {
@@ -51,7 +51,7 @@ const BrandItem = ({
         </Favorite>
       ) : null}
       <BrandShareWrap>
-        <Share link={shareLink} title={brand?.attributes?.brandName} />
+        <Share link={shareLink} title={brand?.brandName} />
       </BrandShareWrap>
       {children}
     </BItem>

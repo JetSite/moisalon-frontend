@@ -1,6 +1,7 @@
 import { useQuery } from '@apollo/client'
 import { getSalons } from '../../../../../graphql/salon/queries/getSalons'
 import Slider from '../../../../blocks/Slider'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 
 const MainSalonsSlider = ({ rent, me }) => {
   let cityInStorage
@@ -8,12 +9,15 @@ const MainSalonsSlider = ({ rent, me }) => {
     cityInStorage = localStorage.getItem('citySalon')
   }
   const { data: salons, loading } = useQuery(getSalons)
+  const salonsFlattened = flattenStrapiResponse(salons?.salons?.data)
+
+  console.log(salons)
 
   return (
     <Slider
       type="salons"
       loading={loading}
-      items={salons?.salons?.data}
+      items={salonsFlattened}
       title="Салоны красоты"
       bgColor="#000"
       pt={102}

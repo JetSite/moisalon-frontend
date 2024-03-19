@@ -357,12 +357,12 @@ const Slider = ({
               ) : null}
               <Title
                 bgColor={bgColor}
-                empty={items.length === 0}
+                empty={items?.length === 0}
                 mobileTitleWidth={mobileTitleWidth}
               >
                 {title} {isOwner && <EditIcons setIsEditing={setIsEditing} />}
               </Title>
-              {items.length > 0 && (
+              {items?.length > 0 && (
                 <NavigationWrapper>
                   <ButtonPrev
                     ref={navigationPrevRef}
@@ -375,7 +375,7 @@ const Slider = ({
                 </NavigationWrapper>
               )}
             </Top>
-            {items.length ? (
+            {items?.length ? (
               <SliderWrapper>
                 <SwiperWrap pl={items?.length === 1 ? 0 : pl}>
                   <Swiper

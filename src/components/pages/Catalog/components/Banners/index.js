@@ -195,7 +195,7 @@ const Image = styled.img`
 const Banners = ({
   bannersByHookWide,
   bannersByHookSmall1,
-  // bannersByHookSmall2,
+  bannersByHookSmall2,
 }) => {
   const bannerWide = bannersByHookWide?.attributes?.banners?.data[0]?.attributes
   const bannerWideImage = bannerWide?.bannerImage?.data?.attributes?.url
@@ -205,6 +205,12 @@ const Banners = ({
   const bannerSmall1 =
     bannersByHookSmall1?.attributes?.banners?.data[0]?.attributes
   const bannerSmall1Image = bannerSmall1?.bannerImage?.data?.attributes?.url
+    ? `${PHOTO_URL}${bannerSmall1?.bannerImage?.data?.attributes?.url}`
+    : ''
+
+  const bannerSmall2 =
+    bannersByHookSmall2?.attributes?.banners?.data[0]?.attributes
+  const bannerSmall2Image = bannerSmall2?.bannerImage?.data?.attributes?.url
     ? `${PHOTO_URL}${bannerSmall1?.bannerImage?.data?.attributes?.url}`
     : ''
 
@@ -270,21 +276,13 @@ const Banners = ({
               </WrapSmall>
             </noindex>
           ) : null}
-          {/* {bannersByHookSmall2?.length ? (
+          {bannerSmall2 ? (
             <noindex>
-              <WrapSmall image={bannersByHookSmall2[0]?.photo?.url}>
-                <Small
-                  href={bannersByHookSmall2[0].link}
-                  target="_blank"
-                  rel="nofollow"
-                >
+              <WrapSmall image={bannerSmall2Image}>
+                <Small href="#" target="_blank" rel="nofollow">
                   <LeftSmall>
-                    <TitleSmall
-                      dangerouslySetInnerHTML={{
-                        __html: bannersByHookSmall2[0].title,
-                      }}
-                    />
-                    {bannersByHookSmall2[0].link ? (
+                    <TitleSmall>{bannerSmall2?.bannerName}</TitleSmall>
+                    {/* {bannersByHookSmall2[0].link ? (
                       <Link
                         href={bannersByHookSmall2[0].link}
                         target="_blank"
@@ -292,12 +290,12 @@ const Banners = ({
                       >
                         {bannersByHookSmall2[0].titleLink}
                       </Link>
-                    ) : null}
+                    ) : null} */}
                   </LeftSmall>
                 </Small>
               </WrapSmall>
             </noindex>
-          ) : null} */}
+          ) : null}
         </Right>
       ) : null}
     </Wrapper>

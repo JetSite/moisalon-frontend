@@ -34,14 +34,13 @@ import PhotoAdd from '../../../../components/pages/Master/ViewMaster/components/
 import { NoItemsText } from '../../../../styles/common'
 import { useSearchHistory } from '../../../../hooks/useSearchHistory'
 import { useSearchHistoryContext } from '../../../../searchHistoryContext'
+import { getMaster } from 'src/graphql/master/queries/getMaster'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 
-const Master = ({ masterData, brandsData, dataReviews, dataScoreRes }) => {
-  const [brands, setBrands] = useState(brandsData)
+const Master = ({ masterData }) => {
   const [master, setMaster] = useState(masterData)
   const [me, setMe] = useContext(MeContext)
-  const [dataScore, setDataScore] = useState(dataScoreRes)
   const catalogs = useContext(CatalogsContext)
-  const [reviews, setReviews] = useState(dataReviews)
   const [editClientServices, setEditClientServices] = useState(false)
   const [activeTab, setActiveTab] = useState(0)
   const [isBrandsEditing, setIsBrandsEditing] = useState(false)
@@ -53,25 +52,26 @@ const Master = ({ masterData, brandsData, dataReviews, dataScoreRes }) => {
   if (typeof window !== 'undefined') {
     cityInStorage = localStorage.getItem('citySalon')
   }
-  const { data, loading, refetch } = useQuery(mastersRandomQuery, {
-    variables: {
-      count: 10,
-      city:
-        me && me?.info && me?.info?.city
-          ? me?.info?.city
-          : cityInStorage
-          ? cityInStorage
-          : '',
-    },
-  })
+  // const { data, loading, refetch } = useQuery(mastersRandomQuery, {
+  //   variables: {
+  //     count: 10,
+  //     city:
+  //       me && me?.info && me?.info?.city
+  //         ? me?.info?.city
+  //         : cityInStorage
+  //         ? cityInStorage
+  //         : '',
+  //   },
+  // })
 
   useEffect(() => {
-    setMaster(masterData)
-    setBrands(brandsData)
-    setDataScore(dataScoreRes)
-    setReviews(dataReviews)
-    refetch()
-  }, [masterData, brandsData, dataScoreRes, dataReviews])
+    if (masterData?.data) {
+      setMaster(flattenStrapiResponse(masterData.data))
+    }
+    // refetch()
+  }, [masterData])
+
+  console.log(master)
 
   const { setChosenItemId } = useSearchHistoryContext()
 
@@ -79,136 +79,138 @@ const Master = ({ masterData, brandsData, dataReviews, dataScoreRes }) => {
     setChosenItemId(master.id)
   }, [])
 
-  const { refetch: refetchMaster } = useQuery(masterQuery, {
-    variables: { id: master.id },
-    skip: true,
-    onCompleted: res => {
-      setMaster(res.master)
-    },
-  })
+  console.log(masterData)
 
-  const [updateMasterPhotoWorks] = useMutation(updateMasterPhotoWorksMutation, {
-    onCompleted: () => {
-      refetchMaster()
-    },
-  })
+  // const { refetch: refetchMaster } = useQuery(masterQuery, {
+  //   variables: { id: master.id },
+  //   skip: true,
+  //   onCompleted: res => {
+  //     setMaster(res.master)
+  //   },
+  // })
 
-  const [updateMasterPhotoDiploma] = useMutation(
-    updateMasterPhotoDiplomaMutation,
-    {
-      onCompleted: () => {
-        refetchMaster()
-      },
-    },
-  )
+  // const [updateMasterPhotoWorks] = useMutation(updateMasterPhotoWorksMutation, {
+  //   onCompleted: () => {
+  //     refetchMaster()
+  //   },
+  // })
 
-  const { refetch: refetchReviews } = useQuery(reviewsForMaster, {
-    variables: { originId: master.id },
-    skip: true,
-    onCompleted: res => {
-      setReviews(res.reviewsForMaster)
-    },
-  })
+  // const [updateMasterPhotoDiploma] = useMutation(
+  //   updateMasterPhotoDiplomaMutation,
+  //   {
+  //     onCompleted: () => {
+  //       refetchMaster()
+  //     },
+  //   },
+  // )
 
-  const { refetch: refetchBrands } = useQuery(brandQuery, {
-    variables: { id: master.id },
-    skip: true,
-    onCompleted: res => {
-      if (res) {
-        setBrands(res.brandsMaster)
-      }
-    },
-  })
+  // const { refetch: refetchReviews } = useQuery(reviewsForMaster, {
+  //   variables: { originId: master.id },
+  //   skip: true,
+  //   onCompleted: res => {
+  //     setReviews(res.reviewsForMaster)
+  //   },
+  // })
 
-  const masterSpecializationsCatalog = catalogOrDefault(
-    catalogs?.masterSpecializationsCatalog,
-  )
+  // const { refetch: refetchBrands } = useQuery(brandQuery, {
+  //   variables: { id: master.id },
+  //   skip: true,
+  //   onCompleted: res => {
+  //     if (res) {
+  //       setBrands(res.brandsMaster)
+  //     }
+  //   },
+  // })
 
-  const salonServicesMasterCatalog = catalogOrDefault(
-    catalogs?.salonServicesMasterCatalog,
-  )
+  // const masterSpecializationsCatalog = catalogOrDefault(
+  //   catalogs?.masterSpecializationsCatalog,
+  // )
 
-  const salonsId = master?.salonIds || []
+  // const salonServicesMasterCatalog = catalogOrDefault(
+  //   catalogs?.salonServicesMasterCatalog,
+  // )
 
-  const { refetch: refetchScore, loading: loadingScore } = useQuery(
-    scoreMaster,
-    {
-      variables: { id: master.id },
-      onCompleted: res => {
-        setDataScore(res.scoreMaster)
-      },
-    },
-  )
+  // const salonsId = master?.salonIds || []
 
-  const onAdd = photoId => {
-    const oldArr = master?.photosWorks
-      ? master?.photosWorks.map(item => item.id)
-      : []
-    const newArr = [...oldArr, photoId]
-    updateMasterPhotoWorks({
-      variables: { input: { photoWorksIds: newArr, id: master?.id } },
-    })
-  }
+  // const { refetch: refetchScore, loading: loadingScore } = useQuery(
+  //   scoreMaster,
+  //   {
+  //     variables: { id: master.id },
+  //     onCompleted: res => {
+  //       setDataScore(res.scoreMaster)
+  //     },
+  //   },
+  // )
 
-  const onDelete = photoId => {
-    const oldArr = master?.photosWorks
-      ? master?.photosWorks.map(item => item.id)
-      : []
-    const newArr = oldArr.filter(item => item !== photoId)
-    updateMasterPhotoWorks({
-      variables: { input: { photoWorksIds: newArr, id: master?.id } },
-    })
-  }
+  // const onAdd = photoId => {
+  //   const oldArr = master?.photosWorks
+  //     ? master?.photosWorks.map(item => item.id)
+  //     : []
+  //   const newArr = [...oldArr, photoId]
+  //   updateMasterPhotoWorks({
+  //     variables: { input: { photoWorksIds: newArr, id: master?.id } },
+  //   })
+  // }
 
-  const onAddDiploma = photoId => {
-    const oldArr = master?.photosDiploma
-      ? master?.photosDiploma.map(item => item.id)
-      : []
-    const newArr = [...oldArr, photoId]
-    updateMasterPhotoDiploma({
-      variables: { input: { photoDiplomaIds: newArr, id: master?.id } },
-    })
-  }
+  // const onDelete = photoId => {
+  //   const oldArr = master?.photosWorks
+  //     ? master?.photosWorks.map(item => item.id)
+  //     : []
+  //   const newArr = oldArr.filter(item => item !== photoId)
+  //   updateMasterPhotoWorks({
+  //     variables: { input: { photoWorksIds: newArr, id: master?.id } },
+  //   })
+  // }
 
-  const onDeleteDiploma = photoId => {
-    const oldArr = master?.photosDiploma
-      ? master?.photosDiploma.map(item => item.id)
-      : []
-    const newArr = oldArr.filter(item => item !== photoId)
-    updateMasterPhotoDiploma({
-      variables: { input: { photoDiplomaIds: newArr, id: master?.id } },
-    })
-  }
+  // const onAddDiploma = photoId => {
+  //   const oldArr = master?.photosDiploma
+  //     ? master?.photosDiploma.map(item => item.id)
+  //     : []
+  //   const newArr = [...oldArr, photoId]
+  //   updateMasterPhotoDiploma({
+  //     variables: { input: { photoDiplomaIds: newArr, id: master?.id } },
+  //   })
+  // }
 
-  const [removeBrands] = useMutation(removeUserBrandsMutation, {
-    onCompleted: () => {
-      refetchBrands()
-    },
-  })
+  // const onDeleteDiploma = photoId => {
+  //   const oldArr = master?.photosDiploma
+  //     ? master?.photosDiploma.map(item => item.id)
+  //     : []
+  //   const newArr = oldArr.filter(item => item !== photoId)
+  //   updateMasterPhotoDiploma({
+  //     variables: { input: { photoDiplomaIds: newArr, id: master?.id } },
+  //   })
+  // }
 
-  const handleRemoveBrand = id => {
-    removeBrands({
-      variables: {
-        ids: [id],
-        masterId: me?.master?.id,
-      },
-    })
-  }
+  // const [removeBrands] = useMutation(removeUserBrandsMutation, {
+  //   onCompleted: () => {
+  //     refetchBrands()
+  //   },
+  // })
 
-  const [removeSalons] = useMutation(removeUserSalonsMutation, {
-    onCompleted: () => {
-      refetchMaster()
-    },
-  })
+  // const handleRemoveBrand = id => {
+  //   removeBrands({
+  //     variables: {
+  //       ids: [id],
+  //       masterId: me?.master?.id,
+  //     },
+  //   })
+  // }
 
-  const handleRemoveSalon = id => {
-    removeSalons({
-      variables: {
-        ids: [id],
-        masterId: me?.master?.id,
-      },
-    })
-  }
+  // const [removeSalons] = useMutation(removeUserSalonsMutation, {
+  //   onCompleted: () => {
+  //     refetchMaster()
+  //   },
+  // })
+
+  // const handleRemoveSalon = id => {
+  //   removeSalons({
+  //     variables: {
+  //       ids: [id],
+  //       masterId: me?.master?.id,
+  //     },
+  //   })
+  // }
 
   const isOwner = me?.master?.id === master?.id
 
@@ -229,11 +231,11 @@ const Master = ({ masterData, brandsData, dataReviews, dataScoreRes }) => {
           me={me}
           master={master}
           isOwner={isOwner}
-          refetchMaster={refetchMaster}
-          refetchScore={refetchScore}
-          scoreMasterCount={dataScore?.value}
-          loadingScore={loadingScore}
-          masterSpecializationsCatalog={masterSpecializationsCatalog}
+          // refetchMaster={refetchMaster}
+          // refetchScore={refetchScore}
+          // scoreMasterCount={dataScore?.value}
+          // loadingScore={loadingScore}
+          // masterSpecializationsCatalog={masterSpecializationsCatalog}
         />
         <TabsSlider
           activeTab={activeTab}
@@ -245,8 +247,8 @@ const Master = ({ masterData, brandsData, dataReviews, dataScoreRes }) => {
               id: 2,
               text: 'Услуги',
               link: '#services',
-              count: master?.servicesMaster?.length,
-              show: master?.servicesMaster?.length || isOwner,
+              count: master?.services?.length,
+              show: master?.services?.length || isOwner,
             },
             {
               id: 3,
@@ -262,37 +264,36 @@ const Master = ({ masterData, brandsData, dataReviews, dataScoreRes }) => {
               count: master?.photosDiploma?.length,
               show: master?.photosDiploma?.length || isOwner,
             },
-            {
-              id: 5,
-              text: 'Бренды',
-              link: '#brands',
-              count: brands?.length,
-              show: brands?.length || isOwner,
-            },
-            {
-              id: 6,
-              text: 'Отзывы',
-              link: '#reviews',
-              count: reviews.length,
-              show: true,
-            },
+            // {
+            //   id: 5,
+            //   text: 'Бренды',
+            //   link: '#brands',
+            //   count: brands?.length,
+            //   show: brands?.length || isOwner,
+            // },
+            // {
+            //   id: 6,
+            //   text: 'Отзывы',
+            //   link: '#reviews',
+            //   count: reviews.length,
+            //   show: true,
+            // },
             { id: 7, text: 'Контакты', link: '#contacts', show: true },
           ]}
         />
         <About master={master} />
-        {master?.servicesMaster?.length || isOwner ? (
+        {master?.services?.length || isOwner ? (
           <ServicesForClient
-            services={master?.servicesMaster}
-            salonServicesMasterCatalog={salonServicesMasterCatalog}
+            services={master?.services}
             isOwner={isOwner}
             master={master}
-            masterDataQuery={refetchMaster}
-            edit={editClientServices}
-            setEdit={setEditClientServices}
-            count={master?.servicesMaster?.length}
+            // masterDataQuery={refetchMaster}
+            // edit={editClientServices}
+            // setEdit={setEditClientServices}
+            count={master?.service?.length}
           />
         ) : null}
-        {master?.servicesMaster?.length || isOwner ? (
+        {/* {master?.servicesMaster?.length || isOwner ? (
           <MobileServicesForClient
             services={master?.servicesMaster}
             master={master}
@@ -300,7 +301,7 @@ const Master = ({ masterData, brandsData, dataReviews, dataScoreRes }) => {
             refetchMaster={refetchMaster}
             catalogs={catalogs}
           />
-        ) : null}
+        ) : null} */}
         {master?.photosWorks?.length || isOwner ? (
           <>
             <Slider
@@ -310,7 +311,7 @@ const Master = ({ masterData, brandsData, dataReviews, dataScoreRes }) => {
               title="Примеры работ"
               isEditing={isPortfolioEditing}
               setIsEditing={setIsPortfolioEditing}
-              deleteFunction={onDelete}
+              // deleteFunction={onDelete}
               pt={52}
               pb={31}
             >
@@ -334,7 +335,7 @@ const Master = ({ masterData, brandsData, dataReviews, dataScoreRes }) => {
             title="Дипломы и сертификаты"
             isEditing={isDiplomsEditing}
             setIsEditing={setIsDiplomsEditing}
-            deleteFunction={onDeleteDiploma}
+            // deleteFunction={onDeleteDiploma}
             pt={52}
             pb={31}
           >
@@ -353,7 +354,7 @@ const Master = ({ masterData, brandsData, dataReviews, dataScoreRes }) => {
             </>
           </Slider>
         ) : null}
-        {salonsId?.length || isOwner ? (
+        {master?.salons?.length || isOwner ? (
           // <SalonMasterSlider
           //   title="Салоны, в которых я работаю"
           //   isOwner={isOwner}
@@ -366,17 +367,17 @@ const Master = ({ masterData, brandsData, dataReviews, dataScoreRes }) => {
           // />
           <Slider
             type="salons"
-            items={[]}
+            items={master.salons}
             isOwner={isOwner}
             title="Салоны, в которых я работаю"
             isEditing={isSalonsEditing}
             setIsEditing={setIsSalonsEditing}
-            deleteFunction={handleRemoveSalon}
+            // deleteFunction={handleRemoveSalon}
             pt={52}
             pb={31}
           >
             <>
-              {!salonsId.length ? (
+              {!master?.salons?.length ? (
                 !isSalonsEditing ? (
                   <NoItemsText>
                     Нет добавленных салонов. Нажмите на карандаш, чтобы добавить
@@ -390,7 +391,7 @@ const Master = ({ masterData, brandsData, dataReviews, dataScoreRes }) => {
             </>
           </Slider>
         ) : null}
-        {brands?.length || isOwner ? (
+        {/* {brands?.length || isOwner ? (
           <Slider
             type="brands"
             items={brands}
@@ -417,25 +418,32 @@ const Master = ({ masterData, brandsData, dataReviews, dataScoreRes }) => {
               ) : null}
             </>
           </Slider>
-        ) : null}
-        {me?.salons?.length && master?.resume ? (
+        ) : null} */}
+        {/* {me?.salons?.length && master?.resume ? (
           <Resume master={master} />
-        ) : null}
-        <ReviewsMaster
+        ) : null} */}
+        {/* <ReviewsMaster
           data={reviews}
           me={me}
           masterId={master.id}
           refetchReviews={refetchReviews}
-        />
+        /> */}
         <Contacts
-          phone={master?.phone}
-          email={master?.email}
-          address={master?.addressFull}
-          socials={master?.socialNetworkUrls}
+          phone={master?.masterPhone}
+          email={master?.masterEmail}
+          address={master?.masterAddress}
+          addressCoordinates={{
+            latitude: master?.latitude,
+            longitude: master?.longitude,
+          }}
+          socials={master?.socialNetworks}
+          haveTelegram={master?.haveTelegram}
+          haveWhatsApp={master?.haveWhatsApp}
+          haveViber={master?.haveViber}
         />
         <InviteMaster me={me} />
         <Line text="Вы мастер или владелец салона? Расскажите о себе и мы поможем найти новых клиентов и мастеров!" />
-        <Slider
+        {/* <Slider
           type="masters"
           title="Ближайшие мастера"
           items={data?.mastersRandom || []}
@@ -447,7 +455,7 @@ const Master = ({ masterData, brandsData, dataReviews, dataScoreRes }) => {
           bgColor="#f2f0f0"
           pt={102}
           pb={91}
-        />
+        /> */}
       </>
     </MainLayout>
   )
@@ -455,55 +463,39 @@ const Master = ({ masterData, brandsData, dataReviews, dataScoreRes }) => {
 
 export async function getServerSideProps({ params, query }) {
   const apolloClient = initializeApollo()
+
+  const id = params.id
+
   const masterQueryRes = await apolloClient.query({
-    query: masterSlugQuery,
-    variables: { slug: params.id },
+    query: getMaster,
+    variables: { id },
   })
 
-  const id = masterQueryRes?.data?.masterSlug?.id
-  const master = masterQueryRes?.data?.masterSlug
+  const master = masterQueryRes?.data?.master
 
-  const city = await apolloClient.query({
-    query: citySuggestionsQuery,
-    variables: {
-      city: query?.city || '',
-      count: 1,
-    },
-  })
+  // const city = await apolloClient.query({
+  //   query: citySuggestionsQuery,
+  //   variables: {
+  //     city: query?.city || '',
+  //     count: 1,
+  //   },
+  // })
 
-  if (!id || !city?.data?.citySuggestions[0]?.data?.city) {
+  // if (!id || !city?.data?.citySuggestions[0]?.data?.city) {
+  //   return {
+  //     notFound: true,
+  //   }
+  // }
+
+  if (!id) {
     return {
       notFound: true,
     }
   }
 
-  const data = await Promise.all([
-    apolloClient.query({
-      query: brandQuery,
-      variables: {
-        id: id,
-      },
-    }),
-    apolloClient.query({
-      query: reviewsForMaster,
-      variables: {
-        originId: id,
-      },
-    }),
-    apolloClient.query({
-      query: scoreMaster,
-      variables: {
-        id: id,
-      },
-    }),
-  ])
-
   return addApolloState(apolloClient, {
     props: {
       masterData: master,
-      brandsData: data[0]?.data?.brandsMaster || [],
-      dataReviews: data[1]?.data?.reviewsForMaster,
-      dataScoreRes: data[2].data,
     },
   })
 }

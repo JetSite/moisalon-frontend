@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import { MainContainer } from "../../../../../../styles/common";
-import Map from "../../../../../../components/blocks/Map";
+import { useState, useEffect } from 'react'
+import { MainContainer } from '../../../../../../styles/common'
+import Map from '../../../../../../components/blocks/Map'
 import {
   Wrapper,
   Top,
@@ -23,16 +23,25 @@ import {
   VBIcon,
   YTIcon,
   BlurPhone,
-} from "./styled";
-import defaultNumber from "../../../../../../utils/defaultNumber";
-import { numberForSocials } from "../../../../../../utils/formatNumber";
+} from './styled'
+import defaultNumber from '../../../../../../utils/defaultNumber'
+import { numberForSocials } from '../../../../../../utils/formatNumber'
 
-const Contacts = ({ phone, email, address, socials }) => {
-  const [openPhone, setOpenPhone] = useState(true);
+const Contacts = ({
+  phone,
+  email,
+  address,
+  addressCoordinates,
+  socials,
+  haveTelegram,
+  haveWhatsApp,
+  haveViber,
+}) => {
+  const [openPhone, setOpenPhone] = useState(true)
 
   useEffect(() => {
-    setOpenPhone(false);
-  }, []);
+    setOpenPhone(false)
+  }, [])
 
   return (
     <MainContainer id="contacts">
@@ -45,22 +54,19 @@ const Contacts = ({ phone, email, address, socials }) => {
         <Bottom>
           <ContentWrapperFlex>
             <Content>
-              {phone?.phoneNumber ? (
+              {phone ? (
                 openPhone ? (
                   <ContentWrapperElement>
-                    <PhoneNumber href={`tel:${phone?.phoneNumber}`}>
-                      {defaultNumber(phone?.phoneNumber)}
+                    <PhoneNumber href={`tel:${phone}`}>
+                      {defaultNumber(phone)}
                     </PhoneNumber>
                   </ContentWrapperElement>
                 ) : (
                   <ContentWrapperElement>
-                    {phone?.phoneNumber ? (
+                    {phone ? (
                       <PhoneNumberClose onClick={() => setOpenPhone(true)}>
                         <BlurPhone>
-                          {defaultNumber(phone?.phoneNumber)
-                            .split("")
-                            .splice(0, 6)
-                            .join("")}{" "}
+                          {defaultNumber(phone).split('').splice(0, 6).join('')}{' '}
                         </BlurPhone>
                         Показать номер
                       </PhoneNumberClose>
@@ -71,58 +77,36 @@ const Contacts = ({ phone, email, address, socials }) => {
               <ContentWrapperElement>
                 {email ? <Email href={`mailto:${email}`}>{email}</Email> : null}
                 <noindex>
-                  {address?.full ? (
+                  {address ? (
                     <Address
-                      href={`https://yandex.ru/maps/?pt=${address.longitude},${address.latitude}&z=18&l=map`}
+                      href={`https://yandex.ru/maps/?pt=${addressCoordinates.longitude},${addressCoordinates.latitude}&z=18&l=map`}
                       target="_blank"
                       rel="nofollow"
                     >
-                      {address?.full}
+                      {address}
                     </Address>
                   ) : null}
                 </noindex>
               </ContentWrapperElement>
             </Content>
             <SocialsWrapper>
-              {socials?.vKontakte ? (
+              {socials &&
+                !!socials.length &&
+                socials.map(social => (
+                  <noindex>
+                    <a
+                      href={social.link}
+                      target="_blank"
+                      rel="noreferrer nofollow"
+                    >
+                      {social.s_network.title}
+                    </a>
+                  </noindex>
+                ))}
+              {haveTelegram ? (
                 <noindex>
                   <a
-                    href={socials?.vKontakte}
-                    target="_blank"
-                    rel="noreferrer nofollow"
-                  >
-                    <VKIcon />{" "}
-                  </a>
-                </noindex>
-              ) : null}
-              {socials?.odnoklassniki ? (
-                <noindex>
-                  <a
-                    href={socials?.odnoklassniki}
-                    target="_blank"
-                    rel="noreferrer nofollow"
-                  >
-                    <OKIcon />
-                  </a>
-                </noindex>
-              ) : null}
-              {socials?.youTube ? (
-                <noindex>
-                  <a
-                    href={socials?.youTube}
-                    target="_blank"
-                    rel="noreferrer nofollow"
-                  >
-                    <YTIcon />
-                  </a>
-                </noindex>
-              ) : null}
-              {phone?.haveTelegram ? (
-                <noindex>
-                  <a
-                    href={`https://tlgg.ru/${numberForSocials(
-                      phone?.phoneNumber
-                    )}`}
+                    href={`https://tlgg.ru/${numberForSocials(phone)}`}
                     target="_blank"
                     rel="noreferrer nofollow"
                   >
@@ -130,27 +114,25 @@ const Contacts = ({ phone, email, address, socials }) => {
                   </a>
                 </noindex>
               ) : null}
-              {phone?.haveWhatsApp ? (
+              {haveWhatsApp ? (
                 <noindex>
                   <a
                     target="_blank"
                     rel="noreferrer nofollow"
                     href={`https://api.whatsapp.com/send?phone=${numberForSocials(
-                      phone?.phoneNumber
+                      phone,
                     )}`}
                   >
                     <WSIcon />
                   </a>
                 </noindex>
               ) : null}
-              {phone?.haveViber ? (
+              {haveViber ? (
                 <noindex>
                   <a
                     target="_blank"
                     rel="noreferrer nofollow"
-                    href={`viber://chat?number=%2B${numberForSocials(
-                      phone?.phoneNumber
-                    )}`}
+                    href={`viber://chat?number=%2B${numberForSocials(phone)}`}
                   >
                     <VBIcon />
                   </a>
@@ -160,15 +142,15 @@ const Contacts = ({ phone, email, address, socials }) => {
           </ContentWrapperFlex>
           <ContentBottom>
             <ContentWrapperElement>
-              {address?.longitude && address?.latitude ? (
-                <Map address={address} />
+              {addressCoordinates?.longitude && addressCoordinates?.latitude ? (
+                <Map address={addressCoordinates} />
               ) : null}
             </ContentWrapperElement>
           </ContentBottom>
         </Bottom>
       </Wrapper>
     </MainContainer>
-  );
-};
+  )
+}
 
-export default Contacts;
+export default Contacts

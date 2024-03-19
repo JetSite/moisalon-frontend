@@ -1,11 +1,12 @@
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../../styles/variables";
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../../../styles/variables'
+import { PHOTO_URL } from 'variables'
 
 export const PortfolioItemBlock = styled.div`
   position: relative;
   width: 275px;
   height: 275px;
-  background: ${(props) => `url(${props.item.url}) no-repeat
+  background: ${props => `url(${PHOTO_URL}${props.item.url}) no-repeat
     center`};
   background-size: contain;
 
@@ -15,19 +16,19 @@ export const PortfolioItemBlock = styled.div`
     border-radius: 5px;
     box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
   }
-`;
+`
 
 export const Wrap = styled.div`
   position: relative;
-`;
+`
 
 export const DeleteIcon = styled.div`
-  content: "";
+  content: '';
   position: absolute;
   top: 19px;
   right: 17px;
   width: 22px;
   height: 22px;
   cursor: pointer;
-  background: url("/close-cross-red.svg") no-repeat center;
-`;
+  background: url('/close-cross-red.svg') no-repeat center;
+`

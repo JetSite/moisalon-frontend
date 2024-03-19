@@ -1,13 +1,13 @@
-import { gql } from "@apollo/client";
-import { metaInfo } from "../../common/metaInfo";
-import { imageInfo } from "../../common/imageInfo";
+import { gql } from '@apollo/client'
+import { metaInfo } from '../../common/metaInfo'
+import { imageInfo } from '../../common/imageInfo'
 import {
   salonAdministratorsFragment,
   salonBrandsFragment,
   salonMastersFragment,
   salonReviewsFragment,
   salonServicesFragment,
-} from "../fragments";
+} from '../fragments'
 
 export const getSalons = gql`
   query salons {
@@ -22,15 +22,11 @@ export const getSalons = gql`
             salonIsNotRent
             salonWebSiteUrl
             salonEmail
-            salonPhones
-            salonSocialNetworkUrls
             salonAverageScore
             salonSumScore
             salonRating
             salonOwnerConfirmed
             salonOnlineBookingUrl
-            salonWorkingHours
-            salonLocationDirections
             salonDescription
             salonContactPersonName
             salonContactPersonPhone
@@ -53,6 +49,35 @@ export const getSalons = gql`
             salonPhotos {
               ${imageInfo}
             }
+            salonPhones {
+              id
+              phoneNumber
+              phoneTitle
+              phoneContact
+            }
+            workingHours {
+              id
+              dayOfWeek
+              startTime
+              endTime
+            }
+            socialNetworks {
+              id
+              title
+              link
+              s_network {
+                data {
+                  id
+                  attributes {
+                    title
+                    logo {
+                      ${imageInfo}
+                    }
+                    slug
+                  }
+                }
+              }
+            }
             ${salonAdministratorsFragment}
             ${salonBrandsFragment}
             ${salonMastersFragment}
@@ -63,4 +88,4 @@ export const getSalons = gql`
       ${metaInfo}
     }
   }
-`;
+`
