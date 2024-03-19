@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import SalonItem from '../../../SalonCard'
+import SalonCard from '../../../SalonCard'
 import { cyrToTranslit } from '../../../../../utils/translit'
 import { CityContext } from '../../../../../searchContext'
 import Button from '../../../../ui/Button'
@@ -22,25 +22,24 @@ const SalonSlide = ({ item, isEditing, deleteFunction }) => {
           : `/${cyrToTranslit(city)}/rent`
       }
     >
-      <SalonItem
-        item={item}
+      <SalonCard
+        item={item.attributes}
         shareLink={`https://moi.salon/${cyrToTranslit(
           item?.address?.city,
         )}/salon/${item?.seo?.slug || item?.id}`}
-      >
-        {isEditing && (
-          <DeleteSalon onClick={() => deleteFunction(item.id)}>
-            <Button
-              variant="withRoundBorder"
-              size="roundMedium"
-              font="roundMedium"
-              mt="40"
-            >
-              Больше тут не работаю
-            </Button>
-          </DeleteSalon>
-        )}
-      </SalonItem>
+      />
+      {isEditing && (
+        <DeleteSalon onClick={() => deleteFunction(item.id)}>
+          <Button
+            variant="withRoundBorder"
+            size="roundMedium"
+            font="roundMedium"
+            mt="40"
+          >
+            Больше тут не работаю
+          </Button>
+        </DeleteSalon>
+      )}
     </Link>
   )
 }

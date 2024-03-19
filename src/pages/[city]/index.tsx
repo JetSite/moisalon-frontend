@@ -27,6 +27,17 @@ import { getFeedCategories } from 'src/graphql/feed/queries/getFeedCategories'
 import { totalSalons } from 'src/graphql/salon/queries/totalSalons'
 import { totalMasters } from 'src/graphql/master/queries/totalMasters'
 import { totalBrands } from 'src/graphql/brand/queries/totalBrands'
+import { GetServerSideProps } from 'next'
+
+interface Props {
+  beautyCategories: any
+  beautyAllContent: any
+  bannerHooks: any
+  totalSalons: any
+  totalMasters: any
+  totalBrands: any
+  cityData: any
+}
 
 export default function AppContent({
   beautyCategories,
@@ -36,7 +47,7 @@ export default function AppContent({
   totalMasters,
   totalBrands,
   cityData,
-}) {
+}: Props) {
   // const [me, setMe] = useContext(MeContext);
   // const [city, setCity] = useContext(CityContext);
   // const [query, setQuery] = useContext(SearchMainQueryContext);
@@ -114,7 +125,7 @@ export default function AppContent({
   )
 }
 
-export async function getServerSideProps(ctx) {
+export const getServerSideProps: GetServerSideProps = async ctx => {
   const apolloClient = initializeApollo()
   // const city = await apolloClient.query({
   //   query: citySuggestionsQuery,

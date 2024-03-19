@@ -21,16 +21,14 @@ const RibbonSlide = ({ item }) => {
         query: { category: item.categoryId, item: item.id },
       }}
     >
-      <a>
-        <SliderItem>
-          <SliderContent>
-            <SliderImageWrap imageUrl={`${PHOTO_URL}${item.photoId}/original`}>
-              {/* <SliderImage alt={item.title} src={item.image} /> */}
-            </SliderImageWrap>
-            <SliderText>{item.title}</SliderText>
-          </SliderContent>
-        </SliderItem>
-      </a>
+      <SliderItem>
+        <SliderContent>
+          <SliderImageWrap imageUrl={`${PHOTO_URL}${item.photoId}/original`}>
+            {/* <SliderImage alt={item.title} src={item.image} /> */}
+          </SliderImageWrap>
+          <SliderText>{item.title}</SliderText>
+        </SliderContent>
+      </SliderItem>
     </Link>
   )
 }

@@ -1,4 +1,12 @@
-import React, { useContext, useCallback, useState, useEffect } from 'react'
+import React, {
+  useContext,
+  useCallback,
+  useState,
+  useEffect,
+  Dispatch,
+  SetStateAction,
+  FC,
+} from 'react'
 import { useQuery } from '@apollo/client'
 import Link from 'next/link'
 import {
@@ -11,15 +19,30 @@ import { MobileVisible, MobileHidden } from '../../../../../styles/common'
 import { WrapperItemsSalons, Title, SalonCardWrapper } from './styled'
 import SalonCard from '../../../../blocks/SalonCard'
 import Button from '../../../../ui/Button'
-import FilterSearchResults from '../../../../blocks/FilterSearchResults'
+import FilterSearchResults, {
+  typesFilter,
+} from '../../../../blocks/FilterSearchResults'
 import { pluralize } from '../../../../../utils/pluralize'
 import SalonMap from '../../../Salon/SalonMap'
 import { cyrToTranslit } from '../../../../../utils/translit'
 import RentFilter from '../../../Rent/RentFilter'
 import { useSearchHistory } from '../../../../../hooks/useSearchHistory'
 import useCheckMobileDevice from '../../../../../hooks/useCheckMobileDevice'
+import { useRouter } from 'next/router'
 
-const SalonsSearchResults = ({
+interface Props {
+  me: any
+  salonSearch: any
+  view: string
+  setView: Dispatch<SetStateAction<string>>
+  main: boolean
+  rent: boolean
+  setFilterOpen?: Dispatch<SetStateAction<boolean>>
+  filterOpen?: boolean
+  cityData: string
+}
+
+const SalonsSearchResults: FC<Props> = ({
   me,
   salonSearch,
   view,
@@ -32,12 +55,17 @@ const SalonsSearchResults = ({
 }) => {
   const [query] = useContext(SearchMainQueryContext)
   const [salonSearchData, setSalonSearchData] = useState(salonSearch)
-  const [loading, setLoading] = useState(false)
-  const [filters, setFilters] = useState(null)
-  const [fetchMoreLoading, setFetchMoreLoading] = useState(false)
+  const [loading, setLoading] = useState<boolean>(false)
+  const [filters, setFilters] = useState<null | Object>(null)
+  const [fetchMoreLoading, setFetchMoreLoading] = useState<boolean>(false)
   const [city] = useContext(CityContext)
-  const [sortProperty, setSortProperty] = useState(null)
-  const [sortOrder, setSortOrder] = useState(null)
+  const [sortProperty, setSortProperty] = useState<
+    keyof typeof typesFilter | null
+  >(null)
+  const [sortOrder, setSortOrder] = useState<'ASCENDING' | 'DESCENDING' | null>(
+    null,
+  )
+  const router = useRouter()
 
   const isMobile = useCheckMobileDevice()
 
@@ -55,11 +83,12 @@ const SalonsSearchResults = ({
 
   const querySearch = {
     ...EmptySearchQuery,
+    //@ts-ignore
     query: (query && query.query) || '',
     city: city ? city : 'Москва',
     lessor: rent ? true : false,
-    sortOrder: sortOrder || undefined,
-    sortProperty: sortProperty || undefined,
+    sortOrder: sortOrder || null,
+    sortProperty: sortProperty || null,
   }
 
   const { fetchMore, refetch } = useQuery(searchQuery, {
@@ -86,15 +115,13 @@ const SalonsSearchResults = ({
   }, [querySearch?.query, querySearch?.city, filters, sortOrder, sortProperty])
 
   const salonsSearchResult =
-    typeof window !== 'undefined'
-      ? salonSearchData?.salonsConnection
-      : salonSearch?.salonsConnection
-  const slicedList = salonsSearchResult?.nodes
+    typeof window !== 'undefined' ? salonSearchData?.data : salonSearch?.data
+  const slicedList = salonsSearchResult
   const hasNextPage = salonSearchData?.salonsConnection?.pageInfo?.hasNextPage
   const totalCount =
     typeof window !== 'undefined'
-      ? salonSearchData?.salonsConnection?.totalCount
-      : salonSearch?.salonsConnection?.totalCount
+      ? salonSearchData.meta.pagination.total
+      : salonSearch.meta.pagination.total
 
   const onFetchMore = useCallback(() => {
     setFetchMoreLoading(true)
@@ -118,7 +145,7 @@ const SalonsSearchResults = ({
         })
       },
     })
-  })
+  }, [filters, querySearch])
 
   const fetchMoreButton = hasNextPage ? (
     <>
@@ -189,31 +216,36 @@ const SalonsSearchResults = ({
             />
             <WrapperItemsSalons>
               {slicedList &&
-                slicedList.map(salon => (
-                  <Link
-                    key={salon?.salon?.id}
-                    href={
-                      rent
-                        ? `/${cyrToTranslit(
-                            salon?.salon?.address?.city || city,
-                          )}/rent/${salon.salon?.seo?.slug || salon.salon.id}`
-                        : `/${cyrToTranslit(
-                            salon?.salon?.address?.city || city,
-                          )}/salon/${salon.salon?.seo?.slug || salon.salon.id}`
+                slicedList.map((salon: any) => (
+                  <li
+                    key={salon.id}
+                    onClick={() =>
+                      router.push(
+                        rent
+                          ? `/${cyrToTranslit(
+                              salon.attributes.cities.data.attributes
+                                .cityName || city,
+                            )}/rent/${salon.attributes.slug || salon.id}`
+                          : `/${cyrToTranslit(
+                              salon.attributes.cities.data.attributes
+                                .cityName || city,
+                            )}/salon/${salon.attributes.slug || salon.id}`,
+                      )
                     }
                   >
-                    <SalonCardWrapper id={salon?.salon?.id}>
+                    <SalonCardWrapper id={salon.id}>
                       <SalonCard
                         seatCount={salon.seatCount}
                         rent={rent}
                         loading={loading}
-                        item={salon.salon}
+                        item={salon.attributes}
                         shareLink={`https://moi.salon/${cyrToTranslit(
-                          salon?.salon?.address?.city || city,
-                        )}/salon/${salon.salon?.seo?.slug || salon.salon.id}`}
+                          salon.attributes.cities.data.attributes.cityName ||
+                            city,
+                        )}/salon/${salon.attributes.slug || salon.id}`}
                       />
                     </SalonCardWrapper>
-                  </Link>
+                  </li>
                 ))}
             </WrapperItemsSalons>
             {fetchMoreButton}

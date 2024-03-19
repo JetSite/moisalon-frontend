@@ -17,6 +17,7 @@ import { getTotalCount } from '../../../utils/getTotalCount'
 import { GetServerSideProps } from 'next'
 import { DocumentNode, TypedDocumentNode } from '@apollo/client/core'
 import { OperationVariables } from '@apollo/react-common'
+import { getSalonsThroughCity } from 'src/graphql/salon/queries/getSalonsThroughCity'
 
 interface IProps {
   totalBrands: number
@@ -37,29 +38,26 @@ const AllSalons: FC<IProps> = ({
   cityData,
   data,
 }) => {
-  // const [me, setMe] = useContext(MeContext);
+  const [me, setMe] = useContext(MeContext)
   // useCheckCity(cityData);
 
-  const { data: data1 } = useQuery(getCities, {
+  const { data: data1 } = useQuery(getSalonsThroughCity, {
     variables: { cityName: ['Москва'] },
   })
 
-  console.log(data1)
-  console.log(cityData)
+  // console.log(salonSearch)
+  // console.log(data)
 
   return (
-    <></>
-
-    // <CategoryPageLayout loading={false} me={me}>
-    //   <AllSalonsPage
-    //     totalBrands={totalBrands}
-    //     totalMasters={totalMasters}
-    //     totalSalons={totalSalons}
-    //     salonSearch={salonSearch}
-    //     salonServices={salonServices}
-    //     me={me}
-    //   />
-    // </CategoryPageLayout>
+    <CategoryPageLayout loading={false} me={me}>
+      <AllSalonsPage
+        totalBrands={totalBrands}
+        totalMasters={totalMasters}
+        totalSalons={totalSalons}
+        salonSearch={salonSearch}
+        me={me}
+      />
+    </CategoryPageLayout>
   )
 }
 
@@ -73,6 +71,10 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
   const normalizeCity = city.cities.data[0].attributes.cityName
 
   const data = await Promise.all([
+    apolloClient.query({
+      query: getSalonsThroughCity,
+      variables: { cityName: ['Москва'] },
+    }),
     // apolloClient.query({
     // query: searchQuery,
     //   variables: {
@@ -110,10 +112,10 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
   return addApolloState(apolloClient, {
     props: {
       data: data,
-      // salonSearch: data[0]?.data?.salonSearch,
-      totalBrands: getTotalCount(data[0].data.brands),
-      totalMasters: getTotalCount(data[1].data.masters),
-      totalSalons: getTotalCount(data[2].data.salons),
+      salonSearch: data[0].data.salons,
+      totalBrands: getTotalCount(data[1].data.brands),
+      totalMasters: getTotalCount(data[2].data.masters),
+      totalSalons: getTotalCount(data[3].data.salons),
       // salonServices: data[4]?.data?.salonServicesCount,
       // cityData: city?.data?.citySuggestions[0]?.data?.city || "Москва",
       cityData: normalizeCity,

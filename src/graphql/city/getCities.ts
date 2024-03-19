@@ -1,4 +1,4 @@
-import { TypedDocumentNode, gql } from '@apollo/client'
+import { gql } from '@apollo/client'
 
 export const getCities = gql`
   query CityQuery($cityName: [String]) {
@@ -7,6 +7,7 @@ export const getCities = gql`
         id
         attributes {
           cityName
+          citySlug
         }
       }
     }

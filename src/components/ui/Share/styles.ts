@@ -1,27 +1,29 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
-import { laptopBreakpoint } from "../../../../styles/variables";
+import { laptopBreakpoint } from '../../../../styles/variables'
+import { RefObject } from 'react'
 
 export const Wrapper = styled.div`
   position: relative;
-`;
+`
 
-export const IconWrapper = styled.div`
+export const IconWrapper = styled.button`
+  border: none;
   width: 17px;
   height: 16px;
   transition: 0.2s;
   &:hover {
     transform: scale(1.2);
   }
-`;
+`
 
 export const Icon = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-`;
+`
 
-export const WrapperSocials = styled.div`
+export const WrapperSocials = styled.div<{ ref: RefObject<HTMLDivElement> }>`
   width: 210px;
   padding: 10px;
   /* padding-top: 20px; */
@@ -39,7 +41,7 @@ export const WrapperSocials = styled.div`
     left: -92px;
     padding-bottom: 6px;
   }
-`;
+`
 
 export const WrapperItems = styled.div`
   height: 42px;
@@ -62,7 +64,7 @@ export const WrapperItems = styled.div`
       height: 24px !important;
     }
   }
-`;
+`
 
 export const Title = styled.h5`
   font-weight: 700;
@@ -75,7 +77,7 @@ export const Title = styled.h5`
     margin-bottom: 6px;
     font-size: 12px;
   }
-`;
+`
 
 export const SocialItem = styled.div`
   margin-bottom: 10px;
@@ -95,7 +97,7 @@ export const SocialItem = styled.div`
       margin-right: 6px;
     }
   }
-`;
+`
 
 export const CloseBtn = styled.div`
   position: absolute;
@@ -107,10 +109,10 @@ export const CloseBtn = styled.div`
   &:hover {
     transform: scale(1.2);
   }
-`;
+`
 
 export const Close = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-`;
+`
