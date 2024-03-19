@@ -1,5 +1,5 @@
-import { useRef, useState, useContext } from "react";
-import { MainContainer } from "../../../../styles/common";
+import { useRef, useState, useContext } from 'react'
+import { MainContainer } from '../../../../styles/common'
 import {
   Title,
   Wrapper,
@@ -9,21 +9,21 @@ import {
   SliderWrapper,
   PhoneButton,
   ItemToggle,
-} from "./styled";
-import { Swiper, SwiperSlide } from "swiper/react";
-import SwiperCore, { Navigation } from "swiper/core";
-import Link from "next/link";
+} from './styled'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import SwiperCore, { Navigation } from 'swiper/core'
+import Link from 'next/link'
 import {
   ButtonNext,
   ButtonPrev,
   NavigationWrapper,
-} from "../../../../styles/sliderBlocks";
-import catalogOrDefault from "../../../../utils/catalogOrDefault";
-import MasterItem from "./components/MasterItem";
-import { CatalogsContext, CityContext } from "../../../../searchContext";
-import { cyrToTranslit } from "../../../../utils/translit";
+} from '../../../../styles/sliderBlocks'
+import catalogOrDefault from '../../../../utils/catalogOrDefault'
+import MasterItem from './components/MasterItem'
+import { CatalogsContext, CityContext } from '../../../../searchContext'
+import { cyrToTranslit } from '../../../../utils/translit'
 
-SwiperCore.use([Navigation]);
+SwiperCore.use([Navigation])
 
 const MastersFavorites = ({
   title,
@@ -32,30 +32,30 @@ const MastersFavorites = ({
   cabinet = false,
   mobile = false,
 }) => {
-  const navigationPrevRef = useRef(null);
-  const navigationNextRef = useRef(null);
-  const [city] = useContext(CityContext);
-  const catalogs = useContext(CatalogsContext);
+  const navigationPrevRef = useRef(null)
+  const navigationNextRef = useRef(null)
+  const [city] = useContext(CityContext)
+  const catalogs = useContext(CatalogsContext)
   const masterSpecializationsCatalog = catalogOrDefault(
-    catalogs?.masterSpecializationsCatalog
-  );
+    catalogs?.masterSpecializationsCatalog,
+  )
 
-  const onBeforeInit = (Swiper) => {
-    if (typeof Swiper.params.navigation !== "boolean") {
-      const navigation = Swiper.params.navigation;
-      navigation.prevEl = navigationPrevRef.current;
-      navigation.nextEl = navigationNextRef.current;
+  const onBeforeInit = Swiper => {
+    if (typeof Swiper.params.navigation !== 'boolean') {
+      const navigation = Swiper.params.navigation
+      navigation.prevEl = navigationPrevRef.current
+      navigation.nextEl = navigationNextRef.current
     }
-  };
+  }
 
-  const [deleteItem, setDeleteItem] = useState(false);
-  const [toggle, setToggle] = useState(mobile && cabinet && true);
+  const [deleteItem, setDeleteItem] = useState(false)
+  const [toggle, setToggle] = useState(mobile && cabinet && true)
 
-  let masters;
-  if (typeof window !== "undefined") {
-    masters = JSON.parse(localStorage.getItem("favorites"))?.masters || [];
+  let masters
+  if (typeof window !== 'undefined') {
+    masters = JSON.parse(localStorage.getItem('favorites'))?.masters || []
     if (!masters.length) {
-      setMasterEmpty(true);
+      setMasterEmpty(true)
     }
   }
 
@@ -83,7 +83,7 @@ const MastersFavorites = ({
             <SliderWrapper>
               <SwiperWrap>
                 <Swiper
-                  style={{ padding: "5px", marginLeft: "-5px" }}
+                  style={{ padding: '5px', marginLeft: '-5px' }}
                   mousewheel={true}
                   pagination={{ clickable: true }}
                   slidesPerView={5}
@@ -115,22 +115,20 @@ const MastersFavorites = ({
                   {masters &&
                     masters.map((master, i) => (
                       <SwiperSlide
-                        style={{ minHeight: "100%", height: "auto" }}
+                        style={{ minHeight: '100%', height: 'auto' }}
                         key={i}
                       >
                         <Link
                           href={`/${cyrToTranslit(
-                            master?.addressFull?.city || city
+                            master?.addressFull?.city || city,
                           )}/master/${master?.seo?.slug || master?.id}`}
                         >
-                          <a>
-                            <MasterItem
-                              master={master}
-                              catalog={masterSpecializationsCatalog}
-                              deleteItem={deleteItem}
-                              setDeleteItem={setDeleteItem}
-                            />
-                          </a>
+                          <MasterItem
+                            master={master}
+                            catalog={masterSpecializationsCatalog}
+                            deleteItem={deleteItem}
+                            setDeleteItem={setDeleteItem}
+                          />
                         </Link>
                         {master?.phone?.phoneNumber && !cabinet ? (
                           <PhoneButton
@@ -148,7 +146,7 @@ const MastersFavorites = ({
         ) : null}
       </MainContainer>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default MastersFavorites;
+export default MastersFavorites

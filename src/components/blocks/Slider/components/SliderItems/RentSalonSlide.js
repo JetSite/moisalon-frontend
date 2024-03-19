@@ -1,11 +1,11 @@
-import { useContext } from "react";
-import Link from "next/link";
-import SalonItem from "../../../SalonCard";
-import { cyrToTranslit } from "../../../../../utils/translit";
-import { CityContext } from "../../../../../searchContext";
+import { useContext } from 'react'
+import Link from 'next/link'
+import SalonItem from '../../../SalonCard'
+import { cyrToTranslit } from '../../../../../utils/translit'
+import { CityContext } from '../../../../../searchContext'
 
 const RentSalonSlide = ({ item }) => {
-  const [city] = useContext(CityContext);
+  const [city] = useContext(CityContext)
 
   return (
     <Link
@@ -13,18 +13,16 @@ const RentSalonSlide = ({ item }) => {
         item?.salon?.seo?.slug || item?.salon?.id
       }`}
     >
-      <a>
-        <SalonItem
-          item={item?.salon}
-          seatCount={item?.seatCount}
-          shareLink={`https://moi.salon/${cyrToTranslit(
-            item?.salon?.address?.city || city
-          )}/salon/${item?.salon?.seo?.slug || item?.salon?.id}`}
-          rent
-        />
-      </a>
+      <SalonItem
+        item={item?.salon}
+        seatCount={item?.seatCount}
+        shareLink={`https://moi.salon/${cyrToTranslit(
+          item?.salon?.address?.city || city,
+        )}/salon/${item?.salon?.seo?.slug || item?.salon?.id}`}
+        rent
+      />
     </Link>
-  );
-};
+  )
+}
 
-export default RentSalonSlide;
+export default RentSalonSlide

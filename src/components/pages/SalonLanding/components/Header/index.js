@@ -1,7 +1,7 @@
-import { useContext } from "react";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { MobileHidden, MobileVisible } from "../../../../../styles/common";
+import { useContext } from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { MobileHidden, MobileVisible } from '../../../../../styles/common'
 import {
   Wrapper,
   Content,
@@ -14,22 +14,20 @@ import {
   ButtonWrap,
   Features,
   FeaturesItem,
-} from "./styles";
-import Button from "../../../../ui/Button";
-import { cyrToTranslit } from "../../../../../utils/translit";
-import { CityContext } from "../../../../../searchContext";
+} from './styles'
+import Button from '../../../../ui/Button'
+import { cyrToTranslit } from '../../../../../utils/translit'
+import { CityContext } from '../../../../../searchContext'
 
 const Header = () => {
-  const { push } = useRouter();
-  const [city] = useContext(CityContext);
+  const { push } = useRouter()
+  const [city] = useContext(CityContext)
   return (
     <Wrapper>
       <Content>
         <LogoSmallWrap>
           <Link href={`/${cyrToTranslit(city)}`}>
-            <a>
-              <LogoSmall src="/for-salon-logo-small.png" alt="logo-big" />
-            </a>
+            <LogoSmall src="/for-salon-logo-small.png" alt="logo-big" />
           </Link>
         </LogoSmallWrap>
         <LogoSmallText>
@@ -37,9 +35,7 @@ const Header = () => {
         </LogoSmallText>
         <LogoBigWrap>
           <Link href={`/${cyrToTranslit(city)}`}>
-            <a>
-              <LogoBig src="/logo-white.svg" alt="logo-big" />
-            </a>
+            <LogoBig src="/logo-white.svg" alt="logo-big" />
           </Link>
         </LogoBigWrap>
         <LogoBigText>
@@ -48,7 +44,7 @@ const Header = () => {
         <MobileHidden>
           <ButtonWrap>
             <Button
-              onClick={() => push("/createLessorSalon")}
+              onClick={() => push('/createLessorSalon')}
               size="medium"
               variant="red"
               font="medium"
@@ -60,7 +56,7 @@ const Header = () => {
         <MobileVisible>
           <ButtonWrap>
             <Button
-              onClick={() => push("/createLessorSalon")}
+              onClick={() => push('/createLessorSalon')}
               size="fullWidth"
               variant="red"
               font="medium"
@@ -85,7 +81,7 @@ const Header = () => {
         </FeaturesItem>
       </Features>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

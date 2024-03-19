@@ -1,11 +1,11 @@
-import { Avatar } from "@material-ui/core";
-import { Skeleton } from "@material-ui/lab";
-import styled from "styled-components";
+import { Avatar } from '@material-ui/core'
+import { Skeleton } from '@material-ui/lab'
+import styled from 'styled-components'
 import {
   mobileBreakpoint,
   tabletBreakpoint,
   laptopBreakpoint,
-} from "../../../../../../styles/variables";
+} from '../../../../../../styles/variables'
 
 export const Checkbox = styled.input`
   position: absolute;
@@ -17,7 +17,7 @@ export const Checkbox = styled.input`
     user-select: none;
   }
   & + label::before {
-    content: "";
+    content: '';
     display: inline-block;
     width: 16px;
     height: 16px;
@@ -26,10 +26,10 @@ export const Checkbox = styled.input`
     border: 1px solid #797979;
     margin-right: 14px;
     cursor: pointer;
-    background: ${(props) =>
-      props.checked ? `url("/icon-check.svg") no-repeat center` : ""};
+    background: ${props =>
+      props.checked ? `url("/icon-check.svg") no-repeat center` : ''};
   }
-`;
+`
 export const Label = styled.label`
   font-size: 1rem;
   line-height: 1.5;
@@ -41,7 +41,7 @@ export const Label = styled.label`
     font-weight: 500;
     line-height: 16px;
   }
-`;
+`
 
 export const Wrapper = styled.div`
   max-width: 731px;
@@ -50,7 +50,7 @@ export const Wrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     max-width: 100%;
   }
-`;
+`
 
 export const WrapperResults = styled.div`
   padding: 0 140px;
@@ -58,7 +58,7 @@ export const WrapperResults = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     padding: 0 20px;
   }
-`;
+`
 
 export const InputWrap = styled.div`
   position: relative;
@@ -72,10 +72,10 @@ export const InputWrap = styled.div`
 
   &:before {
     position: absolute;
-    content: "";
+    content: '';
     left: 20px;
     top: 17px;
-    background: url("/search.svg") no-repeat center;
+    background: url('/search.svg') no-repeat center;
     background-size: cover;
     cursor: pointer;
     width: 20px;
@@ -99,7 +99,7 @@ export const InputWrap = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     margin-bottom: 16px;
   }
-`;
+`
 
 export const Input = styled.input`
   width: 100%;
@@ -134,13 +134,13 @@ export const Input = styled.input`
     font-size: 18px;
   }
 
-  &[type="search"] {
+  &[type='search'] {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
   }
 
-  &[type="search"]::-webkit-search-cancel-button {
+  &[type='search']::-webkit-search-cancel-button {
     -webkit-appearance: none;
     appearance: none;
   }
@@ -169,7 +169,7 @@ export const Input = styled.input`
       font-size: 12px;
     }
   }
-`;
+`
 
 export const WrapperItems = styled.div`
   width: 100%;
@@ -190,9 +190,9 @@ export const WrapperItems = styled.div`
     column-gap: 15px;
     margin-bottom: 40px;
   }
-`;
+`
 
-export const WrapperItemsSalons = styled.div`
+export const WrapperItemsSalons = styled.ul`
   width: 100%;
   display: flex;
   justify-content: flex-start;
@@ -211,7 +211,7 @@ export const WrapperItemsSalons = styled.div`
     column-gap: 15px;
     margin-bottom: 40px;
   }
-`;
+`
 
 export const WrapperItemsMasters = styled.div`
   width: 100%;
@@ -235,7 +235,7 @@ export const WrapperItemsMasters = styled.div`
   @media (max-width: ${mobileBreakpoint}) {
     grid-template-columns: repeat(2, minmax(135px, 1fr));
   }
-`;
+`
 
 export const City = styled.p`
   font-weight: 700;
@@ -247,7 +247,7 @@ export const City = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     margin-top: 10px;
   }
-`;
+`
 
 export const WrapperItemsBrands = styled(WrapperItems)`
   width: 100%;
@@ -269,7 +269,7 @@ export const WrapperItemsBrands = styled(WrapperItems)`
 
   @media (max-width: ${mobileBreakpoint}) {
   }
-`;
+`
 
 export const Item = styled.div`
   width: 217px;
@@ -295,7 +295,7 @@ export const Item = styled.div`
     padding: 21px 30px 0 30px;
     justify-content: flex-start;
   }
-`;
+`
 
 export const Name = styled.p`
   font-weight: 600;
@@ -313,7 +313,7 @@ export const Name = styled.p`
     font-weight: 600;
     line-height: 18px;
   }
-`;
+`
 
 export const Favorite = styled.div`
   position: absolute;
@@ -321,7 +321,7 @@ export const Favorite = styled.div`
   height: 16px;
   padding: 20px;
   background: ${({ isFavorite }) =>
-      isFavorite ? "url(/favorite-red-icon.svg)" : "url(/favorit.svg)"}
+      isFavorite ? 'url(/favorite-red-icon.svg)' : 'url(/favorit.svg)'}
     no-repeat center;
   cursor: pointer;
   right: 2px;
@@ -331,7 +331,7 @@ export const Favorite = styled.div`
     right: -5px;
     top: -6px;
   }
-`;
+`
 
 export const SkeletonItem = styled(Skeleton)`
   width: 173px;
@@ -340,7 +340,7 @@ export const SkeletonItem = styled(Skeleton)`
     width: 104px;
     height: 104px;
   }
-`;
+`
 
 export const SkeletonMasterItem = styled(Skeleton)`
   width: 217px;
@@ -349,14 +349,14 @@ export const SkeletonMasterItem = styled(Skeleton)`
     width: 160px;
     height: 355px;
   }
-`;
+`
 
 export const FavoriteMaster = styled(Favorite)`
   @media (max-width: ${laptopBreakpoint}) {
     right: 2px;
     top: 2px;
   }
-`;
+`
 
 export const Image = styled(Avatar)`
   width: 140px;
@@ -368,7 +368,7 @@ export const Image = styled(Avatar)`
     height: 100px;
     margin-bottom: 18px;
   }
-`;
+`
 
 export const Specializations = styled.p`
   color: #727272;
@@ -389,7 +389,7 @@ export const Specializations = styled.p`
     font-weight: 400;
     line-height: 18px;
   }
-`;
+`
 
 export const Title = styled.h1`
   margin-top: 64px;
@@ -404,7 +404,7 @@ export const Title = styled.h1`
     text-align: left;
     font-size: 22px;
   }
-`;
+`
 
 export const MasterInfo = styled.div`
   display: flex;
@@ -417,7 +417,7 @@ export const MasterInfo = styled.div`
     grid-template-rows: repeat(6, 18px);
     row-gap: 2px; */
   }
-`;
+`
 
 export const SalonCardWrapper = styled.div`
   width: 373px;
@@ -427,7 +427,7 @@ export const SalonCardWrapper = styled.div`
     width: 100%;
     margin-right: 0;
   }
-`;
+`
 
 export const BItem = styled.div`
   width: 173px;
@@ -454,14 +454,14 @@ export const BItem = styled.div`
     height: 104px;
     padding: 0 16px;
   }
-`;
+`
 
 export const BrandImage = styled.img`
   max-width: 100%;
   overflow: hidden;
-`;
+`
 
 export const LinkStyled = styled.a`
   display: block;
   height: 100%;
-`;
+`

@@ -1,75 +1,75 @@
-import { useCallback, useState, useEffect } from "react";
-import Link from "next/link";
-import { useQuery } from "@apollo/client";
-import { brandSearchQuery } from "../../../../../_graphql-legacy/search/brandSearch";
-import BrandItem from "./BrandItem";
-import Button from "../../../../ui/Button";
-import { MobileVisible, MobileHidden } from "../../../../../styles/common";
-import { ListWrapper, ListContent } from "./styles";
+import { useCallback, useState, useEffect } from 'react'
+import Link from 'next/link'
+import { useQuery } from '@apollo/client'
+import { brandSearchQuery } from '../../../../../_graphql-legacy/search/brandSearch'
+import BrandItem from './BrandItem'
+import Button from '../../../../ui/Button'
+import { MobileVisible, MobileHidden } from '../../../../../styles/common'
+import { ListWrapper, ListContent } from './styles'
 
 const List = ({ filterProduct, brandSearchData }) => {
-  const [brandsSearchList, setBrandsSearchList] = useState(brandSearchData);
-  const [fetchMoreLoading, setFetchMoreLoading] = useState(false);
+  const [brandsSearchList, setBrandsSearchList] = useState(brandSearchData)
+  const [fetchMoreLoading, setFetchMoreLoading] = useState(false)
 
   const { fetchMore, refetch } = useQuery(brandSearchQuery, {
     variables: {
-      query: "",
+      query: '',
       categoryId:
-        filterProduct?.value !== "Все категории" ? filterProduct?.value : null,
+        filterProduct?.value !== 'Все категории' ? filterProduct?.value : null,
     },
     skip: true,
     notifyOnNetworkStatusChange: true,
-    onCompleted: (res) => {
+    onCompleted: res => {
       if (res) {
-        setBrandsSearchList(res.brandsSearch);
+        setBrandsSearchList(res.brandsSearch)
       }
     },
-  });
+  })
 
   useEffect(() => {
-    if (filterProduct?.value && filterProduct?.value !== "Все категории") {
+    if (filterProduct?.value && filterProduct?.value !== 'Все категории') {
       refetch({
         variables: {
-          query: "",
+          query: '',
           categoryId:
-            filterProduct?.value !== "Все категории"
+            filterProduct?.value !== 'Все категории'
               ? filterProduct?.value
               : null,
         },
-      });
+      })
     } else {
-      setBrandsSearchList(brandSearchData);
+      setBrandsSearchList(brandSearchData)
     }
-  }, [filterProduct]);
+  }, [filterProduct])
 
-  const brandsSearchResult = brandsSearchList?.connection.nodes || [];
-  const hasNextPage = brandsSearchList?.connection?.pageInfo?.hasNextPage;
+  const brandsSearchResult = brandsSearchList?.connection.nodes || []
+  const hasNextPage = brandsSearchList?.connection?.pageInfo?.hasNextPage
 
   const onFetchMore = useCallback(() => {
-    setFetchMoreLoading(true);
+    setFetchMoreLoading(true)
     fetchMore({
       variables: {
-        query: "",
+        query: '',
         categoryId:
-          filterProduct?.value !== "Все категории"
+          filterProduct?.value !== 'Все категории'
             ? filterProduct?.value
             : null,
         cursor: brandsSearchList?.connection?.pageInfo?.endCursor,
       },
 
       updateQuery(previousResult, { fetchMoreResult }) {
-        const newNodes = fetchMoreResult.brandsSearch.connection.nodes;
-        setFetchMoreLoading(false);
+        const newNodes = fetchMoreResult.brandsSearch.connection.nodes
+        setFetchMoreLoading(false)
         setBrandsSearchList({
           connection: {
             ...fetchMoreResult.brandsSearch.connection,
             nodes: [...brandsSearchList?.connection.nodes, ...newNodes],
           },
           filterDefinition: fetchMoreResult.brandsSearch.filterDefinition,
-        });
+        })
       },
-    });
-  });
+    })
+  })
 
   const fetchMoreButton = hasNextPage ? (
     <>
@@ -97,12 +97,12 @@ const List = ({ filterProduct, brandSearchData }) => {
         </Button>
       </MobileVisible>
     </>
-  ) : null;
+  ) : null
 
   return (
     <ListContent>
       <ListWrapper>
-        {brandsSearchResult?.map((brand) => (
+        {brandsSearchResult?.map(brand => (
           <Link
             href={{
               pathname: `/catalogB2b/${brand.id}/product`,
@@ -112,15 +112,13 @@ const List = ({ filterProduct, brandSearchData }) => {
             }}
             key={brand.id}
           >
-            <a>
-              <BrandItem filterProduct={filterProduct} brand={brand} />
-            </a>
+            <BrandItem filterProduct={filterProduct} brand={brand} />
           </Link>
         ))}
       </ListWrapper>
       {fetchMoreButton}
     </ListContent>
-  );
-};
+  )
+}
 
-export default List;
+export default List

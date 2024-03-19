@@ -25,8 +25,7 @@ import {
   TitleIconWrapper,
 } from './styles'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation, Pagination } from 'swiper/modules'
-import SwiperCore from 'swiper/core'
+import SwiperCore, { Navigation } from 'swiper/core'
 import Link from 'next/link'
 import {
   Bottom,
@@ -357,12 +356,12 @@ const Slider = ({
               ) : null}
               <Title
                 bgColor={bgColor}
-                empty={items.length === 0}
+                empty={items?.length === 0}
                 mobileTitleWidth={mobileTitleWidth}
               >
                 {title} {isOwner && <EditIcons setIsEditing={setIsEditing} />}
               </Title>
-              {items.length > 0 && (
+              {items?.length > 0 && (
                 <NavigationWrapper>
                   <ButtonPrev
                     ref={navigationPrevRef}
@@ -375,7 +374,7 @@ const Slider = ({
                 </NavigationWrapper>
               )}
             </Top>
-            {items.length ? (
+            {items?.length ? (
               <SliderWrapper>
                 <SwiperWrap pl={items?.length === 1 ? 0 : pl}>
                   <Swiper
@@ -391,7 +390,7 @@ const Slider = ({
                     onBeforeInit={onBeforeInit}
                     breakpoints={{
                       320: {
-                        centeredSlides: items.length === 1,
+                        centeredSlides: items?.length === 1,
                       },
                       700: {
                         centeredSlides: false,
@@ -409,7 +408,7 @@ const Slider = ({
                         {customProps(type, typeObject).firstSlide}
                       </SwiperSlide>
                     )}
-                    {items.map((item, i) => (
+                    {items?.map((item, i) => (
                       <SwiperSlide
                         style={{
                           minHeight: '100%',
@@ -421,7 +420,8 @@ const Slider = ({
                         {customProps(type, item).sliderItem}
                       </SwiperSlide>
                     ))}
-                    {items.length >= customProps(type).slidesCountWhenAllShow &&
+                    {items?.length >=
+                      customProps(type).slidesCountWhenAllShow &&
                       !customProps(type).isAllPage &&
                       !noAll && (
                         <SwiperSlide

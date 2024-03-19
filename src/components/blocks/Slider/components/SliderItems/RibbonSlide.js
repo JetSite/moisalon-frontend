@@ -23,10 +23,10 @@ const RibbonSlide = ({ item }) => {
     >
       <SliderItem>
         <SliderContent>
-          <SliderImageWrap imageUrl={imageUrl}>
+          <SliderImageWrap imageUrl={`${PHOTO_URL}${item.photoId}/original`}>
             {/* <SliderImage alt={item.title} src={item.image} /> */}
           </SliderImageWrap>
-          <SliderText>{item.attributes?.beautyFeedTitle}</SliderText>
+          <SliderText>{item.title}</SliderText>
         </SliderContent>
       </SliderItem>
     </Link>

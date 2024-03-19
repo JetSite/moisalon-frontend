@@ -9,9 +9,9 @@ import {
   salonServicesFragment,
 } from '../fragments'
 
-export const getSalons = gql`
-  query salons {
-    salons {
+export const getSalon = gql`
+  query salon($id: ID) {
+    salon(id: $id) {
       data {
         id
         attributes {
@@ -76,7 +76,6 @@ export const getSalons = gql`
             ${salonServicesFragment}
         }
       }
-      ${metaInfo}
     }
   }
 `

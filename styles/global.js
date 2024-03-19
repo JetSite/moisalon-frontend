@@ -41,6 +41,11 @@ p {
   margin: 0;
 }
 
+button {
+  padding: 0;
+  background: none;
+}
+
 ul li,
 ol li {
   list-style: none;
@@ -88,4 +93,4 @@ input {
 .ymaps-2-1-79-gototech {
   display: none!important;
 }
-`;
+`

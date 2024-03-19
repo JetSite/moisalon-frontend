@@ -1,5 +1,5 @@
-import Link from "next/link";
-import { MobileHidden, MobileVisible } from "../../../../../styles/common";
+import Link from 'next/link'
+import { MobileHidden, MobileVisible } from '../../../../../styles/common'
 import {
   Wrapper,
   Content,
@@ -12,26 +12,24 @@ import {
   ButtonWrap,
   Features,
   FeaturesItem,
-} from "./styles";
-import Button from "../../../../ui/Button";
-import { useRouter } from "next/router";
-import { useContext } from "react";
-import { CityContext, MeContext } from "../../../../../searchContext";
-import { cyrToTranslit } from "../../../../../utils/translit";
+} from './styles'
+import Button from '../../../../ui/Button'
+import { useRouter } from 'next/router'
+import { useContext } from 'react'
+import { CityContext, MeContext } from '../../../../../searchContext'
+import { cyrToTranslit } from '../../../../../utils/translit'
 
 const Header = ({ setOpenPopup }) => {
-  const router = useRouter();
-  const [me] = useContext(MeContext);
-  const [city] = useContext(CityContext);
-  const isLoggedIn = me?.info !== undefined && me?.info !== null;
+  const router = useRouter()
+  const [me] = useContext(MeContext)
+  const [city] = useContext(CityContext)
+  const isLoggedIn = me?.info !== undefined && me?.info !== null
   return (
     <Wrapper>
       <Content>
         <LogoSmallWrap>
           <Link href={`/${cyrToTranslit(city)}`}>
-            <a>
-              <LogoSmall src="/for-salon-logo-small.png" alt="logo-big" />
-            </a>
+            <LogoSmall src="/for-salon-logo-small.png" alt="logo-big" />
           </Link>
         </LogoSmallWrap>
         <LogoSmallText>
@@ -40,9 +38,7 @@ const Header = ({ setOpenPopup }) => {
         </LogoSmallText>
         <LogoBigWrap>
           <Link href={`/${cyrToTranslit(city)}`}>
-            <a>
-              <LogoBig src="/logo-white.svg" alt="logo-big" />
-            </a>
+            <LogoBig src="/logo-white.svg" alt="logo-big" />
           </Link>
         </LogoBigWrap>
         <LogoBigText>
@@ -53,7 +49,7 @@ const Header = ({ setOpenPopup }) => {
             <Button
               // onClick={() => setOpenPopup(true)}
               onClick={() =>
-                router.push(isLoggedIn ? "/masterCabinet" : "/login")
+                router.push(isLoggedIn ? '/masterCabinet' : '/login')
               }
               size="mediumNoPadding"
               variant="red"
@@ -68,7 +64,7 @@ const Header = ({ setOpenPopup }) => {
             <Button
               // onClick={() => setOpenPopup(true)}
               onClick={() =>
-                router.push(isLoggedIn ? "/masterCabinet" : "/login")
+                router.push(isLoggedIn ? '/masterCabinet' : '/login')
               }
               size="fullWidth"
               variant="red"
@@ -94,7 +90,7 @@ const Header = ({ setOpenPopup }) => {
         </FeaturesItem>
       </Features>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

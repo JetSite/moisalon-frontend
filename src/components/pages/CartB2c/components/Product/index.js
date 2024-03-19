@@ -1,35 +1,35 @@
-import { useState, useEffect, useContext } from "react";
-import styled from "styled-components";
-import Link from "next/link";
-import { useMutation } from "@apollo/react-hooks";
-import { Checkbox } from "@material-ui/core";
-import { BpCheckedIcon, BpIcon } from "../..";
-import { makeStyles } from "@material-ui/core/styles";
-import { laptopBreakpoint } from "../../../../../../styles/variables";
-import { PHOTO_URL } from "../../../../../../variables";
-import { addToCartB2cMutation } from "../../../../../_graphql-legacy/cart/addToB2cCart";
-import { CityContext } from "../../../../../searchContext";
-import { cyrToTranslit } from "../../../../../utils/translit";
+import { useState, useEffect, useContext } from 'react'
+import styled from 'styled-components'
+import Link from 'next/link'
+import { useMutation } from '@apollo/react-hooks'
+import { Checkbox } from '@material-ui/core'
+import { BpCheckedIcon, BpIcon } from '../..'
+import { makeStyles } from '@material-ui/core/styles'
+import { laptopBreakpoint } from '../../../../../../styles/variables'
+import { PHOTO_URL } from '../../../../../../variables'
+import { addToCartB2cMutation } from '../../../../../_graphql-legacy/cart/addToB2cCart'
+import { CityContext } from '../../../../../searchContext'
+import { cyrToTranslit } from '../../../../../utils/translit'
 
 const useStyles = makeStyles({
   root: {
-    marginLeft: "-9px",
-    "&:hover": {
-      backgroundColor: "transparent !important",
+    marginLeft: '-9px',
+    '&:hover': {
+      backgroundColor: 'transparent !important',
     },
   },
-});
+})
 
 const Wrapper = styled.div`
   border-bottom: 1px solid #e3e3e3;
   padding-bottom: 20px;
   margin-bottom: 45px;
-`;
+`
 
 const Top = styled.div`
   display: flex;
   justify-content: flex-start;
-`;
+`
 
 const Image = styled.div`
   border: 1px solid #ededed;
@@ -46,45 +46,45 @@ const Image = styled.div`
     height: 90%;
     object-fit: contain;
   }
-`;
+`
 
 const Name = styled.p`
   font-weight: 500;
   font-size: 14px;
   line-height: 20px;
   margin-bottom: 7px;
-`;
+`
 
 const Description = styled.div`
   font-size: 10px;
   line-height: 16px;
   margin-bottom: 7px;
-`;
+`
 
 const Info = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-`;
+`
 
 const Price = styled.p`
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
   color: #f03;
-`;
+`
 
 const Controls = styled.div`
   display: flex;
   justify-content: space-between;
-`;
+`
 
 const QuantityWrap = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: -58px;
-`;
+`
 
 const Minus = styled.div`
   width: 28px;
@@ -92,23 +92,23 @@ const Minus = styled.div`
   border-radius: 100%;
   flex-shrink: 0;
   cursor: pointer;
-  background: #f0f0f0 url("/icon-minus.svg") no-repeat center;
+  background: #f0f0f0 url('/icon-minus.svg') no-repeat center;
   transition: all 0.2s ease-in-out;
 
   &:hover {
-    background: #ff0033 url("/icon-minus-white.svg") no-repeat center;
+    background: #ff0033 url('/icon-minus-white.svg') no-repeat center;
   }
-`;
+`
 
 const Plus = styled(Minus)`
-  background: #f0f0f0 url("/icon-plus.svg") no-repeat center;
+  background: #f0f0f0 url('/icon-plus.svg') no-repeat center;
   background-size: 13px;
 
   &:hover {
-    background: #ff0033 url("/icon-plus-white.svg") no-repeat center;
+    background: #ff0033 url('/icon-plus-white.svg') no-repeat center;
     background-size: 13px;
   }
-`;
+`
 
 const Quantity = styled.p`
   font-size: 10px;
@@ -118,7 +118,7 @@ const Quantity = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     width: 40px;
   }
-`;
+`
 
 const Product = ({
   item,
@@ -129,24 +129,24 @@ const Product = ({
   refetchCart,
   cart,
 }) => {
-  const classes = useStyles();
-  const [city] = useContext(CityContext);
+  const classes = useStyles()
+  const [city] = useContext(CityContext)
 
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(false)
 
   useEffect(() => {
-    if (checkedProducts.find((el) => el.key === item.key)) {
-      setChecked(true);
+    if (checkedProducts.find(el => el.key === item.key)) {
+      setChecked(true)
     } else {
-      setChecked(false);
+      setChecked(false)
     }
-  }, [checkedProducts]);
+  }, [checkedProducts])
 
   const [addToCart] = useMutation(addToCartB2cMutation, {
     onCompleted: () => {
-      refetchCart();
+      refetchCart()
     },
-  });
+  })
 
   const add = (item, quantity) => {
     addToCart({
@@ -157,10 +157,10 @@ const Product = ({
           isB2b: false,
         },
       },
-    });
-  };
+    })
+  }
 
-  const deleteItem = (item) => {
+  const deleteItem = item => {
     removeItem({
       variables: {
         input: {
@@ -168,16 +168,16 @@ const Product = ({
           isB2b: false,
         },
       },
-    });
-  };
+    })
+  }
 
   const handleChecked = () => {
-    if (checkedProducts.find((el) => el.key === item.key)) {
-      setCheckedProducts(checkedProducts.filter((el) => el.key !== item.key));
+    if (checkedProducts.find(el => el.key === item.key)) {
+      setCheckedProducts(checkedProducts.filter(el => el.key !== item.key))
     } else {
-      setCheckedProducts([...checkedProducts, item]);
+      setCheckedProducts([...checkedProducts, item])
     }
-  };
+  }
 
   return (
     <Wrapper>
@@ -190,18 +190,16 @@ const Product = ({
             },
           }}
         >
-          <a>
-            <Image>
-              <img
-                src={
-                  item?.product?.photoIds[0]
-                    ? ` ${PHOTO_URL}${item?.product?.photoIds[0]}/original`
-                    : "/cosmetic_placeholder.jpg"
-                }
-                alt="logo"
-              />
-            </Image>
-          </a>
+          <Image>
+            <img
+              src={
+                item?.product?.photoIds[0]
+                  ? ` ${PHOTO_URL}${item?.product?.photoIds[0]}/original`
+                  : '/cosmetic_placeholder.jpg'
+              }
+              alt="logo"
+            />
+          </Image>
         </Link>
         <Info>
           <Name>{item?.product?.title}</Name>
@@ -224,7 +222,7 @@ const Product = ({
         </QuantityWrap>
       </Controls>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default Product;
+export default Product

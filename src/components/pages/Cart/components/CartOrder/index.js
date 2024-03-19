@@ -1,32 +1,32 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect } from 'react'
 import {
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-} from "@material-ui/core";
-import { Field } from "react-final-form";
-import Button from "../../../../ui/Button";
-import AutoFocusedForm from "../../../../blocks/Form/AutoFocusedForm";
-import RadioButtonGroup from "../../../../blocks/Form/RadioButtonGroup";
-import RadioButton from "../../../../blocks/Form/RadioButton";
-import Error from "../../../../blocks/Form/Error";
-import AddressNoSalonField from "../../../../blocks/Form/AddressField/AddressNoSalonField";
-import { TextField } from "../../../../blocks/Form";
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../styles/variables";
+} from '@material-ui/core'
+import { Field } from 'react-final-form'
+import Button from '../../../../ui/Button'
+import AutoFocusedForm from '../../../../blocks/Form/AutoFocusedForm'
+import RadioButtonGroup from '../../../../blocks/Form/RadioButtonGroup'
+import RadioButton from '../../../../blocks/Form/RadioButton'
+import Error from '../../../../blocks/Form/Error'
+import AddressNoSalonField from '../../../../blocks/Form/AddressField/AddressNoSalonField'
+import { TextField } from '../../../../blocks/Form'
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../../styles/variables'
 
-const onUpdate = (handler) => (event) => {
-  const value = event.target.value;
-  if (value === "") {
-    handler(null);
-  } else if (value === "1") {
-    handler(true);
+const onUpdate = handler => event => {
+  const value = event.target.value
+  if (value === '') {
+    handler(null)
+  } else if (value === '1') {
+    handler(true)
   } else {
-    handler(false);
+    handler(false)
   }
-};
+}
 
 const ButtonsAction = styled(DialogActions)`
   justify-content: space-between;
@@ -39,7 +39,7 @@ const ButtonsAction = styled(DialogActions)`
       width: 100%;
     }
   }
-`;
+`
 
 const ButtonAction = styled(DialogActions)`
   @media (max-width: ${laptopBreakpoint}) {
@@ -48,18 +48,18 @@ const ButtonAction = styled(DialogActions)`
       width: 100%;
     }
   }
-`;
+`
 
 const GroupRadio = ({ input }) => {
-  const { name, value, onChange } = input;
-  const handleOnChange = useCallback(onUpdate(onChange), [onChange]);
+  const { name, value, onChange } = input
+  const handleOnChange = useCallback(onUpdate(onChange), [onChange])
 
-  const inputValue = value === true ? "1" : value === false ? "0" : "";
+  const inputValue = value === true ? '1' : value === false ? '0' : ''
   const groupProps = {
     name,
     onChange: handleOnChange,
     value: inputValue,
-  };
+  }
 
   return (
     <div style={{ marginBottom: 20 }}>
@@ -73,12 +73,12 @@ const GroupRadio = ({ input }) => {
         </div>
       </RadioButtonGroup>
     </div>
-  );
-};
+  )
+}
 
 const GroupRadioField = ({ name, title }) => (
   <Field name={name} component={GroupRadio} title={title} />
-);
+)
 
 const CartOrder = ({
   openOrder,
@@ -102,30 +102,30 @@ const CartOrder = ({
       me.master.addressFull &&
       me.master.addressFull.full
     ) {
-      setClickAddress(true);
+      setClickAddress(true)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [openOrder]);
+  }, [openOrder])
 
   useEffect(() => {
     if (open) {
-      const itemsDelete = checkedProducts.map((item) => {
+      const itemsDelete = checkedProducts.map(item => {
         return {
           key: item.key,
           quantity: 0,
-        };
-      });
+        }
+      })
       removeItem({
         variables: {
           input: {
             items: itemsDelete,
-            clientMutationId: "",
+            clientMutationId: '',
           },
         },
-      });
-      setCheckedProducts([]);
+      })
+      setCheckedProducts([])
     }
-  }, [open]);
+  }, [open])
 
   return (
     <div>
@@ -144,7 +144,7 @@ const CartOrder = ({
                   me.master &&
                   me.master.addressFull &&
                   me.master.addressFull.full) ||
-                "",
+                '',
             }}
             onSubmit={onSubmit}
             render={({ handleSubmit, form }) => {
@@ -186,7 +186,7 @@ const CartOrder = ({
                     </Button>
                   </ButtonsAction>
                 </>
-              );
+              )
             }}
           />
         </DialogContent>
@@ -194,12 +194,12 @@ const CartOrder = ({
       <Dialog
         open={open}
         onClose={() => {
-          handleCloseSuccess();
+          handleCloseSuccess()
         }}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Заказ отправлен"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{'Заказ отправлен'}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             Представители брендов свяжутся с вами в ближайшее время
@@ -208,7 +208,7 @@ const CartOrder = ({
         <ButtonAction>
           <Button
             onClick={() => {
-              handleCloseSuccess();
+              handleCloseSuccess()
             }}
             variant="red"
           >
@@ -217,7 +217,7 @@ const CartOrder = ({
         </ButtonAction>
       </Dialog>
     </div>
-  );
-};
+  )
+}
 
-export default CartOrder;
+export default CartOrder

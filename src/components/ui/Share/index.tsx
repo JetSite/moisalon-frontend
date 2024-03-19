@@ -1,5 +1,5 @@
-import { useState, useRef } from "react";
-import OutsideClickHandler from "react-outside-click-handler";
+import { useState, useRef, MouseEvent, FC } from 'react'
+import OutsideClickHandler from 'react-outside-click-handler'
 import {
   VKShareButton,
   VKIcon,
@@ -11,7 +11,7 @@ import {
   ViberIcon,
   WhatsappShareButton,
   WhatsappIcon,
-} from "next-share";
+} from 'next-share'
 import {
   Wrapper,
   WrapperItems,
@@ -20,21 +20,27 @@ import {
   WrapperSocials,
   Title,
   SocialItem,
-} from "./styles";
+} from './styles'
 
-const Share = ({ link, imageLink = "", title = "" }) => {
-  const [showSocials, setShowSocials] = useState(false);
-  const shareWrapperRef = useRef();
+interface Props {
+  link: string
+  imageLink?: string
+  title: string
+}
 
-  const openSocials = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setShowSocials(!showSocials);
-  };
+const Share: FC<Props> = ({ link, imageLink, title }) => {
+  const [showSocials, setShowSocials] = useState(false)
+  const shareWrapperRef = useRef<HTMLDivElement>(null)
+
+  const openSocials = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setShowSocials(!showSocials)
+  }
 
   const btnClick = () => {
-    setShowSocials(false);
-  };
+    setShowSocials(false)
+  }
 
   return (
     <Wrapper>
@@ -43,7 +49,7 @@ const Share = ({ link, imageLink = "", title = "" }) => {
       </IconWrapper>
       <OutsideClickHandler
         onOutsideClick={() => {
-          setShowSocials(false);
+          setShowSocials(false)
         }}
       >
         {showSocials ? (
@@ -101,7 +107,7 @@ const Share = ({ link, imageLink = "", title = "" }) => {
         ) : null}
       </OutsideClickHandler>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default Share;
+export default Share
