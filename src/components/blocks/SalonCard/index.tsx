@@ -46,15 +46,12 @@ const SalonCard: FC<Props> = ({
 }) => {
   const catalogs = useContext(CatalogsContext)
   const mobileMedia = useMedia({ maxWidth: 768 })
-  // const salonActivitiesCatalog = catalogOrDefault(
-  //   catalogs?.salonActivitiesCatalog,
-  // )
 
-  const logoUrl = item.salonLogo?.data?.attributes?.url
-    ? `${PHOTO_URL}${item.salonLogo?.data?.attributes?.url}`
+  const logoUrl = item?.salonLogo?.url
+    ? `${PHOTO_URL}${item.salonLogo.url}`
     : ''
-  const imageUrl = item.salonCover?.data?.attributes?.url
-    ? `${PHOTO_URL}${item.salonCover?.data?.attributes?.url}`
+  const imageUrl = item?.salonCover?.url
+    ? `${PHOTO_URL}${item.salonCover.url}`
     : ''
 
   const [isFavorite, setIsFavorit] = useState<boolean>(false)
@@ -91,15 +88,15 @@ const SalonCard: FC<Props> = ({
       <Content>
         <Wrap>
           <Top>
-            <Name>{item.salonName || ''}</Name>
+            <Name>{item?.salonName || ''}</Name>
             <Socials>
-              {item.salonPhones && item.salonPhones.length ? (
+              {item?.salonPhones && item?.salonPhones?.length ? (
                 <PhoneLink
                   onClick={e => e.stopPropagation()}
                   href={`tel:${item.salonPhones[0].phoneNumber}`}
                 />
               ) : null}
-              {item.salonEmail ? (
+              {item?.salonEmail ? (
                 <EmailLink
                   onClick={e => e.stopPropagation()}
                   href={`mailto:${item.salonEmail}`}
@@ -118,12 +115,12 @@ const SalonCard: FC<Props> = ({
                 )}
               </Activities>
             </SalonInfo> */}
-            {item.salonAddress ? <Address>{item.salonAddress}</Address> : null}
+            {item?.salonAddress ? <Address>{item.salonAddress}</Address> : null}
           </Info>
         </Wrap>
         <Rating
-          averageScore={item.salonAverageScore}
-          numberScore={item.salonSumScore}
+          averageScore={item?.salonAverageScore}
+          numberScore={item?.salonSumScore}
           position={!mobileMedia ? 'justify' : 'start'}
           fontSize={!mobileMedia ? '14px' : '10px'}
           fontWeight={600}
@@ -133,7 +130,7 @@ const SalonCard: FC<Props> = ({
         <HeartFullFill fill={isFavorite} />
       </FavoriteIcon>
       <SalonShareWrap>
-        <Share link={shareLink} title={item.salonName} />
+        <Share link={shareLink} title={item?.salonName} />
       </SalonShareWrap>
     </Wrapper>
   )

@@ -1,10 +1,13 @@
-import { useState, useEffect, useContext } from "react";
-import { useMutation } from "@apollo/client";
-import { selectedGroupNamesMax } from "../../../../../../utils/serviceCatalog";
-import { MainContainer } from "../../../../../../styles/common";
-import BackButton from "../../../../../ui/BackButton";
-import RatingEdit from "../../../../../ui/RatingEdit";
-import { createScopesMaster } from "../../../../../../_graphql-legacy/master/createScopesMaster";
+import { useState, useEffect, useContext } from 'react'
+import { useMutation } from '@apollo/client'
+import {
+  getServicesNames,
+  selectedGroupNamesMax,
+} from '../../../../../../utils/serviceCatalog'
+import { MainContainer } from '../../../../../../styles/common'
+import BackButton from '../../../../../ui/BackButton'
+import RatingEdit from '../../../../../ui/RatingEdit'
+import { createScopesMaster } from '../../../../../../_graphql-legacy/master/createScopesMaster'
 import {
   Wrapper,
   Socials,
@@ -28,69 +31,70 @@ import {
   SocialsWrapper,
   ChatIcon,
   ChatTip,
-} from "./styles";
-import { useRouter } from "next/router";
+} from './styles'
+import { useRouter } from 'next/router'
 import {
   favoritesInStorage,
   inStorage,
-} from "../../../../../../utils/favoritesInStorage";
-import { cyrToTranslit } from "../../../../../../utils/translit";
-import defaultNumber from "../../../../../../utils/defaultNumber";
-import { CityContext } from "../../../../../../searchContext";
-import ChatMessagePopup from "../../../../../ui/ChatMessagePopup";
-import { numberForSocials } from "../../../../../../utils/formatNumber";
+} from '../../../../../../utils/favoritesInStorage'
+import { cyrToTranslit } from '../../../../../../utils/translit'
+import defaultNumber from '../../../../../../utils/defaultNumber'
+import { CityContext } from '../../../../../../searchContext'
+import ChatMessagePopup from '../../../../../ui/ChatMessagePopup'
+import { numberForSocials } from '../../../../../../utils/formatNumber'
+import { PHOTO_URL } from 'variables'
 
 const Header = ({
   master,
-  masterSpecializationsCatalog,
+  // masterSpecializationsCatalog,
   me,
-  scoreMasterCount,
-  loadingScore,
-  refetchMaster,
-  refetchScore,
+  // scoreMasterCount,
+  // loadingScore,
+  // refetchMaster,
+  // refetchScore,
   isOwner,
 }) => {
-  const router = useRouter();
-  const [city] = useContext(CityContext);
-  const [chatMessagePopup, setChatMessagePopup] = useState(false);
+  const router = useRouter()
+  const [city] = useContext(CityContext)
+  const [chatMessagePopup, setChatMessagePopup] = useState(false)
 
-  const logo = master.photo ? (
-    <Logo background={`url(${master.photo.url})`} />
+  const logo = master?.masterPhoto?.url ? (
+    <Logo background={`url(${PHOTO_URL}${master?.masterPhoto?.url})`} />
   ) : (
     <SkeletonCircle />
-  );
+  )
 
-  const [isFavorite, setIsFavorit] = useState(false);
-  const [showSocials, setShowSocials] = useState(false);
+  const [isFavorite, setIsFavorit] = useState(false)
+  const [showSocials, setShowSocials] = useState(false)
 
   useEffect(() => {
-    const isInStorage = inStorage("masters", master);
-    setIsFavorit(!!isInStorage);
-  }, []);
+    const isInStorage = inStorage('masters', master)
+    setIsFavorit(!!isInStorage)
+  }, [])
 
   const addFavorite = (e, master) => {
-    e.preventDefault();
-    e.stopPropagation();
-    favoritesInStorage("masters", master);
-    setIsFavorit(!isFavorite);
-  };
+    e.preventDefault()
+    e.stopPropagation()
+    favoritesInStorage('masters', master)
+    setIsFavorit(!isFavorite)
+  }
 
-  const [createScore] = useMutation(createScopesMaster, {
-    onCompleted: () => {
-      refetchMaster();
-      refetchScore();
-    },
-  });
+  // const [createScore] = useMutation(createScopesMaster, {
+  //   onCompleted: () => {
+  //     refetchMaster();
+  //     refetchScore();
+  //   },
+  // });
 
-  const handleChangeRating = (num) => {
-    if (scoreMasterCount || loadingScore) return;
-    createScore({
-      variables: {
-        value: num,
-        masterId: master.id,
-      },
-    });
-  };
+  const handleChangeRating = num => {
+    // if (scoreMasterCount || loadingScore) return
+    // createScore({
+    //   variables: {
+    //     value: num,
+    //     masterId: master.id,
+    //   },
+    // })
+  }
 
   return (
     <>
@@ -105,30 +109,25 @@ const Header = ({
         />
         <Wrapper>
           <BackButton
-            link={isOwner ? "/masterCabinet" : `/${cyrToTranslit(city)}/master`}
+            link={isOwner ? '/masterCabinet' : `/${cyrToTranslit(city)}/master`}
             type="Мастер"
-            name={master.name}
+            name={master?.masterName}
           />
         </Wrapper>
         <Wrapper>
           <Socials>
             <Phone
-              active={master?.phone?.phoneNumber}
-              href={
-                master?.phone?.phoneNumber
-                  ? `tel:${master.phone.phoneNumber}`
-                  : ""
-              }
+              active={master?.masterPhone}
+              href={master?.masterPhone ? `tel:${master.masterPhone}` : '#'}
             />
             {logo}
             <SocialsWrapper>
               <ActiveSocials
-                // active={
-                //   master?.phone?.haveTelegram ||
-                //   master?.phone?.haveWhatsApp ||
-                //   master?.phone?.haveViber
-                // }
-                active
+                active={
+                  master?.haveTelegram ||
+                  master?.haveWhatsApp ||
+                  master?.haveViber
+                }
                 onClick={() => setShowSocials(!showSocials)}
               />
               <noindex>
@@ -138,33 +137,33 @@ const Header = ({
                     showSocials={showSocials}
                     onClick={() => setChatMessagePopup(true)}
                   />
-                  {master?.phone?.haveTelegram ? (
+                  {master?.haveTelegram ? (
                     <Telegram
                       target="_blank"
                       rel="nofollow"
                       showSocials={showSocials}
                       href={`https://tlgg.ru/${numberForSocials(
-                        master?.phone?.phoneNumber
+                        master?.masterPhone,
                       )}`}
                     />
                   ) : null}
-                  {master?.phone?.haveWhatsApp ? (
+                  {master?.haveWhatsApp ? (
                     <WhatsApp
                       target="_blank"
                       rel="nofollow"
                       showSocials={showSocials}
                       href={`https://api.whatsapp.com/send?phone=${numberForSocials(
-                        master?.phone?.phoneNumber
+                        master?.masterPhone,
                       )}`}
                     />
                   ) : null}
-                  {master?.phone?.haveViber ? (
+                  {master?.haveViber ? (
                     <Viber
                       target="_blank"
                       rel="nofollow"
                       showSocials={showSocials}
                       href={`viber://chat?number=%2B${numberForSocials(
-                        master?.phone?.phoneNumber
+                        master?.masterPhone,
                       )}`}
                     />
                   ) : null}
@@ -174,31 +173,27 @@ const Header = ({
           </Socials>
           <NameWrapper>
             <NameContent>
-              <Name>{master.name}</Name>
+              <Name>{master.masterName}</Name>
               <Favorite
                 isFavorite={isFavorite}
-                onClick={(e) => addFavorite(e, master)}
+                onClick={e => addFavorite(e, master)}
               />
               {/* <Bell /> */}
             </NameContent>
             {isOwner ? (
-              <EditButton onClick={() => router.push("/createMaster")}>
+              <EditButton onClick={() => router.push('/createMaster')}>
                 Редактировать профиль
               </EditButton>
             ) : null}
           </NameWrapper>
-          <Activities>
-            {selectedGroupNamesMax(
-              master?.specializations ? master?.specializations[0] : [],
-              masterSpecializationsCatalog,
-              ", ",
-              1
-            )}
-          </Activities>
+          {master?.services && !!master?.services?.length ? (
+            <Activities>{getServicesNames(master.services)}</Activities>
+          ) : null}
           <Rating>
             <RatingEdit
               handleChangeRating={handleChangeRating}
-              userValue={scoreMasterCount || 0}
+              // userValue={scoreMasterCount || 0}
+              userValue={0}
               count={Math.round(master?.averageScore)}
               me={me}
             />
@@ -207,7 +202,7 @@ const Header = ({
         </Wrapper>
       </MainContainer>
     </>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

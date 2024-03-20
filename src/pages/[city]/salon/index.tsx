@@ -18,6 +18,7 @@ import { GetServerSideProps } from 'next'
 import { DocumentNode, TypedDocumentNode } from '@apollo/client/core'
 import { OperationVariables } from '@apollo/react-common'
 import { getSalonsThroughCity } from 'src/graphql/salon/queries/getSalonsThroughCity'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 
 interface IProps {
   totalBrands: number
@@ -109,10 +110,12 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
   //   }
   // }
 
+  const normalisedSalons = flattenStrapiResponse(data[0].data.salons)
+
   return addApolloState(apolloClient, {
     props: {
       data: data,
-      salonSearch: data[0].data.salons,
+      salonSearch: normalisedSalons,
       totalBrands: getTotalCount(data[1].data.brands),
       totalMasters: getTotalCount(data[2].data.masters),
       totalSalons: getTotalCount(data[3].data.salons),

@@ -5,6 +5,7 @@ import {
   ApolloLink,
   HttpLink,
   NormalizedCacheObject,
+  DefaultOptions,
 } from '@apollo/client'
 import merge from 'deepmerge'
 import isEqual from 'lodash/isEqual'
@@ -28,7 +29,7 @@ export class InMemoryCacheForServerSide extends InMemoryCache {
   broadcastWatches() {}
 }
 
-const defaultContext = {
+const defaultOptions: DefaultOptions = {
   watchQuery: {
     fetchPolicy: 'no-cache',
     errorPolicy: 'ignore',
@@ -46,50 +47,6 @@ const link = new HttpLink({
   },
 })
 
-export const middleware = new ApolloLink((operation, forward) => {
-  if (typeof window !== 'undefined' && window.localStorage) {
-    const session = localStorage.getItem('woo-session')
-    if (session) {
-      operation.setContext(({}) => ({
-        headers: {
-          'woocommerce-session': `Session ${session}`,
-        },
-      }))
-    }
-  }
-
-  return forward(operation)
-})
-
-export const afterware = new ApolloLink((operation, forward) => {
-  return forward(operation).map(response => {
-    const context = operation.getContext()
-    const {
-      response: { headers },
-    } = context
-    const session = headers.get('woocommerce-session')
-    if (session) {
-      if (typeof window !== 'undefined' && window.localStorage) {
-        if (localStorage.getItem('woo-session') !== session) {
-          localStorage.setItem(
-            'woo-session',
-            headers.get('woocommerce-session'),
-          )
-        }
-      }
-    }
-
-    return response
-  })
-})
-
-const goodsLink = new HttpLink({
-  uri: 'https://cosmetic.jetsite.ru/graphql',
-  fetchOptions: {
-    credentials: 'include',
-  },
-})
-
 const cache = isServer
   ? new InMemoryCacheForServerSide({
       resultCaching: false,
@@ -99,13 +56,9 @@ const cache = isServer
 function createApolloClient(): ApolloClient<NormalizedCacheObject> {
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
-    link: ApolloLink.split(
-      operation => operation.getContext().clientName === 'goods',
-      middleware.concat(afterware.concat(goodsLink)),
-      link,
-    ),
+    link,
     cache,
-    defaultContext,
+    defaultOptions,
   })
 }
 

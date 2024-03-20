@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { MobileCatalogGroupForClient } from "./MobileCatalogGroupForClient";
-import { MainContainer } from "../../../../../../styles/common";
+import { useState } from 'react'
+import { MobileCatalogGroupForClient } from './MobileCatalogGroupForClient'
+import { MainContainer } from '../../../../../../styles/common'
 import {
   Wrapper,
   Top,
@@ -9,33 +9,31 @@ import {
   Content,
   NoServicesText,
   TitleWrap,
-} from "./styles";
-import { useMutation } from "@apollo/client";
-import catalogOrDefault from "../../../../../../utils/catalogOrDefault";
-import EditIcons from "../../../../../ui/EditIcons";
-import { updateServiceMasterMutation } from "../../../../../../_graphql-legacy/master/updateServiceMasterMutation";
-import EditSalonServicesForClient from "../../../../../pages/Salon/EditSalonServicesForClient";
+} from './styles'
+import { useMutation } from '@apollo/client'
+import catalogOrDefault from '../../../../../../utils/catalogOrDefault'
+import EditIcons from '../../../../../ui/EditIcons'
+import { updateServiceMasterMutation } from '../../../../../../_graphql-legacy/master/updateServiceMasterMutation'
+import EditSalonServicesForClient from '../../../../../pages/Salon/EditSalonServicesForClient'
 
 const MobileServicesComponent = ({
-  services,
+  serviceCategories,
   isOwner,
   master,
   masterPage = false,
-  catalogs,
-  refetchMaster,
+  // refetchMaster,
 }) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [entriesItems, setEntriesItems] = useState(services);
+  const [isEditing, setIsEditing] = useState(false)
+  const [entriesItems, setEntriesItems] = useState(serviceCategories)
+  const servicesCount = serviceCategories?.reduce((acc, category) => {
+    return acc + category.services.length
+  }, 0)
 
-  const salonServicesMasterCatalog = catalogOrDefault(
-    catalogs?.salonServicesMasterCatalog
-  );
-
-  const [updateServices] = useMutation(updateServiceMasterMutation, {
-    onCompleted: () => {
-      refetchMaster();
-    },
-  });
+  // const [updateServices] = useMutation(updateServiceMasterMutation, {
+  //   onCompleted: () => {
+  //     refetchMaster()
+  //   },
+  // })
 
   const handleEditConfirm = () => {
     updateServices({
@@ -45,39 +43,20 @@ const MobileServicesComponent = ({
           serviceMaster: entriesItems,
         },
       },
-    });
-  };
-
-  const groups = salonServicesMasterCatalog?.groups
-    ?.map((group, idx) => {
-      if (
-        entriesItems.find((item) => {
-          for (let i = 0; i < group?.subGroups?.length; i++) {
-            if (item?.id === group?.subGroups[i]?.id) {
-              return item;
-            }
-            for (let j = 0; j < group?.subGroups[i]?.items?.length; j++) {
-              if (item?.id === group?.subGroups[i]?.items[j]?.id) {
-                return item;
-              }
-            }
-          }
-        })
-      ) {
-        return (
-          <MobileCatalogGroupForClient
-            masterPage={masterPage}
-            withPrice
-            key={idx}
-            group={group}
-            entriesItems={entriesItems}
-          />
-        );
-      } else {
-        return null;
-      }
     })
-    .filter((element) => element !== null);
+  }
+
+  const groups = serviceCategories?.map((serviceCategory, idx) => {
+    return (
+      <MobileCatalogGroupForClient
+        masterPage={masterPage}
+        withPrice
+        key={idx}
+        serviceCategory={serviceCategory}
+        entriesItems={entriesItems}
+      />
+    )
+  })
 
   return (
     <MainContainer id="services">
@@ -92,7 +71,7 @@ const MobileServicesComponent = ({
               />
             )}
           </TitleWrap>
-          <Count>{services?.length || 0}</Count>
+          <Count>{servicesCount || 0}</Count>
         </Top>
         {!isEditing ? (
           groups?.length ? (
@@ -112,7 +91,7 @@ const MobileServicesComponent = ({
         )}
       </Wrapper>
     </MainContainer>
-  );
-};
+  )
+}
 
-export default MobileServicesComponent;
+export default MobileServicesComponent

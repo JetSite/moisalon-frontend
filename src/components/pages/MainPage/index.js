@@ -72,7 +72,7 @@ const MainPage = ({
                 <Banners
                   bannersByHookWide={bannerHooks?.data[0]}
                   bannersByHookSmall1={bannerHooks?.data[1]}
-                  // bannersByHookSmall2={bannersByHookSmall2?.bannersByHookCode}
+                  bannersByHookSmall2={bannerHooks?.data[2]}
                 />
               ) : null}
             </MobileHidden>
@@ -90,7 +90,7 @@ const MainPage = ({
             <Banners
               bannersByHookWide={bannerHooks?.data[0]}
               bannersByHookSmall1={bannerHooks?.data[1]}
-              // bannersByHookSmall2={bannersByHookSmall2?.bannersByHookCode}
+              bannersByHookSmall2={bannerHooks?.data[2]}
             />
           ) : null}
         </MobileVisible>

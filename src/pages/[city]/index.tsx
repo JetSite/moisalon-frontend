@@ -27,6 +27,8 @@ import { getFeedCategories } from 'src/graphql/feed/queries/getFeedCategories'
 import { totalSalons } from 'src/graphql/salon/queries/totalSalons'
 import { totalMasters } from 'src/graphql/master/queries/totalMasters'
 import { totalBrands } from 'src/graphql/brand/queries/totalBrands'
+import { getMaster } from 'src/graphql/master/queries/getMaster'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { GetServerSideProps } from 'next'
 
 interface Props {
@@ -95,6 +97,12 @@ export default function AppContent({
   //     }
   //   }
   // }, []);
+
+  // const { data } = useQuery(getMaster, {
+  //   variables: { id: 1 },
+  // })
+
+  // console.log(data)
 
   return (
     <>

@@ -21,10 +21,15 @@ export const getMasters = gql`
               }
             }
             services {
-              data {
-                id
-                attributes {
-                    serviceName
+              id
+              price
+              serviceName 
+              service {
+                data {
+                  id
+                  attributes {
+                      serviceName
+                  }
                 }
               }
             }
@@ -32,9 +37,6 @@ export const getMasters = gql`
               ${cityInfo}
             }
             masterPhoto {
-              ${imageInfo}
-            }
-            masterGallery {
               ${imageInfo}
             }
         }

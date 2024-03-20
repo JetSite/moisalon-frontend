@@ -81,99 +81,101 @@ const SalonsSearchResults: FC<Props> = ({
     cityInStorage = localStorage.getItem('citySalon')
   }
 
-  const querySearch = {
-    ...EmptySearchQuery,
-    //@ts-ignore
-    query: (query && query.query) || '',
-    city: city ? city : 'Москва',
-    lessor: rent ? true : false,
-    sortOrder: sortOrder || null,
-    sortProperty: sortProperty || null,
-  }
+  // const querySearch = {
+  //   ...EmptySearchQuery,
+  //   //@ts-ignore
+  //   query: (query && query.query) || '',
+  //   city: city ? city : 'Москва',
+  //   lessor: rent ? true : false,
+  //   sortOrder: sortOrder || null,
+  //   sortProperty: sortProperty || null,
+  // }
 
-  const { fetchMore, refetch } = useQuery(searchQuery, {
-    variables: { input: { ...querySearch, ...filters } },
-    notifyOnNetworkStatusChange: true,
-    skip: true,
-    onCompleted: res => {
-      setLoading(false)
-      if (res?.salonSearch) {
-        setSalonSearchData(res.salonSearch)
-      }
-    },
-  })
+  // const { fetchMore, refetch } = useQuery(searchQuery, {
+  //   variables: { input: { ...querySearch, ...filters } },
+  //   notifyOnNetworkStatusChange: true,
+  //   skip: true,
+  //   onCompleted: res => {
+  //     setLoading(false)
+  //     if (res?.salonSearch) {
+  //       setSalonSearchData(res.salonSearch)
+  //     }
+  //   },
+  // })
 
-  useEffect(() => {
-    if (sortProperty || querySearch?.query || filters) {
-      setSearchData(null)
-      setLoading(true)
-      setChosenItemId('')
-      refetch({
-        variables: { input: { ...querySearch, ...filters } },
-      })
-    }
-  }, [querySearch?.query, querySearch?.city, filters, sortOrder, sortProperty])
+  // useEffect(() => {
+  //   if (sortProperty || querySearch?.query || filters) {
+  //     setSearchData(null)
+  //     setLoading(true)
+  //     setChosenItemId('')
+  //     refetch({
+  //       variables: { input: { ...querySearch, ...filters } },
+  //     })
+  //   }
+  // }, [querySearch?.query, querySearch?.city, filters, sortOrder, sortProperty])
 
+  console.log(salonSearchData)
   const salonsSearchResult =
-    typeof window !== 'undefined' ? salonSearchData?.data : salonSearch?.data
+    typeof window !== 'undefined' ? salonSearchData : salonSearch
   const slicedList = salonsSearchResult
-  const hasNextPage = salonSearchData?.salonsConnection?.pageInfo?.hasNextPage
-  const totalCount =
-    typeof window !== 'undefined'
-      ? salonSearchData.meta.pagination.total
-      : salonSearch.meta.pagination.total
+  // const hasNextPage = salonSearchData?.salonsConnection?.pageInfo?.hasNextPage
+  // const totalCount =
+  //   typeof window !== 'undefined'
+  //     ? salonSearchData?.meta?.pagination?.total
+  //     : salonSearch?.meta?.pagination?.total
+  const totalCount = salonSearchData?.length
 
-  const onFetchMore = useCallback(() => {
-    setFetchMoreLoading(true)
-    setChosenItemId('')
-    fetchMore({
-      variables: {
-        input: { ...querySearch, ...filters },
-        cursor: salonSearchData?.salonsConnection?.pageInfo?.endCursor,
-      },
+  // const onFetchMore = useCallback(() => {
+  //   setFetchMoreLoading(true)
+  //   setChosenItemId('')
+  //   fetchMore({
+  //     variables: {
+  //       input: { ...querySearch, ...filters },
+  //       cursor: salonSearchData?.salonsConnection?.pageInfo?.endCursor,
+  //     },
 
-      updateQuery(previousResult, { fetchMoreResult }) {
-        const newNodes = fetchMoreResult.salonSearch.salonsConnection.nodes
+  //     updateQuery(previousResult, { fetchMoreResult }) {
+  //       const newNodes = fetchMoreResult.salonSearch.salonsConnection.nodes
 
-        setFetchMoreLoading(false)
-        setSalonSearchData({
-          salonsConnection: {
-            ...fetchMoreResult.salonSearch.salonsConnection,
-            nodes: [...salonSearchData.salonsConnection.nodes, ...newNodes],
-          },
-          filterDefinition: fetchMoreResult.salonSearch.filterDefinition,
-        })
-      },
-    })
-  }, [filters, querySearch])
+  //       setFetchMoreLoading(false)
+  //       setSalonSearchData({
+  //         salonsConnection: {
+  //           ...fetchMoreResult.salonSearch.salonsConnection,
+  //           nodes: [...salonSearchData.salonsConnection.nodes, ...newNodes],
+  //         },
+  //         filterDefinition: fetchMoreResult.salonSearch.filterDefinition,
+  //       })
+  //     },
+  //   })
+  // }, [filters, querySearch])
 
-  const fetchMoreButton = hasNextPage ? (
-    <>
-      <MobileHidden>
-        <Button
-          onClick={onFetchMore}
-          size="medium"
-          variant="darkTransparent"
-          mb="55"
-          disabled={fetchMoreLoading}
-        >
-          Показать еще
-        </Button>
-      </MobileHidden>
-      <MobileVisible>
-        <Button
-          size="roundSmall"
-          variant="withRoundBorder"
-          font="roundSmall"
-          mb="56"
-          onClick={onFetchMore}
-          disabled={fetchMoreLoading}
-        >
-          Показать еще салоны
-        </Button>
-      </MobileVisible>
-    </>
-  ) : null
+  // const fetchMoreButton = hasNextPage ? (
+  //   <>
+  //     <MobileHidden>
+  //       <Button
+  //         onClick={onFetchMore}
+  //         size="medium"
+  //         variant="darkTransparent"
+  //         mb="55"
+  //         disabled={fetchMoreLoading}
+  //       >
+  //         Показать еще
+  //       </Button>
+  //     </MobileHidden>
+  //     <MobileVisible>
+  //       <Button
+  //         size="roundSmall"
+  //         variant="withRoundBorder"
+  //         font="roundSmall"
+  //         mb="56"
+  //         onClick={onFetchMore}
+  //         disabled={fetchMoreLoading}
+  //       >
+  //         Показать еще салоны
+  //       </Button>
+  //     </MobileVisible>
+  //   </>
+  // ) : null
 
   return (
     <>
@@ -223,13 +225,11 @@ const SalonsSearchResults: FC<Props> = ({
                       router.push(
                         rent
                           ? `/${cyrToTranslit(
-                              salon.attributes.cities.data.attributes
-                                .cityName || city,
-                            )}/rent/${salon.attributes.slug || salon.id}`
+                              salon.cities.cityName || city,
+                            )}/rent/${salon.slug || salon.id}`
                           : `/${cyrToTranslit(
-                              salon.attributes.cities.data.attributes
-                                .cityName || city,
-                            )}/salon/${salon.attributes.slug || salon.id}`,
+                              salon.cities.cityName || city,
+                            )}/salon/${salon.slug || salon.id}`,
                       )
                     }
                   >
@@ -238,17 +238,16 @@ const SalonsSearchResults: FC<Props> = ({
                         seatCount={salon.seatCount}
                         rent={rent}
                         loading={loading}
-                        item={salon.attributes}
+                        item={salon}
                         shareLink={`https://moi.salon/${cyrToTranslit(
-                          salon.attributes.cities.data.attributes.cityName ||
-                            city,
-                        )}/salon/${salon.attributes.slug || salon.id}`}
+                          salon.cities.cityName || city,
+                        )}/salon/${salon.slug || salon.id}`}
                       />
                     </SalonCardWrapper>
                   </li>
                 ))}
             </WrapperItemsSalons>
-            {fetchMoreButton}
+            {/* {fetchMoreButton} */}
           </>
         ) : (
           <SalonMap rent={rent} me={me} view={view} setView={setView} />

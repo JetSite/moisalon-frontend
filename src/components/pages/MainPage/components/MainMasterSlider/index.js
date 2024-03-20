@@ -7,6 +7,7 @@ import { CatalogsContext } from '../../../../../searchContext'
 import Slider from '../../../../blocks/Slider'
 import { getMasters } from 'src/graphql/master/queries/getMasters'
 import MastersResult from 'src/components/pages/ServicesPage/components/ServicesList/MastersResult'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 
 const MainMasterSlider = ({ me }) => {
   let cityInStorage
@@ -20,13 +21,14 @@ const MainMasterSlider = ({ me }) => {
   // )
 
   const { data: masters, loading } = useQuery(getMasters)
+  const mastersFlattened = flattenStrapiResponse(masters?.masters?.data)
 
   return (
     <Slider
       type="masters"
       noScroll
       loading={loading}
-      items={masters?.masters?.data}
+      items={mastersFlattened}
       title="Бьюти-мастера"
       catalog={{}}
       bgColor="#f2f0f0"

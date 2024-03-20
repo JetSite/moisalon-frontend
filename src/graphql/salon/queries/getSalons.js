@@ -25,10 +25,6 @@ export const getSalons = gql`
             salonPhones {
               phoneNumber
             }
-            socialNetworks {
-              title
-              link
-            }
             salonAverageScore
             salonSumScore
             salonRating
@@ -68,6 +64,23 @@ export const getSalons = gql`
             }
             salonPhotos {
               ${imageInfo}
+            }
+            socialNetworks {
+              id
+              title
+              link
+              s_network {
+                data {
+                  id
+                  attributes {
+                    title
+                    logo {
+                      ${imageInfo}
+                    }
+                    slug
+                  }
+                }
+              }
             }
             ${salonAdministratorsFragment}
             ${salonBrandsFragment}
