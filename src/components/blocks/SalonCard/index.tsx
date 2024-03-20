@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext, FC, MouseEvent } from 'react'
 import {
   Wrapper,
   ImageWrap,
@@ -10,8 +10,6 @@ import {
   EmailLink,
   Info,
   Address,
-  Activities,
-  SalonInfo,
   Wrap,
   FavoriteIcon,
   SkeletonSalonItem,
@@ -19,8 +17,6 @@ import {
   SalonShareWrap,
 } from './styles'
 import { Skeleton } from '@material-ui/lab'
-import { selectedGroupNamesMax } from '../../../utils/serviceCatalog'
-import catalogOrDefault from '../../../utils/catalogOrDefault'
 import {
   favoritesInStorage,
   inStorage,
@@ -31,10 +27,23 @@ import Share from '../../ui/Share'
 import Rating from '../../ui/Rating'
 import { useMedia } from 'use-media'
 import HeartFullFill from '../../pages/MainPage/components/Header/icons/HeartFullFill'
-import { red } from '../../../../styles/variables'
 import { PHOTO_URL } from 'variables'
 
-const SalonCard = ({ item, loading, rent = false, seatCount, shareLink }) => {
+interface Props {
+  item: any
+  loading: boolean
+  rent: boolean
+  seatCount: number
+  shareLink: string
+}
+
+const SalonCard: FC<Props> = ({
+  item,
+  loading,
+  rent = false,
+  seatCount,
+  shareLink,
+}) => {
   const catalogs = useContext(CatalogsContext)
   const mobileMedia = useMedia({ maxWidth: 768 })
   // const salonActivitiesCatalog = catalogOrDefault(
@@ -48,14 +57,14 @@ const SalonCard = ({ item, loading, rent = false, seatCount, shareLink }) => {
     ? `${PHOTO_URL}${item.salonCover.url}`
     : ''
 
-  const [isFavorite, setIsFavorit] = useState(false)
+  const [isFavorite, setIsFavorit] = useState<boolean>(false)
 
   useEffect(() => {
     const isInStorage = inStorage('salons', item)
     setIsFavorit(!!isInStorage)
   }, [])
 
-  const addFavorite = (e, item) => {
+  const addFavorite = (e: MouseEvent<HTMLButtonElement>, item: any) => {
     e.preventDefault()
     e.stopPropagation()
     favoritesInStorage('salons', item)
@@ -63,7 +72,7 @@ const SalonCard = ({ item, loading, rent = false, seatCount, shareLink }) => {
   }
 
   return loading ? (
-    <SkeletonSalonItem variant="rectangular" />
+    <SkeletonSalonItem variant="rect" />
   ) : (
     <Wrapper>
       {imageUrl ? (
@@ -84,11 +93,10 @@ const SalonCard = ({ item, loading, rent = false, seatCount, shareLink }) => {
           <Top>
             <Name>{item?.salonName || ''}</Name>
             <Socials>
-              {item?.attributes?.salonPhones &&
-              item?.attributes?.salonPhones.length ? (
+              {item.salonPhones && item.salonPhones.length ? (
                 <PhoneLink
                   onClick={e => e.stopPropagation()}
-                  href={`tel:${item.attributes.salonPhones[0].phoneNumber}`}
+                  href={`tel:${item.salonPhones[0].phoneNumber}`}
                 />
               ) : null}
               {item?.salonEmail ? (

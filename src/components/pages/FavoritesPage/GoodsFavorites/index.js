@@ -1,5 +1,5 @@
-import { useRef, useState, useContext } from "react";
-import { MainContainer } from "../../../../styles/common";
+import { useRef, useState, useContext } from 'react'
+import { MainContainer } from '../../../../styles/common'
 import {
   Title,
   Wrapper,
@@ -8,21 +8,21 @@ import {
   SliderWrapper,
   Empty,
   ItemToggle,
-} from "./styled";
-import { Swiper, SwiperSlide } from "swiper/react";
-import SwiperCore, { Navigation } from "swiper/core";
-import Link from "next/link";
+} from './styled'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import SwiperCore, { Navigation } from 'swiper/core'
+import Link from 'next/link'
 import {
   ButtonNext,
   ButtonPrev,
   NavigationWrapper,
-} from "../../../../styles/sliderBlocks";
-import Button from "../../../ui/Button";
-import Good from "./components/Good";
-import { cyrToTranslit } from "../../../../utils/translit";
-import { CityContext } from "../../../../searchContext";
+} from '../../../../styles/sliderBlocks'
+import Button from '../../../ui/Button'
+import Good from './components/Good'
+import { cyrToTranslit } from '../../../../utils/translit'
+import { CityContext } from '../../../../searchContext'
 
-SwiperCore.use([Navigation]);
+SwiperCore.use([Navigation])
 
 const GoodsFavorites = ({
   title,
@@ -31,26 +31,26 @@ const GoodsFavorites = ({
   mobile = false,
   handleDeleted,
 }) => {
-  const navigationPrevRef = useRef(null);
-  const [city] = useContext(CityContext);
-  const navigationNextRef = useRef(null);
+  const navigationPrevRef = useRef(null)
+  const [city] = useContext(CityContext)
+  const navigationNextRef = useRef(null)
 
-  const onBeforeInit = (Swiper) => {
-    if (typeof Swiper.params.navigation !== "boolean") {
-      const navigation = Swiper.params.navigation;
-      navigation.prevEl = navigationPrevRef.current;
-      navigation.nextEl = navigationNextRef.current;
+  const onBeforeInit = Swiper => {
+    if (typeof Swiper.params.navigation !== 'boolean') {
+      const navigation = Swiper.params.navigation
+      navigation.prevEl = navigationPrevRef.current
+      navigation.nextEl = navigationNextRef.current
     }
-  };
+  }
 
-  const [deleteItem, setDeleteItem] = useState(false);
-  const [toggle, setToggle] = useState(mobile && cabinet && true);
+  const [deleteItem, setDeleteItem] = useState(false)
+  const [toggle, setToggle] = useState(mobile && cabinet && true)
 
-  let products;
-  if (typeof window !== "undefined") {
-    products = JSON.parse(localStorage.getItem("favorites"))?.products || [];
+  let products
+  if (typeof window !== 'undefined') {
+    products = JSON.parse(localStorage.getItem('favorites'))?.products || []
     if (!products.length) {
-      setProductEmpty(true);
+      setProductEmpty(true)
     }
   }
 
@@ -77,7 +77,7 @@ const GoodsFavorites = ({
           <SliderWrapper>
             <SwiperWrap>
               <Swiper
-                style={{ padding: "5px", marginLeft: "-5px" }}
+                style={{ padding: '5px', marginLeft: '-5px' }}
                 mousewheel={true}
                 pagination={{ clickable: true }}
                 slidesPerView={6}
@@ -107,22 +107,20 @@ const GoodsFavorites = ({
                   products.map((product, i) => (
                     <SwiperSlide
                       style={{
-                        minHeight: "100%",
+                        minHeight: '100%',
                       }}
                       key={i}
                     >
                       <Link
                         href={`/${cyrToTranslit(city)}/product/${product?.id}`}
                       >
-                        <a>
-                          <Good
-                            cabinet={cabinet}
-                            product={product}
-                            deleteItem={deleteItem}
-                            setDeleteItem={setDeleteItem}
-                            handleDeleted={handleDeleted}
-                          />
-                        </a>
+                        <Good
+                          cabinet={cabinet}
+                          product={product}
+                          deleteItem={deleteItem}
+                          setDeleteItem={setDeleteItem}
+                          handleDeleted={handleDeleted}
+                        />
                       </Link>
                       {/* {!cabinet ? (
                         <Button size="fullWidth" variant="red" mt="10">
@@ -137,7 +135,7 @@ const GoodsFavorites = ({
         </Wrapper>
       ) : null}
     </MainContainer>
-  );
-};
+  )
+}
 
-export default GoodsFavorites;
+export default GoodsFavorites

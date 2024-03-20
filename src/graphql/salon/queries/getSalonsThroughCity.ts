@@ -1,5 +1,4 @@
 import { gql } from '@apollo/client'
-import { metaInfo } from '../../common/metaInfo'
 import { imageInfo } from '../../common/imageInfo'
 import {
   salonAdministratorsFragment,
@@ -8,14 +7,16 @@ import {
   salonReviewsFragment,
   salonServicesFragment,
 } from '../fragments'
+import { metaInfo } from 'src/graphql/common/metaInfo'
 
-export const getSalons = gql`
-  query salons {
-    salons {
-      data {
+export const getSalonsThroughCity = gql`
+  query getSalonsThroughCity($cityName: [String]) {
+    salons(filters: {cities: {cityName: {in: $cityName}}}) {
+            data {
         id
         attributes {
             salonName
+            slug
             salonID
             salonAddress
             salonIsPublished
@@ -24,6 +25,10 @@ export const getSalons = gql`
             salonEmail
             salonPhones {
               phoneNumber
+            }
+            socialNetworks {
+              title
+              link
             }
             salonAverageScore
             salonSumScore
@@ -56,6 +61,14 @@ export const getSalons = gql`
             createdAt
             updatedAt
             publishedAt
+            cities {
+              data {
+                attributes {
+                  cityName
+                  citySlug
+                }
+              }
+            }
             salonCover {
               ${imageInfo}
             }
@@ -65,23 +78,6 @@ export const getSalons = gql`
             salonPhotos {
               ${imageInfo}
             }
-            socialNetworks {
-              id
-              title
-              link
-              s_network {
-                data {
-                  id
-                  attributes {
-                    title
-                    logo {
-                      ${imageInfo}
-                    }
-                    slug
-                  }
-                }
-              }
-            }
             ${salonAdministratorsFragment}
             ${salonBrandsFragment}
             ${salonMastersFragment}
@@ -90,6 +86,9 @@ export const getSalons = gql`
         }
       }
       ${metaInfo}
-    }
-  }
+          }
+        }
+      
+    
+  
 `

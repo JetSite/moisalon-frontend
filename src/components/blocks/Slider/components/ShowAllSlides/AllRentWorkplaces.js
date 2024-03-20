@@ -1,6 +1,6 @@
-import Link from "next/link";
-import { AllSalons, AllText, AllIconSalon, FavoriteIcon } from "./styles";
-import { cyrToTranslit } from "../../../../../utils/translit";
+import Link from 'next/link'
+import { AllSalons, AllText, AllIconSalon, FavoriteIcon } from './styles'
+import { cyrToTranslit } from '../../../../../utils/translit'
 
 const AllRentWorkplaces = ({ salon }) => {
   return (
@@ -9,15 +9,13 @@ const AllRentWorkplaces = ({ salon }) => {
         salon?.seo?.slug || salon?.id
       }`}
     >
-      <a>
-        <AllSalons>
-          <AllIconSalon />
-          <FavoriteIcon />
-          <AllText>Показать все рабочие места</AllText>
-        </AllSalons>
-      </a>
+      <AllSalons>
+        <AllIconSalon />
+        <FavoriteIcon />
+        <AllText>Показать все рабочие места</AllText>
+      </AllSalons>
     </Link>
-  );
-};
+  )
+}
 
-export default AllRentWorkplaces;
+export default AllRentWorkplaces

@@ -1,31 +1,29 @@
-import Link from "next/link";
-import { useContext } from "react";
-import { CityContext } from "../../../../../../../searchContext";
-import { cyrToTranslit } from "../../../../../../../utils/translit";
-import BrandItem from "./BrandItem";
-import { BrandsContent, MainTitle, ListWrapper, TextNoBrands } from "./styles";
+import Link from 'next/link'
+import { useContext } from 'react'
+import { CityContext } from '../../../../../../../searchContext'
+import { cyrToTranslit } from '../../../../../../../utils/translit'
+import BrandItem from './BrandItem'
+import { BrandsContent, MainTitle, ListWrapper, TextNoBrands } from './styles'
 
 const BrandsList = ({ brands, handlePublish }) => {
-  const [city] = useContext(CityContext);
+  const [city] = useContext(CityContext)
   return (
     <BrandsContent>
       <MainTitle>Профиль: Бренды, с которыми я работаю</MainTitle>
       {brands.length > 0 ? (
         <ListWrapper heightLarge={brands.length}>
-          {brands.map((brand) => (
+          {brands.map(brand => (
             <Link
-              href={`/${cyrToTranslit(brand?.addressFull?.city || city)}/brand/${
-                brand?.seo?.slug || brand.id
-              }`}
+              href={`/${cyrToTranslit(
+                brand?.addressFull?.city || city,
+              )}/brand/${brand?.seo?.slug || brand.id}`}
               key={brand.id}
             >
-              <a>
-                <BrandItem
-                  brand={brand}
-                  brands={brands}
-                  handlePublish={handlePublish}
-                />
-              </a>
+              <BrandItem
+                brand={brand}
+                brands={brands}
+                handlePublish={handlePublish}
+              />
             </Link>
           ))}
         </ListWrapper>
@@ -54,7 +52,7 @@ const BrandsList = ({ brands, handlePublish }) => {
         </MobileVisible>
       </Link> */}
     </BrandsContent>
-  );
-};
+  )
+}
 
-export default BrandsList;
+export default BrandsList

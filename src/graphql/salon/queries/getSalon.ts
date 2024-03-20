@@ -9,9 +9,9 @@ import {
   salonServicesFragment,
 } from '../fragments'
 
-export const getSalons = gql`
-  query salons {
-    salons {
+export const getSalon = gql`
+  query salon($id: ID) {
+    salon(id: $id) {
       data {
         id
         attributes {
@@ -24,6 +24,10 @@ export const getSalons = gql`
             salonEmail
             salonPhones {
               phoneNumber
+            }
+            socialNetworks {
+              title
+              link
             }
             salonAverageScore
             salonSumScore
@@ -65,23 +69,6 @@ export const getSalons = gql`
             salonPhotos {
               ${imageInfo}
             }
-            socialNetworks {
-              id
-              title
-              link
-              s_network {
-                data {
-                  id
-                  attributes {
-                    title
-                    logo {
-                      ${imageInfo}
-                    }
-                    slug
-                  }
-                }
-              }
-            }
             ${salonAdministratorsFragment}
             ${salonBrandsFragment}
             ${salonMastersFragment}
@@ -89,7 +76,6 @@ export const getSalons = gql`
             ${salonServicesFragment}
         }
       }
-      ${metaInfo}
     }
   }
 `
