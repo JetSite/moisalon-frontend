@@ -71,15 +71,15 @@ const Master = ({ masterData }) => {
     // refetch()
   }, [masterData])
 
-  console.log(master)
-
   const { setChosenItemId } = useSearchHistoryContext()
 
   useEffect(() => {
     setChosenItemId(master.id)
   }, [])
 
-  console.log(masterData)
+  const servicesCount = master?.serviceCategories?.reduce((acc, category) => {
+    return acc + category.services.length
+  }, 0)
 
   // const { refetch: refetchMaster } = useQuery(masterQuery, {
   //   variables: { id: master.id },
@@ -104,13 +104,13 @@ const Master = ({ masterData }) => {
   //   },
   // )
 
-  // const { refetch: refetchReviews } = useQuery(reviewsForMaster, {
-  //   variables: { originId: master.id },
-  //   skip: true,
-  //   onCompleted: res => {
-  //     setReviews(res.reviewsForMaster)
-  //   },
-  // })
+  const { refetch: refetchReviews } = useQuery(reviewsForMaster, {
+    variables: { originId: master.id },
+    skip: true,
+    onCompleted: res => {
+      setReviews(res.reviewsForMaster)
+    },
+  })
 
   // const { refetch: refetchBrands } = useQuery(brandQuery, {
   //   variables: { id: master.id },
@@ -247,8 +247,8 @@ const Master = ({ masterData }) => {
               id: 2,
               text: 'Услуги',
               link: '#services',
-              count: master?.services?.length,
-              show: master?.services?.length || isOwner,
+              count: servicesCount,
+              show: master?.serviceCategories?.length || isOwner,
             },
             {
               id: 3,
@@ -264,27 +264,27 @@ const Master = ({ masterData }) => {
               count: master?.photosDiploma?.length,
               show: master?.photosDiploma?.length || isOwner,
             },
-            // {
-            //   id: 5,
-            //   text: 'Бренды',
-            //   link: '#brands',
-            //   count: brands?.length,
-            //   show: brands?.length || isOwner,
-            // },
-            // {
-            //   id: 6,
-            //   text: 'Отзывы',
-            //   link: '#reviews',
-            //   count: reviews.length,
-            //   show: true,
-            // },
+            {
+              id: 5,
+              text: 'Бренды',
+              link: '#brands',
+              count: master?.brands?.length,
+              show: master?.brands?.length || isOwner,
+            },
+            {
+              id: 6,
+              text: 'Отзывы',
+              link: '#reviews',
+              count: master?.reviews?.length,
+              show: true,
+            },
             { id: 7, text: 'Контакты', link: '#contacts', show: true },
           ]}
         />
         <About master={master} />
-        {master?.services?.length || isOwner ? (
+        {master?.serviceCategories?.length || isOwner ? (
           <ServicesForClient
-            services={master?.services}
+            serviceCategories={master?.serviceCategories}
             isOwner={isOwner}
             master={master}
             // masterDataQuery={refetchMaster}
@@ -293,15 +293,14 @@ const Master = ({ masterData }) => {
             count={master?.service?.length}
           />
         ) : null}
-        {/* {master?.servicesMaster?.length || isOwner ? (
+        {master?.serviceCategories?.length || isOwner ? (
           <MobileServicesForClient
-            services={master?.servicesMaster}
+            serviceCategories={master?.serviceCategories}
             master={master}
             isOwner={isOwner}
-            refetchMaster={refetchMaster}
-            catalogs={catalogs}
+            // refetchMaster={refetchMaster}
           />
-        ) : null} */}
+        ) : null}
         {master?.photosWorks?.length || isOwner ? (
           <>
             <Slider
@@ -391,15 +390,15 @@ const Master = ({ masterData }) => {
             </>
           </Slider>
         ) : null}
-        {/* {brands?.length || isOwner ? (
+        {master?.brands?.length || isOwner ? (
           <Slider
             type="brands"
-            items={brands}
+            items={master?.brands}
             isOwner={isOwner}
             title="Бренды, с которыми я работаю"
             isEditing={isBrandsEditing}
             setIsEditing={setIsBrandsEditing}
-            deleteFunction={handleRemoveBrand}
+            // deleteFunction={handleRemoveBrand}
             pt={52}
             pb={31}
             noAll
@@ -407,7 +406,7 @@ const Master = ({ masterData }) => {
             noBottom
           >
             <>
-              {!brands?.length && !isBrandsEditing && (
+              {!master?.brands?.length && !isBrandsEditing && (
                 <NoItemsText>
                   Нет добавленных брендов. Нажмите на карандаш, чтобы добавить
                   бренды
@@ -418,16 +417,16 @@ const Master = ({ masterData }) => {
               ) : null}
             </>
           </Slider>
-        ) : null} */}
+        ) : null}
         {/* {me?.salons?.length && master?.resume ? (
           <Resume master={master} />
         ) : null} */}
-        {/* <ReviewsMaster
-          data={reviews}
+        <ReviewsMaster
+          data={master?.reviews}
           me={me}
           masterId={master.id}
           refetchReviews={refetchReviews}
-        /> */}
+        />
         <Contacts
           phone={master?.masterPhone}
           email={master?.masterEmail}

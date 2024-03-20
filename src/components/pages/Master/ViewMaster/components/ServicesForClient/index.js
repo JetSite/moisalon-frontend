@@ -18,7 +18,7 @@ import EditSalonServicesForClient from '../../../../../pages/Salon/EditSalonServ
 import { updateServiceMasterMutation } from '../../../../../../_graphql-legacy/master/updateServiceMasterMutation'
 
 const Services = ({
-  services,
+  serviceCategories,
   isOwner,
   edit,
   setEdit,
@@ -29,13 +29,16 @@ const Services = ({
 }) => {
   const [isEditing, setIsEditing] = useState(false)
 
-  const [entriesItems, setEntriesItems] = useState(services)
+  const [entriesItems, setEntriesItems] = useState(serviceCategories)
+  const servicesCount = serviceCategories?.reduce((acc, category) => {
+    return acc + category.services.length
+  }, 0)
 
-  const [updateServices] = useMutation(updateServiceMasterMutation, {
-    onCompleted: () => {
-      masterDataQuery()
-    },
-  })
+  // const [updateServices] = useMutation(updateServiceMasterMutation, {
+  //   onCompleted: () => {
+  //     masterDataQuery()
+  //   },
+  // })
 
   const handleEditConfirm = () => {
     updateServices({
@@ -48,13 +51,13 @@ const Services = ({
     })
   }
 
-  const groups = services?.map((service, idx) => {
+  const groups = serviceCategories?.map((serviceCategory, idx) => {
     return (
       <CatalogGroupForClient
         entriesItems={entriesItems}
         withPrice
         key={idx}
-        service={service}
+        serviceCategory={serviceCategory}
       />
     )
   })
@@ -78,7 +81,7 @@ const Services = ({
               />
             )}
           </Title>
-          <Count>{count || 0}</Count>
+          <Count>{servicesCount || 0}</Count>
         </Top>
         {!isEditing ? (
           groups?.length ? (

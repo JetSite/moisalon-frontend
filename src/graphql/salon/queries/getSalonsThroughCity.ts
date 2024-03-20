@@ -63,6 +63,7 @@ export const getSalonsThroughCity = gql`
             publishedAt
             cities {
               data {
+                id
                 attributes {
                   cityName
                   citySlug

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import CatalogSubGroup from '../CatalogSubGroup'
+import CatalogItem from '../CatalogItem'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -36,45 +37,23 @@ const ucFirst = str => {
   return str[0].toUpperCase() + str.slice(1)
 }
 
-export function CatalogGroupForClient({ service, entriesItems }) {
+export function CatalogGroupForClient({ serviceCategory, entriesItems }) {
   const [collapsed, setCollapsed] = useState(true)
 
-  if (!service?.subGroups) {
+  if (!serviceCategory?.services) {
     return null
   }
 
-  const subGroups = group?.subGroups
-    ?.map((subGroup, idx) => {
-      if (
-        entriesItems.find(item => item?.id === subGroup?.id) ||
-        (subGroup?.items?.length &&
-          entriesItems.find(item => {
-            for (let i = 0; i < group?.subGroups?.items?.length; i++) {
-              if (item?.id === group?.subGroups?.items[i]?.id) {
-                return item
-              }
-            }
-          }))
-      ) {
-        return (
-          <CatalogSubGroup
-            key={idx}
-            subGroup={subGroup}
-            entriesItems={entriesItems}
-          />
-        )
-      } else {
-        return null
-      }
-    })
-    .filter(element => element !== null)
+  const services = serviceCategory?.services?.map((service, idx) => {
+    return <CatalogItem key={idx} item={service} />
+  })
 
-  if (subGroups?.length === 0) {
+  if (services?.length === 0) {
     return null
   }
 
-  const visibleItems = subGroups?.slice(0, 3)
-  const collapsedItems = subGroups?.slice(3)
+  const visibleItems = services?.slice(0, 3)
+  const collapsedItems = services?.slice(3)
   const collapsedText = collapsed ? 'Развернуть' : 'Скрыть'
 
   const handleChange = () => {
@@ -83,10 +62,10 @@ export function CatalogGroupForClient({ service, entriesItems }) {
 
   return (
     <Wrapper>
-      <Title>{ucFirst(service?.serviceName)}</Title>
+      <Title>{ucFirst(serviceCategory?.category?.serviceCategoryName)}</Title>
       <Item>{visibleItems}</Item>
       {!collapsed && <Item>{collapsedItems}</Item>}
-      {subGroups?.length > 3 && (
+      {services?.length > 3 && (
         <ShowMore onClick={handleChange}>{collapsedText}</ShowMore>
       )}
     </Wrapper>

@@ -16,6 +16,9 @@ export const getMaster = gql`
                             attributes {
                                     salonName
                                     salonAddress
+                                    salonPhones {
+                                        phoneNumber
+                                    }
                                     salonLogo {
                                         ${imageInfo}
                                     }
@@ -25,17 +28,20 @@ export const getMaster = gql`
                             }
                         }
                     }
-                    services {
+                    serviceCategories {
                         id
-                        price
-                        serviceName 
-                        service {
-                          data {
-                            id
-                            attributes {
-                                serviceName
+                        category {
+                            data {
+                                id
+                                attributes {
+                                    serviceCategoryName
+                                }
                             }
-                          }
+                        }
+                        services {
+                            id
+                            serviceName 
+                            price
                         }
                       }
                     city {
@@ -89,6 +95,36 @@ export const getMaster = gql`
                     averageScore
                     numberScore
                     experience
+                    brands {
+                        data {
+                            id
+                            attributes {
+                                brandName
+                                brandLogo {
+                                    ${imageInfo}
+                                }
+                            }
+                        }
+                    }
+                    reviews {
+                        data {
+                            id
+                            attributes {
+                                reviewTitle
+                                reviewContent
+                                user {
+                                    data {
+                                        id
+                                        attributes {
+                                            username
+                                            email
+                                            phone
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
             }
         }
     }

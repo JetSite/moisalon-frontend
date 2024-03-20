@@ -23,7 +23,7 @@ const SalonSlide = ({ item, isEditing, deleteFunction }) => {
       }
     >
       <SalonCard
-        item={item.attributes}
+        item={item}
         shareLink={`https://moi.salon/${cyrToTranslit(
           item?.address?.city,
         )}/salon/${item?.seo?.slug || item?.id}`}

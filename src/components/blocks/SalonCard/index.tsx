@@ -46,9 +46,6 @@ const SalonCard: FC<Props> = ({
 }) => {
   const catalogs = useContext(CatalogsContext)
   const mobileMedia = useMedia({ maxWidth: 768 })
-  // const salonActivitiesCatalog = catalogOrDefault(
-  //   catalogs?.salonActivitiesCatalog,
-  // )
 
   const logoUrl = item?.salonLogo?.url
     ? `${PHOTO_URL}${item.salonLogo.url}`
@@ -93,7 +90,7 @@ const SalonCard: FC<Props> = ({
           <Top>
             <Name>{item?.salonName || ''}</Name>
             <Socials>
-              {item.salonPhones && item.salonPhones.length ? (
+              {item?.salonPhones && item?.salonPhones?.length ? (
                 <PhoneLink
                   onClick={e => e.stopPropagation()}
                   href={`tel:${item.salonPhones[0].phoneNumber}`}

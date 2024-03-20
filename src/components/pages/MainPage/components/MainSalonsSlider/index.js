@@ -11,8 +11,6 @@ const MainSalonsSlider = ({ rent, me }) => {
   const { data: salons, loading } = useQuery(getSalons)
   const salonsFlattened = flattenStrapiResponse(salons?.salons?.data)
 
-  console.log(salons)
-
   return (
     <Slider
       type="salons"

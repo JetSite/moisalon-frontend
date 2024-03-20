@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { MainContainer, MobileVisible } from "../../../styles/common";
+import { useState } from 'react'
+import { MainContainer, MobileVisible } from '../../../styles/common'
 import {
   Wrapper,
   Top,
@@ -13,29 +13,29 @@ import {
   Buttons,
   Form,
   FormButtons,
-} from "./styled";
-import { useRouter } from "next/router";
-import Stars from "../../ui/Stars";
-import Button from "../../ui/Button";
-import { TextField } from "@material-ui/core";
-import nameRedact from "../../../utils/nameRedact";
-import goalIdObjects from "../../../lib/goalIdObjects";
+} from './styled'
+import { useRouter } from 'next/router'
+import Stars from '../../ui/Stars'
+import Button from '../../ui/Button'
+import { TextField } from '@material-ui/core'
+import nameRedact from '../../../utils/nameRedact'
+import goalIdObjects from '../../../lib/goalIdObjects'
 
 const Reviews = ({ type, id, reviews, reviewMutation, me }) => {
-  const router = useRouter();
+  const router = useRouter()
 
-  const { review } = goalIdObjects(`/${router.pathname.split("/")[1]}`);
+  const { review } = goalIdObjects(`/${router.pathname.split('/')[1]}`)
 
-  const [reviewOpen, setReviewOpen] = useState(false);
-  const [reviewText, setReviewText] = useState("");
-  const [showAll, setShowAll] = useState(false);
+  const [reviewOpen, setReviewOpen] = useState(false)
+  const [reviewText, setReviewText] = useState('')
+  const [showAll, setShowAll] = useState(false)
 
-  const handleReviews = (e) => {
-    setReviewText(e.target.value);
-  };
+  const handleReviews = e => {
+    setReviewText(e.target.value)
+  }
 
   const sendMessage = () => {
-    if (type === "EDUCATION") {
+    if (type === 'EDUCATION') {
       reviewMutation({
         variables: {
           input: {
@@ -43,10 +43,10 @@ const Reviews = ({ type, id, reviews, reviewMutation, me }) => {
             originId: id,
           },
         },
-      });
-      setReviewOpen(false);
-      setReviewText("");
-      return;
+      })
+      setReviewOpen(false)
+      setReviewText('')
+      return
     }
     if (reviewText) {
       reviewMutation({
@@ -58,11 +58,11 @@ const Reviews = ({ type, id, reviews, reviewMutation, me }) => {
             originId: id,
           },
         },
-      });
-      setReviewOpen(false);
-      setReviewText("");
+      })
+      setReviewOpen(false)
+      setReviewText('')
     }
-  };
+  }
 
   return (
     <MainContainer id="reviews">
@@ -74,20 +74,18 @@ const Reviews = ({ type, id, reviews, reviewMutation, me }) => {
           </Count>
         </Top>
         <Content>
-          {reviews?.slice(0, showAll ? undefined : 4).map((item) => (
+          {reviews?.slice(0, showAll ? undefined : 4).map(item => (
             <Review key={item?.id}>
               <ReviewTop>
                 <Name>
-                  {(item?.name && nameRedact(item?.name)) ||
-                    item?.user?.displayName ||
+                  {(item?.user?.username && nameRedact(item?.user?.username)) ||
                     (item?.user?.email && nameRedact(item?.user?.email)) ||
-                    (item?.user?.phoneNumber &&
-                      nameRedact(item?.user?.phoneNumber)) ||
-                    ""}
+                    (item?.user?.phone && nameRedact(item?.user?.phone)) ||
+                    ''}
                 </Name>
                 <Stars count={5} />
               </ReviewTop>
-              <Text>{item?.description}</Text>
+              <Text>{item?.reviewContent}</Text>
             </Review>
           ))}
         </Content>
@@ -110,16 +108,16 @@ const Reviews = ({ type, id, reviews, reviewMutation, me }) => {
             size="medium"
             onClick={() => {
               window.dataLayer.push({
-                event: "event",
+                event: 'event',
                 eventProps: {
-                  category: "click",
+                  category: 'click',
                   action: review,
                 },
-              });
+              })
               if (!me?.info) {
-                router.push("/login");
+                router.push('/login')
               } else {
-                setReviewOpen(true);
+                setReviewOpen(true)
               }
             }}
           >
@@ -147,9 +145,9 @@ const Reviews = ({ type, id, reviews, reviewMutation, me }) => {
             mb="67"
             onClick={() => {
               if (!me?.info) {
-                router.push("/login");
+                router.push('/login')
               } else {
-                setReviewOpen(true);
+                setReviewOpen(true)
               }
             }}
           >
@@ -165,15 +163,15 @@ const Reviews = ({ type, id, reviews, reviewMutation, me }) => {
               rows={4}
               defaultValue={reviewText}
               variant="outlined"
-              onChange={(e) => handleReviews(e)}
+              onChange={e => handleReviews(e)}
             />
             <FormButtons>
               <Button
                 variant="secondary"
                 style={{ marginRight: 24 }}
                 onClick={() => {
-                  setReviewOpen(false);
-                  setReviewText("");
+                  setReviewOpen(false)
+                  setReviewText('')
                 }}
               >
                 Отмена
@@ -181,7 +179,7 @@ const Reviews = ({ type, id, reviews, reviewMutation, me }) => {
               <Button
                 variant="red"
                 onClick={() => {
-                  sendMessage();
+                  sendMessage()
                 }}
               >
                 Отправить
@@ -191,7 +189,7 @@ const Reviews = ({ type, id, reviews, reviewMutation, me }) => {
         ) : null}
       </Wrapper>
     </MainContainer>
-  );
-};
+  )
+}
 
-export default Reviews;
+export default Reviews

@@ -1,29 +1,29 @@
-import { useState, useEffect } from "react";
-import styled from "styled-components";
-import CatalogItem from "../CatalogItem";
+import { useState, useEffect } from 'react'
+import styled from 'styled-components'
+import CatalogItem from '../CatalogItem'
 
 const Wrapper = styled.div`
   width: 100%;
   margin-bottom: 20px;
-`;
+`
 
 const Top = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
-`;
+`
 
 const Title = styled.h4`
   font-weight: 500;
   font-size: 18px;
   width: 70%;
   flex-shrink: 0;
-`;
+`
 
 const Price = styled.p`
   font-weight: 400;
   font-size: 18px;
-`;
+`
 
 const ShowMore = styled.span`
   display: block;
@@ -38,43 +38,42 @@ const ShowMore = styled.span`
   &:hover {
     color: #ff0033;
   }
-`;
+`
 
-const Item = styled.div``;
+const Item = styled.div``
 
-const ucFirst = (str) => {
-  if (!str) return str;
+const ucFirst = str => {
+  if (!str) return str
 
-  return str[0].toUpperCase() + str.slice(1);
-};
+  return str[0].toUpperCase() + str.slice(1)
+}
 
-export default function CatalogSubGroup({ subGroup, entriesItems }) {
-  const [collapsed, setCollapsed] = useState(false);
+export default function CatalogSubGroup({ service, entriesItems }) {
+  const [collapsed, setCollapsed] = useState(false)
 
-  const item = entriesItems?.find((item) => item?.id === subGroup?.id);
   const mapped = subGroup?.items
     ?.map((service, idx) => {
-      if (entriesItems.find((el) => el?.id === service?.id)) {
+      if (entriesItems.find(el => el?.id === service?.id)) {
         return (
           <CatalogItem entriesItems={entriesItems} key={idx} item={service} />
-        );
+        )
       } else {
-        return null;
+        return null
       }
     })
-    .filter((element) => element !== null);
+    .filter(element => element !== null)
 
-  const visibleItems = mapped?.slice(0, 3);
-  const collapsedItems = mapped?.slice(3);
-  const collapsedText = collapsed ? "Показать все" : "Скрыть";
+  const visibleItems = mapped?.slice(0, 3)
+  const collapsedItems = mapped?.slice(3)
+  const collapsedText = collapsed ? 'Показать все' : 'Скрыть'
 
   const handleChange = () => {
-    setCollapsed(!collapsed);
-  };
+    setCollapsed(!collapsed)
+  }
 
   useEffect(() => {
-    setCollapsed(true);
-  }, []);
+    setCollapsed(true)
+  }, [])
 
   return (
     <Wrapper>
@@ -88,5 +87,5 @@ export default function CatalogSubGroup({ subGroup, entriesItems }) {
         <ShowMore onClick={handleChange}>{collapsedText}</ShowMore>
       )}
     </Wrapper>
-  );
+  )
 }
