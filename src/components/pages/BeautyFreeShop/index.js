@@ -1,72 +1,72 @@
-import { useContext, useEffect, useState, useCallback } from "react";
-import Head from "next/head";
-import { useQuery } from "@apollo/client";
-import { getCart } from "../../../_graphql-legacy/cart/getCart";
-import { goodSearch } from "../../../_graphql-legacy/goodSearch";
-import Catalog from "../Catalog";
-import Header from "./components/Header";
-import { Wrapper, NoProducts } from "./styles";
+import { useContext, useEffect, useState, useCallback } from 'react'
+import Head from 'next/head'
+import { useQuery } from '@apollo/client'
+import { getCart } from '../../../_graphql-legacy/cart/getCart'
+import { goodSearch } from '../../../_graphql-legacy/goodSearch'
+import Catalog from '../Catalog'
+import Header from './components/Header'
+import { Wrapper, NoProducts } from './styles'
 // import FilterCatalog from "../../ui/FilterCatalog";
-import { ProductsContext } from "../../../searchContext";
-import { useSearchHistory } from "../../../hooks/useSearchHistory";
-import useCheckMobileDevice from "../../../hooks/useCheckMobileDevice";
+import { ProductsContext } from '../../../searchContext'
+import { useSearchHistory } from '../../../hooks/useSearchHistory'
+import useCheckMobileDevice from '../../../hooks/useCheckMobileDevice'
 
 const BeautyFreeShopPage = ({
   brand,
   me,
   dataProductCategories,
-  dataScore,
-  refetchBrand,
-  refetchScore,
-  goods,
+  // dataScore,
+  // refetchBrand,
+  // refetchScore,
+  // goods,
 }) => {
-  const [filter, setFilter] = useState(null);
-  const [goodsData, setGoodsData] = useState(goods?.goodsSearch);
-  const [fetchMoreLoading, setFetchMoreLoading] = useState(false);
-  const [refetchLoading, setRefetchLoading] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState("Все категории");
-  const [productState, setProductsState] = useContext(ProductsContext);
+  const [filter, setFilter] = useState(null)
+  // const [goodsData, setGoodsData] = useState(goods?.goodsSearch);
+  const [fetchMoreLoading, setFetchMoreLoading] = useState(false)
+  const [refetchLoading, setRefetchLoading] = useState(false)
+  const [selectedProduct, setSelectedProduct] = useState('Все категории')
+  const [productState, setProductsState] = useContext(ProductsContext)
 
-  const isMobile = useCheckMobileDevice();
+  const isMobile = useCheckMobileDevice()
 
-  const { setChosenItemId } = useSearchHistory(
-    goodsData,
-    setGoodsData,
-    "product",
-    isMobile ? -10 : -170
-  );
+  // const { setChosenItemId } = useSearchHistory(
+  //   goodsData,
+  //   setGoodsData,
+  //   "product",
+  //   isMobile ? -10 : -170
+  // );
 
-  const {
-    data: dataCart,
-    refetch: refetchCart,
-    loading: loadingCart,
-  } = useQuery(getCart, {
-    onCompleted: (res) => {
-      setProductsState(res?.getCartB2b?.contents || []);
-    },
-  });
+  // const {
+  //   data: dataCart,
+  //   refetch: refetchCart,
+  //   loading: loadingCart,
+  // } = useQuery(getCart, {
+  //   onCompleted: (res) => {
+  //     setProductsState(res?.getCartB2b?.contents || []);
+  //   },
+  // });
 
-  const { fetchMore, refetch } = useQuery(goodSearch, {
-    variables: {
-      input: {
-        brandId: [brand.id],
-        query: "",
-        isB2b: true,
-        categoryId:
-          !filter?.value || filter?.value === "Все категории"
-            ? null
-            : [filter?.value],
-      },
-    },
-    skip: true,
-    notifyOnNetworkStatusChange: true,
-    onCompleted: (res) => {
-      if (res) {
-        setRefetchLoading(false);
-        setGoodsData(res.goodsSearch);
-      }
-    },
-  });
+  // const { fetchMore, refetch } = useQuery(goodSearch, {
+  //   variables: {
+  //     input: {
+  //       brandId: [brand.id],
+  //       query: "",
+  //       isB2b: true,
+  //       categoryId:
+  //         !filter?.value || filter?.value === "Все категории"
+  //           ? null
+  //           : [filter?.value],
+  //     },
+  //   },
+  //   skip: true,
+  //   notifyOnNetworkStatusChange: true,
+  //   onCompleted: (res) => {
+  //     if (res) {
+  //       setRefetchLoading(false);
+  //       setGoodsData(res.goodsSearch);
+  //     }
+  //   },
+  // });
 
   // useEffect(() => {
   //   if (!filter?.value || filter?.value === "Все категории") {
@@ -76,39 +76,41 @@ const BeautyFreeShopPage = ({
   //     refetch();
   //   }
   // }, [filter]);
-  const cart = dataCart?.getCartB2b?.contents || [];
+  // const cart = dataCart?.getCartB2b?.contents || [];
 
-  const loadMore = useCallback(() => {
-    setFetchMoreLoading(true);
-    setChosenItemId("");
-    fetchMore({
-      variables: {
-        cursor: goodsData?.connection?.pageInfo?.endCursor,
-        input: {
-          query: "",
-          brandId: [brand.id],
-          isB2b: true,
-          // categoryId:
-          //   !filter?.value || filter?.value === "Все категории"
-          //     ? null
-          //     : [filter?.value],
-        },
-      },
-      updateQuery(previousResult, { fetchMoreResult }) {
-        const newNodes = fetchMoreResult.goodsSearch.connection.nodes;
-        setFetchMoreLoading(false);
-        setGoodsData({
-          connection: {
-            ...fetchMoreResult.goodsSearch.connection,
-            nodes: [...goodsData.connection.nodes, ...newNodes],
-          },
-          filterDefinition: fetchMoreResult.goodsSearch.filterDefinition,
-        });
-      },
-    });
-  });
+  // const loadMore = useCallback(() => {
+  //   setFetchMoreLoading(true);
+  //   setChosenItemId("");
+  //   fetchMore({
+  //     variables: {
+  //       cursor: goodsData?.connection?.pageInfo?.endCursor,
+  //       input: {
+  //         query: "",
+  //         brandId: [brand.id],
+  //         isB2b: true,
+  //         // categoryId:
+  //         //   !filter?.value || filter?.value === "Все категории"
+  //         //     ? null
+  //         //     : [filter?.value],
+  //       },
+  //     },
+  //     updateQuery(previousResult, { fetchMoreResult }) {
+  //       const newNodes = fetchMoreResult.goodsSearch.connection.nodes;
+  //       setFetchMoreLoading(false);
+  //       setGoodsData({
+  //         connection: {
+  //           ...fetchMoreResult.goodsSearch.connection,
+  //           nodes: [...goodsData.connection.nodes, ...newNodes],
+  //         },
+  //         filterDefinition: fetchMoreResult.goodsSearch.filterDefinition,
+  //       });
+  //     },
+  //   });
+  // });
 
-  const products = goodsData?.connection?.nodes || [];
+  // const products = goodsData?.connection?.nodes || [];
+
+  const products = []
 
   return (
     <>
@@ -122,11 +124,11 @@ const BeautyFreeShopPage = ({
         ) : null}
       </Head>
       <Header
-        refetchBrand={refetchBrand}
-        refetchScore={refetchScore}
+        // refetchBrand={refetchBrand}
+        // refetchScore={refetchScore}
         me={me}
         brand={brand}
-        dataScore={dataScore}
+        // dataScore={dataScore}
       />
       {/* <Wrapper>
         <FilterCatalog
@@ -137,16 +139,16 @@ const BeautyFreeShopPage = ({
           setSelectedProduct={setSelectedProduct}
         />
       </Wrapper> */}
-      {products.length ? (
+      {brand?.products && !!brand?.products?.length ? (
         <Catalog
-          cart={cart}
-          refetchCart={refetchCart}
-          products={products}
-          hasNextPage={goodsData?.connection?.pageInfo?.hasNextPage}
-          fetchMore={loadMore}
-          loading={fetchMoreLoading}
-          loadingCart={loadingCart}
-          refetchLoading={refetchLoading}
+          // cart={cart}
+          // refetchCart={refetchCart}
+          products={brand.products}
+          // hasNextPage={goodsData?.connection?.pageInfo?.hasNextPage}
+          // fetchMore={loadMore}
+          // loading={fetchMoreLoading}
+          // loadingCart={loadingCart}
+          // refetchLoading={refetchLoading}
           noTitle
           me={me}
           brand={brand}
@@ -157,7 +159,7 @@ const BeautyFreeShopPage = ({
         </Wrapper>
       )}
     </>
-  );
-};
+  )
+}
 
-export default BeautyFreeShopPage;
+export default BeautyFreeShopPage

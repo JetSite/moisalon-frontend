@@ -36,8 +36,9 @@ import { useSearchHistory } from '../../../../hooks/useSearchHistory'
 import { useSearchHistoryContext } from '../../../../searchHistoryContext'
 import { getMaster } from 'src/graphql/master/queries/getMaster'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { getMasters } from 'src/graphql/master/queries/getMasters'
 
-const Master = ({ masterData }) => {
+const Master = ({ masterData, randomMasters }) => {
   const [master, setMaster] = useState(masterData)
   const [me, setMe] = useContext(MeContext)
   const catalogs = useContext(CatalogsContext)
@@ -442,19 +443,19 @@ const Master = ({ masterData }) => {
         />
         <InviteMaster me={me} />
         <Line text="Вы мастер или владелец салона? Расскажите о себе и мы поможем найти новых клиентов и мастеров!" />
-        {/* <Slider
+        <Slider
           type="masters"
           title="Ближайшие мастера"
-          items={data?.mastersRandom || []}
-          loading={loading}
+          items={randomMasters || []}
+          // loading={loading}
           noBottom
           noAll
           noAllButton
-          catalog={masterSpecializationsCatalog}
+          // catalog={masterSpecializationsCatalog}
           bgColor="#f2f0f0"
           pt={102}
           pb={91}
-        /> */}
+        />
       </>
     </MainLayout>
   )
@@ -465,12 +466,21 @@ export async function getServerSideProps({ params, query }) {
 
   const id = params.id
 
-  const masterQueryRes = await apolloClient.query({
-    query: getMaster,
-    variables: { id },
-  })
+  const data = await Promise.all([
+    apolloClient.query({
+      query: getMaster,
+      variables: { id },
+    }),
+    apolloClient.query({
+      query: getMasters,
+      variables: {
+        itemsCount: 10,
+      },
+    }),
+  ])
 
-  const master = masterQueryRes?.data?.master
+  const masterData = flattenStrapiResponse(data[0]?.data?.master?.data)
+  const randomMasters = flattenStrapiResponse(data[1]?.data?.masters?.data)
 
   // const city = await apolloClient.query({
   //   query: citySuggestionsQuery,
@@ -494,7 +504,8 @@ export async function getServerSideProps({ params, query }) {
 
   return addApolloState(apolloClient, {
     props: {
-      masterData: master,
+      masterData,
+      randomMasters,
     },
   })
 }

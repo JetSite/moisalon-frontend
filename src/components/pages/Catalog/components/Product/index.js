@@ -1,20 +1,20 @@
-import { useState, useEffect, useContext } from "react";
-import styled from "styled-components";
-import { lighten } from "polished";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import parseToFloat from "../../../../../utils/parseToFloat";
+import { useState, useEffect, useContext } from 'react'
+import styled from 'styled-components'
+import { lighten } from 'polished'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import parseToFloat from '../../../../../utils/parseToFloat'
 import {
   favoritesInStorage,
   inStorage,
-} from "../../../../../utils/favoritesInStorage";
-import { laptopBreakpoint, red } from "../../../../../../styles/variables";
-import { Skeleton } from "@material-ui/lab";
-import { PHOTO_URL } from "../../../../../../variables";
-import { cyrToTranslit } from "../../../../../utils/translit";
-import { CityContext } from "../../../../../searchContext";
-import FastBuyPopup from "../../../../ui/FastBuyPopup";
-import HeartFullFill from "../../../MainPage/components/Header/icons/HeartFullFill";
+} from '../../../../../utils/favoritesInStorage'
+import { laptopBreakpoint, red } from '../../../../../../styles/variables'
+import { Skeleton } from '@material-ui/lab'
+import { PHOTO_URL } from '../../../../../../variables'
+import { cyrToTranslit } from '../../../../../utils/translit'
+import { CityContext } from '../../../../../searchContext'
+import FastBuyPopup from '../../../../ui/FastBuyPopup'
+import HeartFullFill from '../../../MainPage/components/Header/icons/HeartFullFill'
 
 const Wrapper = styled.div`
   width: 175px;
@@ -40,17 +40,17 @@ const Wrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`;
+`
 
 const SkeletonItem = styled(Skeleton)`
   width: 175px;
   height: 365px;
-`;
+`
 
 const SkeletonBottom = styled(Skeleton)`
   width: 100%;
   height: 35px;
-`;
+`
 
 const ImageWrapper = styled.div`
   display: flex;
@@ -62,7 +62,7 @@ const ImageWrapper = styled.div`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 const Image = styled.img`
   width: 100%;
@@ -72,7 +72,7 @@ const Image = styled.img`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const Favorite = styled.div`
   position: absolute;
@@ -82,7 +82,7 @@ export const Favorite = styled.div`
   cursor: pointer;
   right: 15px;
   top: -10px;
-`;
+`
 
 const Content = styled.div`
   padding: 10px 10px 20px 10px;
@@ -97,7 +97,7 @@ const Content = styled.div`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 const Name = styled.p`
   max-width: 211px;
@@ -110,7 +110,7 @@ const Name = styled.p`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 const Price = styled.div`
   display: flex;
@@ -119,7 +119,7 @@ const Price = styled.div`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 const OldPrice = styled.p`
   color: #a1a1a1;
@@ -129,7 +129,7 @@ const OldPrice = styled.p`
   position: relative;
 
   &:after {
-    content: "";
+    content: '';
     position: absolute;
     background: #a1a1a1;
     height: 1px;
@@ -137,7 +137,7 @@ const OldPrice = styled.p`
     top: 7px;
     left: 0;
   }
-`;
+`
 
 const NewPrice = styled.p`
   margin: 10px 0;
@@ -149,7 +149,7 @@ const NewPrice = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     line-height: 16px;
   }
-`;
+`
 
 const ButtonCart = styled.button`
   width: 48%;
@@ -168,18 +168,18 @@ const ButtonCart = styled.button`
   border-radius: 50px;
   padding: 8px 0px;
   opacity: ${({ disabled }) => (disabled ? 0.3 : 1)};
-  background-color: ${({ disabled }) => (disabled ? "gray" : "#f03")};
-  border-color: ${({ disabled }) => (disabled ? "gray" : "#f03")};
-  pointer-events: ${({ disabled }) => (disabled ? "none" : "auto")};
+  background-color: ${({ disabled }) => (disabled ? 'gray' : '#f03')};
+  border-color: ${({ disabled }) => (disabled ? 'gray' : '#f03')};
+  pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
 
   &:hover {
-    background-color: ${lighten(0.1, "#f03")};
+    background-color: ${lighten(0.1, '#f03')};
   }
 
   @media (max-width: ${laptopBreakpoint}) {
     font-size: 9px;
   }
-`;
+`
 
 const QuantityWrap = styled.div`
   display: flex;
@@ -192,12 +192,12 @@ const QuantityWrap = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     width: 86.3%;
   }
-`;
+`
 
 const Quantity = styled.p`
   font-size: 10px;
   line-height: 16px;
-`;
+`
 
 const Minus = styled.div`
   width: 28px;
@@ -205,29 +205,29 @@ const Minus = styled.div`
   border-radius: 100%;
   flex-shrink: 0;
   cursor: pointer;
-  background: #f0f0f0 url("/icon-minus.svg") no-repeat center;
+  background: #f0f0f0 url('/icon-minus.svg') no-repeat center;
   transition: all 0.2s ease-in-out;
 
   &:hover {
-    background: #ff0033 url("/icon-minus-white.svg") no-repeat center;
+    background: #ff0033 url('/icon-minus-white.svg') no-repeat center;
   }
-`;
+`
 
 const Plus = styled(Minus)`
-  background: #f0f0f0 url("/icon-plus.svg") no-repeat center;
+  background: #f0f0f0 url('/icon-plus.svg') no-repeat center;
   background-size: 13px;
 
   &:hover {
-    background: #ff0033 url("/icon-plus-white.svg") no-repeat center;
+    background: #ff0033 url('/icon-plus-white.svg') no-repeat center;
     background-size: 13px;
   }
-`;
+`
 
 const ButtonsWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
-`;
+`
 
 const Available = styled.div`
   margin-top: 25px;
@@ -239,7 +239,7 @@ const Available = styled.div`
   position: relative;
 
   &:before {
-    content: "";
+    content: '';
     width: 5px;
     height: 5px;
     background-color: ${red};
@@ -256,25 +256,25 @@ const Available = styled.div`
       top: 5px;
     }
   }
-`;
+`
 
 const Description = styled.p`
-  max-height: 96px;
+  max-height: 64px;
   margin-bottom: 15px;
   font-size: 12px;
   line-height: 16px;
   overflow: hidden;
-`;
+`
 
 const ProductDetails = styled.div`
   height: 58px;
-`;
+`
 
 const Detail = styled.p`
   margin-bottom: 3px;
   font-size: 10px;
   color: #c6c6c6;
-`;
+`
 
 const QuantityInPack = styled.p`
   margin-bottom: 10px;
@@ -283,7 +283,7 @@ const QuantityInPack = styled.p`
   color: #c6c6c6;
   text-transform: uppercase;
   text-align: center;
-`;
+`
 
 const Product = ({
   item,
@@ -298,33 +298,37 @@ const Product = ({
   loadingCart,
   brand,
 }) => {
-  const router = useRouter();
-  const [city] = useContext(CityContext);
-  const [openBuyPopup, setOpenBuyPopup] = useState(false);
+  const router = useRouter()
+  const [city] = useContext(CityContext)
+  const [openBuyPopup, setOpenBuyPopup] = useState(false)
 
-  const newItem = cart?.find((el) => el?.product?.id === item.id)
-    ? cart?.find((el) => el?.product?.id === item.id)
-    : { product: { ...item }, quantity: 0 };
+  const newItem = cart?.find(el => el?.product?.id === item.id)
+    ? cart?.find(el => el?.product?.id === item.id)
+    : { product: { ...item }, quantity: 0 }
 
-  const [isFavorite, setIsFavorit] = useState(false);
+  const [isFavorite, setIsFavorit] = useState(false)
 
   useEffect(() => {
-    const isInStorage = inStorage("products", {
+    const isInStorage = inStorage('products', {
       ...item,
       dontShowPrice: brand?.dontShowPrice,
-    });
-    setIsFavorit(!!isInStorage);
-  }, []);
+    })
+    setIsFavorit(!!isInStorage)
+  }, [])
 
   const addFavorite = (e, item) => {
-    e.preventDefault();
-    e.stopPropagation();
-    favoritesInStorage("products", {
+    e.preventDefault()
+    e.stopPropagation()
+    favoritesInStorage('products', {
       ...item,
       dontShowPrice: item?.brand?.dontShowPrice,
-    });
-    setIsFavorit(!isFavorite);
-  };
+    })
+    setIsFavorit(!isFavorite)
+  }
+
+  const productImage = newItem.product?.productCover?.url
+    ? `${PHOTO_URL}${newItem.product.productCover.url}`
+    : ''
 
   return loading ? (
     <SkeletonItem variant="rectangular" />
@@ -348,72 +352,69 @@ const Product = ({
           <ImageWrapper>
             <Image
               alt="image"
-              src={
-                newItem?.product?.photoIds[0]
-                  ? ` ${PHOTO_URL}${newItem?.product?.photoIds[0]}/original`
-                  : "/cosmetic_placeholder.jpg"
-              }
+              src={!!productImage ? productImage : '/cosmetic_placeholder.jpg'}
             />
             <Favorite
               isFavorite={isFavorite}
-              onClick={(e) => addFavorite(e, item)}
+              onClick={e => addFavorite(e, item)}
             >
               <HeartFullFill fill={isFavorite} />
             </Favorite>
           </ImageWrapper>
           <Content>
-            <Name>{newItem?.product?.title}</Name>
+            <Name>{newItem?.product?.productName}</Name>
             <Available>
-              {newItem?.product?.countAvailable > 0
-                ? "В наличии"
-                : "Нет в наличии"}
+              {newItem?.product?.productAvailableInStock > 0
+                ? 'В наличии'
+                : 'Нет в наличии'}
             </Available>
-            <Description>{newItem?.product?.description}</Description>
+            <Description>
+              {newItem?.product?.productShortDescription}
+            </Description>
             <ProductDetails>
-              {item?.sku ? <Detail>Артикул: {item?.sku}</Detail> : null}
-              {item?.material ? (
+              {item?.sku ? <Detail>Артикул: {item?.productSKU}</Detail> : null}
+              {/* {item?.material ? (
                 <Detail>Материал: {item?.material}</Detail>
-              ) : null}
-              {item?.color ? <Detail>Цвет: {item?.color}</Detail> : null}
-              {item?.size ? <Detail>Размер: {item?.size}</Detail> : null}
+              ) : null} */}
+              {/* {item?.color ? <Detail>Цвет: {item?.color}</Detail> : null}
+              {item?.size ? <Detail>Размер: {item?.size}</Detail> : null} */}
             </ProductDetails>
             {newItem?.product?.brand?.dontShowPrice && !me?.info ? null : (
               <Price>
                 <NewPrice>
-                  {newItem?.product?.currentAmount
+                  {newItem?.product?.productSalePrice
                     ? `${
-                        (newItem?.product?.currentAmount &&
-                          newItem?.product?.currentAmount.toLocaleString()) ||
-                        newItem?.product?.currentAmount.toLocaleString()
-                      } руб.`
-                    : "Цена по запросу"}
+                        (newItem?.product?.productSalePrice &&
+                          newItem?.product?.productSalePrice) ||
+                        newItem?.product?.productSalePrice
+                      } ₽`
+                    : 'Цена по запросу'}{' '}
                 </NewPrice>
-                <OldPrice>
-                  {newItem?.product?.amountSales !== 0 &&
-                  newItem?.product?.amount !== 0
-                    ? `${
-                        (newItem?.product?.amount &&
-                          newItem?.product?.amount.toLocaleString()) ||
-                        newItem?.product?.amount.toLocaleString()
-                      } руб.`
-                    : null}
-                </OldPrice>
+                {newItem?.product?.productPrice !== 0 ? (
+                  <OldPrice>
+                    {`${
+                      (newItem?.product?.productPrice &&
+                        newItem?.product?.productPrice) ||
+                      newItem?.product?.productPrice
+                    } ₽`}
+                  </OldPrice>
+                ) : null}
               </Price>
             )}
-            {item?.quantityInPac ? (
+            {/* {item?.quantityInPac ? (
               <QuantityInPack>{item?.quantityInPac}</QuantityInPack>
             ) : (
               <QuantityInPack></QuantityInPack>
-            )}
+            )} */}
             {loadingCart ? (
               <SkeletonBottom />
             ) : newItem?.quantity === 0 ? (
               <ButtonsWrapper>
                 <ButtonCart
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setOpenBuyPopup(true);
+                  onClick={e => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    setOpenBuyPopup(true)
                   }}
                   disabled={newItem?.product?.countAvailable === 0}
                 >
@@ -421,19 +422,19 @@ const Product = ({
                 </ButtonCart>
                 <ButtonCart
                   disabled={newItem?.product?.countAvailable === 0}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
+                  onClick={e => {
+                    e.preventDefault()
+                    e.stopPropagation()
                     if (!me?.info) {
                       router.push(
                         {
-                          pathname: "/login",
-                          query: { error: "notAuthorized" },
+                          pathname: '/login',
+                          query: { error: 'notAuthorized' },
                         },
-                        "/login"
-                      );
+                        '/login',
+                      )
                     } else {
-                      !addLoading ? add(newItem?.product, 1) : {};
+                      !addLoading ? add(newItem?.product, 1) : {}
                     }
                   }}
                 >
@@ -443,18 +444,18 @@ const Product = ({
             ) : (
               <QuantityWrap>
                 <Minus
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    !deleteLoading ? deleteItem(newItem) : {};
+                  onClick={e => {
+                    e.stopPropagation()
+                    e.preventDefault()
+                    !deleteLoading ? deleteItem(newItem) : {}
                   }}
                 />
                 <Quantity>{`${newItem?.quantity} шт.`}</Quantity>
                 <Plus
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    !addLoading ? add(newItem?.product, 1) : {};
+                  onClick={e => {
+                    e.stopPropagation()
+                    e.preventDefault()
+                    !addLoading ? add(newItem?.product, 1) : {}
                   }}
                 />
               </QuantityWrap>
@@ -463,7 +464,7 @@ const Product = ({
         </Wrapper>
       </Link>
     </>
-  );
-};
+  )
+}
 
-export default Product;
+export default Product

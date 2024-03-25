@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useMutation } from "@apollo/client";
+import { useState, useEffect } from 'react'
+import { useMutation } from '@apollo/client'
 import {
   ContentLeft,
   ContentRight,
@@ -18,56 +18,56 @@ import {
   Rating,
   SocialOk,
   Count,
-} from "./styled";
-import RatingEdit from "../../../../../ui/RatingEdit";
+} from './styled'
+import RatingEdit from '../../../../../ui/RatingEdit'
 import {
   favoritesInStorage,
   inStorage,
-} from "../../../../../../utils/favoritesInStorage";
-import { createScopesBrand } from "../../../../../../_graphql-legacy/brand/createScopesBrand";
+} from '../../../../../../utils/favoritesInStorage'
+import { createScopesBrand } from '../../../../../../_graphql-legacy/brand/createScopesBrand'
 
 const Title = ({
   brandName,
   countryName,
-  socialUrl,
+  socials,
   brandUrl,
   brand,
-  scoreBrandCount,
-  loadingScore,
+  // scoreBrandCount,
+  // loadingScore,
   me,
-  refetchBrand,
-  refetchScore,
+  // refetchBrand,
+  // refetchScore,
 }) => {
-  const [isFavorite, setIsFavorit] = useState(false);
+  const [isFavorite, setIsFavorit] = useState(false)
 
   useEffect(() => {
-    const isInStorage = inStorage("brands", brand);
-    setIsFavorit(!!isInStorage);
-  }, []);
+    const isInStorage = inStorage('brands', brand)
+    setIsFavorit(!!isInStorage)
+  }, [])
 
   const addFavorite = (e, brand) => {
-    e.preventDefault();
-    e.stopPropagation();
-    favoritesInStorage("brands", brand);
-    setIsFavorit(!isFavorite);
-  };
+    e.preventDefault()
+    e.stopPropagation()
+    favoritesInStorage('brands', brand)
+    setIsFavorit(!isFavorite)
+  }
 
   const [createScore] = useMutation(createScopesBrand, {
     onCompleted: () => {
-      refetchBrand();
-      refetchScore();
+      refetchBrand()
+      refetchScore()
     },
-  });
+  })
 
-  const handleChangeRating = (num) => {
-    if (scoreBrandCount || loadingScore) return;
+  const handleChangeRating = num => {
+    if (scoreBrandCount || loadingScore) return
     createScore({
       variables: {
         value: num,
         brandId: brand.id,
       },
-    });
-  };
+    })
+  }
 
   return (
     <>
@@ -77,7 +77,7 @@ const Title = ({
           <Notification>
             <Favorite
               isFavorite={isFavorite}
-              onClick={(e) => addFavorite(e, brand)}
+              onClick={e => addFavorite(e, brand)}
             />
             <Bell />
           </Notification>
@@ -86,7 +86,7 @@ const Title = ({
         <Rating>
           <RatingEdit
             handleChangeRating={handleChangeRating}
-            userValue={scoreBrandCount || 0}
+            userValue={0}
             count={Math.round(brand?.averageScore)}
             me={me}
           />
@@ -110,21 +110,21 @@ const Title = ({
                 rel="noreferrer nofollow"
               />
             ) : null} */}
-            {socialUrl?.youTube ? (
+            {socials?.youTube ? (
               <SocialYou
                 href={socialUrl.youTube}
                 target="_blank"
                 rel="noreferrer nofollow"
               />
             ) : null}
-            {socialUrl?.vKontakte ? (
+            {socials?.vKontakte ? (
               <SocialVk
                 href={socialUrl.vKontakte}
                 target="_blank"
                 rel="noreferrer nofollow"
               />
             ) : null}
-            {socialUrl?.odnoklassniki ? (
+            {socials?.odnoklassniki ? (
               <SocialOk
                 href={socialUrl.odnoklassniki}
                 target="_blank"
@@ -136,7 +136,7 @@ const Title = ({
         <BrandWeb href={`mailto:${brandUrl}`}>{brandUrl}</BrandWeb>
       </ContentRight>
     </>
-  );
-};
+  )
+}
 
-export default Title;
+export default Title

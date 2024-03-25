@@ -10,8 +10,8 @@ import {
 } from '../fragments'
 
 export const getSalons = gql`
-  query salons {
-    salons {
+  query salons($itemsCount: Int!) {
+    salons(pagination: { page: 1, pageSize: $itemsCount }) {
       data {
         id
         attributes {

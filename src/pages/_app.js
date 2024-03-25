@@ -34,6 +34,7 @@ import { HistoryProvider } from '../historyContext'
 import { cyrToTranslit } from '../utils/translit'
 import { useCitySuggestions } from '../components/pages/MainPage/components/CitySelect/useCitySuggestions'
 import { SearchHistoryProvider } from '../searchHistoryContext'
+import { getMe } from 'src/graphql/me/queries/getMe'
 
 const progress = new ProgressBar({
   size: 2,
@@ -44,7 +45,7 @@ const progress = new ProgressBar({
 
 const AppContainer = ({ Component, pageProps }) => {
   const router = useRouter()
-  const [getInfo, { data }] = useLazyQuery(currentUserSalonsAndMasterQuery)
+  const [getInfo, { data }] = useLazyQuery(getMe)
   const [getCatalogs, { data: catalogsData }] =
     useLazyQuery(getServiceCategories)
   const [meInfo, setMeInfo] = useState({})

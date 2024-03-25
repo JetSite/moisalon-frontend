@@ -11,7 +11,7 @@ import {
 
 const RibbonSlide = ({ item }) => {
   const imageUrl = item?.attributes?.beautyFeedCover?.data?.attributes?.url
-    ? `${PHOTO_URL}${item?.attributes?.beautyFeedCover?.data?.attributes?.url}`
+    ? `${PHOTO_URL}${item.attributes.beautyFeedCover.data.attributes.url}`
     : ''
 
   return (
@@ -23,10 +23,10 @@ const RibbonSlide = ({ item }) => {
     >
       <SliderItem>
         <SliderContent>
-          <SliderImageWrap imageUrl={`${PHOTO_URL}${item.photoId}/original`}>
+          <SliderImageWrap imageUrl={imageUrl}>
             {/* <SliderImage alt={item.title} src={item.image} /> */}
           </SliderImageWrap>
-          <SliderText>{item.title}</SliderText>
+          <SliderText>{item?.attributes?.beautyFeedTitle}</SliderText>
         </SliderContent>
       </SliderItem>
     </Link>

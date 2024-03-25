@@ -32,91 +32,93 @@ const BrandsSearchResults = ({ brandsSearch }) => {
     isMobile ? -10 : -120,
   )
 
-  const { fetchMore, refetch } = useQuery(brandSearchQuery, {
-    variables: {
-      query: (query && query.query) || '',
-    },
-    skip: true,
-    notifyOnNetworkStatusChange: true,
-    onCompleted: res => {
-      setLoading(false)
-      if (res) {
-        setBrandsSearchData(res.brandsSearch)
-      }
-    },
-  })
+  // const { fetchMore, refetch } = useQuery(brandSearchQuery, {
+  //   variables: {
+  //     query: (query && query.query) || '',
+  //   },
+  //   skip: true,
+  //   notifyOnNetworkStatusChange: true,
+  //   onCompleted: res => {
+  //     setLoading(false)
+  //     if (res) {
+  //       setBrandsSearchData(res.brandsSearch)
+  //     }
+  //   },
+  // })
 
-  const brandsSearchResult = brandsSearchData?.connection.nodes || []
-  const hasNextPage = brandsSearchData?.connection?.pageInfo?.hasNextPage
-  const totalCount = brandsSearchData?.connection?.totalCount
+  const brandsSearchResult = brandsSearchData || []
+  // const hasNextPage = brandsSearchData?.connection?.pageInfo?.hasNextPage
+  // const totalCount = brandsSearchData?.connection?.totalCount
 
-  useEffect(() => {
-    if (query?.query && query.query !== '') {
-      setSearchData(null)
-      setLoading(true)
-      setChosenItemId('')
-      refetch({
-        variables: {
-          query: (query && query.query) || '',
-          cursor: null,
-        },
-      })
-    } else {
-      // setBrandsSearchData(searchData ? searchData : brandsSearch);
-      return
-    }
-  }, [query])
+  const totalCount = brandsSearchData?.length
 
-  const onFetchMore = useCallback(() => {
-    setFetchMoreLoading(true)
-    setChosenItemId('')
-    fetchMore({
-      variables: {
-        query: (query && query.query) || '',
-        cursor: brandsSearchData?.connection?.pageInfo?.endCursor,
-      },
+  // useEffect(() => {
+  //   if (query?.query && query.query !== '') {
+  //     setSearchData(null)
+  //     setLoading(true)
+  //     setChosenItemId('')
+  //     refetch({
+  //       variables: {
+  //         query: (query && query.query) || '',
+  //         cursor: null,
+  //       },
+  //     })
+  //   } else {
+  //     // setBrandsSearchData(searchData ? searchData : brandsSearch);
+  //     return
+  //   }
+  // }, [query])
 
-      updateQuery(previousResult, { fetchMoreResult }) {
-        const newNodes = fetchMoreResult.brandsSearch.connection.nodes
-        setFetchMoreLoading(false)
-        setBrandsSearchData({
-          connection: {
-            ...fetchMoreResult.brandsSearch.connection,
-            nodes: [...brandsSearchData.connection.nodes, ...newNodes],
-          },
-          filterDefinition: fetchMoreResult.brandsSearch.filterDefinition,
-        })
-      },
-    })
-  })
+  // const onFetchMore = useCallback(() => {
+  //   setFetchMoreLoading(true)
+  //   setChosenItemId('')
+  //   fetchMore({
+  //     variables: {
+  //       query: (query && query.query) || '',
+  //       cursor: brandsSearchData?.connection?.pageInfo?.endCursor,
+  //     },
 
-  const fetchMoreButton = hasNextPage ? (
-    <>
-      <MobileHidden>
-        <Button
-          onClick={onFetchMore}
-          size="medium"
-          variant="darkTransparent"
-          mb="55"
-          disabled={fetchMoreLoading}
-        >
-          Показать еще
-        </Button>
-      </MobileHidden>
-      <MobileVisible>
-        <Button
-          size="roundSmall"
-          variant="withRoundBorder"
-          font="roundSmall"
-          mb="56"
-          onClick={onFetchMore}
-          disabled={fetchMoreLoading}
-        >
-          Показать еще бренды
-        </Button>
-      </MobileVisible>
-    </>
-  ) : null
+  //     updateQuery(previousResult, { fetchMoreResult }) {
+  //       const newNodes = fetchMoreResult.brandsSearch.connection.nodes
+  //       setFetchMoreLoading(false)
+  //       setBrandsSearchData({
+  //         connection: {
+  //           ...fetchMoreResult.brandsSearch.connection,
+  //           nodes: [...brandsSearchData.connection.nodes, ...newNodes],
+  //         },
+  //         filterDefinition: fetchMoreResult.brandsSearch.filterDefinition,
+  //       })
+  //     },
+  //   })
+  // })
+
+  // const fetchMoreButton = hasNextPage ? (
+  //   <>
+  //     <MobileHidden>
+  //       <Button
+  //         onClick={onFetchMore}
+  //         size="medium"
+  //         variant="darkTransparent"
+  //         mb="55"
+  //         disabled={fetchMoreLoading}
+  //       >
+  //         Показать еще
+  //       </Button>
+  //     </MobileHidden>
+  //     <MobileVisible>
+  //       <Button
+  //         size="roundSmall"
+  //         variant="withRoundBorder"
+  //         font="roundSmall"
+  //         mb="56"
+  //         onClick={onFetchMore}
+  //         disabled={fetchMoreLoading}
+  //       >
+  //         Показать еще бренды
+  //       </Button>
+  //     </MobileVisible>
+  //   </>
+  // ) : null
 
   return (
     <>
@@ -156,7 +158,7 @@ const BrandsSearchResults = ({ brandsSearch }) => {
               </Link>
             ))}
           </WrapperItemsBrands>
-          {fetchMoreButton}
+          {/* {fetchMoreButton} */}
         </>
       ) : null}
     </>

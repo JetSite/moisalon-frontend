@@ -183,11 +183,11 @@ const Salon: FC<Props> = ({
   //   })
   // }
 
-  const { data: data1 } = useQuery(getSalon, {
-    variables: { id: 3 },
-  })
+  // const { data: data1 } = useQuery(getSalon, {
+  //   variables: { id: 3 },
+  // })
 
-  console.log(salon)
+  // console.log(salon)
 
   return (
     <MainLayout>

@@ -25,7 +25,8 @@ import {
   TitleIconWrapper,
 } from './styles'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import SwiperCore, { Navigation } from 'swiper/core'
+import { Navigation } from 'swiper/modules'
+import SwiperCore from 'swiper/core'
 import Link from 'next/link'
 import {
   Bottom,
@@ -140,7 +141,7 @@ const Slider = ({
     switch (type) {
       case 'masters':
         return {
-          sliderItem: <MasterSlide item={item} catalog={catalog} />,
+          sliderItem: <MasterSlide item={item} />,
           isAllPage: router.pathname === '/[city]/master',
           slidesCountWhenAllShow: 5,
           showAllSlide: <AllMastersSlide />,

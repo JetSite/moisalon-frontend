@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useMutation } from "@apollo/client";
+import { useState, useEffect } from 'react'
+import { useMutation } from '@apollo/client'
 import {
   ContentLeft,
   ContentRight,
@@ -18,16 +18,16 @@ import {
   Count,
   LogoBlock,
   Photo,
-} from "./styled";
-import RatingEdit from "../../../../ui/RatingEdit";
+} from './styled'
+import RatingEdit from '../../../../ui/RatingEdit'
 import {
   favoritesInStorage,
   inStorage,
-} from "../../../../../utils/favoritesInStorage";
-import { createScopesBrand } from "../../../../../_graphql-legacy/brand/createScopesBrand";
-import { PHOTO_URL } from "../../../../../../variables";
-import { red } from "../../../../../../styles/variables";
-import HeartFullFill from "../../../MainPage/components/Header/icons/HeartFullFill";
+} from '../../../../../utils/favoritesInStorage'
+import { createScopesBrand } from '../../../../../_graphql-legacy/brand/createScopesBrand'
+import { PHOTO_URL } from '../../../../../../variables'
+import { red } from '../../../../../../styles/variables'
+import HeartFullFill from '../../../MainPage/components/Header/icons/HeartFullFill'
 
 const Title = ({
   brandName,
@@ -41,36 +41,40 @@ const Title = ({
   refetchBrand,
   refetchScore,
 }) => {
-  const [isFavorite, setIsFavorit] = useState(false);
+  const [isFavorite, setIsFavorit] = useState(false)
 
   useEffect(() => {
-    const isInStorage = inStorage("brands", brand);
-    setIsFavorit(!!isInStorage);
-  }, []);
+    const isInStorage = inStorage('brands', brand)
+    setIsFavorit(!!isInStorage)
+  }, [])
 
   const addFavorite = (e, brand) => {
-    e.preventDefault();
-    e.stopPropagation();
-    favoritesInStorage("brands", brand);
-    setIsFavorit(!isFavorite);
-  };
+    e.preventDefault()
+    e.stopPropagation()
+    favoritesInStorage('brands', brand)
+    setIsFavorit(!isFavorite)
+  }
 
   const [createScore] = useMutation(createScopesBrand, {
     onCompleted: () => {
-      refetchBrand();
-      refetchScore();
+      refetchBrand()
+      refetchScore()
     },
-  });
+  })
 
-  const handleChangeRating = (num) => {
-    if (scoreBrandCount || loadingScore) return;
+  const handleChangeRating = num => {
+    if (scoreBrandCount || loadingScore) return
     createScore({
       variables: {
         value: num,
         brandId: brand.id,
       },
-    });
-  };
+    })
+  }
+
+  const imageUrl = brand?.brandLogo?.url
+    ? `${PHOTO_URL}${brand.brandLogo.url}`
+    : ''
 
   return (
     <>
@@ -80,7 +84,7 @@ const Title = ({
           <Notification>
             <Favorite
               isFavorite={isFavorite}
-              onClick={(e) => addFavorite(e, brand)}
+              onClick={e => addFavorite(e, brand)}
             >
               <HeartFullFill fill={isFavorite} />
             </Favorite>
@@ -101,14 +105,7 @@ const Title = ({
       <ContentRight>
         <LogoBlock>
           <Photo>
-            <img
-              src={
-                brand?.logoId
-                  ? `${PHOTO_URL}${brand?.logoId}/original`
-                  : brand?.photo?.url
-              }
-              alt="Logo"
-            />
+            <img src={imageUrl} alt="Logo" />
           </Photo>
         </LogoBlock>
         <Socials>
@@ -139,7 +136,7 @@ const Title = ({
         <BrandWeb href={`mailto:${brandUrl}`}>{brandUrl}</BrandWeb>
       </ContentRight>
     </>
-  );
-};
+  )
+}
 
-export default Title;
+export default Title
