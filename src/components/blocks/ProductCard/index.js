@@ -1,7 +1,7 @@
-import { useContext, useState, useEffect } from "react";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { CityContext, MeContext } from "../../../searchContext";
+import { useContext, useState, useEffect } from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { CityContext, MeContext } from '../../../searchContext'
 import {
   Wrapper,
   TopGoodWrapper,
@@ -20,15 +20,15 @@ import {
   Minus,
   Favorite,
   ButtonsWrapper,
-} from "./styles";
-import { PHOTO_URL } from "../../../../variables";
-import { cyrToTranslit } from "../../../utils/translit";
+} from './styles'
+import { PHOTO_URL } from '../../../../variables'
+import { cyrToTranslit } from '../../../utils/translit'
 import {
   inStorage,
   favoritesInStorage,
-} from "../../../utils/favoritesInStorage";
-import { red } from "../../../../styles/variables";
-import HeartFullFill from "../../pages/MainPage/components/Header/icons/HeartFullFill";
+} from '../../../utils/favoritesInStorage'
+import { red } from '../../../../styles/variables'
+import HeartFullFill from '../../pages/MainPage/components/Header/icons/HeartFullFill'
 
 const ProductCard = ({
   item,
@@ -41,32 +41,36 @@ const ProductCard = ({
   cart,
   chooseProductOneClick,
 }) => {
-  const router = useRouter();
-  const [me] = useContext(MeContext);
-  const [city] = useContext(CityContext);
-  const [isFavorite, setIsFavorit] = useState(false);
+  const router = useRouter()
+  const [me] = useContext(MeContext)
+  const [city] = useContext(CityContext)
+  const [isFavorite, setIsFavorit] = useState(false)
 
   useEffect(() => {
-    const isInStorage = inStorage("products", {
+    const isInStorage = inStorage('products', {
       ...item,
       dontShowPrice: item?.brand?.dontShowPrice,
-    });
-    setIsFavorit(!!isInStorage);
-  }, []);
+    })
+    setIsFavorit(!!isInStorage)
+  }, [])
 
   const addFavorite = (e, item) => {
-    e.preventDefault();
-    e.stopPropagation();
-    favoritesInStorage("products", {
+    e.preventDefault()
+    e.stopPropagation()
+    favoritesInStorage('products', {
       ...item,
       dontShowPrice: item?.brand?.dontShowPrice,
-    });
-    setIsFavorit(!isFavorite);
-  };
+    })
+    setIsFavorit(!isFavorite)
+  }
 
-  const newItem = cart?.find((el) => el?.product?.id === item.id)
-    ? cart?.find((el) => el?.product?.id === item.id)
-    : { product: { ...item }, quantity: 0 };
+  const imageLink = item?.productCover?.url
+    ? `${PHOTO_URL}${item.productCover.url}`
+    : ''
+
+  const newItem = cart?.find(el => el?.product?.id === item.id)
+    ? cart?.find(el => el?.product?.id === item.id)
+    : { product: { ...item }, quantity: 0 }
   return loading ? (
     <SkeletonItem variant="rectangular" />
   ) : (
@@ -80,75 +84,64 @@ const ProductCard = ({
     >
       <Wrapper>
         <TopGoodWrapper>
-          <Image
-            alt="image"
-            src={
-              newItem?.product?.photoIds[0]
-                ? `${PHOTO_URL}${newItem?.product?.photoIds[0]}/original`
-                : "/cosmetic_placeholder.jpg"
-            }
-          />
-          <Favorite
-            isFavorite={isFavorite}
-            onClick={(e) => addFavorite(e, item)}
-          >
+          <Image alt="image" src={imageLink || '/cosmetic_placeholder.jpg'} />
+          <Favorite isFavorite={isFavorite} onClick={e => addFavorite(e, item)}>
             <HeartFullFill fill={isFavorite} />
           </Favorite>
         </TopGoodWrapper>
         <BottomGoodWrapper>
           <Wrap>
-            <Name>{newItem?.product?.title}</Name>
+            <Name>{newItem?.product?.productName}</Name>
             {newItem?.product?.brand?.dontShowPrice && !me?.info ? null : (
               <Price>
                 <NewPrice>
-                  {newItem?.product?.currentAmount
+                  {newItem?.product?.productSalePrice
                     ? `${
-                        (newItem?.product?.currentAmount &&
-                          newItem?.product?.currentAmount.toLocaleString()) ||
-                        newItem?.product?.currentAmount.toLocaleString()
+                        (newItem?.product?.productSalePrice &&
+                          newItem?.product?.productSalePrice) ||
+                        newItem?.product?.productSalePrice
                       } ₽`
-                    : "Цена по запросу"}{" "}
+                    : 'Цена по запросу'}{' '}
                 </NewPrice>
-                {newItem?.product?.amountSales !== 0 &&
-                newItem?.product?.amount !== 0 ? (
+                {newItem?.product?.productPrice !== 0 ? (
                   <OldPrice>
                     {`${
-                      (newItem?.product?.amount &&
-                        newItem?.product?.amount.toLocaleString()) ||
-                      newItem?.product?.amount.toLocaleString()
+                      (newItem?.product?.productPrice &&
+                        newItem?.product?.productPrice) ||
+                      newItem?.product?.productPrice
                     } ₽`}
                   </OldPrice>
                 ) : null}
               </Price>
             )}
           </Wrap>
-          {loadingCart ? (
+          {/* {loadingCart ? (
             <SkeletonBottom />
           ) : newItem?.quantity === 0 ? (
             <ButtonsWrapper>
               <ButtonCart
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  chooseProductOneClick(newItem);
+                onClick={e => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  chooseProductOneClick(newItem)
                 }}
               >
                 Заказать
               </ButtonCart>
               <ButtonCart
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
+                onClick={e => {
+                  e.preventDefault()
+                  e.stopPropagation()
                   if (!me?.info) {
                     router.push(
                       {
-                        pathname: "/login",
-                        query: { error: "notAuthorized" },
+                        pathname: '/login',
+                        query: { error: 'notAuthorized' },
                       },
-                      "/login"
-                    );
+                      '/login',
+                    )
                   } else {
-                    !addLoading ? add(newItem?.product, 1) : {};
+                    !addLoading ? add(newItem?.product, 1) : {}
                   }
                 }}
               >
@@ -158,26 +151,26 @@ const ProductCard = ({
           ) : (
             <QuantityWrap>
               <Minus
-                onClick={(e) => {
-                  e.stopPropagation();
-                  e.preventDefault();
-                  !deleteLoading ? deleteItem(newItem) : {};
+                onClick={e => {
+                  e.stopPropagation()
+                  e.preventDefault()
+                  !deleteLoading ? deleteItem(newItem) : {}
                 }}
               />
               <Quantity>{`${newItem?.quantity} шт.`}</Quantity>
               <Plus
-                onClick={(e) => {
-                  e.stopPropagation();
-                  e.preventDefault();
-                  !addLoading ? add(newItem?.product, 1) : {};
+                onClick={e => {
+                  e.stopPropagation()
+                  e.preventDefault()
+                  !addLoading ? add(newItem?.product, 1) : {}
                 }}
               />
             </QuantityWrap>
-          )}
+          )} */}
         </BottomGoodWrapper>
       </Wrapper>
     </Link>
-  );
-};
+  )
+}
 
-export default ProductCard;
+export default ProductCard

@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react'
-import { selectedGroupNamesMax } from '../../../utils/serviceCatalog'
+import {
+  getServiceCategoriesNames,
+  selectedGroupNamesMax,
+} from '../../../utils/serviceCatalog'
 import {
   favoritesInStorage,
   inStorage,
@@ -22,13 +25,7 @@ import HeartFullFill from '../../pages/MainPage/components/Header/icons/HeartFul
 import { red } from '../../../../styles/variables'
 import { PHOTO_URL } from 'variables'
 
-const MasterItem = ({
-  master,
-  catalog,
-  loading,
-  shareLink,
-  type = 'slider',
-}) => {
+const MasterItem = ({ master, shareLink, type = 'slider', loading }) => {
   const [isFavorite, setIsFavorit] = useState(false)
 
   useEffect(() => {
@@ -64,16 +61,11 @@ const MasterItem = ({
         <div>
           <Name>{master?.masterName || ''}</Name>
         </div>
-        {/* <div>
+        <div>
           <Specializations>
-            {selectedGroupNamesMax(
-              master?.specializations ? master?.specializations[0] : [],
-              catalog,
-              ", ",
-              1
-            )}
+            {getServiceCategoriesNames(master?.serviceCategories)}
           </Specializations>
-        </div> */}
+        </div>
         <RatingWrapper>
           {master?.city?.cityName ? <City>{master.city.cityName}</City> : null}
           <Rating

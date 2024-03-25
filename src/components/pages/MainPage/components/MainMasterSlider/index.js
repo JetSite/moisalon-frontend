@@ -20,7 +20,11 @@ const MainMasterSlider = ({ me }) => {
   //   catalogs?.masterSpecializationsCatalog,
   // )
 
-  const { data: masters, loading } = useQuery(getMasters)
+  const { data: masters, loading } = useQuery(getMasters, {
+    variables: {
+      itemsCount: 10,
+    },
+  })
   const mastersFlattened = flattenStrapiResponse(masters?.masters?.data)
 
   return (

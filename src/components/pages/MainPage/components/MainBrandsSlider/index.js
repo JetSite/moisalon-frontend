@@ -4,7 +4,11 @@ import Slider from '../../../../blocks/Slider'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 
 const MainBrandsSlider = () => {
-  const { data: brands, loading } = useQuery(getBrands)
+  const { data: brands, loading } = useQuery(getBrands, {
+    variables: {
+      itemsCount: 10,
+    },
+  })
   const brandsFlattened = flattenStrapiResponse(brands?.brands?.data)
 
   return (

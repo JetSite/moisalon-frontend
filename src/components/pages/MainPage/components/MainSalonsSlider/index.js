@@ -8,7 +8,11 @@ const MainSalonsSlider = ({ rent, me }) => {
   if (typeof window !== 'undefined') {
     cityInStorage = localStorage.getItem('citySalon')
   }
-  const { data: salons, loading } = useQuery(getSalons)
+  const { data: salons, loading } = useQuery(getSalons, {
+    variables: {
+      itemsCount: 10,
+    },
+  })
   const salonsFlattened = flattenStrapiResponse(salons?.salons?.data)
 
   return (

@@ -114,7 +114,6 @@ const SalonsSearchResults: FC<Props> = ({
   //   }
   // }, [querySearch?.query, querySearch?.city, filters, sortOrder, sortProperty])
 
-  console.log(salonSearchData)
   const salonsSearchResult =
     typeof window !== 'undefined' ? salonSearchData : salonSearch
   const slicedList = salonsSearchResult

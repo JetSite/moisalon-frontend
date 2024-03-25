@@ -1,10 +1,10 @@
-import { gql } from "@apollo/client";
-import { metaInfo } from "../../common/metaInfo";
-import { imageInfo } from "../../common/imageInfo";
+import { gql } from '@apollo/client'
+import { metaInfo } from '../../common/metaInfo'
+import { imageInfo } from '../../common/imageInfo'
 
 export const getBrands = gql`
-  query brands {
-    brands {
+  query brands($itemsCount: Int!) {
+    brands(pagination: { page: 1, pageSize: $itemsCount }) {
       data {
         id
         attributes {
@@ -17,4 +17,4 @@ export const getBrands = gql`
       ${metaInfo}
     }
   }
-`;
+`

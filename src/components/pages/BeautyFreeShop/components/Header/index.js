@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { MainContainer } from "../../../../../styles/common";
+import { useState } from 'react'
+import { MainContainer } from '../../../../../styles/common'
 import {
   Wrapper,
   Photo,
@@ -12,10 +12,10 @@ import {
   Character,
   OpenCharacter,
   Terms,
-} from "./styled";
-import Title from "../Title";
-import { useRouter } from "next/router";
-import { PHOTO_URL } from "../../../../../../variables";
+} from './styled'
+import Title from '../Title'
+import { useRouter } from 'next/router'
+import { PHOTO_URL } from '../../../../../../variables'
 
 const Header = ({
   brand,
@@ -26,22 +26,20 @@ const Header = ({
   refetchBrand,
   refetchScore,
 }) => {
-  const router = useRouter();
-  const [toggleTerms, setToggleTerms] = useState(false);
+  const router = useRouter()
+  const [toggleTerms, setToggleTerms] = useState(false)
+
+  const imageUrl = brand?.brandLogo?.url
+    ? `${PHOTO_URL}${brand.brandLogo.url}`
+    : ''
+
   return (
     <>
       <MainContainer>
         <Wrapper>
           <LogoBlock>
             <Photo>
-              <img
-                src={
-                  brand?.logoId
-                    ? `${PHOTO_URL}${brand?.logoId}/original`
-                    : brand?.photo?.url
-                }
-                alt="Logo"
-              />
+              <img src={imageUrl} alt="Logo" />
             </Photo>
           </LogoBlock>
           <IContainer>
@@ -49,9 +47,9 @@ const Header = ({
               refetchBrand={refetchBrand}
               me={me}
               brandUrl={brand?.email}
-              socialUrl={brand?.socialNetworkUrls}
+              socialUrl={brand?.socialNetworks}
               countryName={brand?.country}
-              brandName={brand?.name}
+              brandName={brand?.brandName}
               brand={brand}
               refetchScore={refetchScore}
               scoreBrandCount={scoreBrandCount}
@@ -88,7 +86,7 @@ const Header = ({
         </Wrapper>
       </MainContainer>
     </>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

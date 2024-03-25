@@ -37,6 +37,13 @@ export function convertServiceIdsToCatalogEntries(ids) {
   })
 }
 
+export function getServiceCategoriesNames(serviceCategories) {
+  const names = serviceCategories.map(
+    serviceCategory => serviceCategory.category.serviceCategoryName,
+  )
+  return names.join(', ')
+}
+
 export function getServicesNames(services) {
   const names = services.map(service => service.serviceName)
   return names.join(', ')

@@ -1,6 +1,6 @@
-import { useContext, useState } from "react";
-import { MainContainer } from "../../../../../../styles/common";
-import BackButton from "../../../../../ui/BackButton";
+import { useContext, useState } from 'react'
+import { MainContainer } from '../../../../../../styles/common'
+import BackButton from '../../../../../ui/BackButton'
 import {
   Wrapper,
   Photo,
@@ -14,56 +14,54 @@ import {
   Character,
   OpenCharacter,
   Terms,
-} from "./styled";
-import Title from "../Title";
-import { useRouter } from "next/router";
-import { cyrToTranslit } from "../../../../../../utils/translit";
-import { CityContext } from "../../../../../../searchContext";
-import { PHOTO_URL } from "../../../../../../../variables";
+} from './styled'
+import Title from '../Title'
+import { useRouter } from 'next/router'
+import { cyrToTranslit } from '../../../../../../utils/translit'
+import { CityContext } from '../../../../../../searchContext'
+import { PHOTO_URL } from '../../../../../../../variables'
 
 const Header = ({
   brand,
   isOwner,
-  scoreBrandCount,
-  loadingScore,
+  // scoreBrandCount,
+  // loadingScore,
   me,
-  refetchBrand,
-  refetchScore,
+  // refetchBrand,
+  // refetchScore,
 }) => {
-  const [city] = useContext(CityContext);
-  const router = useRouter();
-  const [toggleTerms, setToggleTerms] = useState(false);
+  const [city] = useContext(CityContext)
+  const router = useRouter()
+  const [toggleTerms, setToggleTerms] = useState(false)
+
+  const imageUrl = brand?.brandLogo?.url
+    ? `${PHOTO_URL}${brand.brandLogo.url}`
+    : ''
+
   return (
     <>
       <MainContainer>
         <Wrapper>
           <BackButton
             type="Бренд"
-            name={brand?.name}
-            link={isOwner ? "/masterCabinet" : `/${cyrToTranslit(city)}/brand`}
+            name={brand?.brandName}
+            link={isOwner ? '/masterCabinet' : `/${cyrToTranslit(city)}/brand`}
           />
         </Wrapper>
         <Wrapper>
           <LogoBlock>
             <Photo>
-              <img
-                src={
-                  brand?.logoId
-                    ? `${PHOTO_URL}${brand?.logoId}/original`
-                    : brand?.photo?.url
-                }
-                alt="Logo"
-              />
+              <img src={imageUrl} alt="Logo" />
             </Photo>
             {isOwner ? (
               <EditButton
                 onClick={() =>
                   router.push(
                     {
-                      pathname: "/createBrand",
+                      pathname: '/createBrand',
                       query: { id: brand?.id },
                     },
-                    "/createBrand"
+                    '/createBrand',
                   )
                 }
               >
@@ -73,16 +71,16 @@ const Header = ({
           </LogoBlock>
           <IContainer>
             <Title
-              refetchBrand={refetchBrand}
+              // refetchBrand={refetchBrand}
               me={me}
               brandUrl={brand?.email}
-              socialUrl={brand?.socialNetworkUrls}
+              socials={brand?.socialNetworks}
               countryName={brand?.country}
-              brandName={brand?.name}
+              brandName={brand?.brandName}
               brand={brand}
-              refetchScore={refetchScore}
-              scoreBrandCount={scoreBrandCount}
-              loadingScore={loadingScore}
+              // refetchScore={refetchScore}
+              // scoreBrandCount={scoreBrandCount}
+              // loadingScore={loadingScore}
             />
           </IContainer>
           <MinimalSumm>
@@ -115,7 +113,7 @@ const Header = ({
         </Wrapper>
       </MainContainer>
     </>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

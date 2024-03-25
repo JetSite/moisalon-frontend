@@ -4,7 +4,7 @@ import MasterItem from '../../../MasterCard'
 import { cyrToTranslit } from '../../../../../utils/translit'
 import { CityContext } from '../../../../../searchContext'
 
-const MasterSlide = ({ item, catalog }) => {
+const MasterSlide = ({ item }) => {
   const [city] = useContext(CityContext)
 
   return (
@@ -15,7 +15,6 @@ const MasterSlide = ({ item, catalog }) => {
     >
       <MasterItem
         master={item}
-        catalog={catalog}
         shareLink={`https://moi.salon/${cyrToTranslit(
           item?.addressFull?.city || city,
         )}/master/${item?.seo?.slug || item?.id}`}
