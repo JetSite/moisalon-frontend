@@ -23,27 +23,13 @@ import { currentUserSalonsAndMasterQuery } from '../../../../../_graphql-legacy/
 import { useRouter } from 'next/router'
 import { cyrToTranslit } from '../../../../../utils/translit'
 
-let cities = [
-  'Москва',
-  'Санкт-Петербург',
-  'Екатеринбург',
-  'Новосибирск',
-  'Нижний Новгород',
-  'Казань',
-  'Самара',
-  'Ростов-на-Дону',
-  'Челябинск',
-  'Саратов',
-  'Хабаровск',
-  'Волгоград',
-]
-
 const CitySelect = ({
   showCitySelect,
   setShowCitySelect,
   setShowHamburgerMenu,
   setMeInfo,
   me,
+  cities,
 }) => {
   const [city, setCity] = useContext(CityContext)
   // useEffect(() => {
@@ -58,7 +44,7 @@ const CitySelect = ({
   // });
   const router = useRouter()
 
-  const [cityInput, setCityInput] = useState('')
+  // const [cityInput, setCityInput] = useState('')
   const wrapperRef = useRef(null)
   const [query, setQuery] = useContext(SearchMainQueryContext)
 
@@ -102,54 +88,56 @@ const CitySelect = ({
     setShowCitySelect(false)
   }
 
-  const changeCity = e => {
-    setCityInput(e.target.value)
-  }
+  // const changeCity = e => {
+  //   setCityInput(e.target.value)
+  // }
 
   const cityClickHandler = async index => {
-    const city = citiesList.find((city, i) => i == index)
+    const city = citiesList.find(city => city.id == index)
     setShowCitySelect(false)
     setShowHamburgerMenu && setShowHamburgerMenu(false)
-    localStorage.setItem('citySalon', city ? city : 'Москва')
+    localStorage.setItem('citySalon', city?.cityName ? city.cityName : 'Москва')
     // await changeCityFunc({
     //   variables: {
     //     city: city ? city : "Москва",
     //   },
     // });
-    setCity(city ? city : 'Москва')
-    setQuery({ ...query, city: city })
+    setCity(city?.cityName ? city.cityName : 'Москва')
+    setQuery({ ...query, city: city?.cityName ? city.cityName : 'Москва' })
     if (router.pathname === '/[city]/salon/[id]' && router?.query?.city) {
-      router.push(`/${cyrToTranslit(city)}/salon`)
+      router.push(`/${city.citySlug}/salon`)
       return
     }
     if (
       router.pathname === '/[city]/brand/[id]/products' &&
       router?.query?.city
     ) {
-      router.push(`/${cyrToTranslit(city)}/brand`)
+      router.push(`/${city.citySlug}/brand`)
       return
     }
     if (router.pathname === '/[city]/rent/[id]' && router?.query?.city) {
-      router.push(`/${cyrToTranslit(city)}/rent`)
+      router.push(`/${city.citySlug}/rent`)
       return
     }
     if (
       router.pathname === '/[city]/rent/[id]room/[roomId]/seat/[seatId]' &&
       router?.query?.city
     ) {
-      router.push(`/${cyrToTranslit(city)}/rent`)
+      router.push(`/${city.citySlug}/rent`)
       return
     }
     if (router.pathname === '/[city]/master/[id]' && router?.query?.city) {
-      router.push(`/${cyrToTranslit(city)}/master`)
+      router.push(`/${city.citySlug}/master`)
       return
     }
     if (router.pathname === '/[city]/brand/[id]' && router?.query?.city) {
-      router.push(`/${cyrToTranslit(city)}/brand`)
+      router.push(`/${city.citySlug}/brand`)
       return
     }
     if (router?.query?.city) {
-      router.replace({ query: { ...router.query, city: cyrToTranslit(city) } })
+      router.replace({
+        query: { ...router.query, city: city.citySlug },
+      })
     }
   }
 
@@ -157,18 +145,18 @@ const CitySelect = ({
     <CitiesList cities={citiesList} cityClickHandler={cityClickHandler} />
   )
 
-  if (cityInput.length > 2) {
-    component = (
-      <UpdatedList
-        setMeInfo={setMeInfo}
-        cityInput={cityInput}
-        setCityInput={setCityInput}
-        setShowCitySelect={setShowCitySelect}
-        changeCityFunc={changeCityFunc}
-        setShowHamburgerMenu={setShowHamburgerMenu}
-      />
-    )
-  }
+  // if (cityInput.length > 2) {
+  //   component = (
+  //     <UpdatedList
+  //       setMeInfo={setMeInfo}
+  //       cityInput={cityInput}
+  //       setCityInput={setCityInput}
+  //       setShowCitySelect={setShowCitySelect}
+  //       changeCityFunc={changeCityFunc}
+  //       setShowHamburgerMenu={setShowHamburgerMenu}
+  //     />
+  //   )
+  // }
 
   return (
     <>
@@ -185,7 +173,7 @@ const CitySelect = ({
           <CloseWrapper onClick={closeHandler} />
           <Title>Выберите город:</Title>
         </TitleWrapper>
-        <InputWrapper>
+        {/* <InputWrapper>
           <CityInput
             type="text"
             name="city-select"
@@ -193,7 +181,7 @@ const CitySelect = ({
             placeholder="Найти ваш город"
             onChange={changeCity}
           />
-        </InputWrapper>
+        </InputWrapper> */}
         {component}
       </Wrapper>
     </>

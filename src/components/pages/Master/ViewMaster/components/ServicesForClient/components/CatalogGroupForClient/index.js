@@ -37,14 +37,14 @@ const ucFirst = str => {
   return str[0].toUpperCase() + str.slice(1)
 }
 
-export function CatalogGroupForClient({ serviceCategory, entriesItems }) {
+export function CatalogGroupForClient({ serviceBlock, entriesItems }) {
   const [collapsed, setCollapsed] = useState(true)
 
-  if (!serviceCategory?.services) {
+  if (!serviceBlock?.services) {
     return null
   }
 
-  const services = serviceCategory?.services?.map((service, idx) => {
+  const services = serviceBlock?.services?.map((service, idx) => {
     return <CatalogItem key={idx} item={service} />
   })
 
@@ -62,7 +62,7 @@ export function CatalogGroupForClient({ serviceCategory, entriesItems }) {
 
   return (
     <Wrapper>
-      <Title>{ucFirst(serviceCategory?.category?.serviceCategoryName)}</Title>
+      <Title>{ucFirst(serviceBlock?.category)}</Title>
       <Item>{visibleItems}</Item>
       {!collapsed && <Item>{collapsedItems}</Item>}
       {services?.length > 3 && (
