@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { laptopBreakpoint, red } from "../../../../../../styles/variables";
+import styled from 'styled-components'
+import { laptopBreakpoint, red } from '../../../../../../styles/variables'
 
 export const Wrapper = styled.div`
   position: fixed;
@@ -7,17 +7,17 @@ export const Wrapper = styled.div`
   right: 0;
   z-index: 300;
   min-width: 591px;
-  min-height: 580px;
+  /* min-height: 580px; */
   padding: 52px 120px;
   background-color: #fff;
-  transform: ${(props) =>
-    props.showCitySelect ? "translateY(0)" : "translateY(-125%)"};
+  transform: ${props =>
+    props.showCitySelect ? 'translateY(0)' : 'translateY(-200%)'};
   transition: all 0.3s;
   box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
 
   @media (max-width: ${laptopBreakpoint}) {
     min-width: 320px;
-    display: ${(props) => (props.showCitySelect ? "block" : "none")};
+    display: ${props => (props.showCitySelect ? 'block' : 'none')};
     height: 60%;
     top: initial;
     bottom: 0;
@@ -28,7 +28,7 @@ export const Wrapper = styled.div`
     padding: 44px 22px;
     overflow: auto;
   }
-`;
+`
 
 export const TitleWrapper = styled.div`
   position: relative;
@@ -38,7 +38,7 @@ export const TitleWrapper = styled.div`
     justify-content: center;
     margin-bottom: 20px;
   }
-`;
+`
 
 export const Blur = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
@@ -46,7 +46,7 @@ export const Blur = styled.div`
     overflow: hidden;
     width: 100%;
     position: fixed;
-    display: ${(props) => (props.showCitySelect ? "block" : "none")};
+    display: ${props => (props.showCitySelect ? 'block' : 'none')};
     top: 0;
     left: 0;
     background-color: rgba(255, 255, 255, 0.9 *);
@@ -55,7 +55,7 @@ export const Blur = styled.div`
     filter: blur(10px);
     z-index: 699;
   }
-`;
+`
 
 export const Title = styled.h3`
   position: relative;
@@ -69,7 +69,7 @@ export const Title = styled.h3`
     font-weight: 600;
     line-height: 20px;
   }
-`;
+`
 
 export const CloseWrapper = styled.div`
   position: absolute;
@@ -77,7 +77,7 @@ export const CloseWrapper = styled.div`
   left: -46px;
   width: 32px;
   height: 32px;
-  background: url("/close-cross.svg") no-repeat;
+  background: url('/close-cross.svg') no-repeat;
   background-size: cover;
   cursor: pointer;
 
@@ -85,7 +85,7 @@ export const CloseWrapper = styled.div`
     top: -4px;
     left: -7px;
   }
-`;
+`
 
 export const CityPingWrap = styled.div`
   display: none;
@@ -94,21 +94,21 @@ export const CityPingWrap = styled.div`
     display: block;
     margin-right: 5px;
   }
-`;
+`
 
 export const InputWrapper = styled.div`
   position: relative;
   &:after {
-    content: "";
+    content: '';
     position: absolute;
     right: 35px;
     bottom: 17px;
     width: 20px;
     height: 22px;
-    background: url("/search-icon-orange.svg") no-repeat;
+    background: url('/search-icon-orange.svg') no-repeat;
     background-size: cover;
   }
-`;
+`
 
 export const CityInput = styled.input`
   width: 358px;
@@ -130,11 +130,11 @@ export const CityInput = styled.input`
     width: 100%;
     margin-left: 0;
   }
-`;
+`
 
 export const CitiesListWrapper = styled.ul`
   margin-top: 23px;
-`;
+`
 
 export const CityItem = styled.li`
   font-size: 14px;
@@ -151,4 +151,4 @@ export const CityItem = styled.li`
     font-weight: 600;
     line-height: 35px;
   }
-`;
+`

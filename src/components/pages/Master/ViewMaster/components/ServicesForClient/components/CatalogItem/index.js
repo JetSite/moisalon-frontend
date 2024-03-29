@@ -13,9 +13,7 @@ const Top = styled.div`
 const Title = styled.h4`
   font-weight: 500;
   font-size: 16px;
-  width: 70%;
   color: #727272;
-  flex-shrink: 0;
 `
 
 const Price = styled.p`
@@ -28,7 +26,11 @@ export default function CatalogItem({ item }) {
     <Wrapper>
       <Top>
         <Title>{item?.serviceName}</Title>
-        {item?.price ? <Price>от {item.price}</Price> : null}
+        {item?.priceFrom ? (
+          <Price>
+            от {item.priceFrom} {item.unitOfMeasurement}
+          </Price>
+        ) : null}
       </Top>
     </Wrapper>
   )

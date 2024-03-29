@@ -1,6 +1,6 @@
-import { gql } from "@apollo/client";
-import { metaInfo } from "../../common/metaInfo";
-import { imageInfo } from "../../common/imageInfo";
+import { gql } from '@apollo/client'
+import { metaInfo } from '../../common/metaInfo'
+import { imageInfo } from '../../common/imageInfo'
 
 export const getFeeds = gql`
   query feeds {
@@ -21,4 +21,4 @@ export const getFeeds = gql`
       ${metaInfo}
     }
   }
-`;
+`

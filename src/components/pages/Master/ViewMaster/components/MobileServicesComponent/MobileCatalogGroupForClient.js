@@ -57,10 +57,10 @@ const ucFirst = str => {
   return str[0].toUpperCase() + str.slice(1)
 }
 
-export function MobileCatalogGroupForClient({ serviceCategory, masterPage }) {
+export function MobileCatalogGroupForClient({ serviceBlock, masterPage }) {
   const [openGroup, setOpenGroup] = useState(false)
 
-  if (!serviceCategory?.services) {
+  if (!serviceBlock?.services) {
     return null
   }
 
@@ -68,7 +68,7 @@ export function MobileCatalogGroupForClient({ serviceCategory, masterPage }) {
     setOpenGroup(!openGroup)
   }
 
-  const services = serviceCategory?.services?.map((service, idx) => {
+  const services = serviceBlock?.services?.map((service, idx) => {
     return (
       <MobileCatalogItem key={idx} masterPage={masterPage} item={service} />
     )
@@ -81,7 +81,7 @@ export function MobileCatalogGroupForClient({ serviceCategory, masterPage }) {
   return (
     <Wrapper masterPage={masterPage}>
       <TitleWrapper masterPage={masterPage} onClick={openGroupHandler}>
-        <Title>{ucFirst(serviceCategory?.category?.serviceCategoryName)}</Title>
+        <Title>{ucFirst(serviceBlock?.category)}</Title>
         <TickIcon open={openGroup}>
           <Icon src="/services-tick.svg" />
         </TickIcon>

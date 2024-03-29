@@ -44,7 +44,34 @@ export function getServiceCategoriesNames(serviceCategories) {
   return names.join(', ')
 }
 
-export function getServicesNames(services) {
-  const names = services.map(service => service.serviceName)
-  return names.join(', ')
+export function getServicesCategories(services) {
+  const values = []
+  if (services && !!services.length) {
+    services.forEach(service => {
+      service.service.service_categories.forEach(category => {
+        values.push(category.serviceCategoryName)
+      })
+    })
+    return [...new Set(values)]
+  }
+  return []
+}
+
+export function getServicesByCategory(services) {
+  const servicesData = {}
+
+  if (services && !!services.length) {
+    services.forEach(service => {
+      service.service.service_categories.forEach(categoryItem => {
+        const category = categoryItem.serviceCategoryName
+        if (!servicesData[category]) {
+          servicesData[category] = { category, services: [] }
+        }
+        servicesData[category].services.push(service)
+      })
+    })
+
+    return Object.values(servicesData)
+  }
+  return []
 }

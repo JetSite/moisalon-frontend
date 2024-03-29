@@ -1,8 +1,5 @@
 import { useState, useEffect } from 'react'
-import {
-  getServiceCategoriesNames,
-  selectedGroupNamesMax,
-} from '../../../utils/serviceCatalog'
+import { getServicesCategories } from '../../../utils/serviceCatalog'
 import {
   favoritesInStorage,
   inStorage,
@@ -33,6 +30,8 @@ const MasterItem = ({ master, shareLink, type = 'slider', loading }) => {
     setIsFavorit(!!isInStorage)
   }, [])
 
+  const servicesCategories = getServicesCategories(master.services)
+
   const photoUrl = master?.masterPhoto?.url
     ? `${PHOTO_URL}${master.masterPhoto.url}`
     : null
@@ -62,9 +61,7 @@ const MasterItem = ({ master, shareLink, type = 'slider', loading }) => {
           <Name>{master?.masterName || ''}</Name>
         </div>
         <div>
-          <Specializations>
-            {getServiceCategoriesNames(master?.serviceCategories)}
-          </Specializations>
+          <Specializations>{servicesCategories.join(', ')}</Specializations>
         </div>
         <RatingWrapper>
           {master?.city?.cityName ? <City>{master.city.cityName}</City> : null}
