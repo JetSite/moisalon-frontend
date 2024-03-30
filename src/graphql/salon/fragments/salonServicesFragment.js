@@ -17,11 +17,7 @@ services {
         serviceName
       }
     }
-    serviceName
-  }
-`
-}
+  }}
 `
 
-export default salonServicesFragment
 export default salonServicesFragment

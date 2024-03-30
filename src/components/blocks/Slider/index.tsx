@@ -217,7 +217,7 @@ const Slider: FC<Props> = ({
         return {
           sliderItem: (
             <SalonSlide
-              item={item as ISalon}
+              item={item as ISalonPage}
               isEditing={isEditing}
               deleteFunction={deleteFunction as IDeleteFunction}
             />

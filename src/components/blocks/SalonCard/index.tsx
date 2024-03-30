@@ -31,6 +31,7 @@ import { useMedia } from 'use-media'
 import HeartFullFill from '../../pages/MainPage/components/Header/icons/HeartFullFill'
 import { PHOTO_URL } from 'src/variables'
 import { ISalon } from 'src/types/salon'
+import { getServicesCategories } from 'src/utils/serviceCatalog'
 
 interface Props {
   item: ISalon

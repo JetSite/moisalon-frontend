@@ -7,10 +7,10 @@ import { CityContext } from '../../../../../searchContext'
 import Button from '../../../../ui/Button'
 import { DeleteSalon } from './styles'
 import { IDeleteFunction } from './BrandSlide'
-import { ISalon } from 'src/types/salon'
+import { ISalonPage } from 'src/types/salon'
 
 interface Props {
-  item: ISalon
+  item: ISalonPage
   isEditing: boolean
   deleteFunction: IDeleteFunction
 }

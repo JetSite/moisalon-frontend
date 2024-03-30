@@ -39,7 +39,7 @@ import defaultNumber from '../../../../../../utils/defaultNumber'
 import { CityContext } from '../../../../../../searchContext'
 import ChatMessagePopup from '../../../../../ui/ChatMessagePopup'
 import { numberForSocials } from '../../../../../../utils/formatNumber'
-import { PHOTO_URL } from 'variables'
+import { PHOTO_URL } from '../../../../../../variables'
 import { getServiceCategories } from 'src/graphql/service/queries/getServiceCategories'
 
 const Header = ({

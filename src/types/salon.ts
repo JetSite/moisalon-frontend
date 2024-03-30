@@ -46,6 +46,7 @@ export interface ISalon {
   salonPhotos: ISalonPhotos[]
   salonPhones: ISalonPhones[]
   cities: ICity
+  services: IServices[]
 }
 
 export interface ISalonPage extends ISalon {
@@ -54,7 +55,6 @@ export interface ISalonPage extends ISalon {
   masters: IMaster[]
   user: { id: IID }
   activities: { id: IID; activityName: string }[]
-  services: IServices[]
   socialNetworks: ISocialNetworks[]
   review: {
     // Поля для отзывов
