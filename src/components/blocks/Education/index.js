@@ -1,16 +1,16 @@
-import { useState, useEffect } from "react";
-import styled from "styled-components";
-import PhotoAdd from "../CreateEducation/PhotoAdd";
-import moment from "moment";
-import "moment/locale/ru";
-import { laptopBreakpoint, red } from "../../../../styles/variables";
-import Rating from "../../ui/Rating";
+import { useState, useEffect } from 'react'
+import styled from 'styled-components'
+import PhotoAdd from '../CreateEducation/PhotoAdd'
+import moment from 'moment'
+import 'moment/locale/ru'
+import { laptopBreakpoint, red } from '../../../styles/variables'
+import Rating from '../../ui/Rating'
 import {
   favoritesInStorage,
   inStorage,
-} from "../../../utils/favoritesInStorage.js";
-import { PHOTO_URL } from "../../../../variables";
-import HeartFullFill from "../../pages/MainPage/components/Header/icons/HeartFullFill";
+} from '../../../utils/favoritesInStorage.js'
+import { PHOTO_URL } from '../../../variables'
+import HeartFullFill from '../../pages/MainPage/components/Header/icons/HeartFullFill'
 
 const EducationWrap = styled.div`
   width: 375px;
@@ -30,7 +30,7 @@ const EducationWrap = styled.div`
     max-width: 375px;
     height: 280px;
   }
-`;
+`
 
 const EducationTop = styled.div`
   width: 100%;
@@ -41,13 +41,13 @@ const EducationTop = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     height: 133px;
   }
-`;
+`
 
 const Image = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-`;
+`
 
 const EducationContent = styled.div`
   padding: 30px 25px;
@@ -61,13 +61,13 @@ const EducationContent = styled.div`
     padding: 15px 20px;
     padding-top: 8px;
   }
-`;
+`
 
 const EducationName = styled.p`
   font-size: 10px;
   line-height: 16px;
   text-align: center;
-`;
+`
 
 const EducationTitle = styled.p`
   font-weight: 600;
@@ -79,7 +79,7 @@ const EducationTitle = styled.p`
     font-size: 14px;
     line-height: initial;
   }
-`;
+`
 
 const EducationBottom = styled.div`
   margin-top: 20px;
@@ -90,9 +90,9 @@ const EducationBottom = styled.div`
     font-size: 12px;
     line-height: 14px;
   }
-`;
+`
 
-const EducationData = styled.div``;
+const EducationData = styled.div``
 
 const Date = styled.p`
   font-weight: 500;
@@ -102,11 +102,11 @@ const Date = styled.p`
     font-size: 12px;
     line-height: 14px;
   }
-`;
+`
 
 const Promo = styled.div`
   margin-left: auto;
-`;
+`
 
 const PromoText = styled.p`
   font-weight: 500;
@@ -116,7 +116,7 @@ const PromoText = styled.p`
     font-size: 12px;
     line-height: 14px;
   }
-`;
+`
 
 const Favorite = styled.div`
   position: absolute;
@@ -131,7 +131,7 @@ const Favorite = styled.div`
     right: 15px;
     top: -12px;
   }
-`;
+`
 
 const Education = ({
   averageScore = 0,
@@ -152,44 +152,44 @@ const Education = ({
   deleteItem = false,
   handleDeleted,
 }) => {
-  const [hover, setHover] = useState(false);
-  const [isFavorite, setIsFavorit] = useState(false);
+  const [hover, setHover] = useState(false)
+  const [isFavorite, setIsFavorit] = useState(false)
 
   useEffect(() => {
     if (!create) {
-      const isInStorage = inStorage("educations", {
+      const isInStorage = inStorage('educations', {
         id,
         title,
         amount,
         photoId,
         dateStart,
         dateEnd,
-      });
-      setIsFavorit(!!isInStorage);
+      })
+      setIsFavorit(!!isInStorage)
     }
-  }, []);
+  }, [])
 
-  const addFavorite = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    favoritesInStorage("educations", {
+  const addFavorite = e => {
+    e.preventDefault()
+    e.stopPropagation()
+    favoritesInStorage('educations', {
       id,
       title,
       amount,
       photoId,
       dateStart,
       dateEnd,
-    });
-    setIsFavorit(!isFavorite);
-    setDeleteItem && setDeleteItem(!deleteItem);
-    handleDeleted && handleDeleted();
-  };
+    })
+    setIsFavorit(!isFavorite)
+    setDeleteItem && setDeleteItem(!deleteItem)
+    handleDeleted && handleDeleted()
+  }
 
   return (
     <EducationWrap>
       {!create ? (
         <EducationTop>
-          <Favorite isFavorite={isFavorite} onClick={(e) => addFavorite(e)}>
+          <Favorite isFavorite={isFavorite} onClick={e => addFavorite(e)}>
             <HeartFullFill fill={isFavorite} />
           </Favorite>
           <Image alt="photo" src={`${PHOTO_URL}${photoId}/original`} />
@@ -216,26 +216,26 @@ const Education = ({
           {dateStart && dateEnd && create ? (
             <EducationData>
               <Date>
-                {moment(dateStart).format("DD MMMM YYYY")} {timeStart} - <br />
+                {moment(dateStart).format('DD MMMM YYYY')} {timeStart} - <br />
               </Date>
               <Date>
-                {moment(dateEnd).format("DD MMMM YYYY")} {timeEnd}
+                {moment(dateEnd).format('DD MMMM YYYY')} {timeEnd}
               </Date>
             </EducationData>
           ) : null}
           {dateStart && dateEnd && !create ? (
             <EducationData>
               <Date>
-                {moment(dateStart).format("DD MMMM YYYY HH:MM")} - <br />
+                {moment(dateStart).format('DD MMMM YYYY HH:MM')} - <br />
               </Date>
-              <Date>{moment(dateEnd).format("DD MMMM YYYY HH:MM")}</Date>
+              <Date>{moment(dateEnd).format('DD MMMM YYYY HH:MM')}</Date>
             </EducationData>
           ) : null}
           {amount ? (
             <Promo>
               <PromoText>Стоимость</PromoText>
               <PromoText>
-                {new Intl.NumberFormat("ru-RU").format(amount)} руб.
+                {new Intl.NumberFormat('ru-RU').format(amount)} руб.
               </PromoText>
             </Promo>
           ) : null}
@@ -247,7 +247,7 @@ const Education = ({
         />
       </EducationContent>
     </EducationWrap>
-  );
-};
+  )
+}
 
-export default Education;
+export default Education

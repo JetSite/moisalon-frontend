@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { laptopBreakpoint } from '../../../../../../../styles/variables'
+import { laptopBreakpoint } from '../../../../../../styles/variables'
 
 const Wrapper = styled.div`
   width: 100%;

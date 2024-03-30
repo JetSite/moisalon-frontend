@@ -1,13 +1,13 @@
-import { useState } from "react";
-import styled from "styled-components";
-import PhotoAdd from "../CreateSale/PhotoAdd";
-import moment from "moment";
-import "moment/locale/ru";
-import { laptopBreakpoint, red } from "../../../../styles/variables";
-import { PHOTO_URL } from "../../../../variables";
+import { useState } from 'react'
+import styled from 'styled-components'
+import PhotoAdd from '../CreateSale/PhotoAdd'
+import moment from 'moment'
+import 'moment/locale/ru'
+import { laptopBreakpoint, red } from '../../../styles/variables'
+import { PHOTO_URL } from '../../../variables'
 
 const EventWrap = styled.div`
-  width: ${({ cabinetVariant }) => (cabinetVariant ? "345px" : "375px")};
+  width: ${({ cabinetVariant }) => (cabinetVariant ? '345px' : '375px')};
   border: 1px solid #f0f0f0;
   border-radius: 5px;
   overflow: hidden;
@@ -25,7 +25,7 @@ const EventWrap = styled.div`
     max-width: 375px;
     height: 280px;
   }
-`;
+`
 
 const EventTop = styled.div`
   width: 100%;
@@ -36,13 +36,13 @@ const EventTop = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     height: 133px;
   }
-`;
+`
 
 const Image = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-`;
+`
 
 const EventContent = styled.div`
   padding: 24px 21px 17px 21px;
@@ -53,7 +53,7 @@ const EventContent = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     height: 147px;
   }
-`;
+`
 
 // const EventName = styled.p`
 //   font-size: 10px;
@@ -72,7 +72,7 @@ const EventTitle = styled.p`
     font-size: 14px;
     line-height: initial;
   }
-`;
+`
 
 const EventBottom = styled.div`
   margin-top: 20px;
@@ -83,13 +83,13 @@ const EventBottom = styled.div`
     font-size: 12px;
     line-height: 14px;
   }
-`;
+`
 
 const EventData = styled.div`
   border-top: 0.5px solid #000;
   padding-top: 10px;
   width: 100%;
-`;
+`
 
 const Date = styled.p`
   display: inline-block;
@@ -102,7 +102,7 @@ const Date = styled.p`
     font-size: 12px;
     line-height: 14px;
   }
-`;
+`
 
 const EventAddress = styled.p`
   color: #727272;
@@ -113,11 +113,11 @@ const EventAddress = styled.p`
     font-size: 12px;
     line-height: 14px;
   }
-`;
+`
 
 const Promo = styled.div`
   margin-left: auto;
-`;
+`
 
 const PromoText = styled.p`
   font-weight: 500;
@@ -127,7 +127,7 @@ const PromoText = styled.p`
     font-size: 12px;
     line-height: 14px;
   }
-`;
+`
 
 const Event = ({
   title,
@@ -140,7 +140,7 @@ const Event = ({
   address,
   cabinetVariant = false,
 }) => {
-  const [hover, setHover] = useState(false);
+  const [hover, setHover] = useState(false)
 
   return (
     <EventWrap cabinetVariant={cabinetVariant}>
@@ -162,8 +162,8 @@ const Event = ({
         <EventBottom>
           {dateStart && dateEnd ? (
             <EventData>
-              <Date>{moment(dateStart).format("DD MMMM")} -&nbsp;</Date>
-              <Date>{moment(dateEnd).format("DD MMMM YYYY")}</Date>
+              <Date>{moment(dateStart).format('DD MMMM')} -&nbsp;</Date>
+              <Date>{moment(dateEnd).format('DD MMMM YYYY')}</Date>
             </EventData>
           ) : null}
           <EventAddress>{address}</EventAddress>
@@ -176,7 +176,7 @@ const Event = ({
         </EventBottom>
       </EventContent>
     </EventWrap>
-  );
-};
+  )
+}
 
-export default Event;
+export default Event

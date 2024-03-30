@@ -1,45 +1,45 @@
-import React, { useCallback, forwardRef } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import styled from "styled-components";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import FormControl from "@material-ui/core/FormControl";
-import MuiSelect from "@material-ui/core/Select";
-import Input from "@material-ui/core/Input";
-import { laptopBreakpoint } from "../../../../../styles/variables";
+import React, { useCallback, forwardRef } from 'react'
+import { makeStyles } from '@material-ui/core/styles'
+import styled from 'styled-components'
+import InputLabel from '@material-ui/core/InputLabel'
+import MenuItem from '@material-ui/core/MenuItem'
+import FormHelperText from '@material-ui/core/FormHelperText'
+import FormControl from '@material-ui/core/FormControl'
+import MuiSelect from '@material-ui/core/Select'
+import Input from '@material-ui/core/Input'
+import { laptopBreakpoint } from '../../../../styles/variables'
 
 const MenuItemStyled = styled(MenuItem)`
   display: block;
   padding: 5px 10px;
   font-size: 16px;
-`;
+`
 
 const useStyles = makeStyles({
-  root: (mode) => ({
-    fontSize: "1.6rem",
+  root: mode => ({
+    fontSize: '1.6rem',
     color: mode.color,
-    "& &:before": {
+    '& &:before': {
       borderBottomColor: mode.color,
     },
-    "& &:hover:before": {
+    '& &:hover:before': {
       borderBottomColor: mode.color,
     },
-    "& &:after": {
+    '& &:after': {
       borderBottomColor: mode.color,
     },
-    "& &$focused": {
+    '& &$focused': {
       color: mode.color,
     },
   }),
-  input: (mode) => ({
+  input: mode => ({
     color: mode.color,
   }),
-  icon: (mode) => ({
+  icon: mode => ({
     color: mode.color,
   }),
-  focused: (mode) => ({}),
-});
+  focused: mode => ({}),
+})
 
 const Select = forwardRef((props, ref) => {
   const {
@@ -53,24 +53,24 @@ const Select = forwardRef((props, ref) => {
     errorText,
     color,
     ...rest
-  } = props;
+  } = props
 
-  const classes = useStyles({ color: color });
+  const classes = useStyles({ color: color })
 
-  const optionsList = options.map((option) => (
+  const optionsList = options.map(option => (
     <MenuItemStyled value={option.value} key={option.value}>
       {option.label}
     </MenuItemStyled>
-  ));
+  ))
 
   const handleChange = useCallback(
-    (event) => {
+    event => {
       if (value !== event.target.value) {
-        onChange(event);
+        onChange(event)
       }
     },
-    [value, onChange]
-  );
+    [value, onChange],
+  )
 
   return (
     <FormControl
@@ -108,7 +108,7 @@ const Select = forwardRef((props, ref) => {
       </MuiSelect>
       {showError ? <FormHelperText>{errorText}</FormHelperText> : null}
     </FormControl>
-  );
-});
+  )
+})
 
-export default Select;
+export default Select

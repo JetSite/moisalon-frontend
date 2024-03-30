@@ -1,12 +1,12 @@
-import { useContext, useState, useEffect } from "react";
-import { useQuery } from "@apollo/client";
-import { useMutation } from "@apollo/react-hooks";
-import { useRouter } from "next/router";
+import { useContext, useState, useEffect } from 'react'
+import { useQuery } from '@apollo/client'
+import { useMutation } from '@apollo/react-hooks'
+import { useRouter } from 'next/router'
 import {
   MainContainer,
   MobileHidden,
   MobileVisible,
-} from "../../../styles/common";
+} from '../../../styles/common'
 import {
   Wrapper,
   Wrap,
@@ -28,91 +28,87 @@ import {
   AvailableQuantity,
   ButtonsWrapper,
   Detail,
-} from "./styled";
-import Stars from "../../ui/Stars";
-import { addToCartB2cMutation } from "../../../_graphql-legacy/cart/addToB2cCart";
-import { removeItemB2cMutation } from "../../../_graphql-legacy/cart/removeItemB2c";
-import { PHOTO_URL } from "../../../../variables";
-import Rating from "../../ui/Rating";
-import BackButton from "../../ui/BackButton";
-import Reviews from "../../blocks/Reviews";
-import { reviewsforProductB2c } from "../../../_graphql-legacy/reviewsforProductB2c";
-import { createReviewMutation } from "../../../_graphql-legacy/createReviewMutation";
-import { getCart } from "../../../_graphql-legacy/cart/getCart";
-import Button from "../../ui/Button";
-import {
-  CityContext,
-  MeContext,
-  ProductsContext,
-} from "../../../searchContext";
-import Popup from "../../ui/Popup";
-import { cyrToTranslit } from "../../../utils/translit";
-import { Count } from "../../blocks/Reviews/styled";
-import { pluralize } from "../../../utils/pluralize";
-import FastBuyPopup from "../../ui/FastBuyPopup";
-import { useSearchHistoryContext } from "../../../searchHistoryContext";
+} from './styled'
+import Stars from '../../ui/Stars'
+import { addToCartB2cMutation } from '../../../_graphql-legacy/cart/addToB2cCart'
+import { removeItemB2cMutation } from '../../../_graphql-legacy/cart/removeItemB2c'
+import { PHOTO_URL } from '../../../variables'
+import Rating from '../../ui/Rating'
+import BackButton from '../../ui/BackButton'
+import Reviews from '../../blocks/Reviews'
+import { reviewsforProductB2c } from '../../../_graphql-legacy/reviewsforProductB2c'
+import { createReviewMutation } from '../../../_graphql-legacy/createReviewMutation'
+import { getCart } from '../../../_graphql-legacy/cart/getCart'
+import Button from '../../ui/Button'
+import { CityContext, MeContext, ProductsContext } from '../../../searchContext'
+import Popup from '../../ui/Popup'
+import { cyrToTranslit } from '../../../utils/translit'
+import { Count } from '../../blocks/Reviews/styled'
+import { pluralize } from '../../../utils/pluralize'
+import FastBuyPopup from '../../ui/FastBuyPopup'
+import { useSearchHistoryContext } from '../../../searchHistoryContext'
 
 const ProductPage = ({ brand, product, dataReviews }) => {
-  const [, setProductsState] = useContext(ProductsContext);
-  const [reviews, setReviews] = useState(dataReviews);
-  const [me] = useContext(MeContext);
-  const [city] = useContext(CityContext);
-  const [toggleCharacter, setToggleCharacter] = useState(false);
-  const [openPopup, setOpenPopup] = useState(false);
-  const [openBuyPopup, setOpenBuyPopup] = useState(false);
+  const [, setProductsState] = useContext(ProductsContext)
+  const [reviews, setReviews] = useState(dataReviews)
+  const [me] = useContext(MeContext)
+  const [city] = useContext(CityContext)
+  const [toggleCharacter, setToggleCharacter] = useState(false)
+  const [openPopup, setOpenPopup] = useState(false)
+  const [openBuyPopup, setOpenBuyPopup] = useState(false)
 
-  const b2bClient = !!me?.master?.id || !!me?.salons?.length;
+  const b2bClient = !!me?.master?.id || !!me?.salons?.length
 
-  const router = useRouter();
+  const router = useRouter()
 
   const closePopup = () => {
-    setOpenPopup(false);
-  };
+    setOpenPopup(false)
+  }
 
-  const { setChosenItemId } = useSearchHistoryContext();
+  const { setChosenItemId } = useSearchHistoryContext()
 
   useEffect(() => {
-    setChosenItemId(product.id);
-  }, []);
+    setChosenItemId(product.id)
+  }, [])
 
   const { refetch: refetchReviews } = useQuery(reviewsforProductB2c, {
     variables: { originId: product?.id },
     skip: true,
-    onCompleted: (res) => {
-      setReviews(res);
+    onCompleted: res => {
+      setReviews(res)
     },
-  });
+  })
 
   const [reviewMutation] = useMutation(createReviewMutation, {
     onCompleted: () => {
-      refetchReviews();
+      refetchReviews()
     },
-  });
+  })
 
   const { data: dataCart, refetch: refetchCart } = useQuery(getCart, {
-    onCompleted: (res) => {
-      setProductsState(res?.getCartB2b?.contents || []);
+    onCompleted: res => {
+      setProductsState(res?.getCartB2b?.contents || [])
     },
-  });
-  const cart = dataCart?.getCartB2b?.contents || [];
+  })
+  const cart = dataCart?.getCartB2b?.contents || []
 
   const [addToCart, { loading: addLoading }] = useMutation(
     addToCartB2cMutation,
     {
       onCompleted: () => {
-        refetchCart();
+        refetchCart()
       },
-    }
-  );
+    },
+  )
 
   const [removeItem, { loading: deleteLoading }] = useMutation(
     removeItemB2cMutation,
     {
       onCompleted: () => {
-        refetchCart();
+        refetchCart()
       },
-    }
-  );
+    },
+  )
 
   const add = (item, quantity) => {
     // if (!b2bClient) {
@@ -127,10 +123,10 @@ const ProductPage = ({ brand, product, dataReviews }) => {
           isB2b: true,
         },
       },
-    });
-  };
+    })
+  }
 
-  const deleteItem = (item) => {
+  const deleteItem = item => {
     removeItem({
       variables: {
         input: {
@@ -138,12 +134,12 @@ const ProductPage = ({ brand, product, dataReviews }) => {
           isB2b: true,
         },
       },
-    });
-  };
+    })
+  }
 
-  const newItem = cart?.find((el) => el?.product?.id === product.id)
-    ? cart?.find((el) => el?.product?.id === product.id)
-    : { product: { ...product }, quantity: 0 };
+  const newItem = cart?.find(el => el?.product?.id === product.id)
+    ? cart?.find(el => el?.product?.id === product.id)
+    : { product: { ...product }, quantity: 0 }
   return (
     <MainContainer>
       <FastBuyPopup
@@ -155,10 +151,10 @@ const ProductPage = ({ brand, product, dataReviews }) => {
       />
       <Wrapper>
         <BackButton
-          type={router?.query?.catalog ? "Магазин" : "Бренд"}
+          type={router?.query?.catalog ? 'Магазин' : 'Бренд'}
           name={product?.brand?.name}
           link={`/${cyrToTranslit(
-            product?.brand?.addressFull?.city || city
+            product?.brand?.addressFull?.city || city,
           )}/brand/${product?.brand?.seo?.slug || product?.brand?.id}/products`}
         />
         <Wrap>
@@ -169,7 +165,7 @@ const ProductPage = ({ brand, product, dataReviews }) => {
                 src={
                   newItem?.product?.photoIds[0]
                     ? ` ${PHOTO_URL}${newItem?.product?.photoIds[0]}/original`
-                    : "/cosmetic_placeholder.jpg"
+                    : '/cosmetic_placeholder.jpg'
                 }
               />
             </ImageBrand>
@@ -192,9 +188,9 @@ const ProductPage = ({ brand, product, dataReviews }) => {
             >
               {`${product?.countAvailable} ${pluralize(
                 product?.countAvailable || 0,
-                "упаковка",
-                "упаковки",
-                "упаковок"
+                'упаковка',
+                'упаковки',
+                'упаковок',
               )} в наличии`}
             </AvailableQuantity>
             {product?.sku ? <Detail>Артикул: {product?.sku}</Detail> : null}
@@ -215,10 +211,10 @@ const ProductPage = ({ brand, product, dataReviews }) => {
                       variant="red"
                       font="medium"
                       mt="48"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        setOpenBuyPopup(true);
+                      onClick={e => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        setOpenBuyPopup(true)
                       }}
                     >
                       Заказать в один клик
@@ -228,19 +224,19 @@ const ProductPage = ({ brand, product, dataReviews }) => {
                       variant="red"
                       font="medium"
                       mt="48"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
+                      onClick={e => {
+                        e.preventDefault()
+                        e.stopPropagation()
                         if (me && !me?.info) {
                           router.push(
                             {
-                              pathname: "/login",
-                              query: { error: "notAuthorized" },
+                              pathname: '/login',
+                              query: { error: 'notAuthorized' },
                             },
-                            "/login"
-                          );
+                            '/login',
+                          )
                         } else {
-                          add(newItem?.product, 1);
+                          add(newItem?.product, 1)
                         }
                       }}
                       disabled={product?.countAvailable === 0}
@@ -256,10 +252,10 @@ const ProductPage = ({ brand, product, dataReviews }) => {
                       variant="red"
                       font="popUp"
                       mt="37"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        setOpenBuyPopup(true);
+                      onClick={e => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        setOpenBuyPopup(true)
                       }}
                     >
                       Заказать в один клик
@@ -269,19 +265,19 @@ const ProductPage = ({ brand, product, dataReviews }) => {
                       variant="red"
                       font="popUp"
                       mt="17"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
+                      onClick={e => {
+                        e.preventDefault()
+                        e.stopPropagation()
                         if (me && !me?.info) {
                           router.push(
                             {
-                              pathname: "/login",
-                              query: { error: "notAuthorized" },
+                              pathname: '/login',
+                              query: { error: 'notAuthorized' },
                             },
-                            "/login"
-                          );
+                            '/login',
+                          )
                         } else {
-                          add(newItem?.product, 1);
+                          add(newItem?.product, 1)
                         }
                       }}
                       disabled={product?.countAvailable === 0}
@@ -316,7 +312,7 @@ const ProductPage = ({ brand, product, dataReviews }) => {
             )}
             <Description
               dangerouslySetInnerHTML={{
-                __html: newItem?.product?.description || "",
+                __html: newItem?.product?.description || '',
               }}
             />
             {/* {newItem?.product?.node?.attributes?.nodes?.length ? (
@@ -365,7 +361,7 @@ const ProductPage = ({ brand, product, dataReviews }) => {
         </Button>
       </Popup>
     </MainContainer>
-  );
-};
+  )
+}
 
-export default ProductPage;
+export default ProductPage

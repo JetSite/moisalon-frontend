@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../../styles/variables";
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../../styles/variables'
 
 export const Wrapper = styled.div`
   padding: 0 140px;
@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     padding: 0 20px;
   }
-`;
+`
 
 export const Socials = styled.div`
   display: flex;
@@ -20,17 +20,17 @@ export const Socials = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     margin-bottom: 15px;
   }
-`;
+`
 
 export const Phone = styled.a`
   width: 55px;
   height: 55px;
-  background: ${(props) =>
+  background: ${props =>
     props.active
-      ? "url(/phone-active.svg) no-repeat center"
-      : "url(/phone-disabled.svg) no-repeat center"};
+      ? 'url(/phone-active.svg) no-repeat center'
+      : 'url(/phone-disabled.svg) no-repeat center'};
   background-size: contain;
-  cursor: ${(props) => (props.active ? "pointer" : "initial")};
+  cursor: ${props => (props.active ? 'pointer' : 'initial')};
   transition: 0.3s;
   -webkit-backface-visibility: hidden;
   transform: translateZ(0);
@@ -42,40 +42,40 @@ export const Phone = styled.a`
   @media (max-width: ${laptopBreakpoint}) {
     width: 28px;
     height: 28px;
-    background: ${(props) =>
+    background: ${props =>
       props.active
-        ? "url(/phone-active.svg) no-repeat center"
-        : "url(/phone-disabled.svg) no-repeat center"};
+        ? 'url(/phone-active.svg) no-repeat center'
+        : 'url(/phone-disabled.svg) no-repeat center'};
     background-size: contain;
   }
-`;
+`
 
 export const HiddenSocials = styled.div`
   display: flex;
   align-items: center;
   position: absolute;
   top: 0;
-  left: ${(props) => (props.showSocials ? "75px" : "0px")};
-  opacity: ${(props) => (props.showSocials ? 1 : 0)};
+  left: ${props => (props.showSocials ? '75px' : '0px')};
+  opacity: ${props => (props.showSocials ? 1 : 0)};
   transition: 0.5s;
   @media (max-width: ${laptopBreakpoint}) {
     left: 0;
-    bottom: ${(props) => (props.showSocials ? "-75px" : "0px")};
+    bottom: ${props => (props.showSocials ? '-75px' : '0px')};
   }
-`;
+`
 
 export const SocialsWrapper = styled.div`
   position: relative;
-`;
+`
 
 export const ActiveSocials = styled.div`
   width: 55px;
   height: 55px;
-  background: ${(props) =>
+  background: ${props =>
     props.active
-      ? "url(/email-active.svg) no-repeat center"
-      : "url(/email-disabled.svg) no-repeat center"};
-  cursor: ${(props) => (props.active ? "pointer" : "initial")};
+      ? 'url(/email-active.svg) no-repeat center'
+      : 'url(/email-disabled.svg) no-repeat center'};
+  cursor: ${props => (props.active ? 'pointer' : 'initial')};
   background-size: contain;
   transition: 0.3s;
   -webkit-backface-visibility: hidden;
@@ -88,24 +88,24 @@ export const ActiveSocials = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     width: 28px;
     height: 28px;
-    background: ${(props) =>
+    background: ${props =>
       props.active
-        ? "url(/email-active.svg) no-repeat center"
-        : "url(/email-disabled.svg) no-repeat center"};
+        ? 'url(/email-active.svg) no-repeat center'
+        : 'url(/email-disabled.svg) no-repeat center'};
     position: relative;
     z-index: 2;
     background-size: contain;
   }
-`;
+`
 
 export const Telegram = styled.a`
   width: 55px;
   height: 55px;
-  background: url("/master-socials-tg.svg") no-repeat center;
+  background: url('/master-socials-tg.svg') no-repeat center;
   background-size: contain;
   margin-right: 20px;
   cursor: pointer;
-  display: ${(props) => (props.showSocials ? "block" : "none")};
+  display: ${props => (props.showSocials ? 'block' : 'none')};
   transition: 0.3s;
   -webkit-backface-visibility: hidden;
   transform: translateZ(0);
@@ -120,16 +120,16 @@ export const Telegram = styled.a`
     margin-right: 5px;
     background-size: contain;
   }
-`;
+`
 
 export const WhatsApp = styled.a`
   width: 55px;
   height: 55px;
-  background: url("/master-socials-what.svg") no-repeat center;
+  background: url('/master-socials-what.svg') no-repeat center;
   background-size: contain;
   margin-right: 20px;
   cursor: pointer;
-  display: ${(props) => (props.showSocials ? "block" : "none")};
+  display: ${props => (props.showSocials ? 'block' : 'none')};
   transition: 0.3s;
   -webkit-backface-visibility: hidden;
   transform: translateZ(0);
@@ -144,15 +144,15 @@ export const WhatsApp = styled.a`
     margin-right: 5px;
     background-size: contain;
   }
-`;
+`
 
 export const Viber = styled.a`
   width: 55px;
   height: 55px;
-  background: url("/master-socials-viber.svg") no-repeat center;
+  background: url('/master-socials-viber.svg') no-repeat center;
   background-size: contain;
   cursor: pointer;
-  display: ${(props) => (props.showSocials ? "block" : "none")};
+  display: ${props => (props.showSocials ? 'block' : 'none')};
   transition: 0.3s;
   -webkit-backface-visibility: hidden;
   transform: translateZ(0);
@@ -166,16 +166,16 @@ export const Viber = styled.a`
     height: 28px;
     background-size: contain;
   }
-`;
+`
 
 export const ChatIcon = styled.a`
   width: 55px;
   height: 55px;
   margin-right: 20px;
-  background: url("/email.svg") no-repeat center;
+  background: url('/email.svg') no-repeat center;
   background-size: contain;
   cursor: pointer;
-  display: ${(props) => (props.showSocials ? "block" : "none")};
+  display: ${props => (props.showSocials ? 'block' : 'none')};
   transition: 0.3s;
   -webkit-backface-visibility: hidden;
   transform: translateZ(0);
@@ -190,7 +190,7 @@ export const ChatIcon = styled.a`
     margin-right: 5px;
     background-size: contain;
   }
-`;
+`
 
 export const ChatTip = styled.p`
   display: flex;
@@ -206,12 +206,12 @@ export const ChatTip = styled.p`
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
   transition: 0.3s;
-`;
+`
 
 export const Logo = styled.div`
   width: 173px;
   height: 173px;
-  background: ${(props) => props.background};
+  background: ${props => props.background};
   margin-right: 57px;
   margin-left: 57px;
   border-radius: 100%;
@@ -224,17 +224,17 @@ export const Logo = styled.div`
     margin-left: 21px;
     background-position: center;
   }
-`;
+`
 
 export const NameWrapper = styled.div`
   text-align: center;
   margin-bottom: 20px;
-`;
+`
 
 export const NameContent = styled.div`
   display: inline-block;
   position: relative;
-`;
+`
 
 export const Name = styled.h1`
   position: relative;
@@ -249,15 +249,15 @@ export const Name = styled.h1`
     font-weight: 600;
     line-height: 25px;
   }
-`;
+`
 
 export const Favorite = styled.div`
   position: absolute;
   right: 10px;
   background: ${({ isFavorite }) =>
       isFavorite
-        ? "url(/favorite-red-icon.svg)"
-        : "url(/favorite-grey-icon.svg)"}
+        ? 'url(/favorite-red-icon.svg)'
+        : 'url(/favorite-grey-icon.svg)'}
     no-repeat center;
   width: 20px;
   height: 20px;
@@ -275,12 +275,12 @@ export const Favorite = styled.div`
     right: 0;
     margin-left: 10px;
   }
-`;
+`
 
 export const Bell = styled.div`
   position: absolute;
   right: 10px;
-  background: url("/bell-icon.svg") no-repeat center;
+  background: url('/bell-icon.svg') no-repeat center;
   width: 20px;
   height: 20px;
   cursor: pointer;
@@ -297,7 +297,7 @@ export const Bell = styled.div`
     right: 0;
     margin-left: 10px;
   }
-`;
+`
 
 export const Activities = styled.p`
   width: 70%;
@@ -315,7 +315,7 @@ export const Activities = styled.p`
     font-weight: 600;
     line-height: 16px;
   }
-`;
+`
 
 export const Rating = styled.div`
   display: flex;
@@ -325,11 +325,11 @@ export const Rating = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     margin-bottom: 29px;
   }
-`;
+`
 
 export const Count = styled.p`
   font-size: 10px;
-`;
+`
 
 export const SkeletonCircle = styled.div`
   display: inline-block;
@@ -345,7 +345,7 @@ export const SkeletonCircle = styled.div`
     margin: 0 21px;
     background-color: rgba(34, 34, 34, 0.11);
   }
-`;
+`
 export const EditButton = styled.div`
   background: #f0f0f0;
   border-radius: 50px;
@@ -366,4 +366,4 @@ export const EditButton = styled.div`
     max-width: 320px;
     height: 28px;
   }
-`;
+`

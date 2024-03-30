@@ -1,13 +1,13 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
-import { laptopBreakpoint } from "../../../../styles/variables";
+import { laptopBreakpoint } from '../../../styles/variables'
 
 export const Wrapper = styled.div`
   max-width: 1440px;
   margin: 0 auto;
   height: 529px;
   position: relative;
-  background: url("/404.jpg") no-repeat center;
+  background: url('/404.jpg') no-repeat center;
   background-size: cover;
   padding: 157px 0;
   color: #fff;
@@ -16,7 +16,7 @@ export const Wrapper = styled.div`
   line-height: 55px;
   text-align: center;
   &:after {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
@@ -33,15 +33,15 @@ export const Wrapper = styled.div`
     top: 0;
     z-index: 2;
     padding: 157px 20px;
-    background: url("/mobile-404-bg.png") no-repeat top;
+    background: url('/mobile-404-bg.png') no-repeat top;
   }
-`;
+`
 
 export const Title = styled.h2`
   font: inherit;
   position: relative;
   z-index: 3;
-`;
+`
 
 export const Text = styled.p`
   font: inherit;
@@ -53,4 +53,4 @@ export const Text = styled.p`
     font-weight: 600;
     line-height: 25px;
   }
-`;
+`

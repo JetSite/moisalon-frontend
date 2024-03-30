@@ -36,7 +36,7 @@ import {
   UnreadMessages,
   MobileTitle,
 } from './styled'
-import { red } from '../../../../../../styles/variables'
+import { red } from '../../../../../styles/variables'
 import SearchIcon from './icons/SearchIcon'
 import ProfileIcon from './icons/ProfileIcon'
 import StarIcon from './icons/StarIcon'
@@ -64,7 +64,7 @@ import MoreIcon from './icons/MoreIcon'
 import AdditionalNav from './components/AdditionalNav'
 import { cyrToTranslit } from '../../../../../utils/translit'
 import { getB2cCart } from '../../../../../_graphql-legacy/cart/getB2cCart'
-import { PHOTO_URL } from '../../../../../../variables'
+import { PHOTO_URL } from '../../../../../variables'
 import { useChat } from '../../../../../chatContext'
 import { getCities } from 'src/graphql/city/getCities'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'

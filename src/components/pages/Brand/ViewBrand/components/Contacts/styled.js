@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../../styles/variables";
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../../styles/variables'
 
 export const Wrapper = styled.div`
   margin-bottom: 60px;
@@ -10,13 +10,13 @@ export const Wrapper = styled.div`
     padding: 0 20px;
     margin-top: 0;
   }
-`;
+`
 
 export const Top = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-`;
+`
 
 export const Address = styled.a`
   font-size: 14px;
@@ -30,14 +30,14 @@ export const Address = styled.a`
     line-height: 25px;
     margin-right: 0px;
   }
-`;
+`
 
 export const ContentWrapperElement = styled.div`
   width: 47%;
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`;
+`
 
 export const ContentBottom = styled.div`
   display: flex;
@@ -46,7 +46,7 @@ export const ContentBottom = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     flex-direction: column;
   }
-`;
+`
 
 export const Title = styled.p`
   font-size: 30px;
@@ -60,19 +60,19 @@ export const Title = styled.p`
     font-weight: 600;
     line-height: 25px;
   }
-`;
+`
 
 export const ContactBody = styled.div`
   display: flex;
   justify-content: space-between;
   flex-direction: column;
-`;
+`
 
 export const MapBlock = styled.div`
   width: 600px;
   height: 340px;
   margin-right: 50px;
-`;
+`
 
 export const InfoBlock = styled.div`
   width: 60%;
@@ -86,12 +86,12 @@ export const InfoBlock = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`;
+`
 
 export const Info = styled.div`
   display: flex;
   justify-content: space-between;
-`;
+`
 
 export const BlurPhone = styled.p`
   display: inline;
@@ -101,7 +101,7 @@ export const BlurPhone = styled.p`
   background: linear-gradient(to right, #000000 0%, #ffffff 72%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-`;
+`
 
 export const InfoTitle = styled.p`
   width: 50%;
@@ -114,7 +114,7 @@ export const InfoTitle = styled.p`
     font-size: 12px;
     line-height: 25px;
   }
-`;
+`
 export const InfoDescription = styled.p`
   width: 50%;
   margin-right: 25px;
@@ -136,4 +136,4 @@ export const InfoDescription = styled.p`
     font-size: 12px;
     line-height: 25px;
   }
-`;
+`

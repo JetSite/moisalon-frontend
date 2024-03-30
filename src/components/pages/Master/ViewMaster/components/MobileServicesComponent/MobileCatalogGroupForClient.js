@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import styled from 'styled-components'
-import { laptopBreakpoint } from '../../../../../../../styles/variables'
+import { laptopBreakpoint } from '../../../../../../styles/variables'
 import MobileCatalogItem from './MobileCatalogItem'
 
 const Wrapper = styled.div`

@@ -1,9 +1,9 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 import {
   red,
   laptopBreakpoint,
   tabletBreakpoint,
-} from "../../../../../../styles/variables";
+} from '../../../../../styles/variables'
 
 export const Backdrop = styled.div`
   position: fixed;
@@ -21,7 +21,7 @@ export const Backdrop = styled.div`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const Wrapper = styled.div`
   width: 90%;
@@ -63,7 +63,7 @@ export const Wrapper = styled.div`
       display: none;
     }
   }
-`;
+`
 
 export const Title = styled.h2`
   margin-top: 132px;
@@ -81,7 +81,7 @@ export const Title = styled.h2`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const Subtitle = styled.p`
   margin-top: 40px;
@@ -97,7 +97,7 @@ export const Subtitle = styled.p`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const Left = styled.div`
   max-width: 504px;
@@ -109,7 +109,7 @@ export const Left = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     max-width: 504px;
   }
-`;
+`
 
 export const Right = styled.div`
   max-width: 335px;
@@ -121,7 +121,7 @@ export const Right = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     max-width: 335px;
   }
-`;
+`
 
 export const Close = styled.div`
   position: absolute;
@@ -145,7 +145,7 @@ export const Close = styled.div`
   &:after {
     position: absolute;
     left: 15px;
-    content: " ";
+    content: ' ';
     height: 33px;
     width: 2px;
     background-color: #333;
@@ -164,4 +164,4 @@ export const Close = styled.div`
     right: 16px;
     top: 16px;
   }
-`;
+`

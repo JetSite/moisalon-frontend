@@ -1,6 +1,6 @@
-import Link from "next/link";
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../styles/variables";
+import Link from 'next/link'
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../styles/variables'
 
 const Wrapper = styled.div`
   margin-top: 112px;
@@ -9,7 +9,7 @@ const Wrapper = styled.div`
     margin-top: 0px;
     margin-bottom: 40px;
   }
-`;
+`
 
 const WrapperItem = styled.div`
   width: 100%;
@@ -31,7 +31,7 @@ const WrapperItem = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     padding: 30px 0px;
   }
-`;
+`
 
 const DisabledWrapperItem = styled.div`
   width: 100%;
@@ -46,7 +46,7 @@ const DisabledWrapperItem = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     padding: 30px 0px;
   }
-`;
+`
 
 const Title = styled.p`
   font-weight: 600;
@@ -55,7 +55,7 @@ const Title = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     font-size: 16px;
   }
-`;
+`
 
 const Description = styled.p`
   font-weight: 400;
@@ -67,7 +67,7 @@ const Description = styled.p`
     font-size: 14px;
     margin-top: 20px;
   }
-`;
+`
 
 const Type = styled.p`
   width: 200px;
@@ -84,7 +84,7 @@ const Type = styled.p`
     width: 100%;
     text-align: center;
   }
-`;
+`
 
 const DisabledType = styled.p`
   width: 200px;
@@ -99,7 +99,7 @@ const DisabledType = styled.p`
     width: 100%;
     text-align: center;
   }
-`;
+`
 
 const Text = styled.p`
   font-size: 14px;
@@ -111,7 +111,7 @@ const Text = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 const DisabledText = styled.p`
   font-size: 14px;
@@ -121,7 +121,7 @@ const DisabledText = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 const CreateProfiles = ({ currentMe }) => {
   return (
@@ -181,7 +181,7 @@ const CreateProfiles = ({ currentMe }) => {
         </WrapperItem>
       </Link>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default CreateProfiles;
+export default CreateProfiles

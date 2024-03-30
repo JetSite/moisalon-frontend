@@ -1,5 +1,5 @@
-import { useQuery } from "@apollo/client";
-import { productSearch } from "../../../../_graphql-legacy/product";
+import { useQuery } from '@apollo/client'
+import { productSearch } from '../../../../_graphql-legacy/product'
 
 import {
   ItemChecked,
@@ -9,13 +9,13 @@ import {
   Bottom,
   Price,
   Quantity,
-} from "./../styles";
-import { PHOTO_URL } from "../../../../../variables";
+} from './../styles'
+import { PHOTO_URL } from '../../../../variables'
 
 const RepeatOrderProduct = ({ product }) => {
   const { data, loading } = useQuery(productSearch, {
     variables: { id: product.id },
-  });
+  })
   return (
     <ItemChecked>
       <Image>
@@ -23,7 +23,7 @@ const RepeatOrderProduct = ({ product }) => {
           src={
             data?.product?.photoIds[0]
               ? ` ${PHOTO_URL}${data?.product?.photoIds[0]}/original`
-              : "/cosmetic_placeholder.jpg"
+              : '/cosmetic_placeholder.jpg'
           }
           alt="logo"
         />
@@ -40,7 +40,7 @@ const RepeatOrderProduct = ({ product }) => {
         </Bottom>
       </ItemCheckedRight>
     </ItemChecked>
-  );
-};
+  )
+}
 
-export default RepeatOrderProduct;
+export default RepeatOrderProduct

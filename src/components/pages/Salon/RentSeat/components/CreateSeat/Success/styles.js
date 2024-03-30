@@ -1,12 +1,9 @@
-import styled from "styled-components";
-import {
-  laptopBreakpoint,
-  red,
-} from "../../../../../../../../styles/variables";
-import Button from "../../../../../../ui/Button";
-import { lighten } from "polished";
+import styled from 'styled-components'
+import { laptopBreakpoint, red } from '../../../../../../../styles/variables'
+import Button from '../../../../../../ui/Button'
+import { lighten } from 'polished'
 
-export const Wrapper = styled.div``;
+export const Wrapper = styled.div``
 
 export const TopBlock = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
@@ -16,7 +13,7 @@ export const TopBlock = styled.div`
     background-color: rgba(0, 0, 0, 0.4);
     text-align: center;
   }
-`;
+`
 
 export const TopTitle = styled.h2`
   margin-bottom: 10px;
@@ -28,7 +25,7 @@ export const TopTitle = styled.h2`
     font-weight: 500;
     text-align: center;
   }
-`;
+`
 
 export const TopLink = styled.a`
   display: inline-flex;
@@ -46,12 +43,12 @@ export const TopLink = styled.a`
   cursor: pointer;
 
   &:hover {
-    background: ${lighten(0.1, "#f03")};
+    background: ${lighten(0.1, '#f03')};
   }
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const Subtitle = styled.p`
   margin-bottom: 30px;
@@ -60,7 +57,7 @@ export const Subtitle = styled.p`
     font-size: 12px;
     text-align: center;
   }
-`;
+`
 
 export const MediumBlock = styled.div`
   margin-top: 60px;
@@ -72,7 +69,7 @@ export const MediumBlock = styled.div`
     margin-top: 20px;
     text-align: center;
   }
-`;
+`
 
 export const MediumTitle = styled.h3`
   margin-bottom: 25px;
@@ -81,14 +78,14 @@ export const MediumTitle = styled.h3`
     font-size: 14px;
     text-align: center;
   }
-`;
+`
 
 export const WorkplacePreview = styled.div`
   width: 400px;
   height: 250px;
   margin-bottom: 40px;
   border-radius: 10px;
-  background: ${(props) => `url(${props.url})`} center no-repeat;
+  background: ${props => `url(${props.url})`} center no-repeat;
   background-size: cover;
   position: relative;
 
@@ -97,7 +94,7 @@ export const WorkplacePreview = styled.div`
     max-width: 300px;
     height: 200px;
   }
-`;
+`
 
 export const Name = styled.p`
   display: inline-block;
@@ -117,7 +114,7 @@ export const Name = styled.p`
     transform: translateX(-50%);
     top: 55px;
   }
-`;
+`
 
 export const EditButton = styled.div`
   display: inline-block;
@@ -134,7 +131,7 @@ export const EditButton = styled.div`
   cursor: pointer;
 
   &:hover {
-    background: ${lighten(0.1, "#f03")};
+    background: ${lighten(0.1, '#f03')};
   }
 
   @media (max-width: ${laptopBreakpoint}) {
@@ -142,7 +139,7 @@ export const EditButton = styled.div`
     right: 50%;
     margin-right: -100px;
   }
-`;
+`
 
 export const Price = styled.div`
   width: fit-content;
@@ -155,14 +152,14 @@ export const Price = styled.div`
   position: absolute;
   bottom: 40px;
   left: 10px;
-`;
+`
 
 export const AddButton = styled(Button)`
   @media (max-width: ${laptopBreakpoint}) {
     height: 40px;
     border-radius: 10px;
   }
-`;
+`
 
 export const AddWorkplaceButton = styled(Button)`
   @media (max-width: ${laptopBreakpoint}) {
@@ -171,7 +168,7 @@ export const AddWorkplaceButton = styled(Button)`
     padding: 0;
     border-radius: 10px;
   }
-`;
+`
 
 export const BottomBlock = styled.div`
   margin-top: 60px;
@@ -183,7 +180,7 @@ export const BottomBlock = styled.div`
     align-items: center;
     padding-bottom: 40px;
   }
-`;
+`
 
 export const BottomText = styled.p`
   width: 500px;
@@ -197,7 +194,7 @@ export const BottomText = styled.p`
     line-height: 16px;
     text-align: center;
   }
-`;
+`
 
 export const BackLink = styled.a`
   display: inline-block;
@@ -207,7 +204,7 @@ export const BackLink = styled.a`
   position: relative;
 
   &:before {
-    content: "";
+    content: '';
     width: 0;
     height: 2px;
     background-color: #2d9bf0;
@@ -226,4 +223,4 @@ export const BackLink = styled.a`
     margin-top: 20px;
     font-size: 14px;
   }
-`;
+`

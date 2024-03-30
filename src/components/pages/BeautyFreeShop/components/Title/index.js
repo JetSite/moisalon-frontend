@@ -19,14 +19,14 @@ import {
   LogoBlock,
   Photo,
 } from './styled'
-import RatingEdit from '../../../../ui/RatingEdit'
+import RatingEdit from '../../../../ui/RatingEdit/index.tsx'
 import {
   favoritesInStorage,
   inStorage,
 } from '../../../../../utils/favoritesInStorage'
 import { createScopesBrand } from '../../../../../_graphql-legacy/brand/createScopesBrand'
-import { PHOTO_URL } from '../../../../../../variables'
-import { red } from '../../../../../../styles/variables'
+import { PHOTO_URL } from '../../../../../variables'
+import { red } from '../../../../../styles/variables'
 import HeartFullFill from '../../../MainPage/components/Header/icons/HeartFullFill'
 
 const Title = ({

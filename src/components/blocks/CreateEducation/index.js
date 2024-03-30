@@ -1,20 +1,20 @@
-import styled from "styled-components";
-import { useMutation } from "@apollo/client";
-import { useCallback, useState } from "react";
-import AutoFocusedForm from "../Form/AutoFocusedForm";
-import { FieldStyled } from "../../blocks/Cabinet/components/CabinetForm/styled";
-import { TextField } from "../Form";
-import { required } from "../../../utils/validations";
-import Error from "../Form/Error";
-import { laptopBreakpoint } from "../../../../styles/variables";
-import Button from "../../ui/Button";
-import Education from "../Education";
-import { createEducationMutation } from "../../../_graphql-legacy/education/createEducationMutation";
-import Popup from "../../ui/Popup";
+import styled from 'styled-components'
+import { useMutation } from '@apollo/client'
+import { useCallback, useState } from 'react'
+import AutoFocusedForm from '../Form/AutoFocusedForm'
+import { FieldStyled } from '../../blocks/Cabinet/components/CabinetForm/styled'
+import { TextField } from '../Form'
+import { required } from '../../../utils/validations'
+import Error from '../Form/Error'
+import { laptopBreakpoint } from '../../../styles/variables'
+import Button from '../../ui/Button'
+import Education from '../Education'
+import { createEducationMutation } from '../../../_graphql-legacy/education/createEducationMutation'
+import Popup from '../../ui/Popup'
 
 const FieldWrap = styled.div`
   margin-bottom: 14px;
-`;
+`
 
 const TimeWrap = styled.div`
   margin-left: 14px;
@@ -22,7 +22,7 @@ const TimeWrap = styled.div`
     margin-left: 0;
     margin-bottom: 10px;
   }
-`;
+`
 
 const TextDate = styled.p`
   margin-left: 10px;
@@ -30,7 +30,7 @@ const TextDate = styled.p`
     margin-left: 0;
     margin-bottom: 10px;
   }
-`;
+`
 
 const FieldWrapDate = styled.div`
   margin-bottom: 14px;
@@ -41,7 +41,7 @@ const FieldWrapDate = styled.div`
     flex-direction: column-reverse;
     align-items: flex-start;
   }
-`;
+`
 
 const ButtonWrap = styled.div`
   width: 350px;
@@ -50,7 +50,7 @@ const ButtonWrap = styled.div`
     width: 100%;
     margin-top: 40px;
   }
-`;
+`
 
 const CreateEducation = ({
   setCreateEducation,
@@ -58,38 +58,38 @@ const CreateEducation = ({
   activeProfile,
   refetch,
 }) => {
-  const [errors, setErrors] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [photoId, setPhotoId] = useState(null);
-  const [isErrorPopupOpen, setErrorPopupOpen] = useState(false);
-  const [openPopup, setOpenPopup] = useState(false);
+  const [errors, setErrors] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [photoId, setPhotoId] = useState(null)
+  const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
+  const [openPopup, setOpenPopup] = useState(false)
 
   const [createEducation] = useMutation(createEducationMutation, {
-    onError: (error) => {
-      const errorMessages = error.graphQLErrors.map((e) => e.message);
-      setLoading(false);
-      setErrors(errorMessages);
-      setErrorPopupOpen(true);
+    onError: error => {
+      const errorMessages = error.graphQLErrors.map(e => e.message)
+      setLoading(false)
+      setErrors(errorMessages)
+      setErrorPopupOpen(true)
     },
-    onCompleted: async (data) => {
-      setLoading(false);
+    onCompleted: async data => {
+      setLoading(false)
       await refetch({
         variables: {
           originId: activeProfile.id,
         },
-      });
-      setOpenPopup(true);
+      })
+      setOpenPopup(true)
     },
-  });
+  })
 
   const onSubmit = useCallback(
-    async (values) => {
+    async values => {
       if (!photoId) {
-        setErrors(["Необходимо добавить фото"]);
-        setErrorPopupOpen(true);
-        return;
+        setErrors(['Необходимо добавить фото'])
+        setErrorPopupOpen(true)
+        return
       }
-      setLoading(true);
+      setLoading(true)
       createEducation({
         variables: {
           input: {
@@ -104,20 +104,20 @@ const CreateEducation = ({
             dateEnd: `${values.dateEnd} ${values.timeEnd}:00`,
           },
         },
-      });
+      })
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [photoId]
-  );
+    [photoId],
+  )
 
-  const onAdd = (photoId) => {
-    setPhotoId(photoId);
-  };
+  const onAdd = photoId => {
+    setPhotoId(photoId)
+  }
 
   const closePopup = () => {
-    setOpenPopup(false);
-    setCreateEducation(false);
-  };
+    setOpenPopup(false)
+    setCreateEducation(false)
+  }
 
   return (
     <>
@@ -140,13 +140,13 @@ const CreateEducation = ({
                   timeEnd={values.timeEnd}
                   amount={values.amount}
                   name={`${
-                    type === "master"
-                      ? "Мастер"
-                      : type === "salon"
-                      ? "Салон"
-                      : type === "brand"
-                      ? "Бренд"
-                      : ""
+                    type === 'master'
+                      ? 'Мастер'
+                      : type === 'salon'
+                      ? 'Салон'
+                      : type === 'brand'
+                      ? 'Бренд'
+                      : ''
                   } ${activeProfile?.name}`}
                 />
               </div>
@@ -195,14 +195,14 @@ const CreateEducation = ({
               <FieldWrapDate>
                 <FieldStyled
                   name="dateStart"
-                  component={"input"}
+                  component={'input'}
                   type="date"
                   required
                 />
                 <TimeWrap>
                   <FieldStyled
                     name="timeStart"
-                    component={"input"}
+                    component={'input'}
                     type="time"
                     required
                   />
@@ -212,14 +212,14 @@ const CreateEducation = ({
               <FieldWrapDate>
                 <FieldStyled
                   name="dateEnd"
-                  component={"input"}
+                  component={'input'}
                   type="date"
                   required
                 />
                 <TimeWrap>
                   <FieldStyled
                     name="timeEnd"
-                    component={"input"}
+                    component={'input'}
                     type="time"
                     required
                   />
@@ -238,7 +238,7 @@ const CreateEducation = ({
                   type="submit"
                   disabled={pristine || loading}
                 >
-                  {loading ? "Подождите" : "Сохранить"}
+                  {loading ? 'Подождите' : 'Сохранить'}
                 </Button>
                 <Button
                   variant="darkTransparent"
@@ -251,7 +251,7 @@ const CreateEducation = ({
                 </Button>
               </ButtonWrap>
             </form>
-          );
+          )
         }}
       />
       <Popup
@@ -264,7 +264,7 @@ const CreateEducation = ({
         </Button>
       </Popup>
     </>
-  );
-};
+  )
+}
 
-export default CreateEducation;
+export default CreateEducation

@@ -1,20 +1,19 @@
-import { FC, useContext, useEffect, useState } from 'react'
+import { FC, useContext, useEffect, useMemo, useState } from 'react'
 import Head from 'next/head'
 import { useQuery, useMutation } from '@apollo/client'
 import MainLayout from '../../../../layouts/MainLayout'
 import { salonQuery } from '../../../../_graphql-legacy/salon/salonQuery'
 import { salonSlugQuery } from '../../../../_graphql-legacy/salon/salonSlugQuery'
-import { scoreSalon } from '../../../../_graphql-legacy/salon/scoreSalon'
 import { addApolloState, initializeApollo } from '../../../../apollo-client'
 import SearchBlock from '../../../../components/blocks/SearchBlock'
-import Header from '../../../../components/pages/Salon/ViewSalon/components/Header'
+import Header from '../../../../components/pages/Salon/ViewSalon/components/Header/index'
 import TabsSlider from '../../../../components/ui/TabsSlider'
 import About from '../../../../components/pages/Salon/ViewSalon/components/About'
 import Services from '../../../../components/pages/Salon/ViewSalon/components/Services'
 import ServicesForClient from '../../../../components/pages/Salon/ViewSalon/components/ServicesForClient'
 import { brandsSalon } from '../../../../_graphql-legacy/salon/brandsSalon'
 import { reviewsForSalon } from '../../../../_graphql-legacy/salon/reviewsForSalon'
-import Contacts from '../../../../components/pages/Salon/ViewSalon/components/Contacts'
+import Contacts from '../../../../components/pages/Salon/ViewSalon/components/Contacts/index'
 import SalonReviews from '../../../../components/pages/Salon/ViewSalon/components/SalonReviews'
 import InviteSalon from '../../../../components/pages/Salon/ViewSalon/components/Invite'
 import MobileServicesComponent from '../../../../components/pages/Salon/ViewSalon/components/MobileServicesComponent/MobileServicesComponent'
@@ -36,10 +35,21 @@ import { getSalonsThroughCity } from 'src/graphql/salon/queries/getSalonsThrough
 import { GetServerSideProps } from 'next'
 import { getCities } from 'src/graphql/city/getCities'
 import { getSalonId } from 'src/graphql/salon/queries/getSalonId'
-import { getSalon } from 'src/graphql/salon/queries/getSalon'
+import {
+  flattenStrapiResponse,
+  isArray,
+  isObject,
+} from 'src/utils/flattenStrapiResponse'
+import { ISalon, ISalonPage } from 'src/types/salon'
+import { IID } from 'src/types/common'
+import { getGroupedServices } from 'src/utils/getGrupedServices'
+import { IBrand } from 'src/types/brands'
+import { getSalonPage } from 'src/graphql/salon/queries/getSalon'
+import { getOtherSalons } from 'src/graphql/salon/queries/getOtherSalons'
 
 interface Props {
-  salonData: any
+  salonData: ISalonPage
+  othersSalons: ISalon[]
   brandsData: any
   dataReviews: any
   dataScoreRes: any
@@ -49,22 +59,29 @@ interface Props {
 
 const Salon: FC<Props> = ({
   salonData,
+  othersSalons,
   brandsData,
   dataReviews,
   dataScoreRes,
   mastersData,
   vacancies,
 }) => {
-  // const [activeTab, setActiveTab] = useState(0)
-  // const [edit, setEdit] = useState(false)
-  // const [editClientServices, setEditClientServices] = useState(false)
-  // const [reviews, setReviews] = useState(dataReviews)
-  // const [dataScore, setDataScore] = useState(dataScoreRes)
-  const [salon, setSalon] = useState(salonData)
+  const [activeTab, setActiveTab] = useState<number>(0)
+  const [edit, setEdit] = useState<boolean>(false)
+  const [editClientServices, setEditClientServices] = useState<boolean>(false)
+  const [reviews, setReviews] = useState(salonData.review)
+  const [dataScore, setDataScore] = useState<number>(salonData.salonRating)
+  const [salon, setSalon] = useState<ISalonPage>(salonData)
+  const [brands, setBrands] = useState<IBrand[]>(salonData.brands)
+
   const [me, setMe] = useContext(MeContext)
-  // const catalogs = useContext(CatalogsContext)
-  // const [brands, setBrands] = useState(brandsData)
-  // const [isBrandsEditing, setIsBrandsEditing] = useState(false)
+  const [catalogs, setCatalogs] = useContext(CatalogsContext)
+
+  const groupedServices = useMemo(
+    () => getGroupedServices(salon.services),
+    [salon],
+  )
+  const [isBrandsEditing, setIsBrandsEditing] = useState<boolean>(false)
 
   // let cityInStorage
   // if (typeof window !== 'undefined') {
@@ -90,65 +107,66 @@ const Salon: FC<Props> = ({
   //   fetchPolicy: 'network-only',
   // })
 
-  // useEffect(() => {
-  //   setSalon(salonData)
-  //   setBrands(brandsData)
-  //   setReviews(dataReviews)
-  //   setDataScore(dataScoreRes)
-  //   refetch()
-  // }, [salonData, brandsData, dataReviews, dataScoreRes])
+  useEffect(() => {
+    setSalon(salonData)
+    setBrands(salonData.brands)
+    setReviews(salonData.review)
+    // setDataScore(dataScoreRes)
+    // refetch()
+  }, [salonData])
 
-  // const { refetch: refetchSalon } = useQuery(salonQuery, {
-  //   variables: { id: salon.id },
-  //   skip: true,
-  //   onCompleted: res => {
-  //     setSalon(res.salon)
-  //   },
-  // })
+  const { refetch: refetchSalon } = useQuery(getSalonPage, {
+    variables: { id: salon.id },
+    onCompleted: res => {
+      setSalon(flattenStrapiResponse(res.data.salon) as unknown as ISalonPage)
+    },
+  })
 
-  // const { refetch: refetchScore, loading: loadingScore } = useQuery(
-  //   scoreSalon,
-  //   {
-  //     variables: { id: salon.id },
-  //     onCompleted: res => {
-  //       setDataScore(res.scoreSalon)
-  //     },
-  //   },
-  // )
+  const { refetch: refetchScore, loading: loadingScore } = useQuery(
+    getOtherSalons,
+    {
+      variables: { id: salon.id },
+      onCompleted: res => {
+        setDataScore(res.getOtherSalons)
+      },
+    },
+  )
 
-  // const { refetch: refetchReviews } = useQuery(reviewsForSalon, {
-  //   variables: { originId: salon.id },
-  //   skip: true,
-  //   onCompleted: res => {
-  //     setReviews(res.reviewsForSalon)
-  //   },
-  // })
+  const { refetch: refetchReviews } = useQuery(reviewsForSalon, {
+    variables: { originId: salon.id },
+    skip: true,
+    onCompleted: res => {
+      setReviews(res.reviewsForSalon)
+    },
+  })
 
-  // const { refetch: refetchBrands } = useQuery(brandsSalon, {
-  //   variables: { id: salon.id },
-  //   skip: true,
-  //   onCompleted: res => {
-  //     if (res) {
-  //       setBrands(res.brandsSalon)
-  //     }
-  //   },
-  // })
+  const { refetch: refetchBrands } = useQuery(brandsSalon, {
+    variables: { id: salon.id },
+    skip: true,
+    onCompleted: res => {
+      if (res) {
+        setBrands(res.brandsSalon)
+      }
+    },
+  })
 
-  // const salonActivitiesCatalog = catalogOrDefault(
-  //   catalogs?.salonActivitiesCatalog,
-  // )
+  const salonActivitiesCatalog = catalogOrDefault(
+    catalogs?.salonActivitiesCatalog,
+  )
   // const salonWorkplacesServicesCatalog = catalogOrDefault(
   //   catalogs?.salonWorkplacesServicesCatalog,
   // )
-  // const masterSpecializationsCatalog = catalogOrDefault(
-  //   catalogs?.masterSpecializationsCatalog,
-  // )
+  const masterSpecializationsCatalog = catalogOrDefault(
+    catalogs?.masterSpecializationsCatalog,
+  )
 
   // const salonServicesMasterCatalog = catalogOrDefault(
   //   catalogs?.salonServicesMasterCatalog,
   // )
 
-  // const isOwner = me?.salons?.find(item => item.id === salon.id)
+  const isOwner = !!me?.salons?.find(
+    (item: { id: string | number }) => item.id === salon.id,
+  )
 
   // const groupsServices = salonWorkplacesServicesCatalog?.groups
   //   .map(group => {
@@ -168,26 +186,24 @@ const Salon: FC<Props> = ({
   //   .filter(element => element !== null)
   //   .flat(1)
 
-  // const [removeBrands] = useMutation(removeSalonBrandsMutation, {
-  //   onCompleted: () => {
-  //     refetchBrands()
-  //   },
-  // })
+  const [removeBrands] = useMutation(removeSalonBrandsMutation, {
+    onCompleted: () => {
+      refetchBrands()
+    },
+  })
 
-  // const handleRemoveBrand = id => {
-  //   removeBrands({
-  //     variables: {
-  //       ids: [id],
-  //       salonId: salon.id,
-  //     },
-  //   })
-  // }
+  const handleRemoveBrand = (id: IID) => {
+    removeBrands({
+      variables: {
+        ids: [id],
+        salonId: salon.id,
+      },
+    })
+  }
 
-  // const { data: data1 } = useQuery(getSalon, {
+  // const { data: data1 } = useQuery(getOtherSalons, {
   //   variables: { id: 3 },
   // })
-
-  // console.log(salon)
 
   return (
     <MainLayout>
@@ -201,192 +217,166 @@ const Salon: FC<Props> = ({
         ) : null}
       </Head> */}
       <SearchBlock />
-      {/* <Header
+      <Header
         me={me}
         salon={salon}
         isOwner={isOwner}
         refetchSalon={refetchSalon}
         refetchScore={refetchScore}
-        scoreSalonCount={dataScore?.value}
         loadingScore={loadingScore}
         salonActivitiesCatalog={salonActivitiesCatalog}
-      /> */}
+      />
+      <TabsSlider
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        salon={salon}
+        tabs={[
+          { id: 1, text: 'О салоне', link: '#about', show: true },
+          {
+            id: 2,
+            text: 'Услуги',
+            link: '#services',
+            count: salon?.services?.length,
+            show: !!salon?.services?.length || isOwner,
+          },
+          {
+            id: 3,
+            text: 'Бренды',
+            link: '#brands',
+            count: salon.brands?.length,
+            show: !!salon.brands?.length || isOwner,
+          },
+          {
+            id: 4,
+            text: 'Мастера',
+            link: '#masters',
+            count: salon.masters?.length,
+            show: !!salon.masters?.length,
+          },
+          {
+            id: 5,
+            text: 'Отзывы',
+            link: '#reviews',
+            count: salon.review?.length || 0,
+            show: true,
+          },
+          { id: 6, text: 'Контакты', link: '#contacts', show: true },
+        ]}
+      />
+      <About salon={salon} />
+      {salon.services?.length || isOwner ? (
+        <MobileServicesComponent
+          isOwner={isOwner}
+          groupedServices={groupedServices}
+          salon={salon}
+          refetchSalon={refetchSalon}
+        />
+      ) : null}
+      {salon?.salonPhotos?.length > 0 && <MobileSalonPhotos salon={salon} />}
+      {salon?.masters?.length || isOwner ? (
+        <MobileServicesForClient
+          isOwner={isOwner}
+          groupedServices={groupedServices}
+          salon={salon}
+          refetchSalon={refetchSalon}
+        />
+      ) : null}
+      {salon.services?.length || isOwner ? (
+        <Services
+          groupedServices={groupedServices}
+          isOwner={isOwner}
+          edit={edit}
+          setEdit={setEdit}
+          salon={salon}
+          refetchSalon={refetchSalon}
+          count={salon.services?.length}
+        />
+      ) : null}
+      {salon?.masters.length || isOwner ? (
+        <ServicesForClient
+          groupedServices={groupedServices}
+          isOwner={isOwner}
+          edit={editClientServices}
+          setEdit={setEditClientServices}
+          salon={salon}
+          count={salon?.services?.length}
+          refetchSalon={refetchSalon}
+        />
+      ) : null}
+      {/* {vacancies?.length ? (
+        <Slider type="vacancies" title="Наши вакансии" items={vacancies} />
+      ) : null} */}
+      {brands?.length || isOwner ? (
+        <Slider
+          salon={salon}
+          type="brands"
+          items={brands}
+          isOwner={isOwner}
+          title="Наши бренды"
+          isEditing={isBrandsEditing}
+          setIsEditing={setIsBrandsEditing}
+          deleteFunction={handleRemoveBrand}
+          noBottom
+          noAll
+          noAllButton
+          pt={52}
+          pb={31}
+        >
+          <>
+            {!brands?.length && !isBrandsEditing && (
+              <NoItemsText>
+                Нет добавленных брендов. Нажмите на карандаш, чтобы добавить
+                бренды
+              </NoItemsText>
+            )}
+            {isBrandsEditing ? (
+              <AddBrands refetchBrands={refetchBrands} salonId={salon.id} />
+            ) : null}
+          </>
+        </Slider>
+      ) : null}
+      {salon.masters.length ? (
+        <Slider
+          type="masters"
+          items={salon.masters}
+          title="Наши мастера"
+          bgColor="#f2f0f0"
+          pt={52}
+          pb={31}
+          noBottom
+          noAll
+          noAllButton
+        />
+      ) : null}
+      <SalonReviews
+        me={me}
+        salonId={salon.id}
+        data={reviews}
+        refetchReviews={refetchReviews}
+      />
+      <Contacts
+        phones={salon?.salonPhones}
+        email={salon?.salonEmail}
+        workingHours={salon?.workingHours}
+        address={salon?.salonAddress}
+        socialNetworkUrls={salon?.socialNetworks}
+        metroStations={salon?.metro_stations}
+        locationDirections={salon.locationDirections}
+        coordinates={{ longitude: salon.longitude, latitude: salon.latitude }}
+      />
+      <InviteSalon me={me} />
+      <Slider
+        type="salons"
+        title="Другие салоны поблизости"
+        noBottom
+        noAll
+        noAllButton
+        items={othersSalons || []}
+        loading={false}
+        pt={102}
+        pb={91}
+      />
     </MainLayout>
-    // <MainLayout>
-    //   <Head>
-    //     {salon?.seo?.title ? <title>{salon?.seo?.title}</title> : null}
-    //     {salon?.seo?.description ? (
-    //       <meta name="description" content={salon?.seo?.description} />
-    //     ) : null}
-    //     {salon?.logo?.url ? (
-    //       <meta property="og:image" content={salon?.logo?.url} />
-    //     ) : null}
-    //   </Head>
-    //   <>
-    //     <SearchBlock />
-    //     <Header
-    //       me={me}
-    //       salon={salon}
-    //       isOwner={isOwner}
-    //       refetchSalon={refetchSalon}
-    //       refetchScore={refetchScore}
-    //       scoreSalonCount={dataScore?.value}
-    //       loadingScore={loadingScore}
-    //       salonActivitiesCatalog={salonActivitiesCatalog}
-    //     />
-    //     <TabsSlider
-    //       activeTab={activeTab}
-    //       setActiveTab={setActiveTab}
-    //       tabs={[
-    //         { id: 1, text: 'О салоне', link: '#about', show: true },
-    //         {
-    //           id: 2,
-    //           text: 'Услуги',
-    //           link: '#services',
-    //           count: salon?.servicesMaster?.length,
-    //           show: salon?.servicesMaster?.length || isOwner,
-    //         },
-    //         {
-    //           id: 3,
-    //           text: 'Бренды',
-    //           link: '#brands',
-    //           count: brands?.length,
-    //           show: brands?.length || isOwner,
-    //         },
-    //         {
-    //           id: 4,
-    //           text: 'Мастера',
-    //           link: '#masters',
-    //           count: mastersData?.length,
-    //           show: mastersData?.length,
-    //         },
-    //         {
-    //           id: 5,
-    //           text: 'Отзывы',
-    //           link: '#reviews',
-    //           count: reviews?.length || 0,
-    //           show: true,
-    //         },
-    //         { id: 6, text: 'Контакты', link: '#contacts', show: true },
-    //       ]}
-    //     />
-    //     <About salon={salon} />
-    //     {/* {groupsServices?.length || isOwner ? (
-    //       <MobileServicesComponent
-    //         isOwner={isOwner}
-    //         services={salon?.workplacesServices}
-    //         salon={salon}
-    //         catalogs={catalogs}
-    //         refetchSalon={refetchSalon}
-    //       />
-    //     ) : null} */}
-    //     {salon?.photos?.length > 0 && <MobileSalonPhotos salon={salon} />}
-    //     {salon?.servicesMaster?.length || isOwner ? (
-    //       <MobileServicesForClient
-    //         isOwner={isOwner}
-    //         services={salon?.servicesMaster}
-    //         salon={salon}
-    //         catalogs={catalogs}
-    //         refetchSalon={refetchSalon}
-    //       />
-    //     ) : null}
-    //     {/* {groupsServices?.length || isOwner ? (
-    //       <Services
-    //         services={salon?.workplacesServices}
-    //         salonWorkplacesServicesCatalog={salonWorkplacesServicesCatalog}
-    //         isOwner={isOwner}
-    //         edit={edit}
-    //         setEdit={setEdit}
-    //         salon={salon}
-    //         refetchSalon={refetchSalon}
-    //         count={groupsServices?.length}
-    //       />
-    //     ) : null} */}
-    //     {salon?.servicesMaster?.length || isOwner ? (
-    //       <ServicesForClient
-    //         services={salon?.servicesMaster}
-    //         salonServicesMasterCatalog={salonServicesMasterCatalog}
-    //         isOwner={isOwner}
-    //         edit={editClientServices}
-    //         setEdit={setEditClientServices}
-    //         salon={salon}
-    //         count={salon?.servicesMaster?.length}
-    //         refetchSalon={refetchSalon}
-    //       />
-    //     ) : null}
-    //     {vacancies?.length ? (
-    //       <Slider type="vacancies" title="Наши вакансии" items={vacancies} />
-    //     ) : null}
-    //     {brands?.length || isOwner ? (
-    //       <Slider
-    //         type="brands"
-    //         items={brands}
-    //         isOwner={isOwner}
-    //         title="Наши бренды"
-    //         isEditing={isBrandsEditing}
-    //         setIsEditing={setIsBrandsEditing}
-    //         deleteFunction={handleRemoveBrand}
-    //         noBottom
-    //         noAll
-    //         noAllButton
-    //         pt={52}
-    //         pb={31}
-    //       >
-    //         <>
-    //           {!brands?.length && !isBrandsEditing && (
-    //             <NoItemsText>
-    //               Нет добавленных брендов. Нажмите на карандаш, чтобы добавить
-    //               бренды
-    //             </NoItemsText>
-    //           )}
-    //           {isBrandsEditing ? (
-    //             <AddBrands refetchBrands={refetchBrands} salonId={salon.id} />
-    //           ) : null}
-    //         </>
-    //       </Slider>
-    //     ) : null}
-    //     {mastersData.length ? (
-    //       <Slider
-    //         type="masters"
-    //         items={mastersData}
-    //         title="Наши мастера"
-    //         catalog={masterSpecializationsCatalog}
-    //         bgColor="#f2f0f0"
-    //         pt={52}
-    //         pb={31}
-    //         noBottom
-    //         noAll
-    //         noAllButton
-    //       />
-    //     ) : null}
-    //     <SalonReviews
-    //       me={me}
-    //       salonId={salon.id}
-    //       data={reviews}
-    //       refetchReviews={refetchReviews}
-    //     />
-    //     <Contacts
-    //       phones={salon?.phones}
-    //       email={salon?.email}
-    //       workingHours={salon?.workingHours}
-    //       address={salon?.address}
-    //       socialNetworkUrls={salon?.socialNetworkUrls}
-    //       route={salon?.locationDirections}
-    //     />
-    //     <InviteSalon me={me} />
-    //     <Slider
-    //       type="salons"
-    //       title="Другие салоны поблизости"
-    //       noBottom
-    //       noAll
-    //       noAllButton
-    //       items={data?.salonsRandom || []}
-    //       loading={loading}
-    //       pt={102}
-    //       pb={91}
-    //     />
-    //   </>
-    // </MainLayout>
   )
 }
 export const getServerSideProps: GetServerSideProps = async ({
@@ -406,29 +396,28 @@ export const getServerSideProps: GetServerSideProps = async ({
   })
 
   const id = salonIdRes.data.salons.data[0].id
-  console.log(id)
 
   const data = await Promise.all([
     apolloClient.query({
-      query: getSalon,
-      variables: { id: id },
+      query: getSalonPage,
+      variables: { id },
     }),
-    //   apolloClient.query({
-    //     query: brandsSalon,
-    //     variables: { id: id },
-    //   }),
+    apolloClient.query({
+      query: getOtherSalons,
+      variables: { id },
+    }),
     //   apolloClient.query({
     //     query: reviewsForSalon,
     //     variables: {
     //       originId: id,
     //     },
     //   }),
-    //   apolloClient.query({
-    //     query: scoreSalon,
-    //     variables: {
-    //       id: id,
-    //     },
-    //   }),
+    // apolloClient.query({
+    //   query: scoreSalon,
+    //   variables: {
+    //     id: id,
+    //   },
+    // }),
     //   apolloClient.query({
     //     query: mastersSalon,
     //     variables: {
@@ -454,9 +443,18 @@ export const getServerSideProps: GetServerSideProps = async ({
   //   }
   // }
 
+  const salonData = flattenStrapiResponse(
+    data[0]?.data?.salon,
+  ) as unknown as ISalonPage | null
+
+  const othersSalons = flattenStrapiResponse(
+    data[1]?.data?.salons,
+  ) as unknown as ISalon | null
+
   return addApolloState(apolloClient, {
     props: {
-      salonData: data[0]?.data?.salon,
+      salonData,
+      othersSalons,
       // brandsData: data[1]?.data?.brandsSalon || [],
       // dataReviews: data[2]?.data?.reviewsForSalon,
       // dataScoreRes: data[3]?.data,

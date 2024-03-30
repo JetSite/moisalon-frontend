@@ -1,9 +1,9 @@
-import styled from "styled-components";
-import { Close } from "../BrandLandingPopup/styles";
+import styled from 'styled-components'
+import { Close } from '../BrandLandingPopup/styles'
 import {
   laptopBreakpoint,
   tabletBreakpoint,
-} from "../../../../../../styles/variables";
+} from '../../../../../styles/variables'
 
 export const Backdrop = styled.div`
   position: fixed;
@@ -16,7 +16,7 @@ export const Backdrop = styled.div`
   opacity: ${({ isOpen }) => (isOpen ? 1 : 0)};
   z-index: ${({ isOpen }) => (isOpen ? 600 : -1)};
   transition: all 0.1s ease-in-out;
-`;
+`
 
 export const Wrapper = styled.div`
   width: 40%;
@@ -42,7 +42,7 @@ export const Wrapper = styled.div`
     width: 90%;
     height: 329px;
   }
-`;
+`
 
 export const Text = styled.p`
   font-size: 24px;
@@ -58,7 +58,7 @@ export const Text = styled.p`
     font-size: 16px;
     line-height: 24px;
   }
-`;
+`
 
 export const CloseSuccess = styled(Close)`
   &:hover {
@@ -75,4 +75,4 @@ export const CloseSuccess = styled(Close)`
     top: 16px;
     right: 16px;
   }
-`;
+`

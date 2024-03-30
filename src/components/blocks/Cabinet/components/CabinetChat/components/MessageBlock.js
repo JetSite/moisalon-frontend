@@ -1,7 +1,7 @@
-import { useRef, useEffect, useState } from "react";
-import { useMutation } from "@apollo/client";
-import moment from "moment";
-import "moment/locale/ru";
+import { useRef, useEffect, useState } from 'react'
+import { useMutation } from '@apollo/client'
+import moment from 'moment'
+import 'moment/locale/ru'
 import {
   MessageBlockWrapper,
   AvatarBlock,
@@ -13,20 +13,20 @@ import {
   Name,
   Time,
   Question,
-} from "./styles";
-import { MobileHidden } from "../../../../../../styles/common";
-import { PHOTO_URL } from "../../../../../../../variables";
-import { useChat } from "../../../../../../chatContext";
-import { changeMessageStatusMutation } from "../../../../../../_graphql-legacy/chat/changeMessageStatusMutation";
+} from './styles'
+import { MobileHidden } from '../../../../../../styles/common'
+import { PHOTO_URL } from '../../../../../../variables'
+import { useChat } from '../../../../../../chatContext'
+import { changeMessageStatusMutation } from '../../../../../../_graphql-legacy/chat/changeMessageStatusMutation'
 
-moment.locale("ru", {
+moment.locale('ru', {
   calendar: {
-    lastDay: "[Вчера в] LT",
-    sameDay: "LT",
-    lastWeek: "ll",
-    sameElse: "L",
+    lastDay: '[Вчера в] LT',
+    sameDay: 'LT',
+    lastWeek: 'll',
+    sameElse: 'L',
   },
-});
+})
 
 const MessageBlock = ({
   chat,
@@ -36,9 +36,9 @@ const MessageBlock = ({
   messagesListRef,
   refetchMessages,
 }) => {
-  const messageRef = useRef();
-  const [messageIsRead, setMessageIsRead] = useState(message.read);
-  const { setUnreadMessagesCount } = useChat();
+  const messageRef = useRef()
+  const [messageIsRead, setMessageIsRead] = useState(message.read)
+  const { setUnreadMessagesCount } = useChat()
 
   const [changeMessageStatus] = useMutation(changeMessageStatusMutation, {
     variables: {
@@ -47,47 +47,47 @@ const MessageBlock = ({
       },
     },
     onCompleted: () => {
-      refetchMessages();
-      setUnreadMessagesCount((prevCount) => prevCount - 1);
+      refetchMessages()
+      setUnreadMessagesCount(prevCount => prevCount - 1)
     },
-  });
+  })
 
   useEffect(() => {
-    if (me.info.id === message.authorUserId) return;
-    if (message.read) return;
+    if (me.info.id === message.authorUserId) return
+    if (message.read) return
 
     const options = {
       root: messagesListRef?.current,
-      rootMargin: "0px",
+      rootMargin: '0px',
       threshold: 0.9,
-    };
+    }
 
-    const callback = (entries) => {
-      const [entry] = entries;
+    const callback = entries => {
+      const [entry] = entries
       if (entry.isIntersecting && !messageIsRead) {
-        changeMessageStatus();
-        setMessageIsRead(true);
+        changeMessageStatus()
+        setMessageIsRead(true)
       }
-    };
+    }
 
-    const observer = new IntersectionObserver(callback, options);
-    observer.observe(messageRef?.current);
+    const observer = new IntersectionObserver(callback, options)
+    observer.observe(messageRef?.current)
 
     return () => {
-      observer.disconnect();
-    };
-  }, [messageIsRead]);
+      observer.disconnect()
+    }
+  }, [messageIsRead])
 
   const name =
     me.info.id === message.authorUserId
       ? me.info.displayName
-      : chatClicked.user.displayName;
+      : chatClicked.user.displayName
   const photoId =
     me.info.id === message.authorUserId
       ? me.info.avatar
-      : chatClicked.user.avatar;
-  const photoUrl = `${PHOTO_URL}${photoId}/original`;
-  const isRead = me.info.id !== message.authorUserId ? messageIsRead : true;
+      : chatClicked.user.avatar
+  const photoUrl = `${PHOTO_URL}${photoId}/original`
+  const isRead = me.info.id !== message.authorUserId ? messageIsRead : true
 
   return (
     <MessageBlockWrapper ref={messageRef} isRead={isRead}>
@@ -119,7 +119,7 @@ const MessageBlock = ({
         </Row>
       </Content>
     </MessageBlockWrapper>
-  );
-};
+  )
+}
 
-export default MessageBlock;
+export default MessageBlock

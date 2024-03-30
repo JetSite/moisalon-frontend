@@ -1,16 +1,16 @@
-import { useContext } from "react";
-import { useRouter } from "next/router";
-import Link from "next/link";
-import MainLayout from "../../../layouts/MainLayout";
-import SearchBlock from "../../../components/blocks/SearchBlock";
-import BackButton from "../../../components/ui/BackButton";
-import Ribbon from "../../pages/MainPage/components/Ribbon";
-import Button from "../../ui/Button";
+import { useContext } from 'react'
+import { useRouter } from 'next/router'
+import Link from 'next/link'
+import MainLayout from '../../../layouts/MainLayout'
+import SearchBlock from '../../../components/blocks/SearchBlock'
+import BackButton from '../../../components/ui/BackButton'
+import Ribbon from '../../pages/MainPage/components/Ribbon'
+import Button from '../../ui/Button'
 import {
   MainContainer,
   MobileHidden,
   MobileVisible,
-} from "../../../styles/common";
+} from '../../../styles/common'
 import {
   Wrapper,
   Content,
@@ -27,52 +27,52 @@ import {
   SaleInfo,
   SaleConditions,
   CountdownWrap,
-} from "./styles";
-import moment from "moment";
-import "moment/locale/ru";
-import Countdown from "../../blocks/Countdown";
-import { cyrToTranslit } from "../../../utils/translit";
-import { CityContext } from "../../../searchContext";
-import { PHOTO_URL } from "../../../../variables";
+} from './styles'
+import moment from 'moment'
+import 'moment/locale/ru'
+import Countdown from '../../blocks/Countdown'
+import { cyrToTranslit } from '../../../utils/translit'
+import { CityContext } from '../../../searchContext'
+import { PHOTO_URL } from '../../../variables'
 
 const SalePage = ({ sale, loading, beautyCategories, beautyAllContent }) => {
-  const router = useRouter();
-  const [city] = useContext(CityContext);
+  const router = useRouter()
+  const [city] = useContext(CityContext)
 
-  const originInfo = (item) => {
+  const originInfo = item => {
     switch (item?.origin) {
-      case "MASTER":
+      case 'MASTER':
         return {
-          originType: "Мастер",
+          originType: 'Мастер',
           originName: item.masterOrigin?.name,
           customTitle: `у мастера ${item.masterOrigin?.name}`,
-          buttonLink: "master",
+          buttonLink: 'master',
           originLink: `/${cyrToTranslit(
-            item?.masterOrigin?.addressFull?.city || city
+            item?.masterOrigin?.addressFull?.city || city,
           )}/master/${item?.originId}`,
-        };
-      case "SALON":
+        }
+      case 'SALON':
         return {
-          originType: "Салон",
+          originType: 'Салон',
           originName: item.salonOrigin?.name,
           customTitle: `в салоне ${item.salonOrigin?.name}`,
-          buttonLink: "salon",
+          buttonLink: 'salon',
           originLink: `/${cyrToTranslit(
-            item?.salonOrigin?.address?.city || city
+            item?.salonOrigin?.address?.city || city,
           )}/salon/${item?.originId}`,
-        };
-      case "BRAND":
+        }
+      case 'BRAND':
         return {
-          originType: "Бренд",
+          originType: 'Бренд',
           originName: item.brandOrigin?.name,
           customTitle: `у бренда ${item.brandOrigin?.name}`,
-          buttonLink: "brand",
+          buttonLink: 'brand',
           originLink: `/${cyrToTranslit(
-            item?.brandOrigin?.addressFull?.city || city
+            item?.brandOrigin?.addressFull?.city || city,
           )}/brand/${item?.originId}`,
-        };
+        }
     }
-  };
+  }
 
   return (
     <MainLayout>
@@ -82,7 +82,7 @@ const SalePage = ({ sale, loading, beautyCategories, beautyAllContent }) => {
           <BackButton
             type="Все акции"
             name={originInfo(sale).originName}
-            link={"/sales"}
+            link={'/sales'}
           />
           <Content>
             <Left>
@@ -127,11 +127,11 @@ const SalePage = ({ sale, loading, beautyCategories, beautyAllContent }) => {
                 <DateWrap>
                   <Date>
                     Дата начала:&nbsp;
-                    {moment(sale.dateStart).format("DD MMMM YYYY")}
+                    {moment(sale.dateStart).format('DD MMMM YYYY')}
                   </Date>
                   <Date>
                     Дата окончания:&nbsp;
-                    {moment(sale.dateEnd).format("DD MMMM YYYY")}
+                    {moment(sale.dateEnd).format('DD MMMM YYYY')}
                   </Date>
                 </DateWrap>
                 {sale?.promo ? (
@@ -180,7 +180,7 @@ const SalePage = ({ sale, loading, beautyCategories, beautyAllContent }) => {
         beautyAllContent={beautyAllContent}
       />
     </MainLayout>
-  );
-};
+  )
+}
 
-export default SalePage;
+export default SalePage

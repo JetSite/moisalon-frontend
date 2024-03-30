@@ -1,12 +1,12 @@
-import styled from "styled-components";
-import { red, laptopBreakpoint } from "../../../../styles/variables";
+import styled from 'styled-components'
+import { red, laptopBreakpoint } from '../../../styles/variables'
 
 export const Wrapper = styled.div`
   padding: 0 140px;
   @media (max-width: ${laptopBreakpoint}) {
     padding: 0 20px;
   }
-`;
+`
 
 export const Content = styled.div`
   display: flex;
@@ -15,7 +15,7 @@ export const Content = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     flex-direction: column;
   }
-`;
+`
 
 export const Left = styled.div`
   width: 28.9%;
@@ -23,7 +23,7 @@ export const Left = styled.div`
     width: 100%;
     position: relative;
   }
-`;
+`
 
 export const ImageWrap = styled.div`
   position: relative;
@@ -35,13 +35,13 @@ export const ImageWrap = styled.div`
     max-width: 335px;
     height: 201px;
   }
-`;
+`
 
 export const Image = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-`;
+`
 
 export const EndEducation = styled.p`
   margin-top: 44px;
@@ -49,14 +49,14 @@ export const EndEducation = styled.p`
   font-weight: 600;
   line-height: 30px;
   text-align: right;
-`;
+`
 
 export const Right = styled.div`
   width: 60.9%;
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`;
+`
 
 export const Title = styled.h1`
   font-size: 40px;
@@ -69,7 +69,7 @@ export const Title = styled.h1`
     line-height: 25px;
     text-align: center;
   }
-`;
+`
 
 export const Subtitle = styled.p`
   margin-top: 28px;
@@ -91,7 +91,7 @@ export const Subtitle = styled.p`
     text-align: center;
     text-decoration: underline;
   }
-`;
+`
 
 export const DatePromoWrap = styled.div`
   margin-top: 45px;
@@ -103,9 +103,9 @@ export const DatePromoWrap = styled.div`
     margin-top: 14px;
     margin-bottom: 12px;
   }
-`;
+`
 
-export const DateWrap = styled.div``;
+export const DateWrap = styled.div``
 
 export const Date = styled.p`
   margin-bottom: 10px;
@@ -116,9 +116,9 @@ export const Date = styled.p`
     margin-bottom: 3px;
     font-size: 10px;
   }
-`;
+`
 
-export const Promo = styled(Date)``;
+export const Promo = styled(Date)``
 
 export const EducationInfo = styled.div`
   font-size: 18px;
@@ -137,7 +137,7 @@ export const EducationInfo = styled.div`
       margin-bottom: 37px;
     }
   }
-`;
+`
 
 export const EducationInfoBold = styled.span`
   font-size: 18px;
@@ -146,7 +146,7 @@ export const EducationInfoBold = styled.span`
   @media (max-width: ${laptopBreakpoint}) {
     font-size: 14px;
   }
-`;
+`
 
 export const EducationConditions = styled.p`
   margin-top: 77px;
@@ -158,7 +158,7 @@ export const EducationConditions = styled.p`
     font-size: 10px;
     line-height: 16px;
   }
-`;
+`
 
 export const EducationPrice = styled.p`
   margin-top: 40px;
@@ -170,7 +170,7 @@ export const EducationPrice = styled.p`
     margin-bottom: 20px;
     font-size: 14px;
   }
-`;
+`
 
 export const CountdownWrap = styled.div`
   margin-top: 44px;
@@ -181,17 +181,17 @@ export const CountdownWrap = styled.div`
     transform: translateX(-50%);
     margin-top: 0;
   }
-`;
+`
 
 export const Rating = styled.div`
   display: flex;
   margin-top: 20px;
   justify-content: flex-end;
-`;
+`
 
 export const Count = styled.p`
   font-size: 10px;
-`;
+`
 
 export const Favorite = styled.div`
   position: absolute;
@@ -199,7 +199,7 @@ export const Favorite = styled.div`
   height: 16px;
   padding: 20px;
   background: ${({ isFavorite }) =>
-      isFavorite ? "url(/favorite-red-icon.svg)" : "url(/favorit.svg)"}
+      isFavorite ? 'url(/favorite-red-icon.svg)' : 'url(/favorit.svg)'}
     no-repeat center;
   cursor: pointer;
   right: 2px;
@@ -209,4 +209,4 @@ export const Favorite = styled.div`
     right: -5px;
     top: -6px;
   }
-`;
+`

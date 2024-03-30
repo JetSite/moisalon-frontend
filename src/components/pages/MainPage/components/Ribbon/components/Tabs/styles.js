@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../../../styles/variables";
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../../../styles/variables'
 
 export const Wrapper = styled.div`
   max-width: 1160px;
@@ -24,14 +24,14 @@ export const Wrapper = styled.div`
       display: none;
     }
   }
-`;
+`
 
 export const Item = styled.a`
   display: flex;
   width: 136px;
   margin-bottom: 9px;
   border: 1px solid;
-  border-color: ${(props) => (props.active ? "#f03" : "#fff")};
+  border-color: ${props => (props.active ? '#f03' : '#fff')};
   border-radius: 50px;
   height: 36px;
   align-items: center;
@@ -41,7 +41,7 @@ export const Item = styled.a`
   margin-right: 9px;
   flex-shrink: 0;
   transition: 0.3s;
-  background-color: ${(props) => (props.active ? "#f03" : "#000")};
+  background-color: ${props => (props.active ? '#f03' : '#000')};
   p {
     color: #fff;
   }
@@ -65,7 +65,7 @@ export const Item = styled.a`
       margin-right: 8px;
     }
   }
-`;
+`
 
 export const Text = styled.p`
   font-weight: 500;
@@ -77,4 +77,4 @@ export const Text = styled.p`
     font-weight: 500;
     line-height: 16px;
   }
-`;
+`

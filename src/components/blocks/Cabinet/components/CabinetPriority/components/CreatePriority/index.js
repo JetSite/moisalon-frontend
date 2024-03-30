@@ -1,18 +1,18 @@
-import styled from "styled-components";
-import { useState, useCallback } from "react";
-import AutoFocusedForm from "../../../../../Form/AutoFocusedForm";
-import { FieldStyled } from "../../../CabinetForm/styled";
-import { TextField } from "../../../../../Form";
-import { required } from "../../../../../../../utils/validations";
-import Error from "../../../../../Form/Error";
-import { laptopBreakpoint } from "../../../../../../../../styles/variables";
-import Button from "../../../../../../ui/Button";
-import { createPriorityMutation } from "../../../../../../../_graphql-legacy/priority/createPriorityMutation";
-import { useMutation } from "@apollo/client";
+import styled from 'styled-components'
+import { useState, useCallback } from 'react'
+import AutoFocusedForm from '../../../../../Form/AutoFocusedForm'
+import { FieldStyled } from '../../../CabinetForm/styled'
+import { TextField } from '../../../../../Form'
+import { required } from '../../../../../../../utils/validations'
+import Error from '../../../../../Form/Error'
+import { laptopBreakpoint } from '../../../../../../../styles/variables'
+import Button from '../../../../../../ui/Button'
+import { createPriorityMutation } from '../../../../../../../_graphql-legacy/priority/createPriorityMutation'
+import { useMutation } from '@apollo/client'
 
 const FieldWrap = styled.div`
   margin-bottom: 14px;
-`;
+`
 
 const ButtonWrap = styled.div`
   width: 350px;
@@ -21,7 +21,7 @@ const ButtonWrap = styled.div`
     width: 100%;
     margin-top: 40px;
   }
-`;
+`
 
 const CreatePriority = ({
   setCreatePriority,
@@ -29,31 +29,31 @@ const CreatePriority = ({
   activeProfile,
   refetch,
 }) => {
-  const [errors, setErrors] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [isErrorPopupOpen, setErrorPopupOpen] = useState(false);
+  const [errors, setErrors] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
 
   const [createPriority] = useMutation(createPriorityMutation, {
-    onError: (error) => {
-      const errorMessages = error.graphQLErrors.map((e) => e.message);
-      setLoading(false);
-      setErrors(errorMessages);
-      setErrorPopupOpen(true);
+    onError: error => {
+      const errorMessages = error.graphQLErrors.map(e => e.message)
+      setLoading(false)
+      setErrors(errorMessages)
+      setErrorPopupOpen(true)
     },
-    onCompleted: async (data) => {
-      setLoading(false);
+    onCompleted: async data => {
+      setLoading(false)
       await refetch({
         variables: {
           originId: activeProfile.id,
         },
-      });
-      setCreatePriority(false);
+      })
+      setCreatePriority(false)
     },
-  });
+  })
 
   const onSubmit = useCallback(
-    async (values) => {
-      setLoading(true);
+    async values => {
+      setLoading(true)
       createPriority({
         variables: {
           input: {
@@ -62,11 +62,11 @@ const CreatePriority = ({
             originId: activeProfile?.id,
           },
         },
-      });
+      })
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
+    [],
+  )
 
   return (
     <>
@@ -97,7 +97,7 @@ const CreatePriority = ({
                   type="submit"
                   disabled={pristine || loading}
                 >
-                  {loading ? "Подождите" : "Сохранить"}
+                  {loading ? 'Подождите' : 'Сохранить'}
                 </Button>
                 <Button
                   variant="darkTransparent"
@@ -110,11 +110,11 @@ const CreatePriority = ({
                 </Button>
               </ButtonWrap>
             </form>
-          );
+          )
         }}
       />
     </>
-  );
-};
+  )
+}
 
-export default CreatePriority;
+export default CreatePriority

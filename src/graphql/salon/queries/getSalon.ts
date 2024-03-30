@@ -1,5 +1,4 @@
 import { gql } from '@apollo/client'
-import { metaInfo } from '../../common/metaInfo'
 import { imageInfo } from '../../common/imageInfo'
 import {
   salonAdministratorsFragment,
@@ -9,13 +8,39 @@ import {
   salonServicesFragment,
 } from '../fragments'
 
-export const getSalon = gql`
+export const getSalonPage = gql`
   query salon($id: ID) {
     salon(id: $id) {
       data {
         id
         attributes {
             salonName
+            latitude
+            longitude
+            locationDirections
+            cities {
+              data {
+                id
+                attributes {
+                  citySlug
+                  cityName
+                }
+              }
+            }
+            user {
+              data {
+                id
+              }
+            }
+            activities {
+                data {
+                  id
+                  attributes {
+                    activityName
+                  }
+                }
+              }
+              
             salonID
             salonAddress
             salonIsPublished
@@ -24,6 +49,9 @@ export const getSalon = gql`
             salonEmail
             salonPhones {
               phoneNumber
+              haveTelegram
+              haveWhatsApp
+              haveViber
             }
             socialNetworks {
               title
@@ -44,6 +72,7 @@ export const getSalon = gql`
                 id
                 attributes {
                   title
+                  
                 }
               }
             }

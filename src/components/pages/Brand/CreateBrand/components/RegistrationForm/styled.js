@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../../styles/variables";
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../../styles/variables'
 
 export const Wrapper = styled.div`
   max-width: 690px;
@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     margin-bottom: 36px;
   }
-`;
+`
 
 export const Title = styled.h2`
   font-weight: 500;
@@ -25,9 +25,9 @@ export const Title = styled.h2`
     line-height: 25px;
     text-transform: none;
   }
-`;
+`
 
-export const Form = styled.form``;
+export const Form = styled.form``
 
 export const WrapperForm = styled.div`
   width: 100%;
@@ -36,8 +36,8 @@ export const WrapperForm = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     margin-bottom: 60px;
   }
-`;
+`
 
 export const FieldWrap = styled.div`
   margin-bottom: 14px;
-`;
+`

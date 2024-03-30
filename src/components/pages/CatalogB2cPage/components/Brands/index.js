@@ -1,10 +1,10 @@
-import { useContext } from "react";
-import Link from "next/link";
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../styles/variables";
-import BrandItem from "../../../../blocks/BrandCard";
-import { CityContext } from "../../../../../searchContext";
-import { cyrToTranslit } from "../../../../../utils/translit";
+import { useContext } from 'react'
+import Link from 'next/link'
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../styles/variables'
+import BrandItem from '../../../../blocks/BrandCard/index.tsx'
+import { CityContext } from '../../../../../searchContext'
+import { cyrToTranslit } from '../../../../../utils/translit'
 
 const Wrapper = styled.div`
   background: #f8f8f8;
@@ -12,7 +12,7 @@ const Wrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     padding: 20px 0;
   }
-`;
+`
 
 const Content = styled.div`
   max-width: 1440px;
@@ -21,7 +21,7 @@ const Content = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     padding: 0 20px;
   }
-`;
+`
 
 const BrandsContent = styled.div`
   display: flex;
@@ -30,7 +30,7 @@ const BrandsContent = styled.div`
     overflow-x: auto;
     column-gap: 20px;
   }
-`;
+`
 
 const Title = styled.p`
   font-weight: 600;
@@ -40,10 +40,10 @@ const Title = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     font-size: 24px;
   }
-`;
+`
 
 const Brands = ({ brandSearchData }) => {
-  const [city] = useContext(CityContext);
+  const [city] = useContext(CityContext)
   return (
     <Wrapper>
       <Content>
@@ -51,7 +51,7 @@ const Brands = ({ brandSearchData }) => {
         <BrandsContent>
           {brandSearchData?.brandsSearch?.connection?.nodes
             .slice(0, 6)
-            .map((item) => (
+            .map(item => (
               <Link
                 key={item.id}
                 href={{
@@ -59,11 +59,11 @@ const Brands = ({ brandSearchData }) => {
                   query: {
                     id: item.id,
                     title: item.name,
-                    type: "brand",
+                    type: 'brand',
                   },
                 }}
               >
-                <div style={{ cursor: "pointer" }}>
+                <div style={{ cursor: 'pointer' }}>
                   <BrandItem item={item} />
                 </div>
               </Link>
@@ -71,7 +71,7 @@ const Brands = ({ brandSearchData }) => {
         </BrandsContent>
       </Content>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default Brands;
+export default Brands

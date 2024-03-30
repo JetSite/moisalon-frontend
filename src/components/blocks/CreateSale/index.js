@@ -1,20 +1,20 @@
-import styled from "styled-components";
-import { useMutation } from "@apollo/client";
-import { useCallback, useState } from "react";
-import AutoFocusedForm from "../Form/AutoFocusedForm";
-import { FieldStyled } from "../../blocks/Cabinet/components/CabinetForm/styled";
-import { TextField } from "../Form";
-import { required } from "../../../utils/validations";
-import Error from "../Form/Error";
-import { laptopBreakpoint } from "../../../../styles/variables";
-import Button from "../../ui/Button";
-import Sale from "../Sale";
-import { createSaleMutation } from "../../../_graphql-legacy/sales/createSaleMutation";
-import Popup from "../../ui/Popup";
+import styled from 'styled-components'
+import { useMutation } from '@apollo/client'
+import { useCallback, useState } from 'react'
+import AutoFocusedForm from '../Form/AutoFocusedForm'
+import { FieldStyled } from '../../blocks/Cabinet/components/CabinetForm/styled'
+import { TextField } from '../Form'
+import { required } from '../../../utils/validations'
+import Error from '../Form/Error'
+import { laptopBreakpoint } from '../../../styles/variables'
+import Button from '../../ui/Button'
+import Sale from '../Sale'
+import { createSaleMutation } from '../../../_graphql-legacy/sales/createSaleMutation'
+import Popup from '../../ui/Popup'
 
 const FieldWrap = styled.div`
   margin-bottom: 14px;
-`;
+`
 
 const TextDate = styled.p`
   margin-left: 10px;
@@ -22,7 +22,7 @@ const TextDate = styled.p`
     margin-left: 0;
     margin-bottom: 10px;
   }
-`;
+`
 
 const FieldWrapDate = styled.div`
   margin-bottom: 14px;
@@ -33,7 +33,7 @@ const FieldWrapDate = styled.div`
     flex-direction: column-reverse;
     align-items: flex-start;
   }
-`;
+`
 
 const ButtonWrap = styled.div`
   width: 350px;
@@ -42,41 +42,41 @@ const ButtonWrap = styled.div`
     width: 100%;
     margin-top: 40px;
   }
-`;
+`
 
 const CreateSale = ({ setCreateSale, type, activeProfile, refetch }) => {
-  const [errors, setErrors] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [photoId, setPhotoId] = useState(null);
-  const [isErrorPopupOpen, setErrorPopupOpen] = useState(false);
-  const [openPopup, setOpenPopup] = useState(false);
+  const [errors, setErrors] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [photoId, setPhotoId] = useState(null)
+  const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
+  const [openPopup, setOpenPopup] = useState(false)
 
   const [createSale] = useMutation(createSaleMutation, {
-    onError: (error) => {
-      const errorMessages = error.graphQLErrors.map((e) => e.message);
-      setLoading(false);
-      setErrors(errorMessages);
-      setErrorPopupOpen(true);
+    onError: error => {
+      const errorMessages = error.graphQLErrors.map(e => e.message)
+      setLoading(false)
+      setErrors(errorMessages)
+      setErrorPopupOpen(true)
     },
-    onCompleted: async (data) => {
-      setLoading(false);
+    onCompleted: async data => {
+      setLoading(false)
       await refetch({
         variables: {
           originId: activeProfile.id,
         },
-      });
-      setOpenPopup(true);
+      })
+      setOpenPopup(true)
     },
-  });
+  })
 
   const onSubmit = useCallback(
-    async (values) => {
+    async values => {
       if (!photoId) {
-        setErrors(["Необходимо добавить фото"]);
-        setErrorPopupOpen(true);
-        return;
+        setErrors(['Необходимо добавить фото'])
+        setErrorPopupOpen(true)
+        return
       }
-      setLoading(true);
+      setLoading(true)
       createSale({
         variables: {
           input: {
@@ -91,20 +91,20 @@ const CreateSale = ({ setCreateSale, type, activeProfile, refetch }) => {
             dateEnd: values.dateEnd,
           },
         },
-      });
+      })
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [photoId]
-  );
+    [photoId],
+  )
 
-  const onAdd = (photoId) => {
-    setPhotoId(photoId);
-  };
+  const onAdd = photoId => {
+    setPhotoId(photoId)
+  }
 
   const closePopup = () => {
-    setOpenPopup(false);
-    setCreateSale(false);
-  };
+    setOpenPopup(false)
+    setCreateSale(false)
+  }
 
   return (
     <>
@@ -125,13 +125,13 @@ const CreateSale = ({ setCreateSale, type, activeProfile, refetch }) => {
                   title={values.title}
                   promo={values.value}
                   name={`${
-                    type === "master"
-                      ? "Мастер"
-                      : type === "salon"
-                      ? "Салон"
-                      : type === "brand"
-                      ? "Бренд"
-                      : ""
+                    type === 'master'
+                      ? 'Мастер'
+                      : type === 'salon'
+                      ? 'Салон'
+                      : type === 'brand'
+                      ? 'Бренд'
+                      : ''
                   } ${activeProfile?.name}`}
                 />
               </div>
@@ -177,7 +177,7 @@ const CreateSale = ({ setCreateSale, type, activeProfile, refetch }) => {
               <FieldWrapDate>
                 <FieldStyled
                   name="dateStart"
-                  component={"input"}
+                  component={'input'}
                   type="date"
                   required
                 />
@@ -186,7 +186,7 @@ const CreateSale = ({ setCreateSale, type, activeProfile, refetch }) => {
               <FieldWrapDate>
                 <FieldStyled
                   name="dateEnd"
-                  component={"input"}
+                  component={'input'}
                   type="date"
                   required
                 />
@@ -204,7 +204,7 @@ const CreateSale = ({ setCreateSale, type, activeProfile, refetch }) => {
                   type="submit"
                   disabled={pristine || loading}
                 >
-                  {loading ? "Подождите" : "Сохранить"}
+                  {loading ? 'Подождите' : 'Сохранить'}
                 </Button>
                 <Button
                   variant="darkTransparent"
@@ -217,7 +217,7 @@ const CreateSale = ({ setCreateSale, type, activeProfile, refetch }) => {
                 </Button>
               </ButtonWrap>
             </form>
-          );
+          )
         }}
       />
       <Popup
@@ -230,7 +230,7 @@ const CreateSale = ({ setCreateSale, type, activeProfile, refetch }) => {
         </Button>
       </Popup>
     </>
-  );
-};
+  )
+}
 
-export default CreateSale;
+export default CreateSale

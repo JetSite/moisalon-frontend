@@ -1,6 +1,6 @@
-import { selectedGroupNamesMax } from "../../../../../utils/serviceCatalog";
-import { favoritesInStorage } from "../../../../../utils/favoritesInStorage";
-import Rating from "../../../../ui/Rating";
+import { selectedGroupNamesMax } from '../../../../../utils/serviceCatalog'
+import { favoritesInStorage } from '../../../../../utils/favoritesInStorage'
+import Rating from '../../../../ui/Rating'
 import {
   Image,
   Favorite,
@@ -12,21 +12,21 @@ import {
   PhoneLink,
   EmailLink,
   City,
-} from "../styled";
-import HeartFullFill from "../../../MainPage/components/Header/icons/HeartFullFill";
-import { red } from "../../../../../../styles/variables";
+} from '../styled'
+import HeartFullFill from '../../../MainPage/components/Header/icons/HeartFullFill'
+import { red } from '../../../../../styles/variables'
 
 const MasterItem = ({ master, catalog, deleteItem, setDeleteItem }) => {
   const addFavorite = (e, item) => {
-    e.preventDefault();
-    e.stopPropagation();
-    favoritesInStorage("masters", item);
-    setDeleteItem(!deleteItem);
-  };
+    e.preventDefault()
+    e.stopPropagation()
+    favoritesInStorage('masters', item)
+    setDeleteItem(!deleteItem)
+  }
 
   return (
     <Item>
-      <Favorite onClick={(e) => addFavorite(e, master)}>
+      <Favorite onClick={e => addFavorite(e, master)}>
         <HeartFullFill fill={red} />
       </Favorite>
       <Image
@@ -37,23 +37,23 @@ const MasterItem = ({ master, catalog, deleteItem, setDeleteItem }) => {
       <Socials>
         {master?.phone ? (
           <PhoneLink
-            onClick={(e) => {
-              e.stopPropagation();
+            onClick={e => {
+              e.stopPropagation()
             }}
             href={`tel:${master?.phone?.phoneNumber}`}
           />
         ) : null}
         {master?.email ? (
           <EmailLink
-            onClick={(e) => {
-              e.stopPropagation();
+            onClick={e => {
+              e.stopPropagation()
             }}
             href={`mailto:${master?.email}`}
           />
         ) : null}
       </Socials>
       <MasterInfo>
-        <Name>{master?.name || ""}</Name>
+        <Name>{master?.name || ''}</Name>
         {master?.addressFull?.city ? (
           <City>{master?.addressFull?.city}</City>
         ) : null}
@@ -62,8 +62,8 @@ const MasterItem = ({ master, catalog, deleteItem, setDeleteItem }) => {
             {selectedGroupNamesMax(
               master?.specializations ? master?.specializations[0] : [],
               catalog,
-              ", ",
-              1
+              ', ',
+              1,
             )}
           </Specializations>
           <Rating
@@ -73,7 +73,7 @@ const MasterItem = ({ master, catalog, deleteItem, setDeleteItem }) => {
         </div>
       </MasterInfo>
     </Item>
-  );
-};
+  )
+}
 
-export default MasterItem;
+export default MasterItem

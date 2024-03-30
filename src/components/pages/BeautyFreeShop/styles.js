@@ -1,6 +1,6 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
-import { laptopBreakpoint } from "../../../../styles/variables";
+import { laptopBreakpoint } from '../../../styles/variables'
 
 export const Wrapper = styled.div`
   max-width: 1440px;
@@ -10,10 +10,10 @@ export const Wrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     padding: 0 20px;
   }
-`;
+`
 
 export const NoProducts = styled.div`
   margin: 110px 0;
   font-size: 18px;
   line-height: 30px;
-`;
+`

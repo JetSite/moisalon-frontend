@@ -8,9 +8,9 @@ import {
   favoritesInStorage,
   inStorage,
 } from '../../../../../utils/favoritesInStorage'
-import { laptopBreakpoint, red } from '../../../../../../styles/variables'
+import { laptopBreakpoint, red } from '../../../../../styles/variables'
 import { Skeleton } from '@material-ui/lab'
-import { PHOTO_URL } from '../../../../../../variables'
+import { PHOTO_URL } from '../../../../../variables'
 import { cyrToTranslit } from '../../../../../utils/translit'
 import { CityContext } from '../../../../../searchContext'
 import FastBuyPopup from '../../../../ui/FastBuyPopup'

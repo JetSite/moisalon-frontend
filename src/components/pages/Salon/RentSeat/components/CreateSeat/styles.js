@@ -1,27 +1,27 @@
-import { Field } from "react-final-form";
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../../styles/variables";
-import Button from "../../../../../ui/Button";
+import { Field } from 'react-final-form'
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../../styles/variables'
+import Button from '../../../../../ui/Button'
 
 export const FieldWrap = styled.div`
   margin-bottom: 14px;
-`;
+`
 
 export const FieldStyled = styled(Field)`
   label {
     width: fit-content;
     &:after {
-      display: ${({ requiredField }) => (requiredField ? "block" : "none")};
-      content: "";
+      display: ${({ requiredField }) => (requiredField ? 'block' : 'none')};
+      content: '';
       position: absolute;
       top: -3px;
       right: -11px;
       width: 7px;
       height: 7px;
-      background: url("/required-icon.svg") no-repeat center;
+      background: url('/required-icon.svg') no-repeat center;
     }
   }
-`;
+`
 
 export const Title = styled.p`
   font-weight: 500;
@@ -36,31 +36,31 @@ export const Title = styled.p`
     line-height: 20px;
     text-transform: none;
   }
-`;
+`
 
 export const Desc = styled.p`
   font-size: 16px;
   font-weight: 600;
   margin-top: 30px;
   margin-bottom: 20px;
-`;
+`
 
 export const DescTitle = styled(Desc)`
   margin-bottom: 10px;
-`;
+`
 
 export const DescPhoto = styled(Desc)`
   @media (max-width: ${laptopBreakpoint}) {
     text-align: center;
   }
-`;
+`
 
 export const Subdesc = styled.p`
   font-size: 12px;
   line-height: 18px;
   color: #808080;
   /* margin-bottom: 20px; */
-`;
+`
 
 export const PhotoWrap = styled.div`
   width: 100%;
@@ -73,7 +73,7 @@ export const PhotoWrap = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     height: 133px;
   }
-`;
+`
 
 export const CheckboxWrapper = styled.div`
   height: 21px;
@@ -85,7 +85,7 @@ export const CheckboxWrapper = styled.div`
     margin-top: 20px;
     margin-bottom: 20px;
   }
-`;
+`
 
 export const Back = styled.p`
   cursor: pointer;
@@ -95,7 +95,7 @@ export const Back = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     margin-top: 20px;
   }
-`;
+`
 
 export const Checkbox = styled.input`
   position: absolute;
@@ -107,7 +107,7 @@ export const Checkbox = styled.input`
     user-select: none;
   }
   & + p::before {
-    content: "";
+    content: '';
     display: inline-block;
     width: 16px;
     height: 16px;
@@ -116,10 +116,10 @@ export const Checkbox = styled.input`
     border: 1px solid #797979;
     margin-right: 14px;
     cursor: pointer;
-    background: ${(props) =>
-      props.checked ? `url("/tick-checkbox.png") no-repeat center` : ""};
+    background: ${props =>
+      props.checked ? `url("/tick-checkbox.png") no-repeat center` : ''};
   }
-`;
+`
 
 export const CustomButton = styled(Button)`
   width: 455px;
@@ -129,7 +129,7 @@ export const CustomButton = styled(Button)`
     width: 100%;
     font-size: 14px;
   }
-`;
+`
 
 export const SupportText = styled.p`
   margin-bottom: 50px;
@@ -144,7 +144,7 @@ export const SupportText = styled.p`
     position: relative;
     /* top: -20px; */
   }
-`;
+`
 
 export const SupportLink = styled.span`
   text-decoration: underline;
@@ -154,7 +154,7 @@ export const SupportLink = styled.span`
   &:hover {
     color: #000;
   }
-`;
+`
 
 export const ButtonsBlockText = styled.p`
   width: 455px;
@@ -165,11 +165,11 @@ export const ButtonsBlockText = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`;
+`
 
 export const SupportTextBottom = styled(SupportText)`
   margin-top: 30px;
   @media (max-width: ${laptopBreakpoint}) {
     text-align: center;
   }
-`;
+`

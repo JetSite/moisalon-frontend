@@ -1,12 +1,12 @@
-import React, { useCallback, useState } from "react";
-import { useDropzone } from "react-dropzone";
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../../../../styles/variables";
+import React, { useCallback, useState } from 'react'
+import { useDropzone } from 'react-dropzone'
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../../../../styles/variables'
 
 const Wrapper = styled.div`
   position: relative;
   cursor: pointer;
-`;
+`
 
 const Photo = styled.div`
   height: 170px;
@@ -22,41 +22,41 @@ const Photo = styled.div`
     width: 280px;
     height: 180px;
   }
-`;
+`
 
 const Delete = styled.div`
-  background: url("/close-cross-red.svg") no-repeat center;
+  background: url('/close-cross-red.svg') no-repeat center;
   width: 15px;
   height: 15px;
   position: absolute;
   top: 10px;
   right: 10px;
-`;
+`
 
 const PhotoItem = ({ photo, onSetDefault, onRemove, onChange, isDefault }) => {
-  const { id, url } = photo;
-  const [isHover, setHover] = useState("");
+  const { id, url } = photo
+  const [isHover, setHover] = useState('')
 
   const onDrop = useCallback(
-    (files) => {
-      onChange(id, files);
+    files => {
+      onChange(id, files)
     },
-    [onChange, id]
-  );
+    [onChange, id],
+  )
 
   const handleOnRemove = useCallback(
-    (ev) => {
-      ev.stopPropagation();
-      onRemove(id);
+    ev => {
+      ev.stopPropagation()
+      onRemove(id)
     },
-    [onRemove, id]
-  );
+    [onRemove, id],
+  )
 
   const { getRootProps, getInputProps } = useDropzone({
-    accept: "image/*",
+    accept: 'image/*',
     onDrop,
-  });
-  const onHoverControls = isHover ? <Delete onClick={handleOnRemove} /> : null;
+  })
+  const onHoverControls = isHover ? <Delete onClick={handleOnRemove} /> : null
 
   return (
     <Wrapper
@@ -71,7 +71,7 @@ const PhotoItem = ({ photo, onSetDefault, onRemove, onChange, isDefault }) => {
           xmlns="http://www.w3.org/2000/svg"
           height="0"
           width="0"
-          className={"photo__blurSvg"}
+          className={'photo__blurSvg'}
         >
           <defs>
             <filter id="blur" x="0" y="0">
@@ -82,7 +82,7 @@ const PhotoItem = ({ photo, onSetDefault, onRemove, onChange, isDefault }) => {
       </Photo>
       {onHoverControls}
     </Wrapper>
-  );
-};
+  )
+}
 
-export default PhotoItem;
+export default PhotoItem

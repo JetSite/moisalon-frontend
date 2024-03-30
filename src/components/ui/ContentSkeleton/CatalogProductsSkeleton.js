@@ -1,12 +1,12 @@
-import React, { useContext } from "react";
-import styled from "styled-components";
-import { Skeleton } from "@material-ui/lab";
-import Header from "../../Catalog/components/CatalogProductsPage/components/Header";
-import { laptopBreakpoint } from "../../../../styles/variables";
-import FilterCatalog from "../../ui/FilterCatalog";
-import BackButton from "../../ui/BackButton";
-import { CityContext, MeContext } from "../../../searchContext";
-import { cyrToTranslit } from "../../../utils/translit";
+import React, { useContext } from 'react'
+import styled from 'styled-components'
+import { Skeleton } from '@material-ui/lab'
+import Header from '../../Catalog/components/CatalogProductsPage/components/Header'
+import { laptopBreakpoint } from '../../../styles/variables'
+import FilterCatalog from '../../ui/FilterCatalog'
+import BackButton from '../../ui/BackButton'
+import { CityContext, MeContext } from '../../../searchContext'
+import { cyrToTranslit } from '../../../utils/translit'
 
 const Wrapper = styled.div`
   padding: 0 140px;
@@ -15,18 +15,18 @@ const Wrapper = styled.div`
     padding: 0 20px;
     margin-top: 0px;
   }
-`;
+`
 
 const LinesWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   margin-top: 45px;
   flex-wrap: wrap;
-`;
+`
 
 const SkeletonRectSmall = styled(Skeleton)`
   margin-bottom: 35px;
-`;
+`
 
 const Title = styled.p`
   font-weight: 600;
@@ -39,7 +39,7 @@ const Title = styled.p`
     text-transform: uppercase;
     text-align: center;
   }
-`;
+`
 
 const CatalogProductsSkeleton = ({
   productCategories,
@@ -49,9 +49,9 @@ const CatalogProductsSkeleton = ({
   filter,
   brand,
 }) => {
-  const [me] = useContext(MeContext);
-  const [city] = useContext(CityContext);
-  const b2bClient = !!me?.master?.id || !!me?.salons?.length;
+  const [me] = useContext(MeContext)
+  const [city] = useContext(CityContext)
+  const b2bClient = !!me?.master?.id || !!me?.salons?.length
   return (
     <>
       <Wrapper>
@@ -89,7 +89,7 @@ const CatalogProductsSkeleton = ({
         </LinesWrapper>
       </Wrapper>
     </>
-  );
-};
+  )
+}
 
-export default CatalogProductsSkeleton;
+export default CatalogProductsSkeleton

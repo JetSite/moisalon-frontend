@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../styles/variables";
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../styles/variables'
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
     margin-bottom: 0;
     padding-bottom: 20px;
   }
-`;
+`
 
 export const Title = styled.p`
   font-weight: 600;
@@ -23,7 +23,7 @@ export const Title = styled.p`
     font-size: 16px;
     margin-right: 10px;
   }
-`;
+`
 
 export const ItemWrap = styled.div`
   display: flex;
@@ -34,7 +34,7 @@ export const ItemWrap = styled.div`
     flex-shrink: 0;
     margin-right: 10px;
   }
-`;
+`
 
 export const Label = styled.p`
   font-size: 18px;
@@ -45,7 +45,7 @@ export const Label = styled.p`
     font-weight: 500;
     line-height: 16px;
   }
-`;
+`
 
 export const CheckboxWrapper = styled.div`
   display: flex;
@@ -54,7 +54,7 @@ export const CheckboxWrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     margin-top: 0;
   }
-`;
+`
 
 export const Checkbox = styled.div`
   position: absolute;
@@ -66,7 +66,7 @@ export const Checkbox = styled.div`
     user-select: none;
   }
   & + p::before {
-    content: "";
+    content: '';
     display: inline-block;
     width: 23px;
     height: 23px;
@@ -75,15 +75,15 @@ export const Checkbox = styled.div`
     border: 1px solid #e3e3e3;
     margin-right: 14px;
     cursor: pointer;
-    background: ${(props) =>
-      props.checked ? `url("/icon-check.svg") no-repeat center` : ""};
+    background: ${props =>
+      props.checked ? `url("/icon-check.svg") no-repeat center` : ''};
   }
   @media (max-width: ${laptopBreakpoint}) {
     & + p::before {
       margin-right: 7px;
     }
   }
-`;
+`
 
 export const ShowAll = styled.p`
   font-weight: 600;
@@ -97,4 +97,4 @@ export const ShowAll = styled.p`
     margin: 0;
     margin-right: 10px;
   }
-`;
+`

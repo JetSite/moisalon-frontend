@@ -1,13 +1,13 @@
-import React, { useCallback, useState } from "react";
-import { useDropzone } from "react-dropzone";
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../../../../styles/variables";
-import uploadPhoto from "../../../../../../../../utils/uploadPhoto";
-import { PHOTO_URL } from "../../../../../../../../../variables";
+import React, { useCallback, useState } from 'react'
+import { useDropzone } from 'react-dropzone'
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../../../../styles/variables'
+import uploadPhoto from '../../../../../../../../utils/uploadPhoto'
+import { PHOTO_URL } from '../../../../../../../../variables'
 
 const Wrapper = styled.div`
   position: relative;
-`;
+`
 
 const Photo = styled.div`
   width: 325px;
@@ -28,7 +28,7 @@ const Photo = styled.div`
     width: 280px;
     height: 200px;
   }
-`;
+`
 
 const ChangeText = styled.span`
   text-align: center;
@@ -39,7 +39,7 @@ const ChangeText = styled.span`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-`;
+`
 
 const PhotoBack = styled.div`
   width: 325px;
@@ -56,31 +56,31 @@ const PhotoBack = styled.div`
     width: 280px;
     height: 200px;
   }
-`;
+`
 
 const PhotoAdd = ({ defaultPhoto, setDefaultPhoto }) => {
-  const [isHover, setHover] = useState(false);
-  const photoType = "salonPhoto";
+  const [isHover, setHover] = useState(false)
+  const photoType = 'salonPhoto'
 
   const onDrop = useCallback(
-    (files) => {
-      const file = files[0];
+    files => {
+      const file = files[0]
       const uploadFile = async () => {
-        await uploadPhoto(file, photoType).then((photoId) => {
+        await uploadPhoto(file, photoType).then(photoId => {
           if (photoId) {
-            setDefaultPhoto(photoId);
+            setDefaultPhoto(photoId)
           }
-        });
-      };
-      uploadFile();
+        })
+      }
+      uploadFile()
     },
-    [photoType]
-  );
+    [photoType],
+  )
 
   const { getRootProps, getInputProps } = useDropzone({
-    accept: "image/*",
+    accept: 'image/*',
     onDrop,
-  });
+  })
 
   return (
     <div
@@ -98,7 +98,7 @@ const PhotoAdd = ({ defaultPhoto, setDefaultPhoto }) => {
         ) : null}
       </Wrapper>
     </div>
-  );
-};
+  )
+}
 
-export default PhotoAdd;
+export default PhotoAdd

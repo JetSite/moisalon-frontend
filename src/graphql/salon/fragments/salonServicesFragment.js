@@ -1,23 +1,23 @@
 const salonServicesFragment = `
-  services {
-    id
-    service {
-      data {
-        id
-        attributes {
-          service_categories {
-            data {
-              id
-              attributes {
-                serviceCategoryName
-              }
+services {
+  id
+  serviceName
+  service {
+    data {
+      id
+      attributes {
+        service_categories {
+          data {
+            id
+            attributes {
+              serviceCategoryName
             }
           }
         }
+        serviceName
       }
     }
-    serviceName
-  }
+  }}
 `
 
 export default salonServicesFragment

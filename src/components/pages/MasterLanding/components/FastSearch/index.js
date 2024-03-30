@@ -1,13 +1,13 @@
-import styled from "styled-components";
-import Button from "../../../../ui/Button";
-import { useRouter } from "next/router";
+import styled from 'styled-components'
+import Button from '../../../../ui/Button'
+import { useRouter } from 'next/router'
 import {
   laptopBreakpoint,
   tabletBreakpoint,
-} from "../../../../../../styles/variables";
-import { cyrToTranslit } from "../../../../../utils/translit";
-import { useContext } from "react";
-import { CityContext } from "../../../../../searchContext";
+} from '../../../../../styles/variables'
+import { cyrToTranslit } from '../../../../../utils/translit'
+import { useContext } from 'react'
+import { CityContext } from '../../../../../searchContext'
 
 const Wrapper = styled.div`
   max-width: 1440px;
@@ -16,7 +16,7 @@ const Wrapper = styled.div`
   @media (max-width: ${tabletBreakpoint}) {
     margin-top: 70px;
   }
-`;
+`
 const Content = styled.div`
   display: flex;
   padding: 0 140px;
@@ -29,7 +29,7 @@ const Content = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     padding: 0 20px;
   }
-`;
+`
 
 const Left = styled.div`
   max-width: 596px;
@@ -44,7 +44,7 @@ const Left = styled.div`
     max-width: 100%;
     margin-right: 0px;
   }
-`;
+`
 const Title = styled.p`
   font-weight: 600;
   font-size: 30px;
@@ -59,7 +59,7 @@ const Title = styled.p`
     font-size: 22px;
     line-height: 31px;
   }
-`;
+`
 const Text = styled.p`
   font-size: 18px;
   line-height: 30px;
@@ -72,26 +72,26 @@ const Text = styled.p`
     font-size: 14px;
     line-height: 21px;
   }
-`;
+`
 
 const Right = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 const Photo = styled.img`
   @media (max-width: ${tabletBreakpoint}) {
     width: 100%;
   }
-`;
+`
 
 const ContentItems = styled.div`
   margin-bottom: 15px;
   @media (max-width: ${tabletBreakpoint}) {
     margin-bottom: 45px;
   }
-`;
+`
 
 const ContentItem = styled.div`
   max-width: 400px;
@@ -102,7 +102,7 @@ const ContentItem = styled.div`
   margin-bottom: 30px;
   &:before {
     position: absolute;
-    content: "";
+    content: '';
     left: 0;
     top: 0;
     width: 20px;
@@ -119,7 +119,7 @@ const ContentItem = styled.div`
       height: 15px;
     }
   }
-`;
+`
 
 const ButtonWrap = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
@@ -128,7 +128,7 @@ const ButtonWrap = styled.div`
       padding: 0;
     }
   }
-`;
+`
 
 const Items = styled.div`
   display: flex;
@@ -136,7 +136,7 @@ const Items = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     flex-wrap: wrap;
   }
-`;
+`
 
 const Item = styled.div`
   width: 25%;
@@ -163,7 +163,7 @@ const Item = styled.div`
       border-right: none;
     }
   }
-`;
+`
 
 const ItemTitle = styled.p`
   font-weight: 500;
@@ -176,7 +176,7 @@ const ItemTitle = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     font-size: 28px;
   }
-`;
+`
 
 const ItemText = styled.p`
   font-size: 18px;
@@ -190,11 +190,11 @@ const ItemText = styled.p`
     font-size: 13px;
     line-height: 18px;
   }
-`;
+`
 
 const FastSearch = () => {
-  const [city] = useContext(CityContext);
-  const router = useRouter();
+  const [city] = useContext(CityContext)
+  const router = useRouter()
   return (
     <Wrapper>
       <Content>
@@ -204,7 +204,7 @@ const FastSearch = () => {
             <Text>
               Творите, где и когда удобно — платформа МОЙ помогает мастерам
               находить рабочие места и кабинеты, принимать посетителей в хороших
-              условиях и платить только за использованное время.{" "}
+              условиях и платить только за использованное время.{' '}
             </Text>
             <ContentItems>
               <ContentItem>
@@ -249,7 +249,7 @@ const FastSearch = () => {
         </Item>
       </Items>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default FastSearch;
+export default FastSearch

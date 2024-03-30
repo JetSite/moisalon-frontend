@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { Skeleton } from '@material-ui/lab'
-import { laptopBreakpoint } from '../../../../styles/variables'
+import { laptopBreakpoint } from '../../../styles/variables'
 
 export const Wrapper = styled.div`
   position: relative;

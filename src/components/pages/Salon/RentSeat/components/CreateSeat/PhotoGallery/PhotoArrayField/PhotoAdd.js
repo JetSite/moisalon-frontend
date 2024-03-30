@@ -1,7 +1,7 @@
-import React, { useCallback } from "react";
-import { useDropzone } from "react-dropzone";
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../../../../styles/variables";
+import React, { useCallback } from 'react'
+import { useDropzone } from 'react-dropzone'
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../../../../styles/variables'
 
 const Photo = styled.div`
   width: 710px;
@@ -14,24 +14,24 @@ const Photo = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  background: #f2f0f0 url("/icon-plus.svg") no-repeat center;
+  background: #f2f0f0 url('/icon-plus.svg') no-repeat center;
 
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`;
+`
 
 const PhotoAdd = ({ onAdd }) => {
   const onDrop = useCallback(
-    (acceptedFiles) => {
-      onAdd(acceptedFiles);
+    acceptedFiles => {
+      onAdd(acceptedFiles)
     },
-    [onAdd]
-  );
+    [onAdd],
+  )
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    accept: "image/*",
+    accept: 'image/*',
     onDrop,
-  });
+  })
 
   return (
     <div {...getRootProps()}>
@@ -42,7 +42,7 @@ const PhotoAdd = ({ onAdd }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default PhotoAdd;
+export default PhotoAdd

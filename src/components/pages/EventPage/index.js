@@ -1,15 +1,15 @@
-import { useContext, useState } from "react";
-import { useRouter } from "next/router";
-import MainLayout from "../../../layouts/MainLayout";
-import SearchBlock from "../../blocks/SearchBlock";
-import BackButton from "../../ui/BackButton";
-import Ribbon from "../../pages/MainPage/components/Ribbon";
-import Button from "../../ui/Button";
+import { useContext, useState } from 'react'
+import { useRouter } from 'next/router'
+import MainLayout from '../../../layouts/MainLayout'
+import SearchBlock from '../../blocks/SearchBlock'
+import BackButton from '../../ui/BackButton'
+import Ribbon from '../../pages/MainPage/components/Ribbon'
+import Button from '../../ui/Button'
 import {
   MainContainer,
   MobileHidden,
   MobileVisible,
-} from "../../../styles/common";
+} from '../../../styles/common'
 import {
   Wrapper,
   Content,
@@ -26,63 +26,63 @@ import {
   EventInfo,
   EventConditions,
   CountdownWrap,
-} from "./styles";
-import moment from "moment";
-import "moment/locale/ru";
-import Countdown from "../../blocks/Countdown";
-import { cyrToTranslit } from "../../../utils/translit";
-import { CityContext, MeContext } from "../../../searchContext";
-import ChatMessagePopup from "../../ui/ChatMessagePopup";
-import { PHOTO_URL } from "../../../../variables";
+} from './styles'
+import moment from 'moment'
+import 'moment/locale/ru'
+import Countdown from '../../blocks/Countdown'
+import { cyrToTranslit } from '../../../utils/translit'
+import { CityContext, MeContext } from '../../../searchContext'
+import ChatMessagePopup from '../../ui/ChatMessagePopup'
+import { PHOTO_URL } from '../../../variables'
 
 const EventPage = ({ event, beautyCategories, beautyAllContent }) => {
-  const router = useRouter();
-  const [city] = useContext(CityContext);
-  const [me] = useContext(MeContext);
-  const [chatMessagePopup, setChatMessagePopup] = useState(false);
+  const router = useRouter()
+  const [city] = useContext(CityContext)
+  const [me] = useContext(MeContext)
+  const [chatMessagePopup, setChatMessagePopup] = useState(false)
 
-  const originInfo = (item) => {
+  const originInfo = item => {
     switch (item?.origin) {
-      case "MASTER":
+      case 'MASTER':
         return {
-          originType: "Мастер",
+          originType: 'Мастер',
           originName: item.masterOrigin?.name,
           customTitle: `у мастера ${item.masterOrigin?.name}`,
-          buttonLink: "master",
+          buttonLink: 'master',
           originLink: `/${cyrToTranslit(
-            item?.masterOrigin?.addressFull?.city || city
+            item?.masterOrigin?.addressFull?.city || city,
           )}/master/${item?.originId}`,
-        };
-      case "SALON":
+        }
+      case 'SALON':
         return {
-          originType: "Салон",
+          originType: 'Салон',
           originName: item.salonOrigin?.name,
           customTitle: `в салоне ${item.salonOrigin?.name}`,
-          buttonLink: "salon",
+          buttonLink: 'salon',
           originLink: `/${cyrToTranslit(
-            item?.salonOrigin?.address?.city || city
+            item?.salonOrigin?.address?.city || city,
           )}/salon/${item?.originId}`,
-        };
-      case "BRAND":
+        }
+      case 'BRAND':
         return {
-          originType: "Бренд",
+          originType: 'Бренд',
           originName: item.brandOrigin?.name,
           customTitle: `у бренда ${item.brandOrigin?.name}`,
-          buttonLink: "brand",
+          buttonLink: 'brand',
           originLink: `/${cyrToTranslit(
-            item?.brandOrigin?.addressFull?.city || city
+            item?.brandOrigin?.addressFull?.city || city,
           )}/brand/${item?.originId}`,
-        };
+        }
     }
-  };
+  }
 
   const eventButtonHandler = () => {
     if (event.originId) {
-      router.push(`${originInfo(event).originLink}`);
+      router.push(`${originInfo(event).originLink}`)
     } else {
-      setChatMessagePopup(true);
+      setChatMessagePopup(true)
     }
-  };
+  }
 
   return (
     <MainLayout>
@@ -101,7 +101,7 @@ const EventPage = ({ event, beautyCategories, beautyAllContent }) => {
             type="Все мероприятия"
             // name={originInfo(event).originName}
             onlyType
-            link={"/events"}
+            link={'/events'}
           />
           <Content>
             <Left>
@@ -145,11 +145,11 @@ const EventPage = ({ event, beautyCategories, beautyAllContent }) => {
                 <DateWrap>
                   <Date>
                     Дата начала:&nbsp;
-                    {moment(event?.dateStart).format("DD MMMM YYYY HH:MM")}
+                    {moment(event?.dateStart).format('DD MMMM YYYY HH:MM')}
                   </Date>
                   <Date>
                     Дата окончания:&nbsp;
-                    {moment(event?.dateEnd).format("DD MMMM YYYY HH:MM")}
+                    {moment(event?.dateEnd).format('DD MMMM YYYY HH:MM')}
                   </Date>
                 </DateWrap>
                 {event?.promo ? (
@@ -201,7 +201,7 @@ const EventPage = ({ event, beautyCategories, beautyAllContent }) => {
         beautyAllContent={beautyAllContent}
       />
     </MainLayout>
-  );
-};
+  )
+}
 
-export default EventPage;
+export default EventPage

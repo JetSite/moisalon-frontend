@@ -1,8 +1,8 @@
-import AutosuggestField from "./AutosuggestField";
-import { useAddressSuggestions } from "./useAddressSuggestions";
-import Map from "../../Map";
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../styles/variables";
+import AutosuggestField from './AutosuggestField'
+import { useAddressSuggestions } from './useAddressSuggestions'
+import Map from '../../Map'
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../styles/variables'
 
 const AutosuggestFieldStyled = styled(AutosuggestField)`
   .MuiInputBase-inputMultiline {
@@ -20,7 +20,7 @@ const AutosuggestFieldStyled = styled(AutosuggestField)`
       line-height: 25px;
     }
   }
-`;
+`
 
 const AddressWrap = styled.div`
   position: relative;
@@ -30,25 +30,25 @@ const AddressWrap = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     min-height: 180px;
   }
-`;
+`
 
 const MapWrap = styled.div`
   padding-top: 20px;
   width: 100%;
-`;
+`
 
 const AddressNoSalonField = ({
-  label = "Адрес",
+  label = 'Адрес',
   fullWidth = true,
   salonId = null,
   ...rest
 }) => {
-  const { suggestions } = useAddressSuggestions(rest.input.value);
-  const { coordinates } = useAddressSuggestions(rest.input.value, 1);
+  const { suggestions } = useAddressSuggestions(rest.input.value)
+  const { coordinates } = useAddressSuggestions(rest.input.value, 1)
   const address = {
     longitude: coordinates.geoLon,
     latitude: coordinates.geoLat,
-  };
+  }
   return (
     <AddressWrap>
       <AutosuggestFieldStyled
@@ -63,7 +63,7 @@ const AddressNoSalonField = ({
         </MapWrap>
       ) : null}
     </AddressWrap>
-  );
-};
+  )
+}
 
-export default AddressNoSalonField;
+export default AddressNoSalonField

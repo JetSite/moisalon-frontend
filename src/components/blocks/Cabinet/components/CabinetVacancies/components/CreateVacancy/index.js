@@ -1,20 +1,20 @@
-import styled from "styled-components";
-import { useMutation } from "@apollo/client";
-import { useCallback, useState } from "react";
-import AutoFocusedForm from "../../../../../Form/AutoFocusedForm";
-import { FieldStyled } from "../../../CabinetForm/styled";
-import { TextField } from "../../../../../Form";
-import { required } from "../../../../../../../utils/validations";
-import Error from "../../../../../Form/Error";
-import { laptopBreakpoint } from "../../../../../../../../styles/variables";
-import Button from "../../../../../../ui/Button";
-import Vacancy from "../../../../../Vacancy";
-import { createVacancyMutation } from "../../../../../../../_graphql-legacy/vacancies/createVacancyMutation";
-import Popup from "../../../../../../ui/Popup";
+import styled from 'styled-components'
+import { useMutation } from '@apollo/client'
+import { useCallback, useState } from 'react'
+import AutoFocusedForm from '../../../../../Form/AutoFocusedForm'
+import { FieldStyled } from '../../../CabinetForm/styled'
+import { TextField } from '../../../../../Form'
+import { required } from '../../../../../../../utils/validations'
+import Error from '../../../../../Form/Error'
+import { laptopBreakpoint } from '../../../../../../../styles/variables'
+import Button from '../../../../../../ui/Button'
+import Vacancy from '../../../../../Vacancy'
+import { createVacancyMutation } from '../../../../../../../_graphql-legacy/vacancies/createVacancyMutation'
+import Popup from '../../../../../../ui/Popup'
 
 const FieldWrap = styled.div`
   margin-bottom: 14px;
-`;
+`
 
 const ButtonWrap = styled.div`
   width: 350px;
@@ -23,42 +23,42 @@ const ButtonWrap = styled.div`
     width: 100%;
     margin-top: 40px;
   }
-`;
+`
 
 const CreateVacancy = ({ setCreateVacancy, type, activeProfile, refetch }) => {
-  const [errors, setErrors] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [photoId, setPhotoId] = useState(null);
-  const [published, setPublished] = useState(false);
-  const [isErrorPopupOpen, setErrorPopupOpen] = useState(false);
-  const [openPopup, setOpenPopup] = useState(false);
+  const [errors, setErrors] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [photoId, setPhotoId] = useState(null)
+  const [published, setPublished] = useState(false)
+  const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
+  const [openPopup, setOpenPopup] = useState(false)
 
   const [createVacancy] = useMutation(createVacancyMutation, {
-    onError: (error) => {
-      const errorMessages = error.graphQLErrors.map((e) => e.message);
-      setLoading(false);
-      setErrors(errorMessages);
-      setErrorPopupOpen(true);
+    onError: error => {
+      const errorMessages = error.graphQLErrors.map(e => e.message)
+      setLoading(false)
+      setErrors(errorMessages)
+      setErrorPopupOpen(true)
     },
-    onCompleted: async (data) => {
-      setLoading(false);
+    onCompleted: async data => {
+      setLoading(false)
       await refetch({
         variables: {
           originId: activeProfile.id,
         },
-      });
-      setOpenPopup(true);
+      })
+      setOpenPopup(true)
     },
-  });
+  })
 
   const onSubmit = useCallback(
-    async (values) => {
+    async values => {
       if (!photoId) {
-        setErrors(["Необходимо добавить фото"]);
-        setErrorPopupOpen(true);
-        return;
+        setErrors(['Необходимо добавить фото'])
+        setErrorPopupOpen(true)
+        return
       }
-      setLoading(true);
+      setLoading(true)
       createVacancy({
         variables: {
           input: {
@@ -73,20 +73,20 @@ const CreateVacancy = ({ setCreateVacancy, type, activeProfile, refetch }) => {
             isPublished: false,
           },
         },
-      });
+      })
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [photoId, published]
-  );
+    [photoId, published],
+  )
 
-  const onAdd = (photoId) => {
-    setPhotoId(photoId);
-  };
+  const onAdd = photoId => {
+    setPhotoId(photoId)
+  }
 
   const closePopup = () => {
-    setOpenPopup(false);
-    setCreateVacancy(false);
-  };
+    setOpenPopup(false)
+    setCreateVacancy(false)
+  }
 
   return (
     <>
@@ -106,13 +106,13 @@ const CreateVacancy = ({ setCreateVacancy, type, activeProfile, refetch }) => {
                   create
                   title={values.title}
                   name={`${
-                    type === "master"
-                      ? "Мастер"
-                      : type === "salon"
-                      ? "Салон"
-                      : type === "brand"
-                      ? "Бренд"
-                      : ""
+                    type === 'master'
+                      ? 'Мастер'
+                      : type === 'salon'
+                      ? 'Салон'
+                      : type === 'brand'
+                      ? 'Бренд'
+                      : ''
                   } ${activeProfile?.name}`}
                 />
               </div>
@@ -189,7 +189,7 @@ const CreateVacancy = ({ setCreateVacancy, type, activeProfile, refetch }) => {
                   type="submit"
                   disabled={pristine || loading}
                 >
-                  {loading ? "Подождите" : "Сохранить"}
+                  {loading ? 'Подождите' : 'Сохранить'}
                 </Button>
                 <Button
                   variant="darkTransparent"
@@ -202,7 +202,7 @@ const CreateVacancy = ({ setCreateVacancy, type, activeProfile, refetch }) => {
                 </Button>
               </ButtonWrap>
             </form>
-          );
+          )
         }}
       />
       <Popup
@@ -215,7 +215,7 @@ const CreateVacancy = ({ setCreateVacancy, type, activeProfile, refetch }) => {
         </Button>
       </Popup>
     </>
-  );
-};
+  )
+}
 
-export default CreateVacancy;
+export default CreateVacancy

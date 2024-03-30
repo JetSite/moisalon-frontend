@@ -12,7 +12,7 @@ import {
 } from './styles'
 import { useMutation } from '@apollo/client'
 import catalogOrDefault from '../../../../../../utils/catalogOrDefault'
-import EditIcons from '../../../../../ui/EditIcons'
+import EditIcons from '../../../../../ui/EditIcons/index.tsx'
 import { updateServiceMasterMutation } from '../../../../../../_graphql-legacy/master/updateServiceMasterMutation'
 import EditSalonServicesForClient from '../../../../../pages/Salon/EditSalonServicesForClient'
 

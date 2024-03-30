@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../../styles/variables";
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../../styles/variables'
 
 export const Wrapper = styled.div`
   max-width: 710px;
@@ -10,14 +10,14 @@ export const Wrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     margin-bottom: 0;
   }
-`;
+`
 
 export const Title = styled.h2`
   font-weight: 500;
   font-size: 40px;
   text-transform: uppercase;
   margin-bottom: 90px;
-`;
+`
 
 export const TitleCabinet = styled.h2`
   font-weight: 500;
@@ -27,7 +27,7 @@ export const TitleCabinet = styled.h2`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 export const TextCabinet = styled.h2`
   font-weight: 600;
@@ -38,19 +38,19 @@ export const TextCabinet = styled.h2`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
-export const Form = styled.form``;
+export const Form = styled.form``
 
 export const WrapperForm = styled.div`
   width: 100%;
   margin-bottom: 108px;
-`;
+`
 
 export const FieldWrap = styled.div`
   margin-bottom: 14px;
-`;
+`
 
 export const ButtonWrap = styled.div`
   margin-top: 66px;
-`;
+`

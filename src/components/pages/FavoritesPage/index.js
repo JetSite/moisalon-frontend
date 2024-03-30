@@ -1,15 +1,15 @@
-import { useState } from "react";
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../styles/variables";
-import BrandsFavorites from "./BrandsFavorites";
-import SalonsFavorites from "./SalonsFavorites";
-import MastersFavorites from "./MastersFavorites";
-import GoodsFavorites from "./GoodsFavorites";
-import EducationsFavorites from "./EducationsFavorites";
+import { useState } from 'react'
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../styles/variables'
+import BrandsFavorites from './BrandsFavorites'
+import SalonsFavorites from './SalonsFavorites'
+import MastersFavorites from './MastersFavorites'
+import GoodsFavorites from './GoodsFavorites'
+import EducationsFavorites from './EducationsFavorites'
 
 const Wrapper = styled.div`
   min-height: 70vh;
-`;
+`
 
 const Empty = styled.div`
   max-width: 1440px;
@@ -22,24 +22,24 @@ const Empty = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     padding: 40px 20px;
   }
-`;
+`
 
 const FavoritesPage = () => {
-  const [, setMasterEmpty] = useState();
-  const [, setSalonEmpty] = useState();
-  const [, setBrandEmpty] = useState();
-  const [, setProductEmpty] = useState();
-  const [, setEducationsEmpty] = useState();
+  const [, setMasterEmpty] = useState()
+  const [, setSalonEmpty] = useState()
+  const [, setBrandEmpty] = useState()
+  const [, setProductEmpty] = useState()
+  const [, setEducationsEmpty] = useState()
 
-  let isFavoriteEmpty;
-  if (typeof window !== "undefined") {
-    const favorites = JSON.parse(localStorage.getItem("favorites"));
+  let isFavoriteEmpty
+  if (typeof window !== 'undefined') {
+    const favorites = JSON.parse(localStorage.getItem('favorites'))
     isFavoriteEmpty =
       !favorites?.brands?.length &&
       !favorites?.masters?.length &&
       !favorites?.salons?.length &&
       !favorites?.products?.length &&
-      !favorites?.educations?.length;
+      !favorites?.educations?.length
     // !favorites?.advices?.length;
   }
 
@@ -67,7 +67,7 @@ const FavoritesPage = () => {
         <Empty>Вы еще ничего не добавили в избранное</Empty>
       ) : null}
     </Wrapper>
-  );
-};
+  )
+}
 
-export default FavoritesPage;
+export default FavoritesPage

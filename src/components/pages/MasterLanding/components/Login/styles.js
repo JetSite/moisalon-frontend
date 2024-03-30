@@ -1,9 +1,9 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 import {
   laptopBreakpoint,
   red,
   tabletBreakpoint,
-} from "../../../../../../styles/variables";
+} from '../../../../../styles/variables'
 
 export const Wrapper = styled.div`
   display: flex;
@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-`;
+`
 
 export const Content = styled.div`
   padding: 136px 140px 0 140px;
@@ -26,18 +26,18 @@ export const Content = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     padding: 20px;
   }
-`;
+`
 
 export const FormWrapper = styled.div`
   max-width: 505px;
-`;
+`
 
 export const Form = styled.form`
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-`;
+`
 
 export const Input = styled.input`
   margin-top: 53px;
@@ -59,7 +59,7 @@ export const Input = styled.input`
     font-weight: 400;
     line-height: 25px;
   }
-`;
+`
 
 export const Label = styled.p`
   font-size: 14px;
@@ -73,7 +73,7 @@ export const Label = styled.p`
     font-weight: 500;
     line-height: 16px;
   }
-`;
+`
 
 export const CheckboxWrapper = styled.div`
   height: 21px;
@@ -85,7 +85,7 @@ export const CheckboxWrapper = styled.div`
     margin-top: 0;
     margin-bottom: 20px;
   }
-`;
+`
 
 export const Checkbox = styled.input`
   position: absolute;
@@ -97,7 +97,7 @@ export const Checkbox = styled.input`
     user-select: none;
   }
   & + p::before {
-    content: "";
+    content: '';
     display: inline-block;
     width: 16px;
     height: 16px;
@@ -106,10 +106,10 @@ export const Checkbox = styled.input`
     border: 1px solid #797979;
     margin-right: 14px;
     cursor: pointer;
-    background: ${(props) =>
-      props.checked ? `url("/tick-checkbox.png") no-repeat center` : ""};
+    background: ${props =>
+      props.checked ? `url("/tick-checkbox.png") no-repeat center` : ''};
   }
-`;
+`
 
 export const Title = styled.h2`
   font-size: 30px;
@@ -122,18 +122,18 @@ export const Title = styled.h2`
     font-weight: 600;
     line-height: 25px;
   }
-`;
+`
 
 export const RegisterType = styled.div`
   max-width: 576px;
-`;
+`
 
 export const ButtonWrapper = styled.div`
   max-width: 335px;
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 export const ButtonMobileWrapper = styled.div`
   display: none;
@@ -142,7 +142,7 @@ export const ButtonMobileWrapper = styled.div`
     display: block;
     padding: 0 20px;
   }
-`;
+`
 
 export const NotAuthorized = styled.div`
   max-width: 400px;
@@ -154,11 +154,11 @@ export const NotAuthorized = styled.div`
     font-size: 12px;
     line-height: 18px;
   }
-`;
+`
 
 export const BottomWrapper = styled.div`
   background: #f2f0f0;
-`;
+`
 
 export const BottomContent = styled.div`
   max-width: 1440px;
@@ -172,7 +172,7 @@ export const BottomContent = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     padding: 20px;
   }
-`;
+`
 
 export const Left = styled.div`
   max-width: 580px;
@@ -184,22 +184,22 @@ export const Left = styled.div`
     max-width: 100%;
     margin-right: 0;
   }
-`;
+`
 
-export const ImageWrap = styled.div``;
+export const ImageWrap = styled.div``
 
 export const Image = styled.img`
   @media (max-width: ${tabletBreakpoint}) {
     width: 100%;
   }
-`;
+`
 
 export const Right = styled.div`
   max-width: 473px;
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 export const TitleBottom = styled.p`
   font-weight: 600;
@@ -215,7 +215,7 @@ export const TitleBottom = styled.p`
     font-size: 22px;
     line-height: 31px;
   }
-`;
+`
 
 export const Desc = styled.p`
   font-size: 18px;
@@ -230,9 +230,9 @@ export const Desc = styled.p`
     font-size: 14px;
     line-height: 21px;
   }
-`;
+`
 
-export const Items = styled.div``;
+export const Items = styled.div``
 
 export const ButtonWrap = styled.div`
   margin-top: 100px;
@@ -245,7 +245,7 @@ export const ButtonWrap = styled.div`
       padding: 0;
     }
   }
-`;
+`
 
 export const Item = styled.div`
   padding-left: 50px;
@@ -255,7 +255,7 @@ export const Item = styled.div`
   margin-bottom: 30px;
   &:before {
     position: absolute;
-    content: "";
+    content: '';
     left: 0;
     top: 0;
     width: 20px;
@@ -271,4 +271,4 @@ export const Item = styled.div`
       height: 15px;
     }
   }
-`;
+`

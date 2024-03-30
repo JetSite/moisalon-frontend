@@ -1,7 +1,7 @@
-import React from "react";
-import PhotoAdd from "./PhotoAdd";
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../../../../styles/variables";
+import React from 'react'
+import PhotoAdd from './PhotoAdd'
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../../../../styles/variables'
 
 const Wrapper = styled.div`
   display: flex;
@@ -10,14 +10,14 @@ const Wrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     justify-content: center;
   }
-`;
+`
 
 const PhotoAddBlock = ({ defaultPhoto, setDefaultPhoto }) => {
   return (
     <Wrapper>
       <PhotoAdd defaultPhoto={defaultPhoto} setDefaultPhoto={setDefaultPhoto} />
     </Wrapper>
-  );
-};
+  )
+}
 
-export default PhotoAddBlock;
+export default PhotoAddBlock

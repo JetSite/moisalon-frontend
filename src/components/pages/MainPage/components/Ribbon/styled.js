@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import Button from "../../../../ui/Button";
-import { laptopBreakpoint } from "../../../../../../styles/variables";
+import styled from 'styled-components'
+import Button from '../../../../ui/Button'
+import { laptopBreakpoint } from '../../../../../styles/variables'
 
 export const Wrapper = styled.div`
   background: #000;
@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     /* display: none; */
   }
-`;
+`
 
 export const SliderWrapper = styled.div`
   display: flex;
@@ -19,7 +19,7 @@ export const SliderWrapper = styled.div`
       width: 185px !important;
     }
   }
-`;
+`
 
 export const Content = styled.div`
   padding-top: 100px;
@@ -30,7 +30,7 @@ export const Content = styled.div`
     padding: 0;
     padding-top: 40px;
   }
-`;
+`
 
 export const TitleWrapper = styled.div`
   width: 320px;
@@ -40,7 +40,7 @@ export const TitleWrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     width: 161px;
   }
-`;
+`
 
 export const Title = styled.p`
   display: inline-block;
@@ -55,7 +55,7 @@ export const Title = styled.p`
     font-size: 20px;
     font-weight: 600;
   }
-`;
+`
 
 export const SearchIcon = styled.div`
   position: absolute;
@@ -71,7 +71,7 @@ export const SearchIcon = styled.div`
       height: 18px;
     }
   }
-`;
+`
 
 export const NoSearchResults = styled.p`
   color: #fff;
@@ -82,4 +82,4 @@ export const NoSearchResults = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     font-size: 14px;
   }
-`;
+`

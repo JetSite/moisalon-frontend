@@ -1,8 +1,8 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 import {
   laptopBreakpoint,
   tabletBreakpoint,
-} from "../../../../../../styles/variables";
+} from '../../../../../styles/variables'
 
 export const AllMasters = styled.div`
   width: 220px;
@@ -15,9 +15,9 @@ export const AllMasters = styled.div`
   flex-direction: column;
   justify-content: center;
   &:after {
-    content: "";
+    content: '';
     position: absolute;
-    background: url("/all-masters.svg") no-repeat bottom;
+    background: url('/all-masters.svg') no-repeat bottom;
     width: 86px;
     height: 45px;
     bottom: 77px;
@@ -25,9 +25,9 @@ export const AllMasters = styled.div`
     margin-left: -43px;
   }
   &:before {
-    content: "";
+    content: '';
     position: absolute;
-    background: url("/all-romb.svg") no-repeat bottom;
+    background: url('/all-romb.svg') no-repeat bottom;
     background-size: cover;
     width: 31px;
     height: 31px;
@@ -46,7 +46,7 @@ export const AllMasters = styled.div`
       bottom: 50px;
     }
   }
-`;
+`
 
 export const AllSalons = styled.div`
   width: 368px;
@@ -62,9 +62,9 @@ export const AllSalons = styled.div`
   flex-direction: column;
   justify-content: center;
   &:before {
-    content: "";
+    content: '';
     position: absolute;
-    background: url("/white-romb.svg") no-repeat center;
+    background: url('/white-romb.svg') no-repeat center;
     background-size: cover;
     width: 31px;
     height: 31px;
@@ -72,9 +72,9 @@ export const AllSalons = styled.div`
     left: 64px;
   }
   &:after {
-    content: "";
+    content: '';
     position: absolute;
-    background: url("/all-number.svg") no-repeat center;
+    background: url('/all-number.svg') no-repeat center;
     background-size: cover;
     width: 70px;
     height: 130px;
@@ -104,7 +104,7 @@ export const AllSalons = styled.div`
       right: 27px;
     }
   }
-`;
+`
 
 export const AllBrands = styled.div`
   width: 177px;
@@ -118,9 +118,9 @@ export const AllBrands = styled.div`
   flex-direction: column;
   justify-content: center;
   &:after {
-    content: "";
+    content: '';
     position: absolute;
-    background: url("/brand-img.svg") no-repeat bottom;
+    background: url('/brand-img.svg') no-repeat bottom;
     width: 68px;
     height: 36px;
     bottom: 13px;
@@ -128,9 +128,9 @@ export const AllBrands = styled.div`
     margin-left: -34px;
   }
   &:before {
-    content: "";
+    content: '';
     position: absolute;
-    background: url("/white-romb.svg") no-repeat bottom;
+    background: url('/white-romb.svg') no-repeat bottom;
     background-size: cover;
     width: 31px;
     height: 31px;
@@ -153,7 +153,7 @@ export const AllBrands = styled.div`
       bottom: 4px;
     }
   }
-`;
+`
 
 export const AllGoods = styled.div`
   width: 176px;
@@ -167,9 +167,9 @@ export const AllGoods = styled.div`
   flex-direction: column;
   justify-content: center;
   &:after {
-    content: "";
+    content: '';
     position: absolute;
-    background: url("/all-goods.svg") no-repeat bottom;
+    background: url('/all-goods.svg') no-repeat bottom;
     width: 124px;
     height: 124px;
     bottom: 21px;
@@ -177,9 +177,9 @@ export const AllGoods = styled.div`
     margin-left: -62px;
   }
   &:before {
-    content: "";
+    content: '';
     position: absolute;
-    background: url("/all-romb.svg") no-repeat bottom;
+    background: url('/all-romb.svg') no-repeat bottom;
     background-size: cover;
     width: 31px;
     height: 31px;
@@ -202,11 +202,11 @@ export const AllGoods = styled.div`
       background-size: contain;
     }
   }
-`;
+`
 
 export const AllIcon = styled.div`
   position: absolute;
-  background: url("/all-master-img.svg") no-repeat bottom;
+  background: url('/all-master-img.svg') no-repeat bottom;
   background-size: cover;
   width: 80px;
   height: 73px;
@@ -216,7 +216,7 @@ export const AllIcon = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     background-size: contain;
   }
-`;
+`
 
 export const AllIconSalon = styled.div`
   position: absolute;
@@ -225,9 +225,9 @@ export const AllIconSalon = styled.div`
   right: 0;
   bottom: 0;
   &:after {
-    content: "";
+    content: '';
     position: absolute;
-    background: url("/all-circle-red.svg") no-repeat center;
+    background: url('/all-circle-red.svg') no-repeat center;
     background-size: cover;
     width: 132px;
     height: 132px;
@@ -235,9 +235,9 @@ export const AllIconSalon = styled.div`
     left: 14.5px;
   }
   &:before {
-    content: "";
+    content: '';
     position: absolute;
-    background: url("/all-salon-img.svg") no-repeat center;
+    background: url('/all-salon-img.svg') no-repeat center;
     background-size: cover;
     width: 113px;
     height: 132px;
@@ -247,7 +247,7 @@ export const AllIconSalon = styled.div`
 
   @media (max-width: ${laptopBreakpoint}) {
     position: absolute;
-    background: url("/all-master-img.svg") no-repeat bottom;
+    background: url('/all-master-img.svg') no-repeat bottom;
     background-size: cover;
     width: 80px;
     height: 73px;
@@ -262,7 +262,7 @@ export const AllIconSalon = styled.div`
       display: none;
     }
   }
-`;
+`
 
 export const AllText = styled.p`
   color: #fff;
@@ -275,7 +275,7 @@ export const AllText = styled.p`
     /* font-size: 16px;
     line-height: 20px; */
   }
-`;
+`
 
 export const AllTextBrand = styled(AllText)`
   @media (max-width: ${laptopBreakpoint}) {
@@ -283,11 +283,11 @@ export const AllTextBrand = styled(AllText)`
     font-size: 14px;
     line-height: 20px;
   }
-`;
+`
 
 export const FavoriteIcon = styled.div`
   position: absolute;
-  background: url("/favorite-red-item.svg") no-repeat center;
+  background: url('/favorite-red-item.svg') no-repeat center;
   background-size: cover;
   width: 60px;
   height: 84px;
@@ -300,4 +300,4 @@ export const FavoriteIcon = styled.div`
     height: 37px;
     right: 44px;
   }
-`;
+`

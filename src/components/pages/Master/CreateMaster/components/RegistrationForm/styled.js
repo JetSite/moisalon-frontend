@@ -1,6 +1,6 @@
-import { Field } from "react-final-form";
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../../styles/variables";
+import { Field } from 'react-final-form'
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../../styles/variables'
 
 export const Wrapper = styled.div`
   max-width: 690px;
@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     margin-bottom: 44px;
   }
-`;
+`
 
 export const Title = styled.h2`
   font-weight: 500;
@@ -26,9 +26,9 @@ export const Title = styled.h2`
     line-height: 25px;
     text-transform: none;
   }
-`;
+`
 
-export const Form = styled.form``;
+export const Form = styled.form``
 
 export const WrapperForm = styled.div`
   width: 100%;
@@ -37,24 +37,24 @@ export const WrapperForm = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     padding-bottom: 76px;
   }
-`;
+`
 
 export const FieldWrap = styled.div`
   margin-bottom: 14px;
-`;
+`
 
 export const FieldStyled = styled(Field)`
   label {
     width: fit-content;
     &:after {
-      display: ${({ requiredField }) => (requiredField ? "block" : "none")};
-      content: "";
+      display: ${({ requiredField }) => (requiredField ? 'block' : 'none')};
+      content: '';
       position: absolute;
       top: -3px;
       right: -11px;
       width: 7px;
       height: 7px;
-      background: url("/required-icon.svg") no-repeat center;
+      background: url('/required-icon.svg') no-repeat center;
     }
   }
-`;
+`

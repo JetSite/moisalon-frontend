@@ -1,5 +1,5 @@
-import { useContext } from "react";
-import MenuCards from "./components/MenuCards";
+import { useContext } from 'react'
+import MenuCards from './components/MenuCards'
 import {
   Wrapper,
   Info,
@@ -16,17 +16,17 @@ import {
   Name,
   Type,
   Wrap,
-} from "./styles";
-import Link from "next/link";
-import { CityContext } from "../../../searchContext";
-import { cyrToTranslit } from "../../../utils/translit";
-import { PHOTO_URL } from "../../../../variables";
+} from './styles'
+import Link from 'next/link'
+import { CityContext } from '../../../searchContext'
+import { cyrToTranslit } from '../../../utils/translit'
+import { PHOTO_URL } from '../../../variables'
 
 const CabinetHeaderMobile = ({ me, setActiveTab, tabs, toggle, setToggle }) => {
-  const salons = me?.salons;
-  const master = me?.master;
-  const brands = me?.userBrands;
-  const [city] = useContext(CityContext);
+  const salons = me?.salons
+  const master = me?.master
+  const brands = me?.userBrands
+  const [city] = useContext(CityContext)
 
   return (
     <Wrapper>
@@ -35,7 +35,7 @@ const CabinetHeaderMobile = ({ me, setActiveTab, tabs, toggle, setToggle }) => {
           url={
             me?.info?.avatar
               ? `${PHOTO_URL}${me?.info?.avatar}/original`
-              : "/empty-photo.svg"
+              : '/empty-photo.svg'
           }
         />
         <Text>
@@ -53,14 +53,14 @@ const CabinetHeaderMobile = ({ me, setActiveTab, tabs, toggle, setToggle }) => {
           {master?.id ? (
             <Link
               href={`/${cyrToTranslit(
-                master?.addressFull?.city || city
+                master?.addressFull?.city || city,
               )}/master/${master?.seo?.slug || master?.id}`}
             >
               <Item>
                 <Container>
                   <Avatar
                     alt="avatar"
-                    src={master?.photo?.url || "empty-photo.svg"}
+                    src={master?.photo?.url || 'empty-photo.svg'}
                   />
                   <Content>
                     <Name>{master?.name}</Name>
@@ -71,16 +71,16 @@ const CabinetHeaderMobile = ({ me, setActiveTab, tabs, toggle, setToggle }) => {
             </Link>
           ) : null}
           {salons?.length
-            ? salons.map((item) => (
+            ? salons.map(item => (
                 <div key={item.id}>
                   <Link
                     href={
                       item?.lessor
                         ? `/${cyrToTranslit(
-                            item?.address?.city || city
+                            item?.address?.city || city,
                           )}/rent/${item?.seo?.slug || item?.id}`
                         : `/${cyrToTranslit(
-                            item?.address?.city || city
+                            item?.address?.city || city,
                           )}/salon/${item?.seo?.slug || item?.id}`
                     }
                   >
@@ -88,14 +88,14 @@ const CabinetHeaderMobile = ({ me, setActiveTab, tabs, toggle, setToggle }) => {
                       <Container>
                         <Avatar
                           alt="avatar"
-                          src={item?.logo?.url || "empty-photo.svg"}
+                          src={item?.logo?.url || 'empty-photo.svg'}
                         />
                         <Content>
                           <Name>{item?.name}</Name>
                           <Type>
                             {item?.lessor
-                              ? "Профиль салона арендодателя"
-                              : "Профиль салона"}
+                              ? 'Профиль салона арендодателя'
+                              : 'Профиль салона'}
                           </Type>
                         </Content>
                       </Container>
@@ -105,11 +105,11 @@ const CabinetHeaderMobile = ({ me, setActiveTab, tabs, toggle, setToggle }) => {
               ))
             : null}
           {brands?.length
-            ? brands.map((item) => (
+            ? brands.map(item => (
                 <div key={item.id}>
                   <Link
                     href={`/${cyrToTranslit(
-                      item?.addressFull?.city || city
+                      item?.addressFull?.city || city,
                     )}/brand/${item?.seo?.slug || item?.id}`}
                   >
                     <Item>
@@ -119,7 +119,7 @@ const CabinetHeaderMobile = ({ me, setActiveTab, tabs, toggle, setToggle }) => {
                           src={
                             item?.logoId
                               ? `${PHOTO_URL}${item?.logoId}/original`
-                              : "empty-photo.svg"
+                              : 'empty-photo.svg'
                           }
                         />
                         <Content>
@@ -136,8 +136,8 @@ const CabinetHeaderMobile = ({ me, setActiveTab, tabs, toggle, setToggle }) => {
       ) : null}
       <Button
         onClick={() => {
-          setActiveTab("profiles");
-          setToggle(false);
+          setActiveTab('profiles')
+          setToggle(false)
         }}
       >
         Добавить профиль
@@ -148,7 +148,7 @@ const CabinetHeaderMobile = ({ me, setActiveTab, tabs, toggle, setToggle }) => {
         setActiveTab={setActiveTab}
       />
     </Wrapper>
-  );
-};
+  )
+}
 
-export default CabinetHeaderMobile;
+export default CabinetHeaderMobile

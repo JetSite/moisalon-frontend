@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { laptopBreakpoint } from '../../../../styles/variables'
+import { laptopBreakpoint } from '../../../styles/variables'
 
 export const Wrapper = styled.div<{ view: 'list' | string }>`
   display: flex;

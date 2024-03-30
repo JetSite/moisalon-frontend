@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../../styles/variables";
-import { lighten } from "polished";
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../../styles/variables'
+import { lighten } from 'polished'
 
 export const Wrapper = styled.div`
   padding: 0 140px;
@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     padding: 0 20px;
   }
-`;
+`
 
 export const Content = styled.div`
   display: flex;
@@ -20,7 +20,7 @@ export const Content = styled.div`
     flex-direction: column-reverse;
     min-height: initial;
   }
-`;
+`
 
 export const Info = styled.div`
   max-width: 292px;
@@ -29,13 +29,13 @@ export const Info = styled.div`
     max-width: 100%;
     margin-top: 20px;
   }
-`;
+`
 
 export const ImageContent = styled.div`
   max-width: 843px;
   width: 100%;
   position: relative;
-`;
+`
 
 export const Image = styled.img`
   object-fit: cover;
@@ -44,7 +44,7 @@ export const Image = styled.img`
   @media (max-width: ${laptopBreakpoint}) {
     max-height: 300px;
   }
-`;
+`
 
 export const OnlineBooking = styled.a`
   position: absolute;
@@ -73,7 +73,7 @@ export const OnlineBooking = styled.a`
     font-size: 10px;
     right: 10px;
   }
-`;
+`
 
 export const Icon = styled.img`
   margin-right: 13px;
@@ -81,28 +81,28 @@ export const Icon = styled.img`
     margin-right: 8px;
     flex-shrink: 0;
   }
-`;
+`
 
 export const SalonInfo = styled.div`
   display: flex;
   @media (max-width: ${laptopBreakpoint}) {
     margin-bottom: 10px;
   }
-`;
+`
 
 export const Avatar = styled.img`
   width: 32px;
   height: 32px;
   border-radius: 100%;
   margin-right: 17px;
-`;
+`
 
 export const SalonInfoRight = styled.div`
   margin-bottom: 20px;
   @media (max-width: ${laptopBreakpoint}) {
     margin: 0;
   }
-`;
+`
 
 export const Name = styled.h1`
   font-weight: 600;
@@ -114,11 +114,11 @@ export const Name = styled.h1`
   @media (max-width: ${laptopBreakpoint}) {
     font-size: 18px;
   }
-`;
+`
 
 export const Socials = styled.div`
   display: flex;
-`;
+`
 
 export const SocialButton = styled.a`
   display: block;
@@ -126,32 +126,32 @@ export const SocialButton = styled.a`
   height: 23px;
   cursor: pointer;
   margin-right: 12px;
-`;
+`
 
 export const SocialFb = styled(SocialButton)`
-  background: url("/brand-fb-icon.svg") no-repeat center;
+  background: url('/brand-fb-icon.svg') no-repeat center;
   background-size: cover;
 
   @media (max-width: ${laptopBreakpoint}) {
     background-size: contain;
   }
-`;
+`
 export const SocialInst = styled(SocialButton)`
-  background: url("/brand-in-icon.svg") no-repeat center;
+  background: url('/brand-in-icon.svg') no-repeat center;
   background-size: cover;
 
   @media (max-width: ${laptopBreakpoint}) {
     background-size: contain;
   }
-`;
+`
 export const SocialVk = styled(SocialButton)`
-  background: url("/brand-vk-icon.svg") no-repeat center;
+  background: url('/brand-vk-icon.svg') no-repeat center;
   background-size: cover;
 
   @media (max-width: ${laptopBreakpoint}) {
     background-size: contain;
   }
-`;
+`
 
 export const ReviewsScore = styled.div`
   display: flex;
@@ -161,7 +161,7 @@ export const ReviewsScore = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     margin-bottom: 16px;
   }
-`;
+`
 
 export const CountReviews = styled.p`
   margin-left: 24px;
@@ -169,7 +169,7 @@ export const CountReviews = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     font-size: 16px;
   }
-`;
+`
 
 export const City = styled.div`
   display: flex;
@@ -179,7 +179,7 @@ export const City = styled.div`
     margin-bottom: 16px;
     align-items: center;
   }
-`;
+`
 
 export const CityText = styled.p`
   display: flex;
@@ -190,18 +190,18 @@ export const CityText = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     font-size: 16px;
   }
-`;
+`
 
 export const Phones = styled.div`
   margin-bottom: 35px;
   @media (max-width: ${laptopBreakpoint}) {
     margin-bottom: 6px;
   }
-`;
+`
 
 export const PhoneWrap = styled.div`
   display: flex;
-`;
+`
 
 export const Working = styled.div`
   display: flex;
@@ -210,7 +210,7 @@ export const Working = styled.div`
     margin-bottom: 16px;
     align-items: center;
   }
-`;
+`
 
 export const Phone = styled.a`
   font-size: 18px;
@@ -220,7 +220,7 @@ export const Phone = styled.a`
   @media (max-width: ${laptopBreakpoint}) {
     font-size: 16px;
   }
-`;
+`
 
 export const ButtonOnline = styled.a`
   width: 100%;
@@ -235,9 +235,9 @@ export const ButtonOnline = styled.a`
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   &:hover {
-    background-color: ${lighten(0.1, "#f03")};
+    background-color: ${lighten(0.1, '#f03')};
   }
-`;
+`
 
 export const EditButton = styled.div`
   background: #f0f0f0;
@@ -258,7 +258,7 @@ export const EditButton = styled.div`
     height: 28px;
     margin-bottom: 18px;
   }
-`;
+`
 
 export const SocialsWrapper = styled.div`
   height: 23px;
@@ -275,16 +275,16 @@ export const SocialsWrapper = styled.div`
     height: 33px;
     margin-bottom: 6px;
   }
-`;
+`
 
 export const Rating = styled.div`
   display: flex;
   margin-bottom: 10px;
-`;
+`
 
 export const Count = styled.p`
   font-size: 10px;
-`;
+`
 
 export const EditButtonsWrapper = styled.div`
   width: 100%;
@@ -298,4 +298,4 @@ export const EditButtonsWrapper = styled.div`
     flex-direction: column;
     align-items: center;
   }
-`;
+`

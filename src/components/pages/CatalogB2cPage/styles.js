@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../styles/variables";
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../styles/variables'
 
 export const Categories = styled.div`
   display: flex;
@@ -17,7 +17,7 @@ export const Categories = styled.div`
     margin-bottom: 10px;
     overflow-x: auto;
   }
-`;
+`
 
 export const Category = styled.div`
   font-size: 14px;
@@ -26,9 +26,9 @@ export const Category = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     flex-shrink: 0;
   }
-`;
+`
 
 export const WrapButton = styled.div`
   padding: 36px 0;
   text-align: center;
-`;
+`

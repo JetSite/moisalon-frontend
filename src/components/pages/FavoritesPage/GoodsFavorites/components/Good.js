@@ -1,5 +1,5 @@
-import parseToFloat from "../../../../../utils/parseToFloat";
-import { favoritesInStorage } from "../../../../../utils/favoritesInStorage";
+import parseToFloat from '../../../../../utils/parseToFloat'
+import { favoritesInStorage } from '../../../../../utils/favoritesInStorage'
 import {
   WrapperItem,
   TopGoodWrapper,
@@ -11,12 +11,12 @@ import {
   Price,
   NewPrice,
   OldPrice,
-} from "../styled";
-import { useContext } from "react";
-import { MeContext } from "../../../../../searchContext";
-import { PHOTO_URL } from "../../../../../../variables";
-import { red } from "../../../../../../styles/variables";
-import HeartFullFill from "../../../MainPage/components/Header/icons/HeartFullFill";
+} from '../styled'
+import { useContext } from 'react'
+import { MeContext } from '../../../../../searchContext'
+import { PHOTO_URL } from '../../../../../variables'
+import { red } from '../../../../../styles/variables'
+import HeartFullFill from '../../../MainPage/components/Header/icons/HeartFullFill'
 
 const Good = ({
   product,
@@ -25,14 +25,14 @@ const Good = ({
   cabinet = false,
   handleDeleted,
 }) => {
-  const [me] = useContext(MeContext);
+  const [me] = useContext(MeContext)
   const addFavorite = (e, product) => {
-    e.preventDefault();
-    e.stopPropagation();
-    favoritesInStorage("products", product);
-    setDeleteItem(!deleteItem);
-    handleDeleted && handleDeleted();
-  };
+    e.preventDefault()
+    e.stopPropagation()
+    favoritesInStorage('products', product)
+    setDeleteItem(!deleteItem)
+    handleDeleted && handleDeleted()
+  }
 
   return (
     <WrapperItem cabinet={cabinet}>
@@ -42,10 +42,10 @@ const Good = ({
           src={
             product?.photoIds[0]
               ? `${PHOTO_URL}${product?.photoIds[0]}/original`
-              : "/cosmetic_placeholder.jpg"
+              : '/cosmetic_placeholder.jpg'
           }
         />
-        <Favorite onClick={(e) => addFavorite(e, product)}>
+        <Favorite onClick={e => addFavorite(e, product)}>
           <HeartFullFill fill={red} />
         </Favorite>
       </TopGoodWrapper>
@@ -57,7 +57,7 @@ const Good = ({
               <NewPrice>
                 {product?.amount
                   ? `${product?.amount.toLocaleString()} ₽`
-                  : "Цена по запросу"}{" "}
+                  : 'Цена по запросу'}{' '}
                 <OldPrice>
                   {product?.currentAmount
                     ? `${product?.currentAmount.toLocaleString()}₽`
@@ -69,7 +69,7 @@ const Good = ({
         </Wrap>
       </BottomGoodWrapper>
     </WrapperItem>
-  );
-};
+  )
+}
 
-export default Good;
+export default Good

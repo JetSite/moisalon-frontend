@@ -13,7 +13,7 @@ import {
   RightColumn,
   NoServicesText,
 } from './styled'
-import EditIcons from '../../../../../ui/EditIcons'
+import EditIcons from '../../../../../ui/EditIcons/index.tsx'
 import EditSalonServicesForClient from '../../../../../pages/Salon/EditSalonServicesForClient'
 import { updateServiceMasterMutation } from '../../../../../../_graphql-legacy/master/updateServiceMasterMutation'
 

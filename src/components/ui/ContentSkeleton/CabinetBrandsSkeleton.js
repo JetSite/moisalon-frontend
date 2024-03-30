@@ -1,7 +1,7 @@
-import React from "react";
-import styled from "styled-components";
-import { Skeleton } from "@material-ui/lab";
-import { laptopBreakpoint } from "../../../../styles/variables";
+import React from 'react'
+import styled from 'styled-components'
+import { Skeleton } from '@material-ui/lab'
+import { laptopBreakpoint } from '../../../styles/variables'
 
 const Wrapper = styled.div`
   display: flex;
@@ -9,12 +9,12 @@ const Wrapper = styled.div`
     padding: 0 20px;
     margin-top: 70px;
   }
-`;
+`
 
 const SkeletonRect = styled(Skeleton)`
   margin-right: 22px;
   border-radius: 5px;
-`;
+`
 
 const CabinetBrandsSkeleton = () => {
   return (
@@ -23,7 +23,7 @@ const CabinetBrandsSkeleton = () => {
       <SkeletonRect variant="rect" width={176} height={176} />
       <SkeletonRect variant="rect" width={176} height={176} />
     </Wrapper>
-  );
-};
+  )
+}
 
-export default CabinetBrandsSkeleton;
+export default CabinetBrandsSkeleton

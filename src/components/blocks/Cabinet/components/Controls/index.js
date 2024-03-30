@@ -1,12 +1,12 @@
-import styled from "styled-components";
-import { useRouter } from "next/router";
-import { laptopBreakpoint } from "../../../../../../styles/variables";
-import Avatar from "../../../Form/Avatar";
-import { useContext } from "react";
-import { CityContext, MeContext } from "../../../../../searchContext";
-import { useQuery } from "@apollo/client";
-import { currentUserSalonsAndMasterQuery } from "../../../../../_graphql-legacy/master/currentUserSalonsAndMasterQuery";
-import { cyrToTranslit } from "../../../../../utils/translit";
+import styled from 'styled-components'
+import { useRouter } from 'next/router'
+import { laptopBreakpoint } from '../../../../../styles/variables'
+import Avatar from '../../../Form/Avatar'
+import { useContext } from 'react'
+import { CityContext, MeContext } from '../../../../../searchContext'
+import { useQuery } from '@apollo/client'
+import { currentUserSalonsAndMasterQuery } from '../../../../../_graphql-legacy/master/currentUserSalonsAndMasterQuery'
+import { cyrToTranslit } from '../../../../../utils/translit'
 
 const Wrapper = styled.div`
   max-width: 395px;
@@ -20,7 +20,7 @@ const Wrapper = styled.div`
     height: initial;
     max-width: 100%;
   }
-`;
+`
 
 const Text = styled.p`
   margin-top: 50px;
@@ -29,7 +29,7 @@ const Text = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 const TextRed = styled.div`
   display: inline-block;
@@ -41,20 +41,20 @@ const TextRed = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 const IconBack = styled.div`
   display: none;
   @media (max-width: ${laptopBreakpoint}) {
     display: block;
-    background: url("/icon-back.svg") no-repeat center;
+    background: url('/icon-back.svg') no-repeat center;
     width: 10px;
     height: 12px;
     position: absolute;
     left: 0;
     top: 44px;
   }
-`;
+`
 
 const Controls = ({
   id,
@@ -66,40 +66,40 @@ const Controls = ({
   noPhotoError,
   setNoPhotoError,
 }) => {
-  const dev = process.env.NEXT_PUBLIC_ENV !== "production";
+  const dev = process.env.NEXT_PUBLIC_ENV !== 'production'
 
-  const router = useRouter();
-  const [me, setMe] = useContext(MeContext);
-  const [city] = useContext(CityContext);
+  const router = useRouter()
+  const [me, setMe] = useContext(MeContext)
+  const [city] = useContext(CityContext)
   const { refetch } = useQuery(currentUserSalonsAndMasterQuery, {
     skip: true,
-    onCompleted: (res) => {
+    onCompleted: res => {
       setMe({
         info: res?.me?.info,
         master: res?.me?.master,
         locationByIp: res?.locationByIp,
         salons: res?.me?.salons,
         rentalRequests: res?.me?.rentalRequests,
-      });
+      })
     },
-  });
+  })
 
   const handleLogout = async () => {
     const resData = await fetch(
       dev
-        ? "https://stage-passport.moi.salon/api/logout"
-        : "https://passport.moi.salon/api/logout",
+        ? 'https://stage-passport.moi.salon/api/logout'
+        : 'https://passport.moi.salon/api/logout',
       {
-        credentials: "include",
-        "Access-Control-Allow-Credentials": true,
-      }
-    );
+        credentials: 'include',
+        'Access-Control-Allow-Credentials': true,
+      },
+    )
 
     if (resData.status === 200) {
-      await refetch();
-      router.push(`/${cyrToTranslit(city)}`);
+      await refetch()
+      router.push(`/${cyrToTranslit(city)}`)
     }
-  };
+  }
 
   return (
     <Wrapper>
@@ -116,18 +116,18 @@ const Controls = ({
       <Text>Мои данные</Text>
       <TextRed
         onClick={() => {
-          handleLogout();
+          handleLogout()
         }}
       >
         Выход
       </TextRed>
       <IconBack
         onClick={() => {
-          handleLogout();
+          handleLogout()
         }}
       />
     </Wrapper>
-  );
-};
+  )
+}
 
-export default Controls;
+export default Controls

@@ -5,7 +5,7 @@ import {
   mobileBreakpoint,
   tabletBreakpoint,
   laptopBreakpoint,
-} from '../../../../../../styles/variables'
+} from '../../../../../styles/variables'
 
 export const Checkbox = styled.input`
   position: absolute;

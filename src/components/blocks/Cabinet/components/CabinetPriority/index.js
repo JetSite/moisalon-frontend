@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useMutation, useQuery } from "@apollo/client";
+import { useState, useEffect } from 'react'
+import { useMutation, useQuery } from '@apollo/client'
 import {
   Wrapper,
   TitlePage,
@@ -13,25 +13,25 @@ import {
   PriorityWrapper,
   Back,
   SkeletonWrap,
-} from "./styles";
-import Button from "../../../../ui/Button";
-import CreatePriority from "./components/CreatePriority";
-import { MobileHidden, MobileVisible } from "../../../../../styles/common";
-import { currentRequestPriority } from "../../../../../_graphql-legacy/priority/currentRequestPriority";
-import { deletePriorityMutation } from "../../../../../_graphql-legacy/priority/deletePriorityMutation";
-import { PHOTO_URL } from "../../../../../../variables";
-import Priority from "../../../../ui/Priority";
+} from './styles'
+import Button from '../../../../ui/Button'
+import CreatePriority from './components/CreatePriority'
+import { MobileHidden, MobileVisible } from '../../../../../styles/common'
+import { currentRequestPriority } from '../../../../../_graphql-legacy/priority/currentRequestPriority'
+import { deletePriorityMutation } from '../../../../../_graphql-legacy/priority/deletePriorityMutation'
+import { PHOTO_URL } from '../../../../../variables'
+import Priority from '../../../../ui/Priority'
 
 const CabinetPriorityList = ({ priority, loading, handleDelete }) => {
   if (loading) {
-    return <SkeletonWrap variant="rect" />;
+    return <SkeletonWrap variant="rect" />
   }
 
   return (
     <PriorityWrapper>
       {priority?.length > 0 ? (
         <>
-          {priority?.map((item) => (
+          {priority?.map(item => (
             <>
               <Priority text={item?.requestComment} status={item?.status} />
               <Button onClick={() => handleDelete(item)} variant="red">
@@ -44,43 +44,43 @@ const CabinetPriorityList = ({ priority, loading, handleDelete }) => {
         <Subtitle>У профиля нет заявок</Subtitle>
       )}
     </PriorityWrapper>
-  );
-};
+  )
+}
 
 const CabinetPriority = ({ me }) => {
-  const salons = me?.salons;
-  const master = me?.master;
-  const brands = me?.userBrands;
+  const salons = me?.salons
+  const master = me?.master
+  const brands = me?.userBrands
 
-  const [id, setId] = useState("");
-  const [type, setType] = useState(null);
-  const [activeProfile, setActiveProfile] = useState(null);
-  const [priority, setPriority] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [createPriority, setCreatePriority] = useState(false);
+  const [id, setId] = useState('')
+  const [type, setType] = useState(null)
+  const [activeProfile, setActiveProfile] = useState(null)
+  const [priority, setPriority] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [createPriority, setCreatePriority] = useState(false)
 
   const { data, refetch: refetchPriority } = useQuery(currentRequestPriority, {
     skip: true,
     variables: {
       originId: id,
     },
-    onCompleted: (res) => {
-      setPriority(res?.currentRequestPriority);
-      setLoading(false);
+    onCompleted: res => {
+      setPriority(res?.currentRequestPriority)
+      setLoading(false)
     },
-  });
+  })
 
   useEffect(() => {
     if (id) {
-      setLoading(true);
-      setPriority([]);
+      setLoading(true)
+      setPriority([])
       refetchPriority({
         variables: {
           originId: id,
         },
-      });
+      })
     }
-  }, [type, id]);
+  }, [type, id])
 
   const [deletePriority] = useMutation(deletePriorityMutation, {
     onCompleted: async () => {
@@ -88,17 +88,17 @@ const CabinetPriority = ({ me }) => {
         variables: {
           originId: activeProfile.id,
         },
-      });
+      })
     },
-  });
+  })
 
-  const handleDelete = (item) => {
+  const handleDelete = item => {
     deletePriority({
       variables: {
         id: item.id,
       },
-    });
-  };
+    })
+  }
 
   return (
     <Wrapper>
@@ -113,15 +113,15 @@ const CabinetPriority = ({ me }) => {
       {master?.id && !activeProfile ? (
         <Item
           onClick={() => {
-            setType("master");
-            setId(master?.id);
-            setActiveProfile(master);
+            setType('master')
+            setId(master?.id)
+            setActiveProfile(master)
           }}
         >
           <Container>
             <Avatar
               alt="avatar"
-              src={master?.photo?.url || "empty-photo.svg"}
+              src={master?.photo?.url || 'empty-photo.svg'}
             />
             <Content>
               <Name>{master?.name}</Name>
@@ -131,26 +131,26 @@ const CabinetPriority = ({ me }) => {
         </Item>
       ) : null}
       {salons?.length && !activeProfile
-        ? salons.map((item) => (
+        ? salons.map(item => (
             <div key={item.id}>
               <Item
                 onClick={() => {
-                  setType("salon");
-                  setId(item?.id);
-                  setActiveProfile(item);
+                  setType('salon')
+                  setId(item?.id)
+                  setActiveProfile(item)
                 }}
               >
                 <Container>
                   <Avatar
                     alt="avatar"
-                    src={item?.logo?.url || "empty-photo.svg"}
+                    src={item?.logo?.url || 'empty-photo.svg'}
                   />
                   <Content>
                     <Name>{item?.name}</Name>
                     <Type>
                       {item?.lessor
-                        ? "Профиль салона арендодателя"
-                        : "Профиль салона"}
+                        ? 'Профиль салона арендодателя'
+                        : 'Профиль салона'}
                     </Type>
                   </Content>
                 </Container>
@@ -159,13 +159,13 @@ const CabinetPriority = ({ me }) => {
           ))
         : null}
       {brands?.length && !activeProfile
-        ? brands.map((item) => (
+        ? brands.map(item => (
             <div key={item.id}>
               <Item
                 onClick={() => {
-                  setType("brand");
-                  setId(item?.id);
-                  setActiveProfile(item);
+                  setType('brand')
+                  setId(item?.id)
+                  setActiveProfile(item)
                 }}
               >
                 <Container>
@@ -174,7 +174,7 @@ const CabinetPriority = ({ me }) => {
                     src={
                       item?.logoId
                         ? `${PHOTO_URL}${item?.logoId}/original`
-                        : "empty-photo.svg"
+                        : 'empty-photo.svg'
                     }
                   />
                   <Content>
@@ -186,12 +186,12 @@ const CabinetPriority = ({ me }) => {
             </div>
           ))
         : null}
-      {type === "master" && activeProfile ? (
+      {type === 'master' && activeProfile ? (
         <>
           <Back
             onClick={() => {
-              setActiveProfile(null);
-              setCreatePriority(false);
+              setActiveProfile(null)
+              setCreatePriority(false)
             }}
           >
             Назад
@@ -200,7 +200,7 @@ const CabinetPriority = ({ me }) => {
             <Container>
               <Avatar
                 alt="avatar"
-                src={master?.photo?.url || "empty-photo.svg"}
+                src={master?.photo?.url || 'empty-photo.svg'}
               />
               <Content>
                 <Name>{master?.name}</Name>
@@ -250,12 +250,12 @@ const CabinetPriority = ({ me }) => {
           )}
         </>
       ) : null}
-      {type === "salon" && activeProfile ? (
+      {type === 'salon' && activeProfile ? (
         <>
           <Back
             onClick={() => {
-              setActiveProfile(null);
-              setCreatePriority(false);
+              setActiveProfile(null)
+              setCreatePriority(false)
             }}
           >
             Назад
@@ -264,7 +264,7 @@ const CabinetPriority = ({ me }) => {
             <Container>
               <Avatar
                 alt="avatar"
-                src={activeProfile?.logo?.url || "empty-photo.svg"}
+                src={activeProfile?.logo?.url || 'empty-photo.svg'}
               />
               <Content>
                 <Name>{activeProfile?.name}</Name>
@@ -314,12 +314,12 @@ const CabinetPriority = ({ me }) => {
           )}
         </>
       ) : null}
-      {type === "brand" && activeProfile ? (
+      {type === 'brand' && activeProfile ? (
         <>
           <Back
             onClick={() => {
-              setActiveProfile(null);
-              setCreatePriority(false);
+              setActiveProfile(null)
+              setCreatePriority(false)
             }}
           >
             Назад
@@ -331,7 +331,7 @@ const CabinetPriority = ({ me }) => {
                 src={
                   activeProfile?.logoId
                     ? `${PHOTO_URL}${activeProfile?.logoId}/original`
-                    : "empty-photo.svg"
+                    : 'empty-photo.svg'
                 }
               />
               <Content>
@@ -383,7 +383,7 @@ const CabinetPriority = ({ me }) => {
         </>
       ) : null}
     </Wrapper>
-  );
-};
+  )
+}
 
-export default CabinetPriority;
+export default CabinetPriority

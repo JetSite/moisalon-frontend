@@ -102,8 +102,6 @@ export default function AppContent({
   //   variables: { id: 1 },
   // })
 
-  // console.log(data)
-
   return (
     <>
       {/* <Head>

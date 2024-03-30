@@ -1,9 +1,9 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 import {
   red,
   laptopBreakpoint,
   tabletBreakpoint,
-} from "../../../../../../styles/variables";
+} from '../../../../../styles/variables'
 
 export const Wrapper = styled.div`
   padding: 85px 140px 0 140px;
@@ -16,7 +16,7 @@ export const Wrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     padding: 20px;
   }
-`;
+`
 
 export const Title = styled.h2`
   font-size: 30px;
@@ -30,7 +30,7 @@ export const Title = styled.h2`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const Text = styled.p`
   max-width: 621px;
@@ -47,7 +47,7 @@ export const Text = styled.p`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const TasksCards = styled.div`
   margin-top: 73px;
@@ -61,7 +61,7 @@ export const TasksCards = styled.div`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const TasksCard = styled.div`
   flex: 1 0 25%;
@@ -89,14 +89,14 @@ export const TasksCard = styled.div`
     min-height: 138px;
     border-right: none;
   }
-`;
+`
 
 export const CardNumber = styled.p`
   color: ${red};
   font-size: 48px;
   font-weight: 500;
   line-height: 60px;
-`;
+`
 
 export const CardText = styled.p`
   margin-top: 15px;
@@ -104,4 +104,4 @@ export const CardText = styled.p`
   font-weight: 500;
   line-height: 27px;
   text-align: center;
-`;
+`

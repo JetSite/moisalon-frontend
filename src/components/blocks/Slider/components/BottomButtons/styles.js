@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import Button from "../../../../ui/Button";
-import { laptopBreakpoint } from "../../../../../../styles/variables";
+import styled from 'styled-components'
+import Button from '../../../../ui/Button'
+import { laptopBreakpoint } from '../../../../../styles/variables'
 
 export const Bottom = styled.div`
   display: flex;
@@ -13,15 +13,15 @@ export const Bottom = styled.div`
     display: block;
     margin-left: 0;
   }
-`;
+`
 
 export const ButtonStyled = styled(Button)`
   position: relative;
   &:before {
-    content: "";
+    content: '';
     width: 15px;
     height: 17px;
-    background: url("/bell-icon.svg") no-repeat center;
+    background: url('/bell-icon.svg') no-repeat center;
     background-size: cover;
     position: absolute;
     top: 18px;
@@ -36,13 +36,13 @@ export const ButtonStyled = styled(Button)`
     width: 100%;
     max-width: 300px;
   }
-`;
+`
 
 export const BottomText = styled.p`
   display: flex;
   align-items: center;
   font-weight: 600;
-  color: ${({ bgColor }) => (bgColor === "#000" ? "#fff" : "#000")};
+  color: ${({ bgColor }) => (bgColor === '#000' ? '#fff' : '#000')};
   font-size: 18px;
   line-height: 25px;
   position: relative;
@@ -58,19 +58,19 @@ export const BottomText = styled.p`
     font-weight: 400;
     line-height: 25px;
   }
-`;
+`
 
 export const Plus = styled.div`
   width: 56px;
   height: 56px;
-  background: ${({ bgColor }) => (bgColor === "#f2f0f0" ? "#fff" : "#f0f0f0")};
+  background: ${({ bgColor }) => (bgColor === '#f2f0f0' ? '#fff' : '#f0f0f0')};
   position: relative;
   border-radius: 100%;
   margin-right: 24px;
   transition: all 0.2s ease-in-out;
 
   &:after {
-    content: "";
+    content: '';
     position: absolute;
     width: 22px;
     height: 1px;
@@ -83,7 +83,7 @@ export const Plus = styled.div`
     }
   }
   &:before {
-    content: "";
+    content: '';
     position: absolute;
     width: 1px;
     height: 22px;
@@ -106,4 +106,4 @@ export const Plus = styled.div`
     margin-right: 19px;
     background: #fff;
   }
-`;
+`

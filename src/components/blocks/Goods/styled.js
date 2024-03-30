@@ -1,6 +1,6 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
-import { laptopBreakpoint } from "../../../../styles/variables";
+import { laptopBreakpoint } from '../../../styles/variables'
 
 export const Wrapper = styled.div`
   margin-top: 100px;
@@ -10,26 +10,26 @@ export const Wrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 export const Top = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-`;
+`
 
 export const Title = styled.p`
   font-size: 30px;
   font-weight: 600;
   margin-bottom: 55px;
-`;
+`
 
 export const Good = styled.div`
   width: 175px;
   min-height: 100%;
   display: flex;
   flex-direction: column;
-`;
+`
 
 export const TopGoodWrapper = styled.div`
   height: 175px;
@@ -41,17 +41,17 @@ export const TopGoodWrapper = styled.div`
   align-items: center;
   position: relative;
   z-index: 2;
-`;
+`
 
 export const Favorite = styled.div`
   position: absolute;
   width: 16px;
   height: 16px;
-  background: url("/favorit.svg") no-repeat center;
+  background: url('/favorit.svg') no-repeat center;
   cursor: pointer;
   right: 12px;
   top: 12px;
-`;
+`
 
 export const ActionPercentBlock = styled.div`
   display: flex;
@@ -69,18 +69,18 @@ export const ActionPercentBlock = styled.div`
   line-height: 16px;
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
-`;
+`
 
 export const SwiperWrap = styled.div`
   max-width: 963px;
   width: 100%;
-`;
+`
 
 export const Image = styled.img`
   height: 100%;
   object-fit: contain;
   width: 100%;
-`;
+`
 
 export const BottomGoodWrapper = styled.div`
   padding: 12px 10px;
@@ -94,7 +94,7 @@ export const BottomGoodWrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
   flex-grow: 1;
-`;
+`
 
 export const Name = styled.p`
   font-size: 14px;
@@ -102,13 +102,13 @@ export const Name = styled.p`
   font-weight: 600;
   text-align: center;
   color: #000;
-`;
+`
 
 export const Price = styled.div`
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
-`;
+`
 
 export const OldPrice = styled.p`
   color: #e5e5e5;
@@ -117,7 +117,7 @@ export const OldPrice = styled.p`
   font-size: 14px;
   line-height: 27px;
   &:after {
-    content: "";
+    content: '';
     position: absolute;
     background: #e5e5e5;
     height: 2px;
@@ -125,14 +125,14 @@ export const OldPrice = styled.p`
     top: calc(50% - 1px);
     left: 0;
   }
-`;
+`
 
 export const NewPrice = styled.p`
   font-size: 14px;
   line-height: 27px;
   color: #ff0033;
   font-weight: 600;
-`;
+`
 
 export const AllGoods = styled.div`
   width: 176px;
@@ -146,9 +146,9 @@ export const AllGoods = styled.div`
   flex-direction: column;
   justify-content: center;
   &:after {
-    content: "";
+    content: '';
     position: absolute;
-    background: url("/all-goods.svg") no-repeat bottom;
+    background: url('/all-goods.svg') no-repeat bottom;
     width: 124px;
     height: 124px;
     bottom: 21px;
@@ -156,26 +156,26 @@ export const AllGoods = styled.div`
     margin-left: -62px;
   }
   &:before {
-    content: "";
+    content: '';
     position: absolute;
-    background: url("/all-romb.svg") no-repeat bottom;
+    background: url('/all-romb.svg') no-repeat bottom;
     background-size: cover;
     width: 31px;
     height: 31px;
     top: 72px;
     left: 12px;
   }
-`;
+`
 
 export const AllIcon = styled.div`
   position: absolute;
-  background: url("/all-img.svg") no-repeat bottom;
+  background: url('/all-img.svg') no-repeat bottom;
   background-size: cover;
   width: 70px;
   height: 81px;
   top: 16px;
   right: 10px;
-`;
+`
 
 export const AllText = styled.p`
   color: #fff;
@@ -183,7 +183,7 @@ export const AllText = styled.p`
   text-align: center;
   font-size: 18px;
   line-height: 25px;
-`;
+`
 
 export const Plus = styled.div`
   width: 56px;
@@ -193,7 +193,7 @@ export const Plus = styled.div`
   border-radius: 100%;
   margin-right: 24px;
   &:after {
-    content: "";
+    content: '';
     position: absolute;
     width: 22px;
     height: 1px;
@@ -203,7 +203,7 @@ export const Plus = styled.div`
     margin-left: -11px;
   }
   &:before {
-    content: "";
+    content: '';
     position: absolute;
     width: 1px;
     height: 22px;
@@ -212,11 +212,11 @@ export const Plus = styled.div`
     margin-top: -11px;
     left: 50%;
   }
-`;
+`
 
 export const BottomText = styled.p`
   font-size: 18px;
   font-weight: 600;
   color: #000;
   line-height: 25px;
-`;
+`

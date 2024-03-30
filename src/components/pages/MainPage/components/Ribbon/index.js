@@ -10,7 +10,9 @@ import {
   NoSearchResults,
 } from './styled'
 import Tabs from './components/Tabs'
-import { red } from '../../../../../../styles/variables'
+import { red } from '../../../../../styles/variables'
+import { getAdvices } from '../../../../../_graphql-legacy/advices/getAdvices'
+import { beautySearch } from '../../../../../_graphql-legacy/search/beautySearch'
 import Search from './icons/Search'
 import RibbonSearch from './components/RibbonSearch'
 import Slider from '../../../../blocks/Slider'

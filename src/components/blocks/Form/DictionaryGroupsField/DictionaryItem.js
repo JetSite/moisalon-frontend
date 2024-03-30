@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../styles/variables";
+import React, { useState, useEffect } from 'react'
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../styles/variables'
 
 const CheckboxWrapper = styled.div`
   display: inline-flex;
@@ -12,7 +12,7 @@ const CheckboxWrapper = styled.div`
     margin-top: 0;
     margin-bottom: 20px;
   }
-`;
+`
 
 const Checkbox = styled.div`
   position: absolute;
@@ -24,7 +24,7 @@ const Checkbox = styled.div`
     user-select: none;
   }
   & + p::before {
-    content: "";
+    content: '';
     display: inline-block;
     width: 23px;
     height: 23px;
@@ -33,10 +33,10 @@ const Checkbox = styled.div`
     border: 1px solid #e3e3e3;
     margin-right: 14px;
     cursor: pointer;
-    background: ${(props) =>
-      props.checked ? `url("/icon-check.svg") no-repeat center` : ""};
+    background: ${props =>
+      props.checked ? `url("/icon-check.svg") no-repeat center` : ''};
   }
-`;
+`
 
 export const Label = styled.p`
   font-size: 18px;
@@ -49,34 +49,34 @@ export const Label = styled.p`
     font-weight: 500;
     line-height: 16px;
   }
-`;
+`
 
 const DictionaryItem = ({ push, remove, value = [], name, ...item }) => {
-  const { checked, id, title: label } = item;
+  const { checked, id, title: label } = item
 
-  const [check, setCheck] = useState(checked);
+  const [check, setCheck] = useState(checked)
 
   useEffect(() => {
     if (!check) {
-      const index = value.map((t) => t.id).indexOf(id);
+      const index = value.map(t => t.id).indexOf(id)
       if (index > -1) {
-        remove(index);
+        remove(index)
       }
     } else {
-      push({ id, value: 1 });
+      push({ id, value: 1 })
     }
-  }, [check]);
+  }, [check])
 
   const clickHandler = () => {
-    setCheck(!check);
-  };
+    setCheck(!check)
+  }
 
   return (
     <CheckboxWrapper onClick={clickHandler}>
       <Checkbox name={name} type="checkbox" checked={check} />
       <Label>{label}</Label>
     </CheckboxWrapper>
-  );
-};
+  )
+}
 
-export default DictionaryItem;
+export default DictionaryItem

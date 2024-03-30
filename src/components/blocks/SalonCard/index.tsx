@@ -29,14 +29,15 @@ import Share from '../../ui/Share'
 import Rating from '../../ui/Rating'
 import { useMedia } from 'use-media'
 import HeartFullFill from '../../pages/MainPage/components/Header/icons/HeartFullFill'
-import { PHOTO_URL } from 'variables'
+import { PHOTO_URL } from 'src/variables'
+import { ISalon } from 'src/types/salon'
 import { getServicesCategories } from 'src/utils/serviceCatalog'
 
 interface Props {
-  item: any
-  loading: boolean
-  rent: boolean
-  seatCount: number
+  item: ISalon
+  loading?: boolean
+  rent?: boolean
+  seatCount?: number
   shareLink: string
 }
 

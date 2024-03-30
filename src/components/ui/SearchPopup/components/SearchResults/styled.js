@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { laptopBreakpoint, red } from "../../../../../../styles/variables";
+import styled from 'styled-components'
+import { laptopBreakpoint, red } from '../../../../../styles/variables'
 
 export const Wrapper = styled.div`
   display: flex;
@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
     padding-bottom: 80px;
     background: #fff;
   }
-`;
+`
 
 export const Category = styled.div`
   min-width: 320px;
@@ -21,21 +21,21 @@ export const Category = styled.div`
     margin-right: 0;
     margin-bottom: 30px;
   }
-`;
+`
 
 export const Title = styled.div`
   color: #797979;
   font-weight: 500;
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const List = styled.div`
   margin-top: 27px;
   @media (max-width: ${laptopBreakpoint}) {
     margin-top: 17px;
   }
-`;
+`
 
 export const ListItem = styled.a`
   display: block;
@@ -53,7 +53,7 @@ export const ListItem = styled.a`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const EmptyResult = styled.p`
   display: block;
@@ -64,4 +64,4 @@ export const EmptyResult = styled.p`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`

@@ -1,20 +1,20 @@
-import styled from "styled-components";
-import { Field } from "react-final-form";
-import { laptopBreakpoint } from "../../../../../../../../styles/variables";
+import styled from 'styled-components'
+import { Field } from 'react-final-form'
+import { laptopBreakpoint } from '../../../../../../../styles/variables'
 
 const Wrapper = styled.div`
   margin-bottom: 30px;
-`;
+`
 
 const Title = styled.p`
   margin-bottom: 15px;
   font-size: 16px;
   text-transform: uppercase;
-`;
+`
 
 const CheckboxWrapper = styled.div`
   margin-bottom: 15px;
-`;
+`
 
 const CheckboxElement = styled(Field)`
   position: absolute;
@@ -23,7 +23,7 @@ const CheckboxElement = styled(Field)`
 
   &:checked {
     & + label::before {
-      background: url("/tick-checkbox.png") no-repeat center;
+      background: url('/tick-checkbox.png') no-repeat center;
     }
   }
 
@@ -33,7 +33,7 @@ const CheckboxElement = styled(Field)`
     user-select: none;
   }
   & + label::before {
-    content: "";
+    content: '';
     display: inline-block;
     width: 16px;
     height: 16px;
@@ -42,20 +42,20 @@ const CheckboxElement = styled(Field)`
     border: 1px solid #797979;
     margin-right: 14px;
     cursor: pointer;
-    background: ${(props) =>
-      props.checked ? `url("/tick-checkbox.png") no-repeat center` : ""};
+    background: ${props =>
+      props.checked ? `url("/tick-checkbox.png") no-repeat center` : ''};
   }
-`;
+`
 
 const Label = styled.label`
   cursor: pointer;
-`;
+`
 
 const TechnicalBlock = ({ item }) => {
   return (
     <Wrapper>
       <Title>{item.title}</Title>
-      {item.id === "equipment_lighting" ? (
+      {item.id === 'equipment_lighting' ? (
         <CheckboxWrapper>
           <CheckboxElement
             name="hasWindows"
@@ -66,7 +66,7 @@ const TechnicalBlock = ({ item }) => {
           <Label htmlFor="hasWindows">Наличие окон</Label>
         </CheckboxWrapper>
       ) : null}
-      {item.items.map((checkboxItem) => (
+      {item.items.map(checkboxItem => (
         <CheckboxWrapper key={checkboxItem.id}>
           <CheckboxElement
             name={item.id}
@@ -79,7 +79,7 @@ const TechnicalBlock = ({ item }) => {
         </CheckboxWrapper>
       ))}
     </Wrapper>
-  );
-};
+  )
+}
 
-export default TechnicalBlock;
+export default TechnicalBlock
