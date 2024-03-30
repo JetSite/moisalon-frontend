@@ -1,8 +1,8 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 import {
   laptopBreakpoint,
   tabletBreakpoint,
-} from "../../../../../../styles/variables";
+} from '../../../../../styles/variables'
 
 export const Wrapper = styled.div`
   padding: 179px 140px 163px 140px;
@@ -16,7 +16,7 @@ export const Wrapper = styled.div`
     padding: 0 20px;
     padding-bottom: 60px;
   }
-`;
+`
 
 export const Content = styled.div`
   display: flex;
@@ -34,7 +34,7 @@ export const Content = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     flex-direction: column-reverse;
   }
-`;
+`
 
 export const List = styled.ul`
   margin-top: 62px;
@@ -46,7 +46,7 @@ export const List = styled.ul`
   @media (max-width: ${laptopBreakpoint}) {
     margin-top: 32px;
   }
-`;
+`
 
 export const ListItem = styled.li`
   margin-left: 49px;
@@ -60,7 +60,7 @@ export const ListItem = styled.li`
   }
 
   &:before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: -49px;
@@ -90,4 +90,4 @@ export const ListItem = styled.li`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`

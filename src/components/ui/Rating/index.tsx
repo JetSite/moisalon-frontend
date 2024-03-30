@@ -22,9 +22,9 @@ const Count = styled.p<{ fontSize: string; fontWeight: number }>`
 interface Props {
   averageScore: number
   numberScore: number
-  position: string
-  fontSize: string
-  fontWeight: number
+  position?: string
+  fontSize?: string
+  fontWeight?: number
 }
 
 const Rating: FC<Props> = ({
@@ -35,7 +35,7 @@ const Rating: FC<Props> = ({
   fontWeight = 400,
 }) => {
   return (
-    <Wrapper position={position}>
+    <Wrapper position={position || ''}>
       <Stars count={Math.round(averageScore)} />
       <Count fontSize={fontSize} fontWeight={fontWeight}>
         {numberScore || 0}

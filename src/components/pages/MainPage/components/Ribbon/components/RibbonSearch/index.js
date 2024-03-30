@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../../../styles/variables";
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../../../styles/variables'
 
 const Wrapper = styled.div`
   width: 535px;
@@ -9,13 +9,13 @@ const Wrapper = styled.div`
   position: relative;
 
   &:after {
-    content: "";
+    content: '';
     width: 20px;
     height: 22px;
     position: absolute;
     top: 17px;
     right: 24px;
-    background: url("/search.svg") no-repeat center;
+    background: url('/search.svg') no-repeat center;
     background-size: contain;
   }
 
@@ -31,7 +31,7 @@ const Wrapper = styled.div`
       right: 18px;
     }
   }
-`;
+`
 
 const Input = styled.input`
   width: 100%;
@@ -77,7 +77,7 @@ const Input = styled.input`
       font-size: 14px;
     }
   }
-`;
+`
 
 const RibbonSearch = ({ searchQuery, setSearchQuery }) => {
   return (
@@ -85,11 +85,11 @@ const RibbonSearch = ({ searchQuery, setSearchQuery }) => {
       <Input
         type="text"
         placeholder="Поиск по бьюти-ленте"
-        onChange={(e) => setSearchQuery(e.target.value)}
+        onChange={e => setSearchQuery(e.target.value)}
         value={searchQuery}
       />
     </Wrapper>
-  );
-};
+  )
+}
 
-export default RibbonSearch;
+export default RibbonSearch

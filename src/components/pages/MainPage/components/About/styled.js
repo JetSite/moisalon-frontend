@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../styles/variables";
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../styles/variables'
 
 export const Wrapper = styled.div`
   background: #000;
@@ -9,15 +9,15 @@ export const Wrapper = styled.div`
     padding-top: 59px;
     overflow: hidden;
   }
-`;
+`
 
 export const Content = styled.div`
   padding: 0 140px;
   position: relative;
   &:after {
     position: absolute;
-    content: "";
-    background: url("/all-masters.svg") no-repeat center;
+    content: '';
+    background: url('/all-masters.svg') no-repeat center;
     width: 159px;
     height: 94px;
     background-size: contain;
@@ -30,8 +30,8 @@ export const Content = styled.div`
   }
   &:before {
     position: absolute;
-    content: "";
-    background: url("/all-number.svg") no-repeat center;
+    content: '';
+    background: url('/all-number.svg') no-repeat center;
     width: 89px;
     height: 161px;
     background-size: contain;
@@ -47,11 +47,11 @@ export const Content = styled.div`
     padding: 0 20px;
     background-color: #000;
   }
-`;
+`
 
 export const RombIcon = styled.div`
   position: absolute;
-  background: url("/white-romb.svg") no-repeat center;
+  background: url('/white-romb.svg') no-repeat center;
   width: 48px;
   height: 48px;
   background-size: contain;
@@ -61,7 +61,7 @@ export const RombIcon = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 export const Title = styled.p`
   color: #fff;
@@ -77,7 +77,7 @@ export const Title = styled.p`
     line-height: 25px;
     text-transform: uppercase;
   }
-`;
+`
 
 export const Info = styled.div`
   display: flex;
@@ -89,7 +89,7 @@ export const Info = styled.div`
     margin-top: 41px;
     margin-bottom: 66px;
   }
-`;
+`
 
 export const InfoItem = styled.div`
   max-width: 335px;
@@ -104,7 +104,7 @@ export const InfoItem = styled.div`
       border-bottom: 1px solid #ffffff;
     }
   }
-`;
+`
 
 export const InfoItemTitle = styled.p`
   color: #fff;
@@ -124,7 +124,7 @@ export const InfoItemTitle = styled.p`
     line-height: 25px;
     border-bottom: 0;
   }
-`;
+`
 
 export const InfoItemText = styled.p`
   color: #fff;
@@ -139,7 +139,7 @@ export const InfoItemText = styled.p`
     line-height: 25px;
     margin-bottom: 27px;
   }
-`;
+`
 
 export const Bottom = styled.div`
   display: flex;
@@ -148,7 +148,7 @@ export const Bottom = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     flex-direction: column;
   }
-`;
+`
 
 export const Left = styled.div`
   width: 50%;
@@ -160,8 +160,8 @@ export const Left = styled.div`
   position: relative;
   &:after {
     position: absolute;
-    content: "";
-    background: url("/black-star-icon.svg") no-repeat center;
+    content: '';
+    background: url('/black-star-icon.svg') no-repeat center;
     width: 49px;
     height: 47px;
     left: 138px;
@@ -174,8 +174,8 @@ export const Left = styled.div`
   }
   &:before {
     position: absolute;
-    content: "";
-    background: url("/all-salon-img.svg") no-repeat center;
+    content: '';
+    background: url('/all-salon-img.svg') no-repeat center;
     width: 109px;
     height: 127px;
     right: 107px;
@@ -196,7 +196,7 @@ export const Left = styled.div`
     padding: 0;
     padding-top: 471px;
   }
-`;
+`
 
 export const Right = styled.div`
   width: 50%;
@@ -206,9 +206,9 @@ export const Right = styled.div`
   padding-top: 468px;
   position: relative;
   &:after {
-    content: "";
+    content: '';
     position: absolute;
-    background: url("/white-romb.svg") no-repeat center;
+    background: url('/white-romb.svg') no-repeat center;
     width: 36px;
     height: 36px;
     background-size: contain;
@@ -218,14 +218,14 @@ export const Right = styled.div`
     @media (max-width: ${laptopBreakpoint}) {
       top: 7%;
       left: 7%;
-      background: url("/mobile-red-romb.svg") no-repeat center;
+      background: url('/mobile-red-romb.svg') no-repeat center;
       background-size: contain;
     }
   }
   &:before {
-    content: "";
+    content: '';
     position: absolute;
-    background: url("/about-arrow-icon.svg") no-repeat center;
+    background: url('/about-arrow-icon.svg') no-repeat center;
     width: 175px;
     height: 103px;
     background-size: contain;
@@ -246,7 +246,7 @@ export const Right = styled.div`
     background-color: #000;
     margin-top: 65px;
   }
-`;
+`
 
 export const BottomContentLeft = styled.div`
   width: 506px;
@@ -263,22 +263,22 @@ export const BottomContentLeft = styled.div`
   }
   &:after {
     position: absolute;
-    content: "";
-    background: url(${(props) => bgImages[props.leftImage]}) no-repeat center;
+    content: '';
+    background: url(${props => bgImages[props.leftImage]}) no-repeat center;
     background-size: contain;
-    width: ${(props) => props.leftImageWidth + "px"};
-    height: ${(props) => props.leftImageHeight + "px"};
+    width: ${props => props.leftImageWidth + 'px'};
+    height: ${props => props.leftImageHeight + 'px'};
     right: 50%;
-    margin-right: ${(props) => "-" + props.leftImageWidth / 2 + "px"};
+    margin-right: ${props => '-' + props.leftImageWidth / 2 + 'px'};
     bottom: 246px;
     @media (max-width: ${laptopBreakpoint}) {
-      top: ${(props) => "-" + props.leftImageTop + "px"};
+      top: ${props => '-' + props.leftImageTop + 'px'};
     }
   }
   &:before {
     position: absolute;
-    content: "";
-    background: url("/all-circle-red.svg") no-repeat center;
+    content: '';
+    background: url('/all-circle-red.svg') no-repeat center;
     background-size: contain;
     width: 282px;
     height: 282px;
@@ -290,7 +290,7 @@ export const BottomContentLeft = styled.div`
       bottom: 180%;
     }
   }
-`;
+`
 
 export const BottomContentRight = styled(BottomContentLeft)`
   @media (max-width: ${laptopBreakpoint}) {
@@ -300,26 +300,26 @@ export const BottomContentRight = styled(BottomContentLeft)`
   }
   &:after {
     position: absolute;
-    content: "";
-    background: url(${(props) => bgImages[props.rightImage]}) no-repeat center;
+    content: '';
+    background: url(${props => bgImages[props.rightImage]}) no-repeat center;
     background-size: contain;
-    width: ${(props) => props.rightImageWidth + "px"};
-    height: ${(props) => props.rightImageHeight + "px"};
+    width: ${props => props.rightImageWidth + 'px'};
+    height: ${props => props.rightImageHeight + 'px'};
     right: 50%;
-    margin-right: ${(props) => "-" + props.rightImageWidth / 2 + "px"};
+    margin-right: ${props => '-' + props.rightImageWidth / 2 + 'px'};
     bottom: 247px;
     @media (max-width: ${laptopBreakpoint}) {
       width: 355px;
       margin-right: -177px;
       right: 50%;
       bottom: 0;
-      top: ${(props) => "-" + props.rightImageTop + "px"};
+      top: ${props => '-' + props.rightImageTop + 'px'};
     }
   }
   &:before {
     display: none;
   }
-`;
+`
 
 export const BottomContentTitle = styled.p`
   text-align: center;
@@ -335,7 +335,7 @@ export const BottomContentTitle = styled.p`
     padding-top: 30px;
     padding-bottom: 20px;
   }
-`;
+`
 
 export const BottomContentText = styled.p`
   text-align: center;
@@ -346,7 +346,7 @@ export const BottomContentText = styled.p`
     background: #fff;
     padding-bottom: 30px;
   }
-`;
+`
 
 export const ButtonWrapper = styled.div`
   height: 135px;
@@ -358,7 +358,7 @@ export const ButtonWrapper = styled.div`
     min-height: 165px;
     padding: 0 20px 30px 20px;
   }
-`;
+`
 
 export const MobileLogo = styled.div`
   display: none;
@@ -367,10 +367,10 @@ export const MobileLogo = styled.div`
     display: block;
     width: 100%;
     min-height: 150px;
-    background: url("/mobile-about-logo.svg") no-repeat center;
+    background: url('/mobile-about-logo.svg') no-repeat center;
     background-size: contain;
   }
-`;
+`
 
 export const MobileAssetMaster = styled.div`
   display: none;
@@ -381,9 +381,9 @@ export const MobileAssetMaster = styled.div`
     position: absolute;
     top: 46px;
     right: 40px;
-    background: url("/mobile-about-asset1.svg") no-repeat center;
+    background: url('/mobile-about-asset1.svg') no-repeat center;
   }
-`;
+`
 export const MobileAssetSalon = styled.div`
   display: none;
   @media (max-width: ${laptopBreakpoint}) {
@@ -393,9 +393,9 @@ export const MobileAssetSalon = styled.div`
     position: absolute;
     top: 39px;
     right: 20px;
-    background: url("/mobile-about-asset2.svg") no-repeat center;
+    background: url('/mobile-about-asset2.svg') no-repeat center;
   }
-`;
+`
 export const MobileAssetBusiness = styled.div`
   display: none;
   @media (max-width: ${laptopBreakpoint}) {
@@ -405,15 +405,15 @@ export const MobileAssetBusiness = styled.div`
     position: absolute;
     top: 37px;
     right: 20px;
-    background: url("/mobile-about-asset3.svg") no-repeat center;
+    background: url('/mobile-about-asset3.svg') no-repeat center;
   }
-`;
+`
 
 const bgImages = {
-  leftMaster: "/masters-page-left.png",
-  rightMaster: "/masters-page-right.png",
-  leftMain: "/about-man.png",
-  rightMain: "/about-woman.png",
-  left: "/woman-left.png",
-  right: "/woman-right.png",
-};
+  leftMaster: '/masters-page-left.png',
+  rightMaster: '/masters-page-right.png',
+  leftMain: '/about-man.png',
+  rightMain: '/about-woman.png',
+  left: '/woman-left.png',
+  right: '/woman-right.png',
+}

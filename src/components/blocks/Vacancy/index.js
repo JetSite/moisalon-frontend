@@ -1,10 +1,10 @@
-import { useState } from "react";
-import { useRouter } from "next/router";
-import styled from "styled-components";
-import PhotoAdd from "../CreateEducation/PhotoAdd";
-import "moment/locale/ru";
-import { laptopBreakpoint, red } from "../../../../styles/variables";
-import { PHOTO_URL } from "../../../../variables";
+import { useState } from 'react'
+import { useRouter } from 'next/router'
+import styled from 'styled-components'
+import PhotoAdd from '../CreateEducation/PhotoAdd'
+import 'moment/locale/ru'
+import { laptopBreakpoint, red } from '../../../styles/variables'
+import { PHOTO_URL } from '../../../variables'
 
 const VacancyWrap = styled.div`
   width: 218px;
@@ -23,7 +23,7 @@ const VacancyWrap = styled.div`
     width: 100%;
     padding: 12px 10px 15px 10px;
   }
-`;
+`
 
 const VacancyTop = styled.div`
   width: 166px;
@@ -36,26 +36,26 @@ const VacancyTop = styled.div`
     height: auto;
     aspect-ratio: 1;
   }
-`;
+`
 
 const Image = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-`;
+`
 
 const VacancyContent = styled.div`
   display: flex;
   flex-direction: column;
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 const VacancyOwner = styled.p`
   font-size: 12px;
   line-height: 14px;
   text-align: center;
-`;
+`
 
 const VacancyTitle = styled.p`
   height: 66px;
@@ -70,7 +70,7 @@ const VacancyTitle = styled.p`
     font-size: 14px;
     line-height: 16px;
   }
-`;
+`
 
 const VacancyBottom = styled.div`
   padding-top: 20px;
@@ -81,7 +81,7 @@ const VacancyBottom = styled.div`
   flex-shrink: 1;
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 const VacancyAmount = styled.div`
   display: flex;
@@ -95,7 +95,7 @@ const VacancyAmount = styled.div`
   font-size: 14px;
   font-weight: 600;
   margin-bottom: 10px;
-`;
+`
 
 export const DeleteVacancyBtn = styled(VacancyAmount)`
   cursor: pointer;
@@ -103,7 +103,7 @@ export const DeleteVacancyBtn = styled(VacancyAmount)`
   &:hover {
     opacity: 0.8;
   }
-`;
+`
 
 const Vacancy = ({
   id,
@@ -115,18 +115,18 @@ const Vacancy = ({
   type,
   removeVacancy,
 }) => {
-  const [hover, setHover] = useState(false);
-  const { pathname } = useRouter();
+  const [hover, setHover] = useState(false)
+  const { pathname } = useRouter()
 
-  const removeVacancyHandler = (vacancyId) => {
+  const removeVacancyHandler = vacancyId => {
     removeVacancy({
       variables: {
         input: {
           id: vacancyId,
         },
       },
-    });
-  };
+    })
+  }
 
   return (
     <VacancyWrap>
@@ -154,7 +154,7 @@ const Vacancy = ({
           {/* {amountFrom && amountTo ? (
             <VacancyAmount>от {amountFrom} ₽</VacancyAmount>
           ) : null} */}
-          {pathname === "/masterCabinet" && !create ? (
+          {pathname === '/masterCabinet' && !create ? (
             <DeleteVacancyBtn onClick={() => removeVacancyHandler(id)}>
               Удалить вакансию
             </DeleteVacancyBtn>
@@ -162,7 +162,7 @@ const Vacancy = ({
         </VacancyBottom>
       </VacancyContent>
     </VacancyWrap>
-  );
-};
+  )
+}
 
-export default Vacancy;
+export default Vacancy

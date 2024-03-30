@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../styles/variables";
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../styles/variables'
 
 export const Wrapper = styled.div`
   padding: 0 140px;
@@ -12,4 +12,4 @@ export const Wrapper = styled.div`
     flex-direction: column;
     align-items: center;
   }
-`;
+`

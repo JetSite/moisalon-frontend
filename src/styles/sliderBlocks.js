@@ -1,6 +1,6 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
-import { laptopBreakpoint } from "../../styles/variables";
+import { laptopBreakpoint } from './variables'
 
 export const NavigationWrapper = styled.div`
   display: flex;
@@ -8,16 +8,16 @@ export const NavigationWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-`;
+`
 
 export const SliderWpapper = styled.div`
   display: flex;
   justify-content: space-between;
-`;
+`
 
 export const ButtonPrev = styled.button`
-  background: ${(props) =>
-    props.color === "white"
+  background: ${props =>
+    props.color === 'white'
       ? `url("/arrow-prev-white.svg") no-repeat center`
       : `url("/arrow-prev.svg") no-repeat center`};
   height: 7px;
@@ -31,11 +31,11 @@ export const ButtonPrev = styled.button`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 export const ButtonNext = styled.button`
-  background: ${(props) =>
-    props.color === "white"
+  background: ${props =>
+    props.color === 'white'
       ? `url("/arrow-next-white.svg") no-repeat center`
       : `url("/arrow-next.svg") no-repeat center`};
   height: 7px;
@@ -49,7 +49,7 @@ export const ButtonNext = styled.button`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 export const Bottom = styled.div`
   a {
@@ -60,4 +60,4 @@ export const Bottom = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`

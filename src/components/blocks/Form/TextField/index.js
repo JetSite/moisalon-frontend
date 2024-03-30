@@ -1,7 +1,7 @@
-import React, { forwardRef } from "react";
-import TextField from "@material-ui/core/TextField";
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../styles/variables";
+import React, { forwardRef } from 'react'
+import TextField from '@material-ui/core/TextField'
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../styles/variables'
 
 const TextFieldStyled = styled(TextField)`
   .MuiInputBase-input {
@@ -23,7 +23,7 @@ const TextFieldStyled = styled(TextField)`
       line-height: 12px;
     }
   }
-`;
+`
 
 const TextFieldAdapter = forwardRef(
   (
@@ -31,24 +31,24 @@ const TextFieldAdapter = forwardRef(
       input,
       meta,
       fullWidth = true,
-      maxLength = "99",
+      maxLength = '99',
       inputMode,
       InputProps,
-      color = "",
+      color = '',
       ...rest
     },
-    ref
+    ref,
   ) => {
     const showError =
       ((meta.submitError && !meta.dirtySinceLastSubmit) || meta.error) &&
-      meta.touched;
-    let { value, type, ...inputRest } = input;
-    if (type === "number") {
+      meta.touched
+    let { value, type, ...inputRest } = input
+    if (type === 'number') {
       if (value === 0) {
-        value = "";
+        value = ''
       }
       if (value < 0) {
-        value = 0;
+        value = 0
       }
       // type = "text";
     }
@@ -69,8 +69,8 @@ const TextFieldAdapter = forwardRef(
         error={showError}
         helperText={showError ? meta.error || meta.submitError : undefined}
       />
-    );
-  }
-);
+    )
+  },
+)
 
-export default TextFieldAdapter;
+export default TextFieldAdapter

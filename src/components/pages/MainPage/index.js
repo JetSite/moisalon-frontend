@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import styled from 'styled-components'
-import { laptopBreakpoint } from '../../../../styles/variables'
+import { laptopBreakpoint } from '../../../styles/variables'
 import About from './components/About'
 import MainLayout from '../../../layouts/MainLayout'
 import MainMasterSlider from './components/MainMasterSlider'

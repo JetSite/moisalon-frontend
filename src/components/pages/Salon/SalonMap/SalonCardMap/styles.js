@@ -1,6 +1,6 @@
-import { Skeleton } from "@material-ui/lab";
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../styles/variables";
+import { Skeleton } from '@material-ui/lab'
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../styles/variables'
 
 export const Wrapper = styled.div`
   position: relative;
@@ -23,7 +23,7 @@ export const Wrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     width: 280px;
   }
-`;
+`
 
 export const SkeletonSalonItem = styled(Skeleton)`
   width: 373px;
@@ -32,10 +32,10 @@ export const SkeletonSalonItem = styled(Skeleton)`
     width: 160px;
     height: 250px;
   }
-`;
+`
 
 export const ImageWrap = styled.div`
-  background: ${(props) => props.background};
+  background: ${props => props.background};
   height: 120px;
   flex-shrink: 0;
   background-size: cover;
@@ -44,7 +44,7 @@ export const ImageWrap = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     flex-shrink: 0;
   }
-`;
+`
 
 export const Content = styled.div`
   position: relative;
@@ -58,19 +58,19 @@ export const Content = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     padding: 17px 10px 10px 10px;
   }
-`;
+`
 
 export const Top = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 5px;
   align-items: flex-start;
-`;
+`
 
 export const Socials = styled.div`
   display: flex;
   align-items: center;
-`;
+`
 
 export const Name = styled.p`
   font-size: 18px;
@@ -84,22 +84,22 @@ export const Name = styled.p`
     line-height: 18px;
     max-width: 85%;
   }
-`;
+`
 
 export const PhoneLink = styled.div`
   width: 14.5px;
   height: 14.5px;
-  background: url("/phone-icon.svg") no-repeat center;
+  background: url('/phone-icon.svg') no-repeat center;
   background-size: contain;
-`;
+`
 
 export const EmailLink = styled.div`
   width: 16.7px;
   height: 12.2px;
-  background: url("/mail-icon.svg") no-repeat center;
+  background: url('/mail-icon.svg') no-repeat center;
   background-size: contain;
   margin-left: 20px;
-`;
+`
 
 export const Info = styled.div`
   margin-bottom: 10px;
@@ -107,9 +107,9 @@ export const Info = styled.div`
     max-height: 90px;
     margin-bottom: 0px;
   }
-`;
+`
 
-export const SalonInfo = styled.div``;
+export const SalonInfo = styled.div``
 
 export const Address = styled.p`
   font-size: 14px;
@@ -124,7 +124,7 @@ export const Address = styled.p`
     overflow: hidden;
     text-overflow: ellipsis;
   }
-`;
+`
 
 export const Activities = styled.p`
   line-height: 27px;
@@ -140,7 +140,7 @@ export const Activities = styled.p`
     overflow: hidden;
     text-overflow: ellipsis;
   }
-`;
+`
 
 export const FavoriteIcon = styled.div`
   position: absolute;
@@ -149,8 +149,8 @@ export const FavoriteIcon = styled.div`
   padding: 20px;
   background: ${({ isFavorite }) =>
       isFavorite
-        ? "url(/favorite-white-item.svg)"
-        : "url(/favorite-red-item.svg)"}
+        ? 'url(/favorite-white-item.svg)'
+        : 'url(/favorite-red-item.svg)'}
     no-repeat center;
   cursor: pointer;
   right: 18px;
@@ -159,6 +159,6 @@ export const FavoriteIcon = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     right: 5px;
   }
-`;
+`
 
-export const Wrap = styled.div``;
+export const Wrap = styled.div``

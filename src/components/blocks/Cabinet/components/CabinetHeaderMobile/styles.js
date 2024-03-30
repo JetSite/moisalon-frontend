@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { red, laptopBreakpoint } from "../../../../../../styles/variables";
+import styled from 'styled-components'
+import { red, laptopBreakpoint } from '../../../../../styles/variables'
 
 export const Wrapper = styled.div`
   display: none;
@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
     display: block;
     width: 100%;
   }
-`;
+`
 
 export const Info = styled.div`
   display: flex;
@@ -17,7 +17,7 @@ export const Info = styled.div`
   padding: 22px;
   color: #fff;
   background-color: ${red};
-`;
+`
 
 export const Logo = styled.div`
   flex-shrink: 0;
@@ -25,17 +25,17 @@ export const Logo = styled.div`
   height: 89px;
   margin-right: 21px;
   border-radius: 50%;
-  background: ${({ url }) => (url ? `url(${url})` : "#fff")} no-repeat center;
+  background: ${({ url }) => (url ? `url(${url})` : '#fff')} no-repeat center;
   background-size: cover;
-`;
+`
 
-export const Text = styled.div``;
+export const Text = styled.div``
 
 export const Title = styled.h2`
   font-size: 20px;
   font-weight: 600;
   line-height: 25px;
-`;
+`
 
 export const Subtitle = styled.p`
   max-height: 70px;
@@ -43,7 +43,7 @@ export const Subtitle = styled.p`
   font-weight: 500;
   line-height: 25px;
   overflow: hidden;
-`;
+`
 
 export const CardsWrapper = styled.div`
   width: 100%;
@@ -56,7 +56,7 @@ export const CardsWrapper = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
-`;
+`
 
 export const Card = styled.div`
   display: flex;
@@ -72,7 +72,7 @@ export const Card = styled.div`
   &:not(:last-child) {
     margin-right: 10px;
   }
-`;
+`
 
 export const CardTitle = styled.h3`
   width: 100%;
@@ -80,15 +80,15 @@ export const CardTitle = styled.h3`
   font-weight: 600;
   line-height: 20px;
   overflow-wrap: break-word;
-`;
+`
 
 export const CardBottom = styled.div`
   display: flex;
-  justify-content: ${({ quantity }) => (quantity ? "space-between" : "center")};
+  justify-content: ${({ quantity }) => (quantity ? 'space-between' : 'center')};
   width: 100%;
-`;
+`
 
-export const Icon = styled.img``;
+export const Icon = styled.img``
 
 export const CardQuantity = styled.span`
   position: relative;
@@ -96,4 +96,4 @@ export const CardQuantity = styled.span`
   color: #a1a1a1;
   font-size: 14px;
   font-weight: 500;
-`;
+`

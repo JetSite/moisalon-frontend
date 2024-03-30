@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../../styles/variables";
-import Button from "../../../../../ui/Button";
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../../styles/variables'
+import Button from '../../../../../ui/Button'
 
 export const Wrapper = styled.div`
   max-width: 710px;
@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     margin-bottom: 0;
   }
-`;
+`
 
 export const WrapperSeats = styled.div`
   display: flex;
@@ -19,7 +19,7 @@ export const WrapperSeats = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     gap: 20px;
   }
-`;
+`
 
 export const TitleRent = styled.h2`
   font-weight: 500;
@@ -29,7 +29,7 @@ export const TitleRent = styled.h2`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 export const TextRent = styled.h2`
   font-weight: 600;
@@ -40,7 +40,7 @@ export const TextRent = styled.h2`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 export const Text = styled.p`
   font-weight: 600;
@@ -51,7 +51,7 @@ export const Text = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 export const ButtonCustom = styled(Button)`
   width: 300px;
@@ -61,4 +61,4 @@ export const ButtonCustom = styled(Button)`
     max-width: 308px;
     font-size: 14px;
   }
-`;
+`

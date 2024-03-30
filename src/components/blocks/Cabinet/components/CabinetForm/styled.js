@@ -1,6 +1,6 @@
-import { Field } from "react-final-form";
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../styles/variables";
+import { Field } from 'react-final-form'
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../styles/variables'
 
 export const Wrapper = styled.div`
   max-width: 710px;
@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
     margin-bottom: 0;
     padding-top: 0px;
   }
-`;
+`
 
 export const Title = styled.p`
   font-weight: 500;
@@ -25,7 +25,7 @@ export const Title = styled.p`
     margin-bottom: 23px;
     text-transform: none;
   }
-`;
+`
 
 export const SubTitle = styled.p`
   font-weight: 600;
@@ -35,11 +35,11 @@ export const SubTitle = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 export const FieldWrap = styled.div`
   margin-bottom: 14px;
-`;
+`
 
 export const Flex = styled.div`
   position: relative;
@@ -47,7 +47,7 @@ export const Flex = styled.div`
     display: flex;
     flex-direction: column-reverse;
   }
-`;
+`
 
 export const ButtonWrap = styled.div`
   width: 350px;
@@ -56,20 +56,20 @@ export const ButtonWrap = styled.div`
     width: 100%;
     margin-top: 40px;
   }
-`;
+`
 
 export const FieldStyled = styled(Field)`
   label {
     width: fit-content;
     &:after {
-      display: ${({ requiredField }) => (requiredField ? "block" : "none")};
-      content: "";
+      display: ${({ requiredField }) => (requiredField ? 'block' : 'none')};
+      content: '';
       position: absolute;
       top: -3px;
       right: -11px;
       width: 7px;
       height: 7px;
-      background: url("/required-icon.svg") no-repeat center;
+      background: url('/required-icon.svg') no-repeat center;
     }
   }
-`;
+`

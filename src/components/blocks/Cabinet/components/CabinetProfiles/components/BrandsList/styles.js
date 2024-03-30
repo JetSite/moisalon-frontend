@@ -1,13 +1,13 @@
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../../../styles/variables";
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../../../styles/variables'
 
 export const BrandsContent = styled.div`
   margin-top: 40px;
-`;
+`
 
 export const OwnBrandsContent = styled.div`
   margin-top: 40px;
-`;
+`
 
 export const Title = styled.h3`
   margin-bottom: 40px;
@@ -18,17 +18,17 @@ export const Title = styled.h3`
     margin-bottom: 30px;
     min-width: 100%;
   }
-`;
+`
 
 export const MainTitle = styled(Title)`
   font-size: 22px;
-`;
+`
 
 export const ListWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   min-width: 572px;
-  min-height: ${(props) => (props.heightLarge ? "199px" : "auto")};
+  min-height: ${props => (props.heightLarge ? '199px' : 'auto')};
   gap: 22px;
 
   @media (max-width: ${laptopBreakpoint}) {
@@ -36,7 +36,7 @@ export const ListWrapper = styled.div`
     margin-bottom: 30px;
     min-width: 100%;
   }
-`;
+`
 
 export const ItemWrapper = styled.div`
   position: relative;
@@ -59,26 +59,26 @@ export const ItemWrapper = styled.div`
     margin-left: 0;
     padding: 0 12px;
   }
-`;
+`
 
 export const Logo = styled.img`
   width: 100%;
-`;
+`
 
 export const TextNoBrands = styled.p`
   margin-bottom: 40px;
   font-size: 16px;
   font-weight: 400;
   line-height: 30px;
-`;
+`
 
 export const RemoveButton = styled.div`
-  display: ${({ published }) => (published ? "block" : "none")};
+  display: ${({ published }) => (published ? 'block' : 'none')};
   width: 42px;
   height: 42px;
   padding: 10px;
   position: absolute;
   top: 0;
   right: 0;
-  background: url("/close-cross-red.svg") no-repeat center;
-`;
+  background: url('/close-cross-red.svg') no-repeat center;
+`

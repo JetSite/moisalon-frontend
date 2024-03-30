@@ -6,7 +6,7 @@ import {
 } from '../../../../../../utils/serviceCatalog'
 import { MainContainer } from '../../../../../../styles/common'
 import BackButton from '../../../../../ui/BackButton'
-import RatingEdit from '../../../../../ui/RatingEdit'
+import RatingEdit from '../../../../../ui/RatingEdit/index.tsx'
 import { createScopesMaster } from '../../../../../../_graphql-legacy/master/createScopesMaster'
 import {
   Wrapper,
@@ -42,7 +42,7 @@ import defaultNumber from '../../../../../../utils/defaultNumber'
 import { CityContext } from '../../../../../../searchContext'
 import ChatMessagePopup from '../../../../../ui/ChatMessagePopup'
 import { numberForSocials } from '../../../../../../utils/formatNumber'
-import { PHOTO_URL } from 'variables'
+import { PHOTO_URL } from 'src/variables'
 
 const Header = ({
   master,

@@ -1,9 +1,9 @@
-import { useCallback } from "react";
-import { useDropzone } from "react-dropzone";
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../styles/variables";
-import uploadPhoto from "../../../../utils/uploadPhoto";
-import { PHOTO_URL } from "../../../../../variables";
+import { useCallback } from 'react'
+import { useDropzone } from 'react-dropzone'
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../styles/variables'
+import uploadPhoto from '../../../../utils/uploadPhoto'
+import { PHOTO_URL } from '../../../../variables'
 
 const Photo = styled.div`
   width: 100%;
@@ -14,7 +14,7 @@ const Photo = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  background: #f2f0f0 url("/icon-plus.svg") no-repeat center;
+  background: #f2f0f0 url('/icon-plus.svg') no-repeat center;
   margin-right: 20px;
   margin-bottom: 20px;
 
@@ -22,7 +22,7 @@ const Photo = styled.div`
     width: 100%;
     height: 133px;
   }
-`;
+`
 
 const PhotoBack = styled.div`
   width: 100%;
@@ -33,7 +33,7 @@ const PhotoBack = styled.div`
   top: 0;
   left: 0;
   cursor: pointer;
-`;
+`
 
 const ChangeText = styled.span`
   text-align: center;
@@ -44,39 +44,39 @@ const ChangeText = styled.span`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-`;
+`
 
 const Image = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-`;
+`
 
 const PhotoAdd = ({ onAdd, hover, photoId }) => {
-  const photoType = "master";
+  const photoType = 'master'
   const onDrop = useCallback(
-    (files) => {
-      const file = files[0];
+    files => {
+      const file = files[0]
       const uploadFile = async () => {
-        await uploadPhoto(file, photoType).then((photoId) => {
-          onAdd(photoId);
-        });
-      };
-      uploadFile();
+        await uploadPhoto(file, photoType).then(photoId => {
+          onAdd(photoId)
+        })
+      }
+      uploadFile()
     },
-    [photoType, onAdd]
-  );
+    [photoType, onAdd],
+  )
 
   const { getRootProps, getInputProps } = useDropzone({
-    accept: "image/*",
+    accept: 'image/*',
     onDrop,
-  });
+  })
 
   const onHoverControls = hover ? (
     <PhotoBack>
       <ChangeText>Изменить фотографию</ChangeText>
     </PhotoBack>
-  ) : null;
+  ) : null
   return (
     <>
       <div {...getRootProps()}>
@@ -86,7 +86,7 @@ const PhotoAdd = ({ onAdd, hover, photoId }) => {
         {onHoverControls}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default PhotoAdd;
+export default PhotoAdd

@@ -46,9 +46,6 @@ const AllSalons: FC<IProps> = ({
     variables: { cityName: ['Москва'] },
   })
 
-  // console.log(salonSearch)
-  // console.log(data)
-
   return (
     <CategoryPageLayout loading={false} me={me}>
       <AllSalonsPage

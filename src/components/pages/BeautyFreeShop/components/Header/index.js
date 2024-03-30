@@ -15,7 +15,7 @@ import {
 } from './styled'
 import Title from '../Title'
 import { useRouter } from 'next/router'
-import { PHOTO_URL } from '../../../../../../variables'
+import { PHOTO_URL } from '../../../../../variables'
 
 const Header = ({
   brand,

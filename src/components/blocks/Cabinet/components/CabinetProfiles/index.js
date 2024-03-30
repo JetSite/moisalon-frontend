@@ -1,5 +1,5 @@
-import { useContext, useState } from "react";
-import Link from "next/link";
+import { useContext, useState } from 'react'
+import Link from 'next/link'
 import {
   Wrapper,
   Item,
@@ -12,18 +12,18 @@ import {
   Type,
   Button,
   MobileWrapper,
-} from "./styles";
-import CreateProfiles from "../CreateProfiles";
-import { CityContext } from "../../../../../searchContext";
-import { cyrToTranslit } from "../../../../../utils/translit";
-import { PHOTO_URL } from "../../../../../../variables";
+} from './styles'
+import CreateProfiles from '../CreateProfiles'
+import { CityContext } from '../../../../../searchContext'
+import { cyrToTranslit } from '../../../../../utils/translit'
+import { PHOTO_URL } from '../../../../../variables'
 
 const CabinetProfiles = ({ me }) => {
-  const salons = me?.salons;
-  const master = me?.master;
-  const brands = me?.userBrands;
-  const [openCreate, setOpenCreate] = useState(false);
-  const [city] = useContext(CityContext);
+  const salons = me?.salons
+  const master = me?.master
+  const brands = me?.userBrands
+  const [openCreate, setOpenCreate] = useState(false)
+  const [city] = useContext(CityContext)
 
   return (
     <>
@@ -33,14 +33,14 @@ const CabinetProfiles = ({ me }) => {
         {master?.id ? (
           <Link
             href={`/${cyrToTranslit(
-              master?.addressFull?.city || city
+              master?.addressFull?.city || city,
             )}/master/${master?.seo?.slug || master?.id}`}
           >
             <Item>
               <Container>
                 <Avatar
                   alt="avatar"
-                  src={master?.photo?.url || "empty-photo.svg"}
+                  src={master?.photo?.url || 'empty-photo.svg'}
                 />
                 <Content>
                   <Name>{master?.name}</Name>
@@ -51,7 +51,7 @@ const CabinetProfiles = ({ me }) => {
           </Link>
         ) : null}
         {salons?.length
-          ? salons.map((item) => (
+          ? salons.map(item => (
               <div key={item.id}>
                 <Link
                   href={
@@ -68,14 +68,14 @@ const CabinetProfiles = ({ me }) => {
                     <Container>
                       <Avatar
                         alt="avatar"
-                        src={item?.logo?.url || "empty-photo.svg"}
+                        src={item?.logo?.url || 'empty-photo.svg'}
                       />
                       <Content>
                         <Name>{item?.name}</Name>
                         <Type>
                           {item?.lessor
-                            ? "Профиль салона арендодателя"
-                            : "Профиль салона"}
+                            ? 'Профиль салона арендодателя'
+                            : 'Профиль салона'}
                         </Type>
                       </Content>
                     </Container>
@@ -85,11 +85,11 @@ const CabinetProfiles = ({ me }) => {
             ))
           : null}
         {brands?.length
-          ? brands.map((item) => (
+          ? brands.map(item => (
               <div key={item.id}>
                 <Link
                   href={`/${cyrToTranslit(
-                    item?.addressFull?.city || city
+                    item?.addressFull?.city || city,
                   )}/brand/${item?.seo?.slug || item?.id}`}
                 >
                   <Item>
@@ -99,7 +99,7 @@ const CabinetProfiles = ({ me }) => {
                         src={
                           item?.logoId
                             ? `${PHOTO_URL}${item?.logoId}/original`
-                            : "empty-photo.svg"
+                            : 'empty-photo.svg'
                         }
                       />
                       <Content>
@@ -122,7 +122,7 @@ const CabinetProfiles = ({ me }) => {
         <CreateProfiles currentMe={me} />
       </MobileWrapper>
     </>
-  );
-};
+  )
+}
 
-export default CabinetProfiles;
+export default CabinetProfiles

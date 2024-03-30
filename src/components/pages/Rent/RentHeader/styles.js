@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../styles/variables";
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../styles/variables'
 
 export const Wrapper = styled.div`
   max-width: 1440px;
@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     padding: 0;
   }
-`;
+`
 
 export const Content = styled.div`
   padding: 0 140px;
@@ -16,7 +16,7 @@ export const Content = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     padding: 0 20px;
   }
-`;
+`
 
 export const Top = styled.div`
   display: flex;
@@ -29,7 +29,7 @@ export const Top = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     flex-direction: column;
   }
-`;
+`
 
 export const TopImage = styled.div`
   max-width: 1440px;
@@ -42,11 +42,11 @@ export const TopImage = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     height: 310px;
   }
-`;
+`
 
 export const Icon = styled.img`
   margin-right: 13px;
-`;
+`
 
 export const OnlineBooking = styled.a`
   cursor: pointer;
@@ -76,7 +76,7 @@ export const OnlineBooking = styled.a`
     left: 50%;
     margin-left: -108px;
   }
-`;
+`
 
 export const SalonDescription = styled.p`
   max-width: 624px;
@@ -89,7 +89,7 @@ export const SalonDescription = styled.p`
     margin-top: 26px;
     margin-bottom: 12px;
   }
-`;
+`
 
 export const InfoBlock = styled.div`
   width: 100%;
@@ -98,7 +98,7 @@ export const InfoBlock = styled.div`
     min-height: initial;
     flex-direction: column;
   }
-`;
+`
 
 export const InfoBlockContent = styled.div`
   display: flex;
@@ -106,7 +106,7 @@ export const InfoBlockContent = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     flex-direction: column;
   }
-`;
+`
 
 export const Left = styled.div`
   max-width: 411px;
@@ -114,7 +114,7 @@ export const Left = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     max-width: 100%;
   }
-`;
+`
 
 export const Title = styled.p`
   margin-top: 20px;
@@ -132,34 +132,34 @@ export const Title = styled.p`
     font-size: 20px;
     line-height: 36px;
   }
-`;
+`
 
 export const PriceLine = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
-`;
+`
 
 export const Time = styled.p`
   font-size: 18px;
-`;
+`
 
 export const Price = styled.p`
   font-size: 18px;
   flex-shrink: 0;
-`;
+`
 
 export const Dotted = styled.div`
   border-bottom: 1px dashed rgba(80, 80, 80, 0.3);
   width: 100%;
   margin: 0 10px;
-`;
+`
 
 export const Item = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 8px;
-`;
+`
 
 export const Text = styled.p`
   font-size: 18px;
@@ -169,13 +169,13 @@ export const Text = styled.p`
     font-size: 16px;
     margin-left: 0;
   }
-`;
+`
 
 export const IconCircle = styled.img`
   @media (max-width: ${laptopBreakpoint}) {
     margin-right: 8px;
   }
-`;
+`
 
 export const ButtonRequest = styled.a`
   background: #ff0033;
@@ -190,7 +190,7 @@ export const ButtonRequest = styled.a`
   align-items: center;
   justify-content: center;
   margin-top: 32px;
-`;
+`
 
 export const InfoItem = styled.div`
   width: 266px;
@@ -198,7 +198,7 @@ export const InfoItem = styled.div`
   &:not(:last-child) {
     margin-right: 130px;
   }
-`;
+`
 
 export const InfoItemTitle = styled.p`
   margin-bottom: 16px;
@@ -208,7 +208,7 @@ export const InfoItemTitle = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     font-size: 16px;
   }
-`;
+`
 
 export const InfoItemTitleWide = styled(InfoItemTitle)`
   width: 266px;
@@ -217,7 +217,7 @@ export const InfoItemTitleWide = styled(InfoItemTitle)`
   @media (max-width: ${laptopBreakpoint}) {
     margin-bottom: 16px;
   }
-`;
+`
 
 export const InfoItemHorisontal = styled.div`
   width: 100%;
@@ -228,7 +228,7 @@ export const InfoItemHorisontal = styled.div`
     flex-direction: column;
     margin-bottom: 14px;
   }
-`;
+`
 
 export const InfoItemContent = styled.div`
   width: 100%;
@@ -238,7 +238,7 @@ export const InfoItemContent = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     flex-direction: column;
   }
-`;
+`
 
 export const ItemWide = styled(Item)`
   width: 50%;
@@ -246,14 +246,14 @@ export const ItemWide = styled(Item)`
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`;
+`
 
 export const MobilePhotosBlock = styled.div`
   width: 100%;
   display: flex;
   overflow-y: hidden;
   overflow-x: scroll;
-`;
+`
 
 export const PhotoWrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
@@ -265,18 +265,18 @@ export const PhotoWrapper = styled.div`
       margin-right: 16px;
     }
   }
-`;
+`
 
 export const Photo = styled.img`
   object-fit: cover;
   height: 100%;
   width: 100%;
-`;
+`
 
 export const BottomButtons = styled.div`
   margin-top: 50px;
   margin-bottom: 60px;
-`;
+`
 
 export const DesktopBlock = styled.div`
   width: 100%;
@@ -285,4 +285,4 @@ export const DesktopBlock = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`

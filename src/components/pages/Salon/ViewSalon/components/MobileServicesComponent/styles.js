@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../../styles/variables";
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../../styles/variables'
 
 export const Wrapper = styled.div`
   display: none;
@@ -8,11 +8,11 @@ export const Wrapper = styled.div`
     display: block;
     padding: 0 20px;
   }
-`;
+`
 
 export const TitleWrap = styled.div`
   display: flex;
-`;
+`
 
 export const Top = styled.div`
   display: flex;
@@ -26,7 +26,7 @@ export const Top = styled.div`
     margin-bottom: 24px;
     padding-bottom: 6px;
   }
-`;
+`
 
 export const Title = styled.p`
   font-size: 30px;
@@ -37,7 +37,7 @@ export const Title = styled.p`
     font-weight: 600;
     line-height: 25px;
   }
-`;
+`
 
 export const Count = styled.p`
   color: #cdcdcd;
@@ -49,14 +49,14 @@ export const Count = styled.p`
     font-weight: 500;
     line-height: 20px;
   }
-`;
+`
 
 export const Content = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-`;
+`
 
 export const NoServicesText = styled.p`
   margin-bottom: 60px;
-`;
+`

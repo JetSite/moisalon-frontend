@@ -1,9 +1,9 @@
-import React from "react";
-import styled from "styled-components";
-import { Skeleton } from "@material-ui/lab";
-import MainLayout from "../../../layouts/MainLayout";
-import { MainContainer } from "../../../styles/common";
-import { laptopBreakpoint } from "../../../../styles/variables";
+import React from 'react'
+import styled from 'styled-components'
+import { Skeleton } from '@material-ui/lab'
+import MainLayout from '../../../layouts/MainLayout'
+import { MainContainer } from '../../../styles/common'
+import { laptopBreakpoint } from '../../../styles/variables'
 
 const Wrapper = styled.div`
   display: flex;
@@ -16,7 +16,7 @@ const Wrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     padding: 0 20px;
   }
-`;
+`
 
 const Left = styled.div`
   width: 40%;
@@ -27,7 +27,7 @@ const Left = styled.div`
     width: 100%;
     align-items: center;
   }
-`;
+`
 
 const Right = styled.div`
   width: 60%;
@@ -35,7 +35,7 @@ const Right = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 const SkeletonCircle = styled(Skeleton)`
   width: 120px;
@@ -47,7 +47,7 @@ const SkeletonCircle = styled(Skeleton)`
     width: 92px;
     height: 92px;
   }
-`;
+`
 
 const SkeletonRectLeft = styled(Skeleton)`
   width: 321px;
@@ -57,13 +57,13 @@ const SkeletonRectLeft = styled(Skeleton)`
     width: 100%;
     height: 400px;
   }
-`;
+`
 
 const SkeletonRectRight = styled(Skeleton)`
   margin-top: 40px;
   width: 100%;
   height: 100%;
-`;
+`
 
 const CreatePageSkeleton = () => {
   return (
@@ -80,7 +80,7 @@ const CreatePageSkeleton = () => {
         </Wrapper>
       </MainContainer>
     </MainLayout>
-  );
-};
+  )
+}
 
-export default CreatePageSkeleton;
+export default CreatePageSkeleton

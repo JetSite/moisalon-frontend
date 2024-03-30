@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../../styles/variables";
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../../styles/variables'
 
 export const Wrapper = styled.div`
   width: 67%;
@@ -16,7 +16,7 @@ export const Wrapper = styled.div`
     margin: 35px 0;
     padding: 0 20px;
   }
-`;
+`
 
 export const ShowMore = styled.span`
   display: block;
@@ -31,7 +31,7 @@ export const ShowMore = styled.span`
   &:hover {
     color: #ff0033;
   }
-`;
+`
 
 export const Text = styled.p`
   overflow: hidden;
@@ -40,4 +40,4 @@ export const Text = styled.p`
   -webkit-line-clamp: 2; /* number of lines to show */
   line-clamp: 2;
   -webkit-box-orient: vertical;
-`;
+`

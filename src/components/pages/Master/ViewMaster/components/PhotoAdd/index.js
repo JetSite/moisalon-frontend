@@ -1,12 +1,12 @@
-import { useCallback } from "react";
-import { useDropzone } from "react-dropzone";
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../../styles/variables";
-import uploadPhoto from "../../../../../../utils/uploadPhoto";
+import { useCallback } from 'react'
+import { useDropzone } from 'react-dropzone'
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../../styles/variables'
+import uploadPhoto from '../../../../../../utils/uploadPhoto'
 
 const Wrapper = styled.div`
   margin-top: 40px;
-`;
+`
 
 const Photo = styled.div`
   width: 175px;
@@ -17,7 +17,7 @@ const Photo = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  background: #f2f0f0 url("/icon-plus.svg") no-repeat center;
+  background: #f2f0f0 url('/icon-plus.svg') no-repeat center;
   margin-right: 20px;
   margin-bottom: 20px;
 
@@ -25,28 +25,28 @@ const Photo = styled.div`
     width: 158px;
     height: 158px;
   }
-`;
+`
 
 const PhotoAdd = ({ onAdd }) => {
-  const photoType = "master";
+  const photoType = 'master'
 
   const onDrop = useCallback(
-    (files) => {
-      const file = files[0];
+    files => {
+      const file = files[0]
       const uploadFile = async () => {
-        await uploadPhoto(file, photoType).then((photoId) => {
-          onAdd(photoId);
-        });
-      };
-      uploadFile();
+        await uploadPhoto(file, photoType).then(photoId => {
+          onAdd(photoId)
+        })
+      }
+      uploadFile()
     },
-    [photoType, onAdd]
-  );
+    [photoType, onAdd],
+  )
 
   const { getRootProps, getInputProps } = useDropzone({
-    accept: "image/*",
+    accept: 'image/*',
     onDrop,
-  });
+  })
 
   return (
     <Wrapper>
@@ -55,7 +55,7 @@ const PhotoAdd = ({ onAdd }) => {
         <Photo />
       </div>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default PhotoAdd;
+export default PhotoAdd

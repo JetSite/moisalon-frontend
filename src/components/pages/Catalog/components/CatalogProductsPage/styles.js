@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../styles/variables";
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../styles/variables'
 
 export const Wrapper = styled.div`
   max-width: 1440px;
@@ -9,13 +9,13 @@ export const Wrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     padding: 0 20px;
   }
-`;
+`
 
 export const NoProducts = styled.div`
   margin: 110px 0;
   font-size: 18px;
   line-height: 30px;
-`;
+`
 
 export const Title = styled.p`
   font-weight: 600;
@@ -28,4 +28,4 @@ export const Title = styled.p`
     text-transform: uppercase;
     text-align: center;
   }
-`;
+`

@@ -1,8 +1,8 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 import {
   laptopBreakpoint,
   tabletBreakpoint,
-} from "../../../../../../styles/variables";
+} from '../../../../../styles/variables'
 
 export const Wrapper = styled.div`
   display: flex;
@@ -18,7 +18,7 @@ export const Wrapper = styled.div`
     padding: 0 20px;
     flex-direction: column-reverse;
   }
-`;
+`
 
 export const LeftBlock = styled.div`
   width: 50.9%;
@@ -26,7 +26,7 @@ export const LeftBlock = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`;
+`
 
 export const Title = styled.h2`
   font-size: 30px;
@@ -43,7 +43,7 @@ export const Title = styled.h2`
     font-size: 26px;
     line-height: 34px;
   }
-`;
+`
 
 export const Text = styled.p`
   margin-top: 55px;
@@ -61,7 +61,7 @@ export const Text = styled.p`
     margin-top: 40px;
     font-size: 16px;
   }
-`;
+`
 
 export const List = styled.ul`
   margin-top: 62px;
@@ -73,7 +73,7 @@ export const List = styled.ul`
   @media (max-width: ${laptopBreakpoint}) {
     margin-top: 32px;
   }
-`;
+`
 
 export const ListItem = styled.li`
   margin-left: 49px;
@@ -87,7 +87,7 @@ export const ListItem = styled.li`
   }
 
   &:before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: -49px;
@@ -117,7 +117,7 @@ export const ListItem = styled.li`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const RightBlock = styled.div`
   width: 40.8%;
@@ -125,7 +125,7 @@ export const RightBlock = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`;
+`
 
 export const ImageWrap = styled.div`
   width: 100%;
@@ -134,7 +134,7 @@ export const ImageWrap = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     min-height: 300px;
   }
-`;
+`
 
 export const Image = styled.img`
   @media (max-width: ${tabletBreakpoint}) {
@@ -143,4 +143,4 @@ export const Image = styled.img`
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`;
+`

@@ -1,15 +1,15 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 import {
   laptopBreakpoint,
   tabletBreakpoint,
   red,
-} from "../../../../../../styles/variables";
+} from '../../../../../styles/variables'
 
 export const Wrapper = styled.div`
   min-height: 736px;
   background: #f2f0f0;
   position: relative;
-`;
+`
 
 export const Container = styled.div`
   display: flex;
@@ -18,7 +18,7 @@ export const Container = styled.div`
   max-width: 1440px;
   margin: 0 auto;
   background: #f2f0f0;
-`;
+`
 
 export const Content = styled.div`
   padding: 161px 140px 0 140px;
@@ -33,7 +33,7 @@ export const Content = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     padding: 40px 20px;
   }
-`;
+`
 
 export const FormWrapper = styled.div`
   max-width: 505px;
@@ -45,7 +45,7 @@ export const FormWrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     max-width: 100%;
   }
-`;
+`
 
 export const FormStyled = styled.form`
   width: 100%;
@@ -62,7 +62,7 @@ export const FormStyled = styled.form`
     width: auto;
     max-width: 100%;
   }
-`;
+`
 
 export const Input = styled.input`
   margin-top: 30px;
@@ -100,13 +100,13 @@ export const Input = styled.input`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const Comment = styled.textarea`
   padding: 10px;
   background: ${({ bg }) => bg};
   resize: none;
-`;
+`
 
 export const Label = styled.p`
   font-size: 14px;
@@ -120,7 +120,7 @@ export const Label = styled.p`
     font-weight: 500;
     line-height: 16px;
   }
-`;
+`
 
 export const LabelComment = styled.p`
   margin-top: 25px;
@@ -133,7 +133,7 @@ export const LabelComment = styled.p`
     font-weight: 500;
     line-height: 16px;
   }
-`;
+`
 
 export const CheckboxWrapper = styled.div`
   height: 21px;
@@ -145,7 +145,7 @@ export const CheckboxWrapper = styled.div`
     margin-top: 20px;
     margin-bottom: 20px;
   }
-`;
+`
 
 export const Checkbox = styled.input`
   position: absolute;
@@ -157,7 +157,7 @@ export const Checkbox = styled.input`
     user-select: none;
   }
   & + p::before {
-    content: "";
+    content: '';
     display: inline-block;
     width: 16px;
     height: 16px;
@@ -166,10 +166,10 @@ export const Checkbox = styled.input`
     border: 1px solid #797979;
     margin-right: 14px;
     cursor: pointer;
-    background: ${(props) =>
-      props.checked ? `url("/tick-checkbox.png") no-repeat center` : ""};
+    background: ${props =>
+      props.checked ? `url("/tick-checkbox.png") no-repeat center` : ''};
   }
-`;
+`
 
 export const Title = styled.h2`
   color: ${red};
@@ -188,18 +188,18 @@ export const Title = styled.h2`
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`;
+`
 
 export const RegisterType = styled.div`
   max-width: 576px;
-`;
+`
 
 export const ButtonWrapper = styled.div`
   max-width: 335px;
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 export const ButtonMobileWrapper = styled.div`
   display: none;
@@ -208,7 +208,7 @@ export const ButtonMobileWrapper = styled.div`
     display: block;
     padding: 0 20px;
   }
-`;
+`
 
 export const NotAuthorized = styled.div`
   max-width: 400px;
@@ -220,7 +220,7 @@ export const NotAuthorized = styled.div`
     font-size: 12px;
     line-height: 18px;
   }
-`;
+`
 
 export const Photo = styled.div`
   width: 673px;
@@ -228,7 +228,7 @@ export const Photo = styled.div`
   position: absolute;
   right: 94px;
   bottom: 0;
-  background: url("/for-brand-login-woman.png") no-repeat center;
+  background: url('/for-brand-login-woman.png') no-repeat center;
   background-size: contain;
   z-index: 1;
 
@@ -238,4 +238,4 @@ export const Photo = styled.div`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`

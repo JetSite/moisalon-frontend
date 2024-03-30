@@ -1,8 +1,8 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 import {
   laptopBreakpoint,
   tabletBreakpoint,
-} from "../../../../../../styles/variables";
+} from '../../../../../styles/variables'
 
 export const Wrapper = styled.div`
   height: 489px;
@@ -17,7 +17,7 @@ export const Wrapper = styled.div`
     height: auto;
     flex-direction: column;
   }
-`;
+`
 
 export const Card = styled.div`
   flex: 1 0 25%;
@@ -49,7 +49,7 @@ export const Card = styled.div`
     min-height: 175px;
     border-right: none;
   }
-`;
+`
 
 export const IconWrap = styled.div`
   width: 81px;
@@ -65,7 +65,7 @@ export const IconWrap = styled.div`
     width: 41px;
     height: 41px;
   }
-`;
+`
 
 export const Icon = styled.img`
   @media (max-width: ${tabletBreakpoint}) {
@@ -74,7 +74,7 @@ export const Icon = styled.img`
   @media (max-width: ${laptopBreakpoint}) {
     height: 100%;
   }
-`;
+`
 
 export const CardTitle = styled.h3`
   margin-top: 23px;
@@ -91,7 +91,7 @@ export const CardTitle = styled.h3`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const CardText = styled.p`
   margin-top: 26px;
@@ -109,4 +109,4 @@ export const CardText = styled.p`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`

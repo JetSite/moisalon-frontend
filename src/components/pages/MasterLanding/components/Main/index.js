@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import {
   laptopBreakpoint,
   tabletBreakpoint,
-} from '../../../../../../styles/variables'
+} from '../../../../../styles/variables'
 import Link from 'next/link'
 import { cyrToTranslit } from '../../../../../utils/translit'
 import { useContext } from 'react'

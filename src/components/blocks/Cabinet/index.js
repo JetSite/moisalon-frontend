@@ -1,23 +1,23 @@
-import { useState, useCallback } from "react";
-import { useMutation } from "@apollo/client";
-import Controls from "./components/Controls";
-import Header from "../../pages/MainPage/components/Header";
-import { MainContainer, Wrapper } from "./styled";
-import { updateMasterPhotoMutation } from "../../../_graphql-legacy/master/updateMasterPhotoMutation";
-import CabinetForm from "./components/CabinetForm";
-import { PHOTO_URL } from "../../../../variables";
+import { useState, useCallback } from 'react'
+import { useMutation } from '@apollo/client'
+import Controls from './components/Controls'
+import Header from '../../pages/MainPage/components/Header'
+import { MainContainer, Wrapper } from './styled'
+import { updateMasterPhotoMutation } from '../../../_graphql-legacy/master/updateMasterPhotoMutation'
+import CabinetForm from './components/CabinetForm'
+import { PHOTO_URL } from '../../../variables'
 
 const Cabinet = ({ refetch, currentMe }) => {
-  const [photoId, setPhotoId] = useState(null);
-  const [noPhotoError, setNoPhotoError] = useState(false);
+  const [photoId, setPhotoId] = useState(null)
+  const [noPhotoError, setNoPhotoError] = useState(false)
 
-  const [updateMasterPhoto] = useMutation(updateMasterPhotoMutation);
+  const [updateMasterPhoto] = useMutation(updateMasterPhotoMutation)
   const onAdd = useCallback(
-    (photoId) => {
-      updateMasterPhoto({ variables: { input: { photoId } } });
+    photoId => {
+      updateMasterPhoto({ variables: { input: { photoId } } })
     },
-    [updateMasterPhoto]
-  );
+    [updateMasterPhoto],
+  )
 
   return (
     <>
@@ -48,7 +48,7 @@ const Cabinet = ({ refetch, currentMe }) => {
         </Wrapper>
       </MainContainer>
     </>
-  );
-};
+  )
+}
 
-export default Cabinet;
+export default Cabinet

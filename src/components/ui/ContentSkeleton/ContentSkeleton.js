@@ -1,10 +1,10 @@
-import React from "react";
-import styled from "styled-components";
-import { Skeleton } from "@material-ui/lab";
-import MainLayout from "../../../layouts/MainLayout";
-import { MainContainer } from "../../../styles/common";
-import SearchBlock from "../../../components/blocks/SearchBlock";
-import { laptopBreakpoint } from "../../../../styles/variables";
+import React from 'react'
+import styled from 'styled-components'
+import { Skeleton } from '@material-ui/lab'
+import MainLayout from '../../../layouts/MainLayout'
+import { MainContainer } from '../../../styles/common'
+import SearchBlock from '../../../components/blocks/SearchBlock'
+import { laptopBreakpoint } from '../../../styles/variables'
 
 const Wrapper = styled.div`
   padding: 0 140px;
@@ -14,20 +14,20 @@ const Wrapper = styled.div`
     padding: 0 20px;
     margin-top: 70px;
   }
-`;
+`
 
 const CirclesWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`;
+`
 
 const LinesWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 45px;
-`;
+`
 
 const SkeletonCircleBig = styled(Skeleton)`
   display: inline-block;
@@ -40,7 +40,7 @@ const SkeletonCircleBig = styled(Skeleton)`
     height: 89px;
     margin: 0 21px;
   }
-`;
+`
 
 const SkeletonCircleSmall = styled(Skeleton)`
   display: inline-block;
@@ -51,15 +51,15 @@ const SkeletonCircleSmall = styled(Skeleton)`
     width: 28px;
     height: 28px;
   }
-`;
+`
 
 const SkeletonRectBig = styled(Skeleton)`
   margin-top: 20px;
-`;
+`
 
 const SkeletonRectSmall = styled(Skeleton)`
   margin-top: 20px;
-`;
+`
 
 const ContentSkeleton = ({ me, loading }) => {
   return (
@@ -80,7 +80,7 @@ const ContentSkeleton = ({ me, loading }) => {
         </Wrapper>
       </MainContainer>
     </MainLayout>
-  );
-};
+  )
+}
 
-export default ContentSkeleton;
+export default ContentSkeleton

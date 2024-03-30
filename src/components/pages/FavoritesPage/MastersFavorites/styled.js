@@ -1,17 +1,17 @@
-import { Avatar } from "@material-ui/core";
-import { lighten } from "polished";
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../styles/variables";
+import { Avatar } from '@material-ui/core'
+import { lighten } from 'polished'
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../styles/variables'
 
 export const Wrapper = styled.div`
   background: #fff;
-`;
+`
 
 export const Socials = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 15px;
-`;
+`
 
 export const ItemToggle = styled.div`
   width: 100%;
@@ -21,22 +21,22 @@ export const ItemToggle = styled.div`
   text-transform: uppercase;
   padding: 10px 0;
   font-weight: 500;
-  color: ${(props) => (props.disabled ? "#e2e2e2" : "#000")};
+  color: ${props => (props.disabled ? '#e2e2e2' : '#000')};
   &:before {
-    content: "";
-    display: ${(props) => (props.disabled ? "none" : "block")};
+    content: '';
+    display: ${props => (props.disabled ? 'none' : 'block')};
     position: absolute;
     width: 9px;
     height: 9px;
-    background: url("/arrow-next-2.svg") no-repeat center;
+    background: url('/arrow-next-2.svg') no-repeat center;
     background-size: contain;
     right: 0;
     transition: 0.3s;
     top: 50%;
-    transform: ${(props) =>
-      props.toggle ? "rotate(90deg) translateX(-50%)" : "translateY(-50%)"};
+    transform: ${props =>
+      props.toggle ? 'rotate(90deg) translateX(-50%)' : 'translateY(-50%)'};
   }
-`;
+`
 
 export const PhoneButton = styled.a`
   display: flex;
@@ -51,34 +51,34 @@ export const PhoneButton = styled.a`
   font-weight: 600;
   cursor: pointer;
   &:hover {
-    background-color: ${lighten(0.1, "#f03")};
+    background-color: ${lighten(0.1, '#f03')};
   }
 
   @media (max-width: ${laptopBreakpoint}) {
     width: initial;
   }
-`;
+`
 
 export const PhoneLink = styled.a`
   width: 14.5px;
   height: 14.5px;
-  background: url("/phone-icon.svg") no-repeat center;
+  background: url('/phone-icon.svg') no-repeat center;
   background-size: contain;
   margin-right: 20px;
-`;
+`
 
 export const EmailLink = styled.a`
   width: 16.7px;
   height: 12.2px;
-  background: url("/mail-icon.svg") no-repeat center;
+  background: url('/mail-icon.svg') no-repeat center;
   background-size: contain;
-`;
+`
 
 export const Top = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-`;
+`
 
 export const Title = styled.p`
   margin-bottom: 55px;
@@ -86,22 +86,22 @@ export const Title = styled.p`
   font-weight: 600;
 
   @media (max-width: ${laptopBreakpoint}) {
-    display: ${(props) => (props.cabinet ? "none" : "block")};
+    display: ${props => (props.cabinet ? 'none' : 'block')};
     margin-top: 40px;
     margin-bottom: 20px;
     font-size: 24px;
   }
-`;
+`
 
 export const Content = styled.div`
-  padding: ${(props) => (props.cabinet ? "0" : "60px 140px")};
-  background: url("/master-slider-bg.png") no-repeat center;
+  padding: ${props => (props.cabinet ? '0' : '60px 140px')};
+  background: url('/master-slider-bg.png') no-repeat center;
 
   @media (max-width: ${laptopBreakpoint}) {
-    padding: ${(props) => (props.cabinet ? "0" : "0 20px")};
-    padding-bottom: ${(props) => (props.cabinet ? "0" : "40px")};
+    padding: ${props => (props.cabinet ? '0' : '0 20px')};
+    padding-bottom: ${props => (props.cabinet ? '0' : '40px')};
   }
-`;
+`
 
 export const Favorite = styled.div`
   position: absolute;
@@ -111,15 +111,15 @@ export const Favorite = styled.div`
   cursor: pointer;
   right: 1.7rem;
   top: -0.8rem;
-`;
+`
 
 export const SliderWrapper = styled.div`
   display: flex;
-`;
+`
 
 export const SwiperWrap = styled.div`
   width: 100%;
-`;
+`
 
 export const Item = styled.div`
   width: 220px;
@@ -139,7 +139,7 @@ export const Item = styled.div`
     width: 100%;
     min-height: 410px;
   }
-`;
+`
 
 export const City = styled.p`
   font-weight: 700;
@@ -151,11 +151,11 @@ export const City = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     margin-top: 10px;
   }
-`;
+`
 
 export const Image = styled(Avatar)`
   margin-bottom: 15px;
-`;
+`
 
 export const BottomGoodWrapper = styled.div`
   padding: 12px 10px;
@@ -168,7 +168,7 @@ export const BottomGoodWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-`;
+`
 
 export const Name = styled.p`
   font-weight: 600;
@@ -177,7 +177,7 @@ export const Name = styled.p`
   color: #000;
   word-break: break-word;
   margin-bottom: 20px;
-`;
+`
 
 export const Specializations = styled.p`
   color: #727272;
@@ -190,7 +190,7 @@ export const Specializations = styled.p`
     font-size: 12px;
     line-height: 18px;
   }
-`;
+`
 
 export const MasterInfo = styled.div`
   display: flex;
@@ -198,9 +198,9 @@ export const MasterInfo = styled.div`
   justify-content: space-between;
   align-items: center;
   flex-grow: 1;
-`;
+`
 
 export const Empty = styled.div`
   font-size: 18px;
   line-height: 30px;
-`;
+`

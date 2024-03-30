@@ -1,4 +1,4 @@
-import { red } from "../../../../../../../styles/variables";
+import { red } from '../../../../../../styles/variables'
 
 const Search = ({ fillSearch, searchOpen }) => {
   return (
@@ -20,7 +20,7 @@ const Search = ({ fillSearch, searchOpen }) => {
         strokeWidth="2"
       />
     </svg>
-  );
-};
+  )
+}
 
-export default Search;
+export default Search

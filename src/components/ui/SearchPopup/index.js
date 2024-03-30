@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef } from "react";
-import styled from "styled-components";
-import SearchBlock from "./components/SearchBlock";
-import SearchResults from "./components/SearchResults";
-import { laptopBreakpoint } from "../../../../styles/variables";
+import { useState, useEffect, useRef } from 'react'
+import styled from 'styled-components'
+import SearchBlock from './components/SearchBlock'
+import SearchResults from './components/SearchResults'
+import { laptopBreakpoint } from '../../../styles/variables'
 
 const SearchPopupWrapper = styled.div`
   position: fixed;
@@ -23,7 +23,7 @@ const SearchPopupWrapper = styled.div`
     overflow-y: scroll;
     overflow-x: hidden;
   }
-`;
+`
 
 const SearchPopup = ({
   showSearchPopup,
@@ -33,43 +33,43 @@ const SearchPopup = ({
   fillCart,
   setFillSearch,
 }) => {
-  const [query, setQuery] = useState({});
-  const searchPopupRef = useRef();
+  const [query, setQuery] = useState({})
+  const searchPopupRef = useRef()
 
   useEffect(() => {
     if (showSearchPopup) {
-      document.body.style.overflowY = "hidden";
-      document.documentElement.style.overflowY = "hidden";
+      document.body.style.overflowY = 'hidden'
+      document.documentElement.style.overflowY = 'hidden'
       // document.body.style.paddingRight = "17px";
     }
     return () => {
-      document.body.style.overflow = "unset";
-      document.documentElement.style.overflowY = "scroll";
+      document.body.style.overflow = 'unset'
+      document.documentElement.style.overflowY = 'scroll'
       // document.body.style.paddingRight = "0";
-    };
-  }, [fillFav, fillProfile, fillCart]);
+    }
+  }, [fillFav, fillProfile, fillCart])
 
-  const useOutsideClick = (ref) => {
+  const useOutsideClick = ref => {
     useEffect(() => {
-      const handleClickOutside = (e) => {
+      const handleClickOutside = e => {
         if (
-          e.target.id === "searchSvg" ||
-          e.target.id === "searchIconPath1" ||
-          e.target.id === "searchIconPath2"
+          e.target.id === 'searchSvg' ||
+          e.target.id === 'searchIconPath1' ||
+          e.target.id === 'searchIconPath2'
         )
-          return;
+          return
         if (ref.current && !ref.current.contains(e.target)) {
-          setShowSearchPopup(false);
-          setFillSearch("#000");
+          setShowSearchPopup(false)
+          setFillSearch('#000')
         }
-      };
-      document.addEventListener("mousedown", handleClickOutside);
+      }
+      document.addEventListener('mousedown', handleClickOutside)
       return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, [ref]);
-  };
-  useOutsideClick(searchPopupRef);
+        document.removeEventListener('mousedown', handleClickOutside)
+      }
+    }, [ref])
+  }
+  useOutsideClick(searchPopupRef)
 
   return (
     <SearchPopupWrapper show={showSearchPopup} ref={searchPopupRef}>
@@ -82,7 +82,7 @@ const SearchPopup = ({
       />
       <SearchResults setShowSearchPopup={setShowSearchPopup} query={query} />
     </SearchPopupWrapper>
-  );
-};
+  )
+}
 
-export default SearchPopup;
+export default SearchPopup

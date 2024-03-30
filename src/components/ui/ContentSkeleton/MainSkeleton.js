@@ -1,8 +1,8 @@
-import React from "react";
-import styled from "styled-components";
-import { Skeleton } from "@material-ui/lab";
-import { MainContainer } from "../../../styles/common";
-import { laptopBreakpoint } from "../../../../styles/variables";
+import React from 'react'
+import styled from 'styled-components'
+import { Skeleton } from '@material-ui/lab'
+import { MainContainer } from '../../../styles/common'
+import { laptopBreakpoint } from '../../../styles/variables'
 
 const Wrapper = styled.div`
   padding: 0 140px;
@@ -12,22 +12,22 @@ const Wrapper = styled.div`
     padding: 0 20px;
     margin-top: 34px;
   }
-`;
+`
 
 const LinesWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 45px;
-`;
+`
 
 const SkeletonRectBig = styled(Skeleton)`
   margin-top: 20px;
-`;
+`
 
 const SkeletonRectSmall = styled(Skeleton)`
   margin-top: 20px;
-`;
+`
 
 const MainSkeleton = () => {
   return (
@@ -48,7 +48,7 @@ const MainSkeleton = () => {
         </LinesWrapper>
       </Wrapper>
     </MainContainer>
-  );
-};
+  )
+}
 
-export default MainSkeleton;
+export default MainSkeleton

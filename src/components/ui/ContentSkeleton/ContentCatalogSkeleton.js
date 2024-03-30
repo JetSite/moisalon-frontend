@@ -1,16 +1,16 @@
-import React, { useContext } from "react";
-import styled from "styled-components";
-import { Skeleton } from "@material-ui/lab";
-import MainLayout from "../../../layouts/MainLayout";
-import { MainContainer } from "../../../styles/common";
-import SearchBlock from "../../../components/blocks/SearchBlock";
-import { laptopBreakpoint } from "../../../../styles/variables";
-import BrandsList from "../../Catalog/components/BrandsList";
-import MobileViewCards from "../../pages/MainPage/components/MobileViewCards";
-import BackButton from "../../ui/BackButton";
-import Banners from "../../pages/Catalog/components/Banners";
-import { CityContext } from "../../../searchContext";
-import { cyrToTranslit } from "../../../utils/translit";
+import React, { useContext } from 'react'
+import styled from 'styled-components'
+import { Skeleton } from '@material-ui/lab'
+import MainLayout from '../../../layouts/MainLayout'
+import { MainContainer } from '../../../styles/common'
+import SearchBlock from '../../../components/blocks/SearchBlock'
+import { laptopBreakpoint } from '../../../styles/variables'
+import BrandsList from '../../Catalog/components/BrandsList'
+import MobileViewCards from '../../pages/MainPage/components/MobileViewCards'
+import BackButton from '../../ui/BackButton'
+import Banners from '../../pages/Catalog/components/Banners'
+import { CityContext } from '../../../searchContext'
+import { cyrToTranslit } from '../../../utils/translit'
 
 const Wrapper = styled.div`
   padding: 0 140px;
@@ -21,7 +21,7 @@ const Wrapper = styled.div`
     padding: 0 20px;
     margin-top: 70px;
   }
-`;
+`
 
 const Wrap = styled.div`
   max-width: 1440px;
@@ -30,18 +30,18 @@ const Wrap = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     padding: 0 20px;
   }
-`;
+`
 
 const LinesWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   margin-top: 45px;
   flex-wrap: wrap;
-`;
+`
 
 const SkeletonRectSmall = styled(Skeleton)`
   margin-bottom: 35px;
-`;
+`
 
 const Title = styled.h2`
   font-weight: 600;
@@ -55,7 +55,7 @@ const Title = styled.h2`
     line-height: 25px;
     text-transform: none;
   }
-`;
+`
 
 const ContentCatalogSkeleton = ({
   me,
@@ -68,7 +68,7 @@ const ContentCatalogSkeleton = ({
   bannersByHookSmall2,
   filterProduct,
 }) => {
-  const [city] = useContext(CityContext);
+  const [city] = useContext(CityContext)
   return (
     <MainLayout me={me} loading={loading}>
       <MobileViewCards />
@@ -115,7 +115,7 @@ const ContentCatalogSkeleton = ({
         </Wrapper>
       </MainContainer>
     </MainLayout>
-  );
-};
+  )
+}
 
-export default ContentCatalogSkeleton;
+export default ContentCatalogSkeleton

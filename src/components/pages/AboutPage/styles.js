@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../styles/variables";
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../styles/variables'
 
 export const Wrapper = styled.div`
   padding: 0 140px;
@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     padding: 0 20px;
   }
-`;
+`
 
 export const TopWrap = styled.div`
   background: #000;
@@ -15,7 +15,7 @@ export const TopWrap = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     background: #fff;
   }
-`;
+`
 
 export const Top = styled.div`
   max-width: 1440px;
@@ -33,7 +33,7 @@ export const Top = styled.div`
     color: #000;
     overflow: hidden;
   }
-`;
+`
 
 export const Bottom = styled.div`
   max-width: 1440px;
@@ -53,7 +53,7 @@ export const Bottom = styled.div`
     background: #f8f8f8;
     overflow: hidden;
   }
-`;
+`
 
 export const TopLeft = styled.div`
   width: 45%;
@@ -61,7 +61,7 @@ export const TopLeft = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`;
+`
 
 export const TopRight = styled.div`
   width: 40%;
@@ -69,7 +69,7 @@ export const TopRight = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`;
+`
 
 export const BottomLeft = styled.div`
   width: 49%;
@@ -77,7 +77,7 @@ export const BottomLeft = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 export const BottomRight = styled.div`
   width: 38%;
@@ -89,7 +89,7 @@ export const BottomRight = styled.div`
     width: 100%;
     z-index: 100;
   }
-`;
+`
 
 export const MainTitle = styled.h1`
   margin-bottom: 27px;
@@ -109,7 +109,7 @@ export const MainTitle = styled.h1`
     line-height: 25px;
     text-align: center;
   }
-`;
+`
 
 export const Title = styled.h2`
   font-size: 40px;
@@ -125,7 +125,7 @@ export const Title = styled.h2`
     line-height: 25px;
     text-align: center;
   }
-`;
+`
 
 export const Text = styled.p`
   margin-bottom: 58px;
@@ -141,7 +141,7 @@ export const Text = styled.p`
     text-align: center;
     z-index: 400;
   }
-`;
+`
 
 export const TopText = styled(Text)`
   color: #fff;
@@ -154,16 +154,16 @@ export const TopText = styled(Text)`
     text-align: center;
     z-index: 0;
   }
-`;
+`
 
 export const TopImage = styled.div`
   position: relative;
   top: -47px;
   width: 100%;
   height: 219px;
-  background: url("/moi-logo-white.svg") no-repeat center;
+  background: url('/moi-logo-white.svg') no-repeat center;
   background-size: cover;
-`;
+`
 
 export const TopMobileImage = styled.div`
   margin: 0 auto;
@@ -171,16 +171,16 @@ export const TopMobileImage = styled.div`
   position: relative;
   width: 323px;
   height: 149px;
-  background: url("/logo.svg") no-repeat center;
+  background: url('/logo.svg') no-repeat center;
   background-size: cover;
-`;
+`
 
 export const BottomImage = styled.div`
   width: 100%;
   height: 100%;
-  background: url("/about-page-bottom.jpg") no-repeat center;
+  background: url('/about-page-bottom.jpg') no-repeat center;
   background-size: cover;
-`;
+`
 
 export const NumberWrapper = styled.div`
   display: flex;
@@ -197,7 +197,7 @@ export const NumberWrapper = styled.div`
       display: none;
     }
   }
-`;
+`
 
 export const Item = styled.div`
   display: flex;
@@ -207,13 +207,13 @@ export const Item = styled.div`
     margin-right: 50px;
     flex-shrink: 0;
   }
-`;
+`
 
 export const Content = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
+`
 
 export const Quantity = styled.p`
   display: block;
@@ -223,7 +223,7 @@ export const Quantity = styled.p`
   font-weight: 600;
   line-height: 25px;
   text-decoration: underline;
-`;
+`
 
 export const NumbersText = styled(Text)`
   margin: 0;
@@ -231,7 +231,7 @@ export const NumbersText = styled(Text)`
   @media (max-width: ${laptopBreakpoint}) {
     z-index: 0;
   }
-`;
+`
 
 export const MissionWrapper = styled.div`
   position: relative;
@@ -242,7 +242,7 @@ export const MissionWrapper = styled.div`
     min-height: 0;
     background: #fff;
   }
-`;
+`
 
 export const MissionContent = styled.div`
   max-width: 1440px;
@@ -252,7 +252,7 @@ export const MissionContent = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     padding: 0 20px;
   }
-`;
+`
 
 export const MissionTitle = styled(Title)`
   margin-bottom: 56px;
@@ -260,7 +260,7 @@ export const MissionTitle = styled(Title)`
   @media (max-width: ${laptopBreakpoint}) {
     margin-bottom: 18px;
   }
-`;
+`
 
 export const MissionText = styled(Text)`
   max-width: 475px;
@@ -269,7 +269,7 @@ export const MissionText = styled(Text)`
     margin: 0 auto;
     z-index: 0;
   }
-`;
+`
 
 export const Romb = styled.div`
   width: 24px;
@@ -277,9 +277,9 @@ export const Romb = styled.div`
   position: absolute;
   top: 75%;
   left: 28%;
-  background: url("/all-romb.svg") no-repeat center;
+  background: url('/all-romb.svg') no-repeat center;
   background-size: contain;
-`;
+`
 
 export const Rectangle = styled.div`
   width: 58px;
@@ -287,14 +287,14 @@ export const Rectangle = styled.div`
   position: absolute;
   top: 13%;
   left: 3%;
-  background: url("//all-salon-img.svg") no-repeat center;
+  background: url('//all-salon-img.svg') no-repeat center;
   background-size: contain;
 
   @media (max-width: ${laptopBreakpoint}) {
     top: 70%;
     left: 7%;
   }
-`;
+`
 
 export const OneIcon = styled.div`
   width: 69px;
@@ -302,14 +302,14 @@ export const OneIcon = styled.div`
   position: absolute;
   bottom: 18%;
   right: 6%;
-  background: url("/about-number.svg") no-repeat center;
+  background: url('/about-number.svg') no-repeat center;
   background-size: contain;
 
   @media (max-width: ${laptopBreakpoint}) {
     bottom: 20%;
     right: 8%;
   }
-`;
+`
 
 export const Star = styled.div`
   width: 32px;
@@ -317,14 +317,14 @@ export const Star = styled.div`
   position: absolute;
   top: 16%;
   right: 39%;
-  background: url("/black-star-icon.svg") no-repeat center;
+  background: url('/black-star-icon.svg') no-repeat center;
   background-size: contain;
 
   @media (max-width: ${laptopBreakpoint}) {
     top: 65%;
     left: 47%;
   }
-`;
+`
 
 export const RedCircle = styled.div`
   width: 158px;
@@ -332,7 +332,7 @@ export const RedCircle = styled.div`
   position: absolute;
   top: 11%;
   right: 6%;
-  background: url("/all-circle-red.svg") no-repeat center;
+  background: url('/all-circle-red.svg') no-repeat center;
   background-size: contain;
 
   @media (max-width: ${laptopBreakpoint}) {
@@ -340,7 +340,7 @@ export const RedCircle = styled.div`
     top: 3%;
     left: 3%;
   }
-`;
+`
 
 export const BlackArrow = styled.div`
   width: 122px;
@@ -348,9 +348,9 @@ export const BlackArrow = styled.div`
   position: absolute;
   bottom: 18%;
   right: 41%;
-  background: url("/about-black-arrow.svg") no-repeat center;
+  background: url('/about-black-arrow.svg') no-repeat center;
   background-size: contain;
-`;
+`
 
 export const WhiteArrow = styled.div`
   width: 122px;
@@ -359,9 +359,9 @@ export const WhiteArrow = styled.div`
   bottom: 8%;
   left: 50%;
   margin-left: -61px;
-  background: url("/all-masters.svg") no-repeat center;
+  background: url('/all-masters.svg') no-repeat center;
   background-size: contain;
-`;
+`
 
 export const RedArrow = styled.div`
   width: 101px;
@@ -370,9 +370,9 @@ export const RedArrow = styled.div`
   bottom: 143px;
   left: 50%;
   margin-left: -51px;
-  background: url("/about-arrow-icon.svg") no-repeat center;
+  background: url('/about-arrow-icon.svg') no-repeat center;
   background-size: contain;
-`;
+`
 
 export const SmallCircle = styled.div`
   width: 30px;
@@ -380,9 +380,9 @@ export const SmallCircle = styled.div`
   position: absolute;
   bottom: 34%;
   right: 15%;
-  background: url("/about-small-circle.svg") no-repeat center;
+  background: url('/about-small-circle.svg') no-repeat center;
   background-size: contain;
-`;
+`
 
 export const BlackCircle = styled.div`
   width: 30px;
@@ -390,9 +390,9 @@ export const BlackCircle = styled.div`
   position: absolute;
   top: 4%;
   right: 7%;
-  background: url("/about-black-circle.svg") no-repeat center;
+  background: url('/about-black-circle.svg') no-repeat center;
   background-size: contain;
-`;
+`
 
 export const RedHook = styled.div`
   width: 74px;
@@ -400,7 +400,7 @@ export const RedHook = styled.div`
   position: absolute;
   top: 18%;
   left: 44%;
-  background: url("/about-red-hook.svg") no-repeat center;
+  background: url('/about-red-hook.svg') no-repeat center;
   background-size: contain;
 
   @media (max-width: ${laptopBreakpoint}) {
@@ -409,7 +409,7 @@ export const RedHook = styled.div`
     top: 13%;
     left: 67%;
   }
-`;
+`
 
 export const BigRomb = styled.div`
   width: 386px;
@@ -417,15 +417,15 @@ export const BigRomb = styled.div`
   position: absolute;
   top: 18%;
   right: 16%;
-  background: url("/about-romb.svg") no-repeat center;
+  background: url('/about-romb.svg') no-repeat center;
   background-size: contain;
-`;
+`
 
 export const LineWrapper = styled.div`
   height: 104px;
   border-top: 1px solid #000;
   border-bottom: 1px solid #000;
-`;
+`
 
 export const LineContent = styled.div`
   height: 100%;
@@ -437,21 +437,21 @@ export const LineContent = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
-`;
+`
 
 export const LineElement = styled.div`
   display: flex;
   flex-shrink: 0;
-`;
+`
 
 export const LineTitle = styled(Title)`
   margin: 0 20px;
   user-select: none;
-`;
+`
 
 export const LineIcon = styled.img`
   width: 24px;
-`;
+`
 
 export const AdvWrapper = styled.div`
   display: flex;
@@ -476,7 +476,7 @@ export const AdvWrapper = styled.div`
       display: none;
     }
   }
-`;
+`
 
 export const AdvItem = styled.div`
   width: 289px;
@@ -489,7 +489,7 @@ export const AdvItem = styled.div`
     margin: 0 24px;
     flex-shrink: 0;
   }
-`;
+`
 
 export const AdvTitle = styled.h3`
   margin-bottom: 15px;
@@ -504,7 +504,7 @@ export const AdvTitle = styled.h3`
     font-weight: 600;
     line-height: 25px;
   }
-`;
+`
 
 export const AdvText = styled.p`
   font-size: 14px;
@@ -514,7 +514,7 @@ export const AdvText = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     line-height: 25px;
   }
-`;
+`
 
 export const PosWrapper = styled.div`
   display: flex;
@@ -539,7 +539,7 @@ export const PosWrapper = styled.div`
       display: none;
     }
   }
-`;
+`
 
 export const PosItem = styled.div`
   width: 289px;
@@ -552,7 +552,7 @@ export const PosItem = styled.div`
     margin: 0 26px;
     flex-shrink: 0;
   }
-`;
+`
 
 export const PosListItem = styled.div`
   position: relative;
@@ -562,16 +562,16 @@ export const PosListItem = styled.div`
   line-height: 27px;
 
   &:before {
-    content: "";
+    content: '';
     position: absolute;
     width: 6px;
     height: 6px;
     top: 11px;
     left: 0;
-    background: url("/about-list-icon.svg") no-repeat center;
+    background: url('/about-list-icon.svg') no-repeat center;
     background-size: contain;
   }
-`;
+`
 
 export const BPWrapper = styled.div`
   min-height: 777px;
@@ -580,7 +580,7 @@ export const BPWrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     min-height: 0;
   }
-`;
+`
 
 export const BPContent = styled.div`
   position: relative;
@@ -593,7 +593,7 @@ export const BPContent = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     padding: 70px 20px 44px 20px;
   }
-`;
+`
 
 export const BPTitle = styled(Title)`
   margin-bottom: 83px;
@@ -602,7 +602,7 @@ export const BPTitle = styled(Title)`
   @media (max-width: ${laptopBreakpoint}) {
     margin-bottom: 40px;
   }
-`;
+`
 
 export const BPList = styled.p`
   width: 40%;
@@ -623,7 +623,7 @@ export const BPList = styled.p`
     padding: 25px 0 25px 53px;
     width: 100%;
   }
-`;
+`
 
 export const BPItemWrap = styled.div`
   display: flex;
@@ -631,12 +631,12 @@ export const BPItemWrap = styled.div`
   cursor: pointer;
   user-select: none;
   &:not(:last-child) {
-    margin-bottom: ${({ toggle }) => (toggle ? "0" : "42px")};
+    margin-bottom: ${({ toggle }) => (toggle ? '0' : '42px')};
     @media (max-width: ${laptopBreakpoint}) {
-      margin-bottom: ${({ toggle }) => (toggle ? "0" : "31px")};
+      margin-bottom: ${({ toggle }) => (toggle ? '0' : '31px')};
     }
   }
-`;
+`
 
 export const BPItem = styled.div`
   color: #fff;
@@ -651,7 +651,7 @@ export const BPItem = styled.div`
     letter-spacing: 0em;
     text-transform: none;
   }
-`;
+`
 
 export const Plus = styled.span`
   margin-right: 30px;
@@ -663,7 +663,7 @@ export const Plus = styled.span`
   border-radius: 50%;
 
   &:before {
-    content: " ";
+    content: ' ';
     position: absolute;
     display: block;
     background-color: #fff;
@@ -672,12 +672,12 @@ export const Plus = styled.span`
     top: 5px;
     bottom: 5px;
     z-index: 9;
-    opacity: ${({ toggle }) => (toggle ? "0" : "1")};
+    opacity: ${({ toggle }) => (toggle ? '0' : '1')};
     transition: 0.2s;
   }
 
   &:after {
-    content: " ";
+    content: ' ';
     position: absolute;
     display: block;
     background-color: #fff;
@@ -691,7 +691,7 @@ export const Plus = styled.span`
   @media (max-width: ${laptopBreakpoint}) {
     margin-right: 25px;
   }
-`;
+`
 
 export const RedStar = styled.div`
   width: 216px;
@@ -699,9 +699,9 @@ export const RedStar = styled.div`
   position: absolute;
   top: 304px;
   right: 40%;
-  background: url("/about-red-star.svg") no-repeat center;
+  background: url('/about-red-star.svg') no-repeat center;
   background-size: contain;
-`;
+`
 
 export const WaveVertical = styled.div`
   width: 330px;
@@ -709,9 +709,9 @@ export const WaveVertical = styled.div`
   position: absolute;
   top: 132px;
   right: 16%;
-  background: url("/about-wave-vertical.svg") no-repeat center;
+  background: url('/about-wave-vertical.svg') no-repeat center;
   background-size: contain;
-`;
+`
 
 export const WhiteCircle = styled.div`
   width: 106px;
@@ -719,13 +719,13 @@ export const WhiteCircle = styled.div`
   position: absolute;
   top: 239px;
   right: 7%;
-  background: url("/about-circle-white.svg") no-repeat center;
+  background: url('/about-circle-white.svg') no-repeat center;
   background-size: contain;
-`;
+`
 
 export const Underlined = styled.span`
   /* text-decoration: underline; */
-`;
+`
 
 export const RedOval = styled.div`
   display: none;
@@ -739,11 +739,11 @@ export const RedOval = styled.div`
     margin-bottom: -116px;
     left: 50%;
     margin-left: -158px;
-    background: url("/about-mobile-oval-red.svg") no-repeat center;
+    background: url('/about-mobile-oval-red.svg') no-repeat center;
     background-size: contain;
     z-index: 10;
   }
-`;
+`
 
 export const GrayRectangle = styled.div`
   display: none;
@@ -759,10 +759,10 @@ export const GrayRectangle = styled.div`
     background: #f8f8f8;
     z-index: 50;
   }
-`;
+`
 
 export const MobileTitle = styled(Title)`
   margin: 0 auto;
   padding-top: 38px;
   width: 80%;
-`;
+`

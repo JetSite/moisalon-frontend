@@ -1,7 +1,7 @@
-import React from "react";
-import styled from "styled-components";
-import { Skeleton } from "@material-ui/lab";
-import { laptopBreakpoint } from "../../../../../../styles/variables";
+import React from 'react'
+import styled from 'styled-components'
+import { Skeleton } from '@material-ui/lab'
+import { laptopBreakpoint } from '../../../../../styles/variables'
 
 const SkeletonRect = styled(Skeleton)`
   width: 1160px;
@@ -10,10 +10,10 @@ const SkeletonRect = styled(Skeleton)`
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`;
+`
 
 const MainSearchSkeleton = () => {
-  return <SkeletonRect variant="rect" height={300} />;
-};
+  return <SkeletonRect variant="rect" height={300} />
+}
 
-export default MainSearchSkeleton;
+export default MainSearchSkeleton

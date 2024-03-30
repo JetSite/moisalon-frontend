@@ -1,6 +1,6 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
-import { laptopBreakpoint } from "../../../../styles/variables";
+import { laptopBreakpoint } from '../../../styles/variables'
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -14,14 +14,14 @@ export const Wrapper = styled.div`
     flex-direction: column;
     margin-bottom: 22px;
   }
-`;
+`
 
 export const ClearIcon = styled.div`
-  content: "";
+  content: '';
   position: absolute;
   width: 26px;
   height: 26px;
-  background: url("/close-cross.svg") no-repeat center;
+  background: url('/close-cross.svg') no-repeat center;
   background-size: contain;
   cursor: pointer;
   right: 20px;
@@ -30,12 +30,12 @@ export const ClearIcon = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 export const InputWrap = styled.div`
   position: relative;
   flex-shrink: 0;
-  margin-right: ${(props) => (props.noFilters ? "0" : "22px")};
+  margin-right: ${props => (props.noFilters ? '0' : '22px')};
   flex-grow: 1;
   border: 1px solid #ededed;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
@@ -46,10 +46,10 @@ export const InputWrap = styled.div`
 
   &:before {
     position: absolute;
-    content: "";
+    content: '';
     left: 20px;
     top: 17px;
-    background: url("/search.svg") no-repeat center;
+    background: url('/search.svg') no-repeat center;
     background-size: cover;
     cursor: pointer;
     width: 20px;
@@ -72,7 +72,7 @@ export const InputWrap = styled.div`
     margin-right: 0;
     flex-grow: 0;
   }
-`;
+`
 
 export const Input = styled.input`
   width: 100%;
@@ -106,13 +106,13 @@ export const Input = styled.input`
     font-weight: 600;
     font-size: 18px;
   }
-  &[type="search"] {
+  &[type='search'] {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
   }
-  &[type="search"]::-webkit-search-cancel-button {
+  &[type='search']::-webkit-search-cancel-button {
     -webkit-appearance: none;
     appearance: none;
   }
-`;
+`

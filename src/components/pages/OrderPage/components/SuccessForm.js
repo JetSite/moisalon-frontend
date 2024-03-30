@@ -1,7 +1,7 @@
-import parseToFloat from "../../../../utils/parseToFloat";
-import Button from "../../../ui/Button";
-import { useEffect } from "react";
-import { useRouter } from "next/router";
+import parseToFloat from '../../../../utils/parseToFloat'
+import Button from '../../../ui/Button'
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
 import {
   SuccessWrapper,
   Content,
@@ -22,26 +22,26 @@ import {
   TextSumm,
   TextTotal,
   ButtonWrap,
-} from "./../styles";
-import { useMedia } from "use-media";
-import PopupOrder from "./PopupOrder";
-import Steps from "./Steps";
-import RepeatOrderProduct from "./RepeatOrderProduct";
-import { PHOTO_URL } from "../../../../../variables";
+} from './../styles'
+import { useMedia } from 'use-media'
+import PopupOrder from './PopupOrder'
+import Steps from './Steps'
+import RepeatOrderProduct from './RepeatOrderProduct'
+import { PHOTO_URL } from '../../../../variables'
 
-const totalSumm = (items) => {
+const totalSumm = items => {
   if (!items?.length) {
-    return 0;
+    return 0
   } else {
-    let count = 0;
+    let count = 0
     for (let i = 0; i < items.length; i++) {
       count +=
         parseToFloat(items[i].product.currentAmount.toString()) *
-        items[i].quantity;
+        items[i].quantity
     }
-    return count;
+    return count
   }
-};
+}
 
 const SuccessForm = ({
   formValues,
@@ -52,30 +52,30 @@ const SuccessForm = ({
   loading,
   setSuccessPage,
 }) => {
-  const router = useRouter();
-  const mobileMedia = useMedia({ maxWidth: 768 });
+  const router = useRouter()
+  const mobileMedia = useMedia({ maxWidth: 768 })
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+    window.scrollTo(0, 0)
+  }, [])
 
   useEffect(() => {
     router.beforePopState(({ url }) => {
-      if (url === "/order") {
-        setSuccessPage(false);
-        return false;
+      if (url === '/order') {
+        setSuccessPage(false)
+        return false
       }
-      return true;
-    });
+      return true
+    })
 
     return () => {
-      router.beforePopState(() => true);
-    };
-  }, [router]);
+      router.beforePopState(() => true)
+    }
+  }, [router])
 
   const amount = formValues?.product?.reduce(
     (sum, { price, count }) => sum + price * count,
-    0
-  );
+    0,
+  )
 
   return (
     <>
@@ -106,10 +106,10 @@ const SuccessForm = ({
               <Desc>Способ оплаты</Desc>
               <Text>
                 {formValues.payment === 0
-                  ? "Оплата картой на сайте"
+                  ? 'Оплата картой на сайте'
                   : formValues.payment === 1
-                  ? "Наличными"
-                  : "Безналичный расчёт"}
+                  ? 'Наличными'
+                  : 'Безналичный расчёт'}
               </Text>
             </ContentWrap>
             {formValues?.comment ? (
@@ -129,7 +129,7 @@ const SuccessForm = ({
                         src={
                           item?.product?.photoIds[0]
                             ? ` ${PHOTO_URL}${item?.product?.photoIds[0]}/original`
-                            : "/cosmetic_placeholder.jpg"
+                            : '/cosmetic_placeholder.jpg'
                         }
                         alt="logo"
                       />
@@ -138,7 +138,7 @@ const SuccessForm = ({
                       <Name>{item?.product?.title}</Name>
                       <Bottom>
                         <Price>{`${parseToFloat(
-                          item?.product?.currentAmount.toString()
+                          item?.product?.currentAmount.toString(),
                         ).toLocaleString()} ₽`}</Price>
                         <Quantity>{item?.quantity} шт.</Quantity>
                       </Bottom>
@@ -147,7 +147,7 @@ const SuccessForm = ({
                 ))
               : null}
             {formValues?.product
-              ? formValues?.product.map((product) => (
+              ? formValues?.product.map(product => (
                   <RepeatOrderProduct product={product} key={product.id} />
                 ))
               : null}
@@ -173,7 +173,7 @@ const SuccessForm = ({
       </Content>
       <PopupOrder handleCloseSuccess={handleClose} open={open} />
     </>
-  );
-};
+  )
+}
 
-export default SuccessForm;
+export default SuccessForm

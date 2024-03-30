@@ -1,11 +1,11 @@
-import { useContext, useState } from "react";
-import { CatalogsContext } from "../../../../../../searchContext";
-import { MobileHidden, MobileVisible } from "../../../../../../styles/common";
-import catalogOrDefault from "../../../../../../utils/catalogOrDefault";
-import AutoFocusedForm from "../../../../../blocks/Form/AutoFocusedForm";
-import Error from "../../../../../blocks/Form/Error";
-import ActivitiesList from "./ActivitiesList";
-import RentalInfo from "./RentalInfo";
+import { useContext, useState } from 'react'
+import { CatalogsContext } from '../../../../../../searchContext'
+import { MobileHidden, MobileVisible } from '../../../../../../styles/common'
+import catalogOrDefault from '../../../../../../utils/catalogOrDefault'
+import AutoFocusedForm from '../../../../../blocks/Form/AutoFocusedForm'
+import Error from '../../../../../blocks/Form/Error'
+import ActivitiesList from './ActivitiesList'
+import RentalInfo from './RentalInfo'
 import {
   Desc,
   Subdesc,
@@ -16,51 +16,51 @@ import {
   SupportLink,
   ButtonsBlockText,
   SupportTextBottom,
-} from "./styles";
-import { createRoomMutation } from "../../../../../../_graphql-legacy/salon/createRoomMutation";
-import { createSeatMutation } from "../../../../../../_graphql-legacy/salon/createSeatMutation";
-import { updateSeatMutation } from "../../../../../../_graphql-legacy/salon/updateSeatMutation";
-import { updateRoomMutation } from "../../../../../../_graphql-legacy/salon/updateRoomMutation";
-import { useMutation } from "@apollo/client";
-import RentalAdditionalInfo from "./RentalAdditionalInfo";
-import { useEffect } from "react";
-import { PHOTO_URL } from "../../../../../../../variables";
-import Success from "./Success";
-import DefaultPhoto from "./DefaultPhoto";
-import PhotoGallery from "./PhotoGallery";
-import SupportPopup from "./SupportPopup";
+} from './styles'
+import { createRoomMutation } from '../../../../../../_graphql-legacy/salon/createRoomMutation'
+import { createSeatMutation } from '../../../../../../_graphql-legacy/salon/createSeatMutation'
+import { updateSeatMutation } from '../../../../../../_graphql-legacy/salon/updateSeatMutation'
+import { updateRoomMutation } from '../../../../../../_graphql-legacy/salon/updateRoomMutation'
+import { useMutation } from '@apollo/client'
+import RentalAdditionalInfo from './RentalAdditionalInfo'
+import { useEffect } from 'react'
+import { PHOTO_URL } from '../../../../../../variables'
+import Success from './Success'
+import DefaultPhoto from './DefaultPhoto'
+import PhotoGallery from './PhotoGallery'
+import SupportPopup from './SupportPopup'
 
 function convertNumber(text) {
   if (text === undefined) {
-    return undefined;
+    return undefined
   }
 
-  if (text === "") {
-    return undefined;
+  if (text === '') {
+    return undefined
   }
 
-  const int = parseInt(text, 10);
+  const int = parseInt(text, 10)
 
   if (Number.isNaN(int)) {
-    return undefined;
+    return undefined
   }
 
-  return int;
+  return int
 }
 
 const findServices = (type, catalog, roomServices) => {
-  const resultArray = [];
+  const resultArray = []
   catalog
-    .filter((subgroup) => subgroup.id === type)[0]
-    .items.map((item) => {
-      roomServices?.map((service) => {
+    .filter(subgroup => subgroup.id === type)[0]
+    .items.map(item => {
+      roomServices?.map(service => {
         if (service.id === item.id) {
-          resultArray.push(item.id);
+          resultArray.push(item.id)
         }
-      });
-    });
-  return resultArray;
-};
+      })
+    })
+  return resultArray
+}
 
 const CreateSeat = ({
   salon,
@@ -75,214 +75,214 @@ const CreateSeat = ({
   seatActivities,
   seatEquipment,
 }) => {
-  const [errors, setErrors] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [isErrorPopupOpen, setErrorPopupOpen] = useState(false);
-  const [roomId, setRoomId] = useState(roomSeatId);
-  const [showAdditionalInfo, setShowAdditionalInfo] = useState(false);
-  const [showSupportPopup, setShowSupportPopup] = useState(false);
-  const [success, setSuccess] = useState(false);
+  const [errors, setErrors] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
+  const [roomId, setRoomId] = useState(roomSeatId)
+  const [showAdditionalInfo, setShowAdditionalInfo] = useState(false)
+  const [showSupportPopup, setShowSupportPopup] = useState(false)
+  const [success, setSuccess] = useState(false)
   const [rentalRate, setRentalRate] = useState(
     seatSalon?.rentalPricing?.hour ||
       seatSalon?.rentalPricing?.day ||
       seatSalon?.rentalPricing?.week ||
       seatSalon?.rentalPricing?.month
       ? []
-      : ["rentalCustom"]
-  );
+      : ['rentalCustom'],
+  )
   const [chosenRentalRents, setChosenRentalRents] = useState({
     hour: seatSalon?.rentalPricing?.hour || null,
     day: seatSalon?.rentalPricing?.day || null,
     week: seatSalon?.rentalPricing?.week || null,
     month: seatSalon?.rentalPricing?.month || null,
-  });
-  const [defaultPhoto, setDefaultPhoto] = useState(seatSalon?.photo?.id);
+  })
+  const [defaultPhoto, setDefaultPhoto] = useState(seatSalon?.photo?.id)
 
-  const catalogs = useContext(CatalogsContext);
+  const catalogs = useContext(CatalogsContext)
   const salonActivitiesCatalog = catalogOrDefault(
-    catalogs?.salonActivitiesCatalog
-  );
+    catalogs?.salonActivitiesCatalog,
+  )
 
   const resetRentalRate = () => {
-    setRentalRate(["rentalCustom"]);
+    setRentalRate(['rentalCustom'])
     setChosenRentalRents({
       hour: null,
       day: null,
       week: null,
       month: null,
-    });
-  };
+    })
+  }
 
   const equipment_lighting = findServices(
-    "equipment_lighting",
+    'equipment_lighting',
     catalogs.salonRoomServicesCatalog.groups[0].subGroups,
-    room?.services
-  );
+    room?.services,
+  )
 
   const equipment_vent = findServices(
-    "equipment_vent",
+    'equipment_vent',
     catalogs.salonRoomServicesCatalog.groups[0].subGroups,
-    room?.services
-  );
+    room?.services,
+  )
   const equipment_water = findServices(
-    "equipment_water",
+    'equipment_water',
     catalogs.salonRoomServicesCatalog.groups[0].subGroups,
-    room?.services
-  );
+    room?.services,
+  )
   const equipment_heating = findServices(
-    "equipment_heating",
+    'equipment_heating',
     catalogs.salonRoomServicesCatalog.groups[0].subGroups,
-    room?.services
-  );
+    room?.services,
+  )
 
   useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-  }, [success, showAdditionalInfo]);
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
+  }, [success, showAdditionalInfo])
 
   useEffect(() => {
-    const rentals = [];
+    const rentals = []
     if (seatSalon?.rentalPricing?.hour) {
-      rentals.push("rentalHour");
+      rentals.push('rentalHour')
     }
     if (seatSalon?.rentalPricing?.day) {
-      rentals.push("rentalDay");
+      rentals.push('rentalDay')
     }
     if (seatSalon?.rentalPricing?.week) {
-      rentals.push("rentalWeek");
+      rentals.push('rentalWeek')
     }
     if (seatSalon?.rentalPricing?.month) {
-      rentals.push("rentalMonth");
+      rentals.push('rentalMonth')
     }
     if (rentals.length) {
-      setRentalRate(rentals);
+      setRentalRate(rentals)
     } else {
-      setRentalRate(["rentalCustom"]);
+      setRentalRate(['rentalCustom'])
     }
-  }, []);
+  }, [])
 
   const [createRoom] = useMutation(createRoomMutation, {
-    onCompleted: (res) => {
-      setRoomId(res?.createSalonRoom?.id);
-      setRoomSeatId(res?.createSalonRoom?.id);
+    onCompleted: res => {
+      setRoomId(res?.createSalonRoom?.id)
+      setRoomSeatId(res?.createSalonRoom?.id)
     },
-    onError: (error) => {
-      setLoading(false);
+    onError: error => {
+      setLoading(false)
       const errorMessages = error.graphQLErrors
         .filter(
-          (e) =>
-            e.extensions && e.extensions["code"] !== "EXEC_NON_NULL_VIOLATION"
+          e =>
+            e.extensions && e.extensions['code'] !== 'EXEC_NON_NULL_VIOLATION',
         )
-        .map((e) => e.message);
-      setErrors(errorMessages);
-      setErrorPopupOpen(true);
+        .map(e => e.message)
+      setErrors(errorMessages)
+      setErrorPopupOpen(true)
     },
-  });
+  })
 
   const [createSeat] = useMutation(createSeatMutation, {
     onCompleted: async () => {
-      await refetchSalon();
-      setLoading(false);
+      await refetchSalon()
+      setLoading(false)
     },
-    onError: (error) => {
-      setLoading(false);
+    onError: error => {
+      setLoading(false)
       const errorMessages = error.graphQLErrors
         .filter(
-          (e) =>
-            e.extensions && e.extensions["code"] !== "EXEC_NON_NULL_VIOLATION"
+          e =>
+            e.extensions && e.extensions['code'] !== 'EXEC_NON_NULL_VIOLATION',
         )
-        .map((e) => e.message);
-      setErrors(errorMessages);
-      setErrorPopupOpen(true);
+        .map(e => e.message)
+      setErrors(errorMessages)
+      setErrorPopupOpen(true)
     },
-  });
+  })
 
   const [updateSeat] = useMutation(updateSeatMutation, {
     onCompleted: async () => {
-      await refetchSalon();
-      setLoading(false);
+      await refetchSalon()
+      setLoading(false)
     },
-    onError: (error) => {
+    onError: error => {
       const errorMessages = error.graphQLErrors
         .filter(
-          (e) =>
-            e.extensions && e.extensions["code"] !== "EXEC_NON_NULL_VIOLATION"
+          e =>
+            e.extensions && e.extensions['code'] !== 'EXEC_NON_NULL_VIOLATION',
         )
-        .map((e) => e.message);
-      setErrors(errorMessages);
-      setErrorPopupOpen(true);
+        .map(e => e.message)
+      setErrors(errorMessages)
+      setErrorPopupOpen(true)
     },
-  });
+  })
 
   const [updateRoom] = useMutation(updateRoomMutation, {
     onCompleted: async () => {
-      await refetchSalon();
-      setLoading(false);
+      await refetchSalon()
+      setLoading(false)
     },
-    onError: (error) => {
+    onError: error => {
       const errorMessages = error.graphQLErrors
         .filter(
-          (e) =>
-            e.extensions && e.extensions["code"] !== "EXEC_NON_NULL_VIOLATION"
+          e =>
+            e.extensions && e.extensions['code'] !== 'EXEC_NON_NULL_VIOLATION',
         )
-        .map((e) => e.message);
-      setErrors(errorMessages);
-      setErrorPopupOpen(true);
+        .map(e => e.message)
+      setErrors(errorMessages)
+      setErrorPopupOpen(true)
     },
-  });
+  })
 
-  const onSubmit = async (values) => {
-    const { photos = [] } = values;
+  const onSubmit = async values => {
+    const { photos = [] } = values
 
-    setLoading(true);
+    setLoading(true)
     if (!photos.length) {
-      setErrors(["Необходимо добавить фото рабочего места"]);
-      setErrorPopupOpen(true);
-      return;
+      setErrors(['Необходимо добавить фото рабочего места'])
+      setErrorPopupOpen(true)
+      return
     }
 
     if (!values.activities) {
-      setErrors(["Необходимо добавить назначение рабочего кабинета"]);
-      setErrorPopupOpen(true);
-      return;
+      setErrors(['Необходимо добавить назначение рабочего кабинета'])
+      setErrorPopupOpen(true)
+      return
     }
 
-    const roomServices = [];
+    const roomServices = []
 
-    values?.equipment_heating?.map((item) => {
-      roomServices.push({ id: item, value: 1 });
-    });
-    values?.equipment_lighting?.map((item) => {
-      roomServices.push({ id: item, value: 1 });
-    });
-    values?.equipment_vent?.map((item) => {
-      roomServices.push({ id: item, value: 1 });
-    });
-    values?.equipment_water?.map((item) => {
-      roomServices.push({ id: item, value: 1 });
-    });
+    values?.equipment_heating?.map(item => {
+      roomServices.push({ id: item, value: 1 })
+    })
+    values?.equipment_lighting?.map(item => {
+      roomServices.push({ id: item, value: 1 })
+    })
+    values?.equipment_vent?.map(item => {
+      roomServices.push({ id: item, value: 1 })
+    })
+    values?.equipment_water?.map(item => {
+      roomServices.push({ id: item, value: 1 })
+    })
 
     if (values?.electricity_sockets_count) {
       roomServices.push({
-        id: "electricity_sockets_count",
+        id: 'electricity_sockets_count',
         value: +values?.electricity_sockets_count,
-      });
+      })
     }
     if (values?.electricity_sockets_extenders_count) {
       roomServices.push({
-        id: "electricity_sockets_extenders_count",
+        id: 'electricity_sockets_extenders_count',
         value: +values?.electricity_sockets_extenders_count,
-      });
+      })
     }
     if (values?.electricity_sockets_ups_count) {
       roomServices.push({
-        id: "electricity_sockets_ups_count",
+        id: 'electricity_sockets_ups_count',
         value: +values?.electricity_sockets_ups_count,
-      });
+      })
     }
 
     const seatInput = {
       activities: values?.activities || [],
-      rentalPricing: rentalRate.includes("rentalCustom")
+      rentalPricing: rentalRate.includes('rentalCustom')
         ? {
             hour: null,
             day: null,
@@ -312,13 +312,13 @@ const CreateSeat = ({
       services: [],
       withLicense: values.withLicense || false,
       equipments: values?.equipment || [],
-    };
+    }
 
     const roomInput = {
-      title: "title",
+      title: 'title',
       seatCount: 1000,
-      description: values?.description || "",
-      videoLink: "title",
+      description: values?.description || '',
+      videoLink: 'title',
       defaultPhotoId: defaultPhoto,
       wetPointsHands: +values?.wetPointsHands || 0,
       wetPointsHead: +values?.wetPointsHead || 0,
@@ -326,9 +326,9 @@ const CreateSeat = ({
       hasWindows: values?.hasWindows || false,
       space: +values?.space || 10,
       floor: +values?.floor || 1,
-      photoIds: photos?.map((photo) => photo.id),
+      photoIds: photos?.map(photo => photo.id),
       services: roomServices || [],
-    };
+    }
 
     if (seatSalon) {
       updateRoom({
@@ -337,7 +337,7 @@ const CreateSeat = ({
           roomId: roomSeatId,
           input: roomInput,
         },
-      });
+      })
       updateSeat({
         variables: {
           salonId: salon.id,
@@ -345,9 +345,9 @@ const CreateSeat = ({
           seatId: seatSalon.id,
           input: { ...seatInput, roomId: roomSeatId },
         },
-      });
-      setSuccess(true);
-      return;
+      })
+      setSuccess(true)
+      return
     }
 
     const createdRoom = await createRoom({
@@ -355,7 +355,7 @@ const CreateSeat = ({
         salonId: salon.id,
         input: roomInput,
       },
-    });
+    })
     createSeat({
       variables: {
         salonId: salon.id,
@@ -365,27 +365,27 @@ const CreateSeat = ({
           roomId: createdRoom?.data?.createSalonRoom?.id,
         },
       },
-    });
+    })
 
-    setSuccess(true);
-  };
+    setSuccess(true)
+  }
 
-  const showAdditionalHandler = (form) => {
-    if (!form.getFieldState("photos").value) {
-      setErrors(["Необходимо добавить фото рабочего места"]);
-      setErrorPopupOpen(true);
-      return;
+  const showAdditionalHandler = form => {
+    if (!form.getFieldState('photos').value) {
+      setErrors(['Необходимо добавить фото рабочего места'])
+      setErrorPopupOpen(true)
+      return
     }
-    setShowAdditionalInfo(true);
-  };
+    setShowAdditionalInfo(true)
+  }
 
-  const photos = room?.photoIds?.map((photoId) => {
+  const photos = room?.photoIds?.map(photoId => {
     return {
       id: photoId,
-      kind: "original",
+      kind: 'original',
       url: `${PHOTO_URL}${photoId}/original`,
-    };
-  });
+    }
+  })
 
   return (
     <AutoFocusedForm
@@ -407,16 +407,16 @@ const CreateSeat = ({
               wetPointsShower: room?.wetPointsShower,
               electricity_sockets_count:
                 room?.services?.filter(
-                  (service) => service.id === "electricity_sockets_count"
+                  service => service.id === 'electricity_sockets_count',
                 )[0]?.value || 0,
               electricity_sockets_extenders_count:
                 room?.services?.filter(
-                  (service) =>
-                    service.id === "electricity_sockets_extenders_count"
+                  service =>
+                    service.id === 'electricity_sockets_extenders_count',
                 )[0]?.value || 0,
               electricity_sockets_ups_count:
                 room?.services?.filter(
-                  (service) => service.id === "electricity_sockets_ups_count"
+                  service => service.id === 'electricity_sockets_ups_count',
                 )[0]?.value || 0,
               space: room?.space,
               floor: room?.floor,
@@ -502,7 +502,7 @@ const CreateSeat = ({
                   onlyOneChoose
                 />
                 <SupportText>
-                  Если не нашли свое направление работы, обратитесь в{" "}
+                  Если не нашли свое направление работы, обратитесь в{' '}
                   <SupportLink onClick={() => setShowSupportPopup(true)}>
                     службу поддержки
                   </SupportLink>
@@ -575,9 +575,9 @@ const CreateSeat = ({
               </>
             )}
           </form>
-        );
+        )
       }}
     />
-  );
-};
-export default CreateSeat;
+  )
+}
+export default CreateSeat

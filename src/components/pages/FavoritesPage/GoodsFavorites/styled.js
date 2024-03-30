@@ -1,22 +1,22 @@
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../styles/variables";
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../styles/variables'
 
 export const Wrapper = styled.div`
-  margin-top: ${(props) => (props.cabinet ? "0" : "60px")};
-  margin-bottom: ${(props) => (props.cabinet ? "0" : "60px")};
-  padding: ${(props) => (props.cabinet ? "0" : "0 140px")};
+  margin-top: ${props => (props.cabinet ? '0' : '60px')};
+  margin-bottom: ${props => (props.cabinet ? '0' : '60px')};
+  padding: ${props => (props.cabinet ? '0' : '0 140px')};
 
   @media (max-width: ${laptopBreakpoint}) {
-    margin-top: ${(props) => (props.cabinet ? "0" : "30px")};
-    padding: ${(props) => (props.cabinet ? "0" : "0 20px")};
+    margin-top: ${props => (props.cabinet ? '0' : '30px')};
+    padding: ${props => (props.cabinet ? '0' : '0 20px')};
   }
-`;
+`
 
 export const Top = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-`;
+`
 
 export const ItemToggle = styled.div`
   width: 100%;
@@ -26,22 +26,22 @@ export const ItemToggle = styled.div`
   text-transform: uppercase;
   padding: 10px 0;
   font-weight: 500;
-  color: ${(props) => (props.disabled ? "#e2e2e2" : "#000")};
+  color: ${props => (props.disabled ? '#e2e2e2' : '#000')};
   &:before {
-    display: ${(props) => (props.disabled ? "none" : "block")};
-    content: "";
+    display: ${props => (props.disabled ? 'none' : 'block')};
+    content: '';
     position: absolute;
     width: 9px;
     height: 9px;
-    background: url("/arrow-next-2.svg") no-repeat center;
+    background: url('/arrow-next-2.svg') no-repeat center;
     background-size: contain;
     right: 0;
     transition: 0.3s;
     top: 50%;
-    transform: ${(props) =>
-      props.toggle ? "rotate(90deg) translateX(-50%)" : "translateY(-50%)"};
+    transform: ${props =>
+      props.toggle ? 'rotate(90deg) translateX(-50%)' : 'translateY(-50%)'};
   }
-`;
+`
 
 export const Title = styled.p`
   font-size: 30px;
@@ -49,22 +49,22 @@ export const Title = styled.p`
   margin-bottom: 55px;
 
   @media (max-width: ${laptopBreakpoint}) {
-    display: ${(props) => (props.cabinet ? "none" : "block")};
+    display: ${props => (props.cabinet ? 'none' : 'block')};
     margin-bottom: 20px;
     font-size: 24px;
   }
-`;
+`
 
 export const SliderWrapper = styled.div`
   display: flex;
-`;
+`
 
 export const SwiperWrap = styled.div`
   width: 100%;
-`;
+`
 
 export const WrapperItem = styled.div`
-  height: ${(props) => (props.cabinet ? "100%" : "85%")};
+  height: ${props => (props.cabinet ? '100%' : '85%')};
   display: flex;
   flex-direction: column;
   position: relative;
@@ -75,7 +75,7 @@ export const WrapperItem = styled.div`
     width: 100%;
     height: 370px;
   }
-`;
+`
 
 export const TopGoodWrapper = styled.div`
   height: 175px;
@@ -88,13 +88,13 @@ export const TopGoodWrapper = styled.div`
     width: 161px;
     margin: 0 auto;
   }
-`;
+`
 
 export const Image = styled.img`
   height: 90%;
   object-fit: contain;
   width: 90%;
-`;
+`
 
 export const Favorite = styled.div`
   position: absolute;
@@ -104,7 +104,7 @@ export const Favorite = styled.div`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const BottomGoodWrapper = styled.div`
   padding: 22px 10px;
@@ -117,7 +117,7 @@ export const BottomGoodWrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
   flex-grow: 1;
-`;
+`
 
 export const Name = styled.p`
   font-size: 14px;
@@ -125,13 +125,13 @@ export const Name = styled.p`
   font-weight: 500;
   text-align: center;
   color: #000;
-`;
+`
 
 export const Price = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 10px;
-`;
+`
 
 export const Wrap = styled.div`
   display: flex;
@@ -139,7 +139,7 @@ export const Wrap = styled.div`
   justify-content: space-between;
   flex-grow: 1;
   margin-bottom: 25px;
-`;
+`
 
 export const OldPrice = styled.p`
   color: #a1a1a1;
@@ -150,7 +150,7 @@ export const OldPrice = styled.p`
   right: -100%;
   top: 4px;
   &:after {
-    content: "";
+    content: '';
     position: absolute;
     background: #a1a1a1;
     height: 2px;
@@ -158,7 +158,7 @@ export const OldPrice = styled.p`
     top: calc(50% - 2px);
     left: 0;
   }
-`;
+`
 
 export const NewPrice = styled.p`
   font-size: 14px;
@@ -166,9 +166,9 @@ export const NewPrice = styled.p`
   color: #ff0033;
   font-weight: 600;
   position: relative;
-`;
+`
 
 export const Empty = styled.div`
   font-size: 18px;
   line-height: 30px;
-`;
+`

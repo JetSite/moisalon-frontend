@@ -1,12 +1,12 @@
-import styled from "styled-components";
-import { red, laptopBreakpoint } from "../../../../styles/variables";
+import styled from 'styled-components'
+import { red, laptopBreakpoint } from '../../../styles/variables'
 
 export const Wrapper = styled.div`
   padding: 0 140px;
   @media (max-width: ${laptopBreakpoint}) {
     padding: 0 20px;
   }
-`;
+`
 
 export const Content = styled.div`
   display: flex;
@@ -15,7 +15,7 @@ export const Content = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     flex-direction: column;
   }
-`;
+`
 
 export const Left = styled.div`
   width: 28.9%;
@@ -23,7 +23,7 @@ export const Left = styled.div`
     width: 100%;
     position: relative;
   }
-`;
+`
 
 export const ImageWrap = styled.div`
   width: 100%;
@@ -34,13 +34,13 @@ export const ImageWrap = styled.div`
     max-width: 335px;
     height: 201px;
   }
-`;
+`
 
 export const Image = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-`;
+`
 
 export const EndVacancy = styled.p`
   margin-top: 44px;
@@ -48,14 +48,14 @@ export const EndVacancy = styled.p`
   font-weight: 600;
   line-height: 30px;
   text-align: right;
-`;
+`
 
 export const Right = styled.div`
   width: 60.9%;
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`;
+`
 
 export const Title = styled.h1`
   font-size: 40px;
@@ -68,7 +68,7 @@ export const Title = styled.h1`
     line-height: 25px;
     text-align: center;
   }
-`;
+`
 
 export const Subtitle = styled.p`
   margin-top: 28px;
@@ -90,7 +90,7 @@ export const Subtitle = styled.p`
     text-align: center;
     text-decoration: underline;
   }
-`;
+`
 
 export const DatePromoWrap = styled.div`
   margin-top: 45px;
@@ -102,9 +102,9 @@ export const DatePromoWrap = styled.div`
     margin-top: 14px;
     margin-bottom: 12px;
   }
-`;
+`
 
-export const DateWrap = styled.div``;
+export const DateWrap = styled.div``
 
 export const Date = styled.p`
   margin-bottom: 10px;
@@ -115,9 +115,9 @@ export const Date = styled.p`
     margin-bottom: 3px;
     font-size: 10px;
   }
-`;
+`
 
-export const Promo = styled(Date)``;
+export const Promo = styled(Date)``
 
 export const VacancyInfo = styled.p`
   font-size: 18px;
@@ -136,7 +136,7 @@ export const VacancyInfo = styled.p`
       margin-bottom: 37px;
     }
   }
-`;
+`
 
 export const VacancyInfoBold = styled.span`
   font-size: 18px;
@@ -145,7 +145,7 @@ export const VacancyInfoBold = styled.span`
   @media (max-width: ${laptopBreakpoint}) {
     font-size: 14px;
   }
-`;
+`
 
 export const VacancyConditions = styled.p`
   margin-top: 77px;
@@ -157,7 +157,7 @@ export const VacancyConditions = styled.p`
     font-size: 10px;
     line-height: 16px;
   }
-`;
+`
 
 export const Salary = styled.p`
   margin-top: 40px;
@@ -169,4 +169,4 @@ export const Salary = styled.p`
     margin-bottom: 20px;
     font-size: 14px;
   }
-`;
+`

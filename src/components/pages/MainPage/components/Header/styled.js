@@ -1,22 +1,22 @@
-import Link from "next/link";
-import styled from "styled-components";
-import { red, laptopBreakpoint } from "../../../../../../styles/variables";
+import Link from 'next/link'
+import styled from 'styled-components'
+import { red, laptopBreakpoint } from '../../../../../styles/variables'
 
 export const LogoWrap = styled.div`
   width: 83px;
   height: 100%;
   cursor: pointer;
-`;
+`
 
 export const Image = styled.img`
   @media (max-width: ${laptopBreakpoint}) {
     height: 100%;
   }
-`;
+`
 
 export const FakeWrapper = styled.div`
   height: 112px;
-`;
+`
 
 export const Wrapper = styled.div`
   background: #ffffff;
@@ -28,17 +28,17 @@ export const Wrapper = styled.div`
   position: relative;
   box-sizing: border-box;
 
-  position: ${({ showSearchPopup }) => (showSearchPopup ? "fixed" : "sticky")};
+  position: ${({ showSearchPopup }) => (showSearchPopup ? 'fixed' : 'sticky')};
   width: 100%;
   top: 0;
   z-index: 600;
-  color: ${({ isAboutPage }) => (isAboutPage ? "#fff" : "#000")};
-  background-color: ${({ isAboutPage }) => (isAboutPage ? "#000" : "#fff")};
+  color: ${({ isAboutPage }) => (isAboutPage ? '#fff' : '#000')};
+  background-color: ${({ isAboutPage }) => (isAboutPage ? '#000' : '#fff')};
 
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 export const WrappperMobile = styled.div`
   display: none;
@@ -50,7 +50,7 @@ export const WrappperMobile = styled.div`
     z-index: 200;
     background-color: #fff;
   }
-`;
+`
 
 export const HeaderContent = styled.div`
   display: flex;
@@ -60,7 +60,7 @@ export const HeaderContent = styled.div`
   margin-left: auto;
   margin-right: auto;
   padding: 0 140px;
-`;
+`
 
 export const Nav = styled.nav`
   margin-left: 30px;
@@ -70,7 +70,7 @@ export const Nav = styled.nav`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 export const HeaderMenu = styled.div`
   display: flex;
@@ -80,33 +80,33 @@ export const HeaderMenu = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 export const NavItemWrapper = styled.ul`
   display: flex;
-`;
+`
 
 export const NavItem = styled.li`
-  display: ${({ visible = true }) => (visible ? "block" : "none")};
+  display: ${({ visible = true }) => (visible ? 'block' : 'none')};
   font-weight: 600;
   margin-right: 30px;
   a {
-    color: ${(props) =>
-      props.active ? red : props.isAboutPage ? "#fff" : "#000"};
+    color: ${props =>
+      props.active ? red : props.isAboutPage ? '#fff' : '#000'};
     transition: 0.3s;
     :hover {
       color: ${red};
     }
   }
   p {
-    color: ${(props) =>
-      props.active ? red : props.isAboutPage ? "#fff" : "#000"};
+    color: ${props =>
+      props.active ? red : props.isAboutPage ? '#fff' : '#000'};
     transition: 0.3s;
     :hover {
       color: ${red};
     }
   }
-`;
+`
 
 export const Links = styled.div`
   display: flex;
@@ -117,18 +117,18 @@ export const Links = styled.div`
     width: 100%;
     justify-content: flex-start;
   }
-`;
+`
 
-export const LinkItem = styled(Link)``;
+export const LinkItem = styled(Link)``
 
 export const TextLink = styled.p`
   margin-left: 14px;
   font-size: 14px;
   line-height: 27px;
-`;
+`
 
 export const LinkWrap = styled.div`
-  margin-right: ${(props) => (props.mr ? props.mr : "50px")};
+  margin-right: ${props => (props.mr ? props.mr : '50px')};
   cursor: pointer;
   transition: 0.3s;
   :last-child {
@@ -141,27 +141,27 @@ export const LinkWrap = styled.div`
   }
 
   @media (max-width: ${laptopBreakpoint}) {
-    margin-right: ${(props) => (props.mr ? props.mr : "32px")};
+    margin-right: ${props => (props.mr ? props.mr : '32px')};
   }
-`;
+`
 
 export const CityItem = styled.div`
   display: flex;
   align-items: flex-end;
-`;
+`
 
 export const LinkItemA = styled.a`
   display: flex;
   align-items: flex-end;
-`;
+`
 
 export const CitySelectText = styled.p`
   margin-right: 10px;
   font-size: 14px;
   font-weight: 600;
   line-height: 27px;
-  color: ${({ showCitySelect }) => (showCitySelect ? red : "#000")};
-`;
+  color: ${({ showCitySelect }) => (showCitySelect ? red : '#000')};
+`
 
 export const LinkCitySelect = styled.div`
   height: 23px;
@@ -192,7 +192,7 @@ export const LinkCitySelect = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 export const LinkFavorites = styled.div`
   height: 23px;
@@ -202,7 +202,7 @@ export const LinkFavorites = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 export const LinkSearch = styled.div`
   height: 23px;
@@ -212,7 +212,7 @@ export const LinkSearch = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 export const LinkSearchMobile = styled.div`
   display: none;
@@ -222,7 +222,7 @@ export const LinkSearchMobile = styled.div`
     height: 23px;
     cursor: pointer;
   }
-`;
+`
 
 export const LinkProfile = styled.div`
   height: 23px;
@@ -232,7 +232,7 @@ export const LinkProfile = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     margin-right: 0;
   }
-`;
+`
 
 export const ProfilePhotoWrap = styled.div`
   width: 24px;
@@ -244,13 +244,13 @@ export const ProfilePhotoWrap = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     margin-right: 0;
   }
-`;
+`
 
 export const ProfilePhoto = styled.img`
   width: 100%;
   height: 100%;
   border-radius: 50%;
-`;
+`
 
 export const UnreadMessages = styled.div`
   position: absolute;
@@ -265,7 +265,7 @@ export const UnreadMessages = styled.div`
   font-size: 12px;
   background: ${red};
   border-radius: 100%;
-`;
+`
 
 export const MobileLogoLink = styled.div`
   display: none;
@@ -276,7 +276,7 @@ export const MobileLogoLink = styled.div`
     height: 32px;
     margin-top: -10px;
   }
-`;
+`
 
 export const HamburgerMenuIcon = styled.div`
   display: none;
@@ -286,7 +286,7 @@ export const HamburgerMenuIcon = styled.div`
     min-width: 22px;
     height: 19px;
   }
-`;
+`
 
 export const Line = styled.span`
   display: none;
@@ -301,14 +301,14 @@ export const Line = styled.span`
       margin-bottom: 7px;
     }
   }
-`;
+`
 
 export const HeaderMobile = styled.div`
   display: none;
 
   @media (max-width: ${laptopBreakpoint}) {
     position: ${({ showSearchPopup }) =>
-      showSearchPopup ? "static" : "sticky"};
+      showSearchPopup ? 'static' : 'sticky'};
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -317,31 +317,31 @@ export const HeaderMobile = styled.div`
     padding: 27px 20px 0 20px;
     z-index: 10;
   }
-`;
+`
 
 export const LogoMobile = styled.div`
   display: flex;
   justify-content: center;
-`;
+`
 
 export const LeftMobile = styled.div`
   display: flex;
   justify-content: space-between;
   width: 30%;
   max-width: 125px;
-`;
+`
 
 export const RightMobile = styled.div`
   display: flex;
   justify-content: space-between;
   width: 30%;
   max-width: 125px;
-`;
+`
 
 export const CartIconWrap = styled.div`
   position: relative;
   cursor: pointer;
-`;
+`
 
 export const Count = styled.div`
   position: absolute;
@@ -358,20 +358,20 @@ export const Count = styled.div`
   align-items: center;
   right: -6px;
   top: -7px;
-`;
+`
 
 export const AdditionalNavWrapper = styled.div`
   position: relative;
   top: -8px;
   cursor: pointer;
-`;
+`
 
 export const AdditionalNavContent = styled.div`
-  display: ${({ showAdditionalNav }) => (showAdditionalNav ? "flex" : "none")};
+  display: ${({ showAdditionalNav }) => (showAdditionalNav ? 'flex' : 'none')};
   position: absolute;
   top: 35px;
-  left: ${(props) => (props.catalog ? "initial" : "-2px")};
-  right: ${(props) => (props.catalog ? "0" : "initial")};
+  left: ${props => (props.catalog ? 'initial' : '-2px')};
+  right: ${props => (props.catalog ? '0' : 'initial')};
   /* display: flex; */
   flex-direction: column;
   padding: 32px 62px 0 42px;
@@ -382,17 +382,17 @@ export const AdditionalNavContent = styled.div`
     list-style: none;
     margin-bottom: 32px;
   }
-`;
+`
 
-export const MoreIconWrap = styled.div``;
+export const MoreIconWrap = styled.div``
 
 export const CloseBtn = styled.div`
-  display: ${({ show }) => (show ? "block" : "none")};
+  display: ${({ show }) => (show ? 'block' : 'none')};
   width: 23px;
   height: 23px;
-  background: #fff url("/mobile-close-icon.svg") no-repeat center;
+  background: #fff url('/mobile-close-icon.svg') no-repeat center;
   background-size: contain;
-`;
+`
 
 export const MobileTitle = styled.h2`
   margin: 10px 0;
@@ -400,4 +400,4 @@ export const MobileTitle = styled.h2`
   font-size: 10px;
   font-weight: 500;
   text-align: center;
-`;
+`

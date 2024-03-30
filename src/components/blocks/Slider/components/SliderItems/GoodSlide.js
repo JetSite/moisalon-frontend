@@ -9,7 +9,7 @@ import { getCart } from '../../../../../_graphql-legacy/cart/getCart'
 import { addToCartB2cMutation } from '../../../../../_graphql-legacy/cart/addToB2cCart'
 import { removeItemB2cMutation } from '../../../../../_graphql-legacy/cart/removeItemB2c'
 
-const GoodSlide = ({ item, chooseProductOneClick }) => {
+const GoodSlide = ({ item }) => {
   const [city] = useContext(CityContext)
   const [productState, setProductsState] = useContext(ProductsContext)
 
@@ -76,7 +76,6 @@ const GoodSlide = ({ item, chooseProductOneClick }) => {
         addLoading={addLoading}
         deleteItem={deleteItem}
         deleteLoading={deleteLoading}
-        chooseProductOneClick={chooseProductOneClick}
       />
     </Link>
   )

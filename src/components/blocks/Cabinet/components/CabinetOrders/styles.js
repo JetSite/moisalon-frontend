@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import Button from "../../../../ui/Button";
-import { red, laptopBreakpoint } from "../../../../../../styles/variables";
+import styled from 'styled-components'
+import Button from '../../../../ui/Button'
+import { red, laptopBreakpoint } from '../../../../../styles/variables'
 
 export const Wrapper = styled.div`
   max-width: 710px;
@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
     padding-top: 0;
     margin-bottom: 40px;
   }
-`;
+`
 
 export const Title = styled.h2`
   font-size: 40px;
@@ -23,7 +23,7 @@ export const Title = styled.h2`
     font-weight: 600;
     text-transform: none;
   }
-`;
+`
 
 export const OrdersList = styled.div`
   margin-top: 64px;
@@ -31,7 +31,7 @@ export const OrdersList = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     margin-top: 15px;
   }
-`;
+`
 
 export const OrderWrapper = styled.div`
   padding: 37px 0 46px 45px;
@@ -46,7 +46,7 @@ export const OrderWrapper = styled.div`
     width: 100%;
     padding: 25px;
   }
-`;
+`
 
 export const OrderTop = styled.div`
   display: flex;
@@ -57,7 +57,7 @@ export const OrderTop = styled.div`
 
   @media (max-width: ${laptopBreakpoint}) {
     &:before {
-      content: "";
+      content: '';
       width: 100%;
       height: 1px;
       position: absolute;
@@ -66,7 +66,7 @@ export const OrderTop = styled.div`
       background: #e3e3e3;
     }
   }
-`;
+`
 
 export const TopDate = styled.p`
   width: 50%;
@@ -75,7 +75,7 @@ export const TopDate = styled.p`
     font-size: 16px;
     font-weight: 600;
   }
-`;
+`
 
 export const TopOrderNum = styled.p`
   width: 50%;
@@ -83,7 +83,7 @@ export const TopOrderNum = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     text-align: right;
   }
-`;
+`
 
 export const OrderDetail = styled.div`
   display: flex;
@@ -93,7 +93,7 @@ export const OrderDetail = styled.div`
   &:not(:first-child) {
     margin-top: 17px;
   }
-`;
+`
 
 export const OrderDetailMobileWrap = styled.div`
   display: none;
@@ -107,7 +107,7 @@ export const OrderDetailMobileWrap = styled.div`
       margin-top: 17px;
     }
   }
-`;
+`
 
 export const OrderDetailMobile = styled(OrderDetail)`
   display: none;
@@ -118,11 +118,11 @@ export const OrderDetailMobile = styled(OrderDetail)`
     font-size: 14px;
     font-weight: 400;
   }
-`;
+`
 
 export const DetailName = styled.p`
   width: 50%;
-`;
+`
 
 export const DetailValue = styled.p`
   width: 50%;
@@ -133,7 +133,7 @@ export const DetailValue = styled.p`
     flex-direction: column;
     align-items: flex-start;
   }
-`;
+`
 
 export const DetailsWrapper = styled.div`
   width: 50%;
@@ -143,7 +143,7 @@ export const DetailsWrapper = styled.div`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const Details = styled(DetailValue)`
   width: 100%;
@@ -158,7 +158,7 @@ export const Details = styled(DetailValue)`
     flex-direction: column;
     align-items: flex-start;
   }
-`;
+`
 
 export const DetailsLeft = styled.div`
   width: 60%;
@@ -169,28 +169,28 @@ export const DetailsLeft = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`;
+`
 
 export const DetailsLeftAddress = styled(DetailsLeft)`
   width: 100%;
-`;
+`
 
 export const BrandName = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const BrandPhone = styled.p`
   margin-top: 5px;
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const BrandAddress = styled.p`
   margin-top: 5px;
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const DetailsRight = styled.div`
   width: 25%;
@@ -201,7 +201,7 @@ export const DetailsRight = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 export const OrderBottom = styled.div`
   display: flex;
@@ -214,7 +214,7 @@ export const OrderBottom = styled.div`
     align-items: flex-start;
     margin-top: 0;
   }
-`;
+`
 
 export const BottomButton = styled.div`
   width: 50%;
@@ -222,7 +222,7 @@ export const BottomButton = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 export const BottomButtonMobile = styled.div`
   display: none;
@@ -232,11 +232,11 @@ export const BottomButtonMobile = styled.div`
     width: 100%;
     margin-top: 30px;
   }
-`;
+`
 
 export const ButtonStyled = styled(Button)`
   background: transparent;
-`;
+`
 
 export const BottomProducts = styled.div`
   width: 50%;
@@ -246,7 +246,7 @@ export const BottomProducts = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 export const BottomProductsMobile = styled(BottomProducts)`
   display: none;
@@ -258,7 +258,7 @@ export const BottomProductsMobile = styled(BottomProducts)`
     width: 100%;
     margin-top: 10px;
   }
-`;
+`
 
 export const ProductWrapper = styled.div`
   width: 88px;
@@ -278,7 +278,7 @@ export const ProductWrapper = styled.div`
     height: 80px;
     background-size: contain;
   }
-`;
+`
 
 export const SocialsWrapper = styled.div`
   width: 100%;
@@ -291,13 +291,13 @@ export const SocialsWrapper = styled.div`
     max-width: 124px;
     margin-top: 10px;
   }
-`;
+`
 
 export const NoOrders = styled.div`
   margin-top: 40px;
   font-size: 22px;
   font-weight: 400;
-`;
+`
 
 export const HiddenMobileOrderDetail = styled.div`
   display: flex;
@@ -310,16 +310,16 @@ export const HiddenMobileOrderDetail = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 export const OrderIcon = styled.div`
   width: 12px;
   height: 12px;
   margin-left: auto;
-  background: url("/filter-arrow.png") no-repeat center;
+  background: url('/filter-arrow.png') no-repeat center;
   background-size: cover;
-  transform: ${({ opened }) => (opened ? "rotate(0deg)" : "rotate(-90deg)")};
+  transform: ${({ opened }) => (opened ? 'rotate(0deg)' : 'rotate(-90deg)')};
   transition: all 0.2s ease-in-out;
-`;
+`
 
-export const ButtonMobileWrap = styled.div``;
+export const ButtonMobileWrap = styled.div``

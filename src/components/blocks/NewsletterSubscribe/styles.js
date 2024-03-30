@@ -1,8 +1,5 @@
-import styled from "styled-components";
-import {
-  laptopBreakpoint,
-  tabletBreakpoint,
-} from "../../../../styles/variables";
+import styled from 'styled-components'
+import { laptopBreakpoint, tabletBreakpoint } from '../../../styles/variables'
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -22,7 +19,7 @@ export const Wrapper = styled.div`
     margin: 0;
     padding-top: 62px;
   }
-`;
+`
 
 export const Text = styled.div`
   min-width: 439px;
@@ -40,12 +37,12 @@ export const Text = styled.div`
     line-height: 25px;
     text-transform: uppercase;
   }
-`;
+`
 
 export const InputWrap = styled.div`
   width: 100%;
   position: relative;
-`;
+`
 
 export const Label = styled.label`
   position: absolute;
@@ -57,7 +54,7 @@ export const Label = styled.label`
   @media (max-width: ${laptopBreakpoint}) {
     bottom: 35px;
   }
-`;
+`
 
 export const Input = styled.input`
   min-width: 332px;
@@ -94,4 +91,4 @@ export const Input = styled.input`
     margin: 41px 0 26px 0;
     padding: 0 0 0 5px;
   }
-`;
+`

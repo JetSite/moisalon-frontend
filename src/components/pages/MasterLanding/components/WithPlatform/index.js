@@ -1,20 +1,20 @@
-import styled from "styled-components";
-import Button from "../../../../ui/Button";
-import { useRouter } from "next/router";
+import styled from 'styled-components'
+import Button from '../../../../ui/Button'
+import { useRouter } from 'next/router'
 import {
   laptopBreakpoint,
   tabletBreakpoint,
-} from "../../../../../../styles/variables";
+} from '../../../../../styles/variables'
 
-import Line from "../../../SalonLanding/components/Line";
-import { cyrToTranslit } from "../../../../../utils/translit";
-import { useContext } from "react";
-import { CityContext } from "../../../../../searchContext";
+import Line from '../../../SalonLanding/components/Line'
+import { cyrToTranslit } from '../../../../../utils/translit'
+import { useContext } from 'react'
+import { CityContext } from '../../../../../searchContext'
 
 const Wrapper = styled.div`
   background: #e5e5e5;
   position: relative;
-`;
+`
 
 const Content = styled.div`
   display: flex;
@@ -28,10 +28,10 @@ const Content = styled.div`
     position: absolute;
     top: 81px;
     left: 100px;
-    content: "";
+    content: '';
     width: 64px;
     height: 62px;
-    background: url("/master-landing-start.svg") no-repeat center;
+    background: url('/master-landing-start.svg') no-repeat center;
   }
   @media (max-width: ${tabletBreakpoint}) {
     padding: 0 70px;
@@ -43,7 +43,7 @@ const Content = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     padding: 0 20px;
   }
-`;
+`
 
 const Left = styled.div`
   max-width: 477px;
@@ -53,26 +53,26 @@ const Left = styled.div`
     position: relative;
     z-index: 1;
   }
-`;
+`
 
 const Right = styled.div`
   max-width: 593px;
   @media (max-width: ${laptopBreakpoint}) {
     max-width: 100%;
   }
-`;
+`
 
 const ImageWrap = styled.div`
   @media (max-width: ${tabletBreakpoint}) {
     width: 280px;
   }
-`;
+`
 
 const Image = styled.img`
   @media (max-width: ${tabletBreakpoint}) {
     width: 100%;
   }
-`;
+`
 
 const Title = styled.p`
   font-weight: 600;
@@ -90,11 +90,11 @@ const Title = styled.p`
     font-size: 22px;
     line-height: 31px;
   }
-`;
+`
 
 const Items = styled.div`
   margin-bottom: 70px;
-`;
+`
 
 const ButtonWrap = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
@@ -103,7 +103,7 @@ const ButtonWrap = styled.div`
       padding: 0;
     }
   }
-`;
+`
 
 const Item = styled.div`
   padding-left: 40px;
@@ -113,7 +113,7 @@ const Item = styled.div`
   margin-bottom: 30px;
   &:before {
     position: absolute;
-    content: "";
+    content: '';
     left: 0;
     top: 0;
     width: 20px;
@@ -129,7 +129,7 @@ const Item = styled.div`
       height: 15px;
     }
   }
-`;
+`
 
 const Bottom = styled.div`
   margin-top: -17px;
@@ -140,11 +140,11 @@ const Bottom = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     margin-top: -11px;
   }
-`;
+`
 
 const WithPlatform = () => {
-  const [city] = useContext(CityContext);
-  const router = useRouter();
+  const [city] = useContext(CityContext)
+  const router = useRouter()
   return (
     <Wrapper>
       <Content>
@@ -185,7 +185,7 @@ const WithPlatform = () => {
         />
       </Bottom>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default WithPlatform;
+export default WithPlatform

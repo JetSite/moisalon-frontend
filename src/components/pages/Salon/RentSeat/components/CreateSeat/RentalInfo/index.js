@@ -1,29 +1,29 @@
-import { useState } from "react";
-import { Field } from "react-final-form";
-import Checkbox from "./Checkbox";
-import Input from "./Input";
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../../../styles/variables";
+import { useState } from 'react'
+import { Field } from 'react-final-form'
+import Checkbox from './Checkbox'
+import Input from './Input'
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../../../styles/variables'
 
 const Wrapper = styled.div`
   margin-bottom: 30px;
-`;
+`
 
 const FieldsWrapper = styled.div`
   display: flex;
   align-items: center;
   margin-top: 20px;
-`;
+`
 
 const FieldWrap = styled.div`
   width: 96%;
   opacity: ${({ active }) => (active ? 1 : 0.3)};
-  /* pointer-events: ${({ active }) => (active ? "auto" : "none")}; */
+  /* pointer-events: ${({ active }) => (active ? 'auto' : 'none')}; */
 
   @media (max-width: ${laptopBreakpoint}) {
     width: 90%;
   }
-`;
+`
 
 const FieldWrapCheckbox = styled.div`
   width: 4%;
@@ -31,13 +31,13 @@ const FieldWrapCheckbox = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     width: 10%;
   }
-`;
+`
 
 const TopCheckboxes = styled.div`
   opacity: ${({ showRentalPrices }) => (showRentalPrices ? 1 : 0.3)};
   pointer-events: ${({ showRentalPrices }) =>
-    showRentalPrices ? "auto" : "none"};
-`;
+    showRentalPrices ? 'auto' : 'none'};
+`
 
 const BottomCheckbox = styled.div`
   margin-top: 20px;
@@ -45,7 +45,7 @@ const BottomCheckbox = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     margin-top: 20px;
   }
-`;
+`
 
 const RentalInfo = ({
   rentalRate,
@@ -54,30 +54,30 @@ const RentalInfo = ({
   setChosenRentalRents,
 }) => {
   const [showRentalPrices, setShowRentalPrices] = useState(
-    rentalRate.includes("rentalCustom") ? false : true
-  );
+    rentalRate.includes('rentalCustom') ? false : true,
+  )
 
   const showRentalPricesHandler = () => {
-    setShowRentalPrices(!showRentalPrices);
-    setRentalRate(rentalRate.includes("rentalCustom") ? [] : ["rentalCustom"]);
-  };
+    setShowRentalPrices(!showRentalPrices)
+    setRentalRate(rentalRate.includes('rentalCustom') ? [] : ['rentalCustom'])
+  }
 
   const checkboxPricesHandler = (type, value) => {
     if (rentalRate.includes(value)) {
-      setRentalRate(rentalRate.filter((rate) => rate !== value));
-      setChosenRentalRents({ ...chosenRentalRents, [type]: null });
+      setRentalRate(rentalRate.filter(rate => rate !== value))
+      setChosenRentalRents({ ...chosenRentalRents, [type]: null })
     } else {
-      setRentalRate([...rentalRate, value]);
+      setRentalRate([...rentalRate, value])
     }
-  };
+  }
 
   const chooseRentalPricesHandler = (type, value) => {
-    setChosenRentalRents({ ...chosenRentalRents, [type]: value });
-  };
+    setChosenRentalRents({ ...chosenRentalRents, [type]: value })
+  }
 
-  const fieldActiveHandler = (value) => {
-    setRentalRate([...rentalRate, value]);
-  };
+  const fieldActiveHandler = value => {
+    setRentalRate([...rentalRate, value])
+  }
 
   return (
     <Wrapper>
@@ -92,13 +92,13 @@ const RentalInfo = ({
               label=""
               rentalRate={rentalRate}
               checkboxPricesHandler={() =>
-                checkboxPricesHandler("hour", "rentalHour")
+                checkboxPricesHandler('hour', 'rentalHour')
               }
             />
           </FieldWrapCheckbox>
           <FieldWrap
-            active={rentalRate.includes("rentalHour")}
-            onClick={() => fieldActiveHandler("rentalHour")}
+            active={rentalRate.includes('rentalHour')}
+            onClick={() => fieldActiveHandler('rentalHour')}
           >
             <Input
               name="hour"
@@ -121,13 +121,13 @@ const RentalInfo = ({
               label=""
               rentalRate={rentalRate}
               checkboxPricesHandler={() =>
-                checkboxPricesHandler("day", "rentalDay")
+                checkboxPricesHandler('day', 'rentalDay')
               }
             />
           </FieldWrapCheckbox>
           <FieldWrap
-            active={rentalRate.includes("rentalDay")}
-            onClick={() => fieldActiveHandler("rentalDay")}
+            active={rentalRate.includes('rentalDay')}
+            onClick={() => fieldActiveHandler('rentalDay')}
           >
             <Input
               name="day"
@@ -150,13 +150,13 @@ const RentalInfo = ({
               label=""
               rentalRate={rentalRate}
               checkboxPricesHandler={() =>
-                checkboxPricesHandler("week", "rentalWeek")
+                checkboxPricesHandler('week', 'rentalWeek')
               }
             />
           </FieldWrapCheckbox>
           <FieldWrap
-            active={rentalRate.includes("rentalWeek")}
-            onClick={() => fieldActiveHandler("rentalWeek")}
+            active={rentalRate.includes('rentalWeek')}
+            onClick={() => fieldActiveHandler('rentalWeek')}
           >
             <Input
               name="week"
@@ -179,13 +179,13 @@ const RentalInfo = ({
               label=""
               rentalRate={rentalRate}
               checkboxPricesHandler={() =>
-                checkboxPricesHandler("month", "rentalMonth")
+                checkboxPricesHandler('month', 'rentalMonth')
               }
             />
           </FieldWrapCheckbox>
           <FieldWrap
-            active={rentalRate.includes("rentalMonth")}
-            onClick={() => fieldActiveHandler("rentalMonth")}
+            active={rentalRate.includes('rentalMonth')}
+            onClick={() => fieldActiveHandler('rentalMonth')}
           >
             <Input
               name="month"
@@ -211,7 +211,7 @@ const RentalInfo = ({
         />
       </BottomCheckbox>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default RentalInfo;
+export default RentalInfo

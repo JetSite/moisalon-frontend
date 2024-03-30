@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../styles/variables";
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../styles/variables'
 
 export const MainContainer = styled.div`
   box-sizing: border-box;
@@ -10,7 +10,7 @@ export const MainContainer = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     padding: 0;
   }
-`;
+`
 
 export const Wrapper = styled.div`
   padding: 0 140px;
@@ -23,4 +23,4 @@ export const Wrapper = styled.div`
     align-items: center;
     padding: 0 20px;
   }
-`;
+`

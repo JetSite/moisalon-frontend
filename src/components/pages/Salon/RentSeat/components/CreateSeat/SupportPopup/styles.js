@@ -1,10 +1,10 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 import {
   laptopBreakpoint,
   mobileBreakpoint,
   red,
-} from "../../../../../../../../styles/variables";
-import Button from "../../../../../../ui/Button";
+} from '../../../../../../../styles/variables'
+import Button from '../../../../../../ui/Button'
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -40,7 +40,7 @@ export const Wrapper = styled.div`
   @media (max-width: ${mobileBreakpoint}) {
     padding: 20px;
   }
-`;
+`
 
 export const PopupWrapper = styled.div`
   width: 350px;
@@ -71,7 +71,7 @@ export const PopupWrapper = styled.div`
     padding: 20px;
     padding-bottom: 10px;
   }
-`;
+`
 
 export const Text = styled.p`
   margin-bottom: 20px;
@@ -82,7 +82,7 @@ export const Text = styled.p`
   @media (max-width: ${mobileBreakpoint}) {
     font-size: 14px;
   }
-`;
+`
 
 export const Buttons = styled.div`
   display: flex;
@@ -91,7 +91,7 @@ export const Buttons = styled.div`
   @media (max-width: ${mobileBreakpoint}) {
     flex-direction: column;
   }
-`;
+`
 
 export const CustomButton = styled(Button)`
   width: 100px;
@@ -106,4 +106,4 @@ export const CustomButton = styled(Button)`
     width: 100%;
     margin-bottom: 15px;
   }
-`;
+`

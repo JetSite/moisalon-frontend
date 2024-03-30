@@ -21,13 +21,13 @@ import {
   Favorite,
   ButtonsWrapper,
 } from './styles'
-import { PHOTO_URL } from '../../../../variables'
+import { PHOTO_URL } from '../../../variables'
 import { cyrToTranslit } from '../../../utils/translit'
 import {
   inStorage,
   favoritesInStorage,
 } from '../../../utils/favoritesInStorage'
-import { red } from '../../../../styles/variables'
+import { red } from '../../../styles/variables'
 import HeartFullFill from '../../pages/MainPage/components/Header/icons/HeartFullFill'
 
 const ProductCard = ({

@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../styles/variables";
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../styles/variables'
 
 export const Wrapper = styled.div`
   max-width: 1440px;
@@ -10,24 +10,24 @@ export const Wrapper = styled.div`
     width: 100%;
     padding: 0;
   }
-`;
+`
 
 export const Content = styled.div`
   max-width: 700px;
-`;
+`
 
 export const HideMobile = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 export const Image = styled.img`
   margin-bottom: 38px;
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 export const ImageLogo = styled(Image)`
   display: block;
@@ -36,7 +36,7 @@ export const ImageLogo = styled(Image)`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 export const ImageMobile = styled.img`
   display: none;
@@ -47,7 +47,7 @@ export const ImageMobile = styled.img`
     margin-bottom: 25px;
     max-width: 400px;
   }
-`;
+`
 
 export const AvatarWrap = styled.div`
   width: 56px;
@@ -58,11 +58,11 @@ export const AvatarWrap = styled.div`
     width: 49px;
     height: 49px;
   }
-`;
+`
 
 export const Avatar = styled.img`
   width: 100%;
-`;
+`
 
 export const Autor = styled.div`
   display: flex;
@@ -75,7 +75,7 @@ export const Autor = styled.div`
     padding-left: 15px;
     padding-right: 15px;
   }
-`;
+`
 
 export const HeadMobile = styled.div`
   position: relative;
@@ -88,22 +88,22 @@ export const HeadMobile = styled.div`
     margin: 0 auto;
     display: block;
   }
-`;
+`
 
 export const Info = styled.div`
   margin-left: 14px;
-`;
+`
 
 export const Close = styled.div`
   position: absolute;
   width: 14px;
   height: 14px;
-  background: url("/beauty-close.svg") no-repeat center;
+  background: url('/beauty-close.svg') no-repeat center;
   cursor: pointer;
   right: 30px;
   top: 20px;
   z-index: 1;
-`;
+`
 
 export const Name = styled.p`
   font-size: 14px;
@@ -111,9 +111,9 @@ export const Name = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     font-size: 10px;
   }
-`;
+`
 
-export const About = styled(Name)``;
+export const About = styled(Name)``
 
 export const Title = styled.p`
   font-size: 24px;
@@ -130,7 +130,7 @@ export const Title = styled.p`
     text-transform: uppercase;
     width: 100%;
   }
-`;
+`
 
 export const Description = styled.p`
   font-weight: 600;
@@ -143,7 +143,7 @@ export const Description = styled.p`
     padding-left: 20px;
     padding-right: 20px;
   }
-`;
+`
 
 export const ContentItem = styled.div`
   margin-bottom: 50px;
@@ -152,7 +152,7 @@ export const ContentItem = styled.div`
     margin-bottom: 30px;
     padding-right: 20px;
   }
-`;
+`
 
 export const ItemText = styled.p`
   font-size: 18px;
@@ -163,7 +163,7 @@ export const ItemText = styled.p`
     line-height: 25px;
     margin-bottom: 20px;
   }
-`;
+`
 
 export const ItemTitle = styled.p`
   font-size: 18px;
@@ -179,7 +179,7 @@ export const ItemTitle = styled.p`
   }
   &:after {
     position: absolute;
-    content: "";
+    content: '';
     width: 6px;
     height: 6px;
     background: #ff0033;
@@ -190,4 +190,4 @@ export const ItemTitle = styled.p`
       top: 7px;
     }
   }
-`;
+`

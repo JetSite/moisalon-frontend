@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import Select from "../../blocks/Form/Select";
-import { red, laptopBreakpoint } from "../../../../styles/variables";
+import styled from 'styled-components'
+import Select from '../../blocks/Form/Select'
+import { red, laptopBreakpoint } from '../../../styles/variables'
 
 export const Wrapper = styled.div`
   margin-bottom: 20px;
@@ -13,15 +13,15 @@ export const Wrapper = styled.div`
     width: 100%;
     flex-direction: column;
   }
-`;
+`
 
 export const Filters = styled.div`
   margin-top: 40px;
   margin-bottom: 20px;
-  color: ${(props) => colors[props.variant]};
-`;
+  color: ${props => colors[props.variant]};
+`
 
-export const FilterBlock = styled.div``;
+export const FilterBlock = styled.div``
 
 export const Filter = styled.div`
   display: inline-flex;
@@ -41,30 +41,30 @@ export const Filter = styled.div`
     width: 150px;
     font-size: 12px;
   }
-`;
+`
 
 export const Category = styled(Filter)`
   margin-right: 23px;
   /* cursor: pointer; */
-`;
+`
 
 export const RestFilters = styled(Filter)`
   position: relative;
   &:after {
-    content: "";
+    content: '';
     position: absolute;
     top: 50%;
     right: 15px;
     width: 22px;
     height: 25px;
     margin-top: -12px;
-    background: ${(props) =>
-        props.variant === "white"
-          ? "url(/filter-catalog.svg)"
-          : "url(/filter-catalog-red.svg)"}
+    background: ${props =>
+        props.variant === 'white'
+          ? 'url(/filter-catalog.svg)'
+          : 'url(/filter-catalog-red.svg)'}
       no-repeat center;
   }
-`;
+`
 
 export const FilterItem = styled.div`
   display: inline-flex;
@@ -73,12 +73,11 @@ export const FilterItem = styled.div`
   width: 175px;
   height: 30px;
   background: ${({ active, variant }) =>
-    active ? activeColors[variant].bg : "transparent"};
+    active ? activeColors[variant].bg : 'transparent'};
   color: ${({ active, variant }) =>
     active ? activeColors[variant].font : colors[variant]};
   border: 1px solid;
-  border-color: ${(props) =>
-    props.active ? "#e1e1e1" : colors[props.variant]};
+  border-color: ${props => (props.active ? '#e1e1e1' : colors[props.variant])};
   border-radius: 50px;
   cursor: pointer;
   &:not(:last-child) {
@@ -90,7 +89,7 @@ export const FilterItem = styled.div`
     width: 128px;
     font-size: 12px;
   }
-`;
+`
 
 export const ProductFilter = styled.div`
   display: flex;
@@ -102,7 +101,7 @@ export const ProductFilter = styled.div`
       display: none;
     }
   }
-`;
+`
 
 export const ProductFilterItem = styled.div`
   cursor: pointer;
@@ -110,7 +109,7 @@ export const ProductFilterItem = styled.div`
   font-size: 14px;
   font-weight: 500;
   margin-bottom: 10px;
-  text-decoration: ${(props) => (props.active ? "underline" : "")};
+  text-decoration: ${props => (props.active ? 'underline' : '')};
   transition: 0.3s;
   &:hover {
     color: #f03;
@@ -119,7 +118,7 @@ export const ProductFilterItem = styled.div`
     white-space: nowrap;
     margin-right: 17px;
   }
-`;
+`
 
 export const BrandFilter = styled.div`
   width: 300px;
@@ -127,27 +126,27 @@ export const BrandFilter = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`;
+`
 
 export const SelectStyled = styled(Select)`
   .MuiMenu-paper {
     max-height: 100px;
   }
-`;
+`
 
 const colors = {
-  black: "#000",
-  white: "#fff",
+  black: '#000',
+  white: '#fff',
   red: `${red}`,
-};
+}
 
 const activeColors = {
   white: {
-    bg: "#fff",
-    font: "#000",
+    bg: '#fff',
+    font: '#000',
   },
   black: {
-    bg: "#e1e1e1",
-    font: "#000",
+    bg: '#e1e1e1',
+    font: '#000',
   },
-};
+}

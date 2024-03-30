@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../../styles/variables";
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../../styles/variables'
 
 export const Wrapper = styled.div`
   padding: 0 140px;
@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
     margin-top: 0;
     padding: 0 20px;
   }
-`;
+`
 
 export const Title = styled.h2`
   font-weight: 600;
@@ -20,7 +20,7 @@ export const Title = styled.h2`
     font-weight: 600;
     line-height: 25px;
   }
-`;
+`
 
 export const Content = styled.p`
   width: 67%;
@@ -29,4 +29,4 @@ export const Content = styled.p`
   font-weight: 400;
   line-height: 27px;
   text-align: left;
-`;
+`

@@ -2,8 +2,8 @@ import styled from 'styled-components'
 import {
   tabletBreakpoint,
   laptopBreakpoint,
-} from '../../../../../../styles/variables'
-import { PHOTO_URL } from 'variables'
+} from '../../../../../styles/variables'
+import { PHOTO_URL } from 'src/variables'
 
 const Wrapper = styled.div`
   display: flex;

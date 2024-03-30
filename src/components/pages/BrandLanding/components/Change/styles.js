@@ -1,9 +1,9 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 import {
   laptopBreakpoint,
   tabletBreakpoint,
   red,
-} from "../../../../../../styles/variables";
+} from '../../../../../styles/variables'
 
 export const BottomWrapper = styled.div`
   background: #f2f0f0;
@@ -11,7 +11,7 @@ export const BottomWrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     margin-top: 60px;
   }
-`;
+`
 
 export const BottomContent = styled.div`
   max-width: 1440px;
@@ -30,7 +30,7 @@ export const BottomContent = styled.div`
     flex-direction: column-reverse;
     align-items: center;
   }
-`;
+`
 
 export const Left = styled.div`
   max-width: 580px;
@@ -38,13 +38,13 @@ export const Left = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`;
+`
 
 export const ImageWrap = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`;
+`
 
 export const Image = styled.img`
   @media (max-width: ${tabletBreakpoint}) {
@@ -53,7 +53,7 @@ export const Image = styled.img`
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`;
+`
 
 export const Right = styled.div`
   max-width: 473px;
@@ -61,7 +61,7 @@ export const Right = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`;
+`
 
 export const TitleBottom = styled.p`
   font-weight: 600;
@@ -77,7 +77,7 @@ export const TitleBottom = styled.p`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const Desc = styled.p`
   font-size: 18px;
@@ -91,9 +91,9 @@ export const Desc = styled.p`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
-export const Items = styled.div``;
+export const Items = styled.div``
 
 export const ButtonWrap = styled.div`
   margin-top: 100px;
@@ -101,7 +101,7 @@ export const ButtonWrap = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     margin-top: 60px;
   }
-`;
+`
 
 export const Item = styled.div`
   padding-left: 50px;
@@ -111,7 +111,7 @@ export const Item = styled.div`
   margin-bottom: 30px;
   &:before {
     position: absolute;
-    content: "";
+    content: '';
     left: 0;
     top: 0;
     width: 20px;
@@ -137,4 +137,4 @@ export const Item = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     padding-left: 40px;
   }
-`;
+`

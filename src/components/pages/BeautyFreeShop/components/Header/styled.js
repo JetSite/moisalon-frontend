@@ -1,6 +1,6 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
-import { laptopBreakpoint } from "../../../../../../styles/variables";
+import { laptopBreakpoint } from '../../../../../styles/variables'
 
 export const Wrapper = styled.div`
   padding: 0 140px;
@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
     padding: 0 20px;
     margin-top: 0;
   }
-`;
+`
 export const IContainer = styled.div`
   margin-top: 50px;
   display: flex;
@@ -22,14 +22,14 @@ export const IContainer = styled.div`
     margin-top: 30px;
     margin-bottom: 30px;
   }
-`;
+`
 export const LogoBlock = styled.div`
   width: 100%;
   display: none;
   @media (max-width: ${laptopBreakpoint}) {
     display: block;
   }
-`;
+`
 export const Photo = styled.div`
   width: 450px;
   margin: 0 auto;
@@ -41,7 +41,7 @@ export const Photo = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     width: 100px;
   }
-`;
+`
 
 export const EditButton = styled.div`
   background: #f0f0f0;
@@ -63,10 +63,10 @@ export const EditButton = styled.div`
     max-width: 320px;
     height: 28px;
   }
-`;
+`
 export const MinimalSumm = styled.div`
   margin-bottom: 40px;
-`;
+`
 
 export const MinimalSummTitle = styled.div`
   font-weight: 600;
@@ -76,18 +76,18 @@ export const MinimalSummTitle = styled.div`
   padding-bottom: 5px;
   border-bottom: 1px solid #e3e3e3;
   margin-bottom: 27px;
-`;
+`
 
 export const MinimalSummText = styled.div`
   font-size: 18px;
-`;
+`
 
 export const WrapCharacter = styled.div`
   margin-bottom: 80px;
   @media (max-width: ${laptopBreakpoint}) {
     margin-bottom: 40px;
   }
-`;
+`
 
 export const Character = styled.p`
   max-width: 335px;
@@ -102,14 +102,14 @@ export const Character = styled.p`
     width: 10px;
     height: 10px;
     position: absolute;
-    content: "";
-    background: url("/arrow-back.svg") no-repeat;
+    content: '';
+    background: url('/arrow-back.svg') no-repeat;
     background-size: contain;
     transform: rotate(180deg);
     right: 0;
     top: 6px;
   }
-`;
+`
 
 export const OpenCharacter = styled.p`
   font-weight: 600;
@@ -124,18 +124,18 @@ export const OpenCharacter = styled.p`
     width: 10px;
     height: 10px;
     position: absolute;
-    content: "";
-    background: url("/arrow-back.svg") no-repeat;
+    content: '';
+    background: url('/arrow-back.svg') no-repeat;
     background-size: contain;
     transform: rotate(270deg);
     right: 0;
     top: 6px;
   }
-`;
+`
 
 export const Terms = styled.div`
   font-size: 18px;
   line-height: 30px;
   max-width: 560px;
   width: 100%;
-`;
+`

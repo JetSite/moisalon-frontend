@@ -1,6 +1,6 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
-import { laptopBreakpoint } from "../../../../styles/variables";
+import { laptopBreakpoint } from '../../../styles/variables'
 
 export const Wrapper = styled.div`
   display: flex;
@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
       display: none;
     }
   }
-`;
+`
 
 export const Tag = styled.div`
   border: 1px solid #000000;
@@ -47,4 +47,4 @@ export const Tag = styled.div`
     font-weight: 500;
     line-height: 16px;
   }
-`;
+`

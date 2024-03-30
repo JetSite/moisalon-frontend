@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../../styles/variables";
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../../styles/variables'
 
 export const Wrapper = styled.div`
   min-height: 782px;
@@ -9,8 +9,8 @@ export const Wrapper = styled.div`
 
   &:before {
     position: absolute;
-    content: "";
-    background: url("/about-arrow-icon.svg") no-repeat;
+    content: '';
+    background: url('/about-arrow-icon.svg') no-repeat;
     background-size: contain;
     width: 206px;
     height: 242px;
@@ -25,9 +25,9 @@ export const Wrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     min-height: auto;
     padding: 36px 20px 39px 20px;
-    background: url("/mobile-invite-bg.png");
+    background: url('/mobile-invite-bg.png');
   }
-`;
+`
 
 export const Image = styled.div`
   position: absolute;
@@ -35,12 +35,12 @@ export const Image = styled.div`
   bottom: 0;
   width: 741px;
   height: 627px;
-  background: url("/masters-page-right.png") no-repeat center;
+  background: url('/masters-page-right.png') no-repeat center;
 
   &:before {
     position: absolute;
-    content: "";
-    background: url("/white-romb.svg") no-repeat center;
+    content: '';
+    background: url('/white-romb.svg') no-repeat center;
     background-size: contain;
     width: 48px;
     height: 48px;
@@ -50,8 +50,8 @@ export const Image = styled.div`
 
   &:after {
     position: absolute;
-    content: "";
-    background: url("/red-halfcircle.svg") no-repeat center;
+    content: '';
+    background: url('/red-halfcircle.svg') no-repeat center;
     background-size: contain;
     width: 341px;
     height: 341px;
@@ -62,7 +62,7 @@ export const Image = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 export const Content = styled.div`
   padding: 35px 70px;
@@ -71,12 +71,12 @@ export const Content = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     padding: 30px 28px;
   }
-`;
+`
 
 export const ContentWrap = styled.div`
   max-width: 366px;
   margin: 0 auto;
-`;
+`
 
 export const Title = styled.h4`
   font-size: 24px;
@@ -90,7 +90,7 @@ export const Title = styled.h4`
     font-weight: 600;
     line-height: 25px;
   }
-`;
+`
 
 export const Text = styled.p`
   margin-top: 20px;
@@ -104,7 +104,7 @@ export const Text = styled.p`
     font-weight: 400;
     line-height: 25px;
   }
-`;
+`
 
 export const ButtonWrapper = styled.div`
   height: 135px;
@@ -115,7 +115,7 @@ export const ButtonWrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 export const ButtonWrapperMobile = styled.div`
   display: none;
@@ -127,4 +127,4 @@ export const ButtonWrapperMobile = styled.div`
     flex-direction: column;
     justify-content: space-between;
   }
-`;
+`

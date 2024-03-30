@@ -1,26 +1,26 @@
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../styles/variables";
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../styles/variables'
 
 const Wrapper = styled.div`
-  margin-bottom: ${(props) => `${props.mbWrapper}px`};
+  margin-bottom: ${props => `${props.mbWrapper}px`};
 
   @media (max-width: ${laptopBreakpoint}) {
     margin-bottom: 30px;
   }
-`;
+`
 
-const TitleWrapper = styled.div``;
+const TitleWrapper = styled.div``
 
-const Title = styled.div``;
+const Title = styled.div``
 
 const ContentWrapper = styled.div`
   flex: 1 1 auto;
-`;
+`
 
 const Description = styled.p`
   font-size: 18px;
   line-height: 30px;
-  margin-bottom: ${(props) => `${props.mbDesc}px`};
+  margin-bottom: ${props => `${props.mbDesc}px`};
 
   @media (max-width: ${laptopBreakpoint}) {
     margin-bottom: 30px;
@@ -28,7 +28,7 @@ const Description = styled.p`
     font-weight: 400;
     line-height: 25px;
   }
-`;
+`
 
 const Group = ({
   mbDesc = 75,
@@ -46,7 +46,7 @@ const Group = ({
       </TitleWrapper>
       <ContentWrapper>{children}</ContentWrapper>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default Group;
+export default Group

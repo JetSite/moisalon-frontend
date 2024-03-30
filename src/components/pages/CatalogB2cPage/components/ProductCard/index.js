@@ -1,12 +1,12 @@
-import { useContext } from "react";
-import styled from "styled-components";
-import { lighten } from "polished";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { laptopBreakpoint } from "../../../../../../styles/variables";
-import { Skeleton } from "@material-ui/lab";
-import { CityContext, MeContext } from "../../../../../searchContext";
-import { PHOTO_URL } from "../../../../../../variables";
+import { useContext } from 'react'
+import styled from 'styled-components'
+import { lighten } from 'polished'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { laptopBreakpoint } from '../../../../../styles/variables'
+import { Skeleton } from '@material-ui/lab'
+import { CityContext, MeContext } from '../../../../../searchContext'
+import { PHOTO_URL } from '../../../../../variables'
 
 const Wrapper = styled.div`
   width: 175px;
@@ -36,7 +36,7 @@ const Wrapper = styled.div`
       flex: 0 0 135px;
     }
   }
-`;
+`
 
 const SkeletonItem = styled(Skeleton)`
   width: 175px;
@@ -44,12 +44,12 @@ const SkeletonItem = styled(Skeleton)`
   @media (max-width: ${laptopBreakpoint}) {
     width: 161px;
   }
-`;
+`
 
 const SkeletonBottom = styled(Skeleton)`
   width: 100%;
   height: 35px;
-`;
+`
 
 const TopGoodWrapper = styled.div`
   height: 175px;
@@ -63,13 +63,13 @@ const TopGoodWrapper = styled.div`
     width: 129px;
     height: 129px;
   }
-`;
+`
 
 const Image = styled.img`
   height: 90%;
   object-fit: contain;
   width: 90%;
-`;
+`
 
 export const Favorite = styled.div`
   position: absolute;
@@ -77,12 +77,12 @@ export const Favorite = styled.div`
   height: 16px;
   padding: 20px;
   background: ${({ isFavorite }) =>
-      isFavorite ? "url(/favorite-red-icon.svg)" : "url(/favorit.svg)"}
+      isFavorite ? 'url(/favorite-red-icon.svg)' : 'url(/favorit.svg)'}
     no-repeat center;
   cursor: pointer;
   right: 2px;
   top: 2px;
-`;
+`
 
 const BottomGoodWrapper = styled.div`
   padding: 22px 10px;
@@ -100,7 +100,7 @@ const BottomGoodWrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     min-height: 170px;
   }
-`;
+`
 
 const Name = styled.p`
   max-width: 211px;
@@ -115,7 +115,7 @@ const Name = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     max-height: 40px;
   }
-`;
+`
 
 const Price = styled.div`
   display: flex;
@@ -123,7 +123,7 @@ const Price = styled.div`
   margin-top: 10px;
   position: relative;
   width: 100%;
-`;
+`
 
 const Wrap = styled.div`
   width: 100%;
@@ -133,7 +133,7 @@ const Wrap = styled.div`
   align-items: center;
   flex-grow: 1;
   margin-bottom: 25px;
-`;
+`
 
 const OldPrice = styled.p`
   color: #a1a1a1;
@@ -144,7 +144,7 @@ const OldPrice = styled.p`
   right: 0;
   top: 2px;
   &:after {
-    content: "";
+    content: '';
     position: absolute;
     background: #a1a1a1;
     height: 2px;
@@ -156,14 +156,14 @@ const OldPrice = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     right: -4px;
   }
-`;
+`
 
 const NewPrice = styled.p`
   font-size: 14px;
   line-height: 20px;
   color: #ff0033;
   font-weight: 600;
-`;
+`
 
 const ButtonCart = styled.button`
   width: 66.3%;
@@ -185,9 +185,9 @@ const ButtonCart = styled.button`
   margin: 0 19px;
 
   &:hover {
-    background-color: ${lighten(0.1, "#f03")};
+    background-color: ${lighten(0.1, '#f03')};
   }
-`;
+`
 
 const QuantityWrap = styled.div`
   display: flex;
@@ -195,12 +195,12 @@ const QuantityWrap = styled.div`
   align-items: center;
   width: 66.3%;
   max-width: 116px;
-`;
+`
 
 const Quantity = styled.p`
   font-size: 10px;
   line-height: 16px;
-`;
+`
 
 const Minus = styled.div`
   width: 28px;
@@ -208,32 +208,32 @@ const Minus = styled.div`
   border-radius: 100%;
   flex-shrink: 0;
   cursor: pointer;
-  background: #f0f0f0 url("/icon-minus.svg") no-repeat center;
+  background: #f0f0f0 url('/icon-minus.svg') no-repeat center;
   transition: all 0.2s ease-in-out;
 
   &:hover {
-    background: #ff0033 url("/icon-minus-white.svg") no-repeat center;
+    background: #ff0033 url('/icon-minus-white.svg') no-repeat center;
   }
-`;
+`
 
 const Plus = styled(Minus)`
-  background: #f0f0f0 url("/icon-plus.svg") no-repeat center;
+  background: #f0f0f0 url('/icon-plus.svg') no-repeat center;
   background-size: 13px;
 
   &:hover {
-    background: #ff0033 url("/icon-plus-white.svg") no-repeat center;
+    background: #ff0033 url('/icon-plus-white.svg') no-repeat center;
     background-size: 13px;
   }
-`;
+`
 
 const ProductCard = ({ item, loading, add, deleteItem, loadingCart, cart }) => {
-  const router = useRouter();
-  const [me] = useContext(MeContext);
-  const [city] = useContext(CityContext);
+  const router = useRouter()
+  const [me] = useContext(MeContext)
+  const [city] = useContext(CityContext)
 
-  const newItem = cart?.find((el) => el?.product?.id === item.id)
-    ? cart?.find((el) => el?.product?.id === item.id)
-    : { product: { ...item }, quantity: 0 };
+  const newItem = cart?.find(el => el?.product?.id === item.id)
+    ? cart?.find(el => el?.product?.id === item.id)
+    : { product: { ...item }, quantity: 0 }
 
   return loading ? (
     <SkeletonItem variant="rectangular" />
@@ -253,7 +253,7 @@ const ProductCard = ({ item, loading, add, deleteItem, loadingCart, cart }) => {
             src={
               newItem?.product?.photoIds[0]
                 ? ` ${PHOTO_URL}${newItem?.product?.photoIds[0]}/original`
-                : "/cosmetic_placeholder.jpg"
+                : '/cosmetic_placeholder.jpg'
             }
           />
         </TopGoodWrapper>
@@ -269,7 +269,7 @@ const ProductCard = ({ item, loading, add, deleteItem, loadingCart, cart }) => {
                           newItem?.product?.currentAmount.toLocaleString()) ||
                         newItem?.product?.currentAmount.toLocaleString()
                       } ₽`
-                    : "Цена по запросу"}{" "}
+                    : 'Цена по запросу'}{' '}
                 </NewPrice>
                 <OldPrice>
                   {newItem?.product?.amountSales !== 0 &&
@@ -288,19 +288,19 @@ const ProductCard = ({ item, loading, add, deleteItem, loadingCart, cart }) => {
             <SkeletonBottom />
           ) : newItem?.quantity === 0 ? (
             <ButtonCart
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
+              onClick={e => {
+                e.preventDefault()
+                e.stopPropagation()
                 if (!me?.info) {
                   router.push(
                     {
-                      pathname: "/login",
-                      query: { error: "notAuthorized" },
+                      pathname: '/login',
+                      query: { error: 'notAuthorized' },
                     },
-                    "/login"
-                  );
+                    '/login',
+                  )
                 } else {
-                  !add(newItem?.product, 1);
+                  !add(newItem?.product, 1)
                 }
               }}
             >
@@ -309,18 +309,18 @@ const ProductCard = ({ item, loading, add, deleteItem, loadingCart, cart }) => {
           ) : (
             <QuantityWrap>
               <Minus
-                onClick={(e) => {
-                  e.stopPropagation();
-                  e.preventDefault();
-                  deleteItem(newItem);
+                onClick={e => {
+                  e.stopPropagation()
+                  e.preventDefault()
+                  deleteItem(newItem)
                 }}
               />
               <Quantity>{`${newItem?.quantity} шт.`}</Quantity>
               <Plus
-                onClick={(e) => {
-                  e.stopPropagation();
-                  e.preventDefault();
-                  add(newItem?.product, 1);
+                onClick={e => {
+                  e.stopPropagation()
+                  e.preventDefault()
+                  add(newItem?.product, 1)
                 }}
               />
             </QuantityWrap>
@@ -328,7 +328,7 @@ const ProductCard = ({ item, loading, add, deleteItem, loadingCart, cart }) => {
         </BottomGoodWrapper>
       </Wrapper>
     </Link>
-  );
-};
+  )
+}
 
-export default ProductCard;
+export default ProductCard

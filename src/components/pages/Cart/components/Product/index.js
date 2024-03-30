@@ -12,10 +12,10 @@ import {
   laptopBreakpoint,
   mobileBreakpoint,
   red,
-} from '../../../../../../styles/variables'
+} from '../../../../../styles/variables'
 import { brandSearchQuery } from '../../../../../_graphql-legacy/search/brandSearch'
 import { addToCartB2cMutation } from '../../../../../_graphql-legacy/cart/addToB2cCart'
-import { PHOTO_URL } from '../../../../../../variables'
+import { PHOTO_URL } from '../../../../../variables'
 import { cyrToTranslit } from '../../../../../utils/translit'
 import { CityContext } from '../../../../../searchContext'
 import { pluralize } from '../../../../../utils/pluralize'

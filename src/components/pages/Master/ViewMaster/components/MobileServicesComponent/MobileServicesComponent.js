@@ -1,9 +1,9 @@
-import { useMemo, useState } from "react";
-import { useMutation } from "@apollo/client";
-import { convertServiceIdsToCatalogEntries } from "../../../../../../utils/serviceCatalog";
-import { CatalogGroup } from "./CatalogGroup";
-import EditIcons from "../../../../../ui/EditIcons";
-import { MainContainer } from "../../../../../../styles/common";
+import { useMemo, useState } from 'react'
+import { useMutation } from '@apollo/client'
+import { convertServiceIdsToCatalogEntries } from '../../../../../../utils/serviceCatalog'
+import { CatalogGroup } from './CatalogGroup'
+import EditIcons from '../../../../../ui/EditIcons/index.tsx'
+import { MainContainer } from '../../../../../../styles/common'
 import {
   Wrapper,
   Top,
@@ -13,10 +13,10 @@ import {
   PhoneButton,
   TitleWrap,
   NoServicesText,
-} from "./styles";
-import EditMasterServices from "../../../../../blocks/EditMasterServices";
-import { masterQuery } from "../../../../../../_graphql-legacy/master/masterQuery";
-import { updateMasterServicesMutation } from "../../../../../../_graphql-legacy/master/updateMasterServicesMutation";
+} from './styles'
+import EditMasterServices from '../../../../../blocks/EditMasterServices'
+import { masterQuery } from '../../../../../../_graphql-legacy/master/masterQuery'
+import { updateMasterServicesMutation } from '../../../../../../_graphql-legacy/master/updateMasterServicesMutation'
 
 const MobileServicesComponent = ({
   isOwner,
@@ -24,13 +24,13 @@ const MobileServicesComponent = ({
   master,
   masterSpecializationsCatalog,
 }) => {
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(false)
   const entries = useMemo(
     () => convertServiceIdsToCatalogEntries(services),
-    [services]
-  );
+    [services],
+  )
 
-  const [entriesItems, setEntriesItems] = useState(entries);
+  const [entriesItems, setEntriesItems] = useState(entries)
 
   const [updateServices] = useMutation(updateMasterServicesMutation, {
     refetchQueries: [
@@ -41,39 +41,39 @@ const MobileServicesComponent = ({
         },
       },
     ],
-  });
+  })
 
   const handleEditConfirm = () => {
-    var services = entriesItems?.filter((s) => s.value !== 0)?.map((s) => s.id);
+    var services = entriesItems?.filter(s => s.value !== 0)?.map(s => s.id)
     const mutation = {
       variables: {
         input: {
           specializationsServices: services,
         },
       },
-    };
-    updateServices(mutation);
-  };
+    }
+    updateServices(mutation)
+  }
 
   const groups = masterSpecializationsCatalog.groups
-    ?.map((group) => {
+    ?.map(group => {
       if (group.items === undefined || group.items === null) {
-        return null;
+        return null
       }
 
-      const items = group?.items?.filter((item) =>
-        entries?.find((entry) => entry.id === item.id)
-      );
+      const items = group?.items?.filter(item =>
+        entries?.find(entry => entry.id === item.id),
+      )
 
       if (items.length === 0) {
-        return null;
+        return null
       }
 
-      return <CatalogGroup key={group?.id} group={group} entries={entries} />;
+      return <CatalogGroup key={group?.id} group={group} entries={entries} />
     })
-    .filter((element) => element !== null);
+    .filter(element => element !== null)
 
-  const phone = master?.phone?.phoneNumber;
+  const phone = master?.phone?.phoneNumber
 
   return (
     <MainContainer id="services">
@@ -123,7 +123,7 @@ const MobileServicesComponent = ({
         </noindex>
       </Wrapper>
     </MainContainer>
-  );
-};
+  )
+}
 
-export default MobileServicesComponent;
+export default MobileServicesComponent

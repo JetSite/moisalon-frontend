@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../styles/variables";
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../styles/variables'
 
 export const Wrapper = styled.div`
   padding: 0 140px;
@@ -7,17 +7,17 @@ export const Wrapper = styled.div`
   width: 1440px;
   margin-left: auto;
   margin-right: auto;
-`;
+`
 
 export const CategoryImage = styled.div`
   min-height: 381px;
-  background: url("/brands-page-bg.jpg") no-repeat;
+  background: url('/brands-page-bg.jpg') no-repeat;
   background-size: cover;
 
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 export const WrapBanner = styled.div`
   &.banner-enter {
@@ -34,4 +34,4 @@ export const WrapBanner = styled.div`
     opacity: 0;
     transition: opacity 500ms, transform 500ms;
   }
-`;
+`

@@ -1,18 +1,18 @@
-import styled from "styled-components";
-import { useState } from "react";
-import { laptopBreakpoint } from "../../../../../styles/variables";
+import styled from 'styled-components'
+import { useState } from 'react'
+import { laptopBreakpoint } from '../../../../styles/variables'
 
 const Input = styled.input`
   margin: 5px;
-  background: ${(props) => (!props.check ? "#fff" : "#f03")};
-  border: ${(props) => (!props.check ? "1px solid #000000" : "1px solid #f03")};
+  background: ${props => (!props.check ? '#fff' : '#f03')};
+  border: ${props => (!props.check ? '1px solid #000000' : '1px solid #f03')};
   border-radius: 50px;
   cursor: pointer;
   font-weight: 500;
   font-size: 14px;
   outline: none;
   padding: 9px 55px;
-  color: ${(props) => (!props.check ? "#000" : "#fff")};
+  color: ${props => (!props.check ? '#000' : '#fff')};
 
   @media (max-width: ${laptopBreakpoint}) {
     padding: 6px 23px;
@@ -20,7 +20,7 @@ const Input = styled.input`
     font-weight: 500;
     line-height: 16px;
   }
-`;
+`
 
 const Description = styled.p`
   font-size: 18px;
@@ -34,7 +34,7 @@ const Description = styled.p`
     line-height: 25px;
     margin: 15px 0px 5px 0px;
   }
-`;
+`
 
 const AllChecked = styled.div`
   margin: 5px;
@@ -53,11 +53,11 @@ const AllChecked = styled.div`
     font-weight: 500;
     line-height: 16px;
   }
-`;
+`
 
 const DictionaryItem = ({ items, group, onChangeDefault }) => {
-  const [showAll, setShowAll] = useState(false);
-  const allCheckedValue = !showAll ? "Выбрать другую" : "Отмена";
+  const [showAll, setShowAll] = useState(false)
+  const allCheckedValue = !showAll ? 'Выбрать другую' : 'Отмена'
   return (
     <>
       <Description>Выберите Вашу основную специализацию:</Description>
@@ -67,11 +67,11 @@ const DictionaryItem = ({ items, group, onChangeDefault }) => {
             <Input
               check={i === 0}
               onClick={() => {
-                onChangeDefault(item, i);
-                setShowAll(!showAll);
+                onChangeDefault(item, i)
+                setShowAll(!showAll)
               }}
               type="button"
-              value={group?.find((el) => el?.id === item)?.title}
+              value={group?.find(el => el?.id === item)?.title}
               name="defaultItem"
             />
           ))}
@@ -86,7 +86,7 @@ const DictionaryItem = ({ items, group, onChangeDefault }) => {
           <Input
             check={true}
             type="button"
-            value={group?.find((el) => el?.id === items[0])?.title}
+            value={group?.find(el => el?.id === items[0])?.title}
             name="defaultItem"
           />
           {items?.length > 1 ? (
@@ -97,7 +97,7 @@ const DictionaryItem = ({ items, group, onChangeDefault }) => {
         </>
       )}
     </>
-  );
-};
+  )
+}
 
-export default DictionaryItem;
+export default DictionaryItem

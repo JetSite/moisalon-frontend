@@ -1,12 +1,12 @@
-import React from "react";
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../../../styles/variables";
+import React from 'react'
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../../../styles/variables'
 
 const InputWrapper = styled.div`
   position: relative;
 
   &:after {
-    content: "₽";
+    content: '₽';
     position: absolute;
     right: 22px;
     top: 0;
@@ -17,7 +17,7 @@ const InputWrapper = styled.div`
       right: 0;
     }
   }
-`;
+`
 
 const InputElement = styled.input`
   width: 100%;
@@ -29,7 +29,7 @@ const InputElement = styled.input`
     outline: none;
     border-bottom-color: #000;
   }
-`;
+`
 
 const Input = ({
   name,
@@ -39,9 +39,9 @@ const Input = ({
   chooseRentalPrice,
   ...rest
 }) => {
-  const changeValueHandler = (e) => {
-    chooseRentalPrice(name, e.target.value);
-  };
+  const changeValueHandler = e => {
+    chooseRentalPrice(name, e.target.value)
+  }
   return (
     <InputWrapper>
       <InputElement
@@ -53,7 +53,7 @@ const Input = ({
         {...rest}
       />
     </InputWrapper>
-  );
-};
+  )
+}
 
-export default Input;
+export default Input

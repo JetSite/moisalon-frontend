@@ -1,6 +1,6 @@
-import { red } from "../../../../../../styles/variables";
+import { red } from '../../../../../styles/variables'
 
-const MoreIcon = ({ fill = "#000", showAdditionalNav }) => {
+const MoreIcon = ({ fill = '#000', showAdditionalNav }) => {
   return (
     <svg
       width="20"
@@ -25,7 +25,7 @@ const MoreIcon = ({ fill = "#000", showAdditionalNav }) => {
         strokeWidth="2"
       />
     </svg>
-  );
-};
+  )
+}
 
-export default MoreIcon;
+export default MoreIcon

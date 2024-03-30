@@ -1,9 +1,9 @@
-import { useState, useRef, useEffect } from "react";
-import { useMutation } from "@apollo/react-hooks";
-import { PHOTO_URL } from "../../../../variables";
-import { CSSTransition } from "react-transition-group";
-import { formatMobileNumber } from "../../../utils/formatMobileNumber";
-import { sendOrderOneClick } from "../../../_graphql-legacy/orders/sendOrderOneClick";
+import { useState, useRef, useEffect } from 'react'
+import { useMutation } from '@apollo/react-hooks'
+import { PHOTO_URL } from '../../../variables'
+import { CSSTransition } from 'react-transition-group'
+import { formatMobileNumber } from '../../../utils/formatMobileNumber'
+import { sendOrderOneClick } from '../../../_graphql-legacy/orders/sendOrderOneClick'
 import {
   PopupWrapper,
   Wrapper,
@@ -30,111 +30,111 @@ import {
   Price,
   PhoneInputWrap,
   PhoneCode,
-} from "./styles";
-import RotatingLoader from "../RotatingLoader";
+} from './styles'
+import RotatingLoader from '../RotatingLoader'
 
 const FastBuyPopup = ({ item, openBuyPopup, setOpenBuyPopup, me, brand }) => {
-  const [productQuantity, setProductQuantity] = useState(1);
-  const [phone, setPhone] = useState("");
-  const [name, setName] = useState("");
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState(null);
-  const popupRef = useRef(null);
+  const [productQuantity, setProductQuantity] = useState(1)
+  const [phone, setPhone] = useState('')
+  const [name, setName] = useState('')
+  const [success, setSuccess] = useState(false)
+  const [error, setError] = useState(null)
+  const popupRef = useRef(null)
 
   useEffect(() => {
-    if (!me?.info) return;
+    if (!me?.info) return
 
     if (me.info.displayName) {
-      setName(me.info.displayName);
+      setName(me.info.displayName)
     }
     if (me.info.phoneNumber) {
-      setPhone(formatMobileNumber(me.info.phoneNumber.substring(1)));
+      setPhone(formatMobileNumber(me.info.phoneNumber.substring(1)))
     }
-  }, [me]);
+  }, [me])
 
-  const useOutsideClick = (ref) => {
+  const useOutsideClick = ref => {
     useEffect(() => {
-      const handleClickOutside = (event) => {
+      const handleClickOutside = event => {
         if (ref.current && !ref.current.contains(event.target)) {
-          setOpenBuyPopup(false);
+          setOpenBuyPopup(false)
         }
-      };
-      document.addEventListener("mousedown", handleClickOutside);
+      }
+      document.addEventListener('mousedown', handleClickOutside)
       return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, [ref]);
-  };
+        document.removeEventListener('mousedown', handleClickOutside)
+      }
+    }, [ref])
+  }
 
-  useOutsideClick(popupRef);
+  useOutsideClick(popupRef)
 
   const [sendOrder, { loading }] = useMutation(sendOrderOneClick, {
-    onCompleted: (res) => {
-      setSuccess(true);
+    onCompleted: res => {
+      setSuccess(true)
     },
-  });
+  })
 
   const buyProduct = () => {
     if (!name || name.length < 2) {
-      setError("Некорректное имя");
-      return;
+      setError('Некорректное имя')
+      return
     }
 
     if (!phone || phone.length < 13) {
-      setError("Некорректный номер телефона");
-      return;
+      setError('Некорректный номер телефона')
+      return
     }
 
     const orderInput = {
       productId: item.id,
       productCount: productQuantity,
       name,
-      phone: `8${phone.replace(/-/g, "")}`,
-    };
+      phone: `8${phone.replace(/-/g, '')}`,
+    }
 
     sendOrder({
       variables: {
         input: orderInput,
       },
-    });
-  };
+    })
+  }
 
-  const closePopup = (e) => {
-    setOpenBuyPopup(false);
-    setSuccess(false);
-    setProductQuantity(1);
-    setError(null);
-    setName(me?.info?.displayName ? me?.info?.displayName : "");
+  const closePopup = e => {
+    setOpenBuyPopup(false)
+    setSuccess(false)
+    setProductQuantity(1)
+    setError(null)
+    setName(me?.info?.displayName ? me?.info?.displayName : '')
     setPhone(
       me?.info?.phoneNumber
         ? formatMobileNumber(me.info.phoneNumber.substring(1))
-        : ""
-    );
-  };
+        : '',
+    )
+  }
 
   const increaseQuantity = () => {
-    setProductQuantity((prevState) => prevState + 1);
-  };
+    setProductQuantity(prevState => prevState + 1)
+  }
 
   const decreaseQuantity = () => {
-    if (productQuantity === 1) return;
-    setProductQuantity((prevState) => prevState - 1);
-  };
+    if (productQuantity === 1) return
+    setProductQuantity(prevState => prevState - 1)
+  }
 
-  const phoneChangeHandler = (e) => {
-    setError(null);
-    const targetValue = formatMobileNumber(e.target.value);
-    setPhone(targetValue);
-  };
+  const phoneChangeHandler = e => {
+    setError(null)
+    const targetValue = formatMobileNumber(e.target.value)
+    setPhone(targetValue)
+  }
 
-  const nameChangeHandler = (e) => {
-    setError(null);
-    setName(e.target.value);
-  };
+  const nameChangeHandler = e => {
+    setError(null)
+    setName(e.target.value)
+  }
 
   const minimalPrice =
-    brand?.minimalOrderPrice || item?.brand?.minimalOrderPrice;
-  const brandName = brand?.name || item?.brand?.name;
+    brand?.minimalOrderPrice || item?.brand?.minimalOrderPrice
+  const brandName = brand?.name || item?.brand?.name
 
   return (
     <CSSTransition
@@ -153,7 +153,7 @@ const FastBuyPopup = ({ item, openBuyPopup, setOpenBuyPopup, me, brand }) => {
                   src={
                     item?.photoIds[0]
                       ? ` ${PHOTO_URL}${item?.photoIds[0]}/original`
-                      : "/cosmetic_placeholder.jpg"
+                      : '/cosmetic_placeholder.jpg'
                   }
                 />
               </Left>
@@ -164,7 +164,7 @@ const FastBuyPopup = ({ item, openBuyPopup, setOpenBuyPopup, me, brand }) => {
                   <>
                     <Title>
                       {`${
-                        me?.info ? "Проверьте данные формы" : "Заполните форму"
+                        me?.info ? 'Проверьте данные формы' : 'Заполните форму'
                       }, чтобы наш менеджер связался с Вами по
                       поводу заказа`}
                     </Title>
@@ -221,7 +221,7 @@ const FastBuyPopup = ({ item, openBuyPopup, setOpenBuyPopup, me, brand }) => {
                         <Plus onClick={increaseQuantity} />
                       </QuantityButtons>
                     </QuantityWrap>
-                    <Error>{error ? error : ""}</Error>
+                    <Error>{error ? error : ''}</Error>
                     <ButtonPopup
                       onClick={buyProduct}
                       variant="red"
@@ -247,7 +247,7 @@ const FastBuyPopup = ({ item, openBuyPopup, setOpenBuyPopup, me, brand }) => {
         </Wrapper>
       )}
     </CSSTransition>
-  );
-};
+  )
+}
 
-export default FastBuyPopup;
+export default FastBuyPopup

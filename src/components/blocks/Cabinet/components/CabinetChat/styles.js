@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../styles/variables";
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../styles/variables'
 
 export const Wrapper = styled.div`
   max-width: 710px;
@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
     padding-top: 0;
     margin-bottom: 40px;
   }
-`;
+`
 
 export const BackBtn = styled.div`
   font-size: 18px;
@@ -20,7 +20,7 @@ export const BackBtn = styled.div`
     margin-bottom: 20px;
     font-size: 14px;
   }
-`;
+`
 
 export const ChatContent = styled.div`
   margin-top: 30px;
@@ -40,17 +40,17 @@ export const ChatContent = styled.div`
   &::-webkit-scrollbar-thumb {
     background-color: #c7c7c7;
   }
-`;
+`
 
 export const Error = styled.p`
   font-weight: 600;
   font-size: 18px;
   line-height: 25px;
-`;
+`
 
 export const ScrollDiv = styled.div`
   width: 1px;
   height: 1px;
   opacity: 0;
   position: relative;
-`;
+`

@@ -1,4 +1,5 @@
 import { createContext } from 'react'
+import { IMe } from './types/me'
 
 export const SortProperty = {
   PRICING: 'PRICING',
@@ -36,6 +37,11 @@ export const EmptySearchQuery = {
   sortOrder: null,
 }
 
+export type IContext = [{ [K: string]: any }, () => void]
+
+type IMeContext = [IMe, () => void]
+type ICityContext = [string, (city: string) => void]
+
 export const MasterSearchQuery = {}
 
 export const SearchMasterQueryContext = createContext([
@@ -52,9 +58,21 @@ export const SearchBrandQueryContext = createContext([
 
 export const SearchQueryContext = createContext([EmptySearchQuery, () => {}])
 
-export const MainSearchQuery = {}
+export const MainSearchQuery: { [K: string]: string } = {}
 
-export const SearchMainQueryContext = createContext([MainSearchQuery, () => {}])
+interface IQuery {
+  [K: string]: string | undefined
+}
+
+type ISearchMainQueryContext = [
+  { [K: string]: string },
+  (query: IQuery) => void,
+]
+
+export const SearchMainQueryContext = createContext<ISearchMainQueryContext>([
+  MainSearchQuery,
+  () => {},
+])
 
 export const CategoryPageSearchQuery = {}
 
@@ -63,14 +81,14 @@ export const CategoryPageQueryContext = createContext([
   () => {},
 ])
 
-export const MeContext = createContext([{}, () => {}])
+export const MeContext = createContext<IMeContext>([{}, () => {}])
 
 export const CartContext = createContext([{}, () => {}])
 
-export const CatalogsContext = createContext([{}, () => {}])
+export const CatalogsContext = createContext<IContext>([{}, () => {}])
 
 export const ProductsContext = createContext([{}, () => {}])
 
 export const ProductsGetStatusContext = createContext([{}, () => {}])
 
-export const CityContext = createContext([{}, () => {}])
+export const CityContext = createContext<ICityContext>(['', () => {}])

@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { red, laptopBreakpoint } from "../../../../../../styles/variables";
+import styled from 'styled-components'
+import { red, laptopBreakpoint } from '../../../../../styles/variables'
 
 export const Wrapper = styled.div`
   background: ${red};
@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 export const Text = styled.p`
   display: inline-block;
@@ -24,4 +24,4 @@ export const Text = styled.p`
   &:hover {
     transform: scale(1.01);
   }
-`;
+`

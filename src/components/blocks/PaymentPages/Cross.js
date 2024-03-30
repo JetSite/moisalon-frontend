@@ -1,5 +1,5 @@
-import React from "react";
-import { red } from "../../../../styles/variables";
+import React from 'react'
+import { red } from '../../../styles/variables'
 
 const Cross = () => {
   return (
@@ -13,7 +13,7 @@ const Cross = () => {
       <path d="M7.77734 23.3346L23.3337 7.77825" stroke={red} />
       <path d="M23.334 23.3346L7.77764 7.77825" stroke={red} />
     </svg>
-  );
-};
+  )
+}
 
-export default Cross;
+export default Cross

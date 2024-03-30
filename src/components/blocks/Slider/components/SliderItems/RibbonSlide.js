@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { PHOTO_URL } from '../../../../../../variables'
+import { PHOTO_URL } from '../../../../../variables'
 
 import {
   SliderItem,

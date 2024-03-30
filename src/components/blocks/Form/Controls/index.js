@@ -1,7 +1,7 @@
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../styles/variables";
-import Avatar from "../Avatar";
-import Tabs from "../Tabs";
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../styles/variables'
+import Avatar from '../Avatar'
+import Tabs from '../Tabs'
 
 const Wrapper = styled.div`
   max-width: 395px;
@@ -14,7 +14,7 @@ const Wrapper = styled.div`
     top: initial;
     height: initial;
   }
-`;
+`
 
 const Controls = ({
   id,
@@ -42,7 +42,7 @@ const Controls = ({
       />
       <Tabs refActive={refActive} tabs={tabs} />
     </Wrapper>
-  );
-};
+  )
+}
 
-export default Controls;
+export default Controls

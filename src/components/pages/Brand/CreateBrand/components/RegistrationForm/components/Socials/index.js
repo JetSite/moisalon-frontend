@@ -1,11 +1,11 @@
-import React from "react";
-import { Field } from "react-final-form";
-import styled from "styled-components";
-import { isUrl } from "../../../../../../../../utils/validations";
-import SocialNetworkUrlsField from "../../../../../../../blocks/Form/SocialNetworkUrlsField";
-import TextFieldAdapter from "../../../../../../../blocks/Form/TextField";
-import { FieldWrap } from "../../styled";
-import { laptopBreakpoint } from "../../../../../../../../../styles/variables";
+import React from 'react'
+import { Field } from 'react-final-form'
+import styled from 'styled-components'
+import { isUrl } from '../../../../../../../../utils/validations'
+import SocialNetworkUrlsField from '../../../../../../../blocks/Form/SocialNetworkUrlsField'
+import TextFieldAdapter from '../../../../../../../blocks/Form/TextField'
+import { FieldWrap } from '../../styled'
+import { laptopBreakpoint } from '../../../../../../../../styles/variables'
 
 const Wrapper = styled.div`
   margin-top: 120px;
@@ -14,7 +14,7 @@ const Wrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     margin-top: 0;
   }
-`;
+`
 
 const Text = styled.p`
   margin-bottom: 40px;
@@ -25,7 +25,7 @@ const Text = styled.p`
     font-weight: 600;
     line-height: 25px;
   }
-`;
+`
 
 const Socials = ({ ref2 }) => {
   return (
@@ -42,7 +42,7 @@ const Socials = ({ ref2 }) => {
       </FieldWrap>
       <Field name="socialNetworkUrls" component={SocialNetworkUrlsField} />
     </Wrapper>
-  );
-};
+  )
+}
 
-export default Socials;
+export default Socials
