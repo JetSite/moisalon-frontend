@@ -9,7 +9,7 @@ const Tabs = ({ tabs, activeTab, changeActiveTab }) => {
           onClick={() => changeActiveTab(item.id)}
           key={item.id}
         >
-          <Text>{item?.attributes?.feedCategoryName}</Text>
+          <Text>{item?.feedCategoryName}</Text>
         </Item>
       ))}
     </Wrapper>

@@ -20,7 +20,7 @@ const Top = styled.div`
 const Title = styled.h4`
   font-weight: 500;
   font-size: 14px;
-  width: 70%;
+  width: 50%;
   color: #727272;
   flex-shrink: 0;
 `
@@ -35,7 +35,11 @@ export default function MobileCatalogItem({ item, masterPage }) {
     <Wrapper masterPage={masterPage}>
       <Top>
         <Title>{item?.serviceName}</Title>
-        {item?.price ? <Price>от {item.price}</Price> : null}
+        {item?.priceFrom ? (
+          <Price>
+            от {item.priceFrom} {item.unitOfMeasurement}
+          </Price>
+        ) : null}
       </Top>
     </Wrapper>
   )

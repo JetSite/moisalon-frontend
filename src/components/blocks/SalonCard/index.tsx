@@ -15,6 +15,8 @@ import {
   SkeletonSalonItem,
   Rent,
   SalonShareWrap,
+  SalonInfo,
+  Activities,
 } from './styles'
 import { Skeleton } from '@material-ui/lab'
 import {
@@ -69,6 +71,8 @@ const SalonCard: FC<Props> = ({
     setIsFavorit(!isFavorite)
   }
 
+  const servicesCategories = getServicesCategories(item.services)
+
   return loading ? (
     <SkeletonSalonItem variant="rect" />
   ) : (
@@ -106,16 +110,9 @@ const SalonCard: FC<Props> = ({
             </Socials>
           </Top>
           <Info>
-            {/* <SalonInfo>
-              <Activities>
-                {selectedGroupNamesMax(
-                  item.activities,
-                  salonActivitiesCatalog,
-                  ', ',
-                  1,
-                )}
-              </Activities>
-            </SalonInfo> */}
+            <SalonInfo>
+              <Activities>{servicesCategories.join(', ')}</Activities>
+            </SalonInfo>
             {item?.salonAddress ? <Address>{item.salonAddress}</Address> : null}
           </Info>
         </Wrap>

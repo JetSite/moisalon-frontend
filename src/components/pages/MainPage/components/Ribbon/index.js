@@ -27,13 +27,10 @@ const Ribbon = ({ title, beautyCategories, beautyAllContent }) => {
   const [searchQuery, setSearchQuery] = useState('')
 
   useEffect(() => {
-    if (beautyCategories?.data?.length > 0) {
-      setCategories([
-        { id: '', attributes: { feedCategoryName: 'Все' } },
-        ...beautyCategories?.data,
-      ])
+    if (beautyCategories?.length > 0) {
+      setCategories([{ id: '', feedCategoryName: 'Все' }, ...beautyCategories])
     }
-    setAllContent(beautyAllContent?.data)
+    setAllContent(beautyAllContent)
   }, [])
 
   useEffect(() => {
@@ -41,7 +38,10 @@ const Ribbon = ({ title, beautyCategories, beautyAllContent }) => {
       setCategoryContent(null)
       return
     }
-    // refetchContent({ catId: activeTab })
+    const categoryContentData = beautyCategories.find(
+      category => category.id === activeTab,
+    )
+    setCategoryContent(categoryContentData.feeds)
   }, [activeTab])
 
   useEffect(() => {
@@ -52,17 +52,6 @@ const Ribbon = ({ title, beautyCategories, beautyAllContent }) => {
     setActiveTab(null)
     // refetchSearch({ query: searchQuery })
   }, [searchQuery])
-
-  // const { refetch: refetchContent } = useQuery(getAdvices, {
-  //   context: { uri: 'https://moi.salon/graphql' },
-  //   variables: {
-  //     catId: activeTab,
-  //   },
-  //   skip: true,
-  //   onCompleted: res => {
-  //     setCategoryContent(res?.pagesCategory)
-  //   },
-  // })
 
   // const { refetch: refetchSearch } = useQuery(beautySearch, {
   //   context: { uri: 'https://moi.salon/graphql' },

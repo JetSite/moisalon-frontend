@@ -22,6 +22,7 @@ const MainMasterSlider = ({ me }) => {
 
   const { data: masters, loading } = useQuery(getMasters, {
     variables: {
+      city: cityInStorage ? cityInStorage : 'Москва',
       itemsCount: 10,
     },
   })

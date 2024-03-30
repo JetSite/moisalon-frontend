@@ -1,18 +1,18 @@
-import React from "react";
-import { CitiesListWrapper, CityItem } from "./styles";
+import React from 'react'
+import { CitiesListWrapper, CityItem } from './styles'
 
 const CitiesList = ({ cities, cityClickHandler }) => {
   return (
     <CitiesListWrapper>
-      {cities.map((city, i) => {
+      {cities?.map(city => {
         return (
-          <CityItem key={i} onClick={() => cityClickHandler(i)}>
-            {city}
+          <CityItem key={city.id} onClick={() => cityClickHandler(city.id)}>
+            {city?.cityName}
           </CityItem>
-        );
+        )
       })}
     </CitiesListWrapper>
-  );
-};
+  )
+}
 
-export default CitiesList;
+export default CitiesList

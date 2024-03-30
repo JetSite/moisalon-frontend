@@ -10,8 +10,8 @@ import {
 } from '../fragments'
 
 export const getSalons = gql`
-  query salons($itemsCount: Int!) {
-    salons(pagination: { page: 1, pageSize: $itemsCount }) {
+  query salons($city: String!,$itemsCount: Int!) {
+    salons(filters:{cities:{cityName:{eq:$city }}}, pagination: { page: 1, pageSize: $itemsCount }) {
       data {
         id
         attributes {
