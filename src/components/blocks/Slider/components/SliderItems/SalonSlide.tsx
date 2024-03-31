@@ -24,7 +24,7 @@ const SalonSlide: FC<Props> = ({ item, isEditing, deleteFunction }) => {
     <Link
       href={
         !landingMaster
-          ? `/${cyrToTranslit(item?.cities?.citySlug)}/salon/${item?.id}`
+          ? `/${cyrToTranslit(city)}/salon/${item?.id}`
           : `/${cyrToTranslit(city)}/rent`
       }
     >

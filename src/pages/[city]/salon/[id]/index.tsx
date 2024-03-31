@@ -395,7 +395,8 @@ export const getServerSideProps: GetServerSideProps = async ({
     variables: { citySlug: ['Москва'] },
   })
 
-  const id = salonIdRes.data.salons.data[0].id
+  // const id = salonIdRes.data.salons.data[0].id
+  const id = params?.id
 
   const data = await Promise.all([
     apolloClient.query({
