@@ -14,35 +14,53 @@ import { getCities } from 'src/graphql/city/getCities'
 import { getMasters } from 'src/graphql/master/queries/getMasters'
 import { useQuery } from '@apollo/client'
 import { getMastersTroughCity } from 'src/graphql/master/queries/getMastersTroughCity'
-import { FC } from 'react'
+import { FC, useContext } from 'react'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { IMaster } from 'src/types/masters'
+import { CityContext, MeContext } from 'src/searchContext'
+import { ICity, IPagination } from 'src/types'
+import { getTotalCount } from 'src/utils/getTotalCount'
 
-interface Props {}
+interface Props {
+  masterData: IMaster[]
+  totalBrands: number
+  totalMasters: number
+  totalSalons: number
+  cityData: ICity[]
+  paginations: IPagination
+}
 
 const AllMasters: FC<Props> = ({
-  masterSearch,
+  masterData,
   totalBrands,
   totalMasters,
   totalSalons,
-  masterServices,
+  // masterServices,
   cityData,
+  paginations,
 }) => {
-  useCheckCity(cityData)
+  const [me, setMe] = useContext(MeContext)
+  const [city, setCity] = useContext(CityContext)
 
-  // const { data } = useQuery(getMastersTroughCity, {
-  //   variables: { itemsCount: 10, cityName: [cityData] },
+  setCity(cityData[0].cityName)
+
+  // const { data: data1 } = useQuery(getMastersTroughCity, {
+  //   variables: { itemsCount: 10, cityName: [cityData[0].cityName] },
   // })
 
-  console.log(masterSearch)
+  console.log(totalBrands)
+  console.log(masterData)
 
   return (
-    <CategoryPageLayout loading={false}>
-      {/* <AllMastersPage
+    <CategoryPageLayout rent me={me} loading={false}>
+      <AllMastersPage
         totalBrands={totalBrands}
         totalMasters={totalMasters}
         totalSalons={totalSalons}
-        masterSearch={masterSearch}
-        masterServices={masterServices}
-      /> */}
+        masterData={masterData}
+        cityData={cityData}
+        paginations={paginations}
+      />
     </CategoryPageLayout>
   )
 }
@@ -88,14 +106,18 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
       },
     }
   }
+
+  // console.log(data[0].data.masters.meta)
+
   return addApolloState(apolloClient, {
     props: {
-      masterSearch: data[0]?.data?.masters,
-      // totalBrands: data[1]?.data.totalBrands,
-      // totalMasters: data[2]?.data.totalMasters,
-      // totalSalons: data[3]?.data.totalSalons,
+      paginations: data[0].data.masters.meta.pagination,
+      masterData: flattenStrapiResponse(data[0]?.data.masters),
+      totalBrands: getTotalCount(data[1]?.data.brands),
+      totalMasters: getTotalCount(data[2]?.data.masters),
+      totalSalons: getTotalCount(data[3]?.data.salons),
       // masterServices: data[4]?.data?.mastersServicesCount,
-      cityData: normalizeCity,
+      cityData: flattenStrapiResponse(city.cities.data),
     },
   })
 }

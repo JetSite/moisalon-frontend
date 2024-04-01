@@ -11,6 +11,7 @@ export const getMastersTroughCity = gql`
         attributes {
             masterName
             masterPhone
+            masterAddress
             masterEmail
             salons {
               data {

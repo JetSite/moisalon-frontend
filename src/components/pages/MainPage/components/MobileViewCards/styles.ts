@@ -22,7 +22,7 @@ export const CardWrap = styled.div`
   flex-shrink: 0;
 `
 
-export const Card = styled.div`
+export const Card = styled.div<{ active: boolean }>`
   display: flex;
   flex-direction: column;
   justify-content: space-between;

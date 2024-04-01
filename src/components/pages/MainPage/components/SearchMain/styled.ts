@@ -7,7 +7,7 @@ import {
   laptopBreakpoint,
 } from '../../../../../styles/variables'
 
-export const Checkbox = styled.input`
+export const Checkbox = styled.input<{ checked: boolean }>`
   position: absolute;
   z-index: -1;
   opacity: 0;
@@ -315,7 +315,7 @@ export const Name = styled.p`
   }
 `
 
-export const Favorite = styled.div`
+export const Favorite = styled.div<{ isFavorite: boolean }>`
   position: absolute;
   width: 16px;
   height: 16px;

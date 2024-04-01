@@ -10,11 +10,15 @@ const MainSalonsSlider = ({ rent, me }) => {
   }
   const { data: salons, loading } = useQuery(getSalons, {
     variables: {
-      city: cityInStorage ? cityInStorage : 'Москва',
+      city: 'Москва',
       itemsCount: 10,
     },
   })
   const salonsFlattened = flattenStrapiResponse(salons?.salons?.data)
+
+  console.log(cityInStorage)
+
+  console.log(salons)
 
   return (
     <Slider
