@@ -129,8 +129,6 @@ const MastersSearchResults: FC<{
   //   });
   // });
 
-  console.log(masterData[0].city.citySlug)
-
   const fetchMoreButton =
     // hasNextPage
     true ? (

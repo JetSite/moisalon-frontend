@@ -16,10 +16,6 @@ const MainSalonsSlider = ({ rent, me }) => {
   })
   const salonsFlattened = flattenStrapiResponse(salons?.salons?.data)
 
-  console.log(cityInStorage)
-
-  console.log(salons)
-
   return (
     <Slider
       type="salons"

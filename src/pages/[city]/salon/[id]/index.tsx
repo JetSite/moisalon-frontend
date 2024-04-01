@@ -21,7 +21,11 @@ import MobileServicesForClient from '../../../../components/pages/Salon/ViewSalo
 import MobileSalonPhotos from '../../../../components/pages/Salon/ViewSalon/components/MobileSalonPhotos'
 import catalogOrDefault from '../../../../utils/catalogOrDefault'
 import { mastersSalon } from '../../../../_graphql-legacy/salon/mastersSalon'
-import { CatalogsContext, MeContext } from '../../../../searchContext'
+import {
+  CatalogsContext,
+  CityContext,
+  MeContext,
+} from '../../../../searchContext'
 import { salonsRandom } from '../../../../_graphql-legacy/salon/salonsRandom'
 import { citySuggestionsQuery } from '../../../../_graphql-legacy/city/citySuggestionsQuery'
 import { cyrToTranslit } from '../../../../utils/translit'
@@ -73,6 +77,8 @@ const Salon: FC<Props> = ({
   const [dataScore, setDataScore] = useState<number>(salonData.salonRating)
   const [salon, setSalon] = useState<ISalonPage>(salonData)
   const [brands, setBrands] = useState<IBrand[]>(salonData.brands)
+  const [city, setCity] = useContext(CityContext)
+  setCity(salonData.cities.cityName)
 
   const [me, setMe] = useContext(MeContext)
   const [catalogs, setCatalogs] = useContext(CatalogsContext)

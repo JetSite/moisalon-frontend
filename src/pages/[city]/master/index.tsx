@@ -48,9 +48,6 @@ const AllMasters: FC<Props> = ({
   //   variables: { itemsCount: 10, cityName: [cityData[0].cityName] },
   // })
 
-  console.log(totalBrands)
-  console.log(masterData)
-
   return (
     <CategoryPageLayout rent me={me} loading={false}>
       <AllMastersPage

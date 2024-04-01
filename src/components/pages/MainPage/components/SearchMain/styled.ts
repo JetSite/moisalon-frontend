@@ -422,6 +422,7 @@ export const MasterInfo = styled.div`
 export const SalonCardWrapper = styled.div`
   width: 373px;
   height: 100%;
+  cursor: pointer;
 
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
