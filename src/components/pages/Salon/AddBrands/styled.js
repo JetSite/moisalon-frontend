@@ -1,16 +1,16 @@
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../styles/variables";
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../styles/variables'
 
 export const BrandsContent = styled.div`
   margin-top: 40px;
-`;
+`
 
 export const Title = styled.h3`
   margin-bottom: 40px;
   font-size: 16px;
   font-weight: 600;
   line-height: 45px;
-`;
+`
 
 export const ListWrapper = styled.div`
   display: flex;
@@ -24,4 +24,4 @@ export const ListWrapper = styled.div`
     margin-bottom: 30px;
     min-width: 100%;
   }
-`;
+`

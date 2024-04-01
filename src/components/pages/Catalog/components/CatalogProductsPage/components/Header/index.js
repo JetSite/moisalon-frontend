@@ -1,20 +1,20 @@
-import styled from "styled-components";
-import { useState } from "react";
-import { laptopBreakpoint } from "../../../../../../../../styles/variables";
+import styled from 'styled-components'
+import { useState } from 'react'
+import { laptopBreakpoint } from '../../../../../../../styles/variables'
 
 const Wrapper = styled.div`
   margin-bottom: 80px;
   @media (max-width: ${laptopBreakpoint}) {
     margin-bottom: 30px;
   }
-`;
+`
 const Top = styled.div`
   display: flex;
   margin-bottom: 30px;
   @media (max-width: ${laptopBreakpoint}) {
     flex-direction: column;
   }
-`;
+`
 const Title = styled.p`
   font-size: 48px;
   font-weight: 500;
@@ -25,7 +25,7 @@ const Title = styled.p`
     margin: 0;
     text-align: center;
   }
-`;
+`
 const Country = styled.p`
   font-size: 14px;
   font-weight: 500;
@@ -34,7 +34,7 @@ const Country = styled.p`
     font-size: 11px;
     text-align: center;
   }
-`;
+`
 const TextItem = styled.p`
   font-size: 14px;
   line-height: 27px;
@@ -42,13 +42,13 @@ const TextItem = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     line-height: 25px;
   }
-`;
+`
 const Items = styled.div`
   display: flex;
   @media (max-width: ${laptopBreakpoint}) {
     flex-direction: column;
   }
-`;
+`
 
 const WrapperItem = styled.div`
   margin-right: 150px;
@@ -63,7 +63,7 @@ const WrapperItem = styled.div`
     margin: 0;
     margin-bottom: 30px;
   }
-`;
+`
 
 const TitleItem = styled.p`
   font-weight: 600;
@@ -82,26 +82,25 @@ const TitleItem = styled.p`
     width: 10px;
     height: 10px;
     position: absolute;
-    content: "";
-    background: url("/arrow-back.svg") no-repeat;
+    content: '';
+    background: url('/arrow-back.svg') no-repeat;
     background-size: contain;
     transition: 0.3s;
-    transform: ${(props) =>
-      props.toggle ? "rotate(270deg)" : "rotate(180deg)"};
+    transform: ${props => (props.toggle ? 'rotate(270deg)' : 'rotate(180deg)')};
     right: 0;
     top: 6px;
   }
-`;
+`
 
 const Item = ({ title, text }) => {
-  const [toggle, setToggle] = useState(false);
+  const [toggle, setToggle] = useState(false)
   return (
     <WrapperItem onClick={() => setToggle(!toggle)}>
       <TitleItem toggle={toggle}>{title}</TitleItem>
       {toggle ? <TextItem>{text}</TextItem> : null}
     </WrapperItem>
-  );
-};
+  )
+}
 
 const Header = ({ brand }) => {
   return (
@@ -114,19 +113,19 @@ const Header = ({ brand }) => {
         <Items>
           {brand?.minimalOrderPrice ? (
             <Item
-              title={"Минимальная сумма заказа"}
+              title={'Минимальная сумма заказа'}
               text={`от ${
                 Number(brand?.minimalOrderPrice)?.toLocaleString() || 0
               } ₽`}
             />
           ) : null}
           {brand?.termsDeliveryPrice ? (
-            <Item title={"Условия заказа"} text={brand?.termsDeliveryPrice} />
+            <Item title={'Условия заказа'} text={brand?.termsDeliveryPrice} />
           ) : null}
         </Items>
       ) : null}
     </Wrapper>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

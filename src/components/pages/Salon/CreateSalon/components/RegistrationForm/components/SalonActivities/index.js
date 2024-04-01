@@ -1,9 +1,9 @@
-import styled from "styled-components";
-import { MobileHidden } from "../../../../../../../../styles/common";
-import Button from "../../../../../../../ui/Button";
-import DictionaryField from "../../../../../../../blocks/Form/DictionaryField";
-import { lengthValidate } from "../../../../../../../../utils/validations";
-import { laptopBreakpoint } from "../../../../../../../../../styles/variables";
+import styled from 'styled-components'
+import { MobileHidden } from '../../../../../../../../styles/common'
+import Button from '../../../../../../../ui/Button'
+import DictionaryField from '../../../../../../../blocks/Form/DictionaryField'
+import { lengthValidate } from '../../../../../../../../utils/validations'
+import { laptopBreakpoint } from '../../../../../../../../styles/variables'
 
 const Text = styled.p`
   margin-top: 70px;
@@ -17,7 +17,7 @@ const Text = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 const Title = styled.div`
   display: none;
@@ -27,11 +27,11 @@ const Title = styled.div`
     padding-bottom: 8px;
     border-bottom: 1px solid #e3e3e3;
   }
-`;
+`
 
 const Wrap = styled.div`
   padding-top: 15px;
-`;
+`
 
 const SalonActivities = ({
   serviceCatalog,
@@ -39,7 +39,7 @@ const SalonActivities = ({
   handleClickNextTab,
   number,
 }) => {
-  const { groups: specializations = [] } = serviceCatalog;
+  const { groups: specializations = [] } = serviceCatalog
   return (
     <Wrap ref={ref2} id="vid">
       <Title>Вид деятельности</Title>
@@ -57,9 +57,9 @@ const SalonActivities = ({
       </Text>
       <MobileHidden>
         <Button
-          onClick={(e) => {
-            e.preventDefault();
-            handleClickNextTab(number);
+          onClick={e => {
+            e.preventDefault()
+            handleClickNextTab(number)
           }}
           variant="red"
           size="width374"
@@ -68,7 +68,7 @@ const SalonActivities = ({
         </Button>
       </MobileHidden>
     </Wrap>
-  );
-};
+  )
+}
 
-export default SalonActivities;
+export default SalonActivities

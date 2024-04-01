@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../styles/variables";
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../styles/variables'
 
 export const Choose = styled.p`
   font-weight: 600;
@@ -13,18 +13,17 @@ export const Choose = styled.p`
     color: #f03;
   }
   &:after {
-    content: "";
+    content: '';
     transition: 0.3s;
     position: absolute;
-    background: url("/arrow-back.svg") no-repeat center;
+    background: url('/arrow-back.svg') no-repeat center;
     width: 15px;
     height: 15px;
-    transform: ${(props) =>
-      props.active ? "rotate(270deg)" : "rotate(180deg)"};
+    transform: ${props => (props.active ? 'rotate(270deg)' : 'rotate(180deg)')};
     top: 6px;
     right: 0;
   }
-`;
+`
 
 export const ContentChooseBrand = styled.div`
   max-width: 1440px;
@@ -35,7 +34,7 @@ export const ContentChooseBrand = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     padding: 0 20px 0 20px;
   }
-`;
+`
 
 export const CloseIconWrap = styled.div`
   position: absolute;
@@ -47,11 +46,11 @@ export const CloseIconWrap = styled.div`
     right: 45px;
     top: 17px;
   }
-`;
+`
 
 export const WrapperBrands = styled.div`
   position: absolute;
-  display: ${(props) => (props.active ? "block" : "none")};
+  display: ${props => (props.active ? 'block' : 'none')};
   background: #f8f8f8;
   padding: 35px;
   margin-top: 25px;
@@ -62,7 +61,7 @@ export const WrapperBrands = styled.div`
     background: #fff;
     padding: 0;
     &:before {
-      content: "";
+      content: '';
       position: absolute;
       width: 100%;
       height: 67px;
@@ -73,16 +72,16 @@ export const WrapperBrands = styled.div`
       z-index: 0;
     }
   }
-`;
+`
 
 export const Wrapper = styled.div`
   position: relative;
-`;
+`
 
 export const Content = styled.div`
   display: flex;
   flex-wrap: wrap;
-`;
+`
 
 export const Item = styled.div`
   width: 20%;
@@ -90,7 +89,7 @@ export const Item = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`;
+`
 
 export const Element = styled.div`
   overflow: hidden;
@@ -107,7 +106,7 @@ export const Element = styled.div`
     position: relative;
     z-index: -1;
   }
-`;
+`
 
 export const Title = styled.p`
   font-weight: 600;
@@ -119,4 +118,4 @@ export const Title = styled.p`
     margin-bottom: 20px;
     top: -1px;
   }
-`;
+`

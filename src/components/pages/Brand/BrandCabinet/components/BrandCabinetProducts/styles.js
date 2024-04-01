@@ -1,6 +1,6 @@
-import { Field } from "react-final-form";
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../../styles/variables";
+import { Field } from 'react-final-form'
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../../styles/variables'
 
 export const Title = styled.p`
   font-size: 18px;
@@ -14,7 +14,7 @@ export const Title = styled.p`
     line-height: 25px;
     text-transform: none;
   }
-`;
+`
 
 export const WrapperForm = styled.div`
   width: 100%;
@@ -23,26 +23,26 @@ export const WrapperForm = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     margin-bottom: 85px;
   }
-`;
+`
 
 export const FieldWrap = styled.div`
   margin-bottom: 14px;
-`;
+`
 
 export const PriceWrap = styled.div`
   display: flex;
   justify-content: space-between;
-`;
+`
 
 export const FieldPriceWrap = styled.div`
   width: 49%;
   margin-bottom: 14px;
-`;
+`
 
 export const VideoFieldWrap = styled.div`
   margin-top: 63px;
   margin-bottom: 62px;
-`;
+`
 
 export const FieldTitleStyled = styled.p`
   position: relative;
@@ -53,14 +53,14 @@ export const FieldTitleStyled = styled.p`
   font-size: 18px;
 
   &:after {
-    display: ${({ requiredField }) => (requiredField ? "block" : "none")};
-    content: "";
+    display: ${({ requiredField }) => (requiredField ? 'block' : 'none')};
+    content: '';
     position: absolute;
     top: -3px;
     right: -11px;
     width: 7px;
     height: 7px;
-    background: url("/required-icon.svg") no-repeat center;
+    background: url('/required-icon.svg') no-repeat center;
   }
 
   @media (max-width: ${laptopBreakpoint}) {
@@ -68,20 +68,20 @@ export const FieldTitleStyled = styled.p`
     font-weight: 500;
     line-height: 25px;
   }
-`;
+`
 
 export const FieldStyled = styled(Field)`
   label {
     width: fit-content;
     &:after {
-      display: ${({ requiredField }) => (requiredField ? "block" : "none")};
-      content: "";
+      display: ${({ requiredField }) => (requiredField ? 'block' : 'none')};
+      content: '';
       position: absolute;
       top: -3px;
       right: -11px;
       width: 7px;
       height: 7px;
-      background: url("/required-icon.svg") no-repeat center;
+      background: url('/required-icon.svg') no-repeat center;
     }
   }
-`;
+`

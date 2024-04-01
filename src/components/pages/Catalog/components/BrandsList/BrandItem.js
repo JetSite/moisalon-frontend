@@ -1,11 +1,11 @@
-import { useRouter } from "next/router";
-import Button from "../../../../ui/Button";
-import { MobileVisible, MobileHidden } from "../../../../../styles/common";
-import { BrandWrap, Logo, Image, Price, ButtonStyled } from "./styles";
-import { PHOTO_URL } from "../../../../../../variables";
+import { useRouter } from 'next/router'
+import Button from '../../../../ui/Button'
+import { MobileVisible, MobileHidden } from '../../../../../styles/common'
+import { BrandWrap, Logo, Image, Price, ButtonStyled } from './styles'
+import { PHOTO_URL } from '../../../../../variables'
 
 const BrandItem = ({ brand, filterProduct }) => {
-  const router = useRouter();
+  const router = useRouter()
 
   const clickHandler = () => {
     router.push({
@@ -15,23 +15,20 @@ const BrandItem = ({ brand, filterProduct }) => {
         label: filterProduct?.label,
         brand: brand?.name,
       },
-    });
-  };
+    })
+  }
 
   return (
     <BrandWrap>
       <Logo>
-        <Image
-          alt="logoBrand"
-          src={`${PHOTO_URL}${brand?.logoId}/original`}
-        />
+        <Image alt="logoBrand" src={`${PHOTO_URL}${brand?.logoId}/original`} />
       </Logo>
       {brand?.minimalOrderPrice ? (
         <Price>
-          от{" "}
+          от{' '}
           {Number(
-            brand?.minimalOrderPrice.replace(/\s/g, "")
-          )?.toLocaleString() || 0}{" "}
+            brand?.minimalOrderPrice.replace(/\s/g, ''),
+          )?.toLocaleString() || 0}{' '}
           ₽
         </Price>
       ) : null}
@@ -56,7 +53,7 @@ const BrandItem = ({ brand, filterProduct }) => {
         </ButtonStyled>
       </MobileVisible>
     </BrandWrap>
-  );
-};
+  )
+}
 
-export default BrandItem;
+export default BrandItem

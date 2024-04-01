@@ -19,7 +19,7 @@ import Title from '../Title'
 import { useRouter } from 'next/router'
 import { cyrToTranslit } from '../../../../../../utils/translit'
 import { CityContext } from '../../../../../../searchContext'
-import { PHOTO_URL } from '../../../../../../../variables'
+import { PHOTO_URL } from '../../../../../../variables'
 
 const Header = ({
   brand,

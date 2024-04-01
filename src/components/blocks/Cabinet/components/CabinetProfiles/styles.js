@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../styles/variables";
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../styles/variables'
 
 export const Wrapper = styled.div`
   max-width: 710px;
@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 export const MobileWrapper = styled.div`
   display: none;
@@ -17,7 +17,7 @@ export const MobileWrapper = styled.div`
     display: block;
     width: 100%;
   }
-`;
+`
 
 export const Item = styled.div`
   width: 100%;
@@ -40,19 +40,19 @@ export const Item = styled.div`
     padding: 25px;
     padding-left: 11px;
   }
-`;
+`
 
 export const Container = styled.div`
   display: flex;
   align-items: center;
-`;
+`
 
 export const Content = styled.div`
   margin-left: 41px;
   @media (max-width: ${laptopBreakpoint}) {
     margin-left: 11px;
   }
-`;
+`
 
 export const Name = styled.p`
   font-weight: 600;
@@ -62,7 +62,7 @@ export const Name = styled.p`
     font-size: 16px;
     margin-bottom: 3px;
   }
-`;
+`
 
 export const Type = styled.p`
   font-size: 18px;
@@ -71,13 +71,13 @@ export const Type = styled.p`
     font-size: 11px;
     line-height: 17px;
   }
-`;
+`
 
 export const Avatar = styled.img`
   width: 56px;
   height: 56px;
   border-radius: 100%;
-`;
+`
 
 export const Title = styled.p`
   font-weight: 500;
@@ -90,7 +90,7 @@ export const Title = styled.p`
     margin-bottom: 23px;
     text-transform: none;
   }
-`;
+`
 
 export const SubTitle = styled.p`
   font-weight: 600;
@@ -100,7 +100,7 @@ export const SubTitle = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 export const Button = styled.div`
   cursor: pointer;
@@ -116,7 +116,7 @@ export const Button = styled.div`
   border-radius: 5px;
   margin-top: 80px;
   &:before {
-    content: "";
+    content: '';
     position: absolute;
     width: 29px;
     height: 29px;
@@ -125,9 +125,9 @@ export const Button = styled.div`
     left: 25px;
   }
   &:after {
-    content: "";
+    content: '';
     position: absolute;
-    background: url("/plus-icon.svg") no-repeat center;
+    background: url('/plus-icon.svg') no-repeat center;
     width: 13px;
     height: 13px;
     left: 34px;
@@ -137,7 +137,7 @@ export const Button = styled.div`
     width: 100%;
     font-size: 14px;
     &:before {
-      content: "";
+      content: '';
       position: absolute;
       width: 19px;
       height: 19px;
@@ -146,12 +146,12 @@ export const Button = styled.div`
       left: 25px;
     }
     &:after {
-      content: "";
+      content: '';
       position: absolute;
-      background: url("/plus-icon.svg") no-repeat center;
+      background: url('/plus-icon.svg') no-repeat center;
       width: 9px;
       height: 9px;
       left: 31px;
     }
   }
-`;
+`

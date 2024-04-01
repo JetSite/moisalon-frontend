@@ -1,8 +1,8 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 import {
   laptopBreakpoint,
   tabletBreakpoint,
-} from "../../../../../../styles/variables";
+} from '../../../../../styles/variables'
 
 export const Wrapper = styled.div`
   position: relative;
@@ -15,7 +15,7 @@ export const Wrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     margin-top: 40px;
   }
-`;
+`
 
 export const Content = styled.div`
   padding: 117px 163px 69px 733px;
@@ -29,7 +29,7 @@ export const Content = styled.div`
     padding: 0 20px;
     padding-bottom: 60px;
   }
-`;
+`
 
 export const Text = styled.p`
   font-size: 30px;
@@ -43,7 +43,7 @@ export const Text = styled.p`
     font-size: 24px;
     line-height: 42px;
   }
-`;
+`
 
 export const List = styled.ul`
   margin-top: 74px;
@@ -53,7 +53,7 @@ export const List = styled.ul`
   @media (max-width: ${laptopBreakpoint}) {
     margin-top: 44px;
   }
-`;
+`
 
 export const ListItem = styled.li`
   margin-left: 49px;
@@ -67,7 +67,7 @@ export const ListItem = styled.li`
   }
 
   &:before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: -49px;
@@ -87,13 +87,13 @@ export const ListItem = styled.li`
   @media (max-width: ${laptopBreakpoint}) {
     margin-left: 30px;
   }
-`;
+`
 
 export const ButtonWrap = styled.div`
   margin-left: 12.5px;
   position: relative;
   z-index: 2;
-`;
+`
 
 export const Photo = styled.div`
   width: 721px;
@@ -101,7 +101,7 @@ export const Photo = styled.div`
   position: absolute;
   left: 25px;
   bottom: 0;
-  background: url("/about-woman2.png") no-repeat center;
+  background: url('/about-woman2.png') no-repeat center;
   background-size: cover;
   z-index: 1;
 
@@ -113,7 +113,7 @@ export const Photo = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`;
+`
 
 export const Overlay = styled.div`
   display: none;
@@ -132,7 +132,7 @@ export const Overlay = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     /* display: none; */
   }
-`;
+`
 
 export const Arrow = styled.div`
   width: 242px;
@@ -140,7 +140,7 @@ export const Arrow = styled.div`
   position: absolute;
   left: 419px;
   top: 79px;
-  background: url("/about-arrow-icon.svg") no-repeat center;
+  background: url('/about-arrow-icon.svg') no-repeat center;
   background-size: cover;
   z-index: 1;
 
@@ -158,7 +158,7 @@ export const Arrow = styled.div`
     left: 0px;
     top: 70%;
   }
-`;
+`
 
 export const Romb = styled.div`
   width: 68px;
@@ -166,7 +166,7 @@ export const Romb = styled.div`
   position: absolute;
   left: 95px;
   top: 341px;
-  background: url("/all-romb.svg") no-repeat center;
+  background: url('/all-romb.svg') no-repeat center;
   background-size: contain;
   z-index: 1;
 
@@ -185,4 +185,4 @@ export const Romb = styled.div`
     left: 70%;
     top: 20%;
   }
-`;
+`

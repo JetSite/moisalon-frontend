@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { laptopBreakpoint, red } from "../../../../../../../styles/variables";
+import styled from 'styled-components'
+import { laptopBreakpoint, red } from '../../../../../../styles/variables'
 
 export const ChatBlockWrapper = styled.div`
   display: flex;
@@ -22,7 +22,7 @@ export const ChatBlockWrapper = styled.div`
     padding: 10px;
     /* align-items: center; */
   }
-`;
+`
 
 export const ChatAvatarWrapper = styled.div`
   width: 76px;
@@ -34,7 +34,7 @@ export const ChatAvatarWrapper = styled.div`
     width: 56px;
     height: 56px;
   }
-`;
+`
 
 export const ChatAvatar = styled.img`
   width: 100%;
@@ -42,7 +42,7 @@ export const ChatAvatar = styled.img`
   object-fit: cover;
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const ChatBlockContent = styled.div`
   margin-left: 40px;
@@ -54,7 +54,7 @@ export const ChatBlockContent = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     margin-left: 14px;
   }
-`;
+`
 
 export const ChatBlockName = styled.p`
   font-size: 24px;
@@ -63,7 +63,7 @@ export const ChatBlockName = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     font-size: 14px;
   }
-`;
+`
 
 export const ChatBlockOrigin = styled.a`
   margin-top: 5px;
@@ -75,7 +75,7 @@ export const ChatBlockOrigin = styled.a`
   @media (max-width: ${laptopBreakpoint}) {
     font-size: 14px;
   }
-`;
+`
 
 export const ChatBlockLastMessageTime = styled.span`
   color: #727272;
@@ -85,7 +85,7 @@ export const ChatBlockLastMessageTime = styled.span`
   @media (max-width: ${laptopBreakpoint}) {
     font-size: 10px;
   }
-`;
+`
 
 export const ChatBlockLastMessage = styled.p`
   max-width: 90%;
@@ -101,7 +101,7 @@ export const ChatBlockLastMessage = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     font-size: 14px;
   }
-`;
+`
 
 export const UnreadQuantity = styled.span`
   display: flex;
@@ -120,14 +120,14 @@ export const UnreadQuantity = styled.span`
     flex-shrink: 0;
     align-self: center;
   }
-`;
+`
 
 export const MessageBlockWrapper = styled.div`
   display: flex;
   padding: 20px 20px 0 20px;
   margin-bottom: 10px;
   background: ${({ isRead }) =>
-    isRead ? "transparent" : "rgba(0, 0, 0, 0.1)"};
+    isRead ? 'transparent' : 'rgba(0, 0, 0, 0.1)'};
   transition: background 2s;
 
   @media (max-width: ${laptopBreakpoint}) {
@@ -137,7 +137,7 @@ export const MessageBlockWrapper = styled.div`
     background: #f0f0f0;
     border-radius: 5px;
   }
-`;
+`
 
 export const AvatarBlock = styled.div`
   width: 56px;
@@ -157,7 +157,7 @@ export const AvatarBlock = styled.div`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const AvatarWrapper = styled.div`
   width: 100%;
@@ -167,7 +167,7 @@ export const AvatarWrapper = styled.div`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const Avatar = styled.img`
   width: 100%;
@@ -175,7 +175,7 @@ export const Avatar = styled.img`
   object-fit: cover;
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const Content = styled.div`
   width: 100%;
@@ -189,7 +189,7 @@ export const Content = styled.div`
     flex-direction: column;
     align-items: center;
   }
-`;
+`
 
 export const MobileTopWrapper = styled.div`
   display: none;
@@ -200,7 +200,7 @@ export const MobileTopWrapper = styled.div`
     display: flex;
     align-items: center;
   }
-`;
+`
 
 export const Row = styled.div`
   max-width: 540px;
@@ -209,13 +209,13 @@ export const Row = styled.div`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const ChatRowMessage = styled(Row)`
   @media (max-width: ${laptopBreakpoint}) {
     max-width: 195px;
   }
-`;
+`
 
 export const Name = styled.p`
   font-size: 18px;
@@ -226,7 +226,7 @@ export const Name = styled.p`
     font-size: 14px;
     flex-grow: 1;
   }
-`;
+`
 
 export const Time = styled.p`
   color: #727272;
@@ -236,7 +236,7 @@ export const Time = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     font-size: 10px;
   }
-`;
+`
 
 export const Question = styled.p`
   margin-bottom: 36px;
@@ -250,7 +250,7 @@ export const Question = styled.p`
     font-size: 14px;
     line-height: 25px;
   }
-`;
+`
 
 export const NotAnswered = styled.span`
   display: flex;
@@ -270,7 +270,7 @@ export const NotAnswered = styled.span`
   @media (max-width: ${laptopBreakpoint}) {
     top: 4px;
   }
-`;
+`
 
 export const AnswerInputWrapper = styled.div`
   width: 600px;
@@ -280,7 +280,7 @@ export const AnswerInputWrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     max-width: 528px;
   }
-`;
+`
 
 export const AnswerInput = styled.input`
   width: 100%;
@@ -301,7 +301,7 @@ export const AnswerInput = styled.input`
     height: 39px;
     padding-left: 16px;
   }
-`;
+`
 
 export const AnswerIcon = styled.div`
   width: 24px;
@@ -315,7 +315,7 @@ export const AnswerIcon = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     right: 15px;
   }
-`;
+`
 
 export const Answer = styled.p`
   max-width: 538px;
@@ -332,4 +332,4 @@ export const Answer = styled.p`
     line-height: 25px;
     align-self: flex-start;
   }
-`;
+`

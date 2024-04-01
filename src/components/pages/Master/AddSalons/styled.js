@@ -1,16 +1,16 @@
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../styles/variables";
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../styles/variables'
 
 export const SalonsContent = styled.div`
   margin-top: 40px;
-`;
+`
 
 export const Title = styled.h3`
   margin-bottom: 40px;
   font-size: 16px;
   font-weight: 600;
   line-height: 45px;
-`;
+`
 
 export const ListWrapper = styled.div`
   display: flex;
@@ -24,7 +24,7 @@ export const ListWrapper = styled.div`
     margin-bottom: 30px;
     min-width: 100%;
   }
-`;
+`
 
 export const SalonItemWrapper = styled.div`
   position: relative;
@@ -32,7 +32,7 @@ export const SalonItemWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   cursor: pointer;
-`;
+`
 
 export const SearchListWrapper = styled.div`
   display: flex;
@@ -46,7 +46,7 @@ export const SearchListWrapper = styled.div`
     margin-bottom: 30px;
     min-width: 100%;
   }
-`;
+`
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -60,7 +60,7 @@ export const Wrapper = styled.div`
     flex-direction: column;
     margin-bottom: 22px;
   }
-`;
+`
 
 export const InputWrap = styled.div`
   position: relative;
@@ -69,10 +69,10 @@ export const InputWrap = styled.div`
   margin-right: 22px;
   &:before {
     position: absolute;
-    content: "";
+    content: '';
     left: 20px;
     top: 17px;
-    background: url("/search.svg") no-repeat center;
+    background: url('/search.svg') no-repeat center;
     background-size: cover;
     cursor: pointer;
     width: 20px;
@@ -94,7 +94,7 @@ export const InputWrap = styled.div`
     width: 100%;
     margin-right: 0;
   }
-`;
+`
 
 export const Input = styled.input`
   width: 100%;
@@ -127,10 +127,10 @@ export const Input = styled.input`
     font-weight: 600;
     font-size: 18px;
   }
-`;
+`
 
 export const Published = styled.div`
-  display: ${({ published }) => (published ? "block" : "none")};
+  display: ${({ published }) => (published ? 'block' : 'none')};
   position: absolute;
   top: 0;
   left: 0;
@@ -143,7 +143,7 @@ export const Published = styled.div`
     width: 160px;
     height: 277px;
   }
-`;
+`
 
 export const SalonCardWrapper = styled.div`
   position: relative;
@@ -165,4 +165,4 @@ export const SalonCardWrapper = styled.div`
     width: 160px;
     height: 277px;
   }
-`;
+`

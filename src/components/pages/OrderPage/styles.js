@@ -1,12 +1,12 @@
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../styles/variables";
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../styles/variables'
 
 export const Wrapper = styled.div`
   padding: 0 140px;
   @media (max-width: ${laptopBreakpoint}) {
     padding: 0 20px;
   }
-`;
+`
 
 export const Content = styled.div`
   margin-top: 40px;
@@ -14,7 +14,7 @@ export const Content = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     margin-bottom: 100px;
   }
-`;
+`
 
 export const Title = styled.p`
   font-weight: 600;
@@ -25,7 +25,7 @@ export const Title = styled.p`
     margin-bottom: 40px;
     text-align: center;
   }
-`;
+`
 
 export const Desc = styled.p`
   font-weight: 600;
@@ -35,7 +35,7 @@ export const Desc = styled.p`
     font-size: 16px;
     margin-bottom: 25px;
   }
-`;
+`
 
 export const ContentForm = styled.div`
   display: flex;
@@ -44,7 +44,7 @@ export const ContentForm = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     display: block;
   }
-`;
+`
 
 export const Left = styled.div`
   width: 100%;
@@ -53,7 +53,7 @@ export const Left = styled.div`
     margin-bottom: 60px;
     max-width: 100%;
   }
-`;
+`
 
 export const Right = styled.div`
   width: 100%;
@@ -62,7 +62,7 @@ export const Right = styled.div`
     margin-bottom: 0;
     max-width: 100%;
   }
-`;
+`
 
 export const FieldWrap = styled.div`
   width: 100%;
@@ -70,12 +70,12 @@ export const FieldWrap = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     margin-bottom: 25px;
   }
-`;
+`
 
 export const ShipingWrap = styled.div`
   display: flex;
   margin-bottom: 50px;
-`;
+`
 
 export const RadioWrap = styled.div`
   display: flex;
@@ -83,14 +83,14 @@ export const RadioWrap = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     flex-wrap: wrap;
   }
-`;
+`
 
 export const ShipingItem = styled.div`
   width: 173px;
-  border: ${(props) => (props.active ? "1px solid #f03" : "1px solid #000000")};
+  border: ${props => (props.active ? '1px solid #f03' : '1px solid #000000')};
   border-radius: 50px;
-  background: ${(props) => (props.active ? "#f03" : "#fff")};
-  color: ${(props) => (props.active ? "#fff" : "#000")};
+  background: ${props => (props.active ? '#f03' : '#fff')};
+  color: ${props => (props.active ? '#fff' : '#000')};
   font-weight: 500;
   font-size: 14px;
   height: 35px;
@@ -102,17 +102,17 @@ export const ShipingItem = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     margin-bottom: 15px;
   }
-`;
+`
 
 export const RadioItem = styled(ShipingItem)`
   width: 217px;
-`;
+`
 
 export const TextAreaWrap = styled.div`
   width: 100%;
   max-width: 472px;
   margin-bottom: 53px;
-`;
+`
 
 export const SuccessWrapper = styled.div`
   display: flex;
@@ -120,7 +120,7 @@ export const SuccessWrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     display: block;
   }
-`;
+`
 
 export const SuccessRight = styled.div`
   max-width: 453px;
@@ -128,7 +128,7 @@ export const SuccessRight = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     max-width: 100%;
   }
-`;
+`
 
 export const SuccessLeft = styled.div`
   max-width: 453px;
@@ -136,7 +136,7 @@ export const SuccessLeft = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     max-width: 100%;
   }
-`;
+`
 
 export const Text = styled.p`
   font-size: 18px;
@@ -146,11 +146,11 @@ export const Text = styled.p`
     font-size: 14px;
     line-height: 25px;
   }
-`;
+`
 
 export const ContentWrap = styled.div`
   margin-bottom: 40px;
-`;
+`
 
 export const ItemChecked = styled.div`
   padding-bottom: 37px;
@@ -160,7 +160,7 @@ export const ItemChecked = styled.div`
   &:last-child {
     border-bottom: none;
   }
-`;
+`
 
 export const Image = styled.div`
   border: 1px solid #ededed;
@@ -177,20 +177,20 @@ export const Image = styled.div`
     height: 90%;
     object-fit: contain;
   }
-`;
+`
 
 export const ItemCheckedRight = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-`;
+`
 
 export const Bottom = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
   margin-top: 10px;
-`;
+`
 
 export const Name = styled.p`
   font-size: 14px;
@@ -199,18 +199,18 @@ export const Name = styled.p`
     font-size: 12px;
     line-height: 18px;
   }
-`;
+`
 
 export const Price = styled.p`
   font-size: 14px;
   line-height: 20px;
   color: #ff0033;
   font-weight: 600;
-`;
+`
 
 export const Quantity = styled.p`
   font-size: 10px;
-`;
+`
 
 export const Total = styled.div`
   display: flex;
@@ -218,17 +218,17 @@ export const Total = styled.div`
   align-items: center;
   margin-bottom: 40px;
   margin-top: 78px;
-`;
+`
 export const TextSumm = styled.p`
   font-weight: 600;
   font-size: 18px;
   line-height: 20px;
-`;
+`
 export const TextTotal = styled.p`
   font-weight: 600;
   font-size: 20px;
   line-height: 25px;
-`;
+`
 
 export const ButtonWrap = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
@@ -237,15 +237,15 @@ export const ButtonWrap = styled.div`
       padding: 0;
     }
   }
-`;
+`
 
 export const BrandsAddresses = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const BrandsAddressWrap = styled.div`
   margin-bottom: 20px;
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`

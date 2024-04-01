@@ -1,14 +1,14 @@
-import React from "react";
-import { Dialog, DialogContent } from "@material-ui/core";
-import { Field } from "react-final-form";
-import AutoFocusedForm from "../../../blocks/Form/AutoFocusedForm";
-import TextField from "../../../blocks/Form/TextField";
-import { FormField } from "../../../../styles/common";
-import { required } from "../../../../utils/validations";
-import { FieldStyled } from "../../../pages/Salon/CreateSalon/components/RegistrationForm/styled";
-import Button from "../../../ui/Button";
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../styles/variables";
+import React from 'react'
+import { Dialog, DialogContent } from '@material-ui/core'
+import { Field } from 'react-final-form'
+import AutoFocusedForm from '../../../blocks/Form/AutoFocusedForm'
+import TextField from '../../../blocks/Form/TextField'
+import { FormField } from '../../../../styles/common'
+import { required } from '../../../../utils/validations'
+import { FieldStyled } from '../../../pages/Salon/CreateSalon/components/RegistrationForm/styled'
+import Button from '../../../ui/Button'
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../styles/variables'
 
 const Title = styled.h3`
   font-weight: 600;
@@ -20,7 +20,7 @@ const Title = styled.h3`
     font-size: 16px;
     line-height: 28px;
   }
-`;
+`
 
 const ButtonsWrap = styled.div`
   width: 100%;
@@ -30,7 +30,7 @@ const ButtonsWrap = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 const MobileButtonsWrap = styled.div`
   display: none;
@@ -41,13 +41,13 @@ const MobileButtonsWrap = styled.div`
     width: 100%;
     height: 130px;
   }
-`;
+`
 
 const ButtonStyled = styled(Button)`
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`;
+`
 
 const MessageField = styled(Field)`
   textarea {
@@ -63,7 +63,7 @@ const MessageField = styled(Field)`
       background-color: #c7c7c7;
     }
   }
-`;
+`
 
 const NewMessagePopup = ({
   me,
@@ -79,14 +79,14 @@ const NewMessagePopup = ({
         onClose={() => setChatMessagePopup(false)}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
-        style={{ maxHeight: "auto" }}
+        style={{ maxHeight: 'auto' }}
         fullWidth
       >
-        <DialogContent style={{ padding: "40px 30px" }}>
+        <DialogContent style={{ padding: '40px 30px' }}>
           <Title>{title}</Title>
           <AutoFocusedForm
             initialValues={{
-              name: me?.info?.displayName || "",
+              name: me?.info?.displayName || '',
             }}
             onSubmit={onSubmit}
             render={({ handleSubmit, form }) => {
@@ -141,13 +141,13 @@ const NewMessagePopup = ({
                     </MobileButtonsWrap>
                   </form>
                 </>
-              );
+              )
             }}
           />
         </DialogContent>
       </Dialog>
     </div>
-  );
-};
+  )
+}
 
-export default NewMessagePopup;
+export default NewMessagePopup

@@ -1,4 +1,4 @@
-import { MobileVisible, MobileHidden } from "../../../../../styles/common";
+import { MobileVisible, MobileHidden } from '../../../../../styles/common'
 import {
   AdvItem,
   AdvImage,
@@ -6,8 +6,8 @@ import {
   AdvDescription,
   AdvShortDescription,
   ReadMore,
-} from "../../styles";
-import { PHOTO_URL } from "../../../../../../variables";
+} from '../../styles'
+import { PHOTO_URL } from '../../../../../variables'
 
 const AdviceItem = ({
   item,
@@ -30,13 +30,13 @@ const AdviceItem = ({
   // };
 
   const clickHandler = () => {
-    if (adviceClicked.length > 0) return;
-    setCategoryClicked(item.categoryId);
-    setAdviceClicked(item.id);
-    window.scrollTo({ top: 0 });
-  };
+    if (adviceClicked.length > 0) return
+    setCategoryClicked(item.categoryId)
+    setAdviceClicked(item.id)
+    window.scrollTo({ top: 0 })
+  }
 
-  const photoUrl = `${PHOTO_URL}${item?.photoId}/original`;
+  const photoUrl = `${PHOTO_URL}${item?.photoId}/original`
 
   return (
     <AdvItem onClick={clickHandler} opened={adviceClicked.length > 0}>
@@ -60,7 +60,7 @@ const AdviceItem = ({
         </AdvShortDescription>
       )}
     </AdvItem>
-  );
-};
+  )
+}
 
-export default AdviceItem;
+export default AdviceItem

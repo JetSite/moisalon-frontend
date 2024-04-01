@@ -19,7 +19,7 @@ import {
   SocialOk,
   Count,
 } from './styled'
-import RatingEdit from '../../../../../ui/RatingEdit'
+import RatingEdit from '../../../../../ui/RatingEdit/index.tsx'
 import {
   favoritesInStorage,
   inStorage,

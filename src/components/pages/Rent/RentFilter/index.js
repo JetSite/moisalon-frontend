@@ -1,15 +1,15 @@
-import { useContext } from "react";
-import { Field } from "react-final-form";
-import styled from "styled-components";
-import Collapse from "@material-ui/core/Collapse";
-import AutoFocusedForm from "../../../blocks/Form/AutoFocusedForm";
-import TextField from "../../../blocks/Form/TextField";
-import SelectField from "../../../blocks/Form/SelectField";
-import Button from "../../../ui/Button";
-import { CatalogsContext } from "../../../../searchContext";
-import catalogOrDefault from "../../../../utils/catalogOrDefault";
-import scrollIntoView from "scroll-into-view";
-import { laptopBreakpoint } from "../../../../../styles/variables";
+import { useContext } from 'react'
+import { Field } from 'react-final-form'
+import styled from 'styled-components'
+import Collapse from '@material-ui/core/Collapse'
+import AutoFocusedForm from '../../../blocks/Form/AutoFocusedForm'
+import TextField from '../../../blocks/Form/TextField'
+import SelectField from '../../../blocks/Form/SelectField'
+import Button from '../../../ui/Button'
+import { CatalogsContext } from '../../../../searchContext'
+import catalogOrDefault from '../../../../utils/catalogOrDefault'
+import scrollIntoView from 'scroll-into-view'
+import { laptopBreakpoint } from '../../../../styles/variables'
 
 const Checkbox = styled.input`
   position: absolute;
@@ -21,7 +21,7 @@ const Checkbox = styled.input`
     user-select: none;
   }
   & + label::before {
-    content: "";
+    content: '';
     display: inline-block;
     width: 16px;
     height: 16px;
@@ -30,10 +30,10 @@ const Checkbox = styled.input`
     border: 1px solid #797979;
     margin-right: 14px;
     cursor: pointer;
-    background: ${(props) =>
-      props.checked ? `url("/icon-check.svg") no-repeat center` : ""};
+    background: ${props =>
+      props.checked ? `url("/icon-check.svg") no-repeat center` : ''};
   }
-`;
+`
 
 const Checkmark = styled.span`
   position: absolute;
@@ -43,7 +43,7 @@ const Checkmark = styled.span`
   width: 16px;
   border: 2px solid #e3e3e3;
   border-radius: 100%;
-`;
+`
 
 const Radio = styled.input`
   position: absolute;
@@ -56,13 +56,13 @@ const Radio = styled.input`
       width: 12px;
       height: 12px;
       background: #000;
-      content: "";
+      content: '';
       border-radius: 100%;
       top: 1px;
       left: 1px;
     }
   }
-`;
+`
 
 const Container = styled.label`
   display: block;
@@ -75,7 +75,7 @@ const Container = styled.label`
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-`;
+`
 
 const Label = styled.label`
   font-size: 1.6rem;
@@ -88,15 +88,15 @@ const Label = styled.label`
     font-weight: 500;
     line-height: 16px;
   }
-`;
+`
 
 const Wrapper = styled.div`
   margin-bottom: 15px;
-`;
+`
 
 const Content = styled.div`
   margin-top: 15px;
-`;
+`
 
 const CategoryWrap = styled.div`
   margin-left: 14px;
@@ -104,13 +104,13 @@ const CategoryWrap = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     margin: 0;
   }
-`;
+`
 
 const ContentWrap = styled.div`
   padding-bottom: 32px;
   border-bottom: 1px solid #000000;
   margin-bottom: 32px;
-`;
+`
 
 const PriceWrap = styled.div`
   display: flex;
@@ -119,7 +119,7 @@ const PriceWrap = styled.div`
     flex-direction: column;
     width: 100%;
   }
-`;
+`
 
 const BlockTitle = styled.p`
   font-weight: 600;
@@ -130,26 +130,26 @@ const BlockTitle = styled.p`
     margin: 0;
     margin-bottom: 20px;
   }
-`;
+`
 
 const SelectWrap = styled.div`
   display: flex;
   width: 100px;
-`;
+`
 
 const LeftGroup = styled.div`
   margin-right: 170px;
   @media (max-width: ${laptopBreakpoint}) {
     margin: 0;
   }
-`;
+`
 
 const More = styled.p`
   cursor: pointer;
   color: #f03;
   border-bottom: 1px dotted #f03;
   display: inline;
-`;
+`
 
 const Block = styled.div`
   display: flex;
@@ -159,12 +159,12 @@ const Block = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     flex-direction: column;
   }
-`;
+`
 
 const PriceFields = styled.div`
   display: flex;
   flex-direction: column;
-`;
+`
 
 const WrapButton = styled.div`
   margin-bottom: 32px;
@@ -174,14 +174,14 @@ const WrapButton = styled.div`
     margin-bottom: 16px;
     width: 100%;
   }
-`;
+`
 
 const ButtonsWrap = styled.div`
   display: flex;
   @media (max-width: ${laptopBreakpoint}) {
     flex-direction: column;
   }
-`;
+`
 
 const LeftPriceFields = styled(PriceFields)`
   margin-right: 118px;
@@ -189,18 +189,18 @@ const LeftPriceFields = styled(PriceFields)`
   @media (max-width: ${laptopBreakpoint}) {
     margin: 0;
   }
-`;
+`
 
-const onUpdate = (handler) => (event) => {
-  const value = event.target.value;
-  if (value === "") {
-    handler(null);
-  } else if (value === "1") {
-    handler(true);
+const onUpdate = handler => event => {
+  const value = event.target.value
+  if (value === '') {
+    handler(null)
+  } else if (value === '1') {
+    handler(true)
   } else {
-    handler(false);
+    handler(false)
   }
-};
+}
 
 const RadioCustom = ({ input, children }) => {
   return (
@@ -211,8 +211,8 @@ const RadioCustom = ({ input, children }) => {
         <Checkmark />
       </Container>
     </>
-  );
-};
+  )
+}
 
 export const CheckBoxCustom = ({ input, label }) => {
   return (
@@ -220,20 +220,20 @@ export const CheckBoxCustom = ({ input, label }) => {
       <Checkbox {...input} id={input?.name} />
       <Label for={input?.name}>{label}</Label>
     </>
-  );
-};
+  )
+}
 
 const RentFilter = ({ setFilterOpen, filterOpen, filters, setFilters }) => {
-  const catalogs = useContext(CatalogsContext);
+  const catalogs = useContext(CatalogsContext)
   const salonActivitiesCatalog = catalogOrDefault(
-    catalogs?.salonActivitiesCatalog
-  );
+    catalogs?.salonActivitiesCatalog,
+  )
 
-  const categoryList = salonActivitiesCatalog?.groups?.map((item) => {
-    return { value: item.id, label: item.title };
-  });
+  const categoryList = salonActivitiesCatalog?.groups?.map(item => {
+    return { value: item.id, label: item.title }
+  })
 
-  const onSubmit = (values) => {
+  const onSubmit = values => {
     const result = {
       ...values,
       activities: values?.activities?.length ? [values?.activities] : [],
@@ -243,10 +243,10 @@ const RentFilter = ({ setFilterOpen, filterOpen, filters, setFilters }) => {
             type: values?.pricing?.type,
           }
         : null,
-    };
-    setFilters(result);
-    setFilterOpen(false);
-    const element = document.getElementById("result");
+    }
+    setFilters(result)
+    setFilterOpen(false)
+    const element = document.getElementById('result')
     if (element) {
       scrollIntoView(element, {
         time: 500,
@@ -254,14 +254,14 @@ const RentFilter = ({ setFilterOpen, filterOpen, filters, setFilters }) => {
           top: 0,
           topOffset: 0,
         },
-      });
+      })
     }
-  };
+  }
 
   return (
     <Wrapper>
       <More onClick={() => setFilterOpen(!filterOpen)}>
-        {!filterOpen ? "Больше параметров" : "Меньше параметров"}
+        {!filterOpen ? 'Больше параметров' : 'Меньше параметров'}
       </More>
       <Collapse in={filterOpen}>
         <Content>
@@ -270,7 +270,7 @@ const RentFilter = ({ setFilterOpen, filterOpen, filters, setFilters }) => {
               ...filters,
               pricing: {
                 price: filters?.pricing?.price,
-                type: filters?.pricing?.type || "HOUR",
+                type: filters?.pricing?.type || 'HOUR',
               },
               activities: filters?.activities[0],
               paymentMethods: {
@@ -300,11 +300,11 @@ const RentFilter = ({ setFilterOpen, filterOpen, filters, setFilters }) => {
                           name="pricing.type"
                           component={SelectField}
                           options={[
-                            { value: "HOUR", label: "₽ / ч." },
-                            { value: "DAY", label: "₽ / д." },
-                            { value: "WEEK", label: "₽ / н." },
-                            { value: "MONTH", label: "₽ / м." },
-                            { value: "YEAR", label: "₽ / г." },
+                            { value: 'HOUR', label: '₽ / ч.' },
+                            { value: 'DAY', label: '₽ / д.' },
+                            { value: 'WEEK', label: '₽ / н.' },
+                            { value: 'MONTH', label: '₽ / м.' },
+                            { value: 'YEAR', label: '₽ / г.' },
                           ]}
                         />
                       </SelectWrap>
@@ -418,7 +418,7 @@ const RentFilter = ({ setFilterOpen, filterOpen, filters, setFilters }) => {
                   <ButtonsWrap>
                     <WrapButton>
                       <Button
-                        style={{ width: " 100%" }}
+                        style={{ width: ' 100%' }}
                         variant="red"
                         size="noWidth"
                         type="submit"
@@ -428,8 +428,8 @@ const RentFilter = ({ setFilterOpen, filterOpen, filters, setFilters }) => {
                     </WrapButton>
                     <Button
                       onClick={() => {
-                        setFilters(null);
-                        setFilterOpen(false);
+                        setFilters(null)
+                        setFilterOpen(false)
                       }}
                       variant="withBorder"
                       size="noWidth"
@@ -438,13 +438,13 @@ const RentFilter = ({ setFilterOpen, filterOpen, filters, setFilters }) => {
                     </Button>
                   </ButtonsWrap>
                 </form>
-              );
+              )
             }}
           />
         </Content>
       </Collapse>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default RentFilter;
+export default RentFilter

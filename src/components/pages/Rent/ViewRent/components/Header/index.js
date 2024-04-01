@@ -1,5 +1,5 @@
-import { MainContainer } from "../../../../../../styles/common";
-import { useMutation } from "@apollo/client";
+import { MainContainer } from '../../../../../../styles/common'
+import { useMutation } from '@apollo/client'
 import {
   Wrapper,
   Content,
@@ -30,28 +30,28 @@ import {
   Rating,
   Count,
   EditButtonsWrapper,
-} from "./styles";
-import BackButton from "../../../../../ui/BackButton";
-import { cyrToTranslit } from "../../../../../../utils/translit";
-import { pluralize } from "../../../../../../utils/pluralize";
+} from './styles'
+import BackButton from '../../../../../ui/BackButton'
+import { cyrToTranslit } from '../../../../../../utils/translit'
+import { pluralize } from '../../../../../../utils/pluralize'
 import {
   urlPatternHttps,
   urlPatternHttp,
-} from "../../../../../../utils/checkUrls";
-import { useContext } from "react";
-import { CityContext } from "../../../../../../searchContext";
-import StarIcon from "../../../../../pages/MainPage/components/Header/icons/StarIcon";
-import scrollIntoView from "scroll-into-view";
-import Schedule from "../../../../../ui/Shedule";
-import { useRouter } from "next/router";
+} from '../../../../../../utils/checkUrls'
+import { useContext } from 'react'
+import { CityContext } from '../../../../../../searchContext'
+import StarIcon from '../../../../../pages/MainPage/components/Header/icons/StarIcon'
+import scrollIntoView from 'scroll-into-view'
+import Schedule from '../../../../../ui/Shedule'
+import { useRouter } from 'next/router'
 import {
   TGIcon,
   VBIcon,
   WSIcon,
-} from "../../../../Master/ViewMaster/components/Contacts/styled";
-import { createScopesSalon } from "../../../../../../_graphql-legacy/salon/createScopesSalon";
-import RatingEdit from "../../../../../ui/RatingEdit";
-import { numberForSocials } from "../../../../../../utils/formatNumber";
+} from '../../../../Master/ViewMaster/components/Contacts/styled'
+import { createScopesSalon } from '../../../../../../_graphql-legacy/salon/createScopesSalon'
+import RatingEdit from '../../../../../ui/RatingEdit/index.tsx'
+import { numberForSocials } from '../../../../../../utils/formatNumber'
 
 const Header = ({
   me,
@@ -64,10 +64,10 @@ const Header = ({
   refetchSalon,
   refetchScore,
 }) => {
-  const router = useRouter();
+  const router = useRouter()
   const handleAnchorClick = () => {
-    setActiveTab(4);
-    const element = document.getElementById("reviews");
+    setActiveTab(4)
+    const element = document.getElementById('reviews')
     if (element) {
       scrollIntoView(element, {
         time: 500,
@@ -75,33 +75,33 @@ const Header = ({
           top: 0,
           topOffset: 100,
         },
-      });
+      })
     }
-  };
+  }
 
   const [createScore] = useMutation(createScopesSalon, {
     onCompleted: () => {
-      refetchSalon();
-      refetchScore();
+      refetchSalon()
+      refetchScore()
     },
-  });
-  const handleChangeRating = (num) => {
-    if (scoreSalonCount || loadingScore) return;
+  })
+  const handleChangeRating = num => {
+    if (scoreSalonCount || loadingScore) return
     createScore({
       variables: {
         value: num,
         salonId: salon.id,
       },
-    });
-  };
+    })
+  }
 
-  const [city] = useContext(CityContext);
+  const [city] = useContext(CityContext)
   return (
     <MainContainer>
       <Wrapper>
         <BackButton
           type="Аренда"
-          link={isOwner ? "/masterCabinet" : `/${cyrToTranslit(city)}/rent`}
+          link={isOwner ? '/masterCabinet' : `/${cyrToTranslit(city)}/rent`}
           name={salon.name}
         />
         <Content>
@@ -143,10 +143,10 @@ const Header = ({
                       <a
                         href={
                           urlPatternHttps.test(
-                            salon?.socialNetworkUrls?.vKontakte
+                            salon?.socialNetworkUrls?.vKontakte,
                           ) ||
                           urlPatternHttp.test(
-                            salon?.socialNetworkUrls?.vKontakte
+                            salon?.socialNetworkUrls?.vKontakte,
                           )
                             ? salon?.socialNetworkUrls?.vKontakte
                             : `https://${salon?.socialNetworkUrls?.vKontakte}`
@@ -162,18 +162,18 @@ const Header = ({
               </SalonInfoRight>
             </SalonInfo>
             <ReviewsScore onClick={() => handleAnchorClick()}>
-              <div style={{ position: "relative", top: 1 }}>
+              <div style={{ position: 'relative', top: 1 }}>
                 <StarIcon />
               </div>
               <CountReviews>{`${dataReviews?.length} ${pluralize(
                 dataReviews?.length || 0,
-                "Отзыв",
-                "Отзыва",
-                "Отзывов"
+                'Отзыв',
+                'Отзыва',
+                'Отзывов',
               )}`}</CountReviews>
             </ReviewsScore>
             <City>
-              <div style={{ position: "relative", top: 3 }}>
+              <div style={{ position: 'relative', top: 3 }}>
                 <Icon src="/icon-city.svg" />
               </div>
               <CityText>{salon?.address?.full}</CityText>
@@ -182,7 +182,7 @@ const Header = ({
               <Phones>
                 {salon?.phones?.map((item, i) => (
                   <PhoneWrap key={i}>
-                    <div style={{ position: "relative", top: -4 }}>
+                    <div style={{ position: 'relative', top: -4 }}>
                       <Icon src="/header-phone-icon.svg" />
                     </div>
                     <Phone href={`tel:${item?.phoneNumber}`}>
@@ -200,7 +200,7 @@ const Header = ({
                   <noindex>
                     <a
                       href={`https://tlgg.ru/${numberForSocials(
-                        salon?.phones[0]?.phoneNumber
+                        salon?.phones[0]?.phoneNumber,
                       )}`}
                       target="_blank"
                       rel="noreferrer nofollow"
@@ -215,7 +215,7 @@ const Header = ({
                       target="_blank"
                       rel="noreferrer nofollow"
                       href={`https://api.whatsapp.com/send?phone=${numberForSocials(
-                        salon?.phones[0]?.phoneNumber
+                        salon?.phones[0]?.phoneNumber,
                       )}`}
                     >
                       <WSIcon />
@@ -228,7 +228,7 @@ const Header = ({
                       target="_blank"
                       rel="noreferrer nofollow"
                       href={`viber://chat?number=%2B${numberForSocials(
-                        salon?.phones[0]?.phoneNumber
+                        salon?.phones[0]?.phoneNumber,
                       )}`}
                     >
                       <VBIcon />
@@ -295,10 +295,10 @@ const Header = ({
               onClick={() =>
                 router.push(
                   {
-                    pathname: "/createLessorSalon",
+                    pathname: '/createLessorSalon',
                     query: { id: salon?.id },
                   },
-                  "/createLessorSalon"
+                  '/createLessorSalon',
                 )
               }
             >
@@ -308,10 +308,10 @@ const Header = ({
               onClick={() =>
                 router.push(
                   {
-                    pathname: "/rentSalonSeat",
+                    pathname: '/rentSalonSeat',
                     query: { id: salon?.id },
                   },
-                  "/rentSalonSeat"
+                  '/rentSalonSeat',
                 )
               }
             >
@@ -321,7 +321,7 @@ const Header = ({
         ) : null}
       </Wrapper>
     </MainContainer>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

@@ -98,6 +98,12 @@ export default function AppContent({
   //   }
   // }, []);
 
+  // const { data } = useQuery(getMaster, {
+  //   variables: { id: 1 },
+  // })
+
+  // console.log(data)
+
   return (
     <>
       {/* <Head>
@@ -181,12 +187,15 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
   //   };
   // }
 
-  debugger
+  const normalisedBeautyCategories = flattenStrapiResponse(
+    data[0]?.data?.feedCategories,
+  )
+  const normalisedBeautyAllContent = flattenStrapiResponse(data[1]?.data?.feeds)
 
   return addApolloState(apolloClient, {
     props: {
-      beautyCategories: data[0]?.data?.feedCategories,
-      beautyAllContent: data[1]?.data?.feeds,
+      beautyCategories: normalisedBeautyCategories,
+      beautyAllContent: normalisedBeautyAllContent,
       bannerHooks: data[2]?.data?.bannerHooks,
       totalSalons: data[3]?.data?.salons?.meta?.pagination?.total,
       totalMasters: data[4]?.data?.masters?.meta?.pagination?.total,

@@ -1,15 +1,15 @@
-import { useContext } from "react";
-import { useRouter } from "next/router";
-import Link from "next/link";
-import SearchBlock from "../../blocks/SearchBlock";
-import BackButton from "../../ui/BackButton";
-import Ribbon from "../../pages/MainPage/components/Ribbon";
-import Button from "../../ui/Button";
+import { useContext } from 'react'
+import { useRouter } from 'next/router'
+import Link from 'next/link'
+import SearchBlock from '../../blocks/SearchBlock'
+import BackButton from '../../ui/BackButton'
+import Ribbon from '../../pages/MainPage/components/Ribbon'
+import Button from '../../ui/Button'
 import {
   MainContainer,
   MobileHidden,
   MobileVisible,
-} from "../../../styles/common";
+} from '../../../styles/common'
 import {
   Wrapper,
   Content,
@@ -25,50 +25,50 @@ import {
   Promo,
   VacancyInfo,
   VacancyConditions,
-} from "./styles";
-import moment from "moment";
-import "moment/locale/ru";
-import { cyrToTranslit } from "../../../utils/translit";
-import { CityContext } from "../../../searchContext";
-import MainLayout from "../../../layouts/MainLayout";
-import { PHOTO_URL } from "../../../../variables";
+} from './styles'
+import moment from 'moment'
+import 'moment/locale/ru'
+import { cyrToTranslit } from '../../../utils/translit'
+import { CityContext } from '../../../searchContext'
+import MainLayout from '../../../layouts/MainLayout'
+import { PHOTO_URL } from '../../../variables'
 
 const VacancyPage = ({ vacancy, beautyCategories, beautyAllContent }) => {
-  const router = useRouter();
-  const [city] = useContext(CityContext);
+  const router = useRouter()
+  const [city] = useContext(CityContext)
 
-  const originInfo = (item) => {
+  const originInfo = item => {
     switch (item?.origin) {
-      case "MASTER":
+      case 'MASTER':
         return {
-          originType: "Мастер",
+          originType: 'Мастер',
           originName: item.masterOrigin?.name,
           customTitle: `у мастера ${item.masterOrigin?.name}`,
-          buttonLink: "master",
+          buttonLink: 'master',
           originLink: `/master/${item.originId}`,
-        };
-      case "SALON":
+        }
+      case 'SALON':
         return {
-          originType: "Салон",
+          originType: 'Салон',
           originName: item.salonOrigin?.name,
           customTitle: `в салоне ${item.salonOrigin?.name}`,
-          buttonLink: "salon",
+          buttonLink: 'salon',
           originLink: `/${cyrToTranslit(
-            item?.salonOrigin?.address?.city || city
+            item?.salonOrigin?.address?.city || city,
           )}/salon/${item?.originId}`,
-        };
-      case "BRAND":
+        }
+      case 'BRAND':
         return {
-          originType: "Бренд",
+          originType: 'Бренд',
           originName: item.brandOrigin?.name,
           customTitle: `у бренда ${item.brandOrigin?.name}`,
-          buttonLink: "brand",
+          buttonLink: 'brand',
           originLink: `/${cyrToTranslit(
-            item?.brandOrigin?.addressFull?.city || city
+            item?.brandOrigin?.addressFull?.city || city,
           )}/brand/${item?.originId}`,
-        };
+        }
     }
-  };
+  }
 
   return (
     <MainLayout>
@@ -78,7 +78,7 @@ const VacancyPage = ({ vacancy, beautyCategories, beautyAllContent }) => {
           <BackButton
             type="Все вакансии"
             name={originInfo(vacancy).originName}
-            link={"/vacancies"}
+            link={'/vacancies'}
           />
           <Content>
             <Left>
@@ -97,7 +97,7 @@ const VacancyPage = ({ vacancy, beautyCategories, beautyAllContent }) => {
                 </Title>
                 <Link href={originInfo(vacancy).originLink} passHref>
                   <Subtitle>
-                    {originInfo(vacancy).originType}{" "}
+                    {originInfo(vacancy).originType}{' '}
                     {originInfo(vacancy).originName}
                   </Subtitle>
                 </Link>
@@ -105,7 +105,7 @@ const VacancyPage = ({ vacancy, beautyCategories, beautyAllContent }) => {
               <MobileVisible>
                 <Link href={originInfo(vacancy).originLink} passHref>
                   <Subtitle>
-                    {originInfo(vacancy).originType}{" "}
+                    {originInfo(vacancy).originType}{' '}
                     {originInfo(vacancy).originName}
                   </Subtitle>
                 </Link>
@@ -115,7 +115,7 @@ const VacancyPage = ({ vacancy, beautyCategories, beautyAllContent }) => {
                 <DateWrap>
                   <Date>
                     Дата публикации:&nbsp;
-                    {moment(vacancy.dateStart).format("DD MMMM YYYY")}
+                    {moment(vacancy.dateStart).format('DD MMMM YYYY')}
                   </Date>
                   {/* <Date>
                     Дата окончания:&nbsp;
@@ -182,7 +182,7 @@ const VacancyPage = ({ vacancy, beautyCategories, beautyAllContent }) => {
         beautyAllContent={beautyAllContent}
       />
     </MainLayout>
-  );
-};
+  )
+}
 
-export default VacancyPage;
+export default VacancyPage

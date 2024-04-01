@@ -4,6 +4,15 @@ const salonBrandsFragment = `
       id
       attributes {
         brandName
+        city {
+          data {
+            id
+            attributes {
+              cityName
+              citySlug
+            }
+          }
+        }
         brandLogo {
           data {
             id
@@ -19,6 +28,6 @@ const salonBrandsFragment = `
       }
     }
   }
-`;
+`
 
-export default salonBrandsFragment;
+export default salonBrandsFragment

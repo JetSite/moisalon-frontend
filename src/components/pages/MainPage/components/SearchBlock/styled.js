@@ -1,8 +1,8 @@
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../styles/variables";
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../styles/variables'
 
 export const Wrapper = styled.div`
-  background: url("/main-search-bg.jpg") no-repeat center;
+  background: url('/main-search-bg.jpg') no-repeat center;
   background-size: cover;
   min-height: 523px;
   display: flex;
@@ -12,8 +12,8 @@ export const Wrapper = styled.div`
 
   @media (max-width: ${laptopBreakpoint}) {
     min-height: 100px;
-    display: ${({ showSearchPopup }) => (showSearchPopup ? "block" : "none")};
+    display: ${({ showSearchPopup }) => (showSearchPopup ? 'block' : 'none')};
     padding: 0 20px;
     background: #fff;
   }
-`;
+`

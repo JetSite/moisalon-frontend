@@ -32,7 +32,7 @@ import { CityContext, MeContext } from '../../../searchContext'
 import { cyrToTranslit } from '../../../utils/translit'
 import { useQuery } from '@apollo/client'
 import { currentUserSalonsAndMasterQuery } from '../../../_graphql-legacy/master/currentUserSalonsAndMasterQuery'
-import { PHOTO_URL } from '../../../../variables'
+import { PHOTO_URL } from '../../../variables'
 
 const HamburgerMenu = ({
   showHamburgerMenu,

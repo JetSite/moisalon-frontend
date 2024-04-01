@@ -1,18 +1,18 @@
-import { Field } from "react-final-form";
-import { PhoneField, TextField } from "../../../../../../../blocks/Form";
-import Group from "../../../../../../../blocks/Form/Group";
-import WorkingTimeArrayField from "../../../../../../../blocks/Form/WorkingTimeField/WorkingTimeArrayField";
-import styled from "styled-components";
-import { MobileHidden } from "../../../../../../../../styles/common";
-import Button from "../../../../../../../ui/Button";
-import { laptopBreakpoint } from "../../../../../../../../../styles/variables";
-import { email } from "../../../../../../../../utils/validations";
+import { Field } from 'react-final-form'
+import { PhoneField, TextField } from '../../../../../../../blocks/Form'
+import Group from '../../../../../../../blocks/Form/Group'
+import WorkingTimeArrayField from '../../../../../../../blocks/Form/WorkingTimeField/WorkingTimeArrayField'
+import styled from 'styled-components'
+import { MobileHidden } from '../../../../../../../../styles/common'
+import Button from '../../../../../../../ui/Button'
+import { laptopBreakpoint } from '../../../../../../../../styles/variables'
+import { email } from '../../../../../../../../utils/validations'
 
 const Wrapper = styled.div`
   width: 100%;
   margin-top: 91px;
   padding-top: 15px;
-`;
+`
 
 const Title = styled.div`
   display: none;
@@ -25,16 +25,16 @@ const Title = styled.div`
     font-weight: 600;
     line-height: 25px;
   }
-`;
+`
 
 const WrapperForm = styled.div`
   width: 100%;
   margin-bottom: 14px;
-`;
+`
 
 const FieldWrap = styled.div`
   margin-bottom: 14px;
-`;
+`
 
 const Administartor = ({ ref5, handleClickNextTab, number }) => {
   return (
@@ -77,14 +77,14 @@ const Administartor = ({ ref5, handleClickNextTab, number }) => {
             />
           </FieldWrap>
         </WrapperForm>
-        <WorkingTimeArrayField name={"contactPersonWorkingHours"} />
+        <WorkingTimeArrayField name={'contactPersonWorkingHours'} />
       </Group>
 
       <MobileHidden>
         <Button
-          onClick={(e) => {
-            e.preventDefault();
-            handleClickNextTab(number);
+          onClick={e => {
+            e.preventDefault()
+            handleClickNextTab(number)
           }}
           variant="red"
           size="width374"
@@ -94,7 +94,7 @@ const Administartor = ({ ref5, handleClickNextTab, number }) => {
         </Button>
       </MobileHidden>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default Administartor;
+export default Administartor

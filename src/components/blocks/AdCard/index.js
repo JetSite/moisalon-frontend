@@ -16,46 +16,46 @@ import {
   FavoriteIcon,
   SkeletonSalonItem,
   AdShareWrap,
-} from "./styles";
-import { Skeleton } from "@material-ui/lab";
-import Share from "../../ui/Share";
-import { useMedia } from "use-media";
-import HeartFullFill from "../../pages/MainPage/components/Header/icons/HeartFullFill";
-import { red } from "../../../../styles/variables";
-import { PHOTO_URL } from "../../../../variables";
+} from './styles'
+import { Skeleton } from '@material-ui/lab'
+import Share from '../../ui/Share'
+import { useMedia } from 'use-media'
+import HeartFullFill from '../../pages/MainPage/components/Header/icons/HeartFullFill'
+import { red } from '../../../styles/variables'
+import { PHOTO_URL } from '../../../variables'
 
 const AdCard = ({ item, loading, shareLink }) => {
-  const mobileMedia = useMedia({ maxWidth: 768 });
+  const mobileMedia = useMedia({ maxWidth: 768 })
 
   const content = () => {
-    if (item?.origin === "MASTER") {
+    if (item?.origin === 'MASTER') {
       return {
         category: `Мастер ${item?.masterOrigin?.name}`,
         email: item?.masterOrigin?.email,
         phone: item?.masterOrigin?.phone?.phoneNumber,
-      };
-    } else if (item?.origin === "SALON") {
+      }
+    } else if (item?.origin === 'SALON') {
       return {
         category: `Салон ${item?.salonOrigin?.name}`,
         email: item?.salonOrigin?.contactPersonEmail,
         phone: item?.salonOrigin?.contactPersonPhone?.phoneNumber,
-      };
-    } else if (item?.origin === "BRAND") {
+      }
+    } else if (item?.origin === 'BRAND') {
       return {
         category: `Бренд ${item?.brandOrigin?.name}`,
         email: item?.brandOrigin?.email,
         phone: item?.brandOrigin?.phone?.phoneNumber,
-      };
+      }
     } else {
       return {
-        category: "Акция",
-        email: "",
-        phone: "",
-      };
+        category: 'Акция',
+        email: '',
+        phone: '',
+      }
     }
-  };
+  }
 
-  const imageUrl = `${PHOTO_URL}${item?.photoId}/original`;
+  const imageUrl = `${PHOTO_URL}${item?.photoId}/original`
 
   return loading ? (
     <SkeletonSalonItem variant="rectangular" />
@@ -72,13 +72,13 @@ const AdCard = ({ item, loading, shareLink }) => {
           <Socials>
             {content().phone ? (
               <PhoneLink
-                onClick={(e) => e.stopPropagation()}
+                onClick={e => e.stopPropagation()}
                 href={`tel:${content().phone}`}
               />
             ) : null}
             {content().email ? (
               <EmailLink
-                onClick={(e) => e.stopPropagation()}
+                onClick={e => e.stopPropagation()}
                 href={`mailto:${content().email}`}
               />
             ) : null}
@@ -105,7 +105,7 @@ const AdCard = ({ item, loading, shareLink }) => {
         <Share link={shareLink} title={item?.name} />
       </AdShareWrap>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default AdCard;
+export default AdCard

@@ -1,6 +1,6 @@
-import { Field } from "react-final-form";
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../../../styles/variables";
+import { Field } from 'react-final-form'
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../../../styles/variables'
 
 const CheckboxWrapper = styled.div`
   height: 21px;
@@ -9,7 +9,7 @@ const CheckboxWrapper = styled.div`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 const Label = styled.p`
   font-size: 16px;
@@ -22,7 +22,7 @@ const Label = styled.p`
     font-weight: 500;
     line-height: 16px;
   }
-`;
+`
 
 const CheckboxElement = styled(Field)`
   position: absolute;
@@ -34,7 +34,7 @@ const CheckboxElement = styled(Field)`
     user-select: none;
   }
   & + p::before {
-    content: "";
+    content: '';
     display: inline-block;
     width: 16px;
     height: 16px;
@@ -43,10 +43,10 @@ const CheckboxElement = styled(Field)`
     border: 1px solid #797979;
     margin-right: 14px;
     cursor: pointer;
-    background: ${(props) =>
-      props.checked ? `url("/tick-checkbox.png") no-repeat center` : ""};
+    background: ${props =>
+      props.checked ? `url("/tick-checkbox.png") no-repeat center` : ''};
   }
-`;
+`
 
 const Checkbox = ({
   label,
@@ -68,7 +68,7 @@ const Checkbox = ({
       />
       <Label>{label}</Label>
     </CheckboxWrapper>
-  );
-};
+  )
+}
 
-export default Checkbox;
+export default Checkbox

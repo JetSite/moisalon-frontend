@@ -1,25 +1,25 @@
-import styled from "styled-components";
-import { red, laptopBreakpoint } from "../../../../../../styles/variables";
+import styled from 'styled-components'
+import { red, laptopBreakpoint } from '../../../../../styles/variables'
 
 export const Wrapper = styled.div`
   margin-bottom: 62px;
   display: flex;
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const FilterItemWrapper = styled.div`
   width: 230px;
   display: flex;
   align-items: center;
   cursor: pointer;
-  pointer-events: ${({ isEmpty }) => (isEmpty ? "none" : "auto")};
+  pointer-events: ${({ isEmpty }) => (isEmpty ? 'none' : 'auto')};
   opacity: ${({ isEmpty }) => (isEmpty ? 0.5 : 1)};
 
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`;
+`
 
 export const FilterColumn = styled.div`
   margin-right: 91px;
@@ -28,10 +28,10 @@ export const FilterColumn = styled.div`
     width: 100%;
     margin-right: 0;
   }
-`;
+`
 
 export const Text = styled.p`
-  color: ${({ active }) => (active ? "#000" : "#a1a1a1")};
+  color: ${({ active }) => (active ? '#000' : '#a1a1a1')};
   font-size: 14px;
   font-weight: 600;
   line-height: 27px;
@@ -45,31 +45,31 @@ export const Text = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     color: #000;
   }
-`;
+`
 
 export const Count = styled.span`
-  /* margin-right: ${({ isEndElement }) => (isEndElement ? "16px" : "5px")};
+  /* margin-right: ${({ isEndElement }) => (isEndElement ? '16px' : '5px')};
   color: #a1a1a1;
   font-size: 14px;
   position: relative; */
   display: flex;
   width: 15px;
-  margin-right: ${({ isEndElement }) => (isEndElement ? "16px" : "5px")};
+  margin-right: ${({ isEndElement }) => (isEndElement ? '16px' : '5px')};
   color: #a1a1a1;
   font-size: 14px;
   justify-content: center;
   align-items: center;
-`;
+`
 
 export const Icon = styled.div`
   width: 11px;
   height: 11px;
-  background: url("/arrow-next-2.svg") no-repeat center;
+  background: url('/arrow-next-2.svg') no-repeat center;
   background-size: contain;
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const BackText = styled.p`
   position: absolute;
@@ -88,7 +88,7 @@ export const BackText = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 export const ScrollDiv = styled.span`
   width: 0;
@@ -96,4 +96,4 @@ export const ScrollDiv = styled.span`
   opacity: 0;
   position: relative;
   top: -220px;
-`;
+`

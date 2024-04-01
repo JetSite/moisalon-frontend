@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { mobileBreakpoint } from "../../../../styles/variables";
+import styled from 'styled-components'
+import { mobileBreakpoint } from '../../../styles/variables'
 
 export const Title = styled.p`
   display: inline-block;
@@ -15,7 +15,7 @@ export const Title = styled.p`
     width: auto;
     line-height: 22px;
   }
-`;
+`
 
 export const City = styled.span`
   width: 319px;
@@ -23,4 +23,4 @@ export const City = styled.span`
   font-weight: 700;
   line-height: 25px;
   padding: 0;
-`;
+`

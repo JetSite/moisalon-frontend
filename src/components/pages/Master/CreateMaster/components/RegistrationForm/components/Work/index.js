@@ -1,18 +1,18 @@
-import { Field } from "react-final-form";
-import styled from "styled-components";
-import { required } from "../../../../../../../../utils/validations";
-import { TextField } from "../../../../../../../blocks/Form";
-import Button from "../../../../../../../ui/Button";
-import { MobileHidden } from "../../../../../../../../styles/common";
-import { FieldStyled, FieldWrap } from "../../styled";
-import { laptopBreakpoint } from "../../../../../../../../../styles/variables";
+import { Field } from 'react-final-form'
+import styled from 'styled-components'
+import { required } from '../../../../../../../../utils/validations'
+import { TextField } from '../../../../../../../blocks/Form'
+import Button from '../../../../../../../ui/Button'
+import { MobileHidden } from '../../../../../../../../styles/common'
+import { FieldStyled, FieldWrap } from '../../styled'
+import { laptopBreakpoint } from '../../../../../../../../styles/variables'
 
 const Wrapper = styled.div`
   padding-top: 120px;
   @media (max-width: ${laptopBreakpoint}) {
     padding-top: 0;
   }
-`;
+`
 const Title = styled.p`
   font-size: 18px;
   line-height: 30px;
@@ -24,7 +24,7 @@ const Title = styled.p`
     font-weight: 400;
     line-height: 25px;
   }
-`;
+`
 const MobileTitle = styled.p`
   display: none;
   @media (max-width: ${laptopBreakpoint}) {
@@ -34,16 +34,16 @@ const MobileTitle = styled.p`
     font-weight: 600;
     line-height: 25px;
   }
-`;
+`
 
 const SearchWorkWrapper = styled.div`
   margin-top: 40px;
-`;
+`
 
 const FieldResumeWrapper = styled.div`
   display: none;
   margin-top: 20px;
-`;
+`
 
 const Label = styled.label`
   font-size: 1.6rem;
@@ -55,7 +55,7 @@ const Label = styled.label`
     font-weight: 500;
     line-height: 16px;
   }
-`;
+`
 
 const Checkbox = styled.input`
   position: absolute;
@@ -73,7 +73,7 @@ const Checkbox = styled.input`
     user-select: none;
   }
   & + label::before {
-    content: "";
+    content: '';
     display: inline-block;
     width: 16px;
     height: 16px;
@@ -82,10 +82,10 @@ const Checkbox = styled.input`
     border: 1px solid #797979;
     margin-right: 14px;
     cursor: pointer;
-    background: ${(props) =>
-      props.checked ? `url("/icon-check.svg") no-repeat center` : ""};
+    background: ${props =>
+      props.checked ? `url("/icon-check.svg") no-repeat center` : ''};
   }
-`;
+`
 
 const Work = ({ ref3, handleClickNextTab, number }) => {
   return (
@@ -157,9 +157,9 @@ const Work = ({ ref3, handleClickNextTab, number }) => {
 
       <MobileHidden>
         <Button
-          onClick={(e) => {
-            e.preventDefault();
-            handleClickNextTab(number);
+          onClick={e => {
+            e.preventDefault()
+            handleClickNextTab(number)
           }}
           variant="red"
           size="width374"
@@ -169,7 +169,7 @@ const Work = ({ ref3, handleClickNextTab, number }) => {
         </Button>
       </MobileHidden>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default Work;
+export default Work

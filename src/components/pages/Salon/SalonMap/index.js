@@ -7,7 +7,7 @@ import {
   ObjectManager,
   GeolocationControl,
 } from 'react-yandex-maps'
-import { laptopBreakpoint } from '../../../../../styles/variables'
+import { laptopBreakpoint } from '../../../../styles/variables'
 import { useMedia } from 'use-media'
 import {
   CityContext,

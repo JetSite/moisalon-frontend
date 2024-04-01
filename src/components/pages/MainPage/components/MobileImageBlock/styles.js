@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../styles/variables";
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../styles/variables'
 
 export const Wrapper = styled.div`
   display: none;
@@ -13,7 +13,7 @@ export const Wrapper = styled.div`
     margin-bottom: 10px;
     padding: 0 20px;
   }
-`;
+`
 
 export const Image = styled.img`
   display: none;
@@ -22,4 +22,4 @@ export const Image = styled.img`
     display: block;
     width: 100%;
   }
-`;
+`

@@ -1,8 +1,8 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 import {
   laptopBreakpoint,
   tabletBreakpoint,
-} from "../../../../../../styles/variables";
+} from '../../../../../styles/variables'
 
 export const SliderItem = styled.div`
   padding: 9px 10px;
@@ -17,7 +17,7 @@ export const SliderItem = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     width: 180px;
   }
-`;
+`
 
 export const SliderContent = styled.div`
   border-radius: 5px;
@@ -25,16 +25,16 @@ export const SliderContent = styled.div`
   padding-bottom: 22px;
   padding-left: 5px;
   padding-right: 5px;
-`;
+`
 
 export const SliderText = styled.p`
   word-break: break-word;
-`;
+`
 
 export const SliderImage = styled.img`
   height: 100%;
   object-position: right top;
-`;
+`
 
 export const SliderImageWrap = styled.div`
   text-align: center;
@@ -49,16 +49,16 @@ export const SliderImageWrap = styled.div`
     width: 135px;
     height: 135px;
   }
-`;
+`
 
 export const ButtonClose = styled.button`
-  content: "";
+  content: '';
   position: absolute;
   top: 12px;
   right: 11px;
   width: 22px;
   height: 22px;
-  background: url("/close-cross-red.svg") no-repeat;
+  background: url('/close-cross-red.svg') no-repeat;
   background-size: contain;
   outline: none;
   border: none;
@@ -67,19 +67,19 @@ export const ButtonClose = styled.button`
     top: 3px;
     right: 3px;
   }
-`;
+`
 
 export const DeleteSalon = styled.div`
   width: 100%;
   position: relative;
   cursor: pointer;
   &:after {
-    content: "";
+    content: '';
     position: absolute;
-    background: url("/close-cross-red.svg") no-repeat center;
+    background: url('/close-cross-red.svg') no-repeat center;
     width: 22px;
     height: 22px;
     bottom: 6px;
     right: 17px;
   }
-`;
+`

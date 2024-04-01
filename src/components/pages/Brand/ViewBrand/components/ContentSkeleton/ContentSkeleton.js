@@ -1,10 +1,10 @@
-import React from "react";
-import styled from "styled-components";
-import { Skeleton } from "@material-ui/lab";
-import MainLayout from "../../../../../../layouts/MainLayout";
-import { MainContainer } from "../../../../../../styles/common";
-import SearchBlock from "../../../../../../components/blocks/SearchBlock";
-import { laptopBreakpoint } from "../../../../../../../styles/variables";
+import React from 'react'
+import styled from 'styled-components'
+import { Skeleton } from '@material-ui/lab'
+import MainLayout from '../../../../../../layouts/MainLayout'
+import { MainContainer } from '../../../../../../styles/common'
+import SearchBlock from '../../../../../../components/blocks/SearchBlock'
+import { laptopBreakpoint } from '../../../../../../styles/variables'
 
 const Wrapper = styled.div`
   padding: 0 140px;
@@ -14,7 +14,7 @@ const Wrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     padding: 0 20px;
   }
-`;
+`
 
 const SkeletonRectBig = styled(Skeleton)`
   margin-top: 20px;
@@ -24,7 +24,7 @@ const SkeletonRectBig = styled(Skeleton)`
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`;
+`
 
 const ContentSkeleton = ({ me, loading }) => {
   return (
@@ -36,7 +36,7 @@ const ContentSkeleton = ({ me, loading }) => {
         </Wrapper>
       </MainContainer>
     </MainLayout>
-  );
-};
+  )
+}
 
-export default ContentSkeleton;
+export default ContentSkeleton

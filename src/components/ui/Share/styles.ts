@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { laptopBreakpoint } from '../../../../styles/variables'
+import { laptopBreakpoint } from '../../../styles/variables'
 import { RefObject } from 'react'
 
 export const Wrapper = styled.div`

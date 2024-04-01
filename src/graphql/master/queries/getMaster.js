@@ -28,22 +28,29 @@ export const getMaster = gql`
                             }
                         }
                     }
-                    serviceCategories {
+                    services {
                         id
-                        category {
-                            data {
-                                id
-                                attributes {
-                                    serviceCategoryName
-                                }
-                            }
-                        }
-                        services {
+                        service {
+                          data {
                             id
-                            serviceName 
-                            price
+                            attributes {
+                              service_categories {
+                                data {
+                                    id
+                                    attributes {
+                                        serviceCategoryName
+                                    }
+                                }
+                              }
+                            }
+                          }
                         }
-                      }
+                        serviceName
+                        price
+                        priceTo
+                        priceFrom
+                        unitOfMeasurement
+                    }
                     city {
                         data {
                             id

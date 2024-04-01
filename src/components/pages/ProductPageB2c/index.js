@@ -1,12 +1,12 @@
-import { useContext, useState } from "react";
-import { useQuery } from "@apollo/client";
-import { useMutation } from "@apollo/react-hooks";
-import { useRouter } from "next/router";
+import { useContext, useState } from 'react'
+import { useQuery } from '@apollo/client'
+import { useMutation } from '@apollo/react-hooks'
+import { useRouter } from 'next/router'
 import {
   MainContainer,
   MobileHidden,
   MobileVisible,
-} from "../../../styles/common";
+} from '../../../styles/common'
 import {
   Wrapper,
   Wrap,
@@ -25,65 +25,61 @@ import {
   Plus,
   Quantity,
   Description,
-} from "../ProductPage/styled";
-import {
-  CityContext,
-  MeContext,
-  ProductsContext,
-} from "../../../searchContext";
-import { PHOTO_URL } from "../../../../variables";
-import BackButton from "../../ui/BackButton";
-import Reviews from "../../blocks/Reviews";
-import { createReviewMutation } from "../../../_graphql-legacy/createReviewMutation";
-import Button from "../../ui/Button";
-import { getB2cCart } from "../../../_graphql-legacy/cart/getB2cCart";
-import { addToCartB2cMutation } from "../../../_graphql-legacy/cart/addToB2cCart";
-import { removeItemB2cMutation } from "../../../_graphql-legacy/cart/removeItemB2c";
-import { reviewsforProductB2c } from "../../../_graphql-legacy/reviewsforProductB2c";
-import Rating from "../../ui/Rating";
-import { cyrToTranslit } from "../../../utils/translit";
+} from '../ProductPage/styled'
+import { CityContext, MeContext, ProductsContext } from '../../../searchContext'
+import { PHOTO_URL } from '../../../variables'
+import BackButton from '../../ui/BackButton'
+import Reviews from '../../blocks/Reviews'
+import { createReviewMutation } from '../../../_graphql-legacy/createReviewMutation'
+import Button from '../../ui/Button'
+import { getB2cCart } from '../../../_graphql-legacy/cart/getB2cCart'
+import { addToCartB2cMutation } from '../../../_graphql-legacy/cart/addToB2cCart'
+import { removeItemB2cMutation } from '../../../_graphql-legacy/cart/removeItemB2c'
+import { reviewsforProductB2c } from '../../../_graphql-legacy/reviewsforProductB2c'
+import Rating from '../../ui/Rating'
+import { cyrToTranslit } from '../../../utils/translit'
 
 const ProductPageB2c = ({ product, dataReviews, brand }) => {
-  const [, setProductsState] = useContext(ProductsContext);
-  const [city] = useContext(CityContext);
-  const [reviews, setReviews] = useState(dataReviews);
-  const [me] = useContext(MeContext);
+  const [, setProductsState] = useContext(ProductsContext)
+  const [city] = useContext(CityContext)
+  const [reviews, setReviews] = useState(dataReviews)
+  const [me] = useContext(MeContext)
 
-  const router = useRouter();
+  const router = useRouter()
 
   const { refetch: refetchReviews } = useQuery(reviewsforProductB2c, {
     variables: { originId: product.id },
     skip: true,
-    onCompleted: (res) => {
-      setReviews(res);
+    onCompleted: res => {
+      setReviews(res)
     },
-  });
+  })
 
   const [reviewMutation] = useMutation(createReviewMutation, {
     onCompleted: () => {
-      refetchReviews();
+      refetchReviews()
     },
-  });
+  })
 
   const { data: dataCart, refetch: refetchCart } = useQuery(getB2cCart, {
-    onCompleted: (res) => {
-      setProductsState(res?.getCart?.contents || []);
+    onCompleted: res => {
+      setProductsState(res?.getCart?.contents || [])
     },
-  });
+  })
 
-  const cart = dataCart?.getCart?.contents || [];
+  const cart = dataCart?.getCart?.contents || []
 
   const [addToCart] = useMutation(addToCartB2cMutation, {
     onCompleted: () => {
-      refetchCart();
+      refetchCart()
     },
-  });
+  })
 
   const [removeItem] = useMutation(removeItemB2cMutation, {
     onCompleted: () => {
-      refetchCart();
+      refetchCart()
     },
-  });
+  })
 
   const add = (item, quantity) => {
     addToCart({
@@ -94,10 +90,10 @@ const ProductPageB2c = ({ product, dataReviews, brand }) => {
           isB2b: false,
         },
       },
-    });
-  };
+    })
+  }
 
-  const deleteItem = (item) => {
+  const deleteItem = item => {
     removeItem({
       variables: {
         input: {
@@ -105,12 +101,12 @@ const ProductPageB2c = ({ product, dataReviews, brand }) => {
           isB2b: false,
         },
       },
-    });
-  };
+    })
+  }
 
-  const newItem = cart?.find((el) => el?.product?.id === product.id)
-    ? cart?.find((el) => el?.product?.id === product.id)
-    : { product: { ...product }, quantity: 0 };
+  const newItem = cart?.find(el => el?.product?.id === product.id)
+    ? cart?.find(el => el?.product?.id === product.id)
+    : { product: { ...product }, quantity: 0 }
 
   return (
     <MainContainer>
@@ -128,7 +124,7 @@ const ProductPageB2c = ({ product, dataReviews, brand }) => {
                 src={
                   newItem?.product?.photoIds[0]
                     ? ` ${PHOTO_URL}${newItem?.product?.photoIds[0]}/original`
-                    : "/cosmetic_placeholder.jpg"
+                    : '/cosmetic_placeholder.jpg'
                 }
               />
             </ImageBrand>
@@ -154,19 +150,19 @@ const ProductPageB2c = ({ product, dataReviews, brand }) => {
                     variant="red"
                     font="medium"
                     mt="48"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
+                    onClick={e => {
+                      e.preventDefault()
+                      e.stopPropagation()
                       if (me && !me?.info) {
                         router.push(
                           {
-                            pathname: "/login",
-                            query: { error: "notAuthorized" },
+                            pathname: '/login',
+                            query: { error: 'notAuthorized' },
                           },
-                          "/login"
-                        );
+                          '/login',
+                        )
                       } else {
-                        add(newItem?.product, 1);
+                        add(newItem?.product, 1)
                       }
                     }}
                   >
@@ -179,19 +175,19 @@ const ProductPageB2c = ({ product, dataReviews, brand }) => {
                     variant="red"
                     font="popUp"
                     mt="37"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
+                    onClick={e => {
+                      e.preventDefault()
+                      e.stopPropagation()
                       if (me && !me?.info) {
                         router.push(
                           {
-                            pathname: "/login",
-                            query: { error: "notAuthorized" },
+                            pathname: '/login',
+                            query: { error: 'notAuthorized' },
                           },
-                          "/login"
-                        );
+                          '/login',
+                        )
                       } else {
-                        add(newItem?.product, 1);
+                        add(newItem?.product, 1)
                       }
                     }}
                   >
@@ -201,7 +197,7 @@ const ProductPageB2c = ({ product, dataReviews, brand }) => {
               </>
             ) : (
               <WrapButton>
-                <CustomButton onClick={() => router.push("/cartB2c")}>
+                <CustomButton onClick={() => router.push('/cartB2c')}>
                   <TopCustomButton>В корзине</TopCustomButton>
                   <BottomCustomButton>Перейти</BottomCustomButton>
                 </CustomButton>
@@ -212,7 +208,7 @@ const ProductPageB2c = ({ product, dataReviews, brand }) => {
                 </QuantityWrap>
               </WrapButton>
             )}
-            <Description>{newItem?.product?.description || ""}</Description>
+            <Description>{newItem?.product?.description || ''}</Description>
           </Right>
         </Wrap>
         <Reviews
@@ -224,7 +220,7 @@ const ProductPageB2c = ({ product, dataReviews, brand }) => {
         />
       </Wrapper>
     </MainContainer>
-  );
-};
+  )
+}
 
-export default ProductPageB2c;
+export default ProductPageB2c

@@ -1,49 +1,49 @@
-import React, { useCallback } from "react";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import FormControl from "@material-ui/core/FormControl";
-import { FormGroup } from "@material-ui/core";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import { Box } from "@material-ui/core";
-import { Separator } from "./styles";
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../styles/variables";
+import React, { useCallback } from 'react'
+import Input from '@material-ui/core/Input'
+import InputLabel from '@material-ui/core/InputLabel'
+import FormControl from '@material-ui/core/FormControl'
+import { FormGroup } from '@material-ui/core'
+import FormHelperText from '@material-ui/core/FormHelperText'
+import { Box } from '@material-ui/core'
+import { Separator } from './styles'
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../styles/variables'
 
-const padWithZero = (time) => time.toString().padStart(2, "0");
+const padWithZero = time => time.toString().padStart(2, '0')
 
 const getTimeValueString = (hour, minute) =>
-  `${padWithZero(hour)}:${padWithZero(minute)}`;
+  `${padWithZero(hour)}:${padWithZero(minute)}`
 
-const getTimeValue = (input) => {
-  if (input === "" || !input) {
+const getTimeValue = input => {
+  if (input === '' || !input) {
     return {
       hour: 0,
       minute: 0,
-    };
+    }
   }
 
-  const hourString = input.substring(0, 2);
-  const minuteString = input.substring(3, 5);
-  const hour = parseInt(hourString, 10);
-  const minute = parseInt(minuteString, 10);
+  const hourString = input.substring(0, 2)
+  const minuteString = input.substring(3, 5)
+  const hour = parseInt(hourString, 10)
+  const minute = parseInt(minuteString, 10)
 
   const value = {
     hour,
     minute,
-  };
+  }
 
-  return value;
-};
+  return value
+}
 
-const getTimeValueFromEvent = (event) => {
+const getTimeValueFromEvent = event => {
   const {
     target: { value },
-  } = event;
-  return getTimeValue(value);
-};
+  } = event
+  return getTimeValue(value)
+}
 
 const FullTime = ({ isActive = false, onClick }) => {
-  const color = isActive ? "#007AFF" : "#D8D8D8";
+  const color = isActive ? '#007AFF' : '#D8D8D8'
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -62,8 +62,8 @@ const FullTime = ({ isActive = false, onClick }) => {
         transform="translate(-1258 -3033) translate(157 1496) translate(1 1512) translate(461 1) translate(460) translate(179 24)"
       />
     </svg>
-  );
-};
+  )
+}
 
 const InputLabelStyled = styled(InputLabel)`
   font-size: 1.4rem;
@@ -71,7 +71,7 @@ const InputLabelStyled = styled(InputLabel)`
   @media (max-width: ${laptopBreakpoint}) {
     font-size: 1.2rem;
   }
-`;
+`
 
 const InputStyled = styled(Input)`
   font-size: 1.6rem;
@@ -79,7 +79,7 @@ const InputStyled = styled(Input)`
   @media (max-width: ${laptopBreakpoint}) {
     font-size: 1.4rem;
   }
-`;
+`
 
 const TimeSpanInput = ({
   label,
@@ -97,37 +97,37 @@ const TimeSpanInput = ({
       startMinute: 0,
       endHour: 23,
       endMinute: 59,
-    });
-  }, [onChange, value]);
+    })
+  }, [onChange, value])
 
   const handleOnChange = useCallback(
-    (event) => {
-      const timeValue = getTimeValueFromEvent(event);
-      const name = event.target.name;
-      if (name.endsWith("from")) {
+    event => {
+      const timeValue = getTimeValueFromEvent(event)
+      const name = event.target.name
+      if (name.endsWith('from')) {
         onChange({
           ...value,
           startHour: timeValue.hour,
           startMinute: timeValue.minute,
-        });
+        })
       } else {
         onChange({
           ...value,
           endHour: timeValue.hour,
           endMinute: timeValue.minute,
-        });
+        })
       }
     },
-    [onChange, value]
-  );
+    [onChange, value],
+  )
 
-  const fromValue = getTimeValueString(value.startHour, value.startMinute);
-  const toValue = getTimeValueString(value.endHour, value.endMinute);
+  const fromValue = getTimeValueString(value.startHour, value.startMinute)
+  const toValue = getTimeValueString(value.endHour, value.endMinute)
 
-  const fromName = `${name}.from`;
-  const toName = `${name}.to`;
+  const fromName = `${name}.from`
+  const toName = `${name}.to`
 
-  const isActive = fromValue === "00:00" && toValue === "23:59";
+  const isActive = fromValue === '00:00' && toValue === '23:59'
 
   return (
     <>
@@ -142,7 +142,7 @@ const TimeSpanInput = ({
             inputComponent="input"
             type="time"
             inputProps={{
-              inputMode: "numeric",
+              inputMode: 'numeric',
             }}
           />
           <Separator>&ndash;</Separator>
@@ -154,7 +154,7 @@ const TimeSpanInput = ({
             inputComponent="input"
             type="time"
             inputProps={{
-              inputMode: "numeric",
+              inputMode: 'numeric',
             }}
           />
           <FullTime isActive={isActive} onClick={handleNonStop} />
@@ -162,7 +162,7 @@ const TimeSpanInput = ({
         {showError ? <FormHelperText>{errorText}</FormHelperText> : null}
       </FormGroup>
     </>
-  );
-};
+  )
+}
 
-export default TimeSpanInput;
+export default TimeSpanInput

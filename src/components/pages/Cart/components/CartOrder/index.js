@@ -15,7 +15,7 @@ import Error from '../../../../blocks/Form/Error'
 import AddressNoSalonField from '../../../../blocks/Form/AddressField/AddressNoSalonField'
 import { TextField } from '../../../../blocks/Form'
 import styled from 'styled-components'
-import { laptopBreakpoint } from '../../../../../../styles/variables'
+import { laptopBreakpoint } from '../../../../../styles/variables'
 
 const onUpdate = handler => event => {
   const value = event.target.value

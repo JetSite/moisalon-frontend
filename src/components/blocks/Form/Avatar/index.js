@@ -1,11 +1,8 @@
-import { useCallback, useState } from "react";
-import styled from "styled-components";
-import { useDropzone } from "react-dropzone";
-import uploadPhoto from "../../../../utils/uploadPhoto";
-import {
-  red as redColor,
-  laptopBreakpoint,
-} from "../../../../../styles/variables";
+import { useCallback, useState } from 'react'
+import styled from 'styled-components'
+import { useDropzone } from 'react-dropzone'
+import uploadPhoto from '../../../../utils/uploadPhoto'
+import { red as redColor, laptopBreakpoint } from '../../../../styles/variables'
 
 const Wrapper = styled.div`
   width: 120px;
@@ -22,7 +19,7 @@ const Wrapper = styled.div`
     width: 92px;
     height: 92px;
   }
-`;
+`
 
 const Empty = styled.div`
   width: 120px;
@@ -30,14 +27,14 @@ const Empty = styled.div`
   border-radius: 100%;
   border: 1px solid #e3e3e3;
   position: relative;
-  background: url("/empty-photo.svg") no-repeat bottom;
+  background: url('/empty-photo.svg') no-repeat bottom;
 
   @media (max-width: ${laptopBreakpoint}) {
     width: 92px;
     height: 92px;
     background-size: contain;
   }
-`;
+`
 
 const LogoText = styled.div`
   width: 120px;
@@ -50,23 +47,23 @@ const LogoText = styled.div`
   font-size: 20px;
   color: #bebebe;
   border: 1px solid
-    ${({ noPhotoError }) => (noPhotoError ? redColor : "#e3e3e3")};
+    ${({ noPhotoError }) => (noPhotoError ? redColor : '#e3e3e3')};
   position: relative;
 
   @media (max-width: ${laptopBreakpoint}) {
     width: 92px;
     height: 92px;
   }
-`;
+`
 
 const Plus = styled.div`
   position: absolute;
   width: 36px;
   height: 36px;
-  background: ${({ red }) => (red ? `${redColor}` : "#e3e3e3")};
+  background: ${({ red }) => (red ? `${redColor}` : '#e3e3e3')};
   border: 1px solid #ffffff;
   border-radius: 100%;
-  color: ${({ red }) => (red ? "#fff" : "#000")};
+  color: ${({ red }) => (red ? '#fff' : '#000')};
   font-weight: 400;
   display: flex;
   align-items: center;
@@ -79,7 +76,7 @@ const Plus = styled.div`
     width: 27px;
     height: 27px;
   }
-`;
+`
 
 const ChangeText = styled.span`
   text-align: center;
@@ -90,20 +87,20 @@ const ChangeText = styled.span`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-`;
+`
 
 const Photo = styled.div`
   width: 120px;
   height: 120px;
   border-radius: 100%;
-  background: ${(props) => `${props.background} no-repeat center`};
+  background: ${props => `${props.background} no-repeat center`};
   background-size: cover;
 
   @media (max-width: ${laptopBreakpoint}) {
     width: 92px;
     height: 92px;
   }
-`;
+`
 
 const PhotoBack = styled.div`
   width: 120px;
@@ -119,7 +116,7 @@ const PhotoBack = styled.div`
     width: 92px;
     height: 92px;
   }
-`;
+`
 
 const Avatar = ({
   id,
@@ -133,39 +130,39 @@ const Avatar = ({
   noPhotoError,
   setNoPhotoError,
 }) => {
-  const [isHover, setHover] = useState(false);
-  const image = photo ? photo.url : null;
-  const isEmpty = !image;
+  const [isHover, setHover] = useState(false)
+  const image = photo ? photo.url : null
+  const isEmpty = !image
 
   const onDrop = useCallback(
-    (files) => {
-      const file = files[0];
+    files => {
+      const file = files[0]
       const uploadFile = async () => {
-        await uploadPhoto(file, photoType).then((photoId) => {
+        await uploadPhoto(file, photoType).then(photoId => {
           if (id) {
-            onAdd(photoId);
+            onAdd(photoId)
           } else {
-            setPhotoId(photoId);
+            setPhotoId(photoId)
           }
-        });
-      };
-      uploadFile();
-      setNoPhotoError(false);
+        })
+      }
+      uploadFile()
+      setNoPhotoError(false)
     },
-    [photoType, onAdd]
-  );
+    [photoType, onAdd],
+  )
 
   const { getRootProps, getInputProps } = useDropzone({
-    accept: "image/*",
+    accept: 'image/*',
     onDrop,
-  });
+  })
 
   const onHoverControls =
     isHover && !isEmpty ? (
       <PhotoBack>
         <ChangeText>Изменить фотографию</ChangeText>
       </PhotoBack>
-    ) : null;
+    ) : null
 
   return (
     <Wrapper>
@@ -178,13 +175,13 @@ const Avatar = ({
           <input {...getInputProps()} />
           <Photo background={`url(${image})`}>
             {!image ? (
-              photoType === "master" ? (
+              photoType === 'master' ? (
                 <Empty>
                   <Plus>+</Plus>
                 </Empty>
               ) : (
                 <LogoText noPhotoError={noPhotoError}>
-                  {title ? title : "лого"}
+                  {title ? title : 'лого'}
                   <Plus red={red}>+</Plus>
                 </LogoText>
               )
@@ -196,7 +193,7 @@ const Avatar = ({
         <Photo background={`url(${image})`} />
       )}
     </Wrapper>
-  );
-};
+  )
+}
 
-export default Avatar;
+export default Avatar

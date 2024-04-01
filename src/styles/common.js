@@ -1,6 +1,6 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
-import { laptopBreakpoint } from "../../styles/variables";
+import { laptopBreakpoint } from './variables'
 
 export const Container = styled.div`
   position: relative;
@@ -13,7 +13,7 @@ export const Container = styled.div`
   flex-direction: column;
   justify-content: space-between;
   box-sizing: border-box;
-`;
+`
 
 export const MainContainer = styled.div`
   box-sizing: border-box;
@@ -24,24 +24,24 @@ export const MainContainer = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     padding: 0;
   }
-`;
+`
 
 export const FormField = styled.div`
   margin-bottom: 24px;
-`;
+`
 
 export const MobileHidden = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 export const MobileVisible = styled.div`
   display: none;
   @media (max-width: ${laptopBreakpoint}) {
     display: block;
   }
-`;
+`
 
 export const NoItemsText = styled.p`
   margin-top: 20px;
@@ -52,4 +52,4 @@ export const NoItemsText = styled.p`
     color: #bebebe;
     margin-bottom: 10px;
   }
-`;
+`

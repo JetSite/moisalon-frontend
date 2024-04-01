@@ -1,28 +1,23 @@
-import { useState } from "react";
-import styled from "styled-components";
-import { FieldArray } from "react-final-form-arrays";
-import DictionaryItem from "./DictionaryItem";
-import DefaultDictionaryItem from "./DefaultDictionaryItem";
-import Group from "../Group";
-import { pluralize } from "../../../../utils/pluralize";
-import {
-  FormHelperText,
-  Box,
-  useMediaQuery,
-  useTheme,
-} from "@material-ui/core";
-import { laptopBreakpoint } from "../../../../../styles/variables";
+import { useState } from 'react'
+import styled from 'styled-components'
+import { FieldArray } from 'react-final-form-arrays'
+import DictionaryItem from './DictionaryItem'
+import DefaultDictionaryItem from './DefaultDictionaryItem'
+import Group from '../Group'
+import { pluralize } from '../../../../utils/pluralize'
+import { FormHelperText, Box, useMediaQuery, useTheme } from '@material-ui/core'
+import { laptopBreakpoint } from '../../../../styles/variables'
 
 const AllChecked = styled.input`
   margin: 5px;
-  background: ${(props) => (!props.check ? "#fff" : "#f03")};
-  border: ${(props) => (!props.check ? "1px solid #000000" : "1px solid #f03")};
+  background: ${props => (!props.check ? '#fff' : '#f03')};
+  border: ${props => (!props.check ? '1px solid #000000' : '1px solid #f03')};
   border-radius: 50px;
   cursor: pointer;
   font-weight: 500;
   font-size: 14px;
   padding: 9px 55px;
-  color: ${(props) => (!props.check ? "#000" : "#fff")};
+  color: ${props => (!props.check ? '#000' : '#fff')};
 
   @media (max-width: ${laptopBreakpoint}) {
     padding: 6px 23px;
@@ -30,7 +25,7 @@ const AllChecked = styled.input`
     font-weight: 500;
     line-height: 16px;
   }
-`;
+`
 
 const ShowMore = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
@@ -47,9 +42,9 @@ const ShowMore = styled.div`
       color: #ff0033;
     }
   }
-`;
+`
 
-const DictionaryField = (props) => {
+const DictionaryField = props => {
   const {
     title,
     description,
@@ -62,43 +57,41 @@ const DictionaryField = (props) => {
     mbDesc = 75,
     mbWrapper = 54,
     onlyOneChoose = false,
-  } = props;
-  const [isOpenMore, setIsOpenMore] = useState(false);
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
+  } = props
+  const [isOpenMore, setIsOpenMore] = useState(false)
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down('xs'))
   const items = groups.map((group, index) => ({
     ...group,
     checked: false,
     index,
-  }));
+  }))
 
   const groupProps = {
     title,
     description,
     fullWidth,
     withButton,
-  };
+  }
 
   return (
     <Group mbWrapper={mbWrapper} mbDesc={mbDesc} {...groupProps}>
       <FieldArray name={name} validate={validate}>
-        {(arrayField) => {
-          const { fields, meta } = arrayField;
-          const { value = [] } = fields;
+        {arrayField => {
+          const { fields, meta } = arrayField
+          const { value = [] } = fields
 
           const onChangeDefault = (item, i) => {
             if (fields.value[0] !== item) {
-              fields.swap(0, i);
+              fields.swap(0, i)
             }
-          };
+          }
 
-          const checkedItems = items.filter(
-            (item) => value.indexOf(item.id) > -1
-          );
-          const checkedItemsLength = checkedItems.length;
+          const checkedItems = items.filter(item => value.indexOf(item.id) > -1)
+          const checkedItemsLength = checkedItems.length
           const unCheckedItems = items
-            .filter((item) => value.indexOf(item.id) < 0)
-            .slice(0, 5 - checkedItemsLength);
+            .filter(item => value.indexOf(item.id) < 0)
+            .slice(0, 5 - checkedItemsLength)
 
           const collapsedItems =
             checkedItemsLength >= 5
@@ -106,14 +99,14 @@ const DictionaryField = (props) => {
               : [
                   ...checkedItems,
                   ...unCheckedItems.slice(0, 5 - checkedItemsLength),
-                ];
+                ]
 
           const dictionaryItems =
-            isMobile && !isOpenMore ? collapsedItems : items;
+            isMobile && !isOpenMore ? collapsedItems : items
 
           const dictionary = dictionaryItems.map(
             ({ index, title, ...group }) => {
-              const checked = value.indexOf(group.id) > -1;
+              const checked = value.indexOf(group.id) > -1
               const itemProps = {
                 item: {
                   ...group,
@@ -123,16 +116,16 @@ const DictionaryField = (props) => {
                 fields,
                 index,
                 name: index === 0 ? name : undefined,
-              };
+              }
               return (
                 <DictionaryItem
                   {...itemProps}
                   key={group.id}
                   onlyOneChoose={onlyOneChoose}
                 />
-              );
-            }
-          );
+              )
+            },
+          )
 
           const moreItems = isMobile ? (
             <ShowMore
@@ -142,33 +135,33 @@ const DictionaryField = (props) => {
               {!isOpenMore
                 ? `Показать еще ${pluralize(
                     items.length - collapsedItems.length,
-                    name !== "equipment" ? "деятельность" : "оборудование",
-                    name !== "equipment" ? "деятельности" : "оборудование",
-                    name !== "equipment" ? "деятельности" : "оборудование"
+                    name !== 'equipment' ? 'деятельность' : 'оборудование',
+                    name !== 'equipment' ? 'деятельности' : 'оборудование',
+                    name !== 'equipment' ? 'деятельности' : 'оборудование',
                   )}`
                 : `Скрыть ${
-                    name !== "equipment" ? "виды деятельности" : "оборудование"
+                    name !== 'equipment' ? 'виды деятельности' : 'оборудование'
                   }`}
             </ShowMore>
-          ) : null;
+          ) : null
 
-          const isAllChecked = checkedItems.length === items.length;
+          const isAllChecked = checkedItems.length === items.length
 
           const checkAllHandler = () => {
             if (isAllChecked) {
               return items.forEach((item, i, arr) => {
-                fields.pop(item.id);
-              });
+                fields.pop(item.id)
+              })
             } else {
               return items
-                .filter((item) => value.indexOf(item.id) < 0)
+                .filter(item => value.indexOf(item.id) < 0)
                 .forEach((item, i, arr) => {
-                  fields.push(item.id);
-                });
+                  fields.push(item.id)
+                })
             }
-          };
+          }
 
-          const allCheckedValue = isAllChecked ? "Убрать все" : "Выбрать все";
+          const allCheckedValue = isAllChecked ? 'Убрать все' : 'Выбрать все'
 
           return (
             <>
@@ -197,11 +190,11 @@ const DictionaryField = (props) => {
                 />
               ) : null}
             </>
-          );
+          )
         }}
       </FieldArray>
     </Group>
-  );
-};
+  )
+}
 
-export default DictionaryField;
+export default DictionaryField

@@ -1,9 +1,9 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 import {
   laptopBreakpoint,
   tabletBreakpoint,
   mobileBreakpoint,
-} from "../../../../styles/variables";
+} from '../../../styles/variables'
 
 export const Wrapper = styled.div`
   padding: 0 140px;
@@ -18,10 +18,10 @@ export const Wrapper = styled.div`
     padding-bottom: 20px;
     margin-top: 0;
   }
-`;
+`
 
 export const Title = styled.h2`
-  display: ${({ noTitle }) => (noTitle ? "none" : "block")};
+  display: ${({ noTitle }) => (noTitle ? 'none' : 'block')};
   font-weight: 600;
   font-size: 30px;
   margin-bottom: 50px;
@@ -33,7 +33,7 @@ export const Title = styled.h2`
     line-height: 25px;
     text-transform: none;
   }
-`;
+`
 
 export const Content = styled.div`
   /* display: grid;
@@ -54,8 +54,8 @@ export const Content = styled.div`
 
   @media (max-width: ${mobileBreakpoint}) {
   }
-`;
+`
 
 export const ButtonWrap = styled.div`
   text-align: center;
-`;
+`

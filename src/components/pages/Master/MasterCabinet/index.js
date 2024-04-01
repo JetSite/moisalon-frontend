@@ -1,48 +1,48 @@
-import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
-import { MainContainer } from "../../../../styles/common";
-import Header from "../../../pages/MainPage/components/Header";
-import { Wrapper } from "./styled";
-import ControlsTabs from "../../../blocks/Form/ControlsTabs";
-import { useMutation } from "@apollo/client";
-import CabinetForm from "../../../blocks/Cabinet/components/CabinetForm";
-import { changeDataMutation } from "../../../../_graphql-legacy/changeDataMutation";
-import CabinetOrders from "../../../blocks/Cabinet/components/CabinetOrders";
-import CabinetProfiles from "../../../blocks/Cabinet/components/CabinetProfiles";
-import CabinetListReviews from "../../../blocks/Cabinet/components/CabinetListReviews";
-import ProfileCabinetHeaderMobile from "../../../blocks/ProfileCabinetHeaderMobile";
-import CabinetFavorits from "../../../blocks/Cabinet/components/CabinetFavorits";
-import CabinetSales from "../../../blocks/Cabinet/components/CabinetSales";
-import CabinetEducations from "../../../blocks/Cabinet/components/CabinetEducations";
-import CabinetChat from "../../../blocks/Cabinet/components/CabinetChat";
-import CabinetEvents from "../../../blocks/Cabinet/components/CabinetEvents";
-import CabinetVacancies from "../../../blocks/Cabinet/components/CabinetVacancies";
-import CabinetPriority from "../../../blocks/Cabinet/components/CabinetPriority";
-import CabinetBanner from "../../../blocks/Cabinet/components/CabinetBanner";
-import { PHOTO_URL } from "../../../../../variables";
-import { useChat } from "../../../../chatContext";
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
+import { MainContainer } from '../../../../styles/common'
+import Header from '../../../pages/MainPage/components/Header'
+import { Wrapper } from './styled'
+import ControlsTabs from '../../../blocks/Form/ControlsTabs'
+import { useMutation } from '@apollo/client'
+import CabinetForm from '../../../blocks/Cabinet/components/CabinetForm'
+import { changeDataMutation } from '../../../../_graphql-legacy/changeDataMutation'
+import CabinetOrders from '../../../blocks/Cabinet/components/CabinetOrders'
+import CabinetProfiles from '../../../blocks/Cabinet/components/CabinetProfiles'
+import CabinetListReviews from '../../../blocks/Cabinet/components/CabinetListReviews'
+import ProfileCabinetHeaderMobile from '../../../blocks/ProfileCabinetHeaderMobile'
+import CabinetFavorits from '../../../blocks/Cabinet/components/CabinetFavorits'
+import CabinetSales from '../../../blocks/Cabinet/components/CabinetSales'
+import CabinetEducations from '../../../blocks/Cabinet/components/CabinetEducations'
+import CabinetChat from '../../../blocks/Cabinet/components/CabinetChat'
+import CabinetEvents from '../../../blocks/Cabinet/components/CabinetEvents'
+import CabinetVacancies from '../../../blocks/Cabinet/components/CabinetVacancies'
+import CabinetPriority from '../../../blocks/Cabinet/components/CabinetPriority'
+import CabinetBanner from '../../../blocks/Cabinet/components/CabinetBanner'
+import { PHOTO_URL } from '../../../../variables'
+import { useChat } from '../../../../chatContext'
 
 const MasterCabinet = ({ refetch, currentMe }) => {
-  const [photoId, setPhotoId] = useState(currentMe?.info?.avatar);
-  const [noPhotoError, setNoPhotoError] = useState(false);
-  const [, setErrors] = useState(null);
-  const [, setErrorPopupOpen] = useState(null);
-  const [toggle, setToggle] = useState(false);
-  const { unreadMessagesCount } = useChat();
+  const [photoId, setPhotoId] = useState(currentMe?.info?.avatar)
+  const [noPhotoError, setNoPhotoError] = useState(false)
+  const [, setErrors] = useState(null)
+  const [, setErrorPopupOpen] = useState(null)
+  const [toggle, setToggle] = useState(false)
+  const { unreadMessagesCount } = useChat()
 
   const [mutate] = useMutation(changeDataMutation, {
-    onError: (error) => {
-      const errorMessages = error.graphQLErrors.map((e) => e.message);
-      setErrors(errorMessages);
-      setErrorPopupOpen(true);
+    onError: error => {
+      const errorMessages = error.graphQLErrors.map(e => e.message)
+      setErrors(errorMessages)
+      setErrorPopupOpen(true)
     },
     onCompleted: async () => {
-      await refetch();
+      await refetch()
     },
-  });
+  })
 
-  const handlePhoto = (id) => {
-    setPhotoId(id);
+  const handlePhoto = id => {
+    setPhotoId(id)
     if (id) {
       mutate({
         variables: {
@@ -54,18 +54,18 @@ const MasterCabinet = ({ refetch, currentMe }) => {
             avatar: id,
           },
         },
-      });
+      })
     }
-  };
+  }
 
-  const [activeTab, setActiveTab] = useState("about");
-  const router = useRouter();
+  const [activeTab, setActiveTab] = useState('about')
+  const router = useRouter()
 
   useEffect(() => {
     if (router?.query?.tab) {
-      setActiveTab(router?.query?.tab);
+      setActiveTab(router?.query?.tab)
     }
-  }, [router?.query?.tab]);
+  }, [router?.query?.tab])
 
   return (
     <>
@@ -74,42 +74,42 @@ const MasterCabinet = ({ refetch, currentMe }) => {
         <ProfileCabinetHeaderMobile
           me={currentMe}
           tabs={[
-            { title: "Мои данные", value: "about", icon: "/icon-about.svg" },
+            { title: 'Мои данные', value: 'about', icon: '/icon-about.svg' },
             {
-              title: "Мои заказы",
-              value: "orders",
-              icon: "/icon-orders.svg",
+              title: 'Мои заказы',
+              value: 'orders',
+              icon: '/icon-orders.svg',
               quantity: currentMe?.orders?.length,
             },
             {
-              title: "Моё избранное",
-              value: "favorits",
-              icon: "/icon-star.svg",
+              title: 'Моё избранное',
+              value: 'favorits',
+              icon: '/icon-star.svg',
             },
             {
-              title: "Отзывы клиентов",
-              value: "reviews",
-              icon: "/icon-reviews.svg",
+              title: 'Отзывы клиентов',
+              value: 'reviews',
+              icon: '/icon-reviews.svg',
             },
-            { title: "Сообщения", value: "chat" },
+            { title: 'Сообщения', value: 'chat' },
             {
-              title: "Мои акции",
-              value: "sales",
-            },
-            {
-              title: "Обучение",
-              value: "educations",
+              title: 'Мои акции',
+              value: 'sales',
             },
             {
-              title: "Вакансии",
-              value: "vacancies",
+              title: 'Обучение',
+              value: 'educations',
             },
             {
-              title: "Мероприятия",
-              value: "events",
+              title: 'Вакансии',
+              value: 'vacancies',
             },
-            { title: "Размещение", value: "priority" },
-            { title: "Реклама", value: "banner" },
+            {
+              title: 'Мероприятия',
+              value: 'events',
+            },
+            { title: 'Размещение', value: 'priority' },
+            { title: 'Реклама', value: 'banner' },
           ]}
           toggle={toggle}
           setToggle={setToggle}
@@ -121,25 +121,25 @@ const MasterCabinet = ({ refetch, currentMe }) => {
             setPhotoId={handlePhoto}
             setActiveTab={setActiveTab}
             tabs={[
-              { title: "Мои данные", value: "about" },
-              { title: "Мои профили", value: "profiles" },
+              { title: 'Мои данные', value: 'about' },
+              { title: 'Мои профили', value: 'profiles' },
               {
-                title: "Сообщения",
-                value: "chat",
+                title: 'Сообщения',
+                value: 'chat',
                 quantity: unreadMessagesCount,
               },
-              { title: "Мои заказы", value: "orders" },
-              { title: "Моё избранное", value: "favorits" },
-              { title: "Отзывы клиентов", value: "reviews" },
-              { title: "Мои акции", value: "sales" },
-              { title: "Обучение", value: "educations" },
-              { title: "Вакансии", value: "vacancies" },
-              { title: "Мероприятия", value: "events" },
-              { title: "Размещение", value: "priority" },
-              { title: "Реклама", value: "banner" },
+              { title: 'Мои заказы', value: 'orders' },
+              { title: 'Моё избранное', value: 'favorits' },
+              { title: 'Отзывы клиентов', value: 'reviews' },
+              { title: 'Мои акции', value: 'sales' },
+              { title: 'Обучение', value: 'educations' },
+              { title: 'Вакансии', value: 'vacancies' },
+              { title: 'Мероприятия', value: 'events' },
+              { title: 'Размещение', value: 'priority' },
+              { title: 'Реклама', value: 'banner' },
             ]}
             id={null}
-            photoType={"master"}
+            photoType={'master'}
             noPhotoError={noPhotoError}
             setNoPhotoError={setNoPhotoError}
             photo={
@@ -147,11 +147,11 @@ const MasterCabinet = ({ refetch, currentMe }) => {
                 ? {
                     url: `${PHOTO_URL}${currentMe?.info?.avatar}/original`,
                   }
-                : { url: "/empty-photo.svg" }
+                : { url: '/empty-photo.svg' }
             }
             me={currentMe}
           />
-          {activeTab === "about" ? (
+          {activeTab === 'about' ? (
             <CabinetForm
               setNoPhotoError={setNoPhotoError}
               photoId={photoId}
@@ -159,33 +159,33 @@ const MasterCabinet = ({ refetch, currentMe }) => {
               auth
               currentMe={currentMe}
             />
-          ) : activeTab === "orders" ? (
+          ) : activeTab === 'orders' ? (
             <CabinetOrders me={currentMe} />
-          ) : activeTab === "profiles" ? (
+          ) : activeTab === 'profiles' ? (
             <CabinetProfiles me={currentMe} />
-          ) : activeTab === "chat" ? (
+          ) : activeTab === 'chat' ? (
             <CabinetChat me={currentMe} />
-          ) : activeTab === "reviews" ? (
+          ) : activeTab === 'reviews' ? (
             <CabinetListReviews me={currentMe} />
-          ) : activeTab === "favorits" ? (
+          ) : activeTab === 'favorits' ? (
             <CabinetFavorits />
-          ) : activeTab === "sales" ? (
+          ) : activeTab === 'sales' ? (
             <CabinetSales me={currentMe} />
-          ) : activeTab === "educations" ? (
+          ) : activeTab === 'educations' ? (
             <CabinetEducations me={currentMe} />
-          ) : activeTab === "vacancies" ? (
+          ) : activeTab === 'vacancies' ? (
             <CabinetVacancies me={currentMe} />
-          ) : activeTab === "events" ? (
+          ) : activeTab === 'events' ? (
             <CabinetEvents me={currentMe} />
-          ) : activeTab === "priority" ? (
+          ) : activeTab === 'priority' ? (
             <CabinetPriority me={currentMe} />
-          ) : activeTab === "banner" ? (
+          ) : activeTab === 'banner' ? (
             <CabinetBanner me={currentMe} />
           ) : null}
         </Wrapper>
       </MainContainer>
     </>
-  );
-};
+  )
+}
 
-export default MasterCabinet;
+export default MasterCabinet

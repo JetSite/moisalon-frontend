@@ -1,6 +1,6 @@
 import styled from 'styled-components'
-import { laptopBreakpoint } from '../../../../../../../styles/variables'
-import { PHOTO_URL } from 'variables'
+import { laptopBreakpoint } from '../../../../../../styles/variables'
+import { PHOTO_URL } from 'src/variables'
 
 export const PortfolioItemBlock = styled.div`
   position: relative;

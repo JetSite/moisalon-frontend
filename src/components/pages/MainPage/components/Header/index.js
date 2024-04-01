@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import Link from 'next/link'
-import { useQuery } from '@apollo/client'
+import { useQuery, useLazyQuery } from '@apollo/client'
 import {
   HeaderContent,
   Image,
@@ -36,7 +36,7 @@ import {
   UnreadMessages,
   MobileTitle,
 } from './styled'
-import { red } from '../../../../../../styles/variables'
+import { red } from '../../../../../styles/variables'
 import SearchIcon from './icons/SearchIcon'
 import ProfileIcon from './icons/ProfileIcon'
 import StarIcon from './icons/StarIcon'
@@ -64,8 +64,10 @@ import MoreIcon from './icons/MoreIcon'
 import AdditionalNav from './components/AdditionalNav'
 import { cyrToTranslit } from '../../../../../utils/translit'
 import { getB2cCart } from '../../../../../_graphql-legacy/cart/getB2cCart'
-import { PHOTO_URL } from '../../../../../../variables'
+import { PHOTO_URL } from '../../../../../variables'
 import { useChat } from '../../../../../chatContext'
+import { getCities } from 'src/graphql/city/getCities'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 
 const activeLink = (path, link) => {
   return link?.find(item => item === path)
@@ -76,12 +78,13 @@ const Header = ({ loading = false }) => {
   if (typeof window !== 'undefined' && window.localStorage) {
     cityInStorage = localStorage.getItem('citySalon')
   }
-
+  const [getCitiesList, { data: citiesData }] = useLazyQuery(getCities)
   const [me, setMe] = useContext(MeContext)
   const [productsGet, setProductsGet] = useContext(ProductsGetStatusContext)
   const [city, setCity] = useContext(CityContext)
   const [products, setProducts] = useContext(ProductsContext)
   const [quantity, setQuantity] = useContext(CartContext)
+  const [cities, setCities] = useState([])
   // const { refetch } = useQuery(currentUserSalonsAndMasterQuery, {
   //   skip: true,
   //   onCompleted: (res) => {
@@ -128,9 +131,9 @@ const Header = ({ loading = false }) => {
   //   }
   // }, [productsGet]);
 
-  // if (typeof window !== "undefined" && window.localStorage) {
-  //   cityInStorage = localStorage.getItem("citySalon");
-  // }
+  if (typeof window !== 'undefined' && window.localStorage) {
+    cityInStorage = localStorage.getItem('citySalon')
+  }
 
   const isLoggedIn = me?.info !== undefined && me?.info !== null
 
@@ -219,6 +222,15 @@ const Header = ({ loading = false }) => {
   //     setQuantity(CountProduct(products));
   //   }
   // }, [products]);
+
+  useEffect(() => {
+    if (citiesData) {
+      const normalisedCities = flattenStrapiResponse(citiesData.cities?.data)
+      setCities(normalisedCities)
+    } else {
+      getCitiesList()
+    }
+  }, [citiesData])
 
   useEffect(() => {
     if (me) {
@@ -393,17 +405,15 @@ const Header = ({ loading = false }) => {
             </AdditionalNavWrapper>
           </HeaderMenu>
           <Links>
-            {me ? (
-              <LinkCitySelect onClick={() => setShowCitySelect(true)}>
-                <CityPingIcon
-                  showCitySelect={showCitySelect}
-                  isAboutPage={isAboutPage}
-                />
-                <CitySelectText showCitySelect={showCitySelect}>
-                  {city}
-                </CitySelectText>
-              </LinkCitySelect>
-            ) : null}
+            <LinkCitySelect onClick={() => setShowCitySelect(true)}>
+              <CityPingIcon
+                showCitySelect={showCitySelect}
+                isAboutPage={isAboutPage}
+              />
+              <CitySelectText showCitySelect={showCitySelect}>
+                {city}
+              </CitySelectText>
+            </LinkCitySelect>
             <LinkSearch
               onMouseMove={() => setFillSearch(red)}
               onMouseLeave={() =>
@@ -497,6 +507,7 @@ const Header = ({ loading = false }) => {
         </HeaderContent>
       </Wrapper>
       <CitySelect
+        cities={cities}
         me={me}
         setMeInfo={setMe}
         showCitySelect={showCitySelect}

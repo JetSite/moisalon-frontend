@@ -1,12 +1,12 @@
-import styled from "styled-components";
-import scrollIntoView from "scroll-into-view";
-import { useRouter } from "next/router";
-import { red, laptopBreakpoint } from "../../../../../../../styles/variables";
-import { useQuery } from "@apollo/client";
-import { useContext } from "react";
-import { CityContext, MeContext } from "../../../../../../searchContext";
-import { currentUserSalonsAndMasterQuery } from "../../../../../../_graphql-legacy/master/currentUserSalonsAndMasterQuery";
-import { cyrToTranslit } from "../../../../../../utils/translit";
+import styled from 'styled-components'
+import scrollIntoView from 'scroll-into-view'
+import { useRouter } from 'next/router'
+import { red, laptopBreakpoint } from '../../../../../../styles/variables'
+import { useQuery } from '@apollo/client'
+import { useContext } from 'react'
+import { CityContext, MeContext } from '../../../../../../searchContext'
+import { currentUserSalonsAndMasterQuery } from '../../../../../../_graphql-legacy/master/currentUserSalonsAndMasterQuery'
+import { cyrToTranslit } from '../../../../../../utils/translit'
 
 const Wrapper = styled.div`
   margin-top: 50px;
@@ -14,24 +14,24 @@ const Wrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 const Back = styled.div`
-  background: url("/icon-back.svg") no-repeat center;
+  background: url('/icon-back.svg') no-repeat center;
   position: absolute;
   width: 10px;
   height: 10px;
   background-size: contain;
-  content: "";
+  content: '';
   left: -20px;
   top: 50%;
   margin-top: -5px;
-`;
+`
 
 const Tab = styled.div`
   position: relative;
   display: block;
-`;
+`
 
 const Text = styled.div`
   display: inline-block;
@@ -39,12 +39,12 @@ const Text = styled.div`
   font-size: 18px;
   font-weight: 600;
   line-height: 45px;
-  text-decoration: ${(props) => (props.active ? "underline" : "")};
+  text-decoration: ${props => (props.active ? 'underline' : '')};
   transition: 0.5s;
   &:hover {
     color: #f03;
   }
-`;
+`
 
 const TextRed = styled.div`
   display: inline-block;
@@ -53,7 +53,7 @@ const TextRed = styled.div`
   line-height: 45px;
   cursor: pointer;
   color: #f03;
-`;
+`
 
 const Quantity = styled.div`
   position: relative;
@@ -70,27 +70,27 @@ const Quantity = styled.div`
   font-size: 9px;
   font-weight: 600;
   text-decoration: none;
-`;
+`
 
 const Tabs = ({ tabs, setActiveTab, activeTab }) => {
-  const router = useRouter();
-  const [me, setMe] = useContext(MeContext);
-  const [city] = useContext(CityContext);
+  const router = useRouter()
+  const [me, setMe] = useContext(MeContext)
+  const [city] = useContext(CityContext)
   const { refetch } = useQuery(currentUserSalonsAndMasterQuery, {
     skip: true,
-    onCompleted: (res) => {
+    onCompleted: res => {
       setMe({
         info: res?.me?.info,
         master: res?.me?.master,
         locationByIp: res?.locationByIp,
         salons: res?.me?.salons,
         rentalRequests: res?.me?.rentalRequests,
-      });
+      })
     },
-  });
-  const dev = process.env.NEXT_PUBLIC_ENV !== "production";
-  const handleClick = (item) => {
-    const element = document.getElementById(item.anchor.replace("#", ""));
+  })
+  const dev = process.env.NEXT_PUBLIC_ENV !== 'production'
+  const handleClick = item => {
+    const element = document.getElementById(item.anchor.replace('#', ''))
     if (element) {
       scrollIntoView(element, {
         time: 500,
@@ -98,30 +98,30 @@ const Tabs = ({ tabs, setActiveTab, activeTab }) => {
           top: 0,
           topOffset: 100,
         },
-      });
+      })
     }
-  };
+  }
 
   const handleLogout = async () => {
     const resData = await fetch(
       dev
-        ? "https://stage-passport.moi.salon/api/logout"
-        : "https://passport.moi.salon/api/logout",
+        ? 'https://stage-passport.moi.salon/api/logout'
+        : 'https://passport.moi.salon/api/logout',
       {
-        credentials: "include",
-        "Access-Control-Allow-Credentials": true,
-      }
-    );
+        credentials: 'include',
+        'Access-Control-Allow-Credentials': true,
+      },
+    )
 
     if (resData.status === 200) {
-      await refetch();
-      router.push(`/${cyrToTranslit(city)}`);
+      await refetch()
+      router.push(`/${cyrToTranslit(city)}`)
     }
-  };
+  }
 
   return (
     <Wrapper>
-      {tabs.map((item) => (
+      {tabs.map(item => (
         <Tab key={item.value}>
           {item.title ? (
             <Text
@@ -134,22 +134,22 @@ const Tabs = ({ tabs, setActiveTab, activeTab }) => {
           {item.quantity ? <Quantity>{item.quantity}</Quantity> : null}
         </Tab>
       ))}
-      {router?.asPath !== "/masterCabinet" ? (
+      {router?.asPath !== '/masterCabinet' ? (
         <Tab>
-          <Text onClick={() => router.push("/masterCabinet")}>
+          <Text onClick={() => router.push('/masterCabinet')}>
             Назад в кабинет пользователя
           </Text>
         </Tab>
       ) : null}
       <TextRed
         onClick={() => {
-          handleLogout();
+          handleLogout()
         }}
       >
         Выход
       </TextRed>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default Tabs;
+export default Tabs

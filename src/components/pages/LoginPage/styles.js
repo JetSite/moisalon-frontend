@@ -1,10 +1,10 @@
-import styled from "styled-components";
-import { red, laptopBreakpoint } from "../../../../styles/variables";
+import styled from 'styled-components'
+import { red, laptopBreakpoint } from '../../../styles/variables'
 
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-`;
+`
 
 export const Content = styled.div`
   padding: 136px 140px 0 140px;
@@ -15,18 +15,18 @@ export const Content = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     padding: 142px 40px 0 40px;
   }
-`;
+`
 
 export const FormWrapper = styled.div`
   max-width: 335px;
-`;
+`
 
 export const Form = styled.form`
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-`;
+`
 
 export const Input = styled.input`
   margin-top: 53px;
@@ -48,7 +48,7 @@ export const Input = styled.input`
     font-weight: 400;
     line-height: 25px;
   }
-`;
+`
 
 export const Label = styled.p`
   font-size: 14px;
@@ -62,7 +62,7 @@ export const Label = styled.p`
     font-weight: 500;
     line-height: 16px;
   }
-`;
+`
 
 export const CheckboxWrapper = styled.div`
   height: 21px;
@@ -74,7 +74,7 @@ export const CheckboxWrapper = styled.div`
     margin-top: 0;
     margin-bottom: 20px;
   }
-`;
+`
 
 export const Checkbox = styled.input`
   position: absolute;
@@ -86,7 +86,7 @@ export const Checkbox = styled.input`
     user-select: none;
   }
   & + p::before {
-    content: "";
+    content: '';
     display: inline-block;
     width: 16px;
     height: 16px;
@@ -95,10 +95,10 @@ export const Checkbox = styled.input`
     border: 1px solid #797979;
     margin-right: 14px;
     cursor: pointer;
-    background: ${(props) =>
-      props.checked ? `url("/tick-checkbox.png") no-repeat center` : ""};
+    background: ${props =>
+      props.checked ? `url("/tick-checkbox.png") no-repeat center` : ''};
   }
-`;
+`
 
 export const Title = styled.h2`
   font-size: 30px;
@@ -111,18 +111,18 @@ export const Title = styled.h2`
     font-weight: 600;
     line-height: 25px;
   }
-`;
+`
 
 export const RegisterType = styled.div`
   max-width: 576px;
-`;
+`
 
 export const ButtonWrapper = styled.div`
   max-width: 335px;
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 export const ButtonMobileWrapper = styled.div`
   display: none;
@@ -131,7 +131,7 @@ export const ButtonMobileWrapper = styled.div`
     display: block;
     padding: 0 40px;
   }
-`;
+`
 
 export const NotAuthorized = styled.div`
   max-width: 400px;
@@ -143,4 +143,4 @@ export const NotAuthorized = styled.div`
     font-size: 12px;
     line-height: 18px;
   }
-`;
+`

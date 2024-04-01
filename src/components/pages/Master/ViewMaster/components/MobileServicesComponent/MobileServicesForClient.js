@@ -12,20 +12,20 @@ import {
 } from './styles'
 import { useMutation } from '@apollo/client'
 import catalogOrDefault from '../../../../../../utils/catalogOrDefault'
-import EditIcons from '../../../../../ui/EditIcons'
+import EditIcons from '../../../../../ui/EditIcons/index.tsx'
 import { updateServiceMasterMutation } from '../../../../../../_graphql-legacy/master/updateServiceMasterMutation'
 import EditSalonServicesForClient from '../../../../../pages/Salon/EditSalonServicesForClient'
 
 const MobileServicesComponent = ({
-  serviceCategories,
+  servicesData,
   isOwner,
   master,
   masterPage = false,
   // refetchMaster,
 }) => {
   const [isEditing, setIsEditing] = useState(false)
-  const [entriesItems, setEntriesItems] = useState(serviceCategories)
-  const servicesCount = serviceCategories?.reduce((acc, category) => {
+  const [entriesItems, setEntriesItems] = useState(servicesData)
+  const servicesCount = servicesData?.reduce((acc, category) => {
     return acc + category.services.length
   }, 0)
 
@@ -46,13 +46,13 @@ const MobileServicesComponent = ({
     })
   }
 
-  const groups = serviceCategories?.map((serviceCategory, idx) => {
+  const groups = servicesData?.map((serviceBlock, idx) => {
     return (
       <MobileCatalogGroupForClient
         masterPage={masterPage}
         withPrice
         key={idx}
-        serviceCategory={serviceCategory}
+        serviceBlock={serviceBlock}
         entriesItems={entriesItems}
       />
     )

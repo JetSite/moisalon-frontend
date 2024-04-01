@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../styles/variables";
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../styles/variables'
 
 export const Wrapper = styled.div`
   padding: 0 140px;
@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
     margin-top: 67px;
     margin-bottom: 0;
   }
-`;
+`
 
 export const Top = styled.div`
   display: flex;
@@ -25,7 +25,7 @@ export const Top = styled.div`
     padding-bottom: 5px;
     margin-bottom: 20px;
   }
-`;
+`
 
 export const Title = styled.p`
   font-size: 30px;
@@ -36,7 +36,7 @@ export const Title = styled.p`
     font-weight: 600;
     line-height: 25px;
   }
-`;
+`
 
 export const Count = styled.p`
   color: #f03;
@@ -51,13 +51,13 @@ export const Count = styled.p`
     font-weight: 600;
     line-height: 20px;
   }
-`;
+`
 
 export const Content = styled.div`
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-`;
+`
 
 export const Review = styled.div`
   width: 45%;
@@ -65,24 +65,24 @@ export const Review = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`;
+`
 
 export const ReviewTop = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 30px;
-`;
+`
 
 export const Name = styled.p`
   font-size: 18px;
   font-weight: 600;
-`;
+`
 
 export const Text = styled.p`
   font-size: 14px;
   line-height: 27px;
-`;
+`
 
 export const Buttons = styled.div`
   display: flex;
@@ -90,13 +90,13 @@ export const Buttons = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 export const Form = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 20px;
-`;
+`
 
 export const FormButtons = styled.div`
   margin-top: 20px;
@@ -106,4 +106,4 @@ export const FormButtons = styled.div`
       width: 100%;
     }
   }
-`;
+`

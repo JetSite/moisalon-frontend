@@ -1,19 +1,19 @@
-import styled from "styled-components";
-import { useMutation } from "@apollo/client";
-import { useCallback, useState } from "react";
-import AutoFocusedForm from "../Form/AutoFocusedForm";
-import { FieldStyled } from "../../blocks/Cabinet/components/CabinetForm/styled";
-import { TextField } from "../Form";
-import { required } from "../../../utils/validations";
-import Error from "../Form/Error";
-import { laptopBreakpoint } from "../../../../styles/variables";
-import Button from "../../ui/Button";
-import PhotoAdd from "./PhotoAdd";
-import { createBannerMutation } from "../../../_graphql-legacy/baners/createBannerMutation";
+import styled from 'styled-components'
+import { useMutation } from '@apollo/client'
+import { useCallback, useState } from 'react'
+import AutoFocusedForm from '../Form/AutoFocusedForm'
+import { FieldStyled } from '../../blocks/Cabinet/components/CabinetForm/styled'
+import { TextField } from '../Form'
+import { required } from '../../../utils/validations'
+import Error from '../Form/Error'
+import { laptopBreakpoint } from '../../../styles/variables'
+import Button from '../../ui/Button'
+import PhotoAdd from './PhotoAdd'
+import { createBannerMutation } from '../../../_graphql-legacy/baners/createBannerMutation'
 
 const FieldWrap = styled.div`
   margin-bottom: 14px;
-`;
+`
 
 const TimeWrap = styled.div`
   margin-left: 14px;
@@ -21,7 +21,7 @@ const TimeWrap = styled.div`
     margin-left: 0;
     margin-bottom: 10px;
   }
-`;
+`
 
 const ButtonWrap = styled.div`
   width: 350px;
@@ -30,7 +30,7 @@ const ButtonWrap = styled.div`
     width: 100%;
     margin-top: 40px;
   }
-`;
+`
 
 const PhotoTop = styled.div`
   width: 100%;
@@ -41,37 +41,37 @@ const PhotoTop = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     height: 133px;
   }
-`;
+`
 
 const CreateBanner = ({ setCreateBanner, refetch }) => {
-  const [errors, setErrors] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [photoId, setPhotoId] = useState(null);
-  const [isErrorPopupOpen, setErrorPopupOpen] = useState(false);
-  const [hover, setHover] = useState(false);
+  const [errors, setErrors] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [photoId, setPhotoId] = useState(null)
+  const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
+  const [hover, setHover] = useState(false)
 
   const [createBanner] = useMutation(createBannerMutation, {
-    onError: (error) => {
-      const errorMessages = error.graphQLErrors.map((e) => e.message);
-      setLoading(false);
-      setErrors(errorMessages);
-      setErrorPopupOpen(true);
+    onError: error => {
+      const errorMessages = error.graphQLErrors.map(e => e.message)
+      setLoading(false)
+      setErrors(errorMessages)
+      setErrorPopupOpen(true)
     },
     onCompleted: async () => {
-      setLoading(false);
-      await refetch();
-      setCreateBanner(false);
+      setLoading(false)
+      await refetch()
+      setCreateBanner(false)
     },
-  });
+  })
 
   const onSubmit = useCallback(
-    async (values) => {
+    async values => {
       if (!photoId) {
-        setErrors(["Необходимо добавить фото"]);
-        setErrorPopupOpen(true);
-        return;
+        setErrors(['Необходимо добавить фото'])
+        setErrorPopupOpen(true)
+        return
       }
-      setLoading(true);
+      setLoading(true)
       createBanner({
         variables: {
           input: {
@@ -81,15 +81,15 @@ const CreateBanner = ({ setCreateBanner, refetch }) => {
             adImage: photoId,
           },
         },
-      });
+      })
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [photoId]
-  );
+    [photoId],
+  )
 
-  const onAdd = (photoId) => {
-    setPhotoId(photoId);
-  };
+  const onAdd = photoId => {
+    setPhotoId(photoId)
+  }
 
   return (
     <>
@@ -150,7 +150,7 @@ const CreateBanner = ({ setCreateBanner, refetch }) => {
                   type="submit"
                   disabled={pristine || loading}
                 >
-                  {loading ? "Подождите" : "Сохранить"}
+                  {loading ? 'Подождите' : 'Сохранить'}
                 </Button>
                 <Button
                   variant="darkTransparent"
@@ -163,11 +163,11 @@ const CreateBanner = ({ setCreateBanner, refetch }) => {
                 </Button>
               </ButtonWrap>
             </form>
-          );
+          )
         }}
       />
     </>
-  );
-};
+  )
+}
 
-export default CreateBanner;
+export default CreateBanner

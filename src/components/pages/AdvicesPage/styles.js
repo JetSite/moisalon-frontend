@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { laptopBreakpoint, red } from "../../../../styles/variables";
+import styled from 'styled-components'
+import { laptopBreakpoint, red } from '../../../styles/variables'
 
 export const Wrapper = styled.div`
   display: flex;
@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
     margin-top: 28px;
     padding: 0 20px;
   }
-`;
+`
 
 export const BackWrapper = styled.div`
   margin-top: 17px;
@@ -21,7 +21,7 @@ export const BackWrapper = styled.div`
     margin-top: 28px;
     padding: 0 20px;
   }
-`;
+`
 
 export const Navigation = styled.div`
   width: 33.9%;
@@ -29,7 +29,7 @@ export const Navigation = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 export const Title = styled.h2`
   font-size: 30px;
@@ -38,14 +38,14 @@ export const Title = styled.h2`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const NavList = styled.div`
   width: 100%;
   margin-top: 17px;
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const NavItem = styled.div`
   width: 54.7%;
@@ -61,7 +61,7 @@ export const NavItem = styled.div`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const NavAdvicesList = styled.div`
   width: 78.2%;
@@ -69,17 +69,17 @@ export const NavAdvicesList = styled.div`
   margin-left: 16px;
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const NavAdviceItem = styled.div`
   position: relative;
   display: block;
   margin-bottom: 27px;
-  color: ${({ active }) => (active ? red : "#000")};
+  color: ${({ active }) => (active ? red : '#000')};
   font-size: 14px;
   font-weight: 400;
   line-height: 27px;
-  text-decoration: ${({ active }) => (active ? "underline" : "none")};
+  text-decoration: ${({ active }) => (active ? 'underline' : 'none')};
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 
@@ -90,7 +90,7 @@ export const NavAdviceItem = styled.div`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const Text = styled.p`
   font-size: 18px;
@@ -99,22 +99,22 @@ export const Text = styled.p`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const Icon = styled.div`
   width: 10px;
   height: 12px;
-  background: url("/services-tick.svg") no-repeat center;
-  transform: ${({ opened }) => (opened ? "rotate(90deg)" : "rotate(0)")};
+  background: url('/services-tick.svg') no-repeat center;
+  transform: ${({ opened }) => (opened ? 'rotate(90deg)' : 'rotate(0)')};
   transition: all 0.2s ease-in-out;
 
   ${NavItem}:hover & {
-    background: url("/services-tick-red.svg") no-repeat center;
+    background: url('/services-tick-red.svg') no-repeat center;
   }
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const Content = styled.div`
   width: 59.2%;
@@ -123,22 +123,22 @@ export const Content = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`;
+`
 
 export const AdvList = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const AdvItem = styled.div`
   position: relative;
-  cursor: ${({ opened }) => (opened ? "default" : "pointer")};
+  cursor: ${({ opened }) => (opened ? 'default' : 'pointer')};
   &:not(:last-child) {
     margin-bottom: 75px;
   }
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const AdvImage = styled.div`
   width: 100%;
@@ -151,7 +151,7 @@ export const AdvImage = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     height: 200px;
   }
-`;
+`
 
 export const Favorite = styled.div`
   width: 20px;
@@ -161,7 +161,7 @@ export const Favorite = styled.div`
   top: 20px;
   right: 20px;
   background: ${({ isFavorite }) =>
-      isFavorite ? "url(/favorite-red-icon.svg)" : "url(/favorit.svg)"}
+      isFavorite ? 'url(/favorite-red-icon.svg)' : 'url(/favorit.svg)'}
     no-repeat center;
   background-size: 20px 20px;
 
@@ -169,7 +169,7 @@ export const Favorite = styled.div`
     top: 18px;
     right: 18px;
   }
-`;
+`
 
 export const AdvTitle = styled.h3`
   margin-top: 35px;
@@ -181,7 +181,7 @@ export const AdvTitle = styled.h3`
   @media (max-width: ${laptopBreakpoint}) {
     margin-top: 21px;
   }
-`;
+`
 
 export const AdvDescription = styled.div`
   margin-top: 10px;
@@ -191,13 +191,13 @@ export const AdvDescription = styled.div`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const AdvShortDescription = styled(AdvDescription)`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`;
+`
 
 export const ReadMore = styled.span`
   margin-top: 10px;
@@ -209,7 +209,7 @@ export const ReadMore = styled.span`
   transition: all 0.2s ease-in-out;
 
   &:before {
-    content: "";
+    content: '';
     width: 100%;
     height: 1px;
     position: absolute;
@@ -229,4 +229,4 @@ export const ReadMore = styled.span`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`

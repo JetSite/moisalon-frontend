@@ -1,9 +1,9 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 import {
   laptopBreakpoint,
   mobileBreakpoint,
   red,
-} from "../../../../styles/variables";
+} from '../../../styles/variables'
 
 export const Wrapper = styled.div`
   padding: 0 140px;
@@ -14,7 +14,7 @@ export const Wrapper = styled.div`
     margin-top: 21px;
     margin-bottom: 0;
   }
-`;
+`
 
 export const Wrap = styled.div`
   display: flex;
@@ -24,7 +24,7 @@ export const Wrap = styled.div`
     flex-direction: column;
     padding-top: 0;
   }
-`;
+`
 
 export const Left = styled.div`
   width: 334px;
@@ -32,7 +32,7 @@ export const Left = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`;
+`
 
 export const ImageBrand = styled.div`
   width: 334px;
@@ -47,13 +47,13 @@ export const ImageBrand = styled.div`
     margin: 0 auto;
     margin-bottom: 30px;
   }
-`;
+`
 
 export const Image = styled.img`
   max-height: 100%;
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const Right = styled.div`
   max-width: 710px;
@@ -62,7 +62,7 @@ export const Right = styled.div`
     width: 100%;
     margin-top: 23px;
   }
-`;
+`
 
 export const Title = styled.h1`
   max-width: 614px;
@@ -77,7 +77,7 @@ export const Title = styled.h1`
     text-align: center;
     line-height: 25px;
   }
-`;
+`
 
 export const Price = styled.p`
   font-weight: 600;
@@ -89,13 +89,13 @@ export const Price = styled.p`
     margin-top: 25px;
     text-align: center;
   }
-`;
+`
 
 export const WrapButton = styled.div`
   display: flex;
   align-items: center;
   margin-top: 48px;
-`;
+`
 
 export const CustomButton = styled.div`
   cursor: pointer;
@@ -109,24 +109,24 @@ export const CustomButton = styled.div`
   align-items: center;
   justify-content: center;
   opacity: ${({ disabled }) => (disabled ? 0.3 : 1)};
-  pointer-events: ${({ disabled }) => (disabled ? "none" : "auto")};
-`;
+  pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
+`
 
 export const TopCustomButton = styled.p`
   font-weight: 600;
   font-size: 18px;
-`;
+`
 
 export const BottomCustomButton = styled.p`
   font-size: 14px;
-`;
+`
 
 export const QuantityWrap = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-left: 33px;
-`;
+`
 
 export const Minus = styled.div`
   width: 28px;
@@ -134,27 +134,27 @@ export const Minus = styled.div`
   border-radius: 100%;
   flex-shrink: 0;
   cursor: pointer;
-  background: #f0f0f0 url("/icon-minus.svg") no-repeat center;
+  background: #f0f0f0 url('/icon-minus.svg') no-repeat center;
   transition: all 0.2s ease-in-out;
 
   &:hover {
-    background: #ff0033 url("/icon-minus-white.svg") no-repeat center;
+    background: #ff0033 url('/icon-minus-white.svg') no-repeat center;
   }
-`;
+`
 
 export const Plus = styled(Minus)`
-  background: #f0f0f0 url("/icon-plus.svg") no-repeat center;
+  background: #f0f0f0 url('/icon-plus.svg') no-repeat center;
   background-size: 13px;
-  pointer-events: ${({ disabled }) => (disabled ? "none" : "auto")};
+  pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
 
   &:hover {
-    background: #ff0033 url("/icon-plus-white.svg") no-repeat center;
+    background: #ff0033 url('/icon-plus-white.svg') no-repeat center;
     background-size: 13px;
   }
-`;
+`
 
 export const Quantity = styled.p`
-  color: ${({ isWrongQuantity }) => (isWrongQuantity ? red : "#000")};
+  color: ${({ isWrongQuantity }) => (isWrongQuantity ? red : '#000')};
   font-size: 10px;
   line-height: 16px;
   width: 60px;
@@ -162,7 +162,7 @@ export const Quantity = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     width: 40px;
   }
-`;
+`
 
 export const Description = styled.div`
   font-size: 18px;
@@ -174,7 +174,7 @@ export const Description = styled.div`
     line-height: 25px;
     margin-top: 36px;
   }
-`;
+`
 
 export const Character = styled.p`
   text-decoration: underline;
@@ -196,14 +196,14 @@ export const Character = styled.p`
       width: 10px;
       height: 10px;
       position: absolute;
-      content: "";
-      background: url("/arrow-back.svg") no-repeat;
+      content: '';
+      background: url('/arrow-back.svg') no-repeat;
       background-size: contain;
       transform: rotate(180deg);
       right: 0;
     }
   }
-`;
+`
 
 export const OpenCharacter = styled.p`
   font-weight: 600;
@@ -224,14 +224,14 @@ export const OpenCharacter = styled.p`
       width: 10px;
       height: 10px;
       position: absolute;
-      content: "";
-      background: url("/arrow-back.svg") no-repeat;
+      content: '';
+      background: url('/arrow-back.svg') no-repeat;
       background-size: contain;
       transform: rotate(270deg);
       right: 0;
     }
   }
-`;
+`
 
 export const Attributes = styled.div`
   display: flex;
@@ -239,34 +239,34 @@ export const Attributes = styled.div`
   max-width: 500px;
   width: 100%;
   margin-bottom: 15px;
-`;
+`
 
 export const Name = styled.div`
   width: 40%;
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
-`;
+`
 
 export const Value = styled.div`
   width: 40%;
   font-size: 14px;
   line-height: 20px;
-`;
+`
 
 export const WrapCharacter = styled.div`
   margin-bottom: 20px;
-`;
+`
 
 export const Terms = styled.p`
   font-size: 18px;
   line-height: 30px;
   max-width: 560px;
   width: 100%;
-`;
+`
 
 export const AvailableQuantity = styled.p`
-  color: ${({ isWrongQuantity }) => (isWrongQuantity ? red : "#000")};
+  color: ${({ isWrongQuantity }) => (isWrongQuantity ? red : '#000')};
   font-weight: 600;
   font-size: 18px;
   line-height: 25px;
@@ -276,7 +276,7 @@ export const AvailableQuantity = styled.p`
     margin-top: 25px;
     text-align: center;
   }
-`;
+`
 
 export const ButtonsWrapper = styled.div`
   width: 500px;
@@ -287,7 +287,7 @@ export const ButtonsWrapper = styled.div`
     width: 100%;
     flex-direction: column;
   }
-`;
+`
 
 export const Detail = styled.div`
   margin-top: 15px;
@@ -295,4 +295,4 @@ export const Detail = styled.div`
 
   @media (max-width: ${mobileBreakpoint}) {
   }
-`;
+`

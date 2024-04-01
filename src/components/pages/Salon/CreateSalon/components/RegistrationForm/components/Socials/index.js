@@ -1,13 +1,13 @@
-import React from "react";
-import { Field } from "react-final-form";
-import styled from "styled-components";
-import { isUrl } from "../../../../../../../../utils/validations";
-import SocialNetworkUrlsField from "../../../../../../../blocks/Form/SocialNetworkUrlsField";
-import TextFieldAdapter from "../../../../../../../blocks/Form/TextField";
-import { FieldWrap } from "../../styled";
+import React from 'react'
+import { Field } from 'react-final-form'
+import styled from 'styled-components'
+import { isUrl } from '../../../../../../../../utils/validations'
+import SocialNetworkUrlsField from '../../../../../../../blocks/Form/SocialNetworkUrlsField'
+import TextFieldAdapter from '../../../../../../../blocks/Form/TextField'
+import { FieldWrap } from '../../styled'
 
-import { laptopBreakpoint } from "../../../../../../../../../styles/variables";
-import Group from "../../../../../../../blocks/Form/Group";
+import { laptopBreakpoint } from '../../../../../../../../styles/variables'
+import Group from '../../../../../../../blocks/Form/Group'
 
 const Wrapper = styled.div`
   margin-top: 105px;
@@ -18,7 +18,7 @@ const Wrapper = styled.div`
     margin-top: 80px;
     margin-bottom: 63px;
   }
-`;
+`
 
 const Title = styled.div`
   display: none;
@@ -31,7 +31,7 @@ const Title = styled.div`
     font-weight: 600;
     line-height: 25px;
   }
-`;
+`
 
 const Socials = ({ ref6 }) => {
   return (
@@ -50,7 +50,7 @@ const Socials = ({ ref6 }) => {
         <Field name="socialNetworkUrls" component={SocialNetworkUrlsField} />
       </Group>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default Socials;
+export default Socials

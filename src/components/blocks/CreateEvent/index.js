@@ -1,20 +1,20 @@
-import styled from "styled-components";
-import { useMutation } from "@apollo/client";
-import { useCallback, useState } from "react";
-import AutoFocusedForm from "../Form/AutoFocusedForm";
-import { FieldStyled } from "../../blocks/Cabinet/components/CabinetForm/styled";
-import { TextField } from "../Form";
-import { required } from "../../../utils/validations";
-import Error from "../Form/Error";
-import { laptopBreakpoint } from "../../../../styles/variables";
-import Button from "../../ui/Button";
-import Event from "../Event";
-import { createEventMutation } from "../../../_graphql-legacy/events/createEventMutation";
-import Popup from "../../ui/Popup";
+import styled from 'styled-components'
+import { useMutation } from '@apollo/client'
+import { useCallback, useState } from 'react'
+import AutoFocusedForm from '../Form/AutoFocusedForm'
+import { FieldStyled } from '../../blocks/Cabinet/components/CabinetForm/styled'
+import { TextField } from '../Form'
+import { required } from '../../../utils/validations'
+import Error from '../Form/Error'
+import { laptopBreakpoint } from '../../../styles/variables'
+import Button from '../../ui/Button'
+import Event from '../Event'
+import { createEventMutation } from '../../../_graphql-legacy/events/createEventMutation'
+import Popup from '../../ui/Popup'
 
 const FieldWrap = styled.div`
   margin-bottom: 14px;
-`;
+`
 
 const TextDate = styled.p`
   margin-left: 10px;
@@ -22,7 +22,7 @@ const TextDate = styled.p`
     margin-left: 0;
     margin-bottom: 10px;
   }
-`;
+`
 
 const FieldWrapDate = styled.div`
   margin-bottom: 14px;
@@ -33,7 +33,7 @@ const FieldWrapDate = styled.div`
     flex-direction: column-reverse;
     align-items: flex-start;
   }
-`;
+`
 
 const TimeWrap = styled.div`
   margin-left: 14px;
@@ -41,7 +41,7 @@ const TimeWrap = styled.div`
     margin-left: 0;
     margin-bottom: 10px;
   }
-`;
+`
 
 const ButtonWrap = styled.div`
   width: 350px;
@@ -50,44 +50,44 @@ const ButtonWrap = styled.div`
     width: 100%;
     margin-top: 40px;
   }
-`;
+`
 
 const CreateEvent = ({ setCreateEvent, refetch, id }) => {
-  const [errors, setErrors] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [photoId, setPhotoId] = useState(null);
-  const [published, setPublished] = useState(false);
-  const [isErrorPopupOpen, setErrorPopupOpen] = useState(false);
-  const [openPopup, setOpenPopup] = useState(false);
+  const [errors, setErrors] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [photoId, setPhotoId] = useState(null)
+  const [published, setPublished] = useState(false)
+  const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
+  const [openPopup, setOpenPopup] = useState(false)
 
   const [createEvent] = useMutation(createEventMutation, {
-    onError: (error) => {
-      const errorMessages = error.graphQLErrors.map((e) => e.message);
-      setLoading(false);
-      setErrors(errorMessages);
-      setErrorPopupOpen(true);
+    onError: error => {
+      const errorMessages = error.graphQLErrors.map(e => e.message)
+      setLoading(false)
+      setErrors(errorMessages)
+      setErrorPopupOpen(true)
     },
-    onCompleted: async (data) => {
-      setLoading(false);
-      await refetch();
-      setOpenPopup(true);
+    onCompleted: async data => {
+      setLoading(false)
+      await refetch()
+      setOpenPopup(true)
     },
-  });
+  })
 
   const onSubmit = useCallback(
-    async (values) => {
+    async values => {
       if (!photoId) {
-        setErrors(["Необходимо добавить фото"]);
-        setErrorPopupOpen(true);
-        return;
+        setErrors(['Необходимо добавить фото'])
+        setErrorPopupOpen(true)
+        return
       }
-      setLoading(true);
+      setLoading(true)
       createEvent({
         variables: {
           input: {
             title: values.title,
             id: id,
-            origin: "Not",
+            origin: 'Not',
             photoId,
             desc: values.desc,
             short_desc: values.short_desc,
@@ -97,19 +97,19 @@ const CreateEvent = ({ setCreateEvent, refetch, id }) => {
             isPublished: false,
           },
         },
-      });
+      })
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [photoId, published]
-  );
-  const onAdd = (photoId) => {
-    setPhotoId(photoId);
-  };
+    [photoId, published],
+  )
+  const onAdd = photoId => {
+    setPhotoId(photoId)
+  }
 
   const closePopup = () => {
-    setOpenPopup(false);
-    setCreateEvent(false);
-  };
+    setOpenPopup(false)
+    setCreateEvent(false)
+  }
 
   return (
     <>
@@ -182,14 +182,14 @@ const CreateEvent = ({ setCreateEvent, refetch, id }) => {
               <FieldWrapDate>
                 <FieldStyled
                   name="dateStart"
-                  component={"input"}
+                  component={'input'}
                   type="date"
                   required
                 />
                 <TimeWrap>
                   <FieldStyled
                     name="timeStart"
-                    component={"input"}
+                    component={'input'}
                     type="time"
                     required
                   />
@@ -199,14 +199,14 @@ const CreateEvent = ({ setCreateEvent, refetch, id }) => {
               <FieldWrapDate>
                 <FieldStyled
                   name="dateEnd"
-                  component={"input"}
+                  component={'input'}
                   type="date"
                   required
                 />
                 <TimeWrap>
                   <FieldStyled
                     name="timeEnd"
-                    component={"input"}
+                    component={'input'}
                     type="time"
                     required
                   />
@@ -233,7 +233,7 @@ const CreateEvent = ({ setCreateEvent, refetch, id }) => {
                   type="submit"
                   disabled={pristine || loading}
                 >
-                  {loading ? "Подождите" : "Сохранить"}
+                  {loading ? 'Подождите' : 'Сохранить'}
                 </Button>
                 <Button
                   variant="darkTransparent"
@@ -246,7 +246,7 @@ const CreateEvent = ({ setCreateEvent, refetch, id }) => {
                 </Button>
               </ButtonWrap>
             </form>
-          );
+          )
         }}
       />
       <Popup
@@ -259,7 +259,7 @@ const CreateEvent = ({ setCreateEvent, refetch, id }) => {
         </Button>
       </Popup>
     </>
-  );
-};
+  )
+}
 
-export default CreateEvent;
+export default CreateEvent

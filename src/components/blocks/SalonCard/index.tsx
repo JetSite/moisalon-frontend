@@ -15,6 +15,8 @@ import {
   SkeletonSalonItem,
   Rent,
   SalonShareWrap,
+  SalonInfo,
+  Activities,
 } from './styles'
 import { Skeleton } from '@material-ui/lab'
 import {
@@ -27,13 +29,15 @@ import Share from '../../ui/Share'
 import Rating from '../../ui/Rating'
 import { useMedia } from 'use-media'
 import HeartFullFill from '../../pages/MainPage/components/Header/icons/HeartFullFill'
-import { PHOTO_URL } from 'variables'
+import { PHOTO_URL } from 'src/variables'
+import { ISalon } from 'src/types/salon'
+import { getServicesCategories } from 'src/utils/serviceCatalog'
 
 interface Props {
-  item: any
-  loading: boolean
-  rent: boolean
-  seatCount: number
+  item: ISalon
+  loading?: boolean
+  rent?: boolean
+  seatCount?: number
   shareLink: string
 }
 
@@ -67,6 +71,8 @@ const SalonCard: FC<Props> = ({
     favoritesInStorage('salons', item)
     setIsFavorit(!isFavorite)
   }
+
+  const servicesCategories = getServicesCategories(item.services)
 
   return loading ? (
     <SkeletonSalonItem variant="rect" />
@@ -105,16 +111,9 @@ const SalonCard: FC<Props> = ({
             </Socials>
           </Top>
           <Info>
-            {/* <SalonInfo>
-              <Activities>
-                {selectedGroupNamesMax(
-                  item.activities,
-                  salonActivitiesCatalog,
-                  ', ',
-                  1,
-                )}
-              </Activities>
-            </SalonInfo> */}
+            <SalonInfo>
+              <Activities>{servicesCategories.join(', ')}</Activities>
+            </SalonInfo>
             {item?.salonAddress ? <Address>{item.salonAddress}</Address> : null}
           </Info>
         </Wrap>

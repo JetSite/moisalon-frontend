@@ -1,6 +1,6 @@
-import { Tabs } from "@material-ui/core";
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../styles/variables";
+import { Tabs } from '@material-ui/core'
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../styles/variables'
 
 export const Title = styled.h2`
   margin-top: 70px;
@@ -15,7 +15,7 @@ export const Title = styled.h2`
     padding: 0 20px;
     font-size: 20px;
   }
-`;
+`
 
 export const TabsWrapper = styled.div`
   margin-bottom: 74px;
@@ -24,7 +24,7 @@ export const TabsWrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     margin-bottom: 40px;
   }
-`;
+`
 
 export const TabsStyled = styled(Tabs)`
   max-width: 1440px;
@@ -46,7 +46,7 @@ export const TabsStyled = styled(Tabs)`
       }
     }
   }
-`;
+`
 
 export const ContentWrapper = styled.div`
   margin-bottom: 150px;
@@ -55,7 +55,7 @@ export const ContentWrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     padding: 0 20px;
   }
-`;
+`
 
 export const Term = styled.dt`
   font-size: 18px;
@@ -64,7 +64,7 @@ export const Term = styled.dt`
   @media (max-width: ${laptopBreakpoint}) {
     font-size: 16px;
   }
-`;
+`
 
 export const Description = styled.dd`
   margin: 0;
@@ -91,7 +91,7 @@ export const Description = styled.dd`
     list-style: disc;
     margin: 10px 0;
   }
-`;
+`
 
 export const TabTitle = styled.h4`
   margin-bottom: 32px;
@@ -104,4 +104,4 @@ export const TabTitle = styled.h4`
     font-size: 20px;
     line-height: 30px;
   }
-`;
+`

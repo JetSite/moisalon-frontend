@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { laptopBreakpoint, red } from "../../../../../../../styles/variables";
+import styled from 'styled-components'
+import { laptopBreakpoint, red } from '../../../../../../styles/variables'
 
 export const Wrapper = styled.div`
   min-width: 170px;
@@ -15,9 +15,9 @@ export const Wrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     bottom: -180px;
   }
-`;
+`
 
-export const CityList = styled.ul``;
+export const CityList = styled.ul``
 
 export const CityItem = styled.li`
   list-style: none;
@@ -32,7 +32,7 @@ export const CityItem = styled.li`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const Text = styled.p`
   font-size: 14px;
@@ -45,4 +45,4 @@ export const Text = styled.p`
     font-weight: 600;
     line-height: 35px;
   }
-`;
+`

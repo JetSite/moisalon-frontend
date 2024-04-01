@@ -1,9 +1,9 @@
-import styled from "styled-components";
-import Button from "../../../../../../../ui/Button";
-import DictionaryField from "../../../../../../../blocks/Form/DictionaryField";
-import { lengthValidate } from "../../../../../../../../utils/validations";
-import { MobileHidden } from "../../../../../../../../styles/common";
-import { laptopBreakpoint } from "../../../../../../../../../styles/variables";
+import styled from 'styled-components'
+import Button from '../../../../../../../ui/Button'
+import DictionaryField from '../../../../../../../blocks/Form/DictionaryField'
+import { lengthValidate } from '../../../../../../../../utils/validations'
+import { MobileHidden } from '../../../../../../../../styles/common'
+import { laptopBreakpoint } from '../../../../../../../../styles/variables'
 
 const Text = styled.p`
   margin-top: 70px;
@@ -26,7 +26,7 @@ const Text = styled.p`
       line-height: 25px;
     }
   }
-`;
+`
 
 const TitleMobile = styled.div`
   display: none;
@@ -37,11 +37,11 @@ const TitleMobile = styled.div`
     font-weight: 600;
     line-height: 25px;
   }
-`;
+`
 
 const Wrap = styled.div`
   padding-top: 15px;
-`;
+`
 
 const MasterSpecializationsList = ({
   serviceCatalog,
@@ -49,7 +49,7 @@ const MasterSpecializationsList = ({
   handleClickNextTab,
   number,
 }) => {
-  const { groups: specializations = [] } = serviceCatalog;
+  const { groups: specializations = [] } = serviceCatalog
 
   return (
     <Wrap ref={ref2} id="spec">
@@ -68,9 +68,9 @@ const MasterSpecializationsList = ({
       </Text>
       <MobileHidden>
         <Button
-          onClick={(e) => {
-            e.preventDefault();
-            handleClickNextTab(number);
+          onClick={e => {
+            e.preventDefault()
+            handleClickNextTab(number)
           }}
           variant="red"
           size="width374"
@@ -79,7 +79,7 @@ const MasterSpecializationsList = ({
         </Button>
       </MobileHidden>
     </Wrap>
-  );
-};
+  )
+}
 
-export default MasterSpecializationsList;
+export default MasterSpecializationsList

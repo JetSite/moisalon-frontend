@@ -1,8 +1,8 @@
-import Button from "../../../../../../../ui/Button";
-import DictionaryGroupsField from "../../../../../../../blocks/Form/DictionaryGroupsField/DictionaryGroupsField";
-import styled from "styled-components";
-import { MobileHidden } from "../../../../../../../../styles/common";
-import { laptopBreakpoint } from "../../../../../../../../../styles/variables";
+import Button from '../../../../../../../ui/Button'
+import DictionaryGroupsField from '../../../../../../../blocks/Form/DictionaryGroupsField/DictionaryGroupsField'
+import styled from 'styled-components'
+import { MobileHidden } from '../../../../../../../../styles/common'
+import { laptopBreakpoint } from '../../../../../../../../styles/variables'
 
 const Wrapper = styled.div`
   margin-top: 91px;
@@ -12,7 +12,7 @@ const Wrapper = styled.div`
     margin-top: 0;
     padding-top: 0;
   }
-`;
+`
 
 const Title = styled.div`
   display: none;
@@ -25,7 +25,7 @@ const Title = styled.div`
     font-weight: 600;
     line-height: 25px;
   }
-`;
+`
 
 const SalonServices = ({
   serviceCatalog,
@@ -33,16 +33,16 @@ const SalonServices = ({
   handleClickNextTab,
   number,
 }) => {
-  const { groups: services = [] } = serviceCatalog;
+  const { groups: services = [] } = serviceCatalog
   return (
     <Wrapper ref={ref3} id="services">
       <Title>Сервис для посетителей</Title>
       <DictionaryGroupsField name="services" groups={services} />
       <MobileHidden>
         <Button
-          onClick={(e) => {
-            e.preventDefault();
-            handleClickNextTab(number);
+          onClick={e => {
+            e.preventDefault()
+            handleClickNextTab(number)
           }}
           variant="red"
           size="width374"
@@ -51,7 +51,7 @@ const SalonServices = ({
         </Button>
       </MobileHidden>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default SalonServices;
+export default SalonServices

@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../../styles/variables";
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../../styles/variables'
 
 export const Wrapper = styled.div`
   padding: 0 140px;
@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
     margin-top: 0;
     padding: 0 20px;
   }
-`;
+`
 
 export const Top = styled.div`
   display: flex;
@@ -23,7 +23,7 @@ export const Top = styled.div`
     margin-bottom: 0;
     padding-bottom: 11px;
   }
-`;
+`
 
 export const ContentWrapper = styled.div`
   width: 47%;
@@ -31,23 +31,23 @@ export const ContentWrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     /* width: 47%; */
   }
-`;
+`
 
 export const ContentWrapperElement = styled.div`
   width: 47%;
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`;
+`
 
 export const SheduleWrap = styled.div`
   width: 47%;
-`;
+`
 
 export const ContentWrapperFlex = styled.div`
   display: flex;
   justify-content: space-between;
-`;
+`
 
 export const Title = styled.h2`
   font-weight: 600;
@@ -58,11 +58,11 @@ export const Title = styled.h2`
     font-weight: 600;
     line-height: 25px;
   }
-`;
+`
 
 export const Bottom = styled.div`
   margin-bottom: 80px;
-`;
+`
 
 export const PhoneNumber = styled.a`
   font-size: 18px;
@@ -80,7 +80,7 @@ export const PhoneNumber = styled.a`
     font-weight: 400;
     line-height: 25px;
   }
-`;
+`
 
 export const PhoneNumberClose = styled.p`
   font-size: 18px;
@@ -95,7 +95,7 @@ export const PhoneNumberClose = styled.p`
     font-weight: 400;
     line-height: 25px;
   }
-`;
+`
 
 export const Email = styled.a`
   font-size: 18px;
@@ -113,7 +113,7 @@ export const Email = styled.a`
     font-weight: 400;
     line-height: 25px;
   }
-`;
+`
 
 export const Address = styled.a`
   font-size: 18px;
@@ -125,7 +125,7 @@ export const Address = styled.a`
     font-weight: 400;
     line-height: 25px;
   }
-`;
+`
 
 export const Content = styled.div`
   display: flex;
@@ -136,7 +136,7 @@ export const Content = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     flex-direction: column;
   }
-`;
+`
 
 export const Socials = styled.div`
   display: flex;
@@ -144,7 +144,7 @@ export const Socials = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     justify-content: flex-end;
   }
-`;
+`
 
 export const ContentBottom = styled.div`
   display: flex;
@@ -153,7 +153,7 @@ export const ContentBottom = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     flex-direction: column;
   }
-`;
+`
 
 const Social = styled.a`
   width: 23px;
@@ -172,17 +172,17 @@ const Social = styled.a`
     margin-right: 0;
     margin-left: 18px;
   }
-`;
+`
 
 export const SocialVk = styled(Social)`
-  background: url("/vk-icon.svg") no-repeat center;
+  background: url('/vk-icon.svg') no-repeat center;
   background-size: contain;
-`;
+`
 
 export const SocialYT = styled(Social)`
-  background: url("/yt-icon.svg") no-repeat center;
+  background: url('/yt-icon.svg') no-repeat center;
   background-size: contain;
-`;
+`
 
 export const BlurPhone = styled.p`
   display: inline;
@@ -192,7 +192,7 @@ export const BlurPhone = styled.p`
   background: linear-gradient(to right, #000000 0%, #ffffff 72%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-`;
+`
 
 export const SubwayFlex = styled.div`
   display: flex;
@@ -200,7 +200,7 @@ export const SubwayFlex = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     display: block;
   }
-`;
+`
 
 export const RouteBlock = styled.div`
   width: 545px;
@@ -209,7 +209,7 @@ export const RouteBlock = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`;
+`
 
 export const RouteBlockTitle = styled.p`
   margin-bottom: 10px;
@@ -217,7 +217,7 @@ export const RouteBlockTitle = styled.p`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const RouteDescription = styled.p`
   font-size: 14px;
@@ -225,4 +225,4 @@ export const RouteDescription = styled.p`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`

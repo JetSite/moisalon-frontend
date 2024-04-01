@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { Skeleton } from '@material-ui/lab'
-import { laptopBreakpoint } from '../../../../styles/variables'
+import { laptopBreakpoint } from '../../../styles/variables'
 
 export const Wrapper = styled.div`
   position: relative;
@@ -104,6 +104,7 @@ export const EmailLink = styled.a`
 export const Info = styled.div`
   display: flex;
   justify-content: space-between;
+  height: 69px;
   overflow: hidden;
   margin-bottom: 10px;
 `
@@ -130,7 +131,7 @@ export const Address = styled.p`
 `
 
 export const Activities = styled.p`
-  line-height: 27px;
+  line-height: 23px;
   font-size: 14px;
   color: #000;
 

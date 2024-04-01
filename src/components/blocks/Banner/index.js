@@ -1,7 +1,7 @@
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../styles/variables";
-import Button from "../../ui/Button";
-import { PHOTO_URL } from "../../../../variables";
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../styles/variables'
+import Button from '../../ui/Button'
+import { PHOTO_URL } from '../../../variables'
 
 const BannerWrap = styled.div`
   width: 375px;
@@ -22,7 +22,7 @@ const BannerWrap = styled.div`
     max-width: 375px;
     height: 280px;
   }
-`;
+`
 
 const Wrap = styled.div`
   width: 375px;
@@ -31,7 +31,7 @@ const Wrap = styled.div`
     max-width: 375px;
     height: 280px;
   }
-`;
+`
 
 const BannerTop = styled.div`
   width: 100%;
@@ -42,13 +42,13 @@ const BannerTop = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     height: 133px;
   }
-`;
+`
 
 const Image = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-`;
+`
 
 const BannerContent = styled.div`
   padding: 30px 25px;
@@ -60,7 +60,7 @@ const BannerContent = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     height: 147px;
   }
-`;
+`
 
 const BannerTitle = styled.p`
   font-weight: 600;
@@ -72,7 +72,7 @@ const BannerTitle = styled.p`
     font-size: 14px;
     line-height: initial;
   }
-`;
+`
 
 const BannerText = styled.p`
   font-weight: 600;
@@ -83,7 +83,7 @@ const BannerText = styled.p`
     font-size: 12px;
     line-height: initial;
   }
-`;
+`
 
 const Status = styled.p`
   font-weight: 600;
@@ -92,7 +92,7 @@ const Status = styled.p`
   margin-top: 8px;
   margin-bottom: 8px;
   color: #f03;
-`;
+`
 
 const Banner = ({ item, handleDelete }) => {
   return (
@@ -108,12 +108,12 @@ const Banner = ({ item, handleDelete }) => {
       </BannerWrap>
       <Wrap>
         <Status>
-          Статус:{" "}
-          {item.status === "New "
-            ? "Новый"
-            : item.status === "Confirmed"
-            ? "Подтвержденный"
-            : "Новый"}
+          Статус:{' '}
+          {item.status === 'New '
+            ? 'Новый'
+            : item.status === 'Confirmed'
+            ? 'Подтвержденный'
+            : 'Новый'}
         </Status>
         <Button
           onClick={() => handleDelete(item)}
@@ -124,7 +124,7 @@ const Banner = ({ item, handleDelete }) => {
         </Button>
       </Wrap>
     </>
-  );
-};
+  )
+}
 
-export default Banner;
+export default Banner

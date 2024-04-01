@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../../styles/variables";
-import { MainContainer } from "../../../../../../styles/common";
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../../styles/variables'
+import { MainContainer } from '../../../../../../styles/common'
 
 const Wrapper = styled.div`
   padding: 0 140px;
@@ -11,7 +11,7 @@ const Wrapper = styled.div`
     margin-bottom: 0px;
     padding-bottom: 10px;
   }
-`;
+`
 
 const Title = styled.p`
   font-weight: 600;
@@ -23,7 +23,7 @@ const Title = styled.p`
     padding-bottom: 16px;
     padding-top: 16px;
   }
-`;
+`
 
 const Content = styled.div`
   width: 100%;
@@ -37,7 +37,7 @@ const Content = styled.div`
     align-items: flex-start;
     padding-top: 20px;
   }
-`;
+`
 
 const Item = styled.div`
   display: flex;
@@ -48,7 +48,7 @@ const Item = styled.div`
     width: 100%;
     margin-bottom: 10px;
   }
-`;
+`
 
 const Text = styled.p`
   font-size: 18px;
@@ -56,9 +56,9 @@ const Text = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     font-size: 16px;
   }
-`;
+`
 
-const Icon = styled.img``;
+const Icon = styled.img``
 
 const Service = ({ services }) => {
   return (
@@ -66,7 +66,7 @@ const Service = ({ services }) => {
       <Wrapper>
         <Title>Сервис для посетителей</Title>
         <Content>
-          {services?.map((item) => (
+          {services?.map(item => (
             <Item key={item.id}>
               <Icon src="/service-rent-icon.svg" />
               <Text>{item?.title}</Text>
@@ -75,7 +75,7 @@ const Service = ({ services }) => {
         </Content>
       </Wrapper>
     </MainContainer>
-  );
-};
+  )
+}
 
-export default Service;
+export default Service

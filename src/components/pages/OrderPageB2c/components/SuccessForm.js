@@ -1,5 +1,5 @@
-import Button from "../../../ui/Button";
-import { useEffect } from "react";
+import Button from '../../../ui/Button'
+import { useEffect } from 'react'
 import {
   SuccessWrapper,
   Content,
@@ -20,23 +20,23 @@ import {
   TextSumm,
   TextTotal,
   ButtonWrap,
-} from "../styles";
-import { useMedia } from "use-media";
-import PopupOrder from "./PopupOrder";
-import Steps from "./Steps";
-import { PHOTO_URL } from "../../../../../variables";
+} from '../styles'
+import { useMedia } from 'use-media'
+import PopupOrder from './PopupOrder'
+import Steps from './Steps'
+import { PHOTO_URL } from '../../../../variables'
 
-const totalSumm = (items) => {
+const totalSumm = items => {
   if (!items?.length) {
-    return 0;
+    return 0
   } else {
-    let count = 0;
+    let count = 0
     for (let i = 0; i < items.length; i++) {
-      count += items[i].product.currentAmount * items[i].quantity;
+      count += items[i].product.currentAmount * items[i].quantity
     }
-    return count;
+    return count
   }
-};
+}
 
 const SuccessForm = ({
   formValues,
@@ -45,15 +45,15 @@ const SuccessForm = ({
   open,
   handleClose,
 }) => {
-  const mobileMedia = useMedia({ maxWidth: 768 });
+  const mobileMedia = useMedia({ maxWidth: 768 })
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+    window.scrollTo(0, 0)
+  }, [])
 
   const amount = formValues?.product?.reduce(
     (sum, { price, count }) => sum + price * count,
-    0
-  );
+    0,
+  )
 
   return (
     <>
@@ -84,10 +84,10 @@ const SuccessForm = ({
               <Desc>Способ оплаты</Desc>
               <Text>
                 {formValues.payment === 0
-                  ? "Картой при получении"
+                  ? 'Картой при получении'
                   : formValues.payment === 1
-                  ? "Наличными"
-                  : "Безналичный расчёт"}
+                  ? 'Наличными'
+                  : 'Безналичный расчёт'}
               </Text>
             </ContentWrap>
             {formValues?.comment ? (
@@ -107,7 +107,7 @@ const SuccessForm = ({
                         src={
                           item?.product?.photoIds[0]
                             ? ` ${PHOTO_URL}${item?.product?.photoIds[0]}/original`
-                            : "/cosmetic_placeholder.jpg"
+                            : '/cosmetic_placeholder.jpg'
                         }
                         alt="logo"
                       />
@@ -143,7 +143,7 @@ const SuccessForm = ({
       </Content>
       <PopupOrder handleCloseSuccess={handleClose} open={open} />
     </>
-  );
-};
+  )
+}
 
-export default SuccessForm;
+export default SuccessForm

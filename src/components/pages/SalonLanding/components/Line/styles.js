@@ -1,14 +1,14 @@
-import styled, { keyframes } from "styled-components";
+import styled, { keyframes } from 'styled-components'
 import {
   laptopBreakpoint,
   tabletBreakpoint,
-} from "../../../../../../styles/variables";
+} from '../../../../../styles/variables'
 
-const move = (lengthValue) => keyframes`
+const move = lengthValue => keyframes`
   100% { 
     transform: translateX(-${lengthValue}px);  
   }
-`;
+`
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -33,7 +33,7 @@ export const Wrapper = styled.div`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const TextWrapper = styled.div`
   height: 100%;
@@ -50,7 +50,7 @@ export const TextWrapper = styled.div`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const Text = styled.p`
   width: ${({ length }) => `${length}px`};
@@ -64,4 +64,4 @@ export const Text = styled.p`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`

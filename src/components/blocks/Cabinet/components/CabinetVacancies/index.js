@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useQuery, useMutation } from "@apollo/client";
+import { useState, useEffect } from 'react'
+import { useQuery, useMutation } from '@apollo/client'
 import {
   Wrapper,
   TitlePage,
@@ -13,42 +13,42 @@ import {
   VacanciesWrapper,
   Back,
   SkeletonWrap,
-} from "./styles";
-import Button from "../../../../ui/Button";
-import CreateVacancy from "./components/CreateVacancy";
-import { MobileHidden, MobileVisible } from "../../../../../styles/common";
-import { currentVacancies } from "../../../../../_graphql-legacy/vacancies/currentVacancies";
-import { deleteVacancyMutation } from "../../../../../_graphql-legacy/vacancies/deleteVacancyMutation";
-import Vacancy from "../../../Vacancy";
-import { PHOTO_URL } from "../../../../../../variables";
+} from './styles'
+import Button from '../../../../ui/Button'
+import CreateVacancy from './components/CreateVacancy'
+import { MobileHidden, MobileVisible } from '../../../../../styles/common'
+import { currentVacancies } from '../../../../../_graphql-legacy/vacancies/currentVacancies'
+import { deleteVacancyMutation } from '../../../../../_graphql-legacy/vacancies/deleteVacancyMutation'
+import Vacancy from '../../../Vacancy'
+import { PHOTO_URL } from '../../../../../variables'
 
 const CabinetVacanciesList = ({ vacancies, loading, removeVacancy }) => {
   if (loading) {
-    return <SkeletonWrap variant="rect" />;
+    return <SkeletonWrap variant="rect" />
   }
 
   return (
     <VacanciesWrapper>
       {vacancies?.length > 0 ? (
         <>
-          {vacancies?.map((item) => (
+          {vacancies?.map(item => (
             <Vacancy
               key={item.id}
               id={item.id}
               title={item.title}
               name={`${
-                item?.origin.toLowerCase() === "master"
-                  ? "Мастер"
-                  : item.origin.toLowerCase() === "salon"
-                  ? "Салон"
-                  : item.origin.toLowerCase() === "brand"
-                  ? "Бренд"
-                  : ""
+                item?.origin.toLowerCase() === 'master'
+                  ? 'Мастер'
+                  : item.origin.toLowerCase() === 'salon'
+                  ? 'Салон'
+                  : item.origin.toLowerCase() === 'brand'
+                  ? 'Бренд'
+                  : ''
               } ${
                 item?.masterOrigin?.name ||
                 item?.salonOrigin?.name ||
                 item?.brandOrigin?.name ||
-                ""
+                ''
               }`}
               photoId={item.photoId}
               amountFrom={item.amountFrom}
@@ -61,49 +61,49 @@ const CabinetVacanciesList = ({ vacancies, loading, removeVacancy }) => {
         <Subtitle>У профиля нет вакансий</Subtitle>
       )}
     </VacanciesWrapper>
-  );
-};
+  )
+}
 
 const CabinetVacancies = ({ me }) => {
-  const salons = me?.salons;
-  const master = me?.master;
-  const brands = me?.userBrands;
+  const salons = me?.salons
+  const master = me?.master
+  const brands = me?.userBrands
 
-  const [id, setId] = useState("");
-  const [type, setType] = useState(null);
-  const [activeProfile, setActiveProfile] = useState(null);
-  const [vacancies, setVacancies] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [createVacancy, setCreateVacancy] = useState(false);
+  const [id, setId] = useState('')
+  const [type, setType] = useState(null)
+  const [activeProfile, setActiveProfile] = useState(null)
+  const [vacancies, setVacancies] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [createVacancy, setCreateVacancy] = useState(false)
 
   const { data, refetch: refetchVacancies } = useQuery(currentVacancies, {
     skip: true,
     variables: {
       originId: id,
     },
-    onCompleted: (res) => {
-      setVacancies(res?.currentVacancies);
-      setLoading(false);
+    onCompleted: res => {
+      setVacancies(res?.currentVacancies)
+      setLoading(false)
     },
-  });
+  })
 
   const [removeVacancy] = useMutation(deleteVacancyMutation, {
     onCompleted: () => {
-      refetchVacancies();
+      refetchVacancies()
     },
-  });
+  })
 
   useEffect(() => {
     if (id) {
-      setLoading(true);
-      setVacancies([]);
+      setLoading(true)
+      setVacancies([])
       refetchVacancies({
         variables: {
           originId: id,
         },
-      });
+      })
     }
-  }, [type, id]);
+  }, [type, id])
 
   return (
     <Wrapper>
@@ -115,26 +115,26 @@ const CabinetVacancies = ({ me }) => {
         <Subtitle>У Вас нет профиля бренда или салона</Subtitle>
       ) : null}
       {salons?.length && !activeProfile
-        ? salons.map((item) => (
+        ? salons.map(item => (
             <div key={item.id}>
               <Item
                 onClick={() => {
-                  setType("salon");
-                  setId(item?.id);
-                  setActiveProfile(item);
+                  setType('salon')
+                  setId(item?.id)
+                  setActiveProfile(item)
                 }}
               >
                 <Container>
                   <Avatar
                     alt="avatar"
-                    src={item?.logo?.url || "empty-photo.svg"}
+                    src={item?.logo?.url || 'empty-photo.svg'}
                   />
                   <Content>
                     <Name>{item?.name}</Name>
                     <Type>
                       {item?.lessor
-                        ? "Профиль салона арендодателя"
-                        : "Профиль салона"}
+                        ? 'Профиль салона арендодателя'
+                        : 'Профиль салона'}
                     </Type>
                   </Content>
                 </Container>
@@ -143,13 +143,13 @@ const CabinetVacancies = ({ me }) => {
           ))
         : null}
       {brands?.length && !activeProfile
-        ? brands.map((item) => (
+        ? brands.map(item => (
             <div key={item.id}>
               <Item
                 onClick={() => {
-                  setType("brand");
-                  setId(item?.id);
-                  setActiveProfile(item);
+                  setType('brand')
+                  setId(item?.id)
+                  setActiveProfile(item)
                 }}
               >
                 <Container>
@@ -158,7 +158,7 @@ const CabinetVacancies = ({ me }) => {
                     src={
                       item?.logoId
                         ? `${PHOTO_URL}${item?.logoId}/original`
-                        : "empty-photo.svg"
+                        : 'empty-photo.svg'
                     }
                   />
                   <Content>
@@ -170,12 +170,12 @@ const CabinetVacancies = ({ me }) => {
             </div>
           ))
         : null}
-      {type === "salon" && activeProfile ? (
+      {type === 'salon' && activeProfile ? (
         <>
           <Back
             onClick={() => {
-              setActiveProfile(null);
-              setCreateVacancy(false);
+              setActiveProfile(null)
+              setCreateVacancy(false)
             }}
           >
             Назад
@@ -184,7 +184,7 @@ const CabinetVacancies = ({ me }) => {
             <Container>
               <Avatar
                 alt="avatar"
-                src={activeProfile?.logo?.url || "empty-photo.svg"}
+                src={activeProfile?.logo?.url || 'empty-photo.svg'}
               />
               <Content>
                 <Name>{activeProfile?.name}</Name>
@@ -230,12 +230,12 @@ const CabinetVacancies = ({ me }) => {
           )}
         </>
       ) : null}
-      {type === "brand" && activeProfile ? (
+      {type === 'brand' && activeProfile ? (
         <>
           <Back
             onClick={() => {
-              setActiveProfile(null);
-              setCreateVacancy(false);
+              setActiveProfile(null)
+              setCreateVacancy(false)
             }}
           >
             Назад
@@ -247,7 +247,7 @@ const CabinetVacancies = ({ me }) => {
                 src={
                   activeProfile?.logoId
                     ? `${PHOTO_URL}${activeProfile?.logoId}/original`
-                    : "empty-photo.svg"
+                    : 'empty-photo.svg'
                 }
               />
               <Content>
@@ -295,7 +295,7 @@ const CabinetVacancies = ({ me }) => {
         </>
       ) : null}
     </Wrapper>
-  );
-};
+  )
+}
 
-export default CabinetVacancies;
+export default CabinetVacancies

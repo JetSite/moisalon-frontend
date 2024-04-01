@@ -37,6 +37,7 @@ import { useSearchHistoryContext } from '../../../../searchHistoryContext'
 import { getMaster } from 'src/graphql/master/queries/getMaster'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { getMasters } from 'src/graphql/master/queries/getMasters'
+import { getServicesByCategory } from 'src/utils/serviceCatalog'
 
 const Master = ({ masterData, randomMasters }) => {
   const [master, setMaster] = useState(masterData)
@@ -77,10 +78,6 @@ const Master = ({ masterData, randomMasters }) => {
   useEffect(() => {
     setChosenItemId(master.id)
   }, [])
-
-  const servicesCount = master?.serviceCategories?.reduce((acc, category) => {
-    return acc + category.services.length
-  }, 0)
 
   // const { refetch: refetchMaster } = useQuery(masterQuery, {
   //   variables: { id: master.id },
@@ -215,6 +212,8 @@ const Master = ({ masterData, randomMasters }) => {
 
   const isOwner = me?.master?.id === master?.id
 
+  const servicesData = getServicesByCategory(master?.services)
+
   return (
     <MainLayout>
       <Head>
@@ -248,8 +247,8 @@ const Master = ({ masterData, randomMasters }) => {
               id: 2,
               text: 'Услуги',
               link: '#services',
-              count: servicesCount,
-              show: master?.serviceCategories?.length || isOwner,
+              count: master?.services?.length,
+              show: master?.services?.length || isOwner,
             },
             {
               id: 3,
@@ -283,9 +282,9 @@ const Master = ({ masterData, randomMasters }) => {
           ]}
         />
         <About master={master} />
-        {master?.serviceCategories?.length || isOwner ? (
+        {master?.services?.length || isOwner ? (
           <ServicesForClient
-            serviceCategories={master?.serviceCategories}
+            servicesData={servicesData}
             isOwner={isOwner}
             master={master}
             // masterDataQuery={refetchMaster}
@@ -294,9 +293,9 @@ const Master = ({ masterData, randomMasters }) => {
             count={master?.service?.length}
           />
         ) : null}
-        {master?.serviceCategories?.length || isOwner ? (
+        {master?.services?.length || isOwner ? (
           <MobileServicesForClient
-            serviceCategories={master?.serviceCategories}
+            servicesData={servicesData}
             master={master}
             isOwner={isOwner}
             // refetchMaster={refetchMaster}
@@ -474,6 +473,7 @@ export async function getServerSideProps({ params, query }) {
     apolloClient.query({
       query: getMasters,
       variables: {
+        city: query?.city || 'Москва',
         itemsCount: 10,
       },
     }),

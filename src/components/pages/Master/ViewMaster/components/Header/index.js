@@ -1,12 +1,9 @@
 import { useState, useEffect, useContext } from 'react'
 import { useMutation } from '@apollo/client'
-import {
-  getServicesNames,
-  selectedGroupNamesMax,
-} from '../../../../../../utils/serviceCatalog'
+import { getServicesCategories } from '../../../../../../utils/serviceCatalog'
 import { MainContainer } from '../../../../../../styles/common'
 import BackButton from '../../../../../ui/BackButton'
-import RatingEdit from '../../../../../ui/RatingEdit'
+import RatingEdit from '../../../../../ui/RatingEdit/index.tsx'
 import { createScopesMaster } from '../../../../../../_graphql-legacy/master/createScopesMaster'
 import {
   Wrapper,
@@ -42,7 +39,8 @@ import defaultNumber from '../../../../../../utils/defaultNumber'
 import { CityContext } from '../../../../../../searchContext'
 import ChatMessagePopup from '../../../../../ui/ChatMessagePopup'
 import { numberForSocials } from '../../../../../../utils/formatNumber'
-import { PHOTO_URL } from 'variables'
+import { PHOTO_URL } from '../../../../../../variables'
+import { getServiceCategories } from 'src/graphql/service/queries/getServiceCategories'
 
 const Header = ({
   master,
@@ -187,7 +185,9 @@ const Header = ({
             ) : null}
           </NameWrapper>
           {master?.services && !!master?.services?.length ? (
-            <Activities>{getServicesNames(master.services)}</Activities>
+            <Activities>
+              {getServicesCategories(master.services).join(', ')}
+            </Activities>
           ) : null}
           <Rating>
             <RatingEdit

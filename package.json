@@ -57,6 +57,7 @@
     "@types/react": "^18.0.2",
     "@types/react-dom": "^18.0.1",
     "@types/react-outside-click-handler": "^1.3.3",
+    "@types/scroll-into-view": "^1.16.4",
     "@types/styled-components": "^5.1.34",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^6.10.0",

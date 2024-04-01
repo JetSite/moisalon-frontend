@@ -1,14 +1,14 @@
-import React from "react";
-import PhotoAdd from "./PhotoAdd";
-import PhotoItem from "./PhotoItem";
-import usePhotos from "./usePhotos";
-import styled from "styled-components";
-import { laptopBreakpoint } from "../../../../../../../../../styles/variables";
+import React from 'react'
+import PhotoAdd from './PhotoAdd'
+import PhotoItem from './PhotoItem'
+import usePhotos from './usePhotos'
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../../../../../styles/variables'
 
 const Wrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 const PhotosWrapper = styled.div`
   display: flex;
@@ -20,13 +20,13 @@ const PhotosWrapper = styled.div`
     flex-wrap: nowrap;
     overflow-x: scroll;
   }
-`;
+`
 
-const PhotoArray = (props) => {
-  const { photos, defaultPhotoId, onSetDefault, description } = props;
-  const { onAdd, onRemove, onChange } = usePhotos(props);
+const PhotoArray = props => {
+  const { photos, defaultPhotoId, onSetDefault, description } = props
+  const { onAdd, onRemove, onChange } = usePhotos(props)
 
-  const photoList = photos.map((photo) => {
+  const photoList = photos.map(photo => {
     return (
       <PhotoItem
         key={photo.id}
@@ -36,15 +36,15 @@ const PhotoArray = (props) => {
         onRemove={onRemove}
         onSetDefault={onSetDefault}
       />
-    );
-  });
+    )
+  })
 
   return (
     <Wrapper>
       <PhotoAdd onAdd={onAdd} />
       <PhotosWrapper>{photoList}</PhotosWrapper>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default PhotoArray;
+export default PhotoArray

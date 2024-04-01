@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useQuery } from "@apollo/client";
+import { useState, useEffect } from 'react'
+import { useQuery } from '@apollo/client'
 import {
   Wrapper,
   TitlePage,
@@ -13,35 +13,35 @@ import {
   SalesWrapper,
   Back,
   SkeletonWrap,
-} from "./styles";
-import Button from "../../../../ui/Button";
-import CreateEducation from "../../../CreateEducation";
-import { MobileHidden, MobileVisible } from "../../../../../styles/common";
-import { currentEducation } from "../../../../../_graphql-legacy/education/currentEducation";
-import Education from "../../../Education";
-import { PHOTO_URL } from "../../../../../../variables";
+} from './styles'
+import Button from '../../../../ui/Button'
+import CreateEducation from '../../../CreateEducation'
+import { MobileHidden, MobileVisible } from '../../../../../styles/common'
+import { currentEducation } from '../../../../../_graphql-legacy/education/currentEducation'
+import Education from '../../../Education'
+import { PHOTO_URL } from '../../../../../variables'
 
 const CabinetEducationsList = ({ educations, loading }) => {
   if (loading) {
-    return <SkeletonWrap variant="rect" />;
+    return <SkeletonWrap variant="rect" />
   }
 
   return (
     <SalesWrapper>
       {educations?.length > 0 ? (
         <>
-          {educations?.map((item) => (
+          {educations?.map(item => (
             <Education
               title={item.title}
               id={item.id}
               name={`${
-                item?.origin.toLowerCase() === "master"
-                  ? "Мастер"
-                  : item.origin.toLowerCase() === "salon"
-                  ? "Салон"
-                  : item.origin.toLowerCase() === "brand"
-                  ? "Бренд"
-                  : ""
+                item?.origin.toLowerCase() === 'master'
+                  ? 'Мастер'
+                  : item.origin.toLowerCase() === 'salon'
+                  ? 'Салон'
+                  : item.origin.toLowerCase() === 'brand'
+                  ? 'Бренд'
+                  : ''
               } ${
                 item?.masterOrigin?.name ||
                 item?.salonOrigin?.name ||
@@ -60,43 +60,43 @@ const CabinetEducationsList = ({ educations, loading }) => {
         <Subtitle>У профиля нет обучающих программ</Subtitle>
       )}
     </SalesWrapper>
-  );
-};
+  )
+}
 
 const CabinetEducations = ({ me }) => {
-  const salons = me?.salons;
-  const master = me?.master;
-  const brands = me?.userBrands;
+  const salons = me?.salons
+  const master = me?.master
+  const brands = me?.userBrands
 
-  const [id, setId] = useState("");
-  const [type, setType] = useState(null);
-  const [activeProfile, setActiveProfile] = useState(null);
-  const [educations, setEducations] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [createEducation, setCreateEducation] = useState(false);
+  const [id, setId] = useState('')
+  const [type, setType] = useState(null)
+  const [activeProfile, setActiveProfile] = useState(null)
+  const [educations, setEducations] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [createEducation, setCreateEducation] = useState(false)
 
   const { data, refetch: refetchEducations } = useQuery(currentEducation, {
     skip: true,
     variables: {
       originId: id,
     },
-    onCompleted: (res) => {
-      setEducations(res?.currentEducation);
-      setLoading(false);
+    onCompleted: res => {
+      setEducations(res?.currentEducation)
+      setLoading(false)
     },
-  });
+  })
 
   useEffect(() => {
     if (id) {
-      setLoading(true);
-      setEducations([]);
+      setLoading(true)
+      setEducations([])
       refetchEducations({
         variables: {
           originId: id,
         },
-      });
+      })
     }
-  }, [type, id]);
+  }, [type, id])
 
   return (
     <Wrapper>
@@ -110,15 +110,15 @@ const CabinetEducations = ({ me }) => {
       {master?.id && !activeProfile ? (
         <Item
           onClick={() => {
-            setType("master");
-            setId(master?.id);
-            setActiveProfile(master);
+            setType('master')
+            setId(master?.id)
+            setActiveProfile(master)
           }}
         >
           <Container>
             <Avatar
               alt="avatar"
-              src={master?.photo?.url || "empty-photo.svg"}
+              src={master?.photo?.url || 'empty-photo.svg'}
             />
             <Content>
               <Name>{master?.name}</Name>
@@ -128,26 +128,26 @@ const CabinetEducations = ({ me }) => {
         </Item>
       ) : null}
       {salons?.length && !activeProfile
-        ? salons.map((item) => (
+        ? salons.map(item => (
             <div key={item.id}>
               <Item
                 onClick={() => {
-                  setType("salon");
-                  setId(item?.id);
-                  setActiveProfile(item);
+                  setType('salon')
+                  setId(item?.id)
+                  setActiveProfile(item)
                 }}
               >
                 <Container>
                   <Avatar
                     alt="avatar"
-                    src={item?.logo?.url || "empty-photo.svg"}
+                    src={item?.logo?.url || 'empty-photo.svg'}
                   />
                   <Content>
                     <Name>{item?.name}</Name>
                     <Type>
                       {item?.lessor
-                        ? "Профиль салона арендодателя"
-                        : "Профиль салона"}
+                        ? 'Профиль салона арендодателя'
+                        : 'Профиль салона'}
                     </Type>
                   </Content>
                 </Container>
@@ -156,13 +156,13 @@ const CabinetEducations = ({ me }) => {
           ))
         : null}
       {brands?.length && !activeProfile
-        ? brands.map((item) => (
+        ? brands.map(item => (
             <div key={item.id}>
               <Item
                 onClick={() => {
-                  setType("brand");
-                  setId(item?.id);
-                  setActiveProfile(item);
+                  setType('brand')
+                  setId(item?.id)
+                  setActiveProfile(item)
                 }}
               >
                 <Container>
@@ -171,7 +171,7 @@ const CabinetEducations = ({ me }) => {
                     src={
                       item?.logoId
                         ? `${PHOTO_URL}${item?.logoId}/original`
-                        : "empty-photo.svg"
+                        : 'empty-photo.svg'
                     }
                   />
                   <Content>
@@ -183,12 +183,12 @@ const CabinetEducations = ({ me }) => {
             </div>
           ))
         : null}
-      {type === "master" && activeProfile ? (
+      {type === 'master' && activeProfile ? (
         <>
           <Back
             onClick={() => {
-              setActiveProfile(null);
-              setCreateEducation(false);
+              setActiveProfile(null)
+              setCreateEducation(false)
             }}
           >
             Назад
@@ -197,7 +197,7 @@ const CabinetEducations = ({ me }) => {
             <Container>
               <Avatar
                 alt="avatar"
-                src={master?.photo?.url || "empty-photo.svg"}
+                src={master?.photo?.url || 'empty-photo.svg'}
               />
               <Content>
                 <Name>{master?.name}</Name>
@@ -242,12 +242,12 @@ const CabinetEducations = ({ me }) => {
           )}
         </>
       ) : null}
-      {type === "salon" && activeProfile ? (
+      {type === 'salon' && activeProfile ? (
         <>
           <Back
             onClick={() => {
-              setActiveProfile(null);
-              setCreateEducation(false);
+              setActiveProfile(null)
+              setCreateEducation(false)
             }}
           >
             Назад
@@ -256,7 +256,7 @@ const CabinetEducations = ({ me }) => {
             <Container>
               <Avatar
                 alt="avatar"
-                src={activeProfile?.logo?.url || "empty-photo.svg"}
+                src={activeProfile?.logo?.url || 'empty-photo.svg'}
               />
               <Content>
                 <Name>{activeProfile?.name}</Name>
@@ -301,12 +301,12 @@ const CabinetEducations = ({ me }) => {
           )}
         </>
       ) : null}
-      {type === "brand" && activeProfile ? (
+      {type === 'brand' && activeProfile ? (
         <>
           <Back
             onClick={() => {
-              setActiveProfile(null);
-              setCreateEducation(false);
+              setActiveProfile(null)
+              setCreateEducation(false)
             }}
           >
             Назад
@@ -318,7 +318,7 @@ const CabinetEducations = ({ me }) => {
                 src={
                   activeProfile?.logoId
                     ? `${PHOTO_URL}${activeProfile?.logoId}/original`
-                    : "empty-photo.svg"
+                    : 'empty-photo.svg'
                 }
               />
               <Content>
@@ -365,7 +365,7 @@ const CabinetEducations = ({ me }) => {
         </>
       ) : null}
     </Wrapper>
-  );
-};
+  )
+}
 
-export default CabinetEducations;
+export default CabinetEducations

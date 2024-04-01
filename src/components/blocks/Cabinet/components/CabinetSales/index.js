@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useQuery } from "@apollo/client";
+import { useState, useEffect } from 'react'
+import { useQuery } from '@apollo/client'
 import {
   Wrapper,
   TitlePage,
@@ -13,34 +13,34 @@ import {
   SalesWrapper,
   Back,
   SkeletonWrap,
-} from "./styles";
-import { currentSales } from "../../../../../_graphql-legacy/sales/currentSales";
-import Button from "../../../../ui/Button";
-import CreateSale from "../../../CreateSale";
-import Sale from "../../../Sale";
-import { MobileHidden, MobileVisible } from "../../../../../styles/common";
-import { PHOTO_URL } from "../../../../../../variables";
+} from './styles'
+import { currentSales } from '../../../../../_graphql-legacy/sales/currentSales'
+import Button from '../../../../ui/Button'
+import CreateSale from '../../../CreateSale'
+import Sale from '../../../Sale'
+import { MobileHidden, MobileVisible } from '../../../../../styles/common'
+import { PHOTO_URL } from '../../../../../variables'
 
 const CabinetSalesList = ({ sales, loading }) => {
   if (loading) {
-    return <SkeletonWrap variant="rect" />;
+    return <SkeletonWrap variant="rect" />
   }
 
   return (
     <SalesWrapper>
       {sales?.length > 0 ? (
         <>
-          {sales?.map((item) => (
+          {sales?.map(item => (
             <Sale
               title={item.title}
               name={`${
-                item?.origin.toLowerCase() === "master"
-                  ? "Мастер"
-                  : item.origin.toLowerCase() === "salon"
-                  ? "Салон"
-                  : item.origin.toLowerCase() === "brand"
-                  ? "Бренд"
-                  : ""
+                item?.origin.toLowerCase() === 'master'
+                  ? 'Мастер'
+                  : item.origin.toLowerCase() === 'salon'
+                  ? 'Салон'
+                  : item.origin.toLowerCase() === 'brand'
+                  ? 'Бренд'
+                  : ''
               } ${
                 item?.masterOrigin?.name ||
                 item?.salonOrigin?.name ||
@@ -57,43 +57,43 @@ const CabinetSalesList = ({ sales, loading }) => {
         <Subtitle>У профиля нет акций</Subtitle>
       )}
     </SalesWrapper>
-  );
-};
+  )
+}
 
 const CabinetSales = ({ me }) => {
-  const salons = me?.salons;
-  const master = me?.master;
-  const brands = me?.userBrands;
+  const salons = me?.salons
+  const master = me?.master
+  const brands = me?.userBrands
 
-  const [id, setId] = useState("");
-  const [type, setType] = useState(null);
-  const [activeProfile, setActiveProfile] = useState(null);
-  const [sales, setSales] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [createSale, setCreateSale] = useState(false);
+  const [id, setId] = useState('')
+  const [type, setType] = useState(null)
+  const [activeProfile, setActiveProfile] = useState(null)
+  const [sales, setSales] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [createSale, setCreateSale] = useState(false)
 
   const { data, refetch: refetchSales } = useQuery(currentSales, {
     skip: true,
     variables: {
       originId: id,
     },
-    onCompleted: (res) => {
-      setSales(res?.currentSales);
-      setLoading(false);
+    onCompleted: res => {
+      setSales(res?.currentSales)
+      setLoading(false)
     },
-  });
+  })
 
   useEffect(() => {
     if (id) {
-      setLoading(true);
-      setSales([]);
+      setLoading(true)
+      setSales([])
       refetchSales({
         variables: {
           originId: id,
         },
-      });
+      })
     }
-  }, [type, id]);
+  }, [type, id])
 
   return (
     <Wrapper>
@@ -105,15 +105,15 @@ const CabinetSales = ({ me }) => {
       {master?.id && !activeProfile ? (
         <Item
           onClick={() => {
-            setType("master");
-            setId(master?.id);
-            setActiveProfile(master);
+            setType('master')
+            setId(master?.id)
+            setActiveProfile(master)
           }}
         >
           <Container>
             <Avatar
               alt="avatar"
-              src={master?.photo?.url || "empty-photo.svg"}
+              src={master?.photo?.url || 'empty-photo.svg'}
             />
             <Content>
               <Name>{master?.name}</Name>
@@ -123,26 +123,26 @@ const CabinetSales = ({ me }) => {
         </Item>
       ) : null}
       {salons?.length && !activeProfile
-        ? salons.map((item) => (
+        ? salons.map(item => (
             <div key={item.id}>
               <Item
                 onClick={() => {
-                  setType("salon");
-                  setId(item?.id);
-                  setActiveProfile(item);
+                  setType('salon')
+                  setId(item?.id)
+                  setActiveProfile(item)
                 }}
               >
                 <Container>
                   <Avatar
                     alt="avatar"
-                    src={item?.logo?.url || "empty-photo.svg"}
+                    src={item?.logo?.url || 'empty-photo.svg'}
                   />
                   <Content>
                     <Name>{item?.name}</Name>
                     <Type>
                       {item?.lessor
-                        ? "Профиль салона арендодателя"
-                        : "Профиль салона"}
+                        ? 'Профиль салона арендодателя'
+                        : 'Профиль салона'}
                     </Type>
                   </Content>
                 </Container>
@@ -151,13 +151,13 @@ const CabinetSales = ({ me }) => {
           ))
         : null}
       {brands?.length && !activeProfile
-        ? brands.map((item) => (
+        ? brands.map(item => (
             <div key={item.id}>
               <Item
                 onClick={() => {
-                  setType("brand");
-                  setId(item?.id);
-                  setActiveProfile(item);
+                  setType('brand')
+                  setId(item?.id)
+                  setActiveProfile(item)
                 }}
               >
                 <Container>
@@ -166,7 +166,7 @@ const CabinetSales = ({ me }) => {
                     src={
                       item?.logoId
                         ? `${PHOTO_URL}${item?.logoId}/original`
-                        : "empty-photo.svg"
+                        : 'empty-photo.svg'
                     }
                   />
                   <Content>
@@ -178,12 +178,12 @@ const CabinetSales = ({ me }) => {
             </div>
           ))
         : null}
-      {type === "master" && activeProfile ? (
+      {type === 'master' && activeProfile ? (
         <>
           <Back
             onClick={() => {
-              setActiveProfile(null);
-              setCreateSale(false);
+              setActiveProfile(null)
+              setCreateSale(false)
             }}
           >
             Назад
@@ -192,7 +192,7 @@ const CabinetSales = ({ me }) => {
             <Container>
               <Avatar
                 alt="avatar"
-                src={master?.photo?.url || "empty-photo.svg"}
+                src={master?.photo?.url || 'empty-photo.svg'}
               />
               <Content>
                 <Name>{master?.name}</Name>
@@ -234,12 +234,12 @@ const CabinetSales = ({ me }) => {
           )}
         </>
       ) : null}
-      {type === "salon" && activeProfile ? (
+      {type === 'salon' && activeProfile ? (
         <>
           <Back
             onClick={() => {
-              setActiveProfile(null);
-              setCreateSale(false);
+              setActiveProfile(null)
+              setCreateSale(false)
             }}
           >
             Назад
@@ -248,7 +248,7 @@ const CabinetSales = ({ me }) => {
             <Container>
               <Avatar
                 alt="avatar"
-                src={activeProfile?.logo?.url || "empty-photo.svg"}
+                src={activeProfile?.logo?.url || 'empty-photo.svg'}
               />
               <Content>
                 <Name>{activeProfile?.name}</Name>
@@ -290,12 +290,12 @@ const CabinetSales = ({ me }) => {
           )}
         </>
       ) : null}
-      {type === "brand" && activeProfile ? (
+      {type === 'brand' && activeProfile ? (
         <>
           <Back
             onClick={() => {
-              setActiveProfile(null);
-              setCreateSale(false);
+              setActiveProfile(null)
+              setCreateSale(false)
             }}
           >
             Назад
@@ -307,7 +307,7 @@ const CabinetSales = ({ me }) => {
                 src={
                   activeProfile?.logoId
                     ? `${PHOTO_URL}${activeProfile?.logoId}/original`
-                    : "empty-photo.svg"
+                    : 'empty-photo.svg'
                 }
               />
               <Content>
@@ -351,7 +351,7 @@ const CabinetSales = ({ me }) => {
         </>
       ) : null}
     </Wrapper>
-  );
-};
+  )
+}
 
-export default CabinetSales;
+export default CabinetSales
