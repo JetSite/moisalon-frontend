@@ -5,6 +5,7 @@ export const cityInfo = `
                 cityName
                 latitude
                 longitude
+                citySlug
         }
     }
 `

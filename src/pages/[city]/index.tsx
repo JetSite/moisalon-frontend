@@ -98,12 +98,6 @@ export default function AppContent({
   //   }
   // }, []);
 
-  // const { data } = useQuery(getMaster, {
-  //   variables: { id: 1 },
-  // })
-
-  // console.log(data)
-
   return (
     <>
       {/* <Head>
