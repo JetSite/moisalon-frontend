@@ -22,7 +22,7 @@ const typesFilterProp = {
 
 interface Props {
   view?: 'list' | string
-  setView: Dispatch<SetStateAction<'list' | string>>
+  setView?: Dispatch<SetStateAction<'list' | string>>
   salon?: boolean
   main?: boolean
   master?: boolean
@@ -100,12 +100,15 @@ const FilterSearchResults: FC<Props> = ({
         {salon && !main ? (
           <FilterWrap active={view === 'list'}>
             <TextFilter
-              onClick={() => setView('list')}
+              onClick={() => setView && setView('list')}
               active={view === 'list'}
             >
               Список
             </TextFilter>
-            <TextFilter onClick={() => setView('map')} active={view === 'map'}>
+            <TextFilter
+              onClick={() => setView && setView('map')}
+              active={view === 'map'}
+            >
               На карте
             </TextFilter>
           </FilterWrap>

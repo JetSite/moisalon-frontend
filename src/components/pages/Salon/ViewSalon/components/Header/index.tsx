@@ -113,8 +113,6 @@ const Header: FC<Props> = ({
     })
   }
 
-  console.log(salon)
-
   return (
     <>
       <MainContainer>

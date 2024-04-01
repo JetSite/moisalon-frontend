@@ -13,62 +13,68 @@ import {
   CardQuantity,
   CardIconAdvices,
 } from './styles'
-import { useContext } from 'react'
+import { FC, useContext } from 'react'
 import { CityContext, MeContext } from '../../../../../searchContext'
 import { cyrToTranslit } from '../../../../../utils/translit'
+import { ICity } from 'src/types'
 
-const MobileViewCards = ({
+interface Props {
+  totalSalons: number
+  totalBrands: number
+  totalMasters: number
+  cityData?: ICity[]
+}
+
+const MobileViewCards: FC<Props> = ({
   totalSalons,
   totalBrands,
   totalMasters,
-  totalSales,
+  cityData,
 }) => {
   const router = useRouter()
   const [city] = useContext(CityContext)
-  const [me] = useContext(MeContext)
-  const b2bClient = !!me?.master?.id || !!me?.salons?.length
 
   const cards = [
     {
       title: 'Объявления',
       iconComponent: <CardIconAdvices />,
-      quantity: totalSales || 0,
-      link: `/${cyrToTranslit(city)}/sales`,
+      quantity: 0,
+      link: `/${cyrToTranslit(city || cityData?.[0].cityName)}/sales`,
       target: '_self',
     },
     {
       title: 'Магазин',
       iconComponent: <CardIconShop />,
       quantity: 535,
-      link: `/${cyrToTranslit(city)}/beautyFreeShop`,
+      link: `/${cyrToTranslit(city || cityData?.[0].cityName)}/beautyFreeShop`,
       target: '_self',
     },
     {
       title: 'Аренда',
       iconComponent: <CardIconBusiness />,
       quantity: totalSalons || 0,
-      link: `/${cyrToTranslit(city)}/rent`,
+      link: `/${cyrToTranslit(city || cityData?.[0].cityName)}/rent`,
       target: '_self',
     },
     {
       title: 'Мастер',
       iconComponent: <CardIconMaster />,
       quantity: totalMasters || 0,
-      link: `/${cyrToTranslit(city)}/master`,
+      link: `/${cyrToTranslit(city || cityData?.[0].cityName)}/master`,
       target: '_self',
     },
     {
       title: 'Салон',
       iconComponent: <CardIconSalon />,
       quantity: totalSalons || 0,
-      link: `/${cyrToTranslit(city)}/salon`,
+      link: `/${cyrToTranslit(city || cityData?.[0].cityName)}/salon`,
       target: '_self',
     },
     {
       title: 'Бренд',
       iconComponent: <CardIconBrand />,
       quantity: totalBrands || 0,
-      link: `/${cyrToTranslit(city)}/brand`,
+      link: `/${cyrToTranslit(city || cityData?.[0].cityName)}/brand`,
       target: '_self',
     },
     // {

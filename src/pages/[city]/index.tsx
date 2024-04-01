@@ -38,7 +38,7 @@ interface Props {
   totalSalons: any
   totalMasters: any
   totalBrands: any
-  cityData: any
+  cityData: string
 }
 
 export default function AppContent({
@@ -50,7 +50,11 @@ export default function AppContent({
   totalBrands,
   cityData,
 }: Props) {
-  // const [me, setMe] = useContext(MeContext);
+  const [city, setCity] = useContext(CityContext)
+
+  setCity(cityData)
+
+  // setMe(cityData)
   // const [city, setCity] = useContext(CityContext);
   // const [query, setQuery] = useContext(SearchMainQueryContext);
   // const router = useRouter();
@@ -101,6 +105,8 @@ export default function AppContent({
   // const { data } = useQuery(getMaster, {
   //   variables: { id: 1 },
   // })
+
+  // console.log(data)
 
   return (
     <>

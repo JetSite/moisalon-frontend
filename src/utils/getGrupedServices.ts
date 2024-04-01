@@ -16,7 +16,7 @@ type IGetGroupedServices = (data: IServices[]) => IGroupedCategories[]
 
 export const getGroupedServices: IGetGroupedServices = data => {
   const categories: IGroupedCategories[] = []
-  data.forEach(service => {
+  data?.forEach(service => {
     if (
       !categories.find(e => service.service.service_categories[0].id === e.id)
     ) {

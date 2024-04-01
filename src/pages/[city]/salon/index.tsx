@@ -42,10 +42,6 @@ const AllSalons: FC<IProps> = ({
   const [me, setMe] = useContext(MeContext)
   // useCheckCity(cityData);
 
-  const { data: data1 } = useQuery(getSalonsThroughCity, {
-    variables: { cityName: ['Москва'] },
-  })
-
   return (
     <CategoryPageLayout loading={false} me={me}>
       <AllSalonsPage

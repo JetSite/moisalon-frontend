@@ -9,6 +9,7 @@ interface IMasterPhoto {
 
 export interface IMaster {
   id: IID
+  masterAddress: string
   masterEmail: string
   masterName: string
   masterPhone: string

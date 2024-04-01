@@ -10,7 +10,7 @@ const MainSalonsSlider = ({ rent, me }) => {
   }
   const { data: salons, loading } = useQuery(getSalons, {
     variables: {
-      city: cityInStorage ? cityInStorage : 'Москва',
+      city: 'Москва',
       itemsCount: 10,
     },
   })

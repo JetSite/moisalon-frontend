@@ -225,10 +225,10 @@ const SalonsSearchResults: FC<Props> = ({
                         rent
                           ? `/${cyrToTranslit(
                               salon.cities.cityName || city,
-                            )}/rent/${salon.slug || salon.id}`
+                            )}/rent/${salon.id}`
                           : `/${cyrToTranslit(
                               salon.cities.cityName || city,
-                            )}/salon/${salon.slug || salon.id}`,
+                            )}/salon/${salon.id}`,
                       )
                     }
                   >
@@ -240,7 +240,7 @@ const SalonsSearchResults: FC<Props> = ({
                         item={salon}
                         shareLink={`https://moi.salon/${cyrToTranslit(
                           salon.cities.cityName || city,
-                        )}/salon/${salon.slug || salon.id}`}
+                        )}/salon/${salon.id}`}
                       />
                     </SalonCardWrapper>
                   </li>

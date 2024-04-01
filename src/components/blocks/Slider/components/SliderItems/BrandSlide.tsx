@@ -20,12 +20,12 @@ const BrandSlide: FC<Props> = ({ item, isEditing, deleteFunction }) => {
 
   return (
     <Link
-      href={`/${cyrToTranslit(item?.city?.citySlug || city)}/brand/${item?.id}`}
+      href={`/${cyrToTranslit(item?.city?.cityName || city)}/brand/${item?.id}`}
     >
       <BrandItem
         brand={item}
         shareLink={`https://moi.salon/${cyrToTranslit(
-          item.city?.citySlug || city,
+          item.city?.cityName || city,
         )}/brand/${item?.id}`}
         isEditing={isEditing}
       >
