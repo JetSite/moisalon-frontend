@@ -3,14 +3,15 @@ import { addApolloState, initializeApollo } from '../../apollo-client'
 import CreateSalon from '../../components/pages/Salon/CreateSalon'
 import { salonQuery } from '../../_graphql-legacy/salon/salonQuery'
 import { salonSlugQuery } from '../../_graphql-legacy/salon/salonSlugQuery'
-import { useContext } from 'react'
-import { MeContext } from '../../searchContext'
 import CreatePageSkeleton from '../../components/ui/ContentSkeleton/CreatePageSkeleton'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData, getStoreEvent } from 'src/store/utils'
 
 const CreateOrEditLessorSalon = ({ salon }) => {
   const router = useRouter()
   const onAdd = () => {}
-  const [me, setMe] = useContext(MeContext)
+  const { me } = useAuthStore(getStoreData)
+  const { setMe } = useAuthStore(getStoreEvent)
 
   if (me === null) {
     return <CreatePageSkeleton />

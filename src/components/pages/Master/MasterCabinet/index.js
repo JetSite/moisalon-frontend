@@ -20,7 +20,7 @@ import CabinetVacancies from '../../../blocks/Cabinet/components/CabinetVacancie
 import CabinetPriority from '../../../blocks/Cabinet/components/CabinetPriority'
 import CabinetBanner from '../../../blocks/Cabinet/components/CabinetBanner'
 import { PHOTO_URL } from '../../../../variables'
-import { useChat } from '../../../../chatContext'
+import { useChat } from '../../../../chatContext.tsx'
 
 const MasterCabinet = ({ refetch, currentMe }) => {
   const [photoId, setPhotoId] = useState(currentMe?.info?.avatar)

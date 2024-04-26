@@ -1,16 +1,17 @@
-import { useCallback, useContext } from 'react'
+import { useCallback } from 'react'
 import { useRouter } from 'next/router'
 import { useMutation } from '@apollo/client'
 import { addApolloState, initializeApollo } from '../../apollo-client'
 import CreateBrand from '../../components/pages/Brand/CreateBrand'
 import { updateBrandPhotoMutation } from '../../_graphql-legacy/brand/updateBrandPhoto'
 import { brandSlugQuery } from '../../_graphql-legacy/brand/brandSlugQuery'
-import { MeContext } from '../../searchContext'
 import CreatePageSkeleton from '../../components/ui/ContentSkeleton/CreatePageSkeleton'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 
 const CreateOrEditBrand = ({ brand }) => {
   const router = useRouter()
-  const [me] = useContext(MeContext)
+  const { me } = useAuthStore(getStoreData)
 
   const [updatePhoto] = useMutation(updateBrandPhotoMutation, {
     onError: error => {

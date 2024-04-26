@@ -1,13 +1,14 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import Link from 'next/link'
-import { CityContext } from '../../../../../searchContext'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 import { WrapperItemsSalons, TitleResults, SalonCardWrapper } from './styles'
 import SalonCard from '../../../../blocks/SalonCard'
 import { pluralize } from '../../../../../utils/pluralize'
 import { cyrToTranslit } from '../../../../../utils/translit'
 
 const SalonsResult = ({ salonsData }) => {
-  const [city] = useContext(CityContext)
+  const { city } = useAuthStore(getStoreData)
 
   return (
     <>

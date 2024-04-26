@@ -3,10 +3,10 @@ import scrollIntoView from 'scroll-into-view'
 import { useRouter } from 'next/router'
 import { red, laptopBreakpoint } from '../../../../styles/variables'
 import { useQuery } from '@apollo/client'
-import { useContext } from 'react'
-import { CityContext, MeContext } from '../../../../searchContext'
 import { currentUserSalonsAndMasterQuery } from '../../../../_graphql-legacy/master/currentUserSalonsAndMasterQuery'
 import { cyrToTranslit } from '../../../../utils/translit'
+import { getStoreData, getStoreEvent } from 'src/store/utils'
+import useAuthStore from 'src/store/authStore'
 
 const Wrapper = styled.div`
   margin-top: 50px;
@@ -74,8 +74,8 @@ const Quantity = styled.div`
 
 const Tabs = ({ tabs, refActive }) => {
   const router = useRouter()
-  const [me, setMe] = useContext(MeContext)
-  const [city] = useContext(CityContext)
+  const { setMe } = useAuthStore(getStoreEvent)
+  const { city } = useAuthStore(getStoreData)
   const { refetch } = useQuery(currentUserSalonsAndMasterQuery, {
     skip: true,
     onCompleted: res => {

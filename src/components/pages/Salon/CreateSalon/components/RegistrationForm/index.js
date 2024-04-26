@@ -1,25 +1,27 @@
-import { useState, useMemo, useContext } from "react";
-import { useRouter } from "next/router";
-import { Wrapper, Title } from "./styled";
-import { MobileVisible, MobileHidden } from "../../../../../../styles/common";
-import AutoFocusedForm from "../../../../../blocks/Form/AutoFocusedForm";
-import Error from "../../../../../blocks/Form/Error";
-import Button from "../../../../../ui/Button";
-import About from "./components/About";
-import Socials from "./components/Socials";
-import SalonActivities from "./components/SalonActivities";
-import SalonServices from "./components/SalonServices";
-import Schedule from "./components/Schedule";
-import Administrator from "./components/Administrator";
-import catalogOrDefault from "../../../../../../utils/catalogOrDefault";
-import { useMutation } from "@apollo/react-hooks";
-import { createSalonMutation } from "../../../../../../_graphql-legacy/salon/createSalonMutation";
-import { updateSalonMutation } from "../../../../../../_graphql-legacy/salon/updateSalonMutation";
-import { updateSalonIdentityMutation } from "../../../../../../_graphql-legacy/salon/updateSalonIdentityMutation";
-import { updateSalonLogoMutation } from "../../../../../../_graphql-legacy/salon/updateSalonLogoMutation";
-import { CatalogsContext } from "../../../../../../searchContext";
-import { useQuery } from "@apollo/client";
-import { currentUserSalonsAndMasterQuery } from "../../../../../../_graphql-legacy/master/currentUserSalonsAndMasterQuery";
+import { useState, useMemo } from 'react'
+import { useRouter } from 'next/router'
+import { Wrapper, Title } from './styled'
+import { MobileVisible, MobileHidden } from '../../../../../../styles/common'
+import AutoFocusedForm from '../../../../../blocks/Form/AutoFocusedForm'
+import Error from '../../../../../blocks/Form/Error'
+import Button from '../../../../../ui/Button'
+import About from './components/About'
+import Socials from './components/Socials'
+import SalonActivities from './components/SalonActivities'
+import SalonServices from './components/SalonServices'
+import Schedule from './components/Schedule'
+import Administrator from './components/Administrator'
+import catalogOrDefault from '../../../../../../utils/catalogOrDefault'
+import { useMutation } from '@apollo/react-hooks'
+import { createSalonMutation } from '../../../../../../_graphql-legacy/salon/createSalonMutation'
+import { updateSalonMutation } from '../../../../../../_graphql-legacy/salon/updateSalonMutation'
+import { updateSalonIdentityMutation } from '../../../../../../_graphql-legacy/salon/updateSalonIdentityMutation'
+import { updateSalonLogoMutation } from '../../../../../../_graphql-legacy/salon/updateSalonLogoMutation'
+import { CatalogsContext } from '../../'
+import { useQuery } from '@apollo/client'
+import { currentUserSalonsAndMasterQuery } from '../../../../../../_graphql-legacy/master/currentUserSalonsAndMasterQuery'
+import useBaseStore from 'src/store/baseStore'
+import { getStoreData } from 'src/store/utils'
 
 const RegistrationForm = ({
   allTabs,
@@ -36,29 +38,29 @@ const RegistrationForm = ({
   setMe,
   lessor,
 }) => {
-  const router = useRouter();
-  const [clickAddress, setClickAddress] = useState(true);
-  const [errors, setErrors] = useState(null);
-  const [isErrorPopupOpen, setErrorPopupOpen] = useState(false);
-  const catalogs = useContext(CatalogsContext);
+  const router = useRouter()
+  const [clickAddress, setClickAddress] = useState(true)
+  const [errors, setErrors] = useState(null)
+  const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
+  const { catalogs } = useBaseStore(getStoreData)
 
   const { refetch } = useQuery(currentUserSalonsAndMasterQuery, {
     skip: true,
-    onCompleted: (res) => {
+    onCompleted: res => {
       setMe({
         info: res?.me?.info,
         master: res?.me?.master,
         locationByIp: res?.locationByIp,
         salons: res?.me?.salons,
         rentalRequests: res?.me?.rentalRequests,
-      });
+      })
     },
-  });
+  })
 
-  const salonServicesCatalog = catalogOrDefault(catalogs?.salonServicesCatalog);
+  const salonServicesCatalog = catalogOrDefault(catalogs?.salonServicesCatalog)
   const salonActivitiesCatalog = catalogOrDefault(
-    catalogs?.salonActivitiesCatalog
-  );
+    catalogs?.salonActivitiesCatalog,
+  )
 
   const salonWithInitialArrays = useMemo(() => {
     return {
@@ -67,114 +69,114 @@ const RegistrationForm = ({
           haveTelegram: false,
           haveViber: false,
           haveWhatsApp: false,
-          phoneNumber: "",
+          phoneNumber: '',
         },
       ],
       workingHours: [
         {
-          startDayOfWeek: "MONDAY",
+          startDayOfWeek: 'MONDAY',
           startHour: 0,
           startMinute: 0,
-          endDayOfWeek: "FRIDAY",
+          endDayOfWeek: 'FRIDAY',
           endHour: 23,
           endMinute: 59,
         },
       ],
       contactPersonWorkingHours: [
         {
-          startDayOfWeek: "MONDAY",
+          startDayOfWeek: 'MONDAY',
           startHour: 0,
           startMinute: 0,
-          endDayOfWeek: "FRIDAY",
+          endDayOfWeek: 'FRIDAY',
           endHour: 23,
           endMinute: 59,
         },
       ],
       ...salon,
       address: salon?.address?.full,
-    };
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [])
 
   const [mutate, { loading }] = useMutation(updateSalonMutation, {
-    onError: (error) => {
-      const errorMessages = error.graphQLErrors.map((e) => e.message);
-      setErrors(errorMessages);
-      setErrorPopupOpen(true);
+    onError: error => {
+      const errorMessages = error.graphQLErrors.map(e => e.message)
+      setErrors(errorMessages)
+      setErrorPopupOpen(true)
     },
     onCompleted: async () => {
-      await refetch();
+      await refetch()
       router.push(
         {
-          pathname: lessor ? "/rentSalonSeat" : "/masterCabinet",
+          pathname: lessor ? '/rentSalonSeat' : '/masterCabinet',
           query: { id: salon.id },
         },
-        lessor ? "/rentSalonSeat" : "/masterCabinet"
-      );
+        lessor ? '/rentSalonSeat' : '/masterCabinet',
+      )
     },
-  });
+  })
 
   const [mutateNameAndAddress] = useMutation(updateSalonIdentityMutation, {
-    onError: (error) => {
-      const errorMessages = error.graphQLErrors.map((e) => e.message);
-      setErrors(errorMessages);
-      setErrorPopupOpen(true);
+    onError: error => {
+      const errorMessages = error.graphQLErrors.map(e => e.message)
+      setErrors(errorMessages)
+      setErrorPopupOpen(true)
     },
-  });
+  })
 
   const [mutateLogo] = useMutation(updateSalonLogoMutation, {
-    onError: (error) => {
-      const errorMessages = error.graphQLErrors.map((e) => e.message);
-      setErrors(errorMessages);
-      setErrorPopupOpen(true);
+    onError: error => {
+      const errorMessages = error.graphQLErrors.map(e => e.message)
+      setErrors(errorMessages)
+      setErrorPopupOpen(true)
     },
-  });
+  })
 
   const [createSalon, { loadingCreate }] = useMutation(createSalonMutation, {
     onCompleted: async ({ createSalon }) => {
-      await refetch();
+      await refetch()
       router.push(
         {
-          pathname: lessor ? "/rentSalonSeat" : "/masterCabinet",
+          pathname: lessor ? '/rentSalonSeat' : '/masterCabinet',
           query: { id: createSalon.id },
         },
-        lessor ? "/rentSalonSeat" : "/masterCabinet"
-      );
+        lessor ? '/rentSalonSeat' : '/masterCabinet',
+      )
     },
 
-    onError: (error) => {
-      const errorMessages = error.graphQLErrors.map((e) => e.message);
-      setErrors(errorMessages);
-      setErrorPopupOpen(true);
+    onError: error => {
+      const errorMessages = error.graphQLErrors.map(e => e.message)
+      setErrors(errorMessages)
+      setErrorPopupOpen(true)
     },
-  });
+  })
 
-  const onSubmit = (values) => {
+  const onSubmit = values => {
     if (!clickAddress || !values.address) {
-      setErrors(["Выберите адрес салона из выпадающего списка"]);
-      setErrorPopupOpen(true);
-      return;
+      setErrors(['Выберите адрес салона из выпадающего списка'])
+      setErrorPopupOpen(true)
+      return
     }
     if (!salon && !photoSalonId) {
-      setNoPhotoError(true);
-      setErrors(["Необходимо добавить логотип салона"]);
-      setErrorPopupOpen(true);
-      return;
+      setNoPhotoError(true)
+      setErrors(['Необходимо добавить логотип салона'])
+      setErrorPopupOpen(true)
+      return
     }
     if (!salon && !values.photos) {
-      setErrors(["Необходимо добавить фото салона"]);
-      setErrorPopupOpen(true);
-      return;
+      setErrors(['Необходимо добавить фото салона'])
+      setErrorPopupOpen(true)
+      return
     }
 
     if (!salon) {
-      const { photos = [], contactPersonPhone = {} } = values;
+      const { photos = [], contactPersonPhone = {} } = values
       const personPhone = {
         haveTelegram: false,
         haveViber: false,
         haveWhatsApp: false,
-        phoneNumber: "",
-      };
+        phoneNumber: '',
+      }
 
       createSalon({
         variables: {
@@ -182,22 +184,22 @@ const RegistrationForm = ({
             ...values,
             contactPersonPhone: { ...personPhone, ...contactPersonPhone },
             isNotRent: false,
-            photoIds: photos.map((photo) => photo.id),
+            photoIds: photos.map(photo => photo.id),
             logoId: photoSalonId,
             lessor: lessor ? true : false,
           },
         },
-      });
+      })
     }
 
     if (salon) {
-      const { photos = [], contactPersonPhone = {} } = values;
+      const { photos = [], contactPersonPhone = {} } = values
       const personPhone = {
         haveTelegram: false,
         haveViber: false,
         haveWhatsApp: false,
-        phoneNumber: "",
-      };
+        phoneNumber: '',
+      }
 
       if (
         salon?.name !== values.name ||
@@ -211,13 +213,13 @@ const RegistrationForm = ({
               salonId: salon.id,
             },
           },
-        });
+        })
       }
 
       if (photoSalonId) {
         mutateLogo({
           variables: { input: { salonId: salon.id, logoId: photoSalonId } },
-        });
+        })
       }
 
       mutate({
@@ -227,13 +229,13 @@ const RegistrationForm = ({
             isNotRent: false,
             contactPersonPhone: { ...personPhone, ...contactPersonPhone },
             salonId: salon.id,
-            photoIds: photos.map((t) => t.id),
+            photoIds: photos.map(t => t.id),
             lessor: salon?.lessor ? true : false,
           },
         },
-      });
+      })
     }
-  };
+  }
 
   return (
     <Wrapper>
@@ -289,8 +291,8 @@ const RegistrationForm = ({
                   disabled={pristine || loadingCreate || loading}
                 >
                   {loadingCreate || loading
-                    ? "Подождите"
-                    : "Сохранить и продолжить"}
+                    ? 'Подождите'
+                    : 'Сохранить и продолжить'}
                 </Button>
               </MobileHidden>
               <MobileVisible>
@@ -302,16 +304,16 @@ const RegistrationForm = ({
                   disabled={pristine || loadingCreate || loading}
                 >
                   {loadingCreate || loading
-                    ? "Подождите"
-                    : "Сохранить и продолжить"}
+                    ? 'Подождите'
+                    : 'Сохранить и продолжить'}
                 </Button>
               </MobileVisible>
             </form>
-          );
+          )
         }}
       />
     </Wrapper>
-  );
-};
+  )
+}
 
-export default RegistrationForm;
+export default RegistrationForm

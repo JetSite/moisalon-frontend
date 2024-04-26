@@ -1,16 +1,18 @@
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import SalonItem from './SalonItem'
 import Button from '../../../../../../ui/Button'
 import { MobileVisible, MobileHidden } from '../../../../../../../styles/common'
 import { SalonsContent, Title, ListWrapper } from './styles'
-import { CityContext } from '../../../../../../../searchContext'
+
 import { cyrToTranslit } from '../../../../../../../utils/translit'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 
 const SalonsList = ({ salons, ref3 }) => {
   const [sliceNumber, setSliceNumber] = useState(3)
   const slicedList = salons?.slice(0, sliceNumber)
-  const [city] = useContext(CityContext)
+  const { city } = useAuthStore(getStoreData)
 
   const onFetchMore = () => {
     setSliceNumber(sliceNumber + 3)

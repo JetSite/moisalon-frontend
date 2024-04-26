@@ -1,13 +1,13 @@
 import { useRouter } from 'next/router'
-import { useContext } from 'react'
 import { addApolloState, initializeApollo } from '../../apollo-client'
 import BrandCabinet from '../../components/pages/Brand/BrandCabinet'
 import CreatePageSkeleton from '../../components/ui/ContentSkeleton/CreatePageSkeleton'
 import { brandSlugQuery } from '../../_graphql-legacy/brand/brandSlugQuery'
-import { MeContext } from '../../searchContext'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 
 const BrandCabinetPage = ({ brand }) => {
-  const [me] = useContext(MeContext)
+  const { me } = useAuthStore(getStoreData)
   const router = useRouter()
 
   if (me === null) {

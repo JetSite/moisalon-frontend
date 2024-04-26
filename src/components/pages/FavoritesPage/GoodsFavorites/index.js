@@ -1,4 +1,4 @@
-import { useRef, useState, useContext } from 'react'
+import { useRef, useState } from 'react'
 import { MainContainer } from '../../../../styles/common'
 import {
   Title,
@@ -17,10 +17,10 @@ import {
   ButtonPrev,
   NavigationWrapper,
 } from '../../../../styles/sliderBlocks'
-import Button from '../../../ui/Button'
 import Good from './components/Good'
 import { cyrToTranslit } from '../../../../utils/translit'
-import { CityContext } from '../../../../searchContext'
+import { getStoreData } from 'src/store/utils'
+import useAuthStore from 'src/store/authStore'
 
 SwiperCore.use([Navigation])
 
@@ -32,7 +32,7 @@ const GoodsFavorites = ({
   handleDeleted,
 }) => {
   const navigationPrevRef = useRef(null)
-  const [city] = useContext(CityContext)
+  const { city } = useAuthStore(getStoreData)
   const navigationNextRef = useRef(null)
 
   const onBeforeInit = Swiper => {

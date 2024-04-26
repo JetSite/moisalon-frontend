@@ -1,4 +1,3 @@
-import { useContext } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import SearchBlock from '../../blocks/SearchBlock'
@@ -29,13 +28,14 @@ import {
 import moment from 'moment'
 import 'moment/locale/ru'
 import { cyrToTranslit } from '../../../utils/translit'
-import { CityContext } from '../../../searchContext'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 import MainLayout from '../../../layouts/MainLayout'
 import { PHOTO_URL } from '../../../variables'
 
 const VacancyPage = ({ vacancy, beautyCategories, beautyAllContent }) => {
   const router = useRouter()
-  const [city] = useContext(CityContext)
+  const { city } = useAuthStore(getStoreData)
 
   const originInfo = item => {
     switch (item?.origin) {

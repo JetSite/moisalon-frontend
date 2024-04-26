@@ -1,4 +1,3 @@
-import { useContext } from 'react'
 import { Field } from 'react-final-form'
 import styled from 'styled-components'
 import Collapse from '@material-ui/core/Collapse'
@@ -6,10 +5,11 @@ import AutoFocusedForm from '../../../blocks/Form/AutoFocusedForm'
 import TextField from '../../../blocks/Form/TextField'
 import SelectField from '../../../blocks/Form/SelectField'
 import Button from '../../../ui/Button'
-import { CatalogsContext } from '../../../../searchContext'
 import catalogOrDefault from '../../../../utils/catalogOrDefault'
 import scrollIntoView from 'scroll-into-view'
 import { laptopBreakpoint } from '../../../../styles/variables'
+import useBaseStore from 'src/store/baseStore'
+import { getStoreData } from 'src/store/utils'
 
 const Checkbox = styled.input`
   position: absolute;
@@ -224,7 +224,7 @@ export const CheckBoxCustom = ({ input, label }) => {
 }
 
 const RentFilter = ({ setFilterOpen, filterOpen, filters, setFilters }) => {
-  const catalogs = useContext(CatalogsContext)
+  const { catalogs } = useBaseStore(getStoreData)
   const salonActivitiesCatalog = catalogOrDefault(
     catalogs?.salonActivitiesCatalog,
   )

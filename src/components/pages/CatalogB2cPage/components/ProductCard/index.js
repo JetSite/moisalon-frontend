@@ -1,11 +1,11 @@
-import { useContext } from 'react'
 import styled from 'styled-components'
 import { lighten } from 'polished'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { laptopBreakpoint } from '../../../../../styles/variables'
 import { Skeleton } from '@material-ui/lab'
-import { CityContext, MeContext } from '../../../../../searchContext'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 import { PHOTO_URL } from '../../../../../variables'
 
 const Wrapper = styled.div`
@@ -228,8 +228,7 @@ const Plus = styled(Minus)`
 
 const ProductCard = ({ item, loading, add, deleteItem, loadingCart, cart }) => {
   const router = useRouter()
-  const [me] = useContext(MeContext)
-  const [city] = useContext(CityContext)
+  const { city, me } = useAuthStore(getStoreData)
 
   const newItem = cart?.find(el => el?.product?.id === item.id)
     ? cart?.find(el => el?.product?.id === item.id)

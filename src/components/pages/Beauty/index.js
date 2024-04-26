@@ -1,6 +1,5 @@
-import { useContext } from "react";
-import SearchBlock from "../../blocks/SearchBlock";
-import { useRouter } from "next/router";
+import SearchBlock from '../../blocks/SearchBlock'
+import { useRouter } from 'next/router'
 import {
   Wrapper,
   Content,
@@ -19,14 +18,15 @@ import {
   ImageMobile,
   HeadMobile,
   Close,
-} from "./styled";
-import BackButton from "../../ui/BackButton";
-import { cyrToTranslit } from "../../../utils/translit";
-import { CityContext } from "../../../searchContext";
+} from './styled'
+import BackButton from '../../ui/BackButton'
+import { cyrToTranslit } from '../../../utils/translit'
+import { getStoreData } from 'src/store/utils'
+import useAuthStore from 'src/store/authStore'
 
 const Beauty = () => {
-  const router = useRouter();
-  const [city] = useContext(CityContext);
+  const router = useRouter()
+  const { city } = useAuthStore(getStoreData)
   return (
     <>
       <HideMobile>
@@ -191,7 +191,7 @@ const Beauty = () => {
         </Content>
       </Wrapper>
     </>
-  );
-};
+  )
+}
 
-export default Beauty;
+export default Beauty

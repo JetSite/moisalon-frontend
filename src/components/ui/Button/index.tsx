@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, ComponentProps, FC } from 'react'
+import { ButtonHTMLAttributes, FC } from 'react'
 import {
   ButtonCustom,
   fontVariants,
@@ -8,7 +8,7 @@ import {
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant: keyof typeof styleVariants
-  size: keyof typeof sizeVariants
+  size?: keyof typeof sizeVariants
   font?: keyof typeof fontVariants
   mb?: string
   mt?: string
@@ -16,9 +16,9 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   as?: keyof JSX.IntrinsicElements
 }
 
-interface Props extends ButtonProps {}
+// interface Props extends ButtonProps {}
 
-const Button: FC<Props> = ({
+const Button: FC<ButtonProps> = ({
   variant = 'dark',
   size = 'small',
   as = 'button',

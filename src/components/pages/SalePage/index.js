@@ -1,4 +1,3 @@
-import { useContext } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import MainLayout from '../../../layouts/MainLayout'
@@ -32,12 +31,13 @@ import moment from 'moment'
 import 'moment/locale/ru'
 import Countdown from '../../blocks/Countdown'
 import { cyrToTranslit } from '../../../utils/translit'
-import { CityContext } from '../../../searchContext'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 import { PHOTO_URL } from '../../../variables'
 
 const SalePage = ({ sale, loading, beautyCategories, beautyAllContent }) => {
   const router = useRouter()
-  const [city] = useContext(CityContext)
+  const { city } = useAuthStore(getStoreData)
 
   const originInfo = item => {
     switch (item?.origin) {

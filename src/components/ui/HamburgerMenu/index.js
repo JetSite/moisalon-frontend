@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import {
@@ -28,11 +28,12 @@ import {
 } from './styles'
 import SearchIcon from '../../pages/MainPage/components/Header/icons/SearchIcon'
 import CityPingIcon from '../../pages/MainPage/components/Header/icons/CityPingIcon'
-import { CityContext, MeContext } from '../../../searchContext'
 import { cyrToTranslit } from '../../../utils/translit'
 import { useQuery } from '@apollo/client'
 import { currentUserSalonsAndMasterQuery } from '../../../_graphql-legacy/master/currentUserSalonsAndMasterQuery'
 import { PHOTO_URL } from '../../../variables'
+import { getStoreData, getStoreEvent } from 'src/store/utils'
+import useAuthStore from 'src/store/authStore'
 
 const HamburgerMenu = ({
   showHamburgerMenu,
@@ -51,8 +52,9 @@ const HamburgerMenu = ({
       document.documentElement.style.overflowY = 'scroll'
     }
   })
-  const [me, setMe] = useContext(MeContext)
-  const [city] = useContext(CityContext)
+  const { city, me } = useAuthStore(getStoreData)
+  const { setMe } = useAuthStore(getStoreEvent)
+
   const dev = process.env.NEXT_PUBLIC_ENV !== 'production'
   const router = useRouter()
   const isLoggedIn = me?.info !== undefined && me?.info !== null

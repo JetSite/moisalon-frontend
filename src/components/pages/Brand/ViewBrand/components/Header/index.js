@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 import { MainContainer } from '../../../../../../styles/common'
 import BackButton from '../../../../../ui/BackButton'
 import {
@@ -18,8 +18,9 @@ import {
 import Title from '../Title'
 import { useRouter } from 'next/router'
 import { cyrToTranslit } from '../../../../../../utils/translit'
-import { CityContext } from '../../../../../../searchContext'
 import { PHOTO_URL } from '../../../../../../variables'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 
 const Header = ({
   brand,
@@ -30,7 +31,7 @@ const Header = ({
   // refetchBrand,
   // refetchScore,
 }) => {
-  const [city] = useContext(CityContext)
+  const { city } = useAuthStore(getStoreData)
   const router = useRouter()
   const [toggleTerms, setToggleTerms] = useState(false)
 

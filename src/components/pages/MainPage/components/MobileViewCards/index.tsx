@@ -13,10 +13,11 @@ import {
   CardQuantity,
   CardIconAdvices,
 } from './styles'
-import { FC, useContext } from 'react'
-import { CityContext, MeContext } from '../../../../../searchContext'
+import { FC } from 'react'
 import { cyrToTranslit } from '../../../../../utils/translit'
 import { ICity } from 'src/types'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 
 interface Props {
   totalSalons: number
@@ -32,7 +33,7 @@ const MobileViewCards: FC<Props> = ({
   cityData,
 }) => {
   const router = useRouter()
-  const [city] = useContext(CityContext)
+  const { city } = useAuthStore(getStoreData)
 
   const cards = [
     {

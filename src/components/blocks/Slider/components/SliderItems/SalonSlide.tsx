@@ -1,13 +1,14 @@
-import { FC, useContext } from 'react'
+import { FC } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import SalonCard from '../../../SalonCard'
 import { cyrToTranslit } from '../../../../../utils/translit'
-import { CityContext } from '../../../../../searchContext'
 import Button from '../../../../ui/Button'
 import { DeleteSalon } from './styles'
 import { IDeleteFunction } from './BrandSlide'
 import { ISalonPage } from 'src/types/salon'
+import { getStoreData } from 'src/store/utils'
+import useAuthStore from 'src/store/authStore'
 
 interface Props {
   item: ISalonPage
@@ -16,7 +17,8 @@ interface Props {
 }
 
 const SalonSlide: FC<Props> = ({ item, isEditing, deleteFunction }) => {
-  const [city] = useContext(CityContext)
+  const { city } = useAuthStore(getStoreData)
+
   const router = useRouter()
   const landingMaster = router.pathname === '/for_master'
 
@@ -30,9 +32,7 @@ const SalonSlide: FC<Props> = ({ item, isEditing, deleteFunction }) => {
     >
       <SalonCard
         item={item}
-        shareLink={`https://moi.salon/${cyrToTranslit(
-          item.cities?.citySlug,
-        )}/salon/${item?.id}`}
+        shareLink={`https://moi.salon/${cyrToTranslit(city)}/salon/${item?.id}`}
       />
       {isEditing && (
         <DeleteSalon onClick={() => deleteFunction(item.id)}>

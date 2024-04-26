@@ -1,18 +1,19 @@
 import { useRouter } from 'next/router'
 import { addApolloState, initializeApollo } from '../../apollo-client'
-import { useContext, useState } from 'react'
-import { MeContext } from '../../searchContext'
+import { useState } from 'react'
 import { salonQuery } from '../../_graphql-legacy/salon/salonQuery'
 import { getSeatActivities } from '../../_graphql-legacy/seat/getSeatActivities'
 import { getSeatEquipment } from '../../_graphql-legacy/seat/getSeatEquipment'
 import RentSeat from '../../components/pages/Salon/RentSeat'
 import { useQuery } from '@apollo/client'
 import CreatePageSkeleton from '../../components/ui/ContentSkeleton/CreatePageSkeleton'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 
 const RentSalonSeat = ({ salonData, seatActivities, seatEquipment }) => {
   const [salon, setSalon] = useState(salonData)
   const router = useRouter()
-  const [me] = useContext(MeContext)
+  const { me } = useAuthStore(getStoreData)
 
   const { refetch: refetchSalon } = useQuery(salonQuery, {
     variables: {

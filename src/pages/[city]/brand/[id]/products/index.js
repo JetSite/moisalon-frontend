@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 import { addApolloState, initializeApollo } from '../../../../../apollo-client'
 import { brandQuery } from '../../../../../_graphql-legacy/brand/brandQuery'
 import { useQuery } from '@apollo/client'
@@ -10,8 +10,9 @@ import BrandProductsPage from '../../../../../components/pages/Brand/BrandProduc
 import { brandSlugQuery } from '../../../../../_graphql-legacy/brand/brandSlugQuery'
 import { getProductCategories } from '../../../../../_graphql-legacy/getProductCategories'
 import { scoreBrand } from '../../../../../_graphql-legacy/brand/scoreBrand'
-import { MeContext } from '../../../../../searchContext'
 import { citySuggestionsQuery } from '../../../../../_graphql-legacy/city/citySuggestionsQuery'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 
 const BrandProducts = ({
   brandData,
@@ -21,7 +22,7 @@ const BrandProducts = ({
 }) => {
   const [brand, setBrand] = useState(brandData)
   const [dataScore, setDataScore] = useState(dataScoreRes)
-  const [me, setMe] = useContext(MeContext)
+  const { me } = useAuthStore(getStoreData)
 
   const { refetch: refetchBrand } = useQuery(brandQuery, {
     variables: { id: brand.id },

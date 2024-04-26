@@ -38,8 +38,6 @@ import {
   urlPatternHttps,
   urlPatternHttp,
 } from '../../../../../../utils/checkUrls'
-import { useContext } from 'react'
-import { CityContext } from '../../../../../../searchContext'
 import StarIcon from '../../../../../pages/MainPage/components/Header/icons/StarIcon'
 import scrollIntoView from 'scroll-into-view'
 import Schedule from '../../../../../ui/Shedule'
@@ -95,7 +93,7 @@ const Header = ({
     })
   }
 
-  const [city] = useContext(CityContext)
+  const { city } = useAuthStore(getStoreData)
   return (
     <MainContainer>
       <Wrapper>

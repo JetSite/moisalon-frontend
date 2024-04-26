@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect } from 'react'
 import { useMutation } from '@apollo/client'
 import { getServicesCategories } from '../../../../../../utils/serviceCatalog'
 import { MainContainer } from '../../../../../../styles/common'
@@ -36,11 +36,12 @@ import {
 } from '../../../../../../utils/favoritesInStorage'
 import { cyrToTranslit } from '../../../../../../utils/translit'
 import defaultNumber from '../../../../../../utils/defaultNumber'
-import { CityContext } from '../../../../../../searchContext'
 import ChatMessagePopup from '../../../../../ui/ChatMessagePopup'
 import { numberForSocials } from '../../../../../../utils/formatNumber'
 import { PHOTO_URL } from '../../../../../../variables'
 import { getServiceCategories } from 'src/graphql/service/queries/getServiceCategories'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 
 const Header = ({
   master,
@@ -53,7 +54,7 @@ const Header = ({
   isOwner,
 }) => {
   const router = useRouter()
-  const [city] = useContext(CityContext)
+  const { city } = useAuthStore(getStoreData)
   const [chatMessagePopup, setChatMessagePopup] = useState(false)
 
   const logo = master?.masterPhoto?.url ? (

@@ -1,6 +1,6 @@
-import Link from "next/link";
-import Button from "../../../ui/Button";
-import { MobileVisible, MobileHidden } from "../../../../styles/common";
+import Link from 'next/link'
+import Button from '../../../ui/Button'
+import { MobileVisible, MobileHidden } from '../../../../styles/common'
 import {
   TopWrap,
   Top,
@@ -24,12 +24,12 @@ import {
   RedCircle,
   BlackCircle,
   RedHook,
-} from "../styles";
-import { useContext } from "react";
-import { MeContext } from "../../../../searchContext";
+} from '../styles'
+import { getStoreData } from 'src/store/utils'
+import useAuthStore from 'src/store/authStore'
 
 const AboutProject = () => {
-  const [me] = useContext(MeContext);
+  const { me } = useAuthStore(getStoreData)
 
   return (
     <>
@@ -43,7 +43,7 @@ const AboutProject = () => {
               одном месте.
             </TopText>
             <MobileHidden>
-              <Link href={me?.info ? "/masterCabinet" : "/login"}>
+              <Link href={me?.info ? '/masterCabinet' : '/login'}>
                 <Button size="medium" variant="red" font="medium">
                   Присоединиться
                 </Button>
@@ -84,7 +84,7 @@ const AboutProject = () => {
         </MobileVisible>
       </Bottom>
     </>
-  );
-};
+  )
+}
 
-export default AboutProject;
+export default AboutProject

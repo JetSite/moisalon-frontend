@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback, useContext } from "react";
-import { useRouter } from "next/router";
-import { useMutation } from "@apollo/react-hooks";
+import { useState, useEffect, useCallback } from 'react'
+import { useRouter } from 'next/router'
+import { useMutation } from '@apollo/react-hooks'
 import {
   Wrapper,
   Title,
@@ -20,227 +20,226 @@ import {
   TotalBrand,
   TextBrandTotal,
   TextBrandSumm,
-} from "./styled";
-import { Checkbox, styled } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import Product from "./components/Product";
-import { sendOrderBrandMutation } from "../../../_graphql-legacy/brand/sendOrderBrandMutation";
-import Button from "../../ui/Button";
-import parseToFloat from "../../../utils/parseToFloat";
-import { removeItemB2cMutation } from "../../../_graphql-legacy/cart/removeItemB2c";
-import CartOrder from "./components/CartOrder";
-import BackButton from "../../ui/BackButton";
-import { cyrToTranslit } from "../../../utils/translit";
-import { CityContext } from "../../../searchContext";
+} from './styled'
+import { Checkbox, styled } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import Product from './components/Product'
+import { sendOrderBrandMutation } from '../../../_graphql-legacy/brand/sendOrderBrandMutation'
+import Button from '../../ui/Button'
+import parseToFloat from '../../../utils/parseToFloat'
+import { removeItemB2cMutation } from '../../../_graphql-legacy/cart/removeItemB2c'
+import CartOrder from './components/CartOrder'
+import BackButton from '../../ui/BackButton'
+import { cyrToTranslit } from '../../../utils/translit'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 
-const CountProduct = (items) => {
+const CountProduct = items => {
   if (items?.length) {
-    let count = 0;
+    let count = 0
     for (let i = 0; i < items?.length; i++) {
-      count += items[i]?.quantity;
+      count += items[i]?.quantity
     }
-    return count;
+    return count
   }
-  return 0;
-};
+  return 0
+}
 
-export const BpIcon = styled("span")(() => ({
+export const BpIcon = styled('span')(() => ({
   borderRadius: 3,
   width: 23,
   height: 23,
-  backgroundColor: "#fff",
-  border: "1px solid #E3E3E3",
-  "&:hover": { bgcolor: "transparent" },
-  "input:hover ~ &": {
-    backgroundColor: "#ebf1f5",
+  backgroundColor: '#fff',
+  border: '1px solid #E3E3E3',
+  '&:hover': { bgcolor: 'transparent' },
+  'input:hover ~ &': {
+    backgroundColor: '#ebf1f5',
   },
-}));
+}))
 
 export const BpCheckedIcon = styled(BpIcon)({
-  backgroundColor: "#E3E3E3",
-  border: "1px solid #E3E3E3",
-  "&:before": {
-    display: "block",
+  backgroundColor: '#E3E3E3',
+  border: '1px solid #E3E3E3',
+  '&:before': {
+    display: 'block',
     width: 23,
     height: 19,
-    background: "url(/icon-check.svg) no-repeat center",
+    background: 'url(/icon-check.svg) no-repeat center',
     content: '""',
   },
-});
+})
 
 const useStyles = makeStyles({
   root: {
-    "&:hover": {
-      backgroundColor: "transparent !important",
+    '&:hover': {
+      backgroundColor: 'transparent !important',
     },
   },
-});
+})
 
-const totalSumm = (items) => {
+const totalSumm = items => {
   if (!items?.length) {
-    return 0;
+    return 0
   } else {
-    let count = 0;
+    let count = 0
     for (let i = 0; i < items.length; i++) {
-      count += items[i].product.currentAmount * items[i].quantity;
+      count += items[i].product.currentAmount * items[i].quantity
     }
-    return count;
+    return count
   }
-};
+}
 
 const checkSumm = (brand, checkedProducts) => {
-  if (checkedProducts.find((el) => el?.product?.brand?.name === brand?.name)) {
+  if (checkedProducts.find(el => el?.product?.brand?.name === brand?.name)) {
     const summArr = checkedProducts.filter(
-      (item) => item?.product?.brand?.name === brand?.name
-    );
-    let summAll = 0;
-    summArr.forEach((el) => (summAll += totalSumm([el])));
-    return summAll < +brand?.minimalOrderPrice ? brand.name : true;
+      item => item?.product?.brand?.name === brand?.name,
+    )
+    let summAll = 0
+    summArr.forEach(el => (summAll += totalSumm([el])))
+    return summAll < +brand?.minimalOrderPrice ? brand.name : true
   }
-  return true;
-};
+  return true
+}
 
 const checkedProductBrands = (checkedArr, productArr) => {
-  let newArr = [];
-  productArr.forEach((item) => {
-    if (
-      checkedArr.find((el) => el?.product?.brand?.name.trim() === item.name)
-    ) {
-      newArr.push(item);
+  let newArr = []
+  productArr.forEach(item => {
+    if (checkedArr.find(el => el?.product?.brand?.name.trim() === item.name)) {
+      newArr.push(item)
     }
-  });
-  return newArr;
-};
+  })
+  return newArr
+}
 
 const Cart = ({ cart, total, me, refetchCart }) => {
-  const [open, setOpen] = useState(false);
-  const [city] = useContext(CityContext);
-  const [checkMinimalSumm, setCheckMinimalSumm] = useState(false);
-  const [productBrands, setProductBrands] = useState([]);
-  const [checkAll, setCheckAll] = useState(true);
-  const [openOrder, setOpenOrder] = useState(false);
-  const [checkedProducts, setCheckedProducts] = useState(cart);
-  const [clickAddress, setClickAddress] = useState(false);
-  const [isErrorPopupOpen, setErrorPopupOpen] = useState(false);
-  const [errors, setErrors] = useState(null);
-  const [isWrongQuantity, setIsWrongQuantity] = useState(false);
-  const router = useRouter();
-  const b2bClient = !!me?.master?.id || !!me?.salons?.length;
+  const [open, setOpen] = useState(false)
+  const { city } = useAuthStore(getStoreData)
+  const [checkMinimalSumm, setCheckMinimalSumm] = useState(false)
+  const [productBrands, setProductBrands] = useState([])
+  const [checkAll, setCheckAll] = useState(true)
+  const [openOrder, setOpenOrder] = useState(false)
+  const [checkedProducts, setCheckedProducts] = useState(cart)
+  const [clickAddress, setClickAddress] = useState(false)
+  const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
+  const [errors, setErrors] = useState(null)
+  const [isWrongQuantity, setIsWrongQuantity] = useState(false)
+  const router = useRouter()
+  const b2bClient = !!me?.master?.id || !!me?.salons?.length
 
   const handleCloseOrder = useCallback(() => {
-    setOpenOrder(false);
-  }, [setOpenOrder]);
+    setOpenOrder(false)
+  }, [setOpenOrder])
 
   const handleCloseSuccess = useCallback(() => {
-    setOpen(false);
-  }, [setOpen]);
+    setOpen(false)
+  }, [setOpen])
 
   useEffect(() => {
     setCheckMinimalSumm(
       checkedProductBrands(checkedProducts, productBrands)
-        .map((item) =>
+        .map(item =>
           item?.minimalOrderPrice
             ? checkSumm(item, checkedProducts, total)
-            : true
+            : true,
         )
-        .filter((el) => el !== true)
-    );
-  }, [checkedProducts, productBrands, cart]);
+        .filter(el => el !== true),
+    )
+  }, [checkedProducts, productBrands, cart])
 
   const [removeItem] = useMutation(removeItemB2cMutation, {
     onCompleted: () => {
-      refetchCart();
+      refetchCart()
     },
-  });
+  })
 
   const [sendOrder] = useMutation(sendOrderBrandMutation, {
     onCompleted: () => {
-      setOpenOrder(false);
-      setOpen(true);
-      setProductBrands([]);
+      setOpenOrder(false)
+      setOpen(true)
+      setProductBrands([])
     },
-  });
+  })
 
-  const classes = useStyles();
+  const classes = useStyles()
 
   const handleOrder = () => {
-    setOpenOrder(true);
-  };
+    setOpenOrder(true)
+  }
 
   useEffect(() => {
     setCheckedProducts(
-      cart.filter((item) => {
-        return checkedProducts.find((el) => el.key === item.key);
-      })
-    );
-  }, [cart]);
+      cart.filter(item => {
+        return checkedProducts.find(el => el.key === item.key)
+      }),
+    )
+  }, [cart])
 
   useEffect(() => {
-    const isWrongQuantities = [];
-    cart.map((product) => {
+    const isWrongQuantities = []
+    cart.map(product => {
       if (product.quantity > product.product.countAvailable) {
-        isWrongQuantities.push(true);
+        isWrongQuantities.push(true)
       } else {
-        isWrongQuantities.push(false);
+        isWrongQuantities.push(false)
       }
-    });
-    setIsWrongQuantity(isWrongQuantities.find((item) => item));
-  }, [cart]);
+    })
+    setIsWrongQuantity(isWrongQuantities.find(item => item))
+  }, [cart])
 
   useEffect(() => {
     if (checkedProducts.length === cart.length) {
-      setCheckAll(true);
+      setCheckAll(true)
     } else {
-      setCheckAll(false);
+      setCheckAll(false)
     }
-  }, [checkedProducts]);
+  }, [checkedProducts])
 
   const handleCheckAll = () => {
     if (checkAll) {
-      setCheckedProducts([]);
+      setCheckedProducts([])
     } else {
-      setCheckedProducts(cart);
+      setCheckedProducts(cart)
     }
-  };
+  }
 
   const handleDelete = () => {
-    const itemsDelete = checkedProducts.map((item) => {
+    const itemsDelete = checkedProducts.map(item => {
       return {
         key: item.key,
         quantity: 0,
-      };
-    });
+      }
+    })
     removeItem({
       variables: {
         input: {
           items: itemsDelete,
-          clientMutationId: "",
+          clientMutationId: '',
           isB2b: true,
         },
       },
-    });
-    setCheckedProducts([]);
-    setProductBrands([]);
-  };
+    })
+    setCheckedProducts([])
+    setProductBrands([])
+  }
 
-  const onSubmit = (values) => {
+  const onSubmit = values => {
     if (!clickAddress || !values.address) {
-      setErrors(["Выберите адрес из выпадающего списка"]);
-      setErrorPopupOpen(true);
-      return;
+      setErrors(['Выберите адрес из выпадающего списка'])
+      setErrorPopupOpen(true)
+      return
     }
-    let newArray = [];
+    let newArray = []
     for (let i = 0; i < checkedProducts.length; i++) {
       newArray.push({
         // brand: checkedProducts[i].brandId,
         id: checkedProducts[i].product.id,
-        brandName: checkedProducts[i].product?.brand?.name || "",
+        brandName: checkedProducts[i].product?.brand?.name || '',
         description: checkedProducts[i].product.description,
         count: checkedProducts[i].quantity,
         price: parseToFloat(
-          checkedProducts[i].product.currentAmount.toString()
+          checkedProducts[i].product.currentAmount.toString(),
         ),
-      });
+      })
     }
     sendOrder({
       variables: {
@@ -251,8 +250,8 @@ const Cart = ({ cart, total, me, refetchCart }) => {
           product: [...newArray],
         },
       },
-    });
-  };
+    })
+  }
 
   return (
     <Wrapper>
@@ -263,7 +262,7 @@ const Cart = ({ cart, total, me, refetchCart }) => {
       />
       {!cart?.length ? (
         <>
-          {" "}
+          {' '}
           <NoItemsText>Ваша корзина пуста, наполните её товарами.</NoItemsText>
           <NoItemsTextRed
             onClick={() =>
@@ -271,11 +270,11 @@ const Cart = ({ cart, total, me, refetchCart }) => {
             }
           >
             Перейти в магазин.
-          </NoItemsTextRed>{" "}
+          </NoItemsTextRed>{' '}
         </>
       ) : (
         <>
-          {" "}
+          {' '}
           <Title>Корзина ({CountProduct(cart)})</Title>
           <Wrap>
             <ProductsWrap>
@@ -296,7 +295,7 @@ const Cart = ({ cart, total, me, refetchCart }) => {
                 ) : null}
               </CheckAndDelete>
               <Content>
-                {cart?.map((item) => (
+                {cart?.map(item => (
                   <Product
                     checkedProducts={checkedProducts}
                     key={item.key}
@@ -315,20 +314,20 @@ const Cart = ({ cart, total, me, refetchCart }) => {
               <Total>
                 <TextSumm>Сумма заказа:</TextSumm>
                 <TextTotal>{`${totalSumm(
-                  checkedProducts
+                  checkedProducts,
                 ).toLocaleString()} ₽`}</TextTotal>
               </Total>
               {productBrands?.length
                 ? checkedProductBrands(checkedProducts, productBrands).map(
-                    (item) =>
+                    item =>
                       item?.minimalOrderPrice &&
                       productBrands
-                        .map((item) =>
+                        .map(item =>
                           item?.minimalOrderPrice
                             ? checkSumm(item, checkedProducts, total)
-                            : true
+                            : true,
                         )
-                        .find((el) => el === item.name) ? (
+                        .find(el => el === item.name) ? (
                         <TotalBrand key={item.id}>
                           <TextBrandSumm>
                             Минимальная сумма заказа бренда - {item.name}:
@@ -336,7 +335,7 @@ const Cart = ({ cart, total, me, refetchCart }) => {
 
                           <TextBrandTotal>{`${item.minimalOrderPrice} ₽`}</TextBrandTotal>
                         </TotalBrand>
-                      ) : null
+                      ) : null,
                   )
                 : null}
               <Button
@@ -349,25 +348,25 @@ const Cart = ({ cart, total, me, refetchCart }) => {
                 }
                 onClick={() => {
                   if (!me?.info) {
-                    router.push("/login");
+                    router.push('/login')
                   } else {
                     sessionStorage.setItem(
-                      "cartChecked",
+                      'cartChecked',
                       JSON.stringify({
                         items: [checkedProducts],
                         productBrands: [
                           checkedProductBrands(checkedProducts, productBrands),
                         ],
-                      })
-                    );
-                    router.push(`/order`);
+                      }),
+                    )
+                    router.push(`/order`)
                   }
                 }}
               >
                 Перейти к оформлению
               </Button>
             </OrderWrap>
-          </Wrap>{" "}
+          </Wrap>{' '}
         </>
       )}
       <CartOrder
@@ -386,7 +385,7 @@ const Cart = ({ cart, total, me, refetchCart }) => {
         setCheckedProducts={setCheckedProducts}
       />
     </Wrapper>
-  );
-};
+  )
+}
 
-export default Cart;
+export default Cart

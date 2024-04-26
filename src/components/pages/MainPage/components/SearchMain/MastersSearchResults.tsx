@@ -1,12 +1,6 @@
-import React, { useCallback, useContext, useState, useEffect, FC } from 'react'
-import { useQuery } from '@apollo/client'
+import React, { useState, useEffect, FC } from 'react'
 import Link from 'next/link'
-import {
-  CatalogsContext,
-  CityContext,
-  MeContext,
-  SearchMainQueryContext,
-} from '../../../../../searchContext'
+
 import { masterSearchQuery } from '../../../../../_graphql-legacy/search/masterSearch'
 import { pluralize } from '../../../../../utils/pluralize'
 import { MobileVisible, MobileHidden } from '../../../../../styles/common'
@@ -23,25 +17,23 @@ import FilterSearchResults from '../../../../blocks/FilterSearchResults'
 import catalogOrDefault from '../../../../../utils/catalogOrDefault'
 import MasterItem from '../../../../blocks/MasterCard'
 import { cyrToTranslit } from '../../../../../utils/translit'
-import { useHistory } from '../../../../../historyContext'
 import { useSearchHistory } from '../../../../../hooks/useSearchHistory'
 import useCheckMobileDevice from '../../../../../hooks/useCheckMobileDevice'
 import { IMaster } from 'src/types/masters'
 import { IPagination } from 'src/types'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 
 const MastersSearchResults: FC<{
   masterData: IMaster[]
   paginations: IPagination
 }> = ({ masterData, paginations }) => {
-  const [query] = useContext(SearchMainQueryContext)
   const [masterSearchData, setMasterSearchData] = useState(masterData)
   const [loading, setLoading] = useState(false)
   const [fetchMoreLoading, setFetchMoreLoading] = useState(false)
-  const catalogs = useContext(CatalogsContext)
-  const [city] = useContext(CityContext)
-  const [me] = useContext(MeContext)
   const [resumeFilter, setResumeFilter] = useState<boolean | null>(null)
   const [loadingFirst, setLoadingFirst] = useState(true)
+  const { me, city } = useAuthStore(getStoreData)
   const [sortProperty, setSortProperty] = useState<
     'RATING' | 'AVERAGESCORE' | null
   >(null)
@@ -75,9 +67,9 @@ const MastersSearchResults: FC<{
 
   useEffect(() => {
     if (!loadingFirst) {
-      if (sortProperty || query?.query) {
+      if (sortProperty) {
         setLoading(true)
-        setChosenItemId('')
+        // setChosenItemId('')
         // refetch({
         //   input: {
         //     query: (query && query.query) || '',
@@ -92,16 +84,16 @@ const MastersSearchResults: FC<{
     } else {
       setLoadingFirst(false)
     }
-  }, [query, resumeFilter, sortOrder, sortProperty])
+  }, [resumeFilter, sortOrder, sortProperty])
 
   const isMobile = useCheckMobileDevice()
 
-  const { setChosenItemId } = useSearchHistory(
-    masterSearchData,
-    setMasterSearchData,
-    'master',
-    isMobile ? -10 : -120,
-  )
+  // const { setChosenItemId } = useSearchHistory(
+  //   masterSearchData,
+  //   setMasterSearchData,
+  //   'master',
+  //   isMobile ? -10 : -120,
+  // )
 
   // const onFetchMore = useCallback(() => {
   //   setFetchMoreLoading(true);

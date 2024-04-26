@@ -1,20 +1,18 @@
-import { useContext, useState, useEffect, useCallback } from "react";
-import Head from "next/head";
-import { useQuery } from "@apollo/client";
-import { useRouter } from "next/router";
-import { getCart } from "../../../../../_graphql-legacy/cart/getCart";
-import { goodSearch } from "../../../../../_graphql-legacy/goodSearch";
-import Catalog from "../..";
-import { Wrapper, NoProducts, Title } from "./styles";
-import FilterCatalog from "../../../../ui/FilterCatalog";
-import BackButton from "../../../../ui/BackButton";
-import Header from "./components/Header";
-import {
-  CityContext,
-  MeContext,
-  ProductsContext,
-} from "../../../../../searchContext";
-import { cyrToTranslit } from "../../../../../utils/translit";
+import { useState, useEffect, useCallback } from 'react'
+import Head from 'next/head'
+import { useQuery } from '@apollo/client'
+import { useRouter } from 'next/router'
+import { getCart } from '../../../../../_graphql-legacy/cart/getCart'
+import { goodSearch } from '../../../../../_graphql-legacy/goodSearch'
+import Catalog from '../..'
+import { Wrapper, NoProducts, Title } from './styles'
+import FilterCatalog from '../../../../ui/FilterCatalog'
+import BackButton from '../../../../ui/BackButton'
+import Header from './components/Header'
+import { cyrToTranslit } from '../../../../../utils/translit'
+import { getStoreData, getStoreEvent } from 'src/store/utils'
+import useAuthStore from 'src/store/authStore'
+import useBaseStore from 'src/store/baseStore'
 
 const CatalogProductsPage = ({
   catalog,
@@ -22,21 +20,21 @@ const CatalogProductsPage = ({
   productCategoriesData,
   goodsData,
 }) => {
-  const router = useRouter();
-  const [me] = useContext(MeContext);
-  const [productState, setProductsState] = useContext(ProductsContext);
-  const [goods, setGoods] = useState(goodsData);
-  const [refetchLoading, setRefetchLoading] = useState(false);
-  const [fetchMoreLoading, setFetchMoreLoading] = useState(false);
-  const b2bClient = !!me?.master?.id || !!me?.salons?.length;
-  const [city] = useContext(CityContext);
+  const router = useRouter()
+  const { me, city } = useAuthStore(getStoreData)
+  const { setProducts: setProductsState } = useBaseStore(getStoreEvent)
+
+  const [goods, setGoods] = useState(goodsData)
+  const [refetchLoading, setRefetchLoading] = useState(false)
+  const [fetchMoreLoading, setFetchMoreLoading] = useState(false)
+  const b2bClient = !!me?.master?.id || !!me?.salons?.length
 
   const [filter, setFilter] = useState({
     value: router.query.value,
     label: router.query.label,
-  });
+  })
 
-  const [selectedProduct, setSelectedProduct] = useState("Все категории");
+  const [selectedProduct, setSelectedProduct] = useState('Все категории')
 
   // const { fetchMore, refetch } = useQuery(goodsCatalogQuery, {
   //   variables: {
@@ -62,52 +60,52 @@ const CatalogProductsPage = ({
     variables: {
       input: {
         brandId: [brand.id],
-        query: "",
+        query: '',
         isB2b: true,
         categoryId:
-          !filter?.value || filter?.value === "Все категории"
+          !filter?.value || filter?.value === 'Все категории'
             ? null
             : [filter?.value],
       },
     },
     skip: true,
     notifyOnNetworkStatusChange: true,
-    onCompleted: (res) => {
+    onCompleted: res => {
       if (res) {
-        setRefetchLoading(false);
-        setGoods(res.goodsSearch);
+        setRefetchLoading(false)
+        setGoods(res.goodsSearch)
       }
     },
-  });
+  })
 
   useEffect(() => {
-    if (!filter?.value || filter?.value === "Все категории") {
-      setGoods(goods);
+    if (!filter?.value || filter?.value === 'Все категории') {
+      setGoods(goods)
     } else {
-      setRefetchLoading(true);
-      refetch();
+      setRefetchLoading(true)
+      refetch()
     }
-  }, [filter]);
+  }, [filter])
 
   const {
     data: dataCart,
     refetch: refetchCart,
     loading: loadingCart,
   } = useQuery(getCart, {
-    onCompleted: (res) => {
-      setProductsState(res?.getCartB2b?.contents || []);
+    onCompleted: res => {
+      setProductsState(res?.getCartB2b?.contents || [])
     },
-  });
+  })
 
-  const cart = dataCart?.getCartB2b?.contents || [];
+  const cart = dataCart?.getCartB2b?.contents || []
 
   const loadMore = useCallback(() => {
-    setFetchMoreLoading(true);
+    setFetchMoreLoading(true)
     fetchMore({
       variables: {
         cursor: goods?.connection?.pageInfo?.endCursor,
         input: {
-          query: "",
+          query: '',
           brandId: [brand.id],
           isB2b: true,
           // categoryId:
@@ -117,20 +115,20 @@ const CatalogProductsPage = ({
         },
       },
       updateQuery(previousResult, { fetchMoreResult }) {
-        const newNodes = fetchMoreResult?.goodsSearch?.connection?.nodes;
-        setFetchMoreLoading(false);
+        const newNodes = fetchMoreResult?.goodsSearch?.connection?.nodes
+        setFetchMoreLoading(false)
         setGoods({
           connection: {
             ...fetchMoreResult?.goodsSearch?.connection,
             nodes: [...goods.connection.nodes, ...newNodes],
           },
           filterDefinition: fetchMoreResult?.goodsSearch?.filterDefinition,
-        });
+        })
       },
-    });
-  });
+    })
+  })
 
-  const renderGoods = goods?.connection?.nodes;
+  const renderGoods = goods?.connection?.nodes
 
   return (
     <>
@@ -182,7 +180,7 @@ const CatalogProductsPage = ({
         </Wrapper>
       )}
     </>
-  );
-};
+  )
+}
 
-export default CatalogProductsPage;
+export default CatalogProductsPage

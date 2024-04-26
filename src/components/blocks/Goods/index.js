@@ -1,4 +1,4 @@
-import { useContext, useRef } from 'react'
+import { useRef } from 'react'
 import { MainContainer } from '../../../styles/common'
 import {
   Title,
@@ -31,7 +31,6 @@ import {
   NavigationWrapper,
   SliderWpapper,
 } from '../../../styles/sliderBlocks'
-import { CityContext, MeContext } from '../../../searchContext'
 import { cyrToTranslit } from '../../../utils/translit'
 
 SwiperCore.use([Navigation])
@@ -39,8 +38,7 @@ SwiperCore.use([Navigation])
 const Goods = ({ items, title }) => {
   const navigationPrevRef = useRef(null)
   const navigationNextRef = useRef(null)
-  const [me] = useContext(MeContext)
-  const [city] = useContext(CityContext)
+  const { city, me } = useAuthStore(getStoreData)
   const b2bClient = !!me?.master?.id || !!me?.salons?.length
 
   const onBeforeInit = Swiper => {

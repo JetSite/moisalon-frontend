@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, FC, MouseEvent } from 'react'
+import { useState, useEffect, FC, MouseEvent } from 'react'
 import {
   Wrapper,
   ImageWrap,
@@ -23,7 +23,6 @@ import {
   favoritesInStorage,
   inStorage,
 } from '../../../utils/favoritesInStorage'
-import { CatalogsContext } from '../../../searchContext'
 import { pluralize } from '../../../utils/pluralize'
 import Share from '../../ui/Share'
 import Rating from '../../ui/Rating'
@@ -38,7 +37,7 @@ interface Props {
   loading?: boolean
   rent?: boolean
   seatCount?: number
-  shareLink: string
+  shareLink?: string
 }
 
 const SalonCard: FC<Props> = ({
@@ -48,7 +47,6 @@ const SalonCard: FC<Props> = ({
   seatCount,
   shareLink,
 }) => {
-  const catalogs = useContext(CatalogsContext)
   const mobileMedia = useMedia({ maxWidth: 768 })
 
   const logoUrl = item?.salonLogo?.url
@@ -128,9 +126,11 @@ const SalonCard: FC<Props> = ({
       <FavoriteIcon isFavorite={isFavorite} onClick={e => addFavorite(e, item)}>
         <HeartFullFill fill={isFavorite} />
       </FavoriteIcon>
-      <SalonShareWrap>
-        <Share link={shareLink} title={item?.salonName} />
-      </SalonShareWrap>
+      {!!shareLink && (
+        <SalonShareWrap>
+          <Share link={shareLink} title={item?.salonName} />
+        </SalonShareWrap>
+      )}
     </Wrapper>
   )
 }

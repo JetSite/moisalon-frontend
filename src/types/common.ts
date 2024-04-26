@@ -3,6 +3,10 @@ import { ReactElement } from 'react'
 
 export type Nullable<T> = { [P in keyof T]: T[P] | null }
 
+export interface LazyType {
+  [K: string]: LazyType
+}
+
 export type IID = string | number
 
 export type IApolloRefetch = (

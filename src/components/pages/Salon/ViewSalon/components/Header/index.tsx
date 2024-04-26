@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, FC, MouseEvent } from 'react'
+import { useState, useEffect, FC, MouseEvent } from 'react'
 import { useRouter } from 'next/router'
 import {
   ApolloQueryResult,
@@ -39,7 +39,6 @@ import {
   ChatIcon,
 } from './styled'
 import { createScopesSalon } from '../../../../../../_graphql-legacy/salon/createScopesSalon'
-import { CityContext } from '../../../../../../searchContext'
 import { cyrToTranslit } from '../../../../../../utils/translit'
 import ChatMessagePopup from '../../../../../ui/ChatMessagePopup'
 import {
@@ -48,16 +47,16 @@ import {
 } from '../../../../../../utils/checkUrls'
 import { numberForSocials } from '../../../../../../utils/formatNumber'
 import { ISalonPage } from 'src/types/salon'
-import { IMe } from 'src/types/me'
 import { IApolloRefetch } from 'src/types/common'
 import { ICatalog } from 'src/utils/catalogOrDefault'
 import { PHOTO_URL } from 'src/variables'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 
 interface Props {
   salon: ISalonPage
   salonActivitiesCatalog: ICatalog
   isOwner: boolean
-  me: IMe
   loadingScore: boolean
   refetchSalon: IApolloRefetch
   refetchScore: IApolloRefetch
@@ -67,7 +66,6 @@ const Header: FC<Props> = ({
   salon,
   salonActivitiesCatalog,
   isOwner,
-  me,
   loadingScore,
   refetchSalon,
   refetchScore,
@@ -78,11 +76,11 @@ const Header: FC<Props> = ({
   ) : (
     <SkeletonCircle />
   )
-  const [city] = useContext(CityContext)
-  const [isFavorite, setIsFavorit] = useState(false)
-  const [showSocials, setShowSocials] = useState(false)
-  const [showAllActivities, setShowAllActivities] = useState(false)
-  const [chatMessagePopup, setChatMessagePopup] = useState(false)
+  const { city } = useAuthStore(getStoreData)
+  const [isFavorite, setIsFavorit] = useState<boolean>(false)
+  const [showSocials, setShowSocials] = useState<boolean>(false)
+  const [showAllActivities, setShowAllActivities] = useState<boolean>(false)
+  const [chatMessagePopup, setChatMessagePopup] = useState<boolean>(false)
 
   useEffect(() => {
     const isInStorage = inStorage('salons', salon)
@@ -119,7 +117,6 @@ const Header: FC<Props> = ({
         <ChatMessagePopup
           open={chatMessagePopup}
           setChatMessagePopup={setChatMessagePopup}
-          me={me}
           userId={salon.user?.id}
           origin="SALON"
           originData={salon}
@@ -243,11 +240,11 @@ const Header: FC<Props> = ({
           </NameWrapper>
           {salon?.activities?.length < 8 || showAllActivities ? (
             <Activities>
-              {selectedGroupNames(
+              {/* {selectedGroupNames(
                 salon?.activities,
                 salonActivitiesCatalog,
                 ', ',
-              )}
+              )} */}
               {showAllActivities ? (
                 <More onClick={() => setShowAllActivities(!showAllActivities)}>
                   Скрыть
@@ -256,11 +253,11 @@ const Header: FC<Props> = ({
             </Activities>
           ) : (
             <Activities>
-              {selectedGroupNames(
+              {/* {selectedGroupNames(
                 salon?.activities?.slice(0, 8),
                 salonActivitiesCatalog,
                 ', ',
-              )}
+              )} */}
               <More onClick={() => setShowAllActivities(!showAllActivities)}>
                 Показать все
               </More>
@@ -287,7 +284,6 @@ const Header: FC<Props> = ({
               handleChangeRating={handleChangeRating}
               userValue={salon.salonAverageScore}
               count={salon.salonAverageScore || 0}
-              me={me}
             />
             <Count>{salon.salonAverageScore || 0}</Count>
           </Rating>

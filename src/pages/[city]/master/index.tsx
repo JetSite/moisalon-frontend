@@ -1,25 +1,21 @@
 import { addApolloState, initializeApollo } from '../../../apollo-client'
-import { masterSearchQuery } from '../../../_graphql-legacy/search/masterSearch'
 import CategoryPageLayout from '../../../layouts/CategoryPageLayout'
 import AllMastersPage from '../../../components/pages/Master/AllMasters'
 
-import { citySuggestionsQuery } from '../../../_graphql-legacy/city/citySuggestionsQuery'
-import { servicesWithMasterCount } from '../../../_graphql-legacy/services/servicesWithMasterCount'
-import useCheckCity from '../../../hooks/checkCity'
 import { GetServerSideProps } from 'next'
 import { totalBrands } from 'src/graphql/brand/queries/totalBrands'
 import { totalMasters } from 'src/graphql/master/queries/totalMasters'
 import { totalSalons } from 'src/graphql/salon/queries/totalSalons'
 import { getCities } from 'src/graphql/city/getCities'
-import { getMasters } from 'src/graphql/master/queries/getMasters'
-import { useQuery } from '@apollo/client'
 import { getMastersTroughCity } from 'src/graphql/master/queries/getMastersTroughCity'
-import { FC, useContext } from 'react'
+import { FC, useEffect } from 'react'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { IMaster } from 'src/types/masters'
-import { CityContext, MeContext } from 'src/searchContext'
 import { ICity, IPagination } from 'src/types'
 import { getTotalCount } from 'src/utils/getTotalCount'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData, getStoreEvent } from 'src/store/utils'
+import useCheckMobileDevice from 'src/hooks/useCheckMobileDevice'
 
 interface Props {
   masterData: IMaster[]
@@ -39,10 +35,12 @@ const AllMasters: FC<Props> = ({
   cityData,
   paginations,
 }) => {
-  const [me, setMe] = useContext(MeContext)
-  const [city, setCity] = useContext(CityContext)
+  const { me } = useAuthStore(getStoreData)
+  const { setCity } = useAuthStore(getStoreEvent)
 
-  setCity(cityData[0].cityName)
+  useEffect(() => {
+    setCity(cityData[0].cityName)
+  }, [])
 
   // const { data: data1 } = useQuery(getMastersTroughCity, {
   //   variables: { itemsCount: 10, cityName: [cityData[0].cityName] },

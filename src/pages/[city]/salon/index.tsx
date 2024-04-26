@@ -1,24 +1,18 @@
-import { FC, useContext } from 'react'
+import { FC } from 'react'
 import React from 'react'
 import { addApolloState, initializeApollo } from '../../../apollo-client'
-import { EmptySearchQuery } from '../../../searchContext'
-import { searchQuery } from '../../../_graphql-legacy/search/searchQuery'
 import CategoryPageLayout from '../../../layouts/CategoryPageLayout'
 import AllSalonsPage from '../../../components/pages/Salon/AllSalons'
 import { totalMasters } from '../../../graphql/master/queries/totalMasters'
 import { totalBrands } from '../../../graphql/brand/queries/totalBrands'
-import { MeContext } from '../../../searchContext'
 import { getCities } from '../../../graphql/city/getCities'
-import useCheckCity from '../../../hooks/checkCity'
-import { servicesWithSalonCount } from '../../../_graphql-legacy/services/servicesWithSalonCount'
 import { totalSalons } from '../../../graphql/salon/queries/totalSalons'
-import { useQuery } from '@apollo/client'
 import { getTotalCount } from '../../../utils/getTotalCount'
 import { GetServerSideProps } from 'next'
-import { DocumentNode, TypedDocumentNode } from '@apollo/client/core'
-import { OperationVariables } from '@apollo/react-common'
 import { getSalonsThroughCity } from 'src/graphql/salon/queries/getSalonsThroughCity'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 
 interface IProps {
   totalBrands: number
@@ -39,7 +33,8 @@ const AllSalons: FC<IProps> = ({
   cityData,
   data,
 }) => {
-  const [me, setMe] = useContext(MeContext)
+  const { me } = useAuthStore(getStoreData)
+
   // useCheckCity(cityData);
 
   return (

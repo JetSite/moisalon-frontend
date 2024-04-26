@@ -3,7 +3,6 @@ import {
   FC,
   ReactElement,
   SetStateAction,
-  useContext,
   useRef,
   useState,
 } from 'react'
@@ -26,10 +25,6 @@ import {
   SeeAllBody,
   SeeAllText,
   SeeAllBodyText,
-  TickIconWrap,
-  TickIcon,
-  Text,
-  ChangeCity,
   TitleIconWrapper,
 } from './styles'
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -69,21 +64,21 @@ import {
   SalonBottomButton,
   BrandBottomButton,
   GoodBottomButton,
-  RibbonBottomButton,
   AdBottomButton,
   WorkplaceBottomButton,
 } from './components/BottomButtons'
 import Button from '../../ui/Button'
 import EditIcons from '../../ui/EditIcons'
-import { CityContext, MeContext } from '../../../searchContext'
 import { cyrToTranslit } from '../../../utils/translit'
 import CityPingIcon from '../../pages/MainPage/components/Header/icons/CityPingIcon'
 import CitySelect from '../../pages/MainPage/components/CitySelect/CitySelect'
-import { IChildren, IID } from 'src/types/common'
+import { IChildren, IID, LazyType } from 'src/types/common'
 import { IBrand } from 'src/types/brands'
 import { IMaster } from 'src/types/masters'
 import { ISalon, ISalonPage } from 'src/types/salon'
 import { IDeleteFunction } from './components/SliderItems/BrandSlide'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData, getStoreEvent } from 'src/store/utils'
 
 SwiperCore.use([Navigation])
 export type SlideType =
@@ -160,9 +155,9 @@ const Slider: FC<Props> = ({
     }
   }
 
-  const [city] = useContext(CityContext)
+  const { city, me } = useAuthStore(getStoreData)
   const [showCitySelect, setShowCitySelect] = useState(false)
-  const [me, setMe] = useContext(MeContext)
+  const { setMe } = useAuthStore(getStoreEvent)
   const router = useRouter()
   const landingMaster = router.pathname === '/for_master'
   const landingSalon = router.pathname === '/for_salon'
@@ -306,7 +301,7 @@ const Slider: FC<Props> = ({
               </SeeAllMain>
             </Link>
           ),
-          sliderItem: <GoodSlide item={item} />,
+          sliderItem: <GoodSlide item={item as unknown as LazyType} />,
           slidesCountWhenAllShow: 6,
           showAllSlide: <AllGoodsSlide />,
           bottom: <GoodBottomButton />,
@@ -364,7 +359,7 @@ const Slider: FC<Props> = ({
               <ShowAll bgColor={bgColor}>Показать все</ShowAll>
             </Link>
           ),
-          sliderItem: <RentSalonSlide item={item} />,
+          sliderItem: <RentSalonSlide item={item as ISalon} />,
           slidesCountWhenAllShow: 3,
           showAllSlide: <AllRentSalons />,
 
@@ -520,7 +515,7 @@ const Slider: FC<Props> = ({
       {/* {loading ? <ColorLinearProgress /> : null} */}
       {loading ? <Skeleton /> : null}
       <CitySelect
-        setMeInfo={setMe}
+        setMe={setMe}
         showCitySelect={showCitySelect}
         setShowCitySelect={setShowCitySelect}
       />

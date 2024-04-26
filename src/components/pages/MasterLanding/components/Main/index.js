@@ -7,8 +7,8 @@ import {
 } from '../../../../../styles/variables'
 import Link from 'next/link'
 import { cyrToTranslit } from '../../../../../utils/translit'
-import { useContext } from 'react'
-import { CityContext } from '../../../../../searchContext'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 
 const Wrapper = styled.div`
   height: 874px;
@@ -136,7 +136,7 @@ const Title = styled.h1`
 
 const Main = () => {
   const router = useRouter()
-  const [city] = useContext(CityContext)
+  const { city } = useAuthStore(getStoreData)
   return (
     <Wrapper>
       <Top>

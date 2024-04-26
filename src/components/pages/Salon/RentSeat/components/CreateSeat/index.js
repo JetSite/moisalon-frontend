@@ -1,5 +1,5 @@
-import { useContext, useState } from 'react'
-import { CatalogsContext } from '../../../../../../searchContext'
+import { useState } from 'react'
+import { CatalogsContext } from '../../'
 import { MobileHidden, MobileVisible } from '../../../../../../styles/common'
 import catalogOrDefault from '../../../../../../utils/catalogOrDefault'
 import AutoFocusedForm from '../../../../../blocks/Form/AutoFocusedForm'
@@ -29,6 +29,8 @@ import Success from './Success'
 import DefaultPhoto from './DefaultPhoto'
 import PhotoGallery from './PhotoGallery'
 import SupportPopup from './SupportPopup'
+import useBaseStore from 'src/store/baseStore'
+import { getStoreData } from 'src/store/utils'
 
 function convertNumber(text) {
   if (text === undefined) {
@@ -98,7 +100,7 @@ const CreateSeat = ({
   })
   const [defaultPhoto, setDefaultPhoto] = useState(seatSalon?.photo?.id)
 
-  const catalogs = useContext(CatalogsContext)
+  const { catalogs } = useBaseStore(getStoreData)
   const salonActivitiesCatalog = catalogOrDefault(
     catalogs?.salonActivitiesCatalog,
   )

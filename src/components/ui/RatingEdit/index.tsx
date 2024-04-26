@@ -4,16 +4,16 @@ import { Wrapper, ActiveStar, DisableStar } from './styled'
 import Popup from '../Popup'
 import Button from '../Button'
 import { IMe } from 'src/types/me'
+import { getStoreData } from 'src/store/utils'
+import useAuthStore from 'src/store/authStore'
 
 interface Props {
-  me: IMe
   count: number
   userValue: number
   handleChangeRating: (num: number) => void
 }
 
 const RatingEdit: FC<Props> = ({
-  me,
   count,
   userValue = 0,
   handleChangeRating,
@@ -22,6 +22,7 @@ const RatingEdit: FC<Props> = ({
   const [hover, setHover] = useState<number | null>(null)
   const [openPopup, setOpenPopup] = useState(false)
   const router = useRouter()
+  const { me } = useAuthStore(getStoreData)
 
   return (
     <>

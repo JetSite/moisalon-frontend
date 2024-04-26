@@ -1,20 +1,17 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import Link from 'next/link'
-import {
-  CatalogsContext,
-  CityContext,
-  MeContext,
-} from '../../../../../searchContext'
 import { pluralize } from '../../../../../utils/pluralize'
 import { WrapperItemsMasters, TitleResults, LinkStyled } from './styles'
 import catalogOrDefault from '../../../../../utils/catalogOrDefault'
 import MasterItem from '../../../../blocks/MasterCard'
 import { cyrToTranslit } from '../../../../../utils/translit'
+import { getStoreData } from 'src/store/utils'
+import useAuthStore from 'src/store/authStore'
+import useBaseStore from 'src/store/baseStore'
 
 const MastersResult = ({ mastersData }) => {
-  const catalogs = useContext(CatalogsContext)
-  const [city] = useContext(CityContext)
-  const [me] = useContext(MeContext)
+  const { catalogs } = useBaseStore(getStoreData)
+  const { city } = useAuthStore(getStoreData)
 
   const masterSpecializationsCatalog = catalogOrDefault(
     catalogs?.masterSpecializationsCatalog,

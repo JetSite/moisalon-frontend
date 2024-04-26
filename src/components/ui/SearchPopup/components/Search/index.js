@@ -1,27 +1,27 @@
-import { useState } from "react";
-import Tags from "../../../../ui/Tags";
-import { Input, Wrapper, InputWrap } from "./styled";
+import { useState } from 'react'
+import Tags from '../../../Tags/index.tsx'
+import { Input, Wrapper, InputWrap } from './styled'
 
 const Search = ({ title, query, setQuery }) => {
-  const [inputValue, setInputValue] = useState(query?.query);
+  const [inputValue, setInputValue] = useState(query?.query)
 
-  const queryHandler = (e) => {
-    setInputValue(e.target.value);
+  const queryHandler = e => {
+    setInputValue(e.target.value)
     setQuery({
       query: e.target.value,
       city: query.city,
-    });
-  };
+    })
+  }
 
-  const queryTag = (item) => {
-    setInputValue(item);
+  const queryTag = item => {
+    setInputValue(item)
     setQuery({
       query: item,
       city: query.city,
-    });
-  };
+    })
+  }
 
-  const inputSubmitHandler = (e) => {};
+  const inputSubmitHandler = e => {}
 
   return (
     <Wrapper>
@@ -35,11 +35,11 @@ const Search = ({ title, query, setQuery }) => {
         />
       </InputWrap>
       <Tags
-        tags={["Тренды", "% Sale", "Бренды", "Полезная информация"]}
+        tags={['Тренды', '% Sale', 'Бренды', 'Полезная информация']}
         queryTag={queryTag}
       />
     </Wrapper>
-  );
-};
+  )
+}
 
-export default Search;
+export default Search

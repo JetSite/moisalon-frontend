@@ -1,10 +1,10 @@
-import { useContext } from 'react'
 import Link from 'next/link'
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../../styles/variables'
 import BrandItem from '../../../../blocks/BrandCard/index.tsx'
-import { CityContext } from '../../../../../searchContext'
 import { cyrToTranslit } from '../../../../../utils/translit'
+import { getStoreData } from 'src/store/utils'
+import useAuthStore from 'src/store/authStore'
 
 const Wrapper = styled.div`
   background: #f8f8f8;
@@ -43,7 +43,7 @@ const Title = styled.p`
 `
 
 const Brands = ({ brandSearchData }) => {
-  const [city] = useContext(CityContext)
+  const { city } = useAuthStore(getStoreData)
   return (
     <Wrapper>
       <Content>

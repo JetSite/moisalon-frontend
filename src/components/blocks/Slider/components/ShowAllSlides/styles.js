@@ -1,8 +1,5 @@
 import styled from 'styled-components'
-import {
-  laptopBreakpoint,
-  tabletBreakpoint,
-} from '../../../../../styles/variables'
+import { laptopBreakpoint } from '../../../../../styles/variables'
 
 export const AllMasters = styled.div`
   width: 220px;

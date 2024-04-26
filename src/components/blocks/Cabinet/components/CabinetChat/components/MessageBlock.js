@@ -16,7 +16,7 @@ import {
 } from './styles'
 import { MobileHidden } from '../../../../../../styles/common'
 import { PHOTO_URL } from '../../../../../../variables'
-import { useChat } from '../../../../../../chatContext'
+import { useChat } from '../../../../../../chatContext.tsx'
 import { changeMessageStatusMutation } from '../../../../../../_graphql-legacy/chat/changeMessageStatusMutation'
 
 moment.locale('ru', {

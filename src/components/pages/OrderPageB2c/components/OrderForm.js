@@ -1,17 +1,17 @@
-import { Field } from "react-final-form";
-import { useContext, useEffect } from "react";
+import { Field } from 'react-final-form'
+import { useEffect } from 'react'
 import {
   phone,
   required,
   composeValidators,
   email,
-} from "../../../../utils/validations";
-import Button from "../../../ui/Button";
-import { TextField } from "../../../blocks/Form";
-import AddressNoSalonField from "../../../blocks/Form/AddressField/AddressNoSalonField";
-import AutoFocusedForm from "../../../blocks/Form/AutoFocusedForm";
-import Error from "../../../blocks/Form/Error";
-import { YMaps, Map, Placemark } from "react-yandex-maps";
+} from '../../../../utils/validations'
+import Button from '../../../ui/Button'
+import { TextField } from '../../../blocks/Form'
+import AddressNoSalonField from '../../../blocks/Form/AddressField/AddressNoSalonField'
+import AutoFocusedForm from '../../../blocks/Form/AutoFocusedForm'
+import Error from '../../../blocks/Form/Error'
+import { YMaps, Map, Placemark } from 'react-yandex-maps'
 import {
   Wrapper,
   Content,
@@ -28,12 +28,13 @@ import {
   TextAreaWrap,
   ButtonWrap,
   BrandsAddresses,
-} from "../styles";
-import { useMedia } from "use-media";
-import { selectedGroupNamesMax } from "../../../../utils/serviceCatalog";
-import Steps from "./Steps";
-import BrandAddress from "./BrandAddress";
-import { MeContext } from "../../../../searchContext";
+} from '../styles'
+import { useMedia } from 'use-media'
+import { selectedGroupNamesMax } from '../../../../utils/serviceCatalog'
+import Steps from './Steps'
+import BrandAddress from './BrandAddress'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 
 const OrderForm = ({
   onSubmit,
@@ -52,11 +53,11 @@ const OrderForm = ({
   formValues,
   productBrands,
 }) => {
-  const mobileMedia = useMedia({ maxWidth: 768 });
+  const mobileMedia = useMedia({ maxWidth: 768 })
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-  const [me] = useContext(MeContext);
+    window.scrollTo(0, 0)
+  }, [])
+  const { me } = useAuthStore(getStoreData)
 
   return (
     <Content>
@@ -67,7 +68,7 @@ const OrderForm = ({
           formValues
             ? {
                 name: formValues?.name,
-                address: formValues?.address || "",
+                address: formValues?.address || '',
                 email: formValues?.email,
                 phone: formValues?.phone,
                 comment: formValues?.comment,
@@ -76,13 +77,13 @@ const OrderForm = ({
                 products: formValues?.products,
               }
             : {
-                name: me?.master?.name || "",
+                name: me?.master?.name || '',
                 address:
                   (me &&
                     me.master &&
                     me.master.addressFull &&
                     me.master.addressFull.full) ||
-                  "",
+                  '',
                 email: me?.info?.email,
                 phone: me?.info?.phoneNumber,
                 specialization: selectedGroupNamesMax(
@@ -90,8 +91,8 @@ const OrderForm = ({
                     ? me?.master?.specializations[0]
                     : [],
                   masterSpecializationsCatalog,
-                  ", ",
-                  1
+                  ', ',
+                  1,
                 ),
               }
         }
@@ -151,19 +152,19 @@ const OrderForm = ({
                     <Desc>Способ доставки</Desc>
                     <ShipingWrap>
                       <ShipingItem
-                        active={shippingMethod === "self"}
-                        onClick={() => setShippingMethod("self")}
+                        active={shippingMethod === 'self'}
+                        onClick={() => setShippingMethod('self')}
                       >
                         Самовывоз
                       </ShipingItem>
                       <ShipingItem
-                        active={shippingMethod === "courier"}
-                        onClick={() => setShippingMethod("courier")}
+                        active={shippingMethod === 'courier'}
+                        onClick={() => setShippingMethod('courier')}
                       >
                         Курьер
                       </ShipingItem>
                     </ShipingWrap>
-                    {shippingMethod === "courier" ? (
+                    {shippingMethod === 'courier' ? (
                       <Field
                         name="address"
                         fullWidth={true}
@@ -173,17 +174,17 @@ const OrderForm = ({
                       />
                     ) : (
                       <>
-                        {shippingMethod === "self" &&
+                        {shippingMethod === 'self' &&
                         formValues?.brandsIds?.length ? (
                           <BrandsAddresses>
-                            {formValues?.brandsIds?.map((brandId) => (
+                            {formValues?.brandsIds?.map(brandId => (
                               <BrandAddress brandId={brandId} key={brandId} />
                             ))}
                           </BrandsAddresses>
                         ) : null}
-                        {shippingMethod === "self" && productBrands?.length ? (
+                        {shippingMethod === 'self' && productBrands?.length ? (
                           <BrandsAddresses>
-                            {productBrands?.map((brand) => (
+                            {productBrands?.map(brand => (
                               <BrandAddress
                                 brandId={brand?.id}
                                 key={brand?.id}
@@ -243,11 +244,11 @@ const OrderForm = ({
                 </ButtonWrap>
               </form>
             </>
-          );
+          )
         }}
       />
     </Content>
-  );
-};
+  )
+}
 
-export default OrderForm;
+export default OrderForm

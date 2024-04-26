@@ -20,7 +20,7 @@ interface Props {
   brand: IBrand
   loading?: boolean
   shareLink: string
-  children: IChildren
+  children?: IChildren
   isEditing?: boolean
   type?: string
 }

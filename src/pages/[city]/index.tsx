@@ -1,26 +1,5 @@
-import { useEffect, useContext } from 'react'
-import Head from 'next/head'
 import { addApolloState, initializeApollo } from '../../apollo-client'
 import MainPage from '../../components/pages/MainPage'
-import { getCategories } from '../../_graphql-legacy/advices/getCategories'
-import { getAll } from '../../_graphql-legacy/advices/getAll'
-import { bannersByHookCodeQuery } from '../../_graphql-legacy/baners/bannersHooks'
-import { citySuggestionsQuery } from '../../_graphql-legacy/city/citySuggestionsQuery'
-import {
-  MeContext,
-  CityContext,
-  SearchMainQueryContext,
-  EmptySearchQuery,
-} from '../../searchContext'
-import { salesSearch } from '../../_graphql-legacy/sales/salesSearch'
-import { searchQuery } from '../../_graphql-legacy/search/searchQuery'
-import { useMutation, useQuery } from '@apollo/client'
-import { useRouter } from 'next/router'
-import { currentUserSalonsAndMasterQuery } from '../../_graphql-legacy/master/currentUserSalonsAndMasterQuery'
-import { changeCityMutation } from '../../_graphql-legacy/city/changeCityMutation'
-import { cyrToTranslit } from '../../utils/translit'
-import { pluralize } from '../../utils/pluralize'
-import { getSalons } from '../../graphql/salon/queries/getSalons'
 import { getBannerHooks } from '../../graphql/banner/queries/getBannerHooks'
 import { getFeeds } from '../../graphql/feed/queries/getFeeds'
 import { getFeedCategories } from 'src/graphql/feed/queries/getFeedCategories'
@@ -30,6 +9,9 @@ import { totalBrands } from 'src/graphql/brand/queries/totalBrands'
 import { getMaster } from 'src/graphql/master/queries/getMaster'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { GetServerSideProps } from 'next'
+import { getStoreEvent } from 'src/store/utils'
+import useAuthStore from 'src/store/authStore'
+import { useEffect } from 'react'
 
 interface Props {
   beautyCategories: any
@@ -41,7 +23,7 @@ interface Props {
   cityData: string
 }
 
-export default function AppContent({
+export default function Main({
   beautyCategories,
   beautyAllContent,
   bannerHooks,
@@ -50,9 +32,10 @@ export default function AppContent({
   totalBrands,
   cityData,
 }: Props) {
-  const [city, setCity] = useContext(CityContext)
-
-  setCity(cityData)
+  const { setCity } = useAuthStore(getStoreEvent)
+  useEffect(() => {
+    setCity(cityData)
+  }, [setCity])
 
   // setMe(cityData)
   // const [city, setCity] = useContext(CityContext);

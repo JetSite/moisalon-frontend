@@ -1,11 +1,12 @@
-import { FC, useContext } from 'react'
+import { FC } from 'react'
 import Link from 'next/link'
 import BrandItem from '../../../BrandCard/index'
 import { cyrToTranslit } from '../../../../../utils/translit'
-import { CityContext } from '../../../../../searchContext'
 import { ButtonClose } from './styles'
 import { IBrand } from 'src/types/brands'
 import { IID } from 'src/types/common'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 
 export type IDeleteFunction = (id: IID) => void
 
@@ -16,7 +17,7 @@ interface Props {
 }
 
 const BrandSlide: FC<Props> = ({ item, isEditing, deleteFunction }) => {
-  const [city] = useContext(CityContext)
+  const { city } = useAuthStore(getStoreData)
 
   return (
     <Link

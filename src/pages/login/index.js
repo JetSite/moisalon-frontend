@@ -1,12 +1,12 @@
-import React, { useContext } from "react";
-
-import LoginPage from "../../components/pages/LoginPage";
-import { MeContext } from "../../searchContext";
+import React from 'react'
+import LoginPage from '../../components/pages/LoginPage'
+import useAuthStore from 'src/store/authStore'
+import { getStoreEvent } from 'src/store/utils'
 
 const Login = () => {
-  const [, setMe] = useContext(MeContext);
+  const { setMe } = useAuthStore(getStoreEvent)
 
-  return <LoginPage setMe={setMe} />;
-};
+  return <LoginPage setMe={setMe} />
+}
 
-export default Login;
+export default Login

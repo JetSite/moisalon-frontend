@@ -1,4 +1,4 @@
-import { useRef, useState, useContext } from 'react'
+import { useRef, useState } from 'react'
 import { MainContainer } from '../../../../styles/common'
 import {
   Title,
@@ -20,8 +20,9 @@ import {
 } from '../../../../styles/sliderBlocks'
 import catalogOrDefault from '../../../../utils/catalogOrDefault'
 import MasterItem from './components/MasterItem'
-import { CatalogsContext, CityContext } from '../../../../searchContext'
 import { cyrToTranslit } from '../../../../utils/translit'
+import { getStoreData } from 'src/store/utils'
+import useAuthStore from 'src/store/authStore'
 
 SwiperCore.use([Navigation])
 
@@ -34,8 +35,8 @@ const MastersFavorites = ({
 }) => {
   const navigationPrevRef = useRef(null)
   const navigationNextRef = useRef(null)
-  const [city] = useContext(CityContext)
-  const catalogs = useContext(CatalogsContext)
+  const { city } = useAuthStore(getStoreData)
+  const { catalogs } = useBaseStore(getStoreData)
   const masterSpecializationsCatalog = catalogOrDefault(
     catalogs?.masterSpecializationsCatalog,
   )

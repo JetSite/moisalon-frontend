@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import catalogOrDefault from '../../../../utils/catalogOrDefault'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCore, { Navigation } from 'swiper/core'
@@ -22,8 +22,10 @@ import {
 } from '../../../../styles/sliderBlocks'
 import SalonCard from './components/SalonCard'
 import { MobileVisible, MobileHidden } from '../../../../styles/common'
-import { CatalogsContext, CityContext } from '../../../../searchContext'
 import { cyrToTranslit } from '../../../../utils/translit'
+import { getStoreData } from 'src/store/utils'
+import useAuthStore from 'src/store/authStore'
+import useBaseStore from 'src/store/baseStore'
 
 SwiperCore.use([Navigation])
 
@@ -45,8 +47,8 @@ const SalonsFavorites = ({
     }
   }
 
-  const [city] = useContext(CityContext)
-  const catalogs = useContext(CatalogsContext)
+  const { city } = useAuthStore(getStoreData)
+  const { catalogs } = useBaseStore(getStoreData)
   const salonActivitiesCatalog = catalogOrDefault(
     catalogs?.salonActivitiesCatalog,
   )
