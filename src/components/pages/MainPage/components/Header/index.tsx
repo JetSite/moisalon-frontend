@@ -49,6 +49,7 @@ import { ICity } from 'src/types'
 import { MobileHeader } from './components/MobileHeader'
 import getMainPageHeaderLinks from './config'
 import ym from 'react-yandex-metrika'
+import { authConfig } from 'src/api/authConfig'
 
 const activeLink = (path: string, link?: string[]) => {
   return link?.find(item => item === path)
@@ -350,7 +351,10 @@ const Header = ({ loading = false }) => {
                   setFillProfile(isAboutPage ? '#fff' : '#000')
                 }
                 onClick={() => {
+                  console.log('li')
+
                   if (me === null) {
+                    router.push(authConfig.notAuthLink)
                     return
                   }
                   ym('reachGoal', 'click_login_head')
@@ -361,7 +365,6 @@ const Header = ({ loading = false }) => {
                       action: 'login_head',
                     },
                   })
-                  router.push('/login')
                 }}
               >
                 <ProfileIcon fill={fillProfile} />
@@ -378,7 +381,9 @@ const Header = ({ loading = false }) => {
             <CartIconWrap
               onMouseMove={() => setFillCart(red)}
               onMouseLeave={() => setFillCart(isAboutPage ? '#fff' : '#000')}
-              onClick={() =>
+              onClick={() => {
+                console.log('first')
+
                 me?.info
                   ? router.push(`/cartB2b`)
                   : router.push(
@@ -388,7 +393,7 @@ const Header = ({ loading = false }) => {
                       },
                       'login',
                     )
-              }
+              }}
             >
               <CartIcon fill={fillCart} />
               {quantity != 0 ? (
