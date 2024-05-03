@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { Dispatch, FC, SetStateAction, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import {
@@ -34,8 +34,25 @@ import { currentUserSalonsAndMasterQuery } from '../../../_graphql-legacy/master
 import { PHOTO_URL } from '../../../variables'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
+import { deleteCookie } from 'cookies-next'
+import { authConfig } from 'src/api/authConfig'
 
-const HamburgerMenu = ({
+export interface INavLinks {
+  title: string
+  link: string
+  target: string
+  visible?: boolean
+}
+
+interface Props {
+  showHamburgerMenu: boolean
+  setShowHamburgerMenu: Dispatch<SetStateAction<boolean>>
+  setShowCitySelect: Dispatch<SetStateAction<boolean>>
+  defaultCity: string
+  loading: boolean
+}
+
+const HamburgerMenu: FC<Props> = ({
   showHamburgerMenu,
   setShowHamburgerMenu,
   setShowCitySelect,
@@ -53,7 +70,7 @@ const HamburgerMenu = ({
     }
   })
   const { city, me } = useAuthStore(getStoreData)
-  const { setMe } = useAuthStore(getStoreEvent)
+  const { setMe, logout } = useAuthStore(getStoreEvent)
 
   const dev = process.env.NEXT_PUBLIC_ENV !== 'production'
   const router = useRouter()
@@ -72,7 +89,7 @@ const HamburgerMenu = ({
     },
   })
 
-  const navLinksTop = [
+  const navLinksTop: INavLinks[] = [
     { title: 'Объявления', link: '/sales', target: '_self' },
     {
       title: 'Магазин',
@@ -87,7 +104,7 @@ const HamburgerMenu = ({
     { title: 'Снять', link: `/${cyrToTranslit(city)}/rent`, target: '_self' },
   ]
 
-  const navLinksBottom = [
+  const navLinksBottom: INavLinks[] = [
     {
       title: 'Мастера',
       link: `/${cyrToTranslit(city)}/master`,
@@ -133,28 +150,18 @@ const HamburgerMenu = ({
     setShowHamburgerMenu(false)
   }
 
-  const handleLogout = async () => {
-    const resData = await fetch(
-      dev
-        ? 'https://stage-passport.moi.salon/api/logout'
-        : 'https://passport.moi.salon/api/logout',
-      {
-        credentials: 'include',
-        'Access-Control-Allow-Credentials': true,
-      },
-    )
-
-    if (resData.status === 200) {
-      await refetch()
-      router.push(`/${cyrToTranslit(city)}`)
-    }
-  }
+  // const handleLogout = async () => {
+  //   deleteCookie(authConfig.tokenKeyName)
+  //   localStorage.removeItem(authConfig.tokenKeyName)
+  //   setMe(null)
+  //   router.push(`/${cyrToTranslit(city)}`)
+  // }
 
   return (
     <>
       <Backdrop showHamburgerMenu={showHamburgerMenu} onClick={closeMenu} />
       <Wrapper showHamburgerMenu={showHamburgerMenu}>
-        <Header me={me} $loading={loading}>
+        <Header>
           <Icons>
             <HamburgerMenuIcon onClick={closeMenu}>
               <CloseIcon src="/mobile-close-icon.svg" />
@@ -215,7 +222,12 @@ const HamburgerMenu = ({
               </LinkWrap>
             ))}
             {isLoggedIn && (
-              <LinkWrapRed onClick={() => handleLogout()} color="">
+              <LinkWrapRed
+                onClick={() => {
+                  logout(router)
+                }}
+                color=""
+              >
                 Выйти
               </LinkWrapRed>
             )}

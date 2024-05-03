@@ -23,6 +23,7 @@ import MasterItem from './components/MasterItem'
 import { cyrToTranslit } from '../../../../utils/translit'
 import { getStoreData } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
+import useBaseStore from 'src/store/baseStore'
 
 SwiperCore.use([Navigation])
 

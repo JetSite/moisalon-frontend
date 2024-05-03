@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { initializeApollo } from '../../../../../apollo-client'
+import { initializeApollo } from '../../../../../api/apollo-client'
 import { cyrToTranslit } from '../../../../../utils/translit'
 import { masterSearchAllQuery } from '../../../../../_graphql-legacy/search/masterAllSearch'
 import { useRouter } from 'next/router'

@@ -7,74 +7,26 @@ import { currentUserSalonsAndMasterQuery } from '../../../../_graphql-legacy/mas
 import { cyrToTranslit } from '../../../../utils/translit'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
+import { Back, Quantity, Tab, Text, TextRed, Wrapper } from './style'
+import { FC } from 'react'
 
-const Wrapper = styled.div`
-  margin-top: 50px;
+interface tabs {
+  id: string
+  href?: string
+  back?: boolean
+  link?: string
+  value?: string
+  quantity: string
+  anchor: string
+}
+interface Props {
+  tabs: tabs[]
+  refActive: string
+}
 
-  @media (max-width: ${laptopBreakpoint}) {
-    display: none;
-  }
-`
-
-const Back = styled.div`
-  background: url('/icon-back.svg') no-repeat center;
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  background-size: contain;
-  content: '';
-  left: -20px;
-  top: 50%;
-  margin-top: -5px;
-`
-
-const Tab = styled.div`
-  cursor: pointer;
-  position: relative;
-  display: block;
-`
-
-const Text = styled.div`
-  display: inline-block;
-  font-size: 18px;
-  font-weight: 600;
-  line-height: 45px;
-  text-decoration: ${props => (props.active ? 'underline' : '')};
-  transition: 0.5s;
-  &:hover {
-    color: #f03;
-  }
-`
-
-const TextRed = styled.div`
-  display: inline-block;
-  font-size: 18px;
-  font-weight: 600;
-  line-height: 45px;
-  cursor: pointer;
-  color: #f03;
-`
-
-const Quantity = styled.div`
-  position: relative;
-  bottom: 2px;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  width: 16px;
-  height: 16px;
-  margin-left: 15px;
-  color: #fff;
-  background-color: ${red};
-  border-radius: 50%;
-  font-size: 9px;
-  font-weight: 600;
-  text-decoration: none;
-`
-
-const Tabs = ({ tabs, refActive }) => {
+const Tabs: FC<Props> = ({ tabs, refActive }) => {
   const router = useRouter()
-  const { setMe } = useAuthStore(getStoreEvent)
+  const { setMe, logout } = useAuthStore(getStoreEvent)
   const { city } = useAuthStore(getStoreData)
   const { refetch } = useQuery(currentUserSalonsAndMasterQuery, {
     skip: true,
@@ -89,7 +41,7 @@ const Tabs = ({ tabs, refActive }) => {
     },
   })
   const dev = process.env.NEXT_PUBLIC_ENV !== 'production'
-  const handleClick = item => {
+  const handleClick = (item: tabs) => {
     const element = document.getElementById(item.anchor.replace('#', ''))
     if (element) {
       scrollIntoView(element, {
@@ -99,23 +51,6 @@ const Tabs = ({ tabs, refActive }) => {
           topOffset: 100,
         },
       })
-    }
-  }
-
-  const handleLogout = async () => {
-    const resData = await fetch(
-      dev
-        ? 'https://stage-passport.moi.salon/api/logout'
-        : 'https://passport.moi.salon/api/logout',
-      {
-        credentials: 'include',
-        'Access-Control-Allow-Credentials': true,
-      },
-    )
-
-    if (resData.status === 200) {
-      await refetch()
-      router.push(`/${cyrToTranslit(city)}`)
     }
   }
 
@@ -155,7 +90,7 @@ const Tabs = ({ tabs, refActive }) => {
       ) : null}
       <TextRed
         onClick={() => {
-          handleLogout()
+          logout(router)
         }}
       >
         Выход

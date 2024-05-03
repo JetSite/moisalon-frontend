@@ -6,14 +6,15 @@ import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { IMaster } from 'src/types/masters'
 
 const MainMasterSlider = () => {
-
   const { data: masters, loading } = useQuery(getMasters, {
     variables: {
       city: 'Москва',
       itemsCount: 10,
     },
   })
-  const mastersFlattened = flattenStrapiResponse(masters?.masters?.data) as unknown as IMaster[]
+  const mastersFlattened = flattenStrapiResponse(
+    masters?.masters?.data,
+  ) as unknown as IMaster[]
 
   return (
     <Slider

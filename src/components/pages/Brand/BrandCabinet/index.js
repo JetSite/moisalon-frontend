@@ -1,62 +1,64 @@
-import { useRef, useState, useEffect, useCallback } from "react";
-import scrollIntoView from "scroll-into-view";
-import { MainContainer, MobileHidden } from "../../../../styles/common";
-import Header from "../../../pages/MainPage/components/Header";
-import { Wrapper } from "./styled";
-import Controls from "../../../blocks/Form/Controls";
-import CabinetForm from "./components/CabinetForm";
-import CabinetHeaderMobile from "../../../blocks/Cabinet/components/CabinetHeaderMobile";
+import { useRef, useState, useEffect, useCallback } from 'react'
+import scrollIntoView from 'scroll-into-view'
+import { MainContainer, MobileHidden } from '../../../../styles/common'
+import Header from '../../../pages/MainPage/components/Header'
+import { Wrapper } from './styled'
+import Controls from '../../../blocks/Form/Controls'
+import CabinetForm from './components/CabinetForm'
+import CabinetHeaderMobile from '../../../blocks/Cabinet/components/CabinetHeaderMobile'
 
 const BrandCabinet = ({ me, brand }) => {
-  const allTabs = useRef();
-  const ref1 = useRef();
-  const ref2 = useRef();
-  const ref3 = useRef();
-  const ref4 = useRef();
+  const allTabs = useRef()
+  const ref1 = useRef()
+  const ref2 = useRef()
+  const ref3 = useRef()
+  const ref4 = useRef()
+
+  // TODO: tabs interface
 
   const [tabs] = useState([
-    { id: "1", value: "Наши продукты", anchor: "products" },
-    { id: "2", value: "Отзывы клиентов", anchor: "reviews" },
-    { id: "3", value: "Представители", anchor: "person" },
-    { id: "4", value: "Наши профили", anchor: "profiles" },
+    { id: '1', value: 'Наши продукты', anchor: 'products' },
+    { id: '2', value: 'Отзывы клиентов', anchor: 'reviews' },
+    { id: '3', value: 'Представители', anchor: 'person' },
+    { id: '4', value: 'Наши профили', anchor: 'profiles' },
     {
-      id: "5",
-      value: "Данные бренда",
-      anchor: "cabinet",
-      href: "/createBrand",
+      id: '5',
+      value: 'Данные бренда',
+      anchor: 'cabinet',
+      href: '/createBrand',
       link: brand?.id,
       back: true,
     },
-  ]);
+  ])
 
-  const [refActive, setRefActive] = useState(false);
-  const [ref1Visible, setRef1Visible] = useState(true);
-  const [ref2Visible, setRef2Visible] = useState(false);
-  const [ref3Visible, setRef3Visible] = useState(false);
-  const [ref4Visible, setRef4Visible] = useState(false);
+  const [refActive, setRefActive] = useState(false)
+  const [ref1Visible, setRef1Visible] = useState(true)
+  const [ref2Visible, setRef2Visible] = useState(false)
+  const [ref3Visible, setRef3Visible] = useState(false)
+  const [ref4Visible, setRef4Visible] = useState(false)
 
   const handleElementPosition = (element, func, top) => {
-    const posTop = element?.getBoundingClientRect()?.top;
+    const posTop = element?.getBoundingClientRect()?.top
     if (
       posTop > 0
         ? window?.innerHeight > posTop + top
         : element?.clientHeight + posTop > window?.innerHeight
     ) {
-      func(true);
-    } else func(false);
-  };
+      func(true)
+    } else func(false)
+  }
 
   useEffect(() => {
     ref1Visible
-      ? setRefActive("1")
+      ? setRefActive('1')
       : ref2Visible
-      ? setRefActive("2")
+      ? setRefActive('2')
       : ref3Visible
-      ? setRefActive("3")
+      ? setRefActive('3')
       : ref4Visible
-      ? setRefActive("4")
-      : null;
-  }, [ref1Visible, ref2Visible, ref3Visible, ref4Visible]);
+      ? setRefActive('4')
+      : null
+  }, [ref1Visible, ref2Visible, ref3Visible, ref4Visible])
 
   const handleScroll = useCallback(() => {
     const elements = [
@@ -80,20 +82,20 @@ const BrandCabinet = ({ me, brand }) => {
         func: setRef4Visible,
         top: 600,
       },
-    ];
-    elements.forEach((el) => handleElementPosition(el.el, el.func, el.top));
-  }, []);
+    ]
+    elements.forEach(el => handleElementPosition(el.el, el.func, el.top))
+  }, [])
 
   useEffect(() => {
-    document.addEventListener("scroll", handleScroll);
+    document.addEventListener('scroll', handleScroll)
     return () => {
-      document.removeEventListener("scroll", handleScroll);
-    };
-  }, [ref1Visible, ref2Visible, ref3Visible, ref4Visible]);
+      document.removeEventListener('scroll', handleScroll)
+    }
+  }, [ref1Visible, ref2Visible, ref3Visible, ref4Visible])
 
-  const handleClickNextTab = (number) => {
-    const newTab = tabs.find((item) => +item.id === number + 1);
-    const element = document.getElementById(newTab.anchor.replace("#", ""));
+  const handleClickNextTab = number => {
+    const newTab = tabs.find(item => +item.id === number + 1)
+    const element = document.getElementById(newTab.anchor.replace('#', ''))
     if (element) {
       scrollIntoView(element, {
         time: 500,
@@ -101,9 +103,9 @@ const BrandCabinet = ({ me, brand }) => {
           top: 0,
           topOffset: 100,
         },
-      });
+      })
     }
-  };
+  }
 
   return (
     <>
@@ -114,7 +116,7 @@ const BrandCabinet = ({ me, brand }) => {
           <MobileHidden>
             <Controls
               tabs={tabs}
-              photoType={"brand"}
+              photoType={'brand'}
               refActive={refActive}
               noSetPhoto={true}
               photo={brand?.photo ? brand?.photo : null}
@@ -133,7 +135,7 @@ const BrandCabinet = ({ me, brand }) => {
         </Wrapper>
       </MainContainer>
     </>
-  );
-};
+  )
+}
 
-export default BrandCabinet;
+export default BrandCabinet

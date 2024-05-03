@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { addApolloState, initializeApollo } from '../../apollo-client'
+import { addApolloState, initializeApollo } from '../../api/apollo-client'
 import { brandSearchAllName } from '../../_graphql-legacy/search/brandSearchAllName'
 import { productsCatagories } from '../../_graphql-legacy/productCatagories'
 import { goodSearch } from '../../_graphql-legacy/goodSearch'

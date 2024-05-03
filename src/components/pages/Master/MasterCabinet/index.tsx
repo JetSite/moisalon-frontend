@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, FC } from 'react'
 import { useRouter } from 'next/router'
 import { MainContainer } from '../../../../styles/common'
-import Header from '../../../pages/MainPage/components/Header'
+import Header from '../../MainPage/components/Header'
 import { Wrapper } from './styled'
 import ControlsTabs from '../../../blocks/Form/ControlsTabs'
 import { useMutation } from '@apollo/client'
@@ -20,13 +20,21 @@ import CabinetVacancies from '../../../blocks/Cabinet/components/CabinetVacancie
 import CabinetPriority from '../../../blocks/Cabinet/components/CabinetPriority'
 import CabinetBanner from '../../../blocks/Cabinet/components/CabinetBanner'
 import { PHOTO_URL } from '../../../../variables'
-import { useChat } from '../../../../chatContext.tsx'
+import { useChat } from '../../../../chatContext'
+import { IRefetch } from 'src/api/types'
+import { IMe } from 'src/types/me'
+import { IID } from 'src/types/common'
 
-const MasterCabinet = ({ refetch, currentMe }) => {
-  const [photoId, setPhotoId] = useState(currentMe?.info?.avatar)
-  const [noPhotoError, setNoPhotoError] = useState(false)
-  const [, setErrors] = useState(null)
-  const [, setErrorPopupOpen] = useState(null)
+interface Props {
+  refetch: IRefetch
+  currentMe: IMe
+}
+
+const MasterCabinet: FC<Props> = ({ refetch, currentMe }) => {
+  const [photoId, setPhotoId] = useState<IID>(currentMe?.info?.avatar)
+  const [noPhotoError, setNoPhotoError] = useState<boolean>(false)
+  const [, setErrors] = useState<string[] | null>(null)
+  const [, setErrorPopupOpen] = useState<boolean | null>(null)
   const [toggle, setToggle] = useState(false)
   const { unreadMessagesCount } = useChat()
 
@@ -41,7 +49,7 @@ const MasterCabinet = ({ refetch, currentMe }) => {
     },
   })
 
-  const handlePhoto = id => {
+  const handlePhoto = (id: IID) => {
     setPhotoId(id)
     if (id) {
       mutate({
@@ -58,12 +66,12 @@ const MasterCabinet = ({ refetch, currentMe }) => {
     }
   }
 
-  const [activeTab, setActiveTab] = useState('about')
+  const [activeTab, setActiveTab] = useState<string>('about')
   const router = useRouter()
 
   useEffect(() => {
     if (router?.query?.tab) {
-      setActiveTab(router?.query?.tab)
+      setActiveTab(router?.query?.tab as string)
     }
   }, [router?.query?.tab])
 
@@ -117,6 +125,7 @@ const MasterCabinet = ({ refetch, currentMe }) => {
         />
         <Wrapper>
           <ControlsTabs
+            onAdd={() => {}}
             activeTab={activeTab}
             setPhotoId={handlePhoto}
             setActiveTab={setActiveTab}
@@ -149,7 +158,6 @@ const MasterCabinet = ({ refetch, currentMe }) => {
                   }
                 : { url: '/empty-photo.svg' }
             }
-            me={currentMe}
           />
           {activeTab === 'about' ? (
             <CabinetForm
@@ -164,7 +172,7 @@ const MasterCabinet = ({ refetch, currentMe }) => {
           ) : activeTab === 'profiles' ? (
             <CabinetProfiles me={currentMe} />
           ) : activeTab === 'chat' ? (
-            <CabinetChat me={currentMe} />
+            <CabinetChat />
           ) : activeTab === 'reviews' ? (
             <CabinetListReviews me={currentMe} />
           ) : activeTab === 'favorits' ? (
@@ -180,7 +188,7 @@ const MasterCabinet = ({ refetch, currentMe }) => {
           ) : activeTab === 'priority' ? (
             <CabinetPriority me={currentMe} />
           ) : activeTab === 'banner' ? (
-            <CabinetBanner me={currentMe} />
+            <CabinetBanner />
           ) : null}
         </Wrapper>
       </MainContainer>

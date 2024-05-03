@@ -1,8 +1,9 @@
-import { useCallback, useState } from 'react'
+import { Dispatch, FC, SetStateAction, useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { useDropzone } from 'react-dropzone'
 import uploadPhoto from '../../../../utils/uploadPhoto'
 import { red as redColor, laptopBreakpoint } from '../../../../styles/variables'
+import { IID } from 'src/types/common'
 
 const Wrapper = styled.div`
   width: 120px;
@@ -36,7 +37,7 @@ const Empty = styled.div`
   }
 `
 
-const LogoText = styled.div`
+const LogoText = styled.div<{ noPhotoError: boolean }>`
   width: 120px;
   height: 120px;
   display: flex;
@@ -56,7 +57,7 @@ const LogoText = styled.div`
   }
 `
 
-const Plus = styled.div`
+const Plus = styled.div<{ red?: boolean }>`
   position: absolute;
   width: 36px;
   height: 36px;
@@ -89,7 +90,7 @@ const ChangeText = styled.span`
   transform: translate(-50%, -50%);
 `
 
-const Photo = styled.div`
+const Photo = styled.div<{ background: string }>`
   width: 120px;
   height: 120px;
   border-radius: 100%;
@@ -118,7 +119,20 @@ const PhotoBack = styled.div`
   }
 `
 
-const Avatar = ({
+interface Props {
+  id: IID | null
+  onAdd: (id: IID) => void
+  setPhotoId: (id: IID) => void
+  photoType: string
+  photo: { url: string }
+  noSetPhoto?: boolean
+  noPhotoError: boolean
+  setNoPhotoError: Dispatch<SetStateAction<boolean>>
+  title?: string
+  red?: boolean
+}
+
+const Avatar: FC<Props> = ({
   id,
   photoType,
   onAdd,
@@ -135,7 +149,7 @@ const Avatar = ({
   const isEmpty = !image
 
   const onDrop = useCallback(
-    files => {
+    (files: File[]) => {
       const file = files[0]
       const uploadFile = async () => {
         await uploadPhoto(file, photoType).then(photoId => {

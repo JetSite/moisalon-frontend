@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { red } from '../../../styles/variables'
 
-export const Backdrop = styled.div`
+export const Backdrop = styled.div<{ showHamburgerMenu?: boolean }>`
   display: ${({ showHamburgerMenu }) => (showHamburgerMenu ? 'block' : 'none')};
   position: fixed;
   top: 0;
@@ -12,7 +12,7 @@ export const Backdrop = styled.div`
   background-color: rgba(0, 0, 0, 0.3);
 `
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{ showHamburgerMenu?: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
@@ -75,7 +75,7 @@ export const Navigation = styled.nav`
 
 export const LinksWrap = styled.ul``
 
-export const LinkWrap = styled.li`
+export const LinkWrap = styled.li<{ visible?: boolean; active?: boolean }>`
   display: ${({ visible = true }) => (visible ? 'block' : 'none')};
   font-size: 16px;
   font-weight: 600;
@@ -87,6 +87,7 @@ export const LinkWrap = styled.li`
 `
 
 export const LinkWrapRed = styled(LinkWrap)`
+  cursor: pointer;
   color: ${red};
 `
 

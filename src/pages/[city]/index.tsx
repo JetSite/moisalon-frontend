@@ -1,4 +1,4 @@
-import { addApolloState, initializeApollo } from '../../apollo-client'
+import { addApolloState, initializeApollo } from '../../api/apollo-client'
 import MainPage from '../../components/pages/MainPage'
 import { getBannerHooks } from '../../graphql/banner/queries/getBannerHooks'
 import { getFeeds } from '../../graphql/feed/queries/getFeeds'

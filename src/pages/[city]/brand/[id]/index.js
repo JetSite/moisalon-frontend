@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import Head from 'next/head'
 import MainLayout from '../../../../layouts/MainLayout'
-import { addApolloState, initializeApollo } from '../../../../apollo-client'
+import { addApolloState, initializeApollo } from '../../../../api/apollo-client'
 import SearchBlock from '../../../../components/blocks/SearchBlock'
 import Header from '../../../../components/pages/Brand/ViewBrand/components/Header'
 import TabsSlider from '../../../../components/ui/TabsSlider'

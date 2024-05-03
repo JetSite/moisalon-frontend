@@ -6,9 +6,14 @@ import {
   HttpLink,
   NormalizedCacheObject,
   DefaultOptions,
+  ServerError,
 } from '@apollo/client'
 import merge from 'deepmerge'
 import isEqual from 'lodash/isEqual'
+import { deleteCookie, getCookie } from 'cookies-next'
+import { authConfig, baseUrl } from './authConfig'
+import Router from 'next/router'
+import { onError } from '@apollo/client/link/error'
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__'
 
@@ -17,9 +22,7 @@ let apolloClient: ApolloClient<NormalizedCacheObject>
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 const dev = process.env.NEXT_PUBLIC_ENV !== 'production'
 const isServer = typeof window === 'undefined'
-export const server = dev
-  ? 'https://moisalon-backend.jetsite.ru/graphql'
-  : 'https://moisalon-backend.jetsite.ru/graphql'
+export const server = baseUrl
 
 export class InMemoryCacheForServerSide extends InMemoryCache {
   diff() {
@@ -40,11 +43,53 @@ const defaultOptions: DefaultOptions = {
   },
 }
 
-const link = new HttpLink({
+const httpLink = new HttpLink({
   uri: server,
   fetchOptions: {
     credentials: 'include',
   },
+})
+
+const errorLink = onError(error => {
+  if (error.networkError?.message.includes('headers')) {
+    deleteCookie(authConfig.tokenKeyName)
+    Router.push('/auth')
+    return
+  }
+
+  if (
+    (error.networkError as ServerError | undefined)?.response?.statusText ===
+    'Unauthorized'
+  ) {
+    deleteCookie(authConfig.tokenKeyName)
+    Router.push('/auth')
+    return
+  }
+
+  if (error.graphQLErrors) {
+    for (const err of error.graphQLErrors) {
+      if (
+        err?.message === 'Unauthorized' ||
+        err?.message === 'Forbidden access'
+      ) {
+        deleteCookie(authConfig.tokenKeyName)
+        Router.push('/auth')
+        return
+      }
+    }
+  }
+})
+
+const authLink = new ApolloLink((operation, forward) => {
+  const accessToken = getCookie(authConfig.tokenKeyName)
+  operation.setContext(({ headers = {} }) => ({
+    headers: {
+      ...headers,
+      authorization: accessToken ? `Bearer ${accessToken}` : '',
+    },
+  }))
+
+  return forward(operation)
 })
 
 const cache = isServer
@@ -56,7 +101,7 @@ const cache = isServer
 function createApolloClient(): ApolloClient<NormalizedCacheObject> {
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
-    link,
+    link: ApolloLink.from([errorLink, authLink, httpLink]),
     cache,
     defaultOptions,
   })

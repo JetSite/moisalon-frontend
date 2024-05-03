@@ -2,7 +2,7 @@ import Head from 'next/head'
 import {
   addApolloState,
   initializeApollo,
-} from '../../../../../../../../apollo-client'
+} from '../../../../../../../../api/apollo-client'
 import RentHeader from '../../../../../../../../components/pages/Rent/RentHeader'
 import SearchBlock from '../../../../../../../../components/blocks/SearchBlock'
 import { citySuggestionsQuery } from '../../../../../../../../_graphql-legacy/city/citySuggestionsQuery'

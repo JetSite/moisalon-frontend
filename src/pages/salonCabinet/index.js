@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { addApolloState, initializeApollo } from '../../apollo-client'
+import { addApolloState, initializeApollo } from '../../api/apollo-client'
 import SalonCabinet from '../../components/pages/Salon/SalonCabinet'
 import { salonQuery } from '../../_graphql-legacy/salon/salonQuery'
 import CreatePageSkeleton from '../../components/ui/ContentSkeleton/CreatePageSkeleton'

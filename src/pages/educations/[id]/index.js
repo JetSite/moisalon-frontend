@@ -1,4 +1,4 @@
-import { addApolloState, initializeApollo } from '../../../apollo-client'
+import { addApolloState, initializeApollo } from '../../../api/apollo-client'
 import { educationSearchById } from '../../../_graphql-legacy/education/educationSearchById'
 import EducationPage from '../../../components/pages/EducationPage'
 import { getCategories } from '../../../_graphql-legacy/advices/getCategories'

@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { useRouter } from 'next/router'
 import { useMutation } from '@apollo/client'
-import { addApolloState, initializeApollo } from '../../apollo-client'
+import { addApolloState, initializeApollo } from '../../api/apollo-client'
 import CreateBrand from '../../components/pages/Brand/CreateBrand'
 import { updateBrandPhotoMutation } from '../../_graphql-legacy/brand/updateBrandPhoto'
 import { brandSlugQuery } from '../../_graphql-legacy/brand/brandSlugQuery'

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import Head from 'next/head'
-import { addApolloState, initializeApollo } from '../../../../apollo-client'
+import { addApolloState, initializeApollo } from '../../../../api/apollo-client'
 import { useQuery, useMutation } from '@apollo/client'
 import { masterQuery } from '../../../../_graphql-legacy/master/masterQuery'
 import { brandQuery } from '../../../../_graphql-legacy/master/brandQuery'

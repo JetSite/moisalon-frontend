@@ -1,7 +1,7 @@
 import { FC, useEffect, useMemo, useState } from 'react'
 import { useQuery, useMutation } from '@apollo/client'
 import MainLayout from '../../../../layouts/MainLayout'
-import { addApolloState, initializeApollo } from '../../../../apollo-client'
+import { addApolloState, initializeApollo } from '../../../../api/apollo-client'
 import SearchBlock from '../../../../components/blocks/SearchBlock'
 import Header from '../../../../components/pages/Salon/ViewSalon/components/Header/index'
 import TabsSlider from '../../../../components/ui/TabsSlider'

@@ -13,7 +13,7 @@ import { cyrToTranslit } from '../../../../../utils/translit'
 import { IChat, useChat } from '../../../../../chatContext'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
-import { LazyType } from 'src/types/common'
+import { IID, LazyType } from 'src/types/common'
 
 const CabinetChat = () => {
   const [chatClicked, setChatClicked] = useState<IChat | null>(null)
@@ -132,7 +132,7 @@ const CabinetChat = () => {
               <ChatContent ref={messagesListRef}>
                 {messages?.map(message => (
                   <MessageBlock
-                    key={message.id}
+                    key={message.id as unknown as IID}
                     chatClicked={chatClicked?.chat}
                     message={message}
                     me={me}

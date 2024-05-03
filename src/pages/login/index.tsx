@@ -1,12 +1,10 @@
-import React from 'react'
+import React, { FC } from 'react'
 import LoginPage from '../../components/pages/LoginPage'
 import useAuthStore from 'src/store/authStore'
 import { getStoreEvent } from 'src/store/utils'
 
-const Login = () => {
-  const { setMe } = useAuthStore(getStoreEvent)
-
-  return <LoginPage setMe={setMe} />
+const Login: FC = () => {
+  return <LoginPage />
 }
 
 export default Login

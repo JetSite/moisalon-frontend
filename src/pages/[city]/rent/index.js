@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import React from 'react'
-import { addApolloState, initializeApollo } from '../../../apollo-client'
+import { addApolloState, initializeApollo } from '../../../api/apollo-client'
 import { EmptySearchQuery } from '../../../searchContext'
 import CategoryPageLayout from '../../../layouts/CategoryPageLayout'
 import { totalSalons } from '../../../_graphql-legacy/salon/totalSalons'

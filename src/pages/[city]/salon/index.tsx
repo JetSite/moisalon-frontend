@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import React from 'react'
-import { addApolloState, initializeApollo } from '../../../apollo-client'
+import { addApolloState, initializeApollo } from '../../../api/apollo-client'
 import CategoryPageLayout from '../../../layouts/CategoryPageLayout'
 import AllSalonsPage from '../../../components/pages/Salon/AllSalons'
 import { totalMasters } from '../../../graphql/master/queries/totalMasters'

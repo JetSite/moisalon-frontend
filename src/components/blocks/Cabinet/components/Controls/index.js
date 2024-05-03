@@ -5,7 +5,8 @@ import Avatar from '../../../Form/Avatar'
 import { useQuery } from '@apollo/client'
 import { currentUserSalonsAndMasterQuery } from '../../../../../_graphql-legacy/master/currentUserSalonsAndMasterQuery'
 import { cyrToTranslit } from '../../../../../utils/translit'
-import { getStoreEvent } from 'src/store/utils'
+import { getStoreData, getStoreEvent } from 'src/store/utils'
+import useAuthStore from 'src/store/authStore'
 
 const Wrapper = styled.div`
   max-width: 395px;

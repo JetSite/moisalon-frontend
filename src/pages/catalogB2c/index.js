@@ -1,4 +1,4 @@
-import { addApolloState, initializeApollo } from '../../apollo-client'
+import { addApolloState, initializeApollo } from '../../api/apollo-client'
 import { brandSearchQuery } from '../../_graphql-legacy/search/brandSearch'
 import CatalogB2cPage from '../../components/pages/CatalogB2cPage'
 import { bannersByHookCodeQuery } from '../../_graphql-legacy/baners/bannersHooks'

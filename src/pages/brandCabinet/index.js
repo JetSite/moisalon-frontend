@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { addApolloState, initializeApollo } from '../../apollo-client'
+import { addApolloState, initializeApollo } from '../../api/apollo-client'
 import BrandCabinet from '../../components/pages/Brand/BrandCabinet'
 import CreatePageSkeleton from '../../components/ui/ContentSkeleton/CreatePageSkeleton'
 import { brandSlugQuery } from '../../_graphql-legacy/brand/brandSlugQuery'

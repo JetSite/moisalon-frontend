@@ -5,7 +5,7 @@ import { ApolloProvider, useLazyQuery } from '@apollo/client'
 import ProgressBar from '@badrap/bar-of-progress'
 import globalStyle from '../styles/global'
 import normalizeStyle from '../styles/normalize'
-import { useApollo } from '../apollo-client'
+import { useApollo } from '../api/apollo-client'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import theme from '../theme'
@@ -17,6 +17,7 @@ import { red } from '../styles/variables'
 import { AppProps } from 'next/app'
 import { MainHead } from './MainHead'
 import { ChatProvider } from 'src/chatContext'
+import AuthProvider from 'src/api/AuthProvider'
 
 const progress = new ProgressBar({
   size: 2,
@@ -28,9 +29,7 @@ const progress = new ProgressBar({
 function MyApp({ Component, pageProps }: AppProps) {
   const mobileMedia = useMedia({ maxWidth: 768 })
   const apolloClient = useApollo(pageProps)
-  // const [getCatalogs, { data: catalogsData }] =
-  //   useLazyQuery(getServiceCategories)
-  const [catalogs, setCatalogs] = useState([])
+
   const router = useRouter()
   useEffect(() => {
     const handleRouteChange = (url: string) => {
@@ -48,14 +47,6 @@ function MyApp({ Component, pageProps }: AppProps) {
       jssStyles.parentNode?.removeChild(jssStyles)
     }
   }, [])
-
-  // useEffect(() => {
-  //   if (catalogsData) {
-  //     setCatalogs(catalogsData)
-  //   } else {
-  //     getCatalogs()
-  //   }
-  // }, [catalogsData])
 
   useEffect(() => {
     router.events.on('routeChangeStart', progress.start)
@@ -78,14 +69,16 @@ function MyApp({ Component, pageProps }: AppProps) {
       <ApolloProvider client={apolloClient}>
         <ThemeProvider theme={theme}>
           <StylesProvider injectFirst>
-            {/* <ChatProvider> */}
-            <YMInitializer
-              accounts={[56585698]}
-              options={{ webvisor: true }}
-              version="2"
-            />
-            <Component {...pageProps} />
-            {/* </ChatProvider> */}
+            <AuthProvider>
+              {/* <ChatProvider> */}
+              <YMInitializer
+                accounts={[56585698]}
+                options={{ webvisor: true }}
+                version="2"
+              />
+              <Component {...pageProps} />
+              {/* </ChatProvider> */}
+            </AuthProvider>
           </StylesProvider>
         </ThemeProvider>
       </ApolloProvider>

@@ -1,4 +1,4 @@
-import { initializeApollo } from '../apollo-client'
+import { initializeApollo } from '../api/apollo-client'
 import { citySuggestionsQuery } from '../_graphql-legacy/city/citySuggestionsQuery'
 
 const AppContent = () => {}

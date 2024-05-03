@@ -5,7 +5,10 @@ import { red, laptopBreakpoint } from '../../../../../../styles/variables'
 import { useQuery } from '@apollo/client'
 import { currentUserSalonsAndMasterQuery } from '../../../../../../_graphql-legacy/master/currentUserSalonsAndMasterQuery'
 import { cyrToTranslit } from '../../../../../../utils/translit'
-import { getStoreEvent } from 'src/store/utils'
+import { getStoreData, getStoreEvent } from 'src/store/utils'
+import useAuthStore from 'src/store/authStore'
+import { Dispatch, FC, SetStateAction } from 'react'
+import { LazyType } from 'src/types/common'
 
 const Wrapper = styled.div`
   margin-top: 50px;
@@ -32,7 +35,7 @@ const Tab = styled.div`
   display: block;
 `
 
-const Text = styled.div`
+const Text = styled.div<{ active?: boolean }>`
   display: inline-block;
   cursor: pointer;
   font-size: 18px;
@@ -71,9 +74,15 @@ const Quantity = styled.div`
   text-decoration: none;
 `
 
-const Tabs = ({ tabs, setActiveTab, activeTab }) => {
+interface Props {
+  tabs: any[]
+  setActiveTab: Dispatch<SetStateAction<string>>
+  activeTab: string
+}
+
+const Tabs: FC<Props> = ({ tabs, setActiveTab, activeTab }) => {
   const router = useRouter()
-  const { setMe } = useAuthStore(getStoreEvent)
+  const { setMe, logout } = useAuthStore(getStoreEvent)
   const { city } = useAuthStore(getStoreData)
   const { refetch } = useQuery(currentUserSalonsAndMasterQuery, {
     skip: true,
@@ -88,7 +97,7 @@ const Tabs = ({ tabs, setActiveTab, activeTab }) => {
     },
   })
   const dev = process.env.NEXT_PUBLIC_ENV !== 'production'
-  const handleClick = item => {
+  const handleClick = (item: any) => {
     const element = document.getElementById(item.anchor.replace('#', ''))
     if (element) {
       scrollIntoView(element, {
@@ -98,23 +107,6 @@ const Tabs = ({ tabs, setActiveTab, activeTab }) => {
           topOffset: 100,
         },
       })
-    }
-  }
-
-  const handleLogout = async () => {
-    const resData = await fetch(
-      dev
-        ? 'https://stage-passport.moi.salon/api/logout'
-        : 'https://passport.moi.salon/api/logout',
-      {
-        credentials: 'include',
-        'Access-Control-Allow-Credentials': true,
-      },
-    )
-
-    if (resData.status === 200) {
-      await refetch()
-      router.push(`/${cyrToTranslit(city)}`)
     }
   }
 
@@ -142,7 +134,7 @@ const Tabs = ({ tabs, setActiveTab, activeTab }) => {
       ) : null}
       <TextRed
         onClick={() => {
-          handleLogout()
+          logout(router)
         }}
       >
         Выход
