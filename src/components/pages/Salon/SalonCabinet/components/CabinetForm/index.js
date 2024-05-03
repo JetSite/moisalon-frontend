@@ -1,33 +1,34 @@
-import { useContext, useState } from "react";
+import { useState } from 'react'
 import {
   Wrapper,
   TitleCabinet,
   TextCabinet,
   TitleServicesMobile,
-} from "./styled";
-import AutoFocusedForm from "../../../../../blocks/Form/AutoFocusedForm";
-import Error from "../../../../../blocks/Form/Error";
-import ServicesList from "../../../../../blocks/Form/ServicesList";
-import SalonCabinetReviews from "../SalonCabinetReviews";
-import catalogOrDefault from "../../../../../../utils/catalogOrDefault";
-import { CatalogsContext } from "../../../../../../searchContext";
+} from './styled'
+import AutoFocusedForm from '../../../../../blocks/Form/AutoFocusedForm'
+import Error from '../../../../../blocks/Form/Error'
+import ServicesList from '../../../../../blocks/Form/ServicesList'
+import SalonCabinetReviews from '../SalonCabinetReviews'
+import catalogOrDefault from '../../../../../../utils/catalogOrDefault'
+import useBaseStore from 'src/store/baseStore'
+import { getStoreData } from 'src/store/utils'
 
 const CabinetForm = ({ allTabs, ref1, ref2, ref3, salon, salonId }) => {
-  const catalogs = useContext(CatalogsContext);
-  const [errors, setErrors] = useState(null);
-  const [isErrorPopupOpen, setErrorPopupOpen] = useState(false);
+  const { catalogs } = useBaseStore(getStoreData)
+  const [errors, setErrors] = useState(null)
+  const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
 
   const salonActivitiesCatalog = catalogOrDefault(
-    catalogs?.salonActivitiesCatalog
-  );
-  const { groups: specializations = [] } = salonActivitiesCatalog;
-  const salonSpecializations = specializations.filter((t) =>
-    salon?.activities.find((id) => id === t.id)
-  );
+    catalogs?.salonActivitiesCatalog,
+  )
+  const { groups: specializations = [] } = salonActivitiesCatalog
+  const salonSpecializations = specializations.filter(t =>
+    salon?.activities.find(id => id === t.id),
+  )
 
   const onSubmit = () => {
-    console.log("changes submitted");
-  };
+    console.log('changes submitted')
+  }
   // const initialValues = {
   //   specializationsServices: useServiceCatalogValues(
   //     salonActivitiesCatalog,
@@ -67,11 +68,11 @@ const CabinetForm = ({ allTabs, ref1, ref2, ref3, salon, salonId }) => {
                 Сохранить и продолжить
               </Button> */}
             </form>
-          );
+          )
         }}
       />
     </Wrapper>
-  );
-};
+  )
+}
 
-export default CabinetForm;
+export default CabinetForm

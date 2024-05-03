@@ -1,4 +1,4 @@
-import { addApolloState, initializeApollo } from '../../../../apollo-client'
+import { addApolloState, initializeApollo } from '../../../../api/apollo-client'
 import CategoryPageLayout from '../../../../layouts/CategoryPageLayout'
 import SearchBlock from '../../../../components/blocks/SearchBlock'
 import ServicesPage from '../../../../components/pages/ServicesPage'

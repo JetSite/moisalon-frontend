@@ -6,8 +6,8 @@ import {
   tabletBreakpoint,
 } from '../../../../../styles/variables'
 import { cyrToTranslit } from '../../../../../utils/translit'
-import { useContext } from 'react'
-import { CityContext } from '../../../../../searchContext'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 
 const Wrapper = styled.div`
   max-width: 1440px;
@@ -193,7 +193,7 @@ const ItemText = styled.p`
 `
 
 const FastSearch = () => {
-  const [city] = useContext(CityContext)
+  const { city } = useAuthStore(getStoreData)
   const router = useRouter()
   return (
     <Wrapper>

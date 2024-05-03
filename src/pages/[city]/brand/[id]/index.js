@@ -1,50 +1,34 @@
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Head from 'next/head'
 import MainLayout from '../../../../layouts/MainLayout'
-import { brandQuery } from '../../../../_graphql-legacy/brand/brandQuery'
-import { brandSlugQuery } from '../../../../_graphql-legacy/brand/brandSlugQuery'
-import { scoreBrand } from '../../../../_graphql-legacy/brand/scoreBrand'
-import { masterIdsQuery } from '../../../../_graphql-legacy/brand/masterIdsQuery'
-import { salonIdsQuery } from '../../../../_graphql-legacy/brand/salonIdsQuery'
-import { addApolloState, initializeApollo } from '../../../../apollo-client'
+import { addApolloState, initializeApollo } from '../../../../api/apollo-client'
 import SearchBlock from '../../../../components/blocks/SearchBlock'
 import Header from '../../../../components/pages/Brand/ViewBrand/components/Header'
 import TabsSlider from '../../../../components/ui/TabsSlider'
 import About from '../../../../components/pages/Brand/ViewBrand/components/About'
-import { goodSearch } from '../../../../_graphql-legacy/goodSearch'
-import { reviewsForBrand } from '../../../../_graphql-legacy/brand/reviewsForBrand'
 import Contacts from '../../../../components/pages/Brand/ViewBrand/components/Contacts'
 import BrandReviews from '../../../../components/pages/Brand/ViewBrand/components/BrandReviews'
 import InviteBrand from '../../../../components/pages/Brand/ViewBrand/components/Invite'
 import Line from '../../../../components/pages/MainPage/components/Line'
-import catalogOrDefault from '../../../../utils/catalogOrDefault'
-import { userBrandsQuery } from '../../../../_graphql-legacy/brand/userBrandsQuery'
-import { useQuery, useMutation } from '@apollo/client'
-import {
-  CatalogsContext,
-  MeContext,
-  ProductsContext,
-} from '../../../../searchContext'
-import { brandsRandomQuery } from '../../../../_graphql-legacy/brand/brandSearchRandom'
-import { citySuggestionsQuery } from '../../../../_graphql-legacy/city/citySuggestionsQuery'
-import { getCart } from '../../../../_graphql-legacy/cart/getCart'
 import { removeItemB2cMutation } from '../../../../_graphql-legacy/cart/removeItemB2c'
 import Slider from '../../../../components/blocks/Slider'
 import { addToCartB2cMutation } from '../../../../_graphql-legacy/cart/addToB2cCart'
-import { useSearchHistoryContext } from '../../../../searchHistoryContext'
 import { getBrand } from 'src/graphql/brand/queries/getBrand'
 import { getBrands } from 'src/graphql/brand/queries/getBrands'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import useBaseStore from 'src/store/baseStore'
+import { getStoreData } from 'src/store/utils'
+import useAuthStore from 'src/store/authStore'
+import { useMutation } from '@apollo/client'
 
 const Brand = ({ brandData, randomBrands }) => {
   const [brand, setBrand] = useState(brandData)
   // const [dataScore, setDataScore] = useState(dataScoreRes)
   // const [reviews, setReviews] = useState(dataReviews)
-  const [me, setMe] = useContext(MeContext)
-  const catalogs = useContext(CatalogsContext)
-  const [productState, setProductsState] = useContext(ProductsContext)
+  const { me } = useAuthStore(getStoreData)
+  const { catalogs } = useBaseStore(getStoreData)
   const b2bClient = !!me?.master?.id || !!me?.salons?.length
-  const { setChosenItemId } = useSearchHistoryContext()
+  const setChosenItemId = () => {}
 
   useEffect(() => {
     setChosenItemId(brand?.id)

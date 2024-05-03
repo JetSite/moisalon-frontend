@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import {
   Wrapper,
@@ -14,7 +14,8 @@ import {
   MobileWrapper,
 } from './styles'
 import CreateProfiles from '../CreateProfiles'
-import { CityContext } from '../../../../../searchContext'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 import { cyrToTranslit } from '../../../../../utils/translit'
 import { PHOTO_URL } from '../../../../../variables'
 
@@ -23,7 +24,7 @@ const CabinetProfiles = ({ me }) => {
   const master = me?.master
   const brands = me?.userBrands
   const [openCreate, setOpenCreate] = useState(false)
-  const [city] = useContext(CityContext)
+  const { city } = useAuthStore(getStoreData)
 
   return (
     <>

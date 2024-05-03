@@ -1,11 +1,7 @@
-import { useEffect, useContext } from "react";
-import { useRouter } from "next/router";
-import {
-  MeContext,
-  SearchMainQueryContext,
-} from "../../../../../searchContext";
-import styled from "styled-components";
-import SearchBlock from "../SearchBlock";
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
+import styled from 'styled-components'
+import SearchBlock from '../SearchBlock'
 
 const SearchPopupWrapper = styled.div`
   position: fixed;
@@ -15,21 +11,21 @@ const SearchPopupWrapper = styled.div`
   padding-bottom: 35px;
   background: #fff;
   opacity: ${({ show }) => (show ? 1 : 0)};
-  transform: ${({ show }) => (show ? "translateY(0)" : "translateY(-20px)")};
+  transform: ${({ show }) => (show ? 'translateY(0)' : 'translateY(-20px)')};
   transition: 0.4s;
-`;
+`
 
 const CloseBtn = styled.div`
-  display: ${({ show }) => (show ? "block" : "none")};
+  display: ${({ show }) => (show ? 'block' : 'none')};
   position: fixed;
   top: -59px;
   left: 12px;
   width: 42px;
   height: 42px;
-  background: #fff url("/close-cross.svg") no-repeat center;
+  background: #fff url('/close-cross.svg') no-repeat center;
   background-size: cover;
   z-index: 100;
-`;
+`
 
 const SearchPopup = ({
   setSearchResults,
@@ -38,30 +34,30 @@ const SearchPopup = ({
   showSearchPopup,
   setShowSearchPopup,
 }) => {
-  const router = useRouter();
-  const { pathname } = router;
-  const [query, setQuery] = useContext(SearchMainQueryContext);
-  const [me] = useContext(MeContext);
-  const b2bClient = !!me?.master?.id || !!me?.salons?.length;
+  const router = useRouter()
+  const { pathname } = router
+  const { me } = useAuthStore(getStoreData)
+  const query = { query: '' } //TODO: query
+  const b2bClient = !!me?.master?.id || !!me?.salons?.length
 
   useEffect(() => {
-    if (router.query.q === "search") {
-      setShowSearchPopup(true);
+    if (router.query.q === 'search') {
+      setShowSearchPopup(true)
     }
     if (
       (pathname === `/[city]/master` ||
         pathname === `/[city]/salon` ||
-        pathname === "/[city]/brand" ||
-        pathname === "/[city]/beautyFreeShop") &&
+        pathname === '/[city]/brand' ||
+        pathname === '/[city]/beautyFreeShop') &&
       query?.query?.length
     ) {
-      setShowSearchPopup(true);
+      setShowSearchPopup(true)
     }
-  }, [pathname]);
+  }, [pathname])
 
   const closehandler = () => {
-    setShowSearchPopup(false);
-  };
+    setShowSearchPopup(false)
+  }
 
   return (
     <SearchPopupWrapper show={showSearchPopup}>
@@ -74,7 +70,7 @@ const SearchPopup = ({
         setShowSearchPopup={setShowSearchPopup}
       />
     </SearchPopupWrapper>
-  );
-};
+  )
+}
 
-export default SearchPopup;
+export default SearchPopup

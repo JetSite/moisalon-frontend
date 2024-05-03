@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 import { useQuery } from '@apollo/client'
 import { useMutation } from '@apollo/react-hooks'
 import { useRouter } from 'next/router'
@@ -26,7 +26,6 @@ import {
   Quantity,
   Description,
 } from '../ProductPage/styled'
-import { CityContext, MeContext, ProductsContext } from '../../../searchContext'
 import { PHOTO_URL } from '../../../variables'
 import BackButton from '../../ui/BackButton'
 import Reviews from '../../blocks/Reviews'
@@ -38,12 +37,14 @@ import { removeItemB2cMutation } from '../../../_graphql-legacy/cart/removeItemB
 import { reviewsforProductB2c } from '../../../_graphql-legacy/reviewsforProductB2c'
 import Rating from '../../ui/Rating'
 import { cyrToTranslit } from '../../../utils/translit'
+import { getStoreData, getStoreEvent } from 'src/store/utils'
+import useAuthStore from 'src/store/authStore'
+import useBaseStore from 'src/store/baseStore'
 
 const ProductPageB2c = ({ product, dataReviews, brand }) => {
-  const [, setProductsState] = useContext(ProductsContext)
-  const [city] = useContext(CityContext)
+  const { setProductsState } = useBaseStore(getStoreEvent)
+  const { city, me } = useAuthStore(getStoreData)
   const [reviews, setReviews] = useState(dataReviews)
-  const [me] = useContext(MeContext)
 
   const router = useRouter()
 

@@ -1,18 +1,16 @@
-import { useContext } from 'react'
 import Head from 'next/head'
 import React from 'react'
-import { addApolloState, initializeApollo } from '../../../apollo-client'
+import { addApolloState, initializeApollo } from '../../../api/apollo-client'
 import { EmptySearchQuery } from '../../../searchContext'
-import { searchQuery } from '../../../_graphql-legacy/search/searchQuery'
 import CategoryPageLayout from '../../../layouts/CategoryPageLayout'
 import { totalSalons } from '../../../_graphql-legacy/salon/totalSalons'
 import { totalMasters } from '../../../_graphql-legacy/master/totalMasters'
 import { totalBrands } from '../../../_graphql-legacy/brand/totalBrands'
-import { MeContext } from '../../../searchContext'
 import { citySuggestionsQuery } from '../../../_graphql-legacy/city/citySuggestionsQuery'
 import AllRentPage from '../../../components/pages/Rent/AllRentPage'
 import useCheckCity from '../../../hooks/checkCity'
-import { CityContext } from '../../../searchContext'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 
 const AllRent = ({
   salonSearch,
@@ -21,8 +19,7 @@ const AllRent = ({
   totalSalons,
   cityData,
 }) => {
-  const [me, setMe] = useContext(MeContext)
-  const [city] = useContext(CityContext)
+  const { me } = useAuthStore(getStoreData)
 
   useCheckCity(cityData)
 

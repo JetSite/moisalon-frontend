@@ -1,5 +1,5 @@
 import React from 'react'
-import { addApolloState, initializeApollo } from '../../../apollo-client'
+import { addApolloState, initializeApollo } from '../../../api/apollo-client'
 import { brandSearchQuery } from '../../../_graphql-legacy/search/brandSearch'
 import CategoryPageLayout from '../../../layouts/CategoryPageLayout'
 import AllBrandsPage from '../../../components/pages/Brand/AllBrands'

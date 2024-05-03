@@ -2,7 +2,6 @@ import React, {
   useState,
   useRef,
   useEffect,
-  useContext,
   FC,
   Dispatch,
   SetStateAction,
@@ -12,10 +11,6 @@ import React, {
 import { useMutation } from '@apollo/react-hooks'
 import { useCitySuggestions } from './useCitySuggestions'
 import { changeCityMutation } from '../../../../../_graphql-legacy/city/changeCityMutation'
-import {
-  CityContext,
-  SearchMainQueryContext,
-} from '../../../../../searchContext'
 import CitiesList from './CitiesList'
 import {
   Wrapper,
@@ -32,6 +27,9 @@ import { useQuery } from '@apollo/client'
 import { currentUserSalonsAndMasterQuery } from '../../../../../_graphql-legacy/master/currentUserSalonsAndMasterQuery'
 import { useRouter } from 'next/router'
 import { cyrToTranslit } from '../../../../../utils/translit'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData, getStoreEvent } from 'src/store/utils'
+import { IMe } from 'src/types/me'
 
 let cities = [
   'Москва',
@@ -52,16 +50,17 @@ interface Props {
   showCitySelect: boolean
   setShowCitySelect: Dispatch<SetStateAction<boolean>>
   setShowHamburgerMenu?: Dispatch<SetStateAction<boolean>>
-  setMeInfo: any //TODO: Me any
+  setMe: (me: IMe) => void
 }
 
 const CitySelect: FC<Props> = ({
   showCitySelect,
   setShowCitySelect,
   setShowHamburgerMenu,
-  setMeInfo,
+  setMe,
 }) => {
-  const [city, setCity] = useContext(CityContext)
+  const { city } = useAuthStore(getStoreData)
+  const { setCity } = useAuthStore(getStoreEvent)
   // useEffect(() => {
   //   if (showCitySelect) {
   //     document.body.style.overflow = "hidden";
@@ -76,12 +75,11 @@ const CitySelect: FC<Props> = ({
 
   const [cityInput, setCityInput] = useState('')
   const wrapperRef = useRef<HTMLDivElement>(null)
-  const [query, setQuery] = useContext(SearchMainQueryContext)
 
   const { refetch } = useQuery(currentUserSalonsAndMasterQuery, {
     skip: true,
     onCompleted: res => {
-      setMeInfo({
+      setMe({
         info: res?.me?.info,
         master: res?.me?.master,
         locationByIp: res?.locationByIp,
@@ -133,7 +131,6 @@ const CitySelect: FC<Props> = ({
     //   },
     // });
     setCity(city ? city : 'Москва')
-    setQuery({ ...query, city: city })
     if (router.pathname === '/[city]/salon/[id]' && router?.query?.city) {
       router.push(`/${cyrToTranslit(city)}/salon`)
       return
@@ -232,11 +229,12 @@ const UpdatedList: FC<PropsUpdatedList> = ({
   setShowHamburgerMenu,
   changeCityFunc,
 }) => {
-  const [query, setQuery] = useContext(SearchMainQueryContext)
   const { suggestions } = useCitySuggestions(cityInput)
-  const [city, setCity] = useContext(CityContext)
   const unicSuggestion = Array.from(new Set(suggestions))
   const router = useRouter()
+
+  const { city } = useAuthStore(getStoreData)
+  const { setCity } = useAuthStore(getStoreEvent)
 
   const cityClickHandler = (index: number) => {
     const city = unicSuggestion.find((city, i) => i == index)
@@ -251,7 +249,6 @@ const UpdatedList: FC<PropsUpdatedList> = ({
       },
     })
     setCity(city ? (city as string) : 'Москва')
-    setQuery({ ...query, city: city as string })
     if (router.pathname === '/[city]/salon/[id]' && router?.query?.city) {
       router.push(`/${cyrToTranslit(city)}/salon`)
       return

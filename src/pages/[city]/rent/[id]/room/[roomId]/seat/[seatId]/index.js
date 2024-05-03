@@ -1,9 +1,8 @@
 import Head from 'next/head'
-import { useContext } from 'react'
 import {
   addApolloState,
   initializeApollo,
-} from '../../../../../../../../apollo-client'
+} from '../../../../../../../../api/apollo-client'
 import RentHeader from '../../../../../../../../components/pages/Rent/RentHeader'
 import SearchBlock from '../../../../../../../../components/blocks/SearchBlock'
 import { citySuggestionsQuery } from '../../../../../../../../_graphql-legacy/city/citySuggestionsQuery'
@@ -11,11 +10,12 @@ import { salonQuery } from '../../../../../../../../_graphql-legacy/salon/salonQ
 import { salonSlugQuery } from '../../../../../../../../_graphql-legacy/salon/salonSlugQuery'
 import { seatQuery } from '../../../../../../../../_graphql-legacy/salon/seatQuery'
 import MainLayout from '../../../../../../../../layouts/MainLayout'
-import { CityContext } from '../../../../../../../../searchContext'
 import { cyrToTranslit } from '../../../../../../../../utils/translit'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 
 const Seat = ({ salonData, roomData }) => {
-  const [city] = useContext(CityContext)
+  const { city } = useAuthStore(getStoreData)
   const seoData = roomData?.seat?.seo
 
   return (

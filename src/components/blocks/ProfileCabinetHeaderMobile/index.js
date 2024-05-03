@@ -1,4 +1,3 @@
-import { useContext } from 'react'
 import MenuCards from './components/MenuCards'
 import {
   Wrapper,
@@ -18,15 +17,16 @@ import {
   Wrap,
 } from './styles'
 import Link from 'next/link'
-import { CityContext } from '../../../searchContext'
 import { cyrToTranslit } from '../../../utils/translit'
 import { PHOTO_URL } from '../../../variables'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 
 const CabinetHeaderMobile = ({ me, setActiveTab, tabs, toggle, setToggle }) => {
   const salons = me?.salons
   const master = me?.master
   const brands = me?.userBrands
-  const [city] = useContext(CityContext)
+  const { city } = useAuthStore(getStoreData)
 
   return (
     <Wrapper>

@@ -1,14 +1,14 @@
-import { useContext } from "react";
-import Link from "next/link";
-import Button from "../../ui/Button";
-import { MobileVisible, MobileHidden } from "../../../styles/common";
-import { Wrapper, Title, Text } from "./styles";
-import MainLayout from "../../../layouts/MainLayout";
-import { cyrToTranslit } from "../../../utils/translit";
-import { CityContext } from "../../../searchContext";
+import Link from 'next/link'
+import Button from '../../ui/Button'
+import { MobileVisible, MobileHidden } from '../../../styles/common'
+import { Wrapper, Title, Text } from './styles'
+import MainLayout from '../../../layouts/MainLayout'
+import { cyrToTranslit } from '../../../utils/translit'
+import { getStoreData } from 'src/store/utils'
+import useAuthStore from 'src/store/authStore'
 
 const NotFound = () => {
-  const [city] = useContext(CityContext);
+  const { city } = useAuthStore(getStoreData)
   return (
     <MainLayout noMobileFooter>
       <Wrapper>
@@ -30,7 +30,7 @@ const NotFound = () => {
         </MobileVisible>
       </Wrapper>
     </MainLayout>
-  );
-};
+  )
+}
 
-export default NotFound;
+export default NotFound

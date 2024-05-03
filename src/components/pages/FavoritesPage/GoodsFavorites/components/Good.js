@@ -12,11 +12,11 @@ import {
   NewPrice,
   OldPrice,
 } from '../styled'
-import { useContext } from 'react'
-import { MeContext } from '../../../../../searchContext'
 import { PHOTO_URL } from '../../../../../variables'
 import { red } from '../../../../../styles/variables'
 import HeartFullFill from '../../../MainPage/components/Header/icons/HeartFullFill'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 
 const Good = ({
   product,
@@ -25,7 +25,7 @@ const Good = ({
   cabinet = false,
   handleDeleted,
 }) => {
-  const [me] = useContext(MeContext)
+  const { me } = useAuthStore(getStoreData)
   const addFavorite = (e, product) => {
     e.preventDefault()
     e.stopPropagation()

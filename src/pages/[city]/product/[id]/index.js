@@ -1,7 +1,7 @@
 import SearchBlock from '../../../../components/blocks/SearchBlock'
 import ProductPage from '../../../../components/pages/ProductPage'
 import MainLayout from '../../../../layouts/MainLayout'
-import { addApolloState, initializeApollo } from '../../../../apollo-client'
+import { addApolloState, initializeApollo } from '../../../../api/apollo-client'
 import { reviewsforProductB2c } from '../../../../_graphql-legacy/reviewsforProductB2c'
 import { productSearch } from '../../../../_graphql-legacy/product'
 

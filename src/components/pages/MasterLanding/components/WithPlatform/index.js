@@ -8,8 +8,8 @@ import {
 
 import Line from '../../../SalonLanding/components/Line'
 import { cyrToTranslit } from '../../../../../utils/translit'
-import { useContext } from 'react'
-import { CityContext } from '../../../../../searchContext'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 
 const Wrapper = styled.div`
   background: #e5e5e5;
@@ -143,7 +143,7 @@ const Bottom = styled.div`
 `
 
 const WithPlatform = () => {
-  const [city] = useContext(CityContext)
+  const { city } = useAuthStore(getStoreData)
   const router = useRouter()
   return (
     <Wrapper>

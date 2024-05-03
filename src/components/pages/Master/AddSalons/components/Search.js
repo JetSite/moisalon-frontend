@@ -1,21 +1,21 @@
-import { useState, useContext, useEffect } from "react";
-import { SearchMainQueryContext } from "../../../../../searchContext";
-import { Wrapper, InputWrap, Input } from "../styled";
+import { useState, useEffect } from 'react'
+import { Wrapper, InputWrap, Input } from '../styled'
 
 const Search = () => {
-  const [query, setQuery] = useContext(SearchMainQueryContext);
-  const [inputValue, setInputValue] = useState("");
+  const query = { query: '' } //TODO: query
+  const setQuery = e => {} //TODO: query
+  const [inputValue, setInputValue] = useState('')
 
   useEffect(() => {
-    setQuery({ ...query, query: "" });
-  }, []);
+    setQuery({ ...query, query: '' })
+  }, [])
 
-  const queryHandler = (e) => {
-    setInputValue(e.target.value);
+  const queryHandler = e => {
+    setInputValue(e.target.value)
     setQuery({
       query: e.target.value,
-    });
-  };
+    })
+  }
 
   return (
     <Wrapper>
@@ -27,7 +27,7 @@ const Search = () => {
         />
       </InputWrap>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default Search;
+export default Search

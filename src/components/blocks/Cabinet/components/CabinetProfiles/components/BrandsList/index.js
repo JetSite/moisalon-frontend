@@ -1,12 +1,10 @@
 import Link from 'next/link'
-import { useContext } from 'react'
-import { CityContext } from '../../../../../../../searchContext'
 import { cyrToTranslit } from '../../../../../../../utils/translit'
 import BrandItem from './BrandItem'
 import { BrandsContent, MainTitle, ListWrapper, TextNoBrands } from './styles'
 
 const BrandsList = ({ brands, handlePublish }) => {
-  const [city] = useContext(CityContext)
+  const { city } = useAuthStore(getStoreData)
   return (
     <BrandsContent>
       <MainTitle>Профиль: Бренды, с которыми я работаю</MainTitle>

@@ -1,20 +1,20 @@
-import { useContext } from "react";
 import {
   Wrapper,
   TitleCabinet,
   TextCabinet,
   ButtonWrapper,
   ButtonWrapperMaster,
-} from "./styled";
-import Button from "../../../../../ui/Button";
-import Link from "next/link";
-import MasterCabinetReviews from "../MasterCabinetReviews";
-import catalogOrDefault from "../../../../../../utils/catalogOrDefault";
-import MasterCabinetProfiles from "../MasterCabinetProfiles";
-import MasterCabinetRequests from "../MasterCabinetRequests";
-import MobileServicesComponent from "../../../../ViewMaster/components/MobileServicesComponent/MobileServicesForClient";
-import MasterCabinetOrders from "../MasterCabinetOrders";
-import { CatalogsContext } from "../../../../../../searchContext";
+} from './styled'
+import Button from '../../../../../ui/Button'
+import Link from 'next/link'
+import MasterCabinetReviews from '../MasterCabinetReviews'
+import catalogOrDefault from '../../../../../../utils/catalogOrDefault'
+import MasterCabinetProfiles from '../MasterCabinetProfiles'
+import MasterCabinetRequests from '../MasterCabinetRequests'
+import MobileServicesComponent from '../../../../ViewMaster/components/MobileServicesComponent/MobileServicesForClient'
+import MasterCabinetOrders from '../MasterCabinetOrders'
+import useBaseStore from 'src/store/baseStore'
+import { getStoreData } from 'src/store/utils'
 
 const CabinetForm = ({
   allTabs,
@@ -28,12 +28,11 @@ const CabinetForm = ({
   reviews,
   me,
 }) => {
-
-  const catalogs = useContext(CatalogsContext);
+  const { catalogs } = useBaseStore(getStoreData)
 
   const masterSpecializationsCatalog = catalogOrDefault(
-    catalogs?.masterSpecializationsCatalog
-  );
+    catalogs?.masterSpecializationsCatalog,
+  )
 
   return (
     <Wrapper id="profiles">
@@ -78,7 +77,7 @@ const CabinetForm = ({
       ) : null}
       <MasterCabinetOrders me={me} ref5={ref5} />
     </Wrapper>
-  );
-};
+  )
+}
 
-export default CabinetForm;
+export default CabinetForm

@@ -1,10 +1,10 @@
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Head from 'next/head'
 import { useQuery } from '@apollo/client'
 import MainLayout from '../../../../layouts/MainLayout'
 import { salonQuery } from '../../../../_graphql-legacy/salon/salonQuery'
 import { salonSlugQuery } from '../../../../_graphql-legacy/salon/salonSlugQuery'
-import { addApolloState, initializeApollo } from '../../../../apollo-client'
+import { addApolloState, initializeApollo } from '../../../../api/apollo-client'
 import SearchBlock from '../../../../components/blocks/SearchBlock'
 import TabsSlider from '../../../../components/ui/TabsSlider'
 import About from '../../../../components/pages/Salon/ViewSalon/components/About'
@@ -12,7 +12,6 @@ import { reviewsForSalon } from '../../../../_graphql-legacy/salon/reviewsForSal
 import Contacts from '../../../../components/pages/Salon/ViewSalon/components/Contacts/index.tsx'
 import SalonReviews from '../../../../components/pages/Salon/ViewSalon/components/SalonReviews'
 import catalogOrDefault from '../../../../utils/catalogOrDefault'
-import { CatalogsContext, MeContext } from '../../../../searchContext'
 import { citySuggestionsQuery } from '../../../../_graphql-legacy/city/citySuggestionsQuery'
 import { cyrToTranslit } from '../../../../utils/translit'
 import Header from '../../../../components/pages/Rent/ViewRent/components/Header'
@@ -24,6 +23,9 @@ import { getCategories } from '../../../../_graphql-legacy/advices/getCategories
 import { getAll } from '../../../../_graphql-legacy/advices/getAll'
 import Slider from '../../../../components/blocks/Slider'
 import { scoreSalon } from '../../../../_graphql-legacy/salon/scoreSalon'
+import { getStoreData } from 'src/store/utils'
+import useAuthStore from 'src/store/authStore'
+import useBaseStore from 'src/store/baseStore'
 
 const Rent = ({
   salonData,
@@ -37,8 +39,9 @@ const Rent = ({
   const [dataScore, setDataScore] = useState(dataScoreRes)
   const [reviews, setReviews] = useState(dataReviews)
   const [salon, setSalon] = useState(salonData)
-  const [me, setMe] = useContext(MeContext)
-  const catalogs = useContext(CatalogsContext)
+  const { me } = useAuthStore(getStoreData)
+  const { catalogs } = useBaseStore(getStoreData)
+
   const [seats, setSeats] = useState([])
 
   useEffect(() => {

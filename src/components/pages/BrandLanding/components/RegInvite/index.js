@@ -1,9 +1,9 @@
-import { useRouter } from "next/router";
+import { useRouter } from 'next/router'
 import {
   MainContainer,
   MobileHidden,
   MobileVisible,
-} from "../../../../../styles/common";
+} from '../../../../../styles/common'
 import {
   Wrapper,
   LeftBlock,
@@ -12,15 +12,15 @@ import {
   RightBlock,
   ImageWrap,
   Image,
-} from "./styles";
-import Button from "../../../../ui/Button";
-import { useContext } from "react";
-import { MeContext } from "../../../../../searchContext";
+} from './styles'
+import Button from '../../../../ui/Button'
+import { getStoreData } from 'src/store/utils'
+import useAuthStore from 'src/store/authStore'
 
 const RegInvite = () => {
-  const { push } = useRouter();
-  const [me] = useContext(MeContext);
-  const isLoggedIn = me?.info !== undefined && me?.info !== null;
+  const { push } = useRouter()
+  const { me } = useAuthStore(getStoreData)
+  const isLoggedIn = me?.info !== undefined && me?.info !== null
   return (
     <MainContainer>
       <Wrapper>
@@ -40,7 +40,7 @@ const RegInvite = () => {
           </Text>
           <MobileHidden>
             <Button
-              onClick={() => push(isLoggedIn ? "/masterCabinet" : "/login")}
+              onClick={() => push(isLoggedIn ? '/masterCabinet' : '/login')}
               size="mediumNoPadding"
               variant="red"
               font="medium"
@@ -51,7 +51,7 @@ const RegInvite = () => {
           </MobileHidden>
           <MobileVisible>
             <Button
-              onClick={() => push(isLoggedIn ? "/masterCabinet" : "/login")}
+              onClick={() => push(isLoggedIn ? '/masterCabinet' : '/login')}
               size="fullWidth"
               variant="red"
               font="medium"
@@ -71,7 +71,7 @@ const RegInvite = () => {
         </RightBlock>
       </Wrapper>
     </MainContainer>
-  );
-};
+  )
+}
 
-export default RegInvite;
+export default RegInvite

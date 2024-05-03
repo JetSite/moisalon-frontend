@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/router'
 import MainLayout from '../../../layouts/MainLayout'
 import SearchBlock from '../../blocks/SearchBlock'
@@ -31,14 +31,14 @@ import moment from 'moment'
 import 'moment/locale/ru'
 import Countdown from '../../blocks/Countdown'
 import { cyrToTranslit } from '../../../utils/translit'
-import { CityContext, MeContext } from '../../../searchContext'
 import ChatMessagePopup from '../../ui/ChatMessagePopup'
 import { PHOTO_URL } from '../../../variables'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 
 const EventPage = ({ event, beautyCategories, beautyAllContent }) => {
   const router = useRouter()
-  const [city] = useContext(CityContext)
-  const [me] = useContext(MeContext)
+  const { city, me } = useAuthStore(getStoreData)
   const [chatMessagePopup, setChatMessagePopup] = useState(false)
 
   const originInfo = item => {

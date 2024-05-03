@@ -1,22 +1,23 @@
-import { useContext } from "react";
-import MainLayout from "../../../layouts/MainLayout";
-import MobileViewCards from "../../pages/MainPage/components/MobileViewCards";
-import SearchBlock from "../../blocks/SearchBlock";
-import { useMutation } from "@apollo/react-hooks";
-import Banners from "../../pages/Catalog/components/Banners";
-import { MobileHidden } from "../../../styles/common";
-import { Categories, Category, WrapButton } from "./styles";
-import Hit from "./components/Hit";
-import Brands from "./components/Brands";
-import Sales from "./components/Sales";
-import Button from "../../ui/Button";
-import Link from "next/link";
-import { CityContext, ProductsContext } from "../../../searchContext";
-import { addToCartB2cMutation } from "../../../_graphql-legacy/cart/addToB2cCart";
-import { getB2cCart } from "../../../_graphql-legacy/cart/getB2cCart";
-import { removeItemB2cMutation } from "../../../_graphql-legacy/cart/removeItemB2c";
-import { useQuery } from "@apollo/client";
-import { cyrToTranslit } from "../../../utils/translit";
+import MainLayout from '../../../layouts/MainLayout'
+import MobileViewCards from '../../pages/MainPage/components/MobileViewCards'
+import SearchBlock from '../../blocks/SearchBlock'
+import { useMutation } from '@apollo/react-hooks'
+import Banners from '../../pages/Catalog/components/Banners'
+import { MobileHidden } from '../../../styles/common'
+import { Categories, Category, WrapButton } from './styles'
+import Hit from './components/Hit'
+import Brands from './components/Brands'
+import Sales from './components/Sales'
+import Button from '../../ui/Button'
+import Link from 'next/link'
+import { addToCartB2cMutation } from '../../../_graphql-legacy/cart/addToB2cCart'
+import { getB2cCart } from '../../../_graphql-legacy/cart/getB2cCart'
+import { removeItemB2cMutation } from '../../../_graphql-legacy/cart/removeItemB2c'
+import { useQuery } from '@apollo/client'
+import { cyrToTranslit } from '../../../utils/translit'
+import { getStoreData, getStoreEvent } from 'src/store/utils'
+import useAuthStore from 'src/store/authStore'
+import useBaseStore from 'src/store/baseStore'
 
 const CatalogB2cPage = ({
   bannersByHookWide,
@@ -31,29 +32,30 @@ const CatalogB2cPage = ({
   totalMasters,
   noFilters,
 }) => {
-  const [productState, setProductsState] = useContext(ProductsContext);
-  const [city] = useContext(CityContext);
+  const { setProducts: setProductsState } = useBaseStore(getStoreEvent)
+  const { city } = useAuthStore(getStoreData)
+
   const {
     data: dataCart,
     refetch: refetchCart,
     loading: loadingCart,
   } = useQuery(getB2cCart, {
-    onCompleted: (res) => {
-      setProductsState(res?.getCart?.contents || []);
+    onCompleted: res => {
+      setProductsState(res?.getCart?.contents || [])
     },
-  });
+  })
 
   const [addToCart] = useMutation(addToCartB2cMutation, {
     onCompleted: () => {
-      refetchCart();
+      refetchCart()
     },
-  });
+  })
 
   const [removeItem] = useMutation(removeItemB2cMutation, {
     onCompleted: () => {
-      refetchCart();
+      refetchCart()
     },
-  });
+  })
 
   const add = (item, quantity) => {
     addToCart({
@@ -64,10 +66,10 @@ const CatalogB2cPage = ({
           isB2b: false,
         },
       },
-    });
-  };
+    })
+  }
 
-  const deleteItem = (item) => {
+  const deleteItem = item => {
     removeItem({
       variables: {
         input: {
@@ -75,10 +77,10 @@ const CatalogB2cPage = ({
           isB2b: false,
         },
       },
-    });
-  };
+    })
+  }
 
-  const cart = dataCart?.getCart?.contents || [];
+  const cart = dataCart?.getCart?.contents || []
 
   return (
     <MainLayout>
@@ -99,7 +101,7 @@ const CatalogB2cPage = ({
               query: {
                 id: item.id,
                 title: item.title,
-                type: "product",
+                type: 'product',
               },
             }}
           >
@@ -139,7 +141,7 @@ const CatalogB2cPage = ({
         </Link>
       </WrapButton>
     </MainLayout>
-  );
-};
+  )
+}
 
-export default CatalogB2cPage;
+export default CatalogB2cPage

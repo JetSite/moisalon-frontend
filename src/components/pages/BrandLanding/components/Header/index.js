@@ -15,14 +15,13 @@ import {
 } from './styles'
 import Button from '../../../../ui/Button'
 import { useRouter } from 'next/router'
-import { useContext } from 'react'
-import { CityContext, MeContext } from '../../../../../searchContext'
 import { cyrToTranslit } from '../../../../../utils/translit'
+import { getStoreData } from 'src/store/utils'
+import useAuthStore from 'src/store/authStore'
 
 const Header = ({ setOpenPopup }) => {
   const router = useRouter()
-  const [me] = useContext(MeContext)
-  const [city] = useContext(CityContext)
+  const { city, me } = useAuthStore(getStoreData)
   const isLoggedIn = me?.info !== undefined && me?.info !== null
   return (
     <Wrapper>

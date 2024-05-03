@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useQuery } from '@apollo/client'
 import { useMutation } from '@apollo/react-hooks'
 import { useRouter } from 'next/router'
@@ -40,19 +40,19 @@ import { reviewsforProductB2c } from '../../../_graphql-legacy/reviewsforProduct
 import { createReviewMutation } from '../../../_graphql-legacy/createReviewMutation'
 import { getCart } from '../../../_graphql-legacy/cart/getCart'
 import Button from '../../ui/Button'
-import { CityContext, MeContext, ProductsContext } from '../../../searchContext'
 import Popup from '../../ui/Popup'
 import { cyrToTranslit } from '../../../utils/translit'
 import { Count } from '../../blocks/Reviews/styled'
 import { pluralize } from '../../../utils/pluralize'
 import FastBuyPopup from '../../ui/FastBuyPopup'
-import { useSearchHistoryContext } from '../../../searchHistoryContext'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData, getStoreEvent } from 'src/store/utils'
+import useBaseStore from 'src/store/baseStore'
 
 const ProductPage = ({ brand, product, dataReviews }) => {
-  const [, setProductsState] = useContext(ProductsContext)
+  const { setProducts: setProductsState } = useBaseStore(getStoreEvent)
   const [reviews, setReviews] = useState(dataReviews)
-  const [me] = useContext(MeContext)
-  const [city] = useContext(CityContext)
+  const { city, me } = useAuthStore(getStoreData)
   const [toggleCharacter, setToggleCharacter] = useState(false)
   const [openPopup, setOpenPopup] = useState(false)
   const [openBuyPopup, setOpenBuyPopup] = useState(false)
@@ -65,7 +65,7 @@ const ProductPage = ({ brand, product, dataReviews }) => {
     setOpenPopup(false)
   }
 
-  const { setChosenItemId } = useSearchHistoryContext()
+  const setChosenItemId = () => {}
 
   useEffect(() => {
     setChosenItemId(product.id)

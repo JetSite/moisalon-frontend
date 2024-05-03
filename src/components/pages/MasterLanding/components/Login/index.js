@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from 'react'
 import {
   Wrapper,
   FormWrapper,
@@ -22,64 +22,65 @@ import {
   Items,
   Item,
   ButtonWrap,
-} from "./styles";
-import Button from "../../../../ui/Button";
-import { useRouter } from "next/router";
-import Error from "../../../../blocks/Form/Error";
-import { MeContext } from "../../../../../searchContext";
+} from './styles'
+import Button from '../../../../ui/Button'
+import { useRouter } from 'next/router'
+import Error from '../../../../blocks/Form/Error'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 
 const Login = () => {
-  const [checked, setChecked] = useState(false);
-  const [value, setValue] = useState("");
-  const [valueCode, setValueCode] = useState("");
-  const [errors, setErrors] = useState(null);
-  const [openCode, setOpenCode] = useState(false);
-  const [isErrorPopupOpen, setErrorPopupOpen] = useState(false);
-  const dev = process.env.NEXT_PUBLIC_ENV !== "production";
-  const router = useRouter();
-  const [me] = useContext(MeContext);
-  const isLoggedIn = me?.info !== undefined && me?.info !== null;
+  const [checked, setChecked] = useState(false)
+  const [value, setValue] = useState('')
+  const [valueCode, setValueCode] = useState('')
+  const [errors, setErrors] = useState(null)
+  const [openCode, setOpenCode] = useState(false)
+  const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
+  const dev = process.env.NEXT_PUBLIC_ENV !== 'production'
+  const router = useRouter()
+  const { me } = useAuthStore(getStoreData)
+  const isLoggedIn = me?.info !== undefined && me?.info !== null
 
   const checkboxHandler = () => {
-    setChecked(!checked);
-  };
+    setChecked(!checked)
+  }
 
-  const handleClick = async (e) => {
-    e.preventDefault();
+  const handleClick = async e => {
+    e.preventDefault()
     if (checked && value) {
       const resData = await fetch(
         dev
           ? `https://stage-passport.moi.salon/api/sendcode?login=${value}`
-          : `https://passport.moi.salon/api/sendcode?login=${value}`
-      );
+          : `https://passport.moi.salon/api/sendcode?login=${value}`,
+      )
 
       if (resData.status !== 200) {
-        setErrors(["Введите корректный емейл или номер телефона"]);
-        setErrorPopupOpen(true);
+        setErrors(['Введите корректный емейл или номер телефона'])
+        setErrorPopupOpen(true)
       } else {
-        setOpenCode(true);
+        setOpenCode(true)
       }
     }
-  };
+  }
 
-  const handleClickCode = async (e) => {
-    e.preventDefault();
+  const handleClickCode = async e => {
+    e.preventDefault()
     if (valueCode) {
       const resData = await fetch(
         dev
           ? `https://stage-passport.moi.salon/api/authorization?login=${value}&code=${valueCode}`
           : `https://passport.moi.salon/api/authorization?login=${value}&code=${valueCode}`,
-        { credentials: "include", "Access-Control-Allow-Credentials": true }
-      );
+        { credentials: 'include', 'Access-Control-Allow-Credentials': true },
+      )
 
       if (resData.status !== 200) {
-        setErrors(["Неверный код"]);
-        setErrorPopupOpen(true);
+        setErrors(['Неверный код'])
+        setErrorPopupOpen(true)
       } else {
-        router.push("/masterCabinet");
+        router.push('/masterCabinet')
       }
     }
-  };
+  }
 
   return (
     <>
@@ -93,10 +94,10 @@ const Login = () => {
             <Form onSubmit={handleClick}>
               {!openCode ? (
                 <>
-                  {" "}
+                  {' '}
                   <Input
                     value={value}
-                    onChange={(e) => setValue(e.target.value)}
+                    onChange={e => setValue(e.target.value)}
                     type="text"
                     name="info"
                     placeholder="Телефон или E-mail"
@@ -108,12 +109,12 @@ const Login = () => {
                       checked={checked}
                     />
                     <Label>Я принимаю условия использования</Label>
-                  </CheckboxWrapper>{" "}
+                  </CheckboxWrapper>{' '}
                 </>
               ) : (
                 <Input
                   value={valueCode}
-                  onChange={(e) => setValueCode(e.target.value)}
+                  onChange={e => setValueCode(e.target.value)}
                   type="text"
                   name="code"
                   autoComplete="one-time-code"
@@ -213,7 +214,7 @@ const Login = () => {
               <Button
                 style={{ padding: 0 }}
                 onClick={() =>
-                  router.push(isLoggedIn ? "/masterCabinet" : "/login")
+                  router.push(isLoggedIn ? '/masterCabinet' : '/login')
                 }
                 size="medium"
                 variant="red"
@@ -231,7 +232,7 @@ const Login = () => {
         </BottomContent>
       </BottomWrapper>
     </>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

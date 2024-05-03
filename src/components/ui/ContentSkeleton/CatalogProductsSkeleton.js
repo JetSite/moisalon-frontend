@@ -1,12 +1,13 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { Skeleton } from '@material-ui/lab'
 import Header from '../../Catalog/components/CatalogProductsPage/components/Header'
 import { laptopBreakpoint } from '../../../styles/variables'
 import FilterCatalog from '../../ui/FilterCatalog'
 import BackButton from '../../ui/BackButton'
-import { CityContext, MeContext } from '../../../searchContext'
 import { cyrToTranslit } from '../../../utils/translit'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 
 const Wrapper = styled.div`
   padding: 0 140px;
@@ -49,8 +50,7 @@ const CatalogProductsSkeleton = ({
   filter,
   brand,
 }) => {
-  const [me] = useContext(MeContext)
-  const [city] = useContext(CityContext)
+  const { city, me } = useAuthStore(getStoreData)
   const b2bClient = !!me?.master?.id || !!me?.salons?.length
   return (
     <>

@@ -5,8 +5,7 @@ import Line from '../../MainPage/components/Line'
 import MobileViewCards from '../../MainPage/components/MobileViewCards'
 import { CategoryImage, WrapBanner } from './styles'
 import { WrapperResults } from '../../MainPage/components/SearchMain/styled'
-import { FC, useContext } from 'react'
-import { SearchMainQueryContext } from '../../../../searchContext'
+import { FC } from 'react'
 import { CSSTransition } from 'react-transition-group'
 import { MobileHidden } from '../../../../styles/common'
 import { IMaster } from 'src/types/masters'
@@ -29,7 +28,7 @@ const AllMastersPage: FC<Props> = ({
   cityData,
   paginations,
 }) => {
-  const [query] = useContext(SearchMainQueryContext)
+  const query = { query: '' } //TODO: query
 
   return (
     <>

@@ -1,10 +1,7 @@
-import { FC, useContext, useEffect, useMemo, useState } from 'react'
-import Head from 'next/head'
+import { FC, useEffect, useMemo, useState } from 'react'
 import { useQuery, useMutation } from '@apollo/client'
 import MainLayout from '../../../../layouts/MainLayout'
-import { salonQuery } from '../../../../_graphql-legacy/salon/salonQuery'
-import { salonSlugQuery } from '../../../../_graphql-legacy/salon/salonSlugQuery'
-import { addApolloState, initializeApollo } from '../../../../apollo-client'
+import { addApolloState, initializeApollo } from '../../../../api/apollo-client'
 import SearchBlock from '../../../../components/blocks/SearchBlock'
 import Header from '../../../../components/pages/Salon/ViewSalon/components/Header/index'
 import TabsSlider from '../../../../components/ui/TabsSlider'
@@ -19,37 +16,24 @@ import InviteSalon from '../../../../components/pages/Salon/ViewSalon/components
 import MobileServicesComponent from '../../../../components/pages/Salon/ViewSalon/components/MobileServicesComponent/MobileServicesComponent'
 import MobileServicesForClient from '../../../../components/pages/Salon/ViewSalon/components/MobileServicesComponent/MobileServicesForClient'
 import MobileSalonPhotos from '../../../../components/pages/Salon/ViewSalon/components/MobileSalonPhotos'
-import catalogOrDefault from '../../../../utils/catalogOrDefault'
-import { mastersSalon } from '../../../../_graphql-legacy/salon/mastersSalon'
-import {
-  CatalogsContext,
-  CityContext,
-  MeContext,
-} from '../../../../searchContext'
-import { salonsRandom } from '../../../../_graphql-legacy/salon/salonsRandom'
-import { citySuggestionsQuery } from '../../../../_graphql-legacy/city/citySuggestionsQuery'
-import { cyrToTranslit } from '../../../../utils/translit'
-import { currentVacancies } from '../../../../_graphql-legacy/vacancies/currentVacancies'
+import catalogOrDefault, { ICatalog } from '../../../../utils/catalogOrDefault'
 import { removeSalonBrandsMutation } from '../../../../_graphql-legacy/salon/removeSalonBrandsMutation'
 import Slider from '../../../../components/blocks/Slider'
 import AddBrands from '../../../../components/pages/Salon/AddBrands'
 import { NoItemsText } from '../../../../styles/common'
-import { useSearchHistoryContext } from '../../../../searchHistoryContext'
-import { getSalonsThroughCity } from 'src/graphql/salon/queries/getSalonsThroughCity'
 import { GetServerSideProps } from 'next'
 import { getCities } from 'src/graphql/city/getCities'
 import { getSalonId } from 'src/graphql/salon/queries/getSalonId'
-import {
-  flattenStrapiResponse,
-  isArray,
-  isObject,
-} from 'src/utils/flattenStrapiResponse'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { ISalon, ISalonPage } from 'src/types/salon'
 import { IID } from 'src/types/common'
 import { getGroupedServices } from 'src/utils/getGrupedServices'
 import { IBrand } from 'src/types/brands'
 import { getSalonPage } from 'src/graphql/salon/queries/getSalon'
 import { getOtherSalons } from 'src/graphql/salon/queries/getOtherSalons'
+import { getStoreData, getStoreEvent } from 'src/store/utils'
+import useAuthStore from 'src/store/authStore'
+import useBaseStore from 'src/store/baseStore'
 
 interface Props {
   salonData: ISalonPage
@@ -77,11 +61,12 @@ const Salon: FC<Props> = ({
   const [dataScore, setDataScore] = useState<number>(salonData.salonRating)
   const [salon, setSalon] = useState<ISalonPage>(salonData)
   const [brands, setBrands] = useState<IBrand[]>(salonData.brands)
-  const [city, setCity] = useContext(CityContext)
-  setCity(salonData.cities.cityName)
 
-  const [me, setMe] = useContext(MeContext)
-  const [catalogs, setCatalogs] = useContext(CatalogsContext)
+  const { setCity } = useAuthStore(getStoreEvent)
+  const { setCity: setCityBase } = useBaseStore(getStoreEvent)
+  const { me } = useAuthStore(getStoreData)
+
+  const { catalogs } = useBaseStore(getStoreData)
 
   const groupedServices = useMemo(
     () => getGroupedServices(salon.services),
@@ -93,8 +78,6 @@ const Salon: FC<Props> = ({
   // if (typeof window !== 'undefined') {
   //   cityInStorage = localStorage.getItem('citySalon')
   // }
-
-  // const { setChosenItemId } = useSearchHistoryContext()
 
   // useEffect(() => {
   //   setChosenItemId(salon.id)
@@ -117,6 +100,8 @@ const Salon: FC<Props> = ({
     setSalon(salonData)
     setBrands(salonData.brands)
     setReviews(salonData.review)
+    setCity(salonData.cities.cityName)
+    setCityBase(salonData.cities.cityName)
     // setDataScore(dataScoreRes)
     // refetch()
   }, [salonData])
@@ -156,15 +141,14 @@ const Salon: FC<Props> = ({
     },
   })
 
-  const salonActivitiesCatalog = catalogOrDefault(
-    catalogs?.salonActivitiesCatalog,
-  )
+  const salonActivitiesCatalog = catalogs as unknown as ICatalog // TODO: unknown
+
   // const salonWorkplacesServicesCatalog = catalogOrDefault(
   //   catalogs?.salonWorkplacesServicesCatalog,
   // )
-  const masterSpecializationsCatalog = catalogOrDefault(
-    catalogs?.masterSpecializationsCatalog,
-  )
+  // const masterSpecializationsCatalog = catalogOrDefault(
+  //   catalogs?.masterSpecializationsCatalog,
+  // )
 
   // const salonServicesMasterCatalog = catalogOrDefault(
   //   catalogs?.salonServicesMasterCatalog,
@@ -224,7 +208,6 @@ const Salon: FC<Props> = ({
       </Head> */}
       <SearchBlock />
       <Header
-        me={me}
         salon={salon}
         isOwner={isOwner}
         refetchSalon={refetchSalon}

@@ -1,4 +1,4 @@
-import { useState, useCallback, useContext } from 'react'
+import { useState, useCallback } from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import Link from 'next/link'
 import { Wrapper, Title, Content, List } from './styles'
@@ -19,7 +19,6 @@ import { educationSearch } from '../../../_graphql-legacy/education/educationSea
 import { eventsSearch } from '../../../_graphql-legacy/events/eventsSearch'
 import { vacanciesSearch } from '../../../_graphql-legacy/vacancies/vacanciesSearch'
 import { masterSearchQuery } from '../../../_graphql-legacy/search/masterSearch'
-import { SearchMainQueryContext } from '../../../searchContext'
 import SalesSearchResults from '../../pages/MainPage/components/SearchMain/SalesSearchResults'
 import EducationsSearchResults from '../../pages/MainPage/components/SearchMain/EducationsSearchResults'
 import EventsSearchResults from '../../pages/MainPage/components/SearchMain/EventsSearchResults'
@@ -112,7 +111,7 @@ const BusinessCategoryPage = ({ type, title, data, link }) => {
   const [, setLoading] = useState(false)
   const slicedList = listData?.connection?.nodes
   const hasNextPage = listData?.connection?.pageInfo?.hasNextPage
-  const [query] = useContext(SearchMainQueryContext)
+  const query = { query: '' } //TODO: query
 
   const { fetchMore } = useQuery(customProps[type].query, {
     variables: customProps[type]?.variables || {

@@ -1,7 +1,5 @@
-import { useContext } from "react";
-import { CityContext } from "../../../../../../searchContext";
-import { MainContainer } from "../../../../../../styles/common";
-import { cyrToTranslit } from "../../../../../../utils/translit";
+import { MainContainer } from '../../../../../../styles/common'
+import { cyrToTranslit } from '../../../../../../utils/translit'
 
 import {
   Wrapper,
@@ -11,10 +9,10 @@ import {
   Link,
   ActionDeadline,
   ActionItemImage,
-} from "./styles";
+} from './styles'
 
 const Actions = () => {
-  const [city] = useContext(CityContext);
+  const { city } = useAuthStore(getStoreData)
   return (
     <>
       <MainContainer>
@@ -38,7 +36,7 @@ const Actions = () => {
         </Wrapper>
       </MainContainer>
     </>
-  );
-};
+  )
+}
 
-export default Actions;
+export default Actions

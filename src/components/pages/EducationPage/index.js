@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import MainLayout from '../../../layouts/MainLayout'
 import SearchBlock from '../../blocks/SearchBlock'
@@ -40,7 +40,6 @@ import {
   favoritesInStorage,
   inStorage,
 } from '../../../utils/favoritesInStorage'
-import { CityContext, MeContext } from '../../../searchContext'
 import ChatMessagePopup from '../../ui/ChatMessagePopup'
 import { educationReviews } from '../../../_graphql-legacy/education/educationReviews'
 import EducationReviews from './components/EducationReviews'
@@ -49,6 +48,8 @@ import { scoreEducation } from '../../../_graphql-legacy/education/scoreEducatio
 import { createScopesEducation } from '../../../_graphql-legacy/education/createScoreEducation'
 import { educationSearchById } from '../../../_graphql-legacy/education/educationSearchById'
 import { PHOTO_URL } from '../../../variables'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 
 const EducationPage = ({
   educationData,
@@ -58,8 +59,7 @@ const EducationPage = ({
   dataScoreRes,
 }) => {
   const [isFavorite, setIsFavorit] = useState(false)
-  const [city] = useContext(CityContext)
-  const [me] = useContext(MeContext)
+  const { city, me } = useAuthStore(getStoreData)
   const [chatMessagePopup, setChatMessagePopup] = useState(false)
   const [reviews, setReviews] = useState(dataReviews)
   const [education, setEducation] = useState(educationData)

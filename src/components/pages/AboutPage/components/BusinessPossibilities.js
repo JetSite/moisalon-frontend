@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import Button from '../../../ui/Button'
 import { MobileHidden, MobileVisible } from '../../../../styles/common'
@@ -16,12 +16,12 @@ import {
   Underlined,
   RedArrow,
 } from '../styles'
-import { CityContext, MeContext } from '../../../../searchContext'
 import { cyrToTranslit } from '../../../../utils/translit'
+import { getStoreData } from 'src/store/utils'
+import useAuthStore from 'src/store/authStore'
 
 const BusinessPossibilities = () => {
-  const [city] = useContext(CityContext)
-  const [me] = useContext(MeContext)
+  const { city, me } = useAuthStore(getStoreData)
   const b2bClient = !!me?.master?.id || !!me?.salons?.length
   const isLoggedIn = me?.info !== undefined && me?.info !== null
 

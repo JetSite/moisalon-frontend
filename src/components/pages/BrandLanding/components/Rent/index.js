@@ -1,10 +1,10 @@
-import { useRouter } from "next/router";
+import { useRouter } from 'next/router'
 import {
   MainContainer,
   MobileHidden,
   MobileVisible,
-} from "../../../../../styles/common";
-import { Wrapper, Content, List, ListItem } from "./styles";
+} from '../../../../../styles/common'
+import { Wrapper, Content, List, ListItem } from './styles'
 import {
   LeftBlock,
   RightBlock,
@@ -12,15 +12,15 @@ import {
   Text,
   ImageWrap,
   Image,
-} from "../RegInvite/styles";
-import Button from "../../../../ui/Button";
-import { useContext } from "react";
-import { MeContext } from "../../../../../searchContext";
+} from '../RegInvite/styles'
+import Button from '../../../../ui/Button'
+import { getStoreData } from 'src/store/utils'
+import useAuthStore from 'src/store/authStore'
 
 const Rent = () => {
-  const { push } = useRouter();
-  const [me] = useContext(MeContext);
-  const isLoggedIn = me?.info !== undefined && me?.info !== null;
+  const { push } = useRouter()
+  const { me } = useAuthStore(getStoreData)
+  const isLoggedIn = me?.info !== undefined && me?.info !== null
 
   return (
     <MainContainer>
@@ -44,7 +44,7 @@ const Rent = () => {
               </ListItem>
               <ListItem>
                 Постоянно работаем над удобством и функциональностью платформы,
-                поэтому ваши возможности будут расти.{" "}
+                поэтому ваши возможности будут расти.{' '}
               </ListItem>
             </List>
           </LeftBlock>
@@ -68,7 +68,7 @@ const Rent = () => {
             </Text>
             <MobileHidden>
               <Button
-                onClick={() => push(isLoggedIn ? "/masterCabinet" : "/login")}
+                onClick={() => push(isLoggedIn ? '/masterCabinet' : '/login')}
                 size="mediumNoPadding"
                 variant="red"
                 font="medium"
@@ -86,7 +86,7 @@ const Rent = () => {
         </Content>
         <MobileVisible>
           <Button
-            onClick={() => push(isLoggedIn ? "/masterCabinet" : "/login")}
+            onClick={() => push(isLoggedIn ? '/masterCabinet' : '/login')}
             size="fullWidth"
             variant="red"
             font="medium"
@@ -97,7 +97,7 @@ const Rent = () => {
         </MobileVisible>
       </Wrapper>
     </MainContainer>
-  );
-};
+  )
+}
 
-export default Rent;
+export default Rent

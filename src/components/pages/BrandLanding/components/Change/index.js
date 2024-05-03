@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from 'react'
 import {
   TitleBottom,
   BottomWrapper,
@@ -11,16 +11,17 @@ import {
   Items,
   Item,
   ButtonWrap,
-} from "./styles";
-import Button from "../../../../ui/Button";
-import { MobileVisible, MobileHidden } from "../../../../../styles/common";
-import { useRouter } from "next/router";
-import { MeContext } from "../../../../../searchContext";
+} from './styles'
+import Button from '../../../../ui/Button'
+import { MobileVisible, MobileHidden } from '../../../../../styles/common'
+import { useRouter } from 'next/router'
+import { getStoreData } from 'src/store/utils'
+import useAuthStore from 'src/store/authStore'
 
 const Change = ({ setOpenPopup }) => {
-  const router = useRouter();
-  const [me] = useContext(MeContext);
-  const isLoggedIn = me?.info !== undefined && me?.info !== null;
+  const router = useRouter()
+  const { me } = useAuthStore(getStoreData)
+  const isLoggedIn = me?.info !== undefined && me?.info !== null
   return (
     <>
       <BottomWrapper>
@@ -56,7 +57,7 @@ const Change = ({ setOpenPopup }) => {
                   font="medium"
                   // onClick={() => setOpenPopup(true)}
                   onClick={() =>
-                    router.push(isLoggedIn ? "/masterCabinet" : "/login")
+                    router.push(isLoggedIn ? '/masterCabinet' : '/login')
                   }
                 >
                   Отправить заявку
@@ -72,7 +73,7 @@ const Change = ({ setOpenPopup }) => {
                   font="medium"
                   // onClick={() => setOpenPopup(true)}
                   onClick={() =>
-                    router.push(isLoggedIn ? "/masterCabinet" : "/login")
+                    router.push(isLoggedIn ? '/masterCabinet' : '/login')
                   }
                 >
                   Отправить заявку
@@ -88,7 +89,7 @@ const Change = ({ setOpenPopup }) => {
         </BottomContent>
       </BottomWrapper>
     </>
-  );
-};
+  )
+}
 
-export default Change;
+export default Change

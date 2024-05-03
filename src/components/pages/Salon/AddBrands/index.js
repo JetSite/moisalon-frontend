@@ -1,62 +1,61 @@
-import { useContext, useCallback } from "react";
-import { useQuery, useMutation } from "@apollo/client";
-import { SearchMainQueryContext } from "../../../../searchContext";
-import { BrandsContent, Title, ListWrapper } from "./styled";
-import Button from "../../../ui/Button";
-import Search from "../../../blocks/Cabinet/components/CabinetProfiles/components/MasterBrands/components/Search";
-import SearchResults from "../../../blocks/Cabinet/components/CabinetProfiles/components/MasterBrands/components/SearchResults";
-import { brandSearchQuery } from "../../../../_graphql-legacy/search/brandSearch";
+import { useCallback } from 'react'
+import { useQuery, useMutation } from '@apollo/client'
+import { BrandsContent, Title, ListWrapper } from './styled'
+import Button from '../../../ui/Button'
+import Search from '../../../blocks/Cabinet/components/CabinetProfiles/components/MasterBrands/components/Search'
+import SearchResults from '../../../blocks/Cabinet/components/CabinetProfiles/components/MasterBrands/components/SearchResults'
+import { brandSearchQuery } from '../../../../_graphql-legacy/search/brandSearch'
 import {
   BrandItemWrapper,
   Published,
-} from "../../../blocks/Cabinet/components/CabinetProfiles/components/MasterBrands/styles";
-import BrandItem from "../../../blocks/Cabinet/components/CabinetProfiles/components/BrandsList/BrandItem";
-import { addSalonBrandsMutation } from "../../../../_graphql-legacy/salon/addSalonBrandsMutation";
-import { removeSalonBrandsMutation } from "../../../../_graphql-legacy/salon/removeSalonBrandsMutation";
-import { brandsSalon } from "../../../../_graphql-legacy/salon/brandsSalon";
+} from '../../../blocks/Cabinet/components/CabinetProfiles/components/MasterBrands/styles'
+import BrandItem from '../../../blocks/Cabinet/components/CabinetProfiles/components/BrandsList/BrandItem'
+import { addSalonBrandsMutation } from '../../../../_graphql-legacy/salon/addSalonBrandsMutation'
+import { removeSalonBrandsMutation } from '../../../../_graphql-legacy/salon/removeSalonBrandsMutation'
+import { brandsSalon } from '../../../../_graphql-legacy/salon/brandsSalon'
 
 const AddBrands = ({ salonId, refetchBrands }) => {
-  const [query] = useContext(SearchMainQueryContext);
+  const query = { query: '' } //TODO: query
 
   const [addBrands] = useMutation(addSalonBrandsMutation, {
     onCompleted: () => {
-      refetchBrands();
+      refetchBrands()
     },
-  });
+  })
   const [removeBrands] = useMutation(removeSalonBrandsMutation, {
     onCompleted: () => {
-      refetchBrands();
+      refetchBrands()
     },
-  });
+  })
 
   const { data, fetchMore } = useQuery(brandSearchQuery, {
     variables: {
-      query: (query && query.query) || "",
+      query: (query && query.query) || '',
     },
-    fetchPolicy: "cache-and-network",
-    nextFetchPolicy: "cache-first",
-  });
+    fetchPolicy: 'cache-and-network',
+    nextFetchPolicy: 'cache-first',
+  })
 
   const { data: dataSalonBrands } = useQuery(brandsSalon, {
     variables: { id: salonId },
-    fetchPolicy: "network-only",
-  });
+    fetchPolicy: 'network-only',
+  })
 
-  const dataSearch = (dataSalonBrands && dataSalonBrands.brandsSalon) || [];
+  const dataSearch = (dataSalonBrands && dataSalonBrands.brandsSalon) || []
 
-  const brandsSearchResult = data?.brandsSearch?.connection.nodes || [];
-  const hasNextPage = data?.brandsSearch?.connection?.pageInfo?.hasNextPage;
+  const brandsSearchResult = data?.brandsSearch?.connection.nodes || []
+  const hasNextPage = data?.brandsSearch?.connection?.pageInfo?.hasNextPage
 
   const onFetchMore = useCallback(() => {
     fetchMore({
       variables: {
-        query: (query && query.query) || "",
+        query: (query && query.query) || '',
         cursor: data?.brandsSearch?.connection?.pageInfo?.endCursor,
       },
 
       updateQuery(previousResult, { fetchMoreResult }) {
-        const newNodes = fetchMoreResult.brandsSearch.connection.nodes;
-        const pageInfo = fetchMoreResult.brandsSearch.connection.pageInfo;
+        const newNodes = fetchMoreResult.brandsSearch.connection.nodes
+        const pageInfo = fetchMoreResult.brandsSearch.connection.pageInfo
 
         return newNodes.length
           ? {
@@ -73,10 +72,10 @@ const AddBrands = ({ salonId, refetchBrands }) => {
                 },
               },
             }
-          : previousResult;
+          : previousResult
       },
-    });
-  });
+    })
+  })
   const fetchMoreButton = hasNextPage ? (
     <Button
       onClick={onFetchMore}
@@ -86,47 +85,47 @@ const AddBrands = ({ salonId, refetchBrands }) => {
     >
       Загрузить ещё
     </Button>
-  ) : null;
+  ) : null
 
   const handlePublish = useCallback(
     (ev, id, published) => {
-      ev.preventDefault();
+      ev.preventDefault()
       if (!published) {
         addBrands({
           variables: {
             ids: [id],
             salonId,
           },
-        });
+        })
       } else {
         removeBrands({
           variables: {
             ids: [id],
             salonId,
           },
-        });
+        })
       }
     },
-    [addBrands, removeBrands, salonId]
-  );
+    [addBrands, removeBrands, salonId],
+  )
 
-  const brandsList = brandsSearchResult?.map((item) => {
+  const brandsList = brandsSearchResult?.map(item => {
     return (
       <BrandItemWrapper
         key={item.id}
-        onClick={(e) =>
+        onClick={e =>
           handlePublish(
             e,
             item.id,
-            dataSearch.find((el) => el.id === item.id)
+            dataSearch.find(el => el.id === item.id),
           )
         }
       >
         <BrandItem brand={item} />
-        <Published published={dataSearch.find((el) => el.id === item.id)} />
+        <Published published={dataSearch.find(el => el.id === item.id)} />
       </BrandItemWrapper>
-    );
-  });
+    )
+  })
 
   return (
     <BrandsContent>
@@ -148,7 +147,7 @@ const AddBrands = ({ salonId, refetchBrands }) => {
         </>
       )}
     </BrandsContent>
-  );
-};
+  )
+}
 
-export default AddBrands;
+export default AddBrands

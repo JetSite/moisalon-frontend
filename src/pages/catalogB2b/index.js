@@ -1,4 +1,4 @@
-import { addApolloState, initializeApollo } from '../../apollo-client'
+import { addApolloState, initializeApollo } from '../../api/apollo-client'
 import { brandSearchQuery } from '../../_graphql-legacy/search/brandSearch'
 import CatalogPage from '../../components/pages/CatalogPage'
 import { getBrandCategories } from '../../_graphql-legacy/getBrandCategories'

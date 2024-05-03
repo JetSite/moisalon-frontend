@@ -1,18 +1,17 @@
-import { useMutation } from "@apollo/client";
-import { useContext, useState, useCallback } from "react";
-import { createRequestToSalon } from "../../../../_graphql-legacy/salon/createRequestToSalon";
-import { CatalogsContext, MeContext } from "../../../../searchContext";
-import { MainContainer } from "../../../../styles/common";
-import catalogOrDefault from "../../../../utils/catalogOrDefault";
-import { formatNumber } from "../../../../utils/formatNumber";
-import { selectedGroupNames } from "../../../../utils/serviceCatalog";
-import { cyrToTranslit } from "../../../../utils/translit";
-import BackButton from "../../../ui/BackButton";
-import Button from "../../../ui/Button";
-import Popup from "../../../ui/Popup";
-import WritePopup from "../../../pages/Salon/ViewSalon/components/WritePopup.js";
-import PhotoSlider from "../../../blocks/PhotoSlider";
-import { MobileVisible, MobileHidden } from "../../../../styles/common";
+import { useMutation } from '@apollo/client'
+import { useState, useCallback } from 'react'
+import { createRequestToSalon } from '../../../../_graphql-legacy/salon/createRequestToSalon'
+import { MainContainer } from '../../../../styles/common'
+import catalogOrDefault from '../../../../utils/catalogOrDefault'
+import { formatNumber } from '../../../../utils/formatNumber'
+import { selectedGroupNames } from '../../../../utils/serviceCatalog'
+import { cyrToTranslit } from '../../../../utils/translit'
+import BackButton from '../../../ui/BackButton'
+import Button from '../../../ui/Button'
+import Popup from '../../../ui/Popup'
+import WritePopup from '../../../pages/Salon/ViewSalon/components/WritePopup.js'
+import PhotoSlider from '../../../blocks/PhotoSlider'
+import { MobileVisible, MobileHidden } from '../../../../styles/common'
 import {
   Wrapper,
   Content,
@@ -43,31 +42,34 @@ import {
   Photo,
   BottomButtons,
   DesktopBlock,
-} from "./styles";
-import { urlPatternHttp, urlPatternHttps } from "../../../../utils/checkUrls";
+} from './styles'
+import { urlPatternHttp, urlPatternHttps } from '../../../../utils/checkUrls'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
+import useBaseStore from 'src/store/baseStore'
 
 const RentHeader = ({ city, salonData, roomData }) => {
-  const catalogs = useContext(CatalogsContext);
-  const [me] = useContext(MeContext);
-  const [openWritePopup, setOpenWritePopup] = useState(false);
-  const [openSuccessPopup, setOpenSuccessPopup] = useState(false);
+  const { catalogs } = useBaseStore(getStoreData)
+  const { me } = useAuthStore(getStoreData)
+  const [openWritePopup, setOpenWritePopup] = useState(false)
+  const [openSuccessPopup, setOpenSuccessPopup] = useState(false)
 
   const handleCloseWritePopup = useCallback(() => {
-    setOpenWritePopup(false);
-  }, [setOpenWritePopup]);
+    setOpenWritePopup(false)
+  }, [setOpenWritePopup])
 
   const closeSuccessPopup = useCallback(() => {
-    setOpenSuccessPopup(false);
-  }, [setOpenSuccessPopup]);
+    setOpenSuccessPopup(false)
+  }, [setOpenSuccessPopup])
 
   const [createRequestPopup] = useMutation(createRequestToSalon, {
     onCompleted: () => {
-      setOpenWritePopup(false);
-      setOpenSuccessPopup(true);
+      setOpenWritePopup(false)
+      setOpenSuccessPopup(true)
     },
-  });
+  })
 
-  const onSubmit = (values) => {
+  const onSubmit = values => {
     createRequestPopup({
       variables: {
         input: {
@@ -75,49 +77,49 @@ const RentHeader = ({ city, salonData, roomData }) => {
           ...values,
         },
       },
-    });
-  };
+    })
+  }
 
   const roomServicesCatalog = catalogOrDefault(
-    catalogs?.salonRoomServicesCatalog
-  );
+    catalogs?.salonRoomServicesCatalog,
+  )
 
-  const foundServices = [];
-  roomData.services.forEach((service) => {
-    roomServicesCatalog?.groups[0]?.subGroups?.forEach((serviceCatalog) => {
-      serviceCatalog.items.forEach((serviceItem) => {
+  const foundServices = []
+  roomData.services.forEach(service => {
+    roomServicesCatalog?.groups[0]?.subGroups?.forEach(serviceCatalog => {
+      serviceCatalog.items.forEach(serviceItem => {
         if (service.id === serviceItem.id) {
           foundServices.push({
             groupTitle: serviceCatalog.title,
             serviceDetail: serviceItem.title,
             quantity: service.value,
-          });
+          })
         }
-      });
-    });
-  });
-  const foundServicesGroups = [];
-  foundServices.forEach((foundService) => {
+      })
+    })
+  })
+  const foundServicesGroups = []
+  foundServices.forEach(foundService => {
     const foundGroup = foundServicesGroups.find(
-      (item) => item === foundService.groupTitle
-    );
+      item => item === foundService.groupTitle,
+    )
     if (!foundGroup) {
-      foundServicesGroups.push(foundService.groupTitle);
+      foundServicesGroups.push(foundService.groupTitle)
     }
-  });
+  })
 
   const hasRentalPrice =
     roomData?.seat?.rentalPricing?.hour ||
     roomData?.seat?.rentalPricing?.day ||
     roomData?.seat?.rentalPricing?.week ||
     roomData?.seat?.rentalPricing?.month ||
-    roomData?.seat?.rentalPricing?.year;
+    roomData?.seat?.rentalPricing?.year
 
   const hasPaymentVariants =
     roomData?.seat?.rentalPaymentMethods?.appleOrGooglePay ||
     roomData?.seat?.rentalPaymentMethods?.bankingCard ||
     roomData?.seat?.rentalPaymentMethods?.cash ||
-    roomData?.seat?.rentalPaymentMethods?.wireTransfer;
+    roomData?.seat?.rentalPaymentMethods?.wireTransfer
 
   return (
     <>
@@ -187,7 +189,7 @@ const RentHeader = ({ city, salonData, roomData }) => {
           </MobileHidden>
           <MobileVisible>
             <MobilePhotosBlock>
-              {roomData?.photos?.map((photo) => (
+              {roomData?.photos?.map(photo => (
                 <PhotoWrapper key={photo.id}>
                   <Photo src={photo.url} />
                 </PhotoWrapper>
@@ -206,7 +208,7 @@ const RentHeader = ({ city, salonData, roomData }) => {
                         <Time>Час</Time>
                         <Dotted />
                         <Price>
-                          от {formatNumber(roomData?.seat?.rentalPricing?.hour)}{" "}
+                          от {formatNumber(roomData?.seat?.rentalPricing?.hour)}{' '}
                           ₽
                         </Price>
                       </PriceLine>
@@ -216,7 +218,7 @@ const RentHeader = ({ city, salonData, roomData }) => {
                         <Time>День</Time>
                         <Dotted />
                         <Price>
-                          от {formatNumber(roomData?.seat?.rentalPricing?.day)}{" "}
+                          от {formatNumber(roomData?.seat?.rentalPricing?.day)}{' '}
                           ₽
                         </Price>
                       </PriceLine>
@@ -226,7 +228,7 @@ const RentHeader = ({ city, salonData, roomData }) => {
                         <Time>Неделя</Time>
                         <Dotted />
                         <Price>
-                          от {formatNumber(roomData?.seat?.rentalPricing?.week)}{" "}
+                          от {formatNumber(roomData?.seat?.rentalPricing?.week)}{' '}
                           ₽
                         </Price>
                       </PriceLine>
@@ -236,7 +238,7 @@ const RentHeader = ({ city, salonData, roomData }) => {
                         <Time>Месяц</Time>
                         <Dotted />
                         <Price>
-                          от{" "}
+                          от{' '}
                           {formatNumber(roomData?.seat?.rentalPricing?.month)} ₽
                         </Price>
                       </PriceLine>
@@ -246,7 +248,7 @@ const RentHeader = ({ city, salonData, roomData }) => {
                         <Time>Год</Time>
                         <Dotted />
                         <Price>
-                          от {formatNumber(roomData?.seat?.rentalPricing?.year)}{" "}
+                          от {formatNumber(roomData?.seat?.rentalPricing?.year)}{' '}
                           ₽
                         </Price>
                       </PriceLine>
@@ -349,26 +351,26 @@ const RentHeader = ({ city, salonData, roomData }) => {
               <InfoItemTitleWide>Окна</InfoItemTitleWide>
               <InfoItemContent>
                 <ItemWide>
-                  <Text>{roomData?.hasWindows ? "да" : "нет"}</Text>
+                  <Text>{roomData?.hasWindows ? 'да' : 'нет'}</Text>
                 </ItemWide>
               </InfoItemContent>
             </InfoItemHorisontal>
-            {foundServicesGroups.map((group) => (
+            {foundServicesGroups.map(group => (
               <InfoItemHorisontal key={group}>
                 <InfoItemTitleWide>{group}</InfoItemTitleWide>
                 <InfoItemContent>
-                  {foundServices.map((service) => {
+                  {foundServices.map(service => {
                     if (service.groupTitle === group) {
                       return (
                         <ItemWide key={service.serviceDetail}>
                           <IconCircle src="/service-rent-icon.svg" />
                           <Text>{service.serviceDetail}</Text>
-                          {service.serviceDetail.includes("шт.") ||
+                          {service.serviceDetail.includes('шт.') ||
                           service.quantity > 1 ? (
                             <Text>- {service.quantity}</Text>
                           ) : null}
                         </ItemWide>
-                      );
+                      )
                     }
                   })}
                 </InfoItemContent>
@@ -486,7 +488,7 @@ const RentHeader = ({ city, salonData, roomData }) => {
         </Popup>
       </>
     </>
-  );
-};
+  )
+}
 
-export default RentHeader;
+export default RentHeader

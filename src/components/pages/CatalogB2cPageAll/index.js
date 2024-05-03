@@ -1,9 +1,9 @@
-import { useState, useCallback, useEffect, useContext } from "react";
-import MainLayout from "../../../layouts/MainLayout";
-import { MobileHidden } from "../../../styles/common";
-import MobileViewCards from "../../pages/MainPage/components/MobileViewCards";
-import SearchBlock from "../../blocks/SearchBlock";
-import BackButton from "../../ui/BackButton";
+import { useState, useCallback, useEffect } from 'react'
+import MainLayout from '../../../layouts/MainLayout'
+import { MobileHidden } from '../../../styles/common'
+import MobileViewCards from '../../pages/MainPage/components/MobileViewCards'
+import SearchBlock from '../../blocks/SearchBlock'
+import BackButton from '../../ui/BackButton'
 import {
   Wrapper,
   Content,
@@ -16,18 +16,20 @@ import {
   Text,
   GoodsWrap,
   WrapButton,
-} from "./styles";
-import Filters from "./components/Filters";
-import ProductCard from "../../pages/CatalogB2cPage/components/ProductCard";
-import Button from "../../ui/Button";
-import { useMutation, useQuery } from "@apollo/client";
-import { goodSearch } from "../../../_graphql-legacy/goodSearch";
-import { useRouter } from "next/router";
-import { CityContext, ProductsContext } from "../../../searchContext";
-import { getB2cCart } from "../../../_graphql-legacy/cart/getB2cCart";
-import { addToCartB2cMutation } from "../../../_graphql-legacy/cart/addToB2cCart";
-import { removeItemB2cMutation } from "../../../_graphql-legacy/cart/removeItemB2c";
-import { cyrToTranslit } from "../../../utils/translit";
+} from './styles'
+import Filters from './components/Filters'
+import ProductCard from '../../pages/CatalogB2cPage/components/ProductCard'
+import Button from '../../ui/Button'
+import { useMutation, useQuery } from '@apollo/client'
+import { goodSearch } from '../../../_graphql-legacy/goodSearch'
+import { useRouter } from 'next/router'
+import { getB2cCart } from '../../../_graphql-legacy/cart/getB2cCart'
+import { addToCartB2cMutation } from '../../../_graphql-legacy/cart/addToB2cCart'
+import { removeItemB2cMutation } from '../../../_graphql-legacy/cart/removeItemB2c'
+import { cyrToTranslit } from '../../../utils/translit'
+import { getStoreData, getStoreEvent } from 'src/store/utils'
+import useAuthStore from 'src/store/authStore'
+import useBaseStore from 'src/store/baseStore'
 
 const CatalogB2cPageAll = ({
   productCategories,
@@ -38,27 +40,27 @@ const CatalogB2cPageAll = ({
   totalMasters,
   noFilters,
 }) => {
-  const router = useRouter();
-  const [productState, setProductsState] = useContext(ProductsContext);
-  const [city] = useContext(CityContext);
-  const [goodsData, setGoodsData] = useState(goods);
+  const router = useRouter()
+  const { setProducts: setProductsState } = useBaseStore(getStoreEvent)
+  const { city } = useAuthStore(getStoreData)
+  const [goodsData, setGoodsData] = useState(goods)
   const [customQuery, setCustomQuery] = useState(
-    router?.query?.type === "query" ? router?.query?.query : ""
-  );
+    router?.query?.type === 'query' ? router?.query?.query : '',
+  )
 
   const [filterProduct, setFilterProduct] = useState(
-    router?.query?.type === "product"
+    router?.query?.type === 'product'
       ? [{ id: router?.query?.id, title: router?.query?.title }]
-      : []
-  );
+      : [],
+  )
   const [filterBrand, setFilterBrand] = useState(
-    router?.query?.type === "brand"
+    router?.query?.type === 'brand'
       ? [{ id: router?.query?.id, title: router?.query?.title }]
-      : []
-  );
-  const [fetchMoreLoading, setFetchMoreLoading] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [firstLoading, setFirstLoading] = useState(false);
+      : [],
+  )
+  const [fetchMoreLoading, setFetchMoreLoading] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [firstLoading, setFirstLoading] = useState(false)
 
   const { refetch, fetchMore } = useQuery(goodSearch, {
     variables: {
@@ -68,36 +70,36 @@ const CatalogB2cPageAll = ({
     },
     skip: true,
     notifyOnNetworkStatusChange: true,
-    onCompleted: (res) => {
-      setLoading(false);
-      setGoodsData(res.goodsSearch);
+    onCompleted: res => {
+      setLoading(false)
+      setGoodsData(res.goodsSearch)
     },
     onError: () => {
-      setLoading(false);
+      setLoading(false)
     },
-  });
+  })
 
   const {
     data: dataCart,
     refetch: refetchCart,
     loading: loadingCart,
   } = useQuery(getB2cCart, {
-    onCompleted: (res) => {
-      setProductsState(res?.getCart?.contents || []);
+    onCompleted: res => {
+      setProductsState(res?.getCart?.contents || [])
     },
-  });
+  })
 
   const [addToCart] = useMutation(addToCartB2cMutation, {
     onCompleted: () => {
-      refetchCart();
+      refetchCart()
     },
-  });
+  })
 
   const [removeItem] = useMutation(removeItemB2cMutation, {
     onCompleted: () => {
-      refetchCart();
+      refetchCart()
     },
-  });
+  })
 
   const add = (item, quantity) => {
     addToCart({
@@ -108,10 +110,10 @@ const CatalogB2cPageAll = ({
           isB2b: false,
         },
       },
-    });
-  };
+    })
+  }
 
-  const deleteItem = (item) => {
+  const deleteItem = item => {
     removeItem({
       variables: {
         input: {
@@ -119,58 +121,58 @@ const CatalogB2cPageAll = ({
           isB2b: false,
         },
       },
-    });
-  };
+    })
+  }
 
-  const cart = dataCart?.getCart?.contents || [];
+  const cart = dataCart?.getCart?.contents || []
 
   useEffect(() => {
     if (firstLoading) {
-      setLoading(true);
+      setLoading(true)
       refetch({
         input: {
           query: customQuery,
-          brandId: filterBrand.map((item) => item.id),
-          categoryId: filterProduct.map((item) => item.id),
+          brandId: filterBrand.map(item => item.id),
+          categoryId: filterProduct.map(item => item.id),
         },
-      });
+      })
     } else {
-      setFirstLoading(true);
+      setFirstLoading(true)
     }
-  }, [filterProduct, filterBrand]);
+  }, [filterProduct, filterBrand])
 
   useEffect(() => {
-    setFirstLoading(false);
-    setFilterProduct([]);
-    setFilterBrand([]);
-    setGoodsData(goods);
-    setCustomQuery(router?.query?.type === "query" ? router?.query?.query : "");
-  }, [goods]);
+    setFirstLoading(false)
+    setFilterProduct([])
+    setFilterBrand([])
+    setGoodsData(goods)
+    setCustomQuery(router?.query?.type === 'query' ? router?.query?.query : '')
+  }, [goods])
 
   const onFetchMore = useCallback(() => {
-    setFetchMoreLoading(true);
+    setFetchMoreLoading(true)
     fetchMore({
       variables: {
         cursor: goodsData?.connection?.pageInfo?.endCursor,
         input: {
-          brandId: filterBrand.map((item) => item.id),
-          categoryId: filterProduct.map((item) => item.id),
+          brandId: filterBrand.map(item => item.id),
+          categoryId: filterProduct.map(item => item.id),
           query: customQuery,
         },
       },
       updateQuery(previousResult, { fetchMoreResult }) {
-        const newNodes = fetchMoreResult.goodsSearch.connection.nodes;
-        setFetchMoreLoading(false);
+        const newNodes = fetchMoreResult.goodsSearch.connection.nodes
+        setFetchMoreLoading(false)
         setGoodsData({
           connection: {
             ...fetchMoreResult.goodsSearch.connection,
             nodes: [...goodsData.connection.nodes, ...newNodes],
           },
           filterDefinition: fetchMoreResult.goodsSearch.filterDefinition,
-        });
+        })
       },
-    });
-  });
+    })
+  })
 
   return (
     <MainLayout>
@@ -205,35 +207,33 @@ const CatalogB2cPageAll = ({
             {filterProduct.length || filterBrand.length ? (
               <Change>
                 <ChangeTitle>Вы выбрали: </ChangeTitle>
-                {filterProduct.map((item) => (
+                {filterProduct.map(item => (
                   <Item
                     onClick={() => {
-                      const arr = filterProduct.filter(
-                        (el) => el.id !== item.id
-                      );
-                      setFilterProduct(arr);
-                      setCustomQuery("");
+                      const arr = filterProduct.filter(el => el.id !== item.id)
+                      setFilterProduct(arr)
+                      setCustomQuery('')
                     }}
                   >
                     {item.title} {`[X]`}
                   </Item>
-                ))}{" "}
-                {filterBrand.map((item) => (
+                ))}{' '}
+                {filterBrand.map(item => (
                   <Item
                     onClick={() => {
-                      const arr = filterBrand.filter((el) => el.id !== item.id);
-                      setFilterBrand(arr);
-                      setCustomQuery("");
+                      const arr = filterBrand.filter(el => el.id !== item.id)
+                      setFilterBrand(arr)
+                      setCustomQuery('')
                     }}
                   >
                     {item.title} {`[X]`}
                   </Item>
-                ))}{" "}
+                ))}{' '}
               </Change>
             ) : null}
             {goodsData?.connection?.nodes?.length ? (
               <GoodsWrap>
-                {goodsData?.connection?.nodes.map((item) => (
+                {goodsData?.connection?.nodes.map(item => (
                   <ProductCard
                     add={add}
                     cart={cart}
@@ -264,7 +264,7 @@ const CatalogB2cPageAll = ({
         </Content>
       </Wrapper>
     </MainLayout>
-  );
-};
+  )
+}
 
-export default CatalogB2cPageAll;
+export default CatalogB2cPageAll

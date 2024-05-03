@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
 import { useMutation } from '@apollo/react-hooks'
@@ -8,7 +8,8 @@ import { makeStyles } from '@material-ui/core/styles'
 import { laptopBreakpoint } from '../../../../../styles/variables'
 import { PHOTO_URL } from '../../../../../variables'
 import { addToCartB2cMutation } from '../../../../../_graphql-legacy/cart/addToB2cCart'
-import { CityContext } from '../../../../../searchContext'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 import { cyrToTranslit } from '../../../../../utils/translit'
 
 const useStyles = makeStyles({
@@ -130,7 +131,7 @@ const Product = ({
   cart,
 }) => {
   const classes = useStyles()
-  const [city] = useContext(CityContext)
+  const { city } = useAuthStore(getStoreData)
 
   const [checked, setChecked] = useState(false)
 

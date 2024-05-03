@@ -1,4 +1,4 @@
-import { addApolloState, initializeApollo } from '../../apollo-client'
+import { addApolloState, initializeApollo } from '../../api/apollo-client'
 import BusinessCategoryPageLayout from '../../layouts/BusinessCategoryPageLayout'
 import BusinessCategoryPage from '../../components/pages/BusinessCategoryPage'
 import { eventsSearch } from '../../_graphql-legacy/events/eventsSearch'

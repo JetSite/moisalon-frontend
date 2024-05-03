@@ -2,11 +2,11 @@ import styled from 'styled-components'
 import { useRouter } from 'next/router'
 import { laptopBreakpoint } from '../../../../../styles/variables'
 import Avatar from '../../../Form/Avatar'
-import { useContext } from 'react'
-import { CityContext, MeContext } from '../../../../../searchContext'
 import { useQuery } from '@apollo/client'
 import { currentUserSalonsAndMasterQuery } from '../../../../../_graphql-legacy/master/currentUserSalonsAndMasterQuery'
 import { cyrToTranslit } from '../../../../../utils/translit'
+import { getStoreData, getStoreEvent } from 'src/store/utils'
+import useAuthStore from 'src/store/authStore'
 
 const Wrapper = styled.div`
   max-width: 395px;
@@ -69,8 +69,9 @@ const Controls = ({
   const dev = process.env.NEXT_PUBLIC_ENV !== 'production'
 
   const router = useRouter()
-  const [me, setMe] = useContext(MeContext)
-  const [city] = useContext(CityContext)
+  const { city } = useAuthStore(getStoreData)
+  const { setMe } = useAuthStore(getStoreEvent)
+
   const { refetch } = useQuery(currentUserSalonsAndMasterQuery, {
     skip: true,
     onCompleted: res => {

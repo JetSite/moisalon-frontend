@@ -1,10 +1,6 @@
-import { useState, useContext, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 import { useQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
-import {
-  CityContext,
-  SearchMainQueryContext,
-} from '../../../../../../../searchContext'
 import { brandSearchQuery } from '../../../../../../../_graphql-legacy/search/brandSearch'
 import Button from '../../../../../../ui/Button'
 import Search from '../MasterBrands/components/Search'
@@ -16,11 +12,13 @@ import { Logo, ItemWrapper } from '../BrandsList/styles'
 import CabinetBrandsSkeleton from '../../../../../../ui/ContentSkeleton/CabinetBrandsSkeleton'
 import { cyrToTranslit } from '../../../../../../../utils/translit'
 import { PHOTO_URL } from '../../../../../../../variables'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 
 const MasterBrands = ({ dataSearch, handlePublish, me }) => {
-  const [query] = useContext(SearchMainQueryContext)
   const router = useRouter()
-  const [city] = useContext(CityContext)
+  const { city } = useAuthStore(getStoreData)
+  const query = { query: '' } //TODO: query
 
   const {
     data,

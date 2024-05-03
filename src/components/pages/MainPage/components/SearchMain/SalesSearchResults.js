@@ -1,7 +1,6 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useQuery } from '@apollo/client'
 import Link from 'next/link'
-import { SearchMainQueryContext } from '../../../../../searchContext'
 import { salesSearch } from '../../../../../_graphql-legacy/sales/salesSearch'
 import { MobileVisible, MobileHidden } from '../../../../../styles/common'
 import { WrapperItems, Title, LinkStyled } from './styled'
@@ -10,7 +9,7 @@ import { pluralize } from '../../../../../utils/pluralize'
 import Sale from '../../../../blocks/Sale'
 
 const SalesSearchResults = () => {
-  const [query] = useContext(SearchMainQueryContext)
+  const query = { query: '' } //TODO: query
   const [salesSearchData, setSalesSearchData] = useState(null)
   const [loading, setLoading] = useState(false)
   const [fetchMoreLoading, setFetchMoreLoading] = useState(false)

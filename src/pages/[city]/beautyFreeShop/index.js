@@ -1,5 +1,5 @@
-import { useContext, useState } from 'react'
-import { addApolloState, initializeApollo } from '../../../apollo-client'
+import { useState } from 'react'
+import { addApolloState, initializeApollo } from '../../../api/apollo-client'
 import { brandQuery } from '../../../_graphql-legacy/brand/brandQuery'
 import { useQuery } from '@apollo/client'
 import { goodSearch } from '../../../_graphql-legacy/goodSearch'
@@ -7,13 +7,14 @@ import MainLayout from '../../../layouts/MainLayout'
 import { MainContainer } from '../../../styles/common'
 import { brandSlugQuery } from '../../../_graphql-legacy/brand/brandSlugQuery'
 import { scoreBrand } from '../../../_graphql-legacy/brand/scoreBrand'
-import { MeContext } from '../../../searchContext'
 import BeautyFreeShopPage from '../../../components/pages/BeautyFreeShop'
 import { citySuggestionsQuery } from '../../../_graphql-legacy/city/citySuggestionsQuery'
 import useCheckCity from '../../../hooks/checkCity'
 import { getBrand } from 'src/graphql/brand/queries/getBrand'
 import { getProductCategories } from 'src/graphql/product/queries/getProductCategories'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { getStoreData, getStoreEvent } from 'src/store/utils'
+import useAuthStore from 'src/store/authStore'
 
 const BeautyFreeShop = ({
   brandData,
@@ -24,7 +25,9 @@ const BeautyFreeShop = ({
 }) => {
   const [brand, setBrand] = useState(brandData)
   // const [dataScore, setDataScore] = useState(dataScoreRes)
-  const [me, setMe] = useContext(MeContext)
+  const { me } = useAuthStore(getStoreData)
+  const { setMe } = useAuthStore(getStoreEvent)
+
   useCheckCity(cityData)
   // const { refetch: refetchBrand } = useQuery(brandQuery, {
   //   variables: { id: brand.id },

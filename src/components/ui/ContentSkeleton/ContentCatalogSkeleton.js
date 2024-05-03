@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { Skeleton } from '@material-ui/lab'
 import MainLayout from '../../../layouts/MainLayout'
@@ -9,8 +9,9 @@ import BrandsList from '../../Catalog/components/BrandsList'
 import MobileViewCards from '../../pages/MainPage/components/MobileViewCards'
 import BackButton from '../../ui/BackButton'
 import Banners from '../../pages/Catalog/components/Banners'
-import { CityContext } from '../../../searchContext'
 import { cyrToTranslit } from '../../../utils/translit'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 
 const Wrapper = styled.div`
   padding: 0 140px;
@@ -68,7 +69,7 @@ const ContentCatalogSkeleton = ({
   bannersByHookSmall2,
   filterProduct,
 }) => {
-  const [city] = useContext(CityContext)
+  const { city } = useAuthStore(getStoreData)
   return (
     <MainLayout me={me} loading={loading}>
       <MobileViewCards />

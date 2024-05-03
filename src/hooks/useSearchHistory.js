@@ -1,41 +1,39 @@
-import { useState, useEffect } from "react";
-import { useSearchHistoryContext } from "../searchHistoryContext";
-import { useHistory } from "../historyContext";
+import { useEffect } from 'react'
 
 export const useSearchHistory = (data, setData, entity, scrollOffset) => {
   const { searchData, setSearchData, chosenItemId, setChosenItemId } =
-    useSearchHistoryContext();
-  const { history } = useHistory();
+    useSearchHistoryContext()
+  const { history } = ['', '']
 
   useEffect(() => {
-    const prevRoute = history[history.length - 1];
+    const prevRoute = history[history.length - 1]
 
-    if (prevRoute.split("/")[2] === entity && prevRoute.split("/")[3]) {
-      setData(searchData);
+    if (prevRoute.split('/')[2] === entity && prevRoute.split('/')[3]) {
+      setData(searchData)
     } else {
-      setSearchData(null);
+      setSearchData(null)
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
-    const prevRoute = history[history.length - 2];
+    const prevRoute = history[history.length - 2]
 
-    if (prevRoute?.split("/")[2] === entity && prevRoute?.split("/")[3]) {
-      const el = document.getElementById(chosenItemId);
+    if (prevRoute?.split('/')[2] === entity && prevRoute?.split('/')[3]) {
+      const el = document.getElementById(chosenItemId)
       if (el) {
-        const yOffset = scrollOffset;
-        const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        const yOffset = scrollOffset
+        const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset
         window.scrollTo({
           top: y,
-          behavior: "smooth",
-        });
+          behavior: 'smooth',
+        })
       }
     }
-  }, [data]);
+  }, [data])
 
   useEffect(() => {
-    setSearchData(data);
-  }, [data]);
+    setSearchData(data)
+  }, [data])
 
-  return { searchData, setSearchData, chosenItemId, setChosenItemId };
-};
+  return { searchData, setSearchData, chosenItemId, setChosenItemId }
+}

@@ -1,4 +1,4 @@
-import { useContext, useRef, useState, useEffect, useCallback } from 'react'
+import { useRef, useState, useEffect, useCallback } from 'react'
 import styled from 'styled-components'
 import { Scrollbar } from 'react-scrollbars-custom'
 import {
@@ -9,23 +9,20 @@ import {
 } from 'react-yandex-maps'
 import { laptopBreakpoint } from '../../../../styles/variables'
 import { useMedia } from 'use-media'
-import {
-  CityContext,
-  EmptySearchQuery,
-  SearchMainQueryContext,
-} from '../../../../searchContext'
 import Link from 'next/link'
 import { useQuery } from '@apollo/client'
 import { searchAddressSalons } from '../../../../_graphql-legacy/search/searchAddressSalons'
 import { MobileHidden, MobileVisible } from '../../../../styles/common'
 import Button from '../../../ui/Button'
-import { searchQuery } from '../../../../_graphql-legacy/search/searchQuery'
+
 import { pluralize } from '../../../../utils/pluralize'
 import FilterSearchResults from '../../../blocks/FilterSearchResults'
 import { salonIdsQuery } from '../../../../_graphql-legacy/brand/salonIdsQuery'
 // import SalonCardMap from "./SalonCardMap";
 import { cyrToTranslit } from '../../../../utils/translit'
 import SalonCard from '../../../blocks/SalonCard'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 
 const WrapperMapBlock = styled.div`
   display: flex;
@@ -131,8 +128,8 @@ const Title = styled.h3`
 `
 
 const SalonMap = ({ me, view, setView, rent }) => {
-  const [query] = useContext(SearchMainQueryContext)
-  const [city] = useContext(CityContext)
+  const query = { query: '' } //TODO: query
+  const { city } = useAuthStore(getStoreData)
   const mobileMedia = useMedia({ maxWidth: 768 })
   const [ids, setIds] = useState(null)
   const [openMobileList, setOpenMobileList] = useState(false)

@@ -1,4 +1,4 @@
-import { addApolloState, initializeApollo } from '../../../apollo-client'
+import { addApolloState, initializeApollo } from '../../../api/apollo-client'
 import { vacancySearchById } from '../../../_graphql-legacy/vacancies/vacancySearchById'
 import VacancyPage from '../../../components/pages/VacancyPage'
 import { getCategories } from '../../../_graphql-legacy/advices/getCategories'

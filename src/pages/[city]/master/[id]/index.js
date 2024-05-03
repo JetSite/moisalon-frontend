@@ -1,6 +1,6 @@
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Head from 'next/head'
-import { addApolloState, initializeApollo } from '../../../../apollo-client'
+import { addApolloState, initializeApollo } from '../../../../api/apollo-client'
 import { useQuery, useMutation } from '@apollo/client'
 import { masterQuery } from '../../../../_graphql-legacy/master/masterQuery'
 import { brandQuery } from '../../../../_graphql-legacy/master/brandQuery'
@@ -24,7 +24,6 @@ import { removeUserSalonsMutation } from '../../../../_graphql-legacy/master/rem
 import Contacts from '../../../../components/pages/Master/ViewMaster/components/Contacts'
 import ServicesForClient from '../../../../components/pages/Master/ViewMaster/components/ServicesForClient'
 import { masterSlugQuery } from '../../../../_graphql-legacy/master/masterSlugQuery'
-import { CatalogsContext, MeContext } from '../../../../searchContext'
 import { mastersRandomQuery } from '../../../../_graphql-legacy/mastersRandomQuery'
 import { citySuggestionsQuery } from '../../../../_graphql-legacy/city/citySuggestionsQuery'
 import Slider from '../../../../components/blocks/Slider'
@@ -32,17 +31,19 @@ import AddBrands from '../../../../components/pages/Master/AddBrands'
 import AddSalons from '../../../../components/pages/Master/AddSalons'
 import PhotoAdd from '../../../../components/pages/Master/ViewMaster/components/PhotoAdd'
 import { NoItemsText } from '../../../../styles/common'
-import { useSearchHistory } from '../../../../hooks/useSearchHistory'
-import { useSearchHistoryContext } from '../../../../searchHistoryContext'
 import { getMaster } from 'src/graphql/master/queries/getMaster'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { getMasters } from 'src/graphql/master/queries/getMasters'
 import { getServicesByCategory } from 'src/utils/serviceCatalog'
+import useBaseStore from 'src/store/baseStore'
+import { getStoreData } from 'src/store/utils'
+import useAuthStore from 'src/store/authStore'
 
 const Master = ({ masterData, randomMasters }) => {
   const [master, setMaster] = useState(masterData)
-  const [me, setMe] = useContext(MeContext)
-  const catalogs = useContext(CatalogsContext)
+  const { me } = useAuthStore(getStoreData)
+  const { catalogs } = useBaseStore(getStoreData)
+
   const [editClientServices, setEditClientServices] = useState(false)
   const [activeTab, setActiveTab] = useState(0)
   const [isBrandsEditing, setIsBrandsEditing] = useState(false)
@@ -73,7 +74,7 @@ const Master = ({ masterData, randomMasters }) => {
     // refetch()
   }, [masterData])
 
-  const { setChosenItemId } = useSearchHistoryContext()
+  const setChosenItemId = () => {}
 
   useEffect(() => {
     setChosenItemId(master.id)

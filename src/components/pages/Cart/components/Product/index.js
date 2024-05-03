@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useQuery } from '@apollo/client'
 import Link from 'next/link'
@@ -17,7 +17,8 @@ import { brandSearchQuery } from '../../../../../_graphql-legacy/search/brandSea
 import { addToCartB2cMutation } from '../../../../../_graphql-legacy/cart/addToB2cCart'
 import { PHOTO_URL } from '../../../../../variables'
 import { cyrToTranslit } from '../../../../../utils/translit'
-import { CityContext } from '../../../../../searchContext'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 import { pluralize } from '../../../../../utils/pluralize'
 
 const useStyles = makeStyles({
@@ -176,7 +177,7 @@ const Product = ({
   })
 
   const [checked, setChecked] = useState(false)
-  const [city] = useContext(CityContext)
+  const { city } = useAuthStore(getStoreData)
 
   useEffect(() => {
     if (dataBrand && checked) {

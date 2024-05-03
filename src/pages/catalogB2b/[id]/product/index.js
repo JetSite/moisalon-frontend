@@ -1,4 +1,4 @@
-import { addApolloState, initializeApollo } from '../../../../apollo-client'
+import { addApolloState, initializeApollo } from '../../../../api/apollo-client'
 import { goodsCatalogQuery } from '../../../../_graphql-legacy/goodsCatalog'
 import { goodSearch } from '../../../../_graphql-legacy/goodSearch'
 import MainLayout from '../../../../layouts/MainLayout'

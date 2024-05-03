@@ -1,4 +1,3 @@
-import { useContext } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { MobileHidden, MobileVisible } from '../../../../../styles/common'
@@ -17,11 +16,12 @@ import {
 } from './styles'
 import Button from '../../../../ui/Button'
 import { cyrToTranslit } from '../../../../../utils/translit'
-import { CityContext } from '../../../../../searchContext'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 
 const Header = () => {
   const { push } = useRouter()
-  const [city] = useContext(CityContext)
+  const { city } = useAuthStore(getStoreData)
   return (
     <Wrapper>
       <Content>

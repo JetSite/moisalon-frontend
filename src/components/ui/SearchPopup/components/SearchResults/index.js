@@ -1,156 +1,148 @@
-import { useState, useEffect, useContext } from "react";
-import { useQuery } from "@apollo/react-hooks";
-import Link from "next/link";
-import { MainContainer } from "../../../../../styles/common";
-import {
-  Wrapper,
-  Category,
-  Title,
-  List,
-  ListItem,
-  EmptyResult,
-} from "./styled";
-import { CityContext, EmptySearchQuery } from "../../../../../searchContext";
-import { MeContext } from "../../../../../searchContext";
-import { masterSearchQuery } from "../../../../../_graphql-legacy/search/masterSearch";
-import { searchQuery } from "../../../../../_graphql-legacy/search/searchQuery";
-import { brandSearchQuery } from "../../../../../_graphql-legacy/search/brandSearch";
-import RotatingLoader from "../../../../ui/RotatingLoader";
-import { cyrToTranslit } from "../../../../../utils/translit";
+import { useState, useEffect } from 'react'
+import { useQuery } from '@apollo/react-hooks'
+import Link from 'next/link'
+import { MainContainer } from '../../../../../styles/common'
+import { Wrapper, Category, Title, List, ListItem, EmptyResult } from './styled'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
+import { masterSearchQuery } from '../../../../../_graphql-legacy/search/masterSearch'
+;('../../../../../_graphql-legacy/search/searchQuery')
+import { brandSearchQuery } from '../../../../../_graphql-legacy/search/brandSearch'
+import RotatingLoader from '../../../../ui/RotatingLoader'
+import { cyrToTranslit } from '../../../../../utils/translit'
 
 const SearchResults = ({ setShowSearchPopup, query }) => {
-  const [me] = useContext(MeContext);
-  const [masterSearchData, setMasterSearchData] = useState(null);
-  const [salonSearchData, setSalonSearchData] = useState(null);
-  const [salonRentSearchData, setSalonRentSearchData] = useState(null);
-  const [brandSearchData, setBrandSearchData] = useState(null);
-  const [masterLoading, setMasterLoading] = useState(false);
-  const [salonLoading, setSalonLoading] = useState(false);
-  const [salonRentLoading, setSalonRentLoading] = useState(false);
-  const [brandLoading, setBrandLoading] = useState(false);
-  const [city] = useContext(CityContext);
+  const [masterSearchData, setMasterSearchData] = useState(null)
+  const [salonSearchData, setSalonSearchData] = useState(null)
+  const [salonRentSearchData, setSalonRentSearchData] = useState(null)
+  const [brandSearchData, setBrandSearchData] = useState(null)
+  const [masterLoading, setMasterLoading] = useState(false)
+  const [salonLoading, setSalonLoading] = useState(false)
+  const [salonRentLoading, setSalonRentLoading] = useState(false)
+  const [brandLoading, setBrandLoading] = useState(false)
+  const { city, me } = useAuthStore(getStoreData)
 
   const { refetch: refetchMastersSearch } = useQuery(masterSearchQuery, {
     variables: {
       variables: {
         input: {
-          query: (query && query.query) || "",
-          city: city ? city : "Москва",
+          query: (query && query.query) || '',
+          city: city ? city : 'Москва',
         },
       },
     },
     skip: true,
     notifyOnNetworkStatusChange: true,
-    onCompleted: (res) => {
-      setMasterLoading(false);
+    onCompleted: res => {
+      setMasterLoading(false)
       if (res) {
-        setMasterSearchData(res.masterSearch.connection.nodes.slice(0, 8));
+        setMasterSearchData(res.masterSearch.connection.nodes.slice(0, 8))
       }
     },
-  });
+  })
 
-  let cityInStorage;
-  if (typeof window !== "undefined") {
-    cityInStorage = localStorage.getItem("citySalon");
+  let cityInStorage
+  if (typeof window !== 'undefined') {
+    cityInStorage = localStorage.getItem('citySalon')
   }
   const querySearch = {
     ...EmptySearchQuery,
-    query: (query && query.query) || "",
+    query: (query && query.query) || '',
     lessor: false,
     city:
       me && me?.info && me?.info?.city
         ? me?.info?.city
         : cityInStorage
         ? cityInStorage
-        : "",
-  };
+        : '',
+  }
   const queryRentSearch = {
     ...EmptySearchQuery,
-    query: (query && query.query) || "",
+    query: (query && query.query) || '',
     lessor: true,
     city:
       me && me?.info && me?.info?.city
         ? me?.info?.city
         : cityInStorage
         ? cityInStorage
-        : "",
-  };
+        : '',
+  }
   const { refetch: refetchSalonsSearch } = useQuery(searchQuery, {
     variables: { input: querySearch },
     notifyOnNetworkStatusChange: true,
     skip: true,
-    onCompleted: (res) => {
-      setSalonLoading(false);
+    onCompleted: res => {
+      setSalonLoading(false)
       if (res?.salonSearch) {
-        setSalonSearchData(res.salonSearch.salonsConnection.nodes.slice(0, 8));
+        setSalonSearchData(res.salonSearch.salonsConnection.nodes.slice(0, 8))
       }
     },
-  });
+  })
 
   const { refetch: refetchSalonsRentSearch } = useQuery(searchQuery, {
     variables: { input: queryRentSearch },
     notifyOnNetworkStatusChange: true,
     skip: true,
-    onCompleted: (res) => {
-      setSalonRentLoading(false);
+    onCompleted: res => {
+      setSalonRentLoading(false)
       if (res?.salonSearch) {
         setSalonRentSearchData(
-          res.salonSearch.salonsConnection.nodes.slice(0, 8)
-        );
+          res.salonSearch.salonsConnection.nodes.slice(0, 8),
+        )
       }
     },
-  });
+  })
 
   const { refetch: refetchBrandsSearch } = useQuery(brandSearchQuery, {
     variables: {
-      query: (query && query.query) || "",
+      query: (query && query.query) || '',
     },
     skip: true,
     notifyOnNetworkStatusChange: true,
-    onCompleted: (res) => {
-      setBrandLoading(false);
+    onCompleted: res => {
+      setBrandLoading(false)
       if (res) {
-        setBrandSearchData(res.brandsSearch.connection.nodes.slice(0, 8));
+        setBrandSearchData(res.brandsSearch.connection.nodes.slice(0, 8))
       }
     },
-  });
+  })
 
   useEffect(() => {
-    setMasterLoading(true);
-    setBrandLoading(true);
+    setMasterLoading(true)
+    setBrandLoading(true)
 
     refetchMastersSearch({
       input: {
-        query: (query && query.query) || "",
+        query: (query && query.query) || '',
         cursor: null,
-        city: city ? city : "Москва",
+        city: city ? city : 'Москва',
       },
-    });
+    })
     refetchBrandsSearch({
       variables: {
-        query: (query && query.query) || "",
+        query: (query && query.query) || '',
         cursor: null,
       },
-    });
-  }, [query]);
+    })
+  }, [query])
 
   useEffect(() => {
-    setSalonLoading(true);
+    setSalonLoading(true)
     refetchSalonsSearch({
       variables: { input: querySearch },
-    });
-  }, [querySearch?.query, querySearch?.city]);
+    })
+  }, [querySearch?.query, querySearch?.city])
 
   useEffect(() => {
-    setSalonRentLoading(true);
+    setSalonRentLoading(true)
     refetchSalonsRentSearch({
       variables: { input: querySearch },
-    });
-  }, [queryRentSearch?.query, queryRentSearch?.city]);
+    })
+  }, [queryRentSearch?.query, queryRentSearch?.city])
 
   const clickItemHandler = () => {
-    setShowSearchPopup(false);
-  };
+    setShowSearchPopup(false)
+  }
 
   return (
     <MainContainer>
@@ -164,10 +156,10 @@ const SearchResults = ({ setShowSearchPopup, query }) => {
               <Title>Мастера</Title>
               <List>
                 {masterSearchData?.length && !masterLoading ? (
-                  masterSearchData.map((master) => (
+                  masterSearchData.map(master => (
                     <Link
                       href={`/${cyrToTranslit(
-                        master?.addressFull?.city || city
+                        master?.addressFull?.city || city,
                       )}/master/${master.id}`}
                       passHref
                     >
@@ -185,10 +177,10 @@ const SearchResults = ({ setShowSearchPopup, query }) => {
               <Title>Салоны</Title>
               <List>
                 {salonSearchData?.length && !salonLoading ? (
-                  salonSearchData.map((salon) => (
+                  salonSearchData.map(salon => (
                     <Link
                       href={`/${cyrToTranslit(
-                        salon?.salon?.address?.city || city
+                        salon?.salon?.address?.city || city,
                       )}/salon/${salon?.salon?.id}`}
                       passHref
                     >
@@ -206,10 +198,10 @@ const SearchResults = ({ setShowSearchPopup, query }) => {
               <Title>Аренда</Title>
               <List>
                 {salonRentSearchData?.length && !salonRentLoading ? (
-                  salonRentSearchData.map((salon) => (
+                  salonRentSearchData.map(salon => (
                     <Link
                       href={`/${cyrToTranslit(
-                        salon?.salon?.address?.city || city
+                        salon?.salon?.address?.city || city,
                       )}/rent/${salon?.salon?.id}`}
                       passHref
                     >
@@ -229,10 +221,10 @@ const SearchResults = ({ setShowSearchPopup, query }) => {
               <Title>Бренды</Title>
               <List>
                 {brandSearchData?.length && !brandLoading ? (
-                  brandSearchData.map((brand) => (
+                  brandSearchData.map(brand => (
                     <Link
                       href={`/${cyrToTranslit(
-                        brand?.addressFull?.city || city
+                        brand?.addressFull?.city || city,
                       )}/brand/${brand.id}`}
                       passHref
                     >
@@ -250,7 +242,7 @@ const SearchResults = ({ setShowSearchPopup, query }) => {
         )}
       </Wrapper>
     </MainContainer>
-  );
-};
+  )
+}
 
-export default SearchResults;
+export default SearchResults

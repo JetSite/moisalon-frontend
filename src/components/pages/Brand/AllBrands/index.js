@@ -1,14 +1,13 @@
-import React, { useContext } from "react";
-import { MainContainer } from "../../../../styles/common";
-import BrandsSearchResults from "../../../pages/MainPage/components/SearchMain/BrandsSearchResults";
-import SearchBlock from "../../../blocks/SearchBlock";
-import Line from "../../../pages/MainPage/components/Line";
-import MobileViewCards from "../../../pages/MainPage/components/MobileViewCards";
-import { CategoryImage, WrapBanner } from "./styles";
-import { WrapperResults } from "../../../pages/MainPage/components/SearchMain/styled";
-import { SearchMainQueryContext } from "../../../../searchContext";
-import { CSSTransition } from "react-transition-group";
-import { MobileHidden } from "../../../../styles/common";
+import React from 'react'
+import { MainContainer } from '../../../../styles/common'
+import BrandsSearchResults from '../../../pages/MainPage/components/SearchMain/BrandsSearchResults'
+import SearchBlock from '../../../blocks/SearchBlock'
+import Line from '../../../pages/MainPage/components/Line'
+import MobileViewCards from '../../../pages/MainPage/components/MobileViewCards'
+import { CategoryImage, WrapBanner } from './styles'
+import { WrapperResults } from '../../../pages/MainPage/components/SearchMain/styled'
+import { CSSTransition } from 'react-transition-group'
+import { MobileHidden } from '../../../../styles/common'
 
 const AllBrandsPage = ({
   brandsSearch,
@@ -16,7 +15,7 @@ const AllBrandsPage = ({
   totalMasters,
   totalSalons,
 }) => {
-  const [query] = useContext(SearchMainQueryContext);
+  const query = { query: '' } //TODO: query
 
   return (
     <>
@@ -45,7 +44,7 @@ const AllBrandsPage = ({
         </WrapperResults>
       </MainContainer>
     </>
-  );
-};
+  )
+}
 
-export default AllBrandsPage;
+export default AllBrandsPage

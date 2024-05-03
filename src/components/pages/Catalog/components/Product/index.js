@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { lighten } from 'polished'
 import Link from 'next/link'
@@ -12,9 +12,10 @@ import { laptopBreakpoint, red } from '../../../../../styles/variables'
 import { Skeleton } from '@material-ui/lab'
 import { PHOTO_URL } from '../../../../../variables'
 import { cyrToTranslit } from '../../../../../utils/translit'
-import { CityContext } from '../../../../../searchContext'
 import FastBuyPopup from '../../../../ui/FastBuyPopup'
 import HeartFullFill from '../../../MainPage/components/Header/icons/HeartFullFill'
+import { getStoreData } from 'src/store/utils'
+import useAuthStore from 'src/store/authStore'
 
 const Wrapper = styled.div`
   width: 175px;
@@ -299,7 +300,7 @@ const Product = ({
   brand,
 }) => {
   const router = useRouter()
-  const [city] = useContext(CityContext)
+  const { city } = useAuthStore(getStoreData)
   const [openBuyPopup, setOpenBuyPopup] = useState(false)
 
   const newItem = cart?.find(el => el?.product?.id === item.id)

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import Head from 'next/head'
 import { useQuery } from '@apollo/client'
 import { getCart } from '../../../_graphql-legacy/cart/getCart'
@@ -7,8 +7,6 @@ import Catalog from '../Catalog'
 import Header from './components/Header'
 import { Wrapper, NoProducts } from './styles'
 // import FilterCatalog from "../../ui/FilterCatalog";
-import { ProductsContext } from '../../../searchContext'
-import { useSearchHistory } from '../../../hooks/useSearchHistory'
 import useCheckMobileDevice from '../../../hooks/useCheckMobileDevice'
 
 const BeautyFreeShopPage = ({
@@ -25,7 +23,6 @@ const BeautyFreeShopPage = ({
   const [fetchMoreLoading, setFetchMoreLoading] = useState(false)
   const [refetchLoading, setRefetchLoading] = useState(false)
   const [selectedProduct, setSelectedProduct] = useState('Все категории')
-  const [productState, setProductsState] = useContext(ProductsContext)
 
   const isMobile = useCheckMobileDevice()
 

@@ -1,66 +1,63 @@
-import { useState, useContext, useEffect, useCallback, useRef } from "react";
-import { useRouter } from "next/router";
-import {
-  SearchMainQueryContext,
-  CategoryPageQueryContext,
-  MeContext,
-} from "../../../../../searchContext";
-import Tags from "../../../../ui/Tags";
-import { Input, Wrapper, InputWrap } from "./styled";
+import { useState, useEffect, useCallback, useRef } from 'react'
+import { useRouter } from 'next/router'
+import Tags from '../../../../ui/Tags/index.tsx'
+import { Input, Wrapper, InputWrap } from './styled'
+import { getStoreData } from 'src/store/utils.js'
+import useAuthStore from 'src/store/authStore.js'
 
 const SearchMain = ({ setShowSearchPopup }) => {
-  const router = useRouter();
-  const textInput = useRef(null);
-  const [me] = useContext(MeContext);
-  const [inputValue, setInputValue] = useState("");
+  const router = useRouter()
+  const textInput = useRef(null)
+  const { city } = useAuthStore(getStoreData)
+  const [inputValue, setInputValue] = useState('')
 
-  const tagsSwitch = (url) => {
-    const splitUrl = url.split("/");
+  const tagsSwitch = url => {
+    const splitUrl = url.split('/')
     switch (splitUrl[1]) {
-      case "master":
-        return ["Колорист", "Бровист", "Макияж", "Пилинг", "Татуаж"];
-      case "salon":
-        return ["Хаммам", "Солярий", "Окрашивание", "Тату", "Массаж"];
-      case "brand":
-        return ["ESTEL", "Волосы", "Бальзам", "Краска", "Лак"];
-      case "catalog":
-        return ["Лечение", "Шампунь", "Краска", "Ногти", "Кожа"];
+      case 'master':
+        return ['Колорист', 'Бровист', 'Макияж', 'Пилинг', 'Татуаж']
+      case 'salon':
+        return ['Хаммам', 'Солярий', 'Окрашивание', 'Тату', 'Массаж']
+      case 'brand':
+        return ['ESTEL', 'Волосы', 'Бальзам', 'Краска', 'Лак']
+      case 'catalog':
+        return ['Лечение', 'Шампунь', 'Краска', 'Ногти', 'Кожа']
       default:
-        return ["стрижка", "маникюр", "спа-салон", "L'OREAL", "барбер"];
+        return ['стрижка', 'маникюр', 'спа-салон', "L'OREAL", 'барбер']
     }
-  };
+  }
 
-  const placeholderSwitch = (url) => {
-    const splitUrl = url.split("/");
+  const placeholderSwitch = url => {
+    const splitUrl = url.split('/')
     switch (splitUrl[1]) {
-      case "master":
-        return "Найти своего мастера";
-      case "salon":
-        return "Найти свой салон";
-      case "brand":
-        return "Найти свой бренд";
-      case "catalog":
-        return "Найти товар";
+      case 'master':
+        return 'Найти своего мастера'
+      case 'salon':
+        return 'Найти свой салон'
+      case 'brand':
+        return 'Найти свой бренд'
+      case 'catalog':
+        return 'Найти товар'
       default:
-        return "Найти услугу / специалиста / косметику";
+        return 'Найти услугу / специалиста / косметику'
     }
-  };
+  }
 
   useEffect(() => {
-    if (router.pathname === "/" || router.pathname === "/[city]") {
-      setInputValue("");
-      setQuery("");
+    if (router.pathname === '/' || router.pathname === '/[city]') {
+      setInputValue('')
+      setQuery('')
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
-    if (router.query.q == "search") {
-      textInput.current.focus();
+    if (router.query.q == 'search') {
+      textInput.current.focus()
     }
-  }, [router.query.q]);
+  }, [router.query.q])
 
   useEffect(() => {
-    if (router.query.q || router.query.q != "search") {
+    if (router.query.q || router.query.q != 'search') {
       queryObject = {
         query: router.query.q,
         city:
@@ -68,51 +65,49 @@ const SearchMain = ({ setShowSearchPopup }) => {
             ? me?.info?.city
             : cityInStorage
             ? cityInStorage
-            : "",
-      };
-      setInputValue(router.query.q);
-      setValueQuery(queryObject);
+            : '',
+      }
+      setInputValue(router.query.q)
+      setValueQuery(queryObject)
 
       updateQuery({
         ...queryObject,
-      });
+      })
     }
 
     return () => {
-      setInputValue("");
-    };
-  }, []);
+      setInputValue('')
+    }
+  }, [])
 
-  let cityInStorage;
+  let cityInStorage
 
-  if (typeof window !== "undefined") {
-    cityInStorage = localStorage.getItem("citySalon");
+  if (typeof window !== 'undefined') {
+    cityInStorage = localStorage.getItem('citySalon')
   }
 
-  const [query, setQuery] = useContext(SearchMainQueryContext);
-  const [categoryPageQuery, setCategoryPageQuery] = useContext(
-    CategoryPageQueryContext
-  );
-  const [valueQuery, setValueQuery] = useState(query.query || "");
+  const query = { query: '' } //TODO: query
+  const setCategoryPageQuery = e => {} //TODO: query
+  const [valueQuery, setValueQuery] = useState(query.query || '')
 
-  let queryObject;
+  let queryObject
 
   const updateQuery = useCallback(
-    (updatedQuery) => {
-      setQuery(updatedQuery);
-      setCategoryPageQuery({ query: "" });
+    updatedQuery => {
+      setQuery(updatedQuery)
+      setCategoryPageQuery({ query: '' })
     },
-    [setQuery, setCategoryPageQuery]
-  );
+    [setQuery, setCategoryPageQuery],
+  )
 
   useEffect(() => {
     if (!valueQuery) {
-      updateQuery({ ...query, query: "" });
+      updateQuery({ ...query, query: '' })
     }
-  }, [valueQuery, updateQuery]);
+  }, [valueQuery, updateQuery])
 
-  const handleSearch = (e) => {
-    setInputValue(e.target.value);
+  const handleSearch = e => {
+    setInputValue(e.target.value)
     queryObject = {
       query: e.target.value,
       city:
@@ -120,35 +115,35 @@ const SearchMain = ({ setShowSearchPopup }) => {
           ? me?.info?.city
           : cityInStorage
           ? cityInStorage
-          : "",
-    };
-    setValueQuery(queryObject);
+          : '',
+    }
+    setValueQuery(queryObject)
 
     updateQuery({
       ...queryObject,
-    });
-  };
+    })
+  }
 
-  const queryTag = (item) => {
-    setInputValue(item);
+  const queryTag = item => {
+    setInputValue(item)
     setQuery({
       query: item,
       city: query.city,
-    });
-    setCategoryPageQuery({ query: "" });
-  };
+    })
+    setCategoryPageQuery({ query: '' })
+  }
 
-  const onEnterHandler = (e) => {
-    if (e.key === "Enter" && inputValue != "") {
-      setQuery("");
-      setShowSearchPopup(false);
-      e.target.blur();
+  const onEnterHandler = e => {
+    if (e.key === 'Enter' && inputValue != '') {
+      setQuery('')
+      setShowSearchPopup(false)
+      e.target.blur()
       window.scrollTo({
         top: 500,
-        behavior: "smooth",
-      });
+        behavior: 'smooth',
+      })
     }
-  };
+  }
 
   return (
     <Wrapper>
@@ -156,7 +151,7 @@ const SearchMain = ({ setShowSearchPopup }) => {
         <Input
           placeholder={placeholderSwitch(router.pathname)}
           value={
-            router.pathname === "/" || router.pathname === "/[city]"
+            router.pathname === '/' || router.pathname === '/[city]'
               ? inputValue
               : inputValue || query.query
           }
@@ -168,7 +163,7 @@ const SearchMain = ({ setShowSearchPopup }) => {
       </InputWrap>
       <Tags tags={tagsSwitch(router.pathname)} queryTag={queryTag} />
     </Wrapper>
-  );
-};
+  )
+}
 
-export default SearchMain;
+export default SearchMain

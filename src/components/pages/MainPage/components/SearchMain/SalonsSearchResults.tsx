@@ -1,5 +1,4 @@
 import React, {
-  useContext,
   useCallback,
   useState,
   useEffect,
@@ -9,12 +8,6 @@ import React, {
 } from 'react'
 import { useQuery } from '@apollo/client'
 import Link from 'next/link'
-import {
-  SearchMainQueryContext,
-  EmptySearchQuery,
-  CityContext,
-} from '../../../../../searchContext'
-import { searchQuery } from '../../../../../_graphql-legacy/search/searchQuery'
 import { MobileVisible, MobileHidden } from '../../../../../styles/common'
 import { WrapperItemsSalons, Title, SalonCardWrapper } from './styled'
 import SalonCard from '../../../../blocks/SalonCard'
@@ -26,9 +19,10 @@ import { pluralize } from '../../../../../utils/pluralize'
 import SalonMap from '../../../Salon/SalonMap'
 import { cyrToTranslit } from '../../../../../utils/translit'
 import RentFilter from '../../../Rent/RentFilter'
-import { useSearchHistory } from '../../../../../hooks/useSearchHistory'
 import useCheckMobileDevice from '../../../../../hooks/useCheckMobileDevice'
 import { useRouter } from 'next/router'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 
 interface Props {
   me: any
@@ -53,12 +47,12 @@ const SalonsSearchResults: FC<Props> = ({
   filterOpen,
   cityData = '',
 }) => {
-  const [query] = useContext(SearchMainQueryContext)
+  const query = { query: '' } //TODO: query
   const [salonSearchData, setSalonSearchData] = useState(salonSearch)
   const [loading, setLoading] = useState<boolean>(false)
   const [filters, setFilters] = useState<null | Object>(null)
   const [fetchMoreLoading, setFetchMoreLoading] = useState<boolean>(false)
-  const [city] = useContext(CityContext)
+  const { city } = useAuthStore(getStoreData)
   const [sortProperty, setSortProperty] = useState<
     keyof typeof typesFilter | null
   >(null)
@@ -69,12 +63,12 @@ const SalonsSearchResults: FC<Props> = ({
 
   const isMobile = useCheckMobileDevice()
 
-  const { setSearchData, setChosenItemId } = useSearchHistory(
-    salonSearchData,
-    setSalonSearchData,
-    'salon',
-    isMobile ? -10 : -120,
-  )
+  // const { setSearchData, setChosenItemId } = useSearchHistory(
+  //   salonSearchData,
+  //   setSalonSearchData,
+  //   'salon',
+  //   isMobile ? -10 : -120,
+  // )
 
   let cityInStorage
   if (typeof window !== 'undefined') {

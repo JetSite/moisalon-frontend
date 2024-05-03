@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { MainContainer } from '../../../styles/common'
-import Search from '../../ui/Search'
 import { Wrapper } from './styled'
+import Search from 'src/components/ui/Search'
 
 interface Props {
   title?: string

@@ -98,7 +98,7 @@ const SalonCard = ({
           <Info>
             <SalonInfo>
               <Activities>
-                {selectedGroupNames(salon?.activities, catalog, ', ')}
+                {/* {selectedGroupNames(salon?.activities, catalog, ', ')} */}
               </Activities>
             </SalonInfo>
             {salon?.address?.full ? (

@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { MainContainer } from '../../../../styles/common'
 import {
   Title,
@@ -18,7 +18,8 @@ import {
   ButtonPrev,
   NavigationWrapper,
 } from '../../../../styles/sliderBlocks'
-import { CityContext } from '../../../../searchContext'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 import Education from '../../../blocks/Education'
 
 SwiperCore.use([Navigation])
@@ -32,7 +33,7 @@ const EducationsFavorites = ({
 }) => {
   const navigationPrevRef = useRef(null)
   const navigationNextRef = useRef(null)
-  const [city] = useContext(CityContext)
+  const { city } = useAuthStore(getStoreData)
 
   const onBeforeInit = Swiper => {
     if (typeof Swiper.params.navigation !== 'boolean') {

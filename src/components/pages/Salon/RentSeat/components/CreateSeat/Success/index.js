@@ -1,6 +1,6 @@
-import { useContext, useEffect } from "react";
-import Link from "next/link";
-import { useRouter } from "next/router";
+import { useEffect } from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 import {
   Wrapper,
   TopBlock,
@@ -18,9 +18,10 @@ import {
   BottomText,
   AddWorkplaceButton,
   BackLink,
-} from "./styles";
-import { cyrToTranslit } from "../../../../../../../utils/translit";
-import { CityContext } from "../../../../../../../searchContext";
+} from './styles'
+import { cyrToTranslit } from '../../../../../../../utils/translit'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 
 const Success = ({
   salon,
@@ -34,16 +35,16 @@ const Success = ({
   roomSeatId,
   activitiesCatalog,
 }) => {
-  const router = useRouter();
-  const [city] = useContext(CityContext);
+  const router = useRouter()
+  const { city } = useAuthStore(getStoreData)
 
   const seatActivity = activitiesCatalog.filter(
-    (activity) => activity.id === seatSalon?.activities[0]
-  );
+    activity => activity.id === seatSalon?.activities[0],
+  )
 
   useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-  }, []);
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
+  }, [])
 
   const priceNumber = seatSalon?.rentalPricing?.hour
     ? seatSalon?.rentalPricing?.hour
@@ -53,38 +54,38 @@ const Success = ({
     ? seatSalon?.rentalPricing?.week
     : seatSalon?.rentalPricing?.month
     ? seatSalon?.rentalPricing?.month
-    : null;
+    : null
   const priceText = seatSalon?.rentalPricing?.hour
-    ? "час"
+    ? 'час'
     : seatSalon?.rentalPricing?.day
-    ? "день"
+    ? 'день'
     : seatSalon?.rentalPricing?.week
-    ? "нед."
+    ? 'нед.'
     : seatSalon?.rentalPricing?.month
-    ? "мес."
-    : null;
+    ? 'мес.'
+    : null
 
   const addButtonHandler = () => {
-    setSuccess(false);
-    setShowAdditionalInfo(true);
-  };
+    setSuccess(false)
+    setShowAdditionalInfo(true)
+  }
 
   const editButtonHandler = () => {
-    setSuccess(false);
-    setShowAdditionalInfo(false);
-  };
+    setSuccess(false)
+    setShowAdditionalInfo(false)
+  }
 
   const addNewWorkplaceButtonHandler = () => {
-    setSeatSalon(null);
-    setRoom(null);
-    setRoomSeatId(null);
-    resetRentalRate();
-    editButtonHandler();
-  };
+    setSeatSalon(null)
+    setRoom(null)
+    setRoomSeatId(null)
+    resetRentalRate()
+    editButtonHandler()
+  }
 
   const backHandler = () => {
-    router.push("/masterCabinet");
-  };
+    router.push('/masterCabinet')
+  }
 
   return (
     <Wrapper>
@@ -144,7 +145,7 @@ const Success = ({
         <BackLink onClick={backHandler}>Вернуться в личный кабинет</BackLink>
       </BottomBlock>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default Success;
+export default Success

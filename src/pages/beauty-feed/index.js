@@ -1,4 +1,4 @@
-import { addApolloState, initializeApollo } from '../../apollo-client'
+import { addApolloState, initializeApollo } from '../../api/apollo-client'
 import { getCategories } from '../../_graphql-legacy/advices/getCategories'
 import { getAll } from '../../_graphql-legacy/advices/getAll'
 import { getAdvices } from '../../_graphql-legacy/advices/getAdvices'
