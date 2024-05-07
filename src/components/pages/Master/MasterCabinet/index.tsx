@@ -27,6 +27,13 @@ import { IID } from 'src/types/common'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 
+export interface IMasterCabinetTab {
+  title: string
+  value: string
+  icon?: string
+  quantity?: number
+}
+
 interface Props {
   refetch: IRefetch
   me: IMe
@@ -34,7 +41,7 @@ interface Props {
 
 const MasterCabinet: FC = () => {
   const { me } = useAuthStore(getStoreData)
-  const [photoId, setPhotoId] = useState<IID>(me?.info?.avatar)
+  const [photoId, setPhotoId] = useState<IID>(me?.info?.avatar?.id || '')
   const [noPhotoError, setNoPhotoError] = useState<boolean>(false)
   const [, setErrors] = useState<string[] | null>(null)
   const [, setErrorPopupOpen] = useState<boolean | null>(null)
@@ -77,8 +84,6 @@ const MasterCabinet: FC = () => {
       setActiveTab(router?.query?.tab as string)
     }
   }, [router?.query?.tab])
-
-  console.log(activeTab)
 
   return (
     <>
@@ -159,7 +164,7 @@ const MasterCabinet: FC = () => {
             photo={
               me?.info?.avatar
                 ? {
-                    url: `${PHOTO_URL}${me?.info?.avatar}/original`,
+                    url: `${PHOTO_URL}${me?.info?.avatar.url}`,
                   }
                 : { url: '/empty-photo.svg' }
             }

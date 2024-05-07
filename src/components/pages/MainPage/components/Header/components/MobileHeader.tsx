@@ -123,7 +123,7 @@ export const MobileHeader: FC<Props> = ({
               <ProfilePhoto
                 src={
                   me?.info?.avatar
-                    ? `${PHOTO_URL}${me?.info?.avatar}/original`
+                    ? `${PHOTO_URL}${me?.info?.avatar.url}`
                     : '/empty-photo.svg'
                 }
               />

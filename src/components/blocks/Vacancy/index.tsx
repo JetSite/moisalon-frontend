@@ -44,7 +44,6 @@ const Vacancy: FC<Props> = ({
   const removeVacancyHandler = (vacancyId: IID) => {
     removeVacancy()
   }
-  console.log(photo)
 
   return (
     <VacancyWrap>

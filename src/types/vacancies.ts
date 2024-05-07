@@ -1,4 +1,4 @@
-import { ICoverImage } from '.'
+import { IPhoto } from '.'
 import { IID } from './common'
 
 export interface IVacancyType {
@@ -14,7 +14,7 @@ export interface IVacancy {
   fullDescription: string
   conditions: string
   requirements: string
-  cover: ICoverImage[]
+  cover: IPhoto[]
   deleted: boolean
   vacancy_type: IVacancyType
   brand: { id: IID; brandName: string } | null

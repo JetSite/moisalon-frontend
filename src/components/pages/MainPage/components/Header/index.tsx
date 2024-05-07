@@ -336,7 +336,7 @@ const Header = ({ loading = false }) => {
                 <ProfilePhoto
                   src={
                     me?.info?.avatar
-                      ? `${PHOTO_URL}${me?.info?.avatar}/original`
+                      ? `${PHOTO_URL}${me?.info?.avatar.url}`
                       : '/empty-photo.svg'
                   }
                 />

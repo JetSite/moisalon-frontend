@@ -21,11 +21,29 @@ import { cyrToTranslit } from '../../../utils/translit'
 import { PHOTO_URL } from '../../../api/variables'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
+import { Dispatch, FC, SetStateAction } from 'react'
+import { ITab } from 'src/components/ui/TabsSlider'
+import { IMasterCabinetTab } from 'src/components/pages/Master/MasterCabinet'
+import { IMe } from 'src/types/me'
 
-const CabinetHeaderMobile = ({ me, setActiveTab, tabs, toggle, setToggle }) => {
-  const salons = me?.salons
-  const master = me?.master
-  const brands = me?.userBrands
+interface Props {
+  setActiveTab: Dispatch<SetStateAction<string>>
+  tabs: IMasterCabinetTab[]
+  toggle: boolean
+  setToggle: Dispatch<SetStateAction<boolean>>
+  me: IMe | null
+}
+
+const CabinetHeaderMobile: FC<Props> = ({
+  me,
+  setActiveTab,
+  tabs,
+  toggle,
+  setToggle,
+}) => {
+  const salons = me?.owner?.salons
+  const master = me?.owner?.masters[0]
+  const brands = me?.owner?.brand
   const { city } = useAuthStore(getStoreData)
 
   return (
@@ -34,12 +52,12 @@ const CabinetHeaderMobile = ({ me, setActiveTab, tabs, toggle, setToggle }) => {
         <Logo
           url={
             me?.info?.avatar
-              ? `${PHOTO_URL}${me?.info?.avatar}/original`
+              ? `${PHOTO_URL}${me?.info?.avatar.url}`
               : '/empty-photo.svg'
           }
         />
         <Text>
-          <Title>{me?.info?.displayName}</Title>
+          <Title>{me?.info?.username}</Title>
           <Subtitle>Кабинет пользователя</Subtitle>
           {salons?.length || master?.id || brands?.length ? (
             <ProfilesButton toggle={toggle} onClick={() => setToggle(!toggle)}>
@@ -48,52 +66,57 @@ const CabinetHeaderMobile = ({ me, setActiveTab, tabs, toggle, setToggle }) => {
           ) : null}
         </Text>
       </Info>
-      {toggle ? (
+      {master && toggle ? (
         <Wrap>
-          {master?.id ? (
+          {master.id ? (
             <Link
-              href={`/${cyrToTranslit(
-                master?.addressFull?.city || city,
-              )}/master/${master?.seo?.slug || master?.id}`}
+              href={`/${cyrToTranslit(master.city.cityName || city)}/master/${
+                master?.id
+              }`}
             >
               <Item>
                 <Container>
                   <Avatar
                     alt="avatar"
-                    src={master?.photo?.url || 'empty-photo.svg'}
+                    src={
+                      PHOTO_URL + master?.masterPhoto.url || 'empty-photo.svg'
+                    }
                   />
                   <Content>
-                    <Name>{master?.name}</Name>
+                    <Name>{master?.masterName}</Name>
                     <Type>Профиль мастера</Type>
                   </Content>
                 </Container>
               </Item>
             </Link>
           ) : null}
-          {salons?.length
+          {salons && salons.length
             ? salons.map(item => (
                 <div key={item.id}>
                   <Link
                     href={
-                      item?.lessor
+                      item.salonWorkplacesCount
                         ? `/${cyrToTranslit(
-                            item?.address?.city || city,
-                          )}/rent/${item?.seo?.slug || item?.id}`
+                            item.cities.cityName || city,
+                          )}/rent/${item?.id}`
                         : `/${cyrToTranslit(
-                            item?.address?.city || city,
-                          )}/salon/${item?.seo?.slug || item?.id}`
+                            item.cities.cityName || city,
+                          )}/salon/${item?.id}`
                     }
                   >
                     <Item>
                       <Container>
                         <Avatar
                           alt="avatar"
-                          src={item?.logo?.url || 'empty-photo.svg'}
+                          src={
+                            PHOTO_URL + item.salonCover?.url ||
+                            'empty-photo.svg'
+                          }
                         />
                         <Content>
-                          <Name>{item?.name}</Name>
+                          <Name>{item?.salonName}</Name>
                           <Type>
-                            {item?.lessor
+                            {item?.salonWorkplacesCount
                               ? 'Профиль салона арендодателя'
                               : 'Профиль салона'}
                           </Type>
@@ -104,26 +127,26 @@ const CabinetHeaderMobile = ({ me, setActiveTab, tabs, toggle, setToggle }) => {
                 </div>
               ))
             : null}
-          {brands?.length
+          {brands && brands?.length
             ? brands.map(item => (
                 <div key={item.id}>
                   <Link
                     href={`/${cyrToTranslit(
-                      item?.addressFull?.city || city,
-                    )}/brand/${item?.seo?.slug || item?.id}`}
+                      item.city.cityName || city,
+                    )}/brand/${item.id}`}
                   >
                     <Item>
                       <Container>
                         <Avatar
                           alt="avatar"
                           src={
-                            item?.logoId
-                              ? `${PHOTO_URL}${item?.logoId}/original`
+                            item.brandLogo
+                              ? `${PHOTO_URL}${item.brandLogo.url}`
                               : 'empty-photo.svg'
                           }
                         />
                         <Content>
-                          <Name>{item?.name}</Name>
+                          <Name>{item.brandName}</Name>
                           <Type>Профиль бренда</Type>
                         </Content>
                       </Container>

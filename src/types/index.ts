@@ -18,15 +18,6 @@ export interface IMetaData {
   pagination: Partial<IPagination>
 }
 
-export interface ICoverImage {
-  id: IID
-  name: string
-  alternativeText: string | null
-  formats: any // Замените на конкретный тип, если есть
-  url: string
-  previewUrl?: string // Если есть предпросмотр
-}
-
 export interface ISalonLogo {
   id: IID
   name: string
@@ -36,13 +27,10 @@ export interface ISalonLogo {
   previewUrl?: string // Если есть предпросмотр
 }
 
-export interface ISalonPhotos {
+export interface IPhoto {
   id: IID
   name: string
-  alternativeText: string | null
-  formats: any // Замените на конкретный тип, если есть
   url: string
-  previewUrl?: string // Если есть предпросмотр
 }
 export interface ISalonPhones {
   phoneNumber: string
