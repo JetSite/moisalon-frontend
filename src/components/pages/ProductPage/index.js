@@ -32,7 +32,7 @@ import {
 import Stars from '../../ui/Stars'
 import { addToCartB2cMutation } from '../../../_graphql-legacy/cart/addToB2cCart'
 import { removeItemB2cMutation } from '../../../_graphql-legacy/cart/removeItemB2c'
-import { PHOTO_URL } from '../../../variables'
+import { PHOTO_URL } from '../../../api/variables'
 import Rating from '../../ui/Rating'
 import BackButton from '../../ui/BackButton'
 import Reviews from '../../blocks/Reviews'

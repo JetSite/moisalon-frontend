@@ -9,7 +9,7 @@ import {
 } from '../../styles'
 import { getFullAdvice } from '../../../../../_graphql-legacy/advices/getFullAdvice'
 import BackButton from '../../../../ui/BackButton'
-import { PHOTO_URL } from '../../../../../variables'
+import { PHOTO_URL } from '../../../../../api/variables'
 
 const FullAdvice = ({ adviceClicked, backHandler }) => {
   const { data: fullAdviceData, loading } = useQuery(getFullAdvice, {

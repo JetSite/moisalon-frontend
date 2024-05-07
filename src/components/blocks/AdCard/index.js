@@ -22,7 +22,7 @@ import Share from '../../ui/Share'
 import { useMedia } from 'use-media'
 import HeartFullFill from '../../pages/MainPage/components/Header/icons/HeartFullFill'
 import { red } from '../../../styles/variables'
-import { PHOTO_URL } from '../../../variables'
+import { PHOTO_URL } from '../../../api/variables'
 
 const AdCard = ({ item, loading, shareLink }) => {
   const mobileMedia = useMedia({ maxWidth: 768 })

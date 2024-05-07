@@ -17,7 +17,7 @@ import 'moment/locale/ru'
 import Button from '../../../../ui/Button'
 import Link from 'next/link'
 import { cyrToTranslit } from '../../../../../utils/translit'
-import { PHOTO_URL } from '../../../../../variables'
+import { PHOTO_URL } from '../../../../../api/variables'
 import { getStoreData } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
 

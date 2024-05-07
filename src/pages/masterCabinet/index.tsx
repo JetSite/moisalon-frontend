@@ -1,7 +1,7 @@
 import { useLazyQuery, useQuery } from '@apollo/client'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
-import { getMe } from 'src/graphql/me/queries/getMe'
+import { getMe } from 'src/api/graphql/me/queries/getMe'
 import { getCookie } from 'cookies-next'
 import { OptionsType } from 'cookies-next/lib/types'
 import { authConfig } from 'src/api/authConfig'
@@ -14,37 +14,19 @@ interface Props {
 }
 
 const CabinetPage: FC<Props> = ({ accessToken }) => {
-  const { me } = useAuthStore(getStoreData)
+  const { me, loading } = useAuthStore(getStoreData)
   const { setMe } = useAuthStore(getStoreEvent)
-  const { refetch, loading } = useQuery(getMe, {
-    fetchPolicy: 'network-only',
-    skip: !!me && !accessToken,
-    onCompleted: res => {
-      setMe({
-        info: res?.me,
-      })
-    },
-  })
 
-  console.log(me)
+  if (loading || !me) return <CreatePageSkeleton />
 
-  // useEffect(() => {
-  //   if (!loading && me === null) {
-  //     refetch()
-  //   }
-  // }, [])
-
-  if (loading) return <CreatePageSkeleton />
-
-  // return !me?.info?.name ||
-  //   !me?.info?.defaultCity ||
-  //   !me?.info?.phoneNumber ||
-  //   !me?.info?.email ? (
-  //   <Cabinet refetch={refetch} currentMe={me} />
-  // ) : (
-  //   <MasterCabinet currentMe={me} refetch={refetch} />
-  // )
-  return !!me && <MasterCabinet currentMe={me} refetch={refetch} />
+  return !me.info?.username ||
+    !me.info?.city?.cityName ||
+    !me.info?.phone ||
+    !me.info?.email ? (
+    <Cabinet />
+  ) : (
+    <MasterCabinet />
+  )
 }
 
 export async function getServerSideProps(context: OptionsType) {

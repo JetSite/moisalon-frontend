@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../styles/variables'
 import Button from '../../ui/Button'
-import { PHOTO_URL } from '../../../variables'
+import { PHOTO_URL } from '../../../api/variables'
 
 const BannerWrap = styled.div`
   width: 375px;

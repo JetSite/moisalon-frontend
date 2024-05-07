@@ -19,19 +19,22 @@ import CabinetEvents from '../../../blocks/Cabinet/components/CabinetEvents'
 import CabinetVacancies from '../../../blocks/Cabinet/components/CabinetVacancies'
 import CabinetPriority from '../../../blocks/Cabinet/components/CabinetPriority'
 import CabinetBanner from '../../../blocks/Cabinet/components/CabinetBanner'
-import { PHOTO_URL } from '../../../../variables'
+import { PHOTO_URL } from '../../../../api/variables'
 import { useChat } from '../../../../chatContext'
 import { IRefetch } from 'src/api/types'
 import { IMe } from 'src/types/me'
 import { IID } from 'src/types/common'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 
 interface Props {
   refetch: IRefetch
-  currentMe: IMe
+  me: IMe
 }
 
-const MasterCabinet: FC<Props> = ({ refetch, currentMe }) => {
-  const [photoId, setPhotoId] = useState<IID>(currentMe?.info?.avatar)
+const MasterCabinet: FC = () => {
+  const { me } = useAuthStore(getStoreData)
+  const [photoId, setPhotoId] = useState<IID>(me?.info?.avatar)
   const [noPhotoError, setNoPhotoError] = useState<boolean>(false)
   const [, setErrors] = useState<string[] | null>(null)
   const [, setErrorPopupOpen] = useState<boolean | null>(null)
@@ -44,8 +47,8 @@ const MasterCabinet: FC<Props> = ({ refetch, currentMe }) => {
       setErrors(errorMessages)
       setErrorPopupOpen(true)
     },
-    onCompleted: async () => {
-      await refetch()
+    onCompleted: data => {
+      console.log(data)
     },
   })
 
@@ -55,10 +58,10 @@ const MasterCabinet: FC<Props> = ({ refetch, currentMe }) => {
       mutate({
         variables: {
           input: {
-            defaultCity: currentMe?.info?.defaultCity,
-            displayName: currentMe?.info?.displayName,
-            email: currentMe?.info?.email,
-            phoneNumber: currentMe?.info?.phoneNumber,
+            defaultCity: me?.info?.city.cityName,
+            displayName: me?.info?.username,
+            email: me?.info?.email,
+            phoneNumber: me?.info?.phone,
             avatar: id,
           },
         },
@@ -75,19 +78,21 @@ const MasterCabinet: FC<Props> = ({ refetch, currentMe }) => {
     }
   }, [router?.query?.tab])
 
+  console.log(activeTab)
+
   return (
     <>
       <Header />
       <MainContainer>
         <ProfileCabinetHeaderMobile
-          me={currentMe}
+          me={me}
           tabs={[
             { title: 'Мои данные', value: 'about', icon: '/icon-about.svg' },
             {
               title: 'Мои заказы',
               value: 'orders',
               icon: '/icon-orders.svg',
-              quantity: currentMe?.orders?.length,
+              quantity: me?.orders?.length,
             },
             {
               title: 'Моё избранное',
@@ -152,9 +157,9 @@ const MasterCabinet: FC<Props> = ({ refetch, currentMe }) => {
             noPhotoError={noPhotoError}
             setNoPhotoError={setNoPhotoError}
             photo={
-              currentMe?.info?.avatar
+              me?.info?.avatar
                 ? {
-                    url: `${PHOTO_URL}${currentMe?.info?.avatar}/original`,
+                    url: `${PHOTO_URL}${me?.info?.avatar}/original`,
                   }
                 : { url: '/empty-photo.svg' }
             }
@@ -163,30 +168,28 @@ const MasterCabinet: FC<Props> = ({ refetch, currentMe }) => {
             <CabinetForm
               setNoPhotoError={setNoPhotoError}
               photoId={photoId}
-              refetch={refetch}
               auth
-              currentMe={currentMe}
             />
           ) : activeTab === 'orders' ? (
-            <CabinetOrders me={currentMe} />
+            <CabinetOrders me={me} />
           ) : activeTab === 'profiles' ? (
-            <CabinetProfiles me={currentMe} />
+            <CabinetProfiles />
           ) : activeTab === 'chat' ? (
             <CabinetChat />
           ) : activeTab === 'reviews' ? (
-            <CabinetListReviews me={currentMe} />
+            <CabinetListReviews />
           ) : activeTab === 'favorits' ? (
             <CabinetFavorits />
           ) : activeTab === 'sales' ? (
-            <CabinetSales me={currentMe} />
+            <CabinetSales me={me} />
           ) : activeTab === 'educations' ? (
-            <CabinetEducations me={currentMe} />
+            <CabinetEducations me={me} />
           ) : activeTab === 'vacancies' ? (
-            <CabinetVacancies me={currentMe} />
+            <CabinetVacancies />
           ) : activeTab === 'events' ? (
-            <CabinetEvents me={currentMe} />
+            <CabinetEvents me={me} />
           ) : activeTab === 'priority' ? (
-            <CabinetPriority me={currentMe} />
+            <CabinetPriority me={me} />
           ) : activeTab === 'banner' ? (
             <CabinetBanner />
           ) : null}

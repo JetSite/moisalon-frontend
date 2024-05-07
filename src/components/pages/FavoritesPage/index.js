@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../styles/variables'
 import BrandsFavorites from './BrandsFavorites'
 import SalonsFavorites from './SalonsFavorites'
-import MastersFavorites from './MastersFavorites'
+import MastersFavorites from './MastersFavorites/index.tsx'
 import GoodsFavorites from './GoodsFavorites'
 import EducationsFavorites from './EducationsFavorites'
 

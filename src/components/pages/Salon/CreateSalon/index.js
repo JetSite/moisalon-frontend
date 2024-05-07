@@ -6,7 +6,7 @@ import Controls from '../../../blocks/Form/Controls'
 import RegistrationForm from './components/RegistrationForm'
 import scrollIntoView from 'scroll-into-view'
 import BackArrow from '../../../ui/BackArrow'
-import { PHOTO_URL } from '../../../../variables'
+import { PHOTO_URL } from '../../../../api/variables'
 
 const CreateSalon = ({ onAdd, salon, setMe, lessor = false }) => {
   const allTabs = useRef()

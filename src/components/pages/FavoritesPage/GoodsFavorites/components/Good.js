@@ -12,7 +12,7 @@ import {
   NewPrice,
   OldPrice,
 } from '../styled'
-import { PHOTO_URL } from '../../../../../variables'
+import { PHOTO_URL } from '../../../../../api/variables'
 import { red } from '../../../../../styles/variables'
 import HeartFullFill from '../../../MainPage/components/Header/icons/HeartFullFill'
 import useAuthStore from 'src/store/authStore'

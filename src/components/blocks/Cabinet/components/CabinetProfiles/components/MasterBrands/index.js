@@ -11,7 +11,7 @@ import { BrandItemWrapper, ListWrapper, Published, Text } from './styles'
 import { Logo, ItemWrapper } from '../BrandsList/styles'
 import CabinetBrandsSkeleton from '../../../../../../ui/ContentSkeleton/CabinetBrandsSkeleton'
 import { cyrToTranslit } from '../../../../../../../utils/translit'
-import { PHOTO_URL } from '../../../../../../../variables'
+import { PHOTO_URL } from '../../../../../../../api/variables'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 

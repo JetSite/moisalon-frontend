@@ -18,7 +18,7 @@ import {
 import { getRoomMessages } from '../../../../../../_graphql-legacy/chat/getRoomMessages'
 import { masterQuery } from '../../../../../../_graphql-legacy/master/masterQuery'
 import { salonQuery } from '../../../../../../_graphql-legacy/salon/salonQuery'
-import { PHOTO_URL } from '../../../../../../variables'
+import { PHOTO_URL } from '../../../../../../api/variables'
 import { IChat, IChatChat } from 'src/chatContext'
 import { IMe } from 'src/types/me'
 

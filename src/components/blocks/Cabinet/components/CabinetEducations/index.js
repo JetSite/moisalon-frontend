@@ -19,7 +19,7 @@ import CreateEducation from '../../../CreateEducation'
 import { MobileHidden, MobileVisible } from '../../../../../styles/common'
 import { currentEducation } from '../../../../../_graphql-legacy/education/currentEducation'
 import Education from '../../../Education'
-import { PHOTO_URL } from '../../../../../variables'
+import { PHOTO_URL } from '../../../../../api/variables'
 
 const CabinetEducationsList = ({ educations, loading }) => {
   if (loading) {

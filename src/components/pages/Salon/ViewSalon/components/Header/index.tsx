@@ -49,7 +49,7 @@ import { numberForSocials } from '../../../../../../utils/formatNumber'
 import { ISalonPage } from 'src/types/salon'
 import { IApolloRefetch } from 'src/types/common'
 import { ICatalog } from 'src/utils/catalogOrDefault'
-import { PHOTO_URL } from 'src/variables'
+import { PHOTO_URL } from 'src/api/variables'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 

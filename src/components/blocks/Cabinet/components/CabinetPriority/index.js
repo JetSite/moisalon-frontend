@@ -19,7 +19,7 @@ import CreatePriority from './components/CreatePriority'
 import { MobileHidden, MobileVisible } from '../../../../../styles/common'
 import { currentRequestPriority } from '../../../../../_graphql-legacy/priority/currentRequestPriority'
 import { deletePriorityMutation } from '../../../../../_graphql-legacy/priority/deletePriorityMutation'
-import { PHOTO_URL } from '../../../../../variables'
+import { PHOTO_URL } from '../../../../../api/variables'
 import Priority from '../../../../ui/Priority'
 
 const CabinetPriorityList = ({ priority, loading, handleDelete }) => {

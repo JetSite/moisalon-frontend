@@ -31,7 +31,7 @@ import { cyrToTranslit } from '../../../utils/translit'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 import MainLayout from '../../../layouts/MainLayout'
-import { PHOTO_URL } from '../../../variables'
+import { PHOTO_URL } from '../../../api/variables'
 
 const VacancyPage = ({ vacancy, beautyCategories, beautyAllContent }) => {
   const router = useRouter()

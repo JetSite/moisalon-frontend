@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { useMutation } from '@apollo/react-hooks'
-import { PHOTO_URL } from '../../../variables'
+import { PHOTO_URL } from '../../../api/variables'
 import { CSSTransition } from 'react-transition-group'
 import { formatMobileNumber } from '../../../utils/formatMobileNumber'
 import { sendOrderOneClick } from '../../../_graphql-legacy/orders/sendOrderOneClick'

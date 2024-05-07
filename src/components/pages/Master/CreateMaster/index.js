@@ -6,7 +6,7 @@ import Controls from '../../../blocks/Form/Controls'
 import RegistrationForm from './components/RegistrationForm'
 import { Wrapper } from './styled'
 import BackArrow from '../../../ui/BackArrow'
-import { PHOTO_URL } from '../../../../variables'
+import { PHOTO_URL } from '../../../../api/variables'
 
 const CreateMaster = ({ onAdd, master }) => {
   const allTabs = useRef()

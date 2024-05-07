@@ -33,7 +33,7 @@ import Countdown from '../../blocks/Countdown'
 import { cyrToTranslit } from '../../../utils/translit'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
-import { PHOTO_URL } from '../../../variables'
+import { PHOTO_URL } from '../../../api/variables'
 
 const SalePage = ({ sale, loading, beautyCategories, beautyAllContent }) => {
   const router = useRouter()

@@ -3,7 +3,7 @@ import { useDropzone } from 'react-dropzone'
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../../../../../styles/variables'
 import uploadPhoto from '../../../../../../../../utils/uploadPhoto'
-import { PHOTO_URL } from '../../../../../../../../variables'
+import { PHOTO_URL } from '../../../../../../../../api/variables'
 
 const Photo = styled.div`
   width: 100%;

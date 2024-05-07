@@ -9,7 +9,7 @@ import {
   favoritesInStorage,
   inStorage,
 } from '../../../utils/favoritesInStorage.js'
-import { PHOTO_URL } from '../../../variables'
+import { PHOTO_URL } from '../../../api/variables'
 import HeartFullFill from '../../pages/MainPage/components/Header/icons/HeartFullFill'
 
 const EducationWrap = styled.div`

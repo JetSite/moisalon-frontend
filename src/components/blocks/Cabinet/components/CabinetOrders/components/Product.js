@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client'
 import { ProductWrapper } from '../styles'
 import { productSearch } from '../../../../../../_graphql-legacy/product'
-import { PHOTO_URL } from '../../../../../../variables'
+import { PHOTO_URL } from '../../../../../../api/variables'
 
 const Product = ({ item }) => {
   const { data } = useQuery(productSearch, {

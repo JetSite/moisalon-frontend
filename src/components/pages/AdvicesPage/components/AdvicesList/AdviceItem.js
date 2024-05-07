@@ -7,7 +7,7 @@ import {
   AdvShortDescription,
   ReadMore,
 } from '../../styles'
-import { PHOTO_URL } from '../../../../../variables'
+import { PHOTO_URL } from '../../../../../api/variables'
 
 const AdviceItem = ({
   item,

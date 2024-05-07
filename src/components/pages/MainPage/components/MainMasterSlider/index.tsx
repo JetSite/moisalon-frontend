@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client'
 import Slider from '../../../../blocks/Slider'
-import { getMasters } from 'src/graphql/master/queries/getMasters'
+import { getMasters } from 'src/api/graphql/master/queries/getMasters'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 
 import { IMaster } from 'src/types/masters'

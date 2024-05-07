@@ -4,7 +4,7 @@ import PhotoAdd from '../CreateSale/PhotoAdd'
 import moment from 'moment'
 import 'moment/locale/ru'
 import { laptopBreakpoint } from '../../../styles/variables'
-import { PHOTO_URL } from '../../../variables'
+import { PHOTO_URL } from '../../../api/variables'
 
 const SaleWrap = styled.div`
   width: 375px;

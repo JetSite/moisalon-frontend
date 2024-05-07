@@ -11,7 +11,7 @@ import {
   BrandShareWrap,
 } from './styles'
 import Share from '../../ui/Share'
-import { PHOTO_URL } from '../../../variables'
+import { PHOTO_URL } from '../../../api/variables'
 import HeartFullFill from '../../pages/MainPage/components/Header/icons/HeartFullFill'
 import { IChildren } from 'src/types/common'
 import { IBrand } from 'src/types/brands'

@@ -4,7 +4,7 @@ import PhotoAdd from '../CreateSale/PhotoAdd'
 import moment from 'moment'
 import 'moment/locale/ru'
 import { laptopBreakpoint, red } from '../../../styles/variables'
-import { PHOTO_URL } from '../../../variables'
+import { PHOTO_URL } from '../../../api/variables'
 
 const EventWrap = styled.div`
   width: ${({ cabinetVariant }) => (cabinetVariant ? '345px' : '375px')};

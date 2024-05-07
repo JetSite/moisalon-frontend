@@ -32,7 +32,7 @@ import 'moment/locale/ru'
 import Countdown from '../../blocks/Countdown'
 import { cyrToTranslit } from '../../../utils/translit'
 import ChatMessagePopup from '../../ui/ChatMessagePopup'
-import { PHOTO_URL } from '../../../variables'
+import { PHOTO_URL } from '../../../api/variables'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 

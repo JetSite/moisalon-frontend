@@ -26,7 +26,7 @@ import {
   Quantity,
   Description,
 } from '../ProductPage/styled'
-import { PHOTO_URL } from '../../../variables'
+import { PHOTO_URL } from '../../../api/variables'
 import BackButton from '../../ui/BackButton'
 import Reviews from '../../blocks/Reviews'
 import { createReviewMutation } from '../../../_graphql-legacy/createReviewMutation'

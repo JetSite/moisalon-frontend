@@ -10,7 +10,7 @@ import {
 } from '../../../../../utils/favoritesInStorage'
 import { laptopBreakpoint, red } from '../../../../../styles/variables'
 import { Skeleton } from '@material-ui/lab'
-import { PHOTO_URL } from '../../../../../variables'
+import { PHOTO_URL } from '../../../../../api/variables'
 import { cyrToTranslit } from '../../../../../utils/translit'
 import FastBuyPopup from '../../../../ui/FastBuyPopup'
 import HeartFullFill from '../../../MainPage/components/Header/icons/HeartFullFill'
