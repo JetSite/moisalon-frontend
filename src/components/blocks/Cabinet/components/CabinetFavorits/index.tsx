@@ -14,7 +14,7 @@ import { IMeThings } from 'src/types/me'
 const CabinetFavorits: FC = () => {
   const { me } = useAuthStore(getStoreData)
   const [activeTab, setActiveTab] = useState<string>('all')
-  const mobileMedia = useMedia({ maxWidth: 768 })
+  const mobileMedia = useMedia({ maxWidth: 992 }) // 768
 
   const handleDeleted = () => {
     console.log('delete')
@@ -46,8 +46,6 @@ const CabinetFavorits: FC = () => {
       return
     }
   }, [])
-
-  console.log(me.favorite)
 
   return (
     <Wrapper>

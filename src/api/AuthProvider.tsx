@@ -43,6 +43,7 @@ const AuthProvider: FC<{ children: IChildren }> = ({ children }) => {
         phone: prepareData.phone,
         id: prepareData.id,
         email: prepareData.email,
+        avatar: prepareData.avatar,
       }
       const owner: IMeThings = {
         salons: prepareData.salons,

@@ -19,7 +19,6 @@ export const CabinetVacanciesList: FC<Props> = ({
   if (loading) {
     return <SkeletonWrap variant="rect" />
   }
-  console.log(vacancies[0])
 
   return (
     <VacanciesWrapper>

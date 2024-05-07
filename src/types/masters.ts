@@ -1,11 +1,5 @@
-import { ICity, IServiceCategories, IServices } from '.'
+import { ICity, IPhoto, IServiceCategories, IServices } from '.'
 import { IID } from './common'
-
-interface IMasterPhoto {
-  id: IID
-  name: string
-  url: string
-}
 
 export interface IMaster {
   id: IID
@@ -14,7 +8,7 @@ export interface IMaster {
   masterName: string
   masterPhone: string
   city: ICity
-  masterPhoto: IMasterPhoto
+  masterPhoto: IPhoto
   averageScore: number
   numberScore: number
   services: IServices[]

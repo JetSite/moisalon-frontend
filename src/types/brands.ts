@@ -1,14 +1,7 @@
-import { ICity } from '.'
+import { ICity, IPhoto } from '.'
 
 export interface IBrand {
-  brandLogo: {
-    alternativeText: null | string
-    formats: unknown
-    id: string
-    name: string
-    previewUrl: null | string
-    url: string
-  }
+  brandLogo: IPhoto
   brandName: string
   id: string
   city: ICity

@@ -19,7 +19,7 @@ export const Info = styled.div`
   background-color: ${red};
 `
 
-export const Logo = styled.div`
+export const Logo = styled.div<{ url: string }>`
   flex-shrink: 0;
   width: 89px;
   height: 89px;
@@ -83,7 +83,7 @@ export const CardTitle = styled.h3`
   word-break: break-word;
 `
 
-export const CardBottom = styled.div`
+export const CardBottom = styled.div<{ quantity?: boolean }>`
   display: flex;
   justify-content: ${({ quantity }) =>
     quantity ? 'space-between' : 'flex-start'};
@@ -100,7 +100,7 @@ export const CardQuantity = styled.span`
   font-weight: 500;
 `
 
-export const ProfilesButton = styled.div`
+export const ProfilesButton = styled.div<{ toggle: boolean }>`
   position: relative;
   font-weight: 500;
   font-size: 14px;

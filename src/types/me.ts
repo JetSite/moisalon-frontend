@@ -1,4 +1,4 @@
-import { ICity } from '.'
+import { ICity, IPhoto } from '.'
 import { IBrand } from './brands'
 import { IID } from './common'
 import { IMaster } from './masters'
@@ -12,6 +12,7 @@ export interface IMeInfo {
   email: string
   phone: string
   city: ICity
+  avatar: IPhoto | null
 }
 
 export interface IMeThings {

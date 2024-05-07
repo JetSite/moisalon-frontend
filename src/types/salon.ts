@@ -1,13 +1,12 @@
 import {
   ICity,
   IMetroStations,
-  ICoverImage,
   ISalonLogo,
   ISalonPhones,
-  ISalonPhotos,
   IServices,
   ISocialNetworks,
   IWorkingHours,
+  IPhoto,
 } from '.'
 import { IBrand } from './brands'
 import { IID } from './common'
@@ -41,9 +40,9 @@ export interface ISalon {
   salonIsPublished: boolean
   salonIsNotRent: boolean
   salonOwnerConfirmed: boolean
-  salonCover: ICoverImage | null
+  salonCover: IPhoto | null
   salonLogo: ISalonLogo | null
-  salonPhotos: ISalonPhotos[]
+  salonPhotos: IPhoto[]
   salonPhones: ISalonPhones[]
   cities: ICity
   services: IServices[]

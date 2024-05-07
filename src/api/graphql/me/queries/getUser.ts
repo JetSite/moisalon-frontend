@@ -30,6 +30,9 @@ export const getUser = gql`
               }
             }
           }
+          avatar {
+            ${imageInfo}
+          }
           salons {
             ${salonFragment}
           }
