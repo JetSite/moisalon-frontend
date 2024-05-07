@@ -26,7 +26,7 @@ import CityPingIcon from '../icons/CityPingIcon'
 import HeartIcon from '../icons/HeartIcon'
 import HamburgerMenu from '../../../../../ui/HamburgerMenu'
 import { cyrToTranslit } from '../../../../../../utils/translit'
-import { PHOTO_URL } from '../../../../../../variables'
+import { PHOTO_URL } from '../../../../../../api/variables'
 
 import { getStoreData, getStoreEvent } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'

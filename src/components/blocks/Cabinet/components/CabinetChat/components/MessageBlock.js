@@ -15,7 +15,7 @@ import {
   Question,
 } from './styles'
 import { MobileHidden } from '../../../../../../styles/common'
-import { PHOTO_URL } from '../../../../../../variables'
+import { PHOTO_URL } from '../../../../../../api/variables'
 import { useChat } from '../../../../../../chatContext.tsx'
 import { changeMessageStatusMutation } from '../../../../../../_graphql-legacy/chat/changeMessageStatusMutation'
 

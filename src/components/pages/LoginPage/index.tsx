@@ -19,7 +19,7 @@ import {
 } from './styles'
 import Button from '../../ui/Button'
 import Error from '../../blocks/Form/Error'
-import { login } from 'src/graphql/me/mutations/login'
+import { login } from 'src/api/graphql/me/mutations/login'
 import { getStoreEvent } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
 import { setCookie } from 'cookies-next'

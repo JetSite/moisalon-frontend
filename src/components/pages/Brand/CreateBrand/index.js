@@ -6,7 +6,7 @@ import Controls from '../../../blocks/Form/Controls'
 import RegistrationForm from './components/RegistrationForm'
 import BackArrow from '../../../ui/BackArrow'
 import { Wrapper } from './styled'
-import { PHOTO_URL } from '../../../../variables'
+import { PHOTO_URL } from '../../../../api/variables'
 
 const CreateBrand = ({ onAdd, loading, brand }) => {
   const allTabs = useRef()

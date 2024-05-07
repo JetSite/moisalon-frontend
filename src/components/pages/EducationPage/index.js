@@ -47,7 +47,7 @@ import { useMutation, useQuery } from '@apollo/client'
 import { scoreEducation } from '../../../_graphql-legacy/education/scoreEducation'
 import { createScopesEducation } from '../../../_graphql-legacy/education/createScoreEducation'
 import { educationSearchById } from '../../../_graphql-legacy/education/educationSearchById'
-import { PHOTO_URL } from '../../../variables'
+import { PHOTO_URL } from '../../../api/variables'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 

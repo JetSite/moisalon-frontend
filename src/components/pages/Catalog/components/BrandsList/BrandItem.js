@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import Button from '../../../../ui/Button'
 import { MobileVisible, MobileHidden } from '../../../../../styles/common'
 import { BrandWrap, Logo, Image, Price, ButtonStyled } from './styles'
-import { PHOTO_URL } from '../../../../../variables'
+import { PHOTO_URL } from '../../../../../api/variables'
 
 const BrandItem = ({ brand, filterProduct }) => {
   const router = useRouter()

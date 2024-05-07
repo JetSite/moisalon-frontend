@@ -6,7 +6,7 @@ import { laptopBreakpoint } from '../../../../../styles/variables'
 import { Skeleton } from '@material-ui/lab'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
-import { PHOTO_URL } from '../../../../../variables'
+import { PHOTO_URL } from '../../../../../api/variables'
 
 const Wrapper = styled.div`
   width: 175px;

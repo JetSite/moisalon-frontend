@@ -7,6 +7,10 @@ export interface LazyType {
   [K: string]: LazyType
 }
 
+export interface InitialValuesForm {
+  [K: string]: string
+}
+
 export type IID = string | number
 
 export type IApolloRefetch = (
@@ -19,3 +23,7 @@ export type IChildren =
   | boolean
   | string
   | null
+
+export interface CustomWindow extends Window {
+  setFormValue?: (fieldName: string, value: any) => void
+}

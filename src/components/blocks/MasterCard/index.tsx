@@ -23,7 +23,7 @@ import {
 } from './styles'
 import HeartFullFill from '../../pages/MainPage/components/Header/icons/HeartFullFill'
 import { red } from '../../../styles/variables'
-import { PHOTO_URL } from 'src/variables'
+import { PHOTO_URL } from 'src/api/variables'
 import { IMaster } from 'src/types/masters'
 
 interface Props {

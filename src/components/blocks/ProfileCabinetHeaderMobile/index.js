@@ -18,7 +18,7 @@ import {
 } from './styles'
 import Link from 'next/link'
 import { cyrToTranslit } from '../../../utils/translit'
-import { PHOTO_URL } from '../../../variables'
+import { PHOTO_URL } from '../../../api/variables'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 

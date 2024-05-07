@@ -19,7 +19,7 @@ import Button from '../../../../ui/Button'
 import CreateSale from '../../../CreateSale'
 import Sale from '../../../Sale'
 import { MobileHidden, MobileVisible } from '../../../../../styles/common'
-import { PHOTO_URL } from '../../../../../variables'
+import { PHOTO_URL } from '../../../../../api/variables'
 
 const CabinetSalesList = ({ sales, loading }) => {
   if (loading) {

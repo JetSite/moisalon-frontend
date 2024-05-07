@@ -1,7 +1,7 @@
 import {
   ICity,
   IMetroStations,
-  ISalonCover,
+  ICoverImage,
   ISalonLogo,
   ISalonPhones,
   ISalonPhotos,
@@ -41,7 +41,7 @@ export interface ISalon {
   salonIsPublished: boolean
   salonIsNotRent: boolean
   salonOwnerConfirmed: boolean
-  salonCover: ISalonCover | null
+  salonCover: ICoverImage | null
   salonLogo: ISalonLogo | null
   salonPhotos: ISalonPhotos[]
   salonPhones: ISalonPhones[]

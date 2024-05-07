@@ -18,7 +18,7 @@ export interface IMetaData {
   pagination: Partial<IPagination>
 }
 
-export interface ISalonCover {
+export interface ICoverImage {
   id: IID
   name: string
   alternativeText: string | null

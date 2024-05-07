@@ -13,7 +13,7 @@ import {
   Favorite,
   SkeletonItem,
 } from './styles'
-import { PHOTO_URL } from '../../../variables'
+import { PHOTO_URL } from '../../../api/variables'
 import { cyrToTranslit } from '../../../utils/translit'
 import {
   inStorage,

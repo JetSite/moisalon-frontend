@@ -28,7 +28,7 @@ import Share from '../../ui/Share'
 import Rating from '../../ui/Rating'
 import { useMedia } from 'use-media'
 import HeartFullFill from '../../pages/MainPage/components/Header/icons/HeartFullFill'
-import { PHOTO_URL } from 'src/variables'
+import { PHOTO_URL } from 'src/api/variables'
 import { ISalon } from 'src/types/salon'
 import { getServicesCategories } from 'src/utils/serviceCatalog'
 

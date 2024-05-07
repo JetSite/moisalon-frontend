@@ -4,7 +4,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCore from 'swiper'
 import { laptopBreakpoint } from '../../../../../../styles/variables'
 import { Navigation } from 'swiper/modules'
-import { PHOTO_URL } from 'src/variables'
+import { PHOTO_URL } from 'src/api/variables'
 import { ISalonPage } from 'src/types/salon'
 
 SwiperCore.use([Navigation])

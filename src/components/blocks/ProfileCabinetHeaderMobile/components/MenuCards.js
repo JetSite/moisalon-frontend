@@ -8,29 +8,12 @@ import {
   Icon,
   CardQuantity,
 } from '../styles'
-import { getStoreData } from 'src/store/utils'
+import { getStoreEvent } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
 
 const MenuCards = ({ tabs, setActiveTab, setToggle }) => {
-  const dev = process.env.NEXT_PUBLIC_ENV !== 'production'
   const router = useRouter()
-  const { city } = useAuthStore(getStoreData)
-
-  const handleLogout = async () => {
-    const resData = await fetch(
-      dev
-        ? 'https://stage-passport.moi.salon/api/logout'
-        : 'https://passport.moi.salon/api/logout',
-      {
-        credentials: 'include',
-        'Access-Control-Allow-Credentials': true,
-      },
-    )
-
-    if (resData.status === 200) {
-      router.push(`/${cyrToTranslit(city)}`)
-    }
-  }
+  const { logout } = useAuthStore(getStoreEvent)
 
   return (
     <CardsWrapper>
@@ -51,7 +34,7 @@ const MenuCards = ({ tabs, setActiveTab, setToggle }) => {
       ))}
       <Card
         onClick={() => {
-          handleLogout()
+          logout(router)
         }}
       >
         <CardTitle>Выход</CardTitle>

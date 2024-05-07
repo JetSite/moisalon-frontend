@@ -31,7 +31,7 @@ import CityPingIcon from '../../pages/MainPage/components/Header/icons/CityPingI
 import { cyrToTranslit } from '../../../utils/translit'
 import { useQuery } from '@apollo/client'
 import { currentUserSalonsAndMasterQuery } from '../../../_graphql-legacy/master/currentUserSalonsAndMasterQuery'
-import { PHOTO_URL } from '../../../variables'
+import { PHOTO_URL } from '../../../api/variables'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
 import { deleteCookie } from 'cookies-next'

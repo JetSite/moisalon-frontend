@@ -24,7 +24,7 @@ import {
 import { useMedia } from 'use-media'
 import PopupOrder from './PopupOrder'
 import Steps from './Steps'
-import { PHOTO_URL } from '../../../../variables'
+import { PHOTO_URL } from '../../../../api/variables'
 
 const totalSumm = items => {
   if (!items?.length) {

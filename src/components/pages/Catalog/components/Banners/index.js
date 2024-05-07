@@ -3,7 +3,7 @@ import {
   tabletBreakpoint,
   laptopBreakpoint,
 } from '../../../../../styles/variables'
-import { PHOTO_URL } from 'src/variables'
+import { PHOTO_URL } from 'src/api/variables'
 
 const Wrapper = styled.div`
   display: flex;

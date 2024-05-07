@@ -10,7 +10,7 @@ import {
   Price,
   Quantity,
 } from './../styles'
-import { PHOTO_URL } from '../../../../variables'
+import { PHOTO_URL } from '../../../../api/variables'
 
 const RepeatOrderProduct = ({ product }) => {
   const { data, loading } = useQuery(productSearch, {

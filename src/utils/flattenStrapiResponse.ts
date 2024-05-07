@@ -1,6 +1,6 @@
 type IFlattenStrapiResponse = (
   data: StrapiDataObject | StrapiDataObject[] | AttributesObject | null,
-) => Object | null
+) => any | null
 
 type AttributesObject = {
   [key: string]: any

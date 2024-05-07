@@ -24,7 +24,7 @@ import { updateRoomMutation } from '../../../../../../_graphql-legacy/salon/upda
 import { useMutation } from '@apollo/client'
 import RentalAdditionalInfo from './RentalAdditionalInfo'
 import { useEffect } from 'react'
-import { PHOTO_URL } from '../../../../../../variables'
+import { PHOTO_URL } from '../../../../../../api/variables'
 import Success from './Success'
 import DefaultPhoto from './DefaultPhoto'
 import PhotoGallery from './PhotoGallery'

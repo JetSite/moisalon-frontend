@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client'
-import { getSalons } from '../../../../../graphql/salon/queries/getSalons'
+import { getSalons } from '../../../../../api/graphql/salon/queries/getSalons'
 import Slider from '../../../../blocks/Slider'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { ISalon } from 'src/types/salon'
