@@ -4,6 +4,7 @@ import Avatar from '../Avatar'
 import Tabs from './components/Tabs'
 import { Dispatch, FC, SetStateAction } from 'react'
 import { IID } from 'src/types/common'
+import { IMasterCabinetTab } from 'src/components/pages/Master/MasterCabinet'
 
 const Wrapper = styled.div`
   max-width: 395px;
@@ -22,7 +23,7 @@ const Wrapper = styled.div`
 interface Props {
   id: IID | null
   onAdd: (id: IID) => void
-  tabs: { title: string; value: string; quantity?: number }[]
+  tabs: IMasterCabinetTab[]
   setPhotoId: (id: IID) => void
   photoType: string
   photo: { url: string }

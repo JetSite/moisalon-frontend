@@ -57,9 +57,11 @@ export const CardsWrapper = styled.div`
   }
 `
 
-export const Card = styled.div`
+export const Card = styled.div<{ disable?: boolean }>`
   display: flex;
   flex-direction: column;
+  cursor: ${props => (props.disable ? 'default' : 'pointer')};
+  opacity: ${props => (props.disable ? '0.3' : '')};
   flex-shrink: 0;
   justify-content: space-between;
   width: 120px;
@@ -135,28 +137,27 @@ export const Button = styled.div`
   top: -29px;
   background: #fff;
   &:before {
-    content: "";
+    content: '';
     position: absolute;
     width: 29px;
     height: 29px;
     border-radius: 100%;
     border: 1px solid #000;
     left: 25px;
-    @media(max-width: 350px) {
+    @media (max-width: 350px) {
       display: none;
     }
   }
   &:after {
-    content: "";
+    content: '';
     position: absolute;
-    background: url("/plus-icon.svg") no-repeat center;
+    background: url('/plus-icon.svg') no-repeat center;
     width: 13px;
     height: 13px;
     left: 34px;
-    @media(max-width: 350px) {
+    @media (max-width: 350px) {
       display: none;
     }
-  }
   }
 `
 

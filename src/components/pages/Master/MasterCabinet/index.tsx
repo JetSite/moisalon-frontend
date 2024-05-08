@@ -32,6 +32,7 @@ export interface IMasterCabinetTab {
   value: string
   icon?: string
   quantity?: number
+  disable?: boolean
 }
 
 interface Props {
@@ -98,6 +99,7 @@ const MasterCabinet: FC = () => {
               value: 'orders',
               icon: '/icon-orders.svg',
               quantity: me?.orders?.length,
+              disable: true,
             },
             {
               title: 'Моё избранное',
@@ -109,14 +111,16 @@ const MasterCabinet: FC = () => {
               value: 'reviews',
               icon: '/icon-reviews.svg',
             },
-            { title: 'Сообщения', value: 'chat' },
+            { title: 'Сообщения', value: 'chat', disable: true },
             {
               title: 'Мои акции',
               value: 'sales',
+              disable: true,
             },
             {
               title: 'Обучение',
               value: 'educations',
+              disable: true,
             },
             {
               title: 'Вакансии',
@@ -125,9 +129,10 @@ const MasterCabinet: FC = () => {
             {
               title: 'Мероприятия',
               value: 'events',
+              disable: true,
             },
-            { title: 'Размещение', value: 'priority' },
-            { title: 'Реклама', value: 'banner' },
+            { title: 'Размещение', value: 'priority', disable: true },
+            { title: 'Реклама', value: 'banner', disable: true },
           ]}
           toggle={toggle}
           setToggle={setToggle}
@@ -146,16 +151,17 @@ const MasterCabinet: FC = () => {
                 title: 'Сообщения',
                 value: 'chat',
                 quantity: unreadMessagesCount,
+                disable: true,
               },
-              { title: 'Мои заказы', value: 'orders' },
+              { title: 'Мои заказы', value: 'orders', disable: true },
               { title: 'Моё избранное', value: 'favorits' },
               { title: 'Отзывы клиентов', value: 'reviews' },
-              { title: 'Мои акции', value: 'sales' },
-              { title: 'Обучение', value: 'educations' },
+              { title: 'Мои акции', value: 'sales', disable: true },
+              { title: 'Обучение', value: 'educations', disable: true },
               { title: 'Вакансии', value: 'vacancies' },
-              { title: 'Мероприятия', value: 'events' },
-              { title: 'Размещение', value: 'priority' },
-              { title: 'Реклама', value: 'banner' },
+              { title: 'Мероприятия', value: 'events', disable: true },
+              { title: 'Размещение', value: 'priority', disable: true },
+              { title: 'Реклама', value: 'banner', disable: true },
             ]}
             id={null}
             photoType={'master'}

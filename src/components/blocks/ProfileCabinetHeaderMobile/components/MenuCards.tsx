@@ -27,10 +27,13 @@ const MenuCards: FC<Props> = ({ tabs, setActiveTab, setToggle }) => {
     <CardsWrapper>
       {tabs?.map(tab => (
         <Card
+          disable={tab.disable}
           key={tab.value}
           onClick={() => {
-            setActiveTab(tab.value)
-            setToggle(false)
+            if (!tab.disable) {
+              setActiveTab(tab.value)
+              setToggle(false)
+            }
           }}
         >
           <CardTitle>{tab.title}</CardTitle>

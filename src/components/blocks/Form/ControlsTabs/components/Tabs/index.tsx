@@ -9,6 +9,7 @@ import { getStoreData, getStoreEvent } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
 import { Dispatch, FC, SetStateAction } from 'react'
 import { LazyType } from 'src/types/common'
+import { IMasterCabinetTab } from 'src/components/pages/Master/MasterCabinet'
 
 const Wrapper = styled.div`
   margin-top: 50px;
@@ -35,16 +36,17 @@ const Tab = styled.div`
   display: block;
 `
 
-const Text = styled.div<{ active?: boolean }>`
+const Text = styled.div<{ active?: boolean; disable?: boolean }>`
   display: inline-block;
-  cursor: pointer;
+  cursor: ${props => (props.disable ? 'default' : 'pointer')};
+  opacity: ${props => (props.disable ? '0.3' : '')};
   font-size: 18px;
   font-weight: 600;
   line-height: 45px;
   text-decoration: ${props => (props.active ? 'underline' : '')};
   transition: 0.5s;
   &:hover {
-    color: #f03;
+    color: ${props => (props.disable ? 'inherit' : '#f03')};
   }
 `
 
@@ -75,7 +77,7 @@ const Quantity = styled.div`
 `
 
 interface Props {
-  tabs: any[]
+  tabs: IMasterCabinetTab[]
   setActiveTab: Dispatch<SetStateAction<string>>
   activeTab: string
 }
@@ -116,7 +118,8 @@ const Tabs: FC<Props> = ({ tabs, setActiveTab, activeTab }) => {
         <Tab key={item.value}>
           {item.title ? (
             <Text
-              onClick={() => setActiveTab(item.value)}
+              disable={item.disable}
+              onClick={() => !item.disable && setActiveTab(item.value)}
               active={item.value === activeTab}
             >
               {item.title}
