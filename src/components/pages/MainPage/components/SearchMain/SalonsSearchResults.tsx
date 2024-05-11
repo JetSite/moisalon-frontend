@@ -217,12 +217,14 @@ const SalonsSearchResults: FC<Props> = ({
                     onClick={() =>
                       router.push(
                         rent
-                          ? `/${cyrToTranslit(
-                              salon.cities.cityName || city,
-                            )}/rent/${salon.id}`
-                          : `/${cyrToTranslit(
-                              salon.cities.cityName || city,
-                            )}/salon/${salon.id}`,
+                          ? `/${
+                              cyrToTranslit(salon.cities.cityName) ||
+                              city.citySlug
+                            }/rent/${salon.id}`
+                          : `/${
+                              cyrToTranslit(salon.cities.cityName) ||
+                              city.citySlug
+                            }/salon/${salon.id}`,
                       )
                     }
                   >
@@ -232,9 +234,9 @@ const SalonsSearchResults: FC<Props> = ({
                         rent={rent}
                         loading={loading}
                         item={salon}
-                        shareLink={`https://moi.salon/${cyrToTranslit(
-                          salon.cities.cityName || city,
-                        )}/salon/${salon.id}`}
+                        shareLink={`https://moi.salon/${
+                          cyrToTranslit(salon.cities.cityName) || city.citySlug
+                        }/salon/${salon.id}`}
                       />
                     </SalonCardWrapper>
                   </li>

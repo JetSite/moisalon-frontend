@@ -12,6 +12,7 @@ import { GetServerSideProps } from 'next'
 import { getStoreEvent } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
 import { useEffect } from 'react'
+import { authConfig, defaultCitySlug } from 'src/api/authConfig'
 
 interface Props {
   beautyCategories: any
@@ -34,7 +35,7 @@ export default function Main({
 }: Props) {
   const { setCity } = useAuthStore(getStoreEvent)
   useEffect(() => {
-    setCity(cityData)
+    setCity({ citySlug: cityData })
   }, [setCity])
 
   // setMe(cityData)
@@ -189,7 +190,7 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
       totalBrands: data[5]?.data?.brands?.meta?.pagination?.total,
       // sales: data[8]?.data,
       // salons: data[9]?.data,
-      cityData: 'Москва',
+      cityData: ctx?.query?.city || defaultCitySlug,
     },
   })
 }

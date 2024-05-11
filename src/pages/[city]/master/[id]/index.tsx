@@ -1,9 +1,7 @@
-import { useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import Head from 'next/head'
 import { addApolloState, initializeApollo } from '../../../../api/apollo-client'
-import { useQuery, useMutation } from '@apollo/client'
-import { masterQuery } from '../../../../_graphql-legacy/master/masterQuery'
-import { brandQuery } from '../../../../_graphql-legacy/master/brandQuery'
+import { useQuery } from '@apollo/client'
 import { reviewsForMaster } from '../../../../_graphql-legacy/master/reviewsForMaster'
 import MainLayout from '../../../../layouts/MainLayout'
 import SearchBlock from '../../../../components/blocks/SearchBlock'
@@ -11,21 +9,11 @@ import Header from '../../../../components/pages/Master/ViewMaster/components/He
 import TabsSlider from '../../../../components/ui/TabsSlider'
 import About from '../../../../components/pages/Master/ViewMaster/components/About'
 import MobileServicesForClient from '../../../../components/pages/Master/ViewMaster/components/MobileServicesComponent/MobileServicesForClient'
-import Resume from '../../../../components/pages/Master/ViewMaster/components/Resume'
 import ReviewsMaster from '../../../../components/pages/Master/ViewMaster/components/MasterReviews'
 import Line from '../../../../components/pages/MainPage/components/Line'
 import InviteMaster from '../../../../components/pages/Master/ViewMaster/components/Invite'
-import catalogOrDefault from '../../../../utils/catalogOrDefault'
-import { scoreMaster } from '../../../../_graphql-legacy/master/scoreMaster'
-import { updateMasterPhotoWorksMutation } from '../../../../_graphql-legacy/master/updateMasterPhotoWorksMutation'
-import { updateMasterPhotoDiplomaMutation } from '../../../../_graphql-legacy/master/updateMasterPhotoDiplomaMutation'
-import { removeUserBrandsMutation } from '../../../../_graphql-legacy/master/removeUserBrandsMutation'
-import { removeUserSalonsMutation } from '../../../../_graphql-legacy/master/removeUserSalonsMutation'
 import Contacts from '../../../../components/pages/Master/ViewMaster/components/Contacts'
 import ServicesForClient from '../../../../components/pages/Master/ViewMaster/components/ServicesForClient'
-import { masterSlugQuery } from '../../../../_graphql-legacy/master/masterSlugQuery'
-import { mastersRandomQuery } from '../../../../_graphql-legacy/mastersRandomQuery'
-import { citySuggestionsQuery } from '../../../../_graphql-legacy/city/citySuggestionsQuery'
 import Slider from '../../../../components/blocks/Slider'
 import AddBrands from '../../../../components/pages/Master/AddBrands'
 import AddSalons from '../../../../components/pages/Master/AddSalons'
@@ -38,12 +26,15 @@ import { getServicesByCategory } from 'src/utils/serviceCatalog'
 import useBaseStore from 'src/store/baseStore'
 import { getStoreData } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
+import { GetServerSideProps } from 'next'
+import Resume from 'src/components/pages/Master/ViewMaster/components/Resume'
+import { cyrToTranslit } from 'src/utils/translit'
+import { defaultCitySlug, defaultcCitiesList } from 'src/api/authConfig'
 
-const Master = ({ masterData, randomMasters }) => {
+const Master: FC<Props> = ({ masterData, randomMasters }) => {
   const [master, setMaster] = useState(masterData)
-  const { me } = useAuthStore(getStoreData)
+  const { me, city } = useAuthStore(getStoreData)
   const { catalogs } = useBaseStore(getStoreData)
-
   const [editClientServices, setEditClientServices] = useState(false)
   const [activeTab, setActiveTab] = useState(0)
   const [isBrandsEditing, setIsBrandsEditing] = useState(false)
@@ -51,21 +42,18 @@ const Master = ({ masterData, randomMasters }) => {
   const [isPortfolioEditing, setIsPortfolioEditing] = useState(false)
   const [isDiplomsEditing, setIsDiplomsEditing] = useState(false)
 
-  let cityInStorage
-  if (typeof window !== 'undefined') {
-    cityInStorage = localStorage.getItem('citySalon')
-  }
-  // const { data, loading, refetch } = useQuery(mastersRandomQuery, {
-  //   variables: {
-  //     count: 10,
-  //     city:
-  //       me && me?.info && me?.info?.city
-  //         ? me?.info?.city
-  //         : cityInStorage
-  //         ? cityInStorage
-  //         : '',
-  //   },
-  // })
+  const { refetch: getMe, loading: meLoading } = useQuery(getMasters, {
+    variables: { city: 'Москва', itemsCount: 10 },
+    onCompleted: data => {
+      console.log(data)
+    },
+    onError: err => {
+      console.log(err)
+    },
+  })
+
+  console.log('randomMasters', randomMasters)
+  console.log(city)
 
   useEffect(() => {
     if (masterData?.data) {
@@ -73,143 +61,6 @@ const Master = ({ masterData, randomMasters }) => {
     }
     // refetch()
   }, [masterData])
-
-  const setChosenItemId = () => {}
-
-  useEffect(() => {
-    setChosenItemId(master.id)
-  }, [])
-
-  // const { refetch: refetchMaster } = useQuery(masterQuery, {
-  //   variables: { id: master.id },
-  //   skip: true,
-  //   onCompleted: res => {
-  //     setMaster(res.master)
-  //   },
-  // })
-
-  // const [updateMasterPhotoWorks] = useMutation(updateMasterPhotoWorksMutation, {
-  //   onCompleted: () => {
-  //     refetchMaster()
-  //   },
-  // })
-
-  // const [updateMasterPhotoDiploma] = useMutation(
-  //   updateMasterPhotoDiplomaMutation,
-  //   {
-  //     onCompleted: () => {
-  //       refetchMaster()
-  //     },
-  //   },
-  // )
-
-  const { refetch: refetchReviews } = useQuery(reviewsForMaster, {
-    variables: { originId: master.id },
-    skip: true,
-    onCompleted: res => {
-      setReviews(res.reviewsForMaster)
-    },
-  })
-
-  // const { refetch: refetchBrands } = useQuery(brandQuery, {
-  //   variables: { id: master.id },
-  //   skip: true,
-  //   onCompleted: res => {
-  //     if (res) {
-  //       setBrands(res.brandsMaster)
-  //     }
-  //   },
-  // })
-
-  // const masterSpecializationsCatalog = catalogOrDefault(
-  //   catalogs?.masterSpecializationsCatalog,
-  // )
-
-  // const salonServicesMasterCatalog = catalogOrDefault(
-  //   catalogs?.salonServicesMasterCatalog,
-  // )
-
-  // const salonsId = master?.salonIds || []
-
-  // const { refetch: refetchScore, loading: loadingScore } = useQuery(
-  //   scoreMaster,
-  //   {
-  //     variables: { id: master.id },
-  //     onCompleted: res => {
-  //       setDataScore(res.scoreMaster)
-  //     },
-  //   },
-  // )
-
-  // const onAdd = photoId => {
-  //   const oldArr = master?.photosWorks
-  //     ? master?.photosWorks.map(item => item.id)
-  //     : []
-  //   const newArr = [...oldArr, photoId]
-  //   updateMasterPhotoWorks({
-  //     variables: { input: { photoWorksIds: newArr, id: master?.id } },
-  //   })
-  // }
-
-  // const onDelete = photoId => {
-  //   const oldArr = master?.photosWorks
-  //     ? master?.photosWorks.map(item => item.id)
-  //     : []
-  //   const newArr = oldArr.filter(item => item !== photoId)
-  //   updateMasterPhotoWorks({
-  //     variables: { input: { photoWorksIds: newArr, id: master?.id } },
-  //   })
-  // }
-
-  // const onAddDiploma = photoId => {
-  //   const oldArr = master?.photosDiploma
-  //     ? master?.photosDiploma.map(item => item.id)
-  //     : []
-  //   const newArr = [...oldArr, photoId]
-  //   updateMasterPhotoDiploma({
-  //     variables: { input: { photoDiplomaIds: newArr, id: master?.id } },
-  //   })
-  // }
-
-  // const onDeleteDiploma = photoId => {
-  //   const oldArr = master?.photosDiploma
-  //     ? master?.photosDiploma.map(item => item.id)
-  //     : []
-  //   const newArr = oldArr.filter(item => item !== photoId)
-  //   updateMasterPhotoDiploma({
-  //     variables: { input: { photoDiplomaIds: newArr, id: master?.id } },
-  //   })
-  // }
-
-  // const [removeBrands] = useMutation(removeUserBrandsMutation, {
-  //   onCompleted: () => {
-  //     refetchBrands()
-  //   },
-  // })
-
-  // const handleRemoveBrand = id => {
-  //   removeBrands({
-  //     variables: {
-  //       ids: [id],
-  //       masterId: me?.master?.id,
-  //     },
-  //   })
-  // }
-
-  // const [removeSalons] = useMutation(removeUserSalonsMutation, {
-  //   onCompleted: () => {
-  //     refetchMaster()
-  //   },
-  // })
-
-  // const handleRemoveSalon = id => {
-  //   removeSalons({
-  //     variables: {
-  //       ids: [id],
-  //       masterId: me?.master?.id,
-  //     },
-  //   })
-  // }
 
   const isOwner = me?.master?.id === master?.id
 
@@ -419,14 +270,14 @@ const Master = ({ masterData, randomMasters }) => {
             </>
           </Slider>
         ) : null}
-        {/* {me?.salons?.length && master?.resume ? (
+        {me?.salons?.length && master?.resume ? (
           <Resume master={master} />
-        ) : null} */}
+        ) : null}
         <ReviewsMaster
           data={master?.reviews}
           me={me}
           masterId={master.id}
-          refetchReviews={refetchReviews}
+          refetchReviews={() => {}}
         />
         <Contacts
           phone={master?.masterPhone}
@@ -461,10 +312,15 @@ const Master = ({ masterData, randomMasters }) => {
   )
 }
 
-export async function getServerSideProps({ params, query }) {
+export const getServerSideProps: GetServerSideProps = async ({
+  params,
+  query,
+}) => {
   const apolloClient = initializeApollo()
 
-  const id = params.id
+  const id = params?.id
+
+  console.log(query.city)
 
   const data = await Promise.all([
     apolloClient.query({
@@ -474,7 +330,8 @@ export async function getServerSideProps({ params, query }) {
     apolloClient.query({
       query: getMasters,
       variables: {
-        city: query?.city || 'Москва',
+        citySlug: query?.city || defaultCitySlug,
+        excludeId: id,
         itemsCount: 10,
       },
     }),

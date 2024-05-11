@@ -15,14 +15,14 @@ const NotFound = () => {
         <Title>404:</Title>
         <Text>Страница не найдена</Text>
         <MobileHidden>
-          <Link href={`/${cyrToTranslit(city)}`} passHref>
+          <Link href={`/${city.citySlug}`} passHref>
             <Button size="medium" variant="red" mt="103" z="10">
               На главную
             </Button>
           </Link>
         </MobileHidden>
         <MobileVisible>
-          <Link href={`/${cyrToTranslit(city)}`} passHref>
+          <Link href={`/${city.citySlug}`} passHref>
             <Button size="fullWidth" variant="red" mt="300" z="10">
               На главную
             </Button>

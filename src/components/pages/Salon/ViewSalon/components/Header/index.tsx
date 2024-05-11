@@ -124,7 +124,7 @@ const Header: FC<Props> = ({
         <Wrapper>
           <BackButton
             type="Салон"
-            link={isOwner ? '/masterCabinet' : `/${cyrToTranslit(city)}/salon`}
+            link={isOwner ? '/masterCabinet' : `/${city.citySlug}/salon`}
             name={salon.salonName}
           />
         </Wrapper>

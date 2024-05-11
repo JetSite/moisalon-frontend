@@ -127,7 +127,7 @@ const RentHeader = ({ city, salonData, roomData }) => {
         <Content>
           <BackButton
             type="Аренда – Салон"
-            link={`/${cyrToTranslit(city)}/rent/${salonData?.id}`}
+            link={`/${city}/rent/${salonData?.id}`}
             name={roomData?.seat?.seatNumber}
           />
         </Content>

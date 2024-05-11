@@ -12,9 +12,9 @@ const BrandsList = ({ brands, handlePublish }) => {
         <ListWrapper heightLarge={brands.length}>
           {brands.map(brand => (
             <Link
-              href={`/${cyrToTranslit(
-                brand?.addressFull?.city || city,
-              )}/brand/${brand?.seo?.slug || brand.id}`}
+              href={`/${
+                cyrToTranslit(brand?.addressFull?.city) || city?.citySlug
+              }/brand/${brand?.seo?.slug || brand.id}`}
               key={brand.id}
             >
               <BrandItem

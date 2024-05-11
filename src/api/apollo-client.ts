@@ -51,8 +51,6 @@ const httpLink = new HttpLink({
 })
 
 const errorLink = onError(error => {
-  console.log('error', error.graphQLErrors)
-
   if (error.networkError?.message.includes('headers')) {
     deleteCookie(authConfig.tokenKeyName)
     Router.push('/auth')
@@ -78,7 +76,7 @@ const errorLink = onError(error => {
         Router.push('/auth')
         return
       } else {
-        Router.back()
+        // Router.back()
         return
       }
     }

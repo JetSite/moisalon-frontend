@@ -140,7 +140,7 @@ const Main = () => {
   return (
     <Wrapper>
       <Top>
-        <Link href={`/${cyrToTranslit(city)}`}>
+        <Link href={`/${city.citySlug}`}>
           <Logo src="/master-landing-logo.svg" />
         </Link>
       </Top>

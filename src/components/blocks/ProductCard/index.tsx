@@ -66,7 +66,9 @@ const ProductCard: FC<Props> = ({ item, loading, cart }) => {
   ) : (
     <Link
       href={{
-        pathname: `/${cyrToTranslit(city)}/product/${newItem?.product?.id}`,
+        pathname: `/${cyrToTranslit(city?.citySlug)}/product/${
+          newItem?.product?.id
+        }`,
         query: {
           catalog: false,
         },

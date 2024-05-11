@@ -113,13 +113,13 @@ const CabinetChat = () => {
           ) : null}
           {chatClicked?.originData && (
             <Link
-              href={`/${cyrToTranslit(
+              href={`/${
                 chatClicked?.chat.origin === 'MASTER'
-                  ? chatClicked?.originData.city
-                  : city,
-              )}/${
-                chatClicked?.chat.origin === 'MASTER' ? 'master' : 'salon'
-              }/${chatClicked?.originData.id}`}
+                  ? cyrToTranslit(chatClicked?.originData.city)
+                  : city?.citySlug
+              }/${chatClicked?.chat.origin === 'MASTER' ? 'master' : 'salon'}/${
+                chatClicked?.originData.id
+              }`}
               passHref
             >
               <ChatBlockOrigin target="_blank">{`${

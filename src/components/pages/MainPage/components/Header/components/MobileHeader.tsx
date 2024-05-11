@@ -107,7 +107,7 @@ export const MobileHeader: FC<Props> = ({
         <LogoMobile>
           <MobileLogoLink>
             <Link
-              href={`/${cyrToTranslit(city)}`}
+              href={`/${city.citySlug}`}
               // onClick={() => setActiveLink('')}
             >
               <Image alt="logo" src="/logo.svg" />

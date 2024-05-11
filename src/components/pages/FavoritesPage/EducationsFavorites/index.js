@@ -33,7 +33,6 @@ const EducationsFavorites = ({
 }) => {
   const navigationPrevRef = useRef(null)
   const navigationNextRef = useRef(null)
-  const { city } = useAuthStore(getStoreData)
 
   const onBeforeInit = Swiper => {
     if (typeof Swiper.params.navigation !== 'boolean') {

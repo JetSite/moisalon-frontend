@@ -188,18 +188,18 @@ const MastersSearchResults: FC<{
         <WrapperItemsMasters>
           {masterData?.map(master => (
             <Link
-              href={`/${cyrToTranslit(master?.city.cityName || city)}/master/${
-                master?.id
-              }`}
+              href={`/${
+                cyrToTranslit(master?.city.cityName) || city.citySlug
+              }/master/${master?.id}`}
               key={master.id}
             >
               <LinkStyled>
                 <MasterItem
                   loading={loading}
                   master={master}
-                  shareLink={`https://moi.salon/${cyrToTranslit(
-                    master?.city.cityName || city,
-                  )}/master/${master?.id}`}
+                  shareLink={`https://moi.salon/${
+                    cyrToTranslit(master?.city.cityName) || city.citySlug
+                  }/master/${master?.id}`}
                   type="search-page"
                 />
               </LinkStyled>

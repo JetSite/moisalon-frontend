@@ -18,7 +18,6 @@ import useAuthStore from 'src/store/authStore'
 
 const OrderPage = () => {
   const { catalogs } = useBaseStore(getStoreData)
-  const { city } = useAuthStore(getStoreData)
 
   const masterSpecializationsCatalog = catalogOrDefault(
     catalogs?.masterSpecializationsCatalog,

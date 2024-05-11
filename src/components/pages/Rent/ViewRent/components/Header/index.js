@@ -99,7 +99,7 @@ const Header = ({
       <Wrapper>
         <BackButton
           type="Аренда"
-          link={isOwner ? '/masterCabinet' : `/${cyrToTranslit(city)}/rent`}
+          link={isOwner ? '/masterCabinet' : `/${city.citySlug}/rent`}
           name={salon.name}
         />
         <Content>

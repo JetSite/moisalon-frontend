@@ -46,7 +46,7 @@ const Header = ({
           <BackButton
             type="Бренд"
             name={brand?.brandName}
-            link={isOwner ? '/masterCabinet' : `/${cyrToTranslit(city)}/brand`}
+            link={isOwner ? '/masterCabinet' : `/${city.citySlug}/brand`}
           />
         </Wrapper>
         <Wrapper>

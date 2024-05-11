@@ -21,7 +21,7 @@ const Actions = () => {
             <TextBlock>
               Акция: уход + окрашивание <br /> air touch 7 500
             </TextBlock>
-            <Link href={`/${cyrToTranslit(city)}`}>Записаться</Link>
+            <Link href={`/${city.citySlug}`}>Записаться</Link>
             <ActionDeadline>До 1 августа</ActionDeadline>
             <ActionItemImage>
               <img src="/master-page-woman.png" alt="woman image" />

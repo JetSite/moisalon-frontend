@@ -2,8 +2,10 @@ import { useQuery } from '@apollo/client'
 import { getBrands } from 'src/api/graphql/brand/queries/getBrands'
 import Slider from '../../../../blocks/Slider'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { FC } from 'react'
+import { MainSlider } from '../MainMasterSlider'
 
-const MainBrandsSlider = () => {
+const MainBrandsSlider: FC<MainSlider> = ({ city }) => {
   const { data: brands, loading } = useQuery(getBrands, {
     variables: {
       itemsCount: 10,
@@ -13,8 +15,8 @@ const MainBrandsSlider = () => {
 
   return (
     <Slider
+      city={city}
       type="brands"
-      noScroll
       loading={loading}
       items={brandsFlattened}
       title="Популярные бренды"

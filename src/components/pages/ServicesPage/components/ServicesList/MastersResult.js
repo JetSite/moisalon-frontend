@@ -37,18 +37,18 @@ const MastersResult = ({ mastersData }) => {
           <WrapperItemsMasters>
             {mastersData?.map(master => (
               <Link
-                href={`/${cyrToTranslit(
-                  master?.addressFull?.city || city,
-                )}/master/${master?.seo?.slug || master?.id}`}
+                href={`/${
+                  cyrToTranslit(master?.addressFull?.city) || city.citySlug
+                }/master/${master?.seo?.slug || master?.id}`}
                 key={master.id}
               >
                 <LinkStyled>
                   <MasterItem
                     master={master}
                     catalog={masterSpecializationsCatalog}
-                    shareLink={`https://moi.salon/${cyrToTranslit(
-                      master?.addressFull?.city || city,
-                    )}/master/${master?.seo?.slug || master?.id}`}
+                    shareLink={`https://moi.salon/${
+                      cyrToTranslit(master?.addressFull?.city) || city.citySlug
+                    }/master/${master?.seo?.slug || master?.id}`}
                   />
                 </LinkStyled>
               </Link>

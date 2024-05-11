@@ -44,8 +44,8 @@ export interface IMetroStations {
 }
 
 export interface ICity {
-  id: IID
-  cityName: string
+  id?: IID
+  cityName?: string
   citySlug: string
 }
 

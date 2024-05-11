@@ -13,12 +13,15 @@ import { IMeInfo, IMeThings } from 'src/types/me'
 import { getCities } from './graphql/city/getCities'
 import { IVacancy } from 'src/types/vacancies'
 import { IReview } from 'src/types/reviews'
+import { ICity } from 'src/types'
 
 const AuthProvider: FC<{ children: IChildren }> = ({ children }) => {
   const router = useRouter()
-  const { me, loading } = useAuthStore(getStoreData)
-  const { setMe, setLoading } = useAuthStore(getStoreEvent)
+  const { me, loading, city } = useAuthStore(getStoreData)
+  const { setMe, setLoading, setCity } = useAuthStore(getStoreEvent)
   const accessToken = getCookie(authConfig.tokenKeyName)
+  const cityCookie = getCookie(authConfig.cityKeyName)
+  // const cityStorage = window || localStorage.getItem(authConfig.cityKeyName)
 
   const getMeCB = {
     onCompleted: (data: any) => {
@@ -65,6 +68,7 @@ const AuthProvider: FC<{ children: IChildren }> = ({ children }) => {
         vacancies: prepareData.vacancies as IVacancy[],
         reviews: prepareData.reviews as IReview[],
       })
+      setCity(prepareData.selected_city as ICity)
     },
     onError: err => console.log(err),
     skip: true,
@@ -72,14 +76,25 @@ const AuthProvider: FC<{ children: IChildren }> = ({ children }) => {
   })
 
   useEffect(() => {
-    console.log('AuthProvider', me)
+    if (!city.id)
+      setCity(
+        cityCookie
+          ? JSON.parse(cityCookie)
+          : // : cityStorage
+            // ? JSON.parse(cityStorage)
+            null,
+      )
+  }, [])
+
+  useEffect(() => {
+    console.log('AuthProvider', me, city)
 
     setLoading(meLoading || userLoading)
     if (router.asPath !== authConfig.notAuthLink) {
       if (!me && accessToken) {
         getMe()
       }
-      if (me && !me.favorite) {
+      if (me && !me.favorite && router.asPath === '/masterCabinet') {
         getUser({ id: me.info.id })
       }
     }

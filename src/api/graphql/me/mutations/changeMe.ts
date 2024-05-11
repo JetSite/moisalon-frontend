@@ -21,6 +21,16 @@ export const changeMe = gql`
             data {
               attributes {
                 cityName
+                citySlug
+              }
+            }
+          }
+          selected_city {
+            data {
+              id
+              attributes {
+                cityName
+                citySlug
               }
             }
           }

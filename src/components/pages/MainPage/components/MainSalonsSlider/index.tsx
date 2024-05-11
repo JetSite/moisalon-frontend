@@ -3,11 +3,13 @@ import { getSalons } from '../../../../../api/graphql/salon/queries/getSalons'
 import Slider from '../../../../blocks/Slider'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { ISalon } from 'src/types/salon'
+import { FC } from 'react'
+import { MainSlider } from '../MainMasterSlider'
 
-const MainSalonsSlider = () => {
+const MainSalonsSlider: FC<MainSlider> = ({ city }) => {
   const { data: salons, loading } = useQuery(getSalons, {
     variables: {
-      city: 'Москва',
+      city: city.citySlug,
       itemsCount: 10,
     },
   })
@@ -17,6 +19,7 @@ const MainSalonsSlider = () => {
 
   return (
     <Slider
+      city={city}
       type="salons"
       loading={loading}
       items={salonsFlattened}

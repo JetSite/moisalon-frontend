@@ -25,11 +25,11 @@ const CtalogPage = () => {
     <MainLayout me={me}>
       <Wrapper>
         <Wrap>
-          <Link href={`/${cyrToTranslit(city)}/beautyFreeShop`}>
+          <Link href={`/${city.citySlug}/beautyFreeShop`}>
             <Button variant="red">B2B магазин</Button>
           </Link>
         </Wrap>
-        <Link href={`/${cyrToTranslit(city)}/beautyFreeShop`}>
+        <Link href={`/${city.citySlug}/beautyFreeShop`}>
           <Button variant="red">B2C магазин</Button>
         </Link>
       </Wrapper>

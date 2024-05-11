@@ -302,7 +302,7 @@ const SalonMap = ({ me, view, setView, rent }) => {
       refetchChange({
         input: {
           ...querySearch,
-          city: city,
+          city: city.citySlug,
         },
       })
       refetchAllSalons()
@@ -329,7 +329,7 @@ const SalonMap = ({ me, view, setView, rent }) => {
       refetchChange({
         input: {
           ...querySearch,
-          city: city,
+          city: city.citySlug,
         },
       })
     }
@@ -348,7 +348,7 @@ const SalonMap = ({ me, view, setView, rent }) => {
     firstFetch({
       input: {
         ...querySearch,
-        city: city,
+        city: city.citySlug,
       },
     })
   }, [])
@@ -625,14 +625,14 @@ const SalonMap = ({ me, view, setView, rent }) => {
                     <Link
                       href={
                         rent
-                          ? `/${cyrToTranslit(
-                              salon?.salon?.address?.city || city,
-                            )}/rent/${salon.salon?.seo?.slug || salon.salon.id}`
-                          : `/${cyrToTranslit(
-                              salon?.salon?.address?.city || city,
-                            )}/salon/${
-                              salon.salon?.seo?.slug || salon.salon.id
-                            }`
+                          ? `/${
+                              cyrToTranslit(salon?.salon?.address?.city) ||
+                              city.citySlug
+                            }/rent/${salon.salon?.seo?.slug || salon.salon.id}`
+                          : `/${
+                              cyrToTranslit(salon?.salon?.address?.city) ||
+                              city.citySlug
+                            }/salon/${salon.salon?.seo?.slug || salon.salon.id}`
                       }
                       key={salon.salon.id}
                     >
@@ -642,9 +642,10 @@ const SalonMap = ({ me, view, setView, rent }) => {
                           rent={rent}
                           loading={loading}
                           item={salon.salon}
-                          shareLink={`https://moi.salon/${cyrToTranslit(
-                            salon?.salon?.address?.city || city,
-                          )}/salon/${salon.salon?.seo?.slug || salon.salon.id}`}
+                          shareLink={`https://moi.salon/${
+                            cyrToTranslit(salon?.salon?.address?.city) ||
+                            city.citySlug
+                          }/salon/${salon.salon?.seo?.slug || salon.salon.id}`}
                         />
                       </SalonCardWrapper>
                     </Link>
@@ -708,12 +709,14 @@ const SalonMap = ({ me, view, setView, rent }) => {
                     <Link
                       href={
                         rent
-                          ? `/${cyrToTranslit(
-                              salon?.address?.city || city,
-                            )}/rent/${salon?.seo?.slug || salon.id}`
-                          : `/${cyrToTranslit(
-                              salon?.address?.city || city,
-                            )}/salon/${salon?.seo?.slug || salon.id}`
+                          ? `/${
+                              cyrToTranslit(salon?.address?.city) ||
+                              city.citySlug
+                            }/rent/${salon?.seo?.slug || salon.id}`
+                          : `/${
+                              cyrToTranslit(salon?.address?.city) ||
+                              city.citySlug
+                            }/salon/${salon?.seo?.slug || salon.id}`
                       }
                       key={salon.id}
                     >
@@ -723,9 +726,9 @@ const SalonMap = ({ me, view, setView, rent }) => {
                           rent={rent}
                           loading={loading}
                           item={salon}
-                          shareLink={`https://moi.salon/${cyrToTranslit(
-                            salon?.address?.city || city,
-                          )}/salon/${salon?.seo?.slug || salon.id}`}
+                          shareLink={`https://moi.salon/${
+                            cyrToTranslit(salon?.address?.city) || city.citySlug
+                          }/salon/${salon?.seo?.slug || salon.id}`}
                         />
                       </SalonCardWrapper>
                     </Link>
@@ -759,14 +762,16 @@ const SalonMap = ({ me, view, setView, rent }) => {
                       <Link
                         href={
                           rent
-                            ? `/${cyrToTranslit(
-                                salon?.salon?.address?.city || city,
-                              )}/rent/${
+                            ? `/${
+                                cyrToTranslit(salon?.salon?.address?.city) ||
+                                city.citySlug
+                              }/rent/${
                                 salon.salon?.seo?.slug || salon.salon.id
                               }`
-                            : `/${cyrToTranslit(
-                                salon?.salon?.address?.city || city,
-                              )}/salon/${
+                            : `/${
+                                cyrToTranslit(salon?.salon?.address?.city) ||
+                                city.citySlug
+                              }/salon/${
                                 salon.salon?.seo?.slug || salon.salon.id
                               }`
                         }
@@ -778,9 +783,10 @@ const SalonMap = ({ me, view, setView, rent }) => {
                             rent={rent}
                             loading={loading}
                             item={salon.salon}
-                            shareLink={`https://moi.salon/${cyrToTranslit(
-                              salon?.salon?.address?.city || city,
-                            )}/salon/${
+                            shareLink={`https://moi.salon/${
+                              cyrToTranslit(salon?.salon?.address?.city) ||
+                              city.citySlug
+                            }/salon/${
                               salon.salon?.seo?.slug || salon.salon.id
                             }`}
                           />
@@ -800,12 +806,14 @@ const SalonMap = ({ me, view, setView, rent }) => {
                       <Link
                         href={
                           rent
-                            ? `/${cyrToTranslit(
-                                salon?.address?.city || city,
-                              )}/rent/${salon?.seo?.slug || salon.id}`
-                            : `/${cyrToTranslit(
-                                salon?.address?.city || city,
-                              )}/salon/${salon?.seo?.slug || salon.id}`
+                            ? `/${
+                                cyrToTranslit(salon?.address?.city) ||
+                                city.citySlug
+                              }/rent/${salon?.seo?.slug || salon.id}`
+                            : `/${
+                                cyrToTranslit(salon?.address?.city) ||
+                                city.citySlug
+                              }/salon/${salon?.seo?.slug || salon.id}`
                         }
                         key={salon.id}
                       >
@@ -815,9 +823,10 @@ const SalonMap = ({ me, view, setView, rent }) => {
                             rent={rent}
                             loading={loading}
                             item={salon}
-                            shareLink={`https://moi.salon/${cyrToTranslit(
-                              salon?.address?.city || city,
-                            )}/salon/${salon?.seo?.slug || salon.id}`}
+                            shareLink={`https://moi.salon/${
+                              cyrToTranslit(salon?.address?.city) ||
+                              city.citySlug
+                            }/salon/${salon?.seo?.slug || salon.id}`}
                           />
                         </SalonCardWrapper>
                       </Link>

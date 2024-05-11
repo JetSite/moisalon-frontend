@@ -27,9 +27,19 @@ export const getUser = gql`
               id
               attributes {
                 cityName
+                citySlug
               }
             }
           }
+          selected_city {
+          data {
+            id
+            attributes {
+              cityName
+              citySlug
+            }
+          }
+        }
           avatar {
             ${imageInfo}
           }

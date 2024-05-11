@@ -95,9 +95,9 @@ const Success = ({
           Теперь мастера смогут отправлять вам заявки на аренду.
         </Subtitle>
         <Link
-          href={`/${cyrToTranslit(salon?.address?.city || city)}/rent/${
-            salon?.id
-          }/room/${roomSeatId}/seat/${seatSalon?.id}`}
+          href={`/${
+            cyrToTranslit(salon?.address?.city) || city.citySlug
+          }/rent/${salon?.id}/room/${roomSeatId}/seat/${seatSalon?.id}`}
           passHref
         >
           <TopLink target="_blank">Просмотр на платформе</TopLink>

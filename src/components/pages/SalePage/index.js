@@ -47,9 +47,10 @@ const SalePage = ({ sale, loading, beautyCategories, beautyAllContent }) => {
           originName: item.masterOrigin?.name,
           customTitle: `у мастера ${item.masterOrigin?.name}`,
           buttonLink: 'master',
-          originLink: `/${cyrToTranslit(
-            item?.masterOrigin?.addressFull?.city || city,
-          )}/master/${item?.originId}`,
+          originLink: `/${
+            cyrToTranslit(item?.masterOrigin?.addressFull?.city) ||
+            city.citySlug
+          }/master/${item?.originId}`,
         }
       case 'SALON':
         return {
@@ -57,9 +58,9 @@ const SalePage = ({ sale, loading, beautyCategories, beautyAllContent }) => {
           originName: item.salonOrigin?.name,
           customTitle: `в салоне ${item.salonOrigin?.name}`,
           buttonLink: 'salon',
-          originLink: `/${cyrToTranslit(
-            item?.salonOrigin?.address?.city || city,
-          )}/salon/${item?.originId}`,
+          originLink: `/${
+            cyrToTranslit(item?.salonOrigin?.address?.city) || city.citySlug
+          }/salon/${item?.originId}`,
         }
       case 'BRAND':
         return {
@@ -67,9 +68,9 @@ const SalePage = ({ sale, loading, beautyCategories, beautyAllContent }) => {
           originName: item.brandOrigin?.name,
           customTitle: `у бренда ${item.brandOrigin?.name}`,
           buttonLink: 'brand',
-          originLink: `/${cyrToTranslit(
-            item?.brandOrigin?.addressFull?.city || city,
-          )}/brand/${item?.originId}`,
+          originLink: `/${
+            cyrToTranslit(item?.brandOrigin?.addressFull?.city) || city.citySlug
+          }/brand/${item?.originId}`,
         }
     }
   }

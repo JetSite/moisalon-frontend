@@ -26,13 +26,13 @@ const SalonSlide: FC<Props> = ({ item, isEditing, deleteFunction }) => {
     <Link
       href={
         !landingMaster
-          ? `/${cyrToTranslit(city)}/salon/${item?.id}`
-          : `/${cyrToTranslit(city)}/rent`
+          ? `/${city.citySlug}/salon/${item?.id}`
+          : `/${city.citySlug}/rent`
       }
     >
       <SalonCard
         item={item}
-        shareLink={`https://moi.salon/${cyrToTranslit(city)}/salon/${item?.id}`}
+        shareLink={`https://moi.salon/${city.citySlug}/salon/${item?.id}`}
       />
       {isEditing && (
         <DeleteSalon onClick={() => deleteFunction(item.id)}>

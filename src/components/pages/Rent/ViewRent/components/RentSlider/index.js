@@ -69,9 +69,9 @@ const RentSlider = ({ salon, title }) => {
                       key={i}
                     >
                       <Link
-                        href={`/${cyrToTranslit(
-                          salon?.address?.city || city,
-                        )}/rent/${salon?.id}/room/${item.id}/seat/${
+                        href={`/${
+                          cyrToTranslit(salon?.address?.city) || city.citySlug
+                        }/rent/${salon?.id}/room/${item.id}/seat/${
                           el?.seo?.slug || el?.id
                         }`}
                       >

@@ -45,11 +45,7 @@ const CatalogPage = ({
         <SearchBlock noFilters={noFilters} title="Найти товар" />
       </MobileHidden>
       <Wrap>
-        <BackButton
-          onlyType
-          type="На главную"
-          link={`/${cyrToTranslit(city)}`}
-        />
+        <BackButton onlyType type="На главную" link={`/${city.citySlug}`} />
       </Wrap>
       {bannersByHookWide?.bannersByHookCode?.length ||
       bannersByHookSmall1?.bannersByHookCode?.length ||

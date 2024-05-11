@@ -85,7 +85,6 @@ interface Props {
 const Tabs: FC<Props> = ({ tabs, setActiveTab, activeTab }) => {
   const router = useRouter()
   const { setMe, logout } = useAuthStore(getStoreEvent)
-  const { city } = useAuthStore(getStoreData)
   const { refetch } = useQuery(currentUserSalonsAndMasterQuery, {
     skip: true,
     onCompleted: res => {

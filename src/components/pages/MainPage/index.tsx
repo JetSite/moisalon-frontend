@@ -39,7 +39,7 @@ const MainPage = ({
   totalBrands,
   cityData,
 }) => {
-  const { me } = useAuthStore(getStoreData)
+  const { me, city } = useAuthStore(getStoreData)
   const query = { query: '' } //TODO: query
   return (
     <MainLayout>
@@ -88,9 +88,9 @@ const MainPage = ({
         {/* <MainGoodsSlider me={me} /> */}
         {/* <MainRentSlider me={me} /> */}
         {/* <MainWorkplacesSlider me={me} /> */}
-        <MainMasterSlider me={me} />
-        <MainSalonsSlider me={me} />
-        <MainBrandsSlider me={me} />
+        <MainMasterSlider city={city} />
+        <MainSalonsSlider city={city} />
+        <MainBrandsSlider city={city} />
         <About me={me} />
         <Ribbon
           title="Бьюти-лента"

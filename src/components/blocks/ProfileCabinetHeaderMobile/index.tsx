@@ -70,9 +70,9 @@ const CabinetHeaderMobile: FC<Props> = ({
         <Wrap>
           {master.id ? (
             <Link
-              href={`/${cyrToTranslit(master.city.cityName || city)}/master/${
-                master?.id
-              }`}
+              href={`/${
+                cyrToTranslit(master.city.cityName) || city?.citySlug
+              }/master/${master?.id}`}
             >
               <Item>
                 <Container>
@@ -96,12 +96,14 @@ const CabinetHeaderMobile: FC<Props> = ({
                   <Link
                     href={
                       item.salonWorkplacesCount
-                        ? `/${cyrToTranslit(
-                            item.cities.cityName || city,
-                          )}/rent/${item?.id}`
-                        : `/${cyrToTranslit(
-                            item.cities.cityName || city,
-                          )}/salon/${item?.id}`
+                        ? `/${
+                            cyrToTranslit(item.cities.cityName) ||
+                            city?.citySlug
+                          }/rent/${item?.id}`
+                        : `/${
+                            cyrToTranslit(item.cities.cityName) ||
+                            city?.citySlug
+                          }/salon/${item?.id}`
                     }
                   >
                     <Item>
@@ -131,9 +133,9 @@ const CabinetHeaderMobile: FC<Props> = ({
             ? brands.map(item => (
                 <div key={item.id}>
                   <Link
-                    href={`/${cyrToTranslit(
-                      item.city.cityName || city,
-                    )}/brand/${item.id}`}
+                    href={`/${
+                      cyrToTranslit(item.city.cityName) || city?.citySlug
+                    }/brand/${item.id}`}
                   >
                     <Item>
                       <Container>

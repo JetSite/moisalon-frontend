@@ -1,4 +1,4 @@
-import React, {  useState } from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
 import { WrapperItemsBrands, Title, LinkStyled } from './styled'
 import { pluralize } from '../../../../../utils/pluralize'
@@ -9,14 +9,13 @@ import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 import { IBrand } from 'src/types/brands'
 
-const BrandsSearchResults = ({ brandsSearch }: {brandsSearch: IBrand[]}) => {
+const BrandsSearchResults = ({ brandsSearch }: { brandsSearch: IBrand[] }) => {
   const [brandsSearchData, setBrandsSearchData] = useState(brandsSearch)
   const [loading, setLoading] = useState(false)
   const [fetchMoreLoading, setFetchMoreLoading] = useState(false)
   const { city } = useAuthStore(getStoreData)
 
   const isMobile = useCheckMobileDevice()
-
 
   // const { fetchMore, refetch } = useQuery(brandSearchQuery, {
   //   variables: {
@@ -126,18 +125,18 @@ const BrandsSearchResults = ({ brandsSearch }: {brandsSearch: IBrand[]}) => {
           <WrapperItemsBrands>
             {brandsSearchResult?.map(brand => (
               <Link
-                href={`/${cyrToTranslit(
-                  brand.city || city,
-                )}/brand/${ brand.id}`}
+                href={`/${cyrToTranslit(brand.city) || city.citySlug}/brand/${
+                  brand.id
+                }`}
                 key={brand.id}
               >
                 <LinkStyled>
                   <BrandItem
                     loading={loading}
                     brand={brand}
-                    shareLink={`https://moi.salon/${cyrToTranslit(
-                      brand.city || city,
-                    )}/brand/${ brand.id}`}
+                    shareLink={`https://moi.salon/${
+                      cyrToTranslit(brand.city) || city.citySlug
+                    }/brand/${brand.id}`}
                     type="search-page"
                   />
                 </LinkStyled>

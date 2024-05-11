@@ -244,7 +244,7 @@ const Product = ({
   return (
     <Wrapper>
       <Top>
-        <Link href={`/${cyrToTranslit(city)}/product/${item?.product?.id}`}>
+        <Link href={`/${city.citySlug}/product/${item?.product?.id}`}>
           <Image>
             <img
               src={

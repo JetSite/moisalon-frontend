@@ -108,7 +108,7 @@ const Header = ({
         />
         <Wrapper>
           <BackButton
-            link={isOwner ? '/masterCabinet' : `/${cyrToTranslit(city)}/master`}
+            link={isOwner ? '/masterCabinet' : `/${city.citySlug}/master`}
             type="Мастер"
             name={master?.masterName}
           />

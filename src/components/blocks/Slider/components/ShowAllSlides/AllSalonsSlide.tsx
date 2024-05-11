@@ -13,9 +13,7 @@ const AllSalonsSlide = () => {
   return (
     <Link
       href={
-        !landingMaster
-          ? `/${cyrToTranslit(city)}/salon`
-          : `/${cyrToTranslit(city)}/rent`
+        !landingMaster ? `/${city.citySlug}/salon` : `/${city.citySlug}/rent`
       }
     >
       <AllSalons>

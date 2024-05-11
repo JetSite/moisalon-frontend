@@ -118,9 +118,9 @@ const BrandsFavorites: FC<ThingsProps> = ({
                         key={i}
                       >
                         <Link
-                          href={`/${cyrToTranslit(
-                            brand.city?.cityName || city,
-                          )}/brand/${brand.id}`}
+                          href={`/${
+                            cyrToTranslit(brand.city?.cityName) || city.citySlug
+                          }/brand/${brand.id}`}
                         >
                           <BrandItem
                             brand={brand}

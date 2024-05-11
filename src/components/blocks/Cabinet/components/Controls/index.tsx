@@ -69,8 +69,7 @@ const Controls = ({
   const dev = process.env.NEXT_PUBLIC_ENV !== 'production'
 
   const router = useRouter()
-  const { city } = useAuthStore(getStoreData)
-  const { setMe, logout } = useAuthStore(getStoreEvent)
+  const { logout } = useAuthStore(getStoreEvent)
 
   return (
     <Wrapper>

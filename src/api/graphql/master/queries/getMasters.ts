@@ -4,8 +4,8 @@ import { imageInfo } from '../../common/imageInfo'
 import { cityInfo } from 'src/api/graphql/common/cityInfo'
 
 export const getMasters = gql`
-  query masters($city: String!,$itemsCount: Int!) {
-    masters(filters:{city:{cityName:{eq:$city }}}, pagination: { page: 1, pageSize: $itemsCount }) {
+  query masters($citySlug: String!,$itemsCount: Int!, $excludeId: ID) {
+    masters(filters:{city:{citySlug:{eq:$citySlug }}, id:{ne: $excludeId}}, pagination: { page: 1, pageSize: $itemsCount }) {
       data {
         id
         attributes {

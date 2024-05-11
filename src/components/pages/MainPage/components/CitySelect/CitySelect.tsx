@@ -30,21 +30,19 @@ import { cyrToTranslit } from '../../../../../utils/translit'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
 import { IMe } from 'src/types/me'
+import { defaultcCitiesList } from 'src/api/authConfig'
+import { IID } from 'src/types/common'
+import { ICity } from 'src/types'
+import { getCities } from 'src/api/graphql/city/getCities'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { UpdatedList } from './UpdatedList'
+import { changeMe } from 'src/api/graphql/me/mutations/changeMe'
 
-let cities = [
-  'Москва',
-  'Санкт-Петербург',
-  'Екатеринбург',
-  'Новосибирск',
-  'Нижний Новгород',
-  'Казань',
-  'Самара',
-  'Ростов-на-Дону',
-  'Челябинск',
-  'Саратов',
-  'Хабаровск',
-  'Волгоград',
-]
+const prepareCitiesList: ICity[] = defaultcCitiesList.map((city, i) => ({
+  cityName: city,
+  citySlug: cyrToTranslit(city) as string,
+  id: (i + 1).toString(),
+}))
 
 interface Props {
   showCitySelect: boolean
@@ -61,6 +59,27 @@ const CitySelect: FC<Props> = ({
 }) => {
   const { city } = useAuthStore(getStoreData)
   const { setCity } = useAuthStore(getStoreEvent)
+  const [citiesList, setCitiesList] = useState<ICity[]>([])
+  const { refetch, loading } = useQuery(getCities, {
+    variables: { itemsCount: 10 },
+    onCompleted: data => {
+      const prepareData = flattenStrapiResponse(data.cities) as ICity[]
+      setCitiesList(prepareData.length ? prepareData : prepareCitiesList)
+    },
+    onError: err => {
+      console.log(err)
+      setCitiesList(prepareCitiesList)
+    },
+    skip: true,
+    notifyOnNetworkStatusChange: true,
+  })
+
+  console.log(city)
+
+  useEffect(() => {
+    refetch()
+  }, [])
+
   // useEffect(() => {
   //   if (showCitySelect) {
   //     document.body.style.overflow = "hidden";
@@ -76,22 +95,12 @@ const CitySelect: FC<Props> = ({
   const [cityInput, setCityInput] = useState('')
   const wrapperRef = useRef<HTMLDivElement>(null)
 
-  const { refetch } = useQuery(currentUserSalonsAndMasterQuery, {
-    skip: true,
+  const [changeCityFunc] = useMutation(changeMe, {
     onCompleted: res => {
-      setMe({
-        info: res?.me?.info,
-        master: res?.me?.master,
-        locationByIp: res?.locationByIp,
-        salons: res?.me?.salons,
-        rentalRequests: res?.me?.rentalRequests,
-      })
-    },
-  })
-
-  const [changeCityFunc] = useMutation(changeCityMutation, {
-    onCompleted: res => {
-      // refetch();
+      const newCity: ICity = flattenStrapiResponse(
+        res.updateUsersPermissionsUser,
+      ).selected_city
+      setCity(newCity)
     },
   })
 
@@ -110,8 +119,6 @@ const CitySelect: FC<Props> = ({
   }
   outsideClick(wrapperRef)
 
-  let citiesList = cities
-
   const closeHandler = () => {
     setShowCitySelect(false)
   }
@@ -120,17 +127,17 @@ const CitySelect: FC<Props> = ({
     setCityInput(e.target.value)
   }
 
-  const cityClickHandler = async (index: number) => {
-    const city = citiesList.find((city, i) => i == index)
+  const cityClickHandler = async (slug: string) => {
+    const city = citiesList.find(city => cyrToTranslit(city) === slug)
     setShowCitySelect(false)
     setShowHamburgerMenu && setShowHamburgerMenu(false)
-    localStorage.setItem('citySalon', city ? city : 'Москва')
+    localStorage.setItem('citySalon', city ? city.citySlug : 'moskva')
     // await changeCityFunc({
     //   variables: {
     //     city: city ? city : "Москва",
     //   },
     // });
-    setCity(city ? city : 'Москва')
+    setCity(city || null)
     if (router.pathname === '/[city]/salon/[id]' && router?.query?.city) {
       router.push(`/${cyrToTranslit(city)}/salon`)
       return
@@ -170,7 +177,7 @@ const CitySelect: FC<Props> = ({
     <CitiesList cities={citiesList} cityClickHandler={cityClickHandler} />
   )
 
-  if (cityInput.length > 2) {
+  if (cityInput.length >= 2) {
     component = (
       <UpdatedList
         cityInput={cityInput}
@@ -206,87 +213,10 @@ const CitySelect: FC<Props> = ({
             onChange={changeCity}
           />
         </InputWrapper>
-        {component}
+        {!loading ? component : null}
       </Wrapper>
     </>
   )
 }
 
 export default CitySelect
-
-interface PropsUpdatedList {
-  cityInput: string
-  setCityInput: Dispatch<SetStateAction<string>>
-  setShowCitySelect: Dispatch<SetStateAction<boolean>>
-  setShowHamburgerMenu?: Dispatch<SetStateAction<boolean>>
-  changeCityFunc: any //TODO: any
-}
-
-const UpdatedList: FC<PropsUpdatedList> = ({
-  cityInput,
-  setCityInput,
-  setShowCitySelect,
-  setShowHamburgerMenu,
-  changeCityFunc,
-}) => {
-  const { suggestions } = useCitySuggestions(cityInput)
-  const unicSuggestion = Array.from(new Set(suggestions))
-  const router = useRouter()
-
-  const { city } = useAuthStore(getStoreData)
-  const { setCity } = useAuthStore(getStoreEvent)
-
-  const cityClickHandler = (index: number) => {
-    const city = unicSuggestion.find((city, i) => i == index)
-    setShowCitySelect(false)
-    setShowHamburgerMenu && setShowHamburgerMenu(false)
-    setCityInput('')
-
-    localStorage.setItem('citySalon', city ? (city as string) : 'Москва')
-    changeCityFunc({
-      variables: {
-        city: city ? city : 'Москва',
-      },
-    })
-    setCity(city ? (city as string) : 'Москва')
-    if (router.pathname === '/[city]/salon/[id]' && router?.query?.city) {
-      router.push(`/${cyrToTranslit(city)}/salon`)
-      return
-    }
-    if (router.pathname === '/[city]/master/[id]' && router?.query?.city) {
-      router.push(`/${cyrToTranslit(city)}/master`)
-      return
-    }
-    if (router.pathname === '/[city]/brand/[id]' && router?.query?.city) {
-      router.push(`/${cyrToTranslit(city)}/brand`)
-      return
-    }
-    if (
-      router.pathname === '/[city]/brand/[id]/products' &&
-      router?.query?.city
-    ) {
-      router.push(`/${cyrToTranslit(city)}/brand`)
-      return
-    }
-    if (router.pathname === '/[city]/rent/[id]' && router?.query?.city) {
-      router.push(`/${cyrToTranslit(city)}/rent`)
-      return
-    }
-    if (
-      router.pathname === '/[city]/rent/[id]room/[roomId]/seat/[seatId]' &&
-      router?.query?.city
-    ) {
-      router.push(`/${cyrToTranslit(city)}/rent`)
-      return
-    }
-    if (router?.query?.city) {
-      router.replace({
-        query: { ...router.query, city: cyrToTranslit(city) },
-      })
-    }
-  }
-
-  return (
-    <CitiesList cities={unicSuggestion} cityClickHandler={cityClickHandler} />
-  )
-}

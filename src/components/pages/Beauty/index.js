@@ -37,14 +37,14 @@ const Beauty = () => {
           <BackButton
             type="Вернуться на главную"
             onlyType
-            link={`/${cyrToTranslit(city)}`}
+            link={`/${city.citySlug}`}
           />
         </HideMobile>
         <Content>
           <Image alt="img" src="/beauty-1.png" />
           <HeadMobile>
             <ImageMobile alt="img" src="/beauty-1-mobile.png" />
-            <Close onClick={() => router.push(`/${cyrToTranslit(city)}`)} />
+            <Close onClick={() => router.push(`/${city.citySlug}`)} />
             <Autor>
               <Avatar alt="avatar" src="/beauty-avatar.png" />
               <Info>

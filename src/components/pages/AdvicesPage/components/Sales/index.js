@@ -67,16 +67,19 @@ const Sales = ({ item }) => {
         <Link
           href={
             item.origin === 'MASTER'
-              ? `/${cyrToTranslit(
-                  item?.masterOrigin?.addressFull?.city || city,
-                )}/master/${item.originId}`
+              ? `/${
+                  cyrToTranslit(item?.masterOrigin?.addressFull?.city) ||
+                  city.citySlug
+                }/master/${item.originId}`
               : item.origin === 'SALON'
-              ? `/${cyrToTranslit(
-                  item?.salonOrigin?.address?.city || city,
-                )}/salon/${item.originId}`
-              : `/${cyrToTranslit(
-                  item?.brandOrigin?.addressFull?.city || city,
-                )}/brand/${item.originId}`
+              ? `/${
+                  cyrToTranslit(item?.salonOrigin?.address?.city) ||
+                  city.citySlug
+                }/salon/${item.originId}`
+              : `/${
+                  cyrToTranslit(item?.brandOrigin?.addressFull?.city) ||
+                  city.citySlug
+                }/brand/${item.originId}`
           }
         >
           <Button variant="red" size="fullWidth">

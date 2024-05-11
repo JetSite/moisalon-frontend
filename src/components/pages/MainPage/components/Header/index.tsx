@@ -143,61 +143,61 @@ const Header = ({ loading = false }) => {
   }, [citiesData])
 
   useEffect(() => {
-    if (me) {
-      if (typeof window !== 'undefined' && window.localStorage) {
-        if (!me?.info) {
-          localStorage.setItem(
-            'citySalon',
-            me?.info?.city
-              ? me.info.city
-              : localStorage.getItem('citySalon')
-              ? localStorage.getItem('citySalon')
-              : me?.locationByIp
-              ? me?.locationByIp?.data?.city
-              : 'Москва',
-          )
-          setCity(
-            me?.info?.city
-              ? me.info.city
-              : localStorage.getItem('citySalon')
-              ? localStorage.getItem('citySalon')
-              : me?.locationByIp
-              ? me?.locationByIp?.data?.city
-              : 'Москва',
-          )
-        } else {
-          setCity(
-            localStorage.getItem('citySalon')
-              ? localStorage.getItem('citySalon')
-              : me?.locationByIp
-              ? me?.locationByIp?.data?.city
-              : 'Москва',
-          )
-          localStorage.setItem(
-            'citySalon',
-            localStorage.getItem('citySalon')
-              ? localStorage.getItem('citySalon')
-              : me?.locationByIp
-              ? me?.locationByIp?.data?.city
-              : 'Москва',
-          )
-        }
-      }
-    }
+    // if (me) {
+    //   if (typeof window !== 'undefined' && window.localStorage) {
+    //     if (!me?.info) {
+    //       localStorage.setItem(
+    //         'citySalon',
+    //         me?.info?.city
+    //           ? me.info.city
+    //           : localStorage.getItem('citySalon')
+    //           ? localStorage.getItem('citySalon')
+    //           : me?.locationByIp
+    //           ? me?.locationByIp?.data?.city
+    //           : 'Москва',
+    //       )
+    //       setCity(
+    //         me?.info?.city
+    //           ? me.info.city
+    //           : localStorage.getItem('citySalon')
+    //           ? localStorage.getItem('citySalon')
+    //           : me?.locationByIp
+    //           ? me?.locationByIp?.data?.city
+    //           : 'Москва',
+    //       )
+    //     } else {
+    //       setCity(
+    //         localStorage.getItem('citySalon')
+    //           ? localStorage.getItem('citySalon')
+    //           : me?.locationByIp
+    //           ? me?.locationByIp?.data?.city
+    //           : 'Москва',
+    //       )
+    //       localStorage.setItem(
+    //         'citySalon',
+    //         localStorage.getItem('citySalon')
+    //           ? localStorage.getItem('citySalon')
+    //           : me?.locationByIp
+    //           ? me?.locationByIp?.data?.city
+    //           : 'Москва',
+    //       )
+    //     }
+    //   }
+    // }
   }, [me])
 
   useEffect(() => {
-    if (!city) {
-      setCity(
-        me?.info?.city
-          ? me.info.city
-          : localStorage.getItem('citySalon')
-          ? localStorage.getItem('citySalon')
-          : me?.locationByIp
-          ? me?.locationByIp?.data?.city
-          : 'Москва',
-      )
-    }
+    // if (!city) {
+    //   setCity(
+    //     me?.info?.city
+    //       ? me.info.city
+    //       : localStorage.getItem('citySalon')
+    //       ? localStorage.getItem('citySalon')
+    //       : me?.locationByIp
+    //       ? me?.locationByIp?.data?.city
+    //       : 'Москва',
+    //   )
+    // }
   }, [])
 
   const [fillFav, setFillFav] = useState(isAboutPage ? '#fff' : '#000')
@@ -215,7 +215,7 @@ const Header = ({ loading = false }) => {
   // const { unreadMessagesCount } = useChat();
 
   const logoClickHandler = () => {
-    router.push(`/${cyrToTranslit(city)}`)
+    router.push(`/${city.citySlug}`)
   }
 
   const searchIconClickHandler = () => {
@@ -245,7 +245,7 @@ const Header = ({ loading = false }) => {
           setFillProfile={setFillProfile}
           setFillCart={setFillCart}
           setShowCitySelect={setShowCitySelect}
-          defaultCity={city}
+          defaultCity={city.citySlug}
           showHamburgerMenu={showHamburgerMenu}
           setShowHamburgerMenu={setShowHamburgerMenu}
           showSearchPopup={showSearchPopup}
@@ -265,25 +265,27 @@ const Header = ({ loading = false }) => {
             </LogoWrap>
             <Nav>
               <NavItemWrapper>
-                {getMainPageHeaderLinks(city).navLinks.map((link, i) => (
-                  <NavItem
-                    key={i}
-                    active={!!activeLink(router.pathname, link.pathArr)}
-                    isAboutPage={isAboutPage}
-                    // visible={!!link?.visible}
-                  >
-                    <Link href={link.link} target={link.target}>
-                      {link.title}
-                    </Link>
-                  </NavItem>
-                ))}
+                {getMainPageHeaderLinks(city.citySlug).navLinks.map(
+                  (link, i) => (
+                    <NavItem
+                      key={i}
+                      active={!!activeLink(router.pathname, link.pathArr)}
+                      isAboutPage={isAboutPage}
+                      // visible={!!link?.visible}
+                    >
+                      <Link href={link.link} target={link.target}>
+                        {link.title}
+                      </Link>
+                    </NavItem>
+                  ),
+                )}
                 <AdditionalNav
                   catalog
                   b2bClient={b2bClient}
                   isAboutPage={isAboutPage}
                   showAdditionalNav={showCatalogMenu}
                   setShowAdditionalNav={setShowCatalogMenu}
-                  links={getMainPageHeaderLinks(city).addCatalogLinks}
+                  links={getMainPageHeaderLinks(city.citySlug).addCatalogLinks}
                 />
               </NavItemWrapper>
             </Nav>
@@ -304,7 +306,7 @@ const Header = ({ loading = false }) => {
                 isAboutPage={isAboutPage}
                 showAdditionalNav={showAdditionalNav}
                 setShowAdditionalNav={setShowAdditionalNav}
-                links={getMainPageHeaderLinks(city).addNavLinks}
+                links={getMainPageHeaderLinks(city.citySlug).addNavLinks}
               />
             </AdditionalNavWrapper>
           </HeaderMenu>
@@ -315,7 +317,7 @@ const Header = ({ loading = false }) => {
                 isAboutPage={isAboutPage}
               />
               <CitySelectText showCitySelect={showCitySelect}>
-                {city}
+                {city.cityName}
               </CitySelectText>
             </LinkCitySelect>
             <LinkSearch

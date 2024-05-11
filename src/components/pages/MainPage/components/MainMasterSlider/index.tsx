@@ -4,11 +4,18 @@ import { getMasters } from 'src/api/graphql/master/queries/getMasters'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 
 import { IMaster } from 'src/types/masters'
+import { defaultCitySlug } from 'src/api/authConfig'
+import { FC } from 'react'
+import { ICity } from 'src/types'
 
-const MainMasterSlider = () => {
+export interface MainSlider {
+  city: ICity
+}
+
+const MainMasterSlider: FC<MainSlider> = ({ city }) => {
   const { data: masters, loading } = useQuery(getMasters, {
     variables: {
-      city: 'Москва',
+      citySlug: city.citySlug,
       itemsCount: 10,
     },
   })
@@ -18,6 +25,7 @@ const MainMasterSlider = () => {
 
   return (
     <Slider
+      city={city}
       type="masters"
       loading={loading}
       items={mastersFlattened}
