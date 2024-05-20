@@ -120,7 +120,7 @@ export const Socials = styled.div`
   display: flex;
 `
 
-export const SocialButton = styled.a`
+export const SocialButton = styled.span`
   display: block;
   width: 23px;
   height: 23px;

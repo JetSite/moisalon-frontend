@@ -229,11 +229,7 @@ const Header: FC<Props> = ({ salon, isOwner }) => {
           </NameWrapper>
           {salon?.activities?.length < 8 || showAllActivities ? (
             <Activities>
-              {/* {selectedGroupNames(
-                salon?.activities,
-                salonActivitiesCatalog,
-                ', ',
-              )} */}
+              {salon?.activities.map(e => e.activityName).join(', ')}
               {showAllActivities ? (
                 <More onClick={() => setShowAllActivities(!showAllActivities)}>
                   Скрыть
@@ -242,11 +238,11 @@ const Header: FC<Props> = ({ salon, isOwner }) => {
             </Activities>
           ) : (
             <Activities>
-              {/* {selectedGroupNames(
-                salon?.activities?.slice(0, 8),
-                salonActivitiesCatalog,
-                ', ',
-              )} */}
+              {salon?.activities
+                .map(e => e.activityName)
+                .slice(0, 8)
+                .join(', ')}
+
               <More onClick={() => setShowAllActivities(!showAllActivities)}>
                 Показать все
               </More>
