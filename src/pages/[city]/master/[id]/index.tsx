@@ -43,7 +43,7 @@ interface Props {
 }
 
 const Master: FC<Props> = ({ masterData, randomMasters, cityData }) => {
-  const [master, setMaster] = useState(masterData)
+  const [master, setMaster] = useState<IMaster>(masterData)
   const { me, city } = useAuthStore(getStoreData)
   const { catalogs } = useBaseStore(getStoreData)
   const [editClientServices, setEditClientServices] = useState(false)
@@ -54,9 +54,11 @@ const Master: FC<Props> = ({ masterData, randomMasters, cityData }) => {
   const [isDiplomsEditing, setIsDiplomsEditing] = useState(false)
   const salonServicesMasterCatalog: any[] = []
 
-  const isOwner = !!me?.owner?.masters.find(e => e.id === master.id)
+  const isOwner = !!me?.owner?.masters.find(e => e.id === master?.id)
 
   const servicesData = getServicesByCategory(master?.services)
+
+  console.log(master)
 
   return (
     <MainLayout>
@@ -246,7 +248,7 @@ const Master: FC<Props> = ({ masterData, randomMasters, cityData }) => {
         {me?.salons?.length && master?.resume ? (
           <Resume master={master} />
         ) : null}
-        <ReviewsMaster reviews={master?.reviews} masterId={master.id} />
+        <ReviewsMaster reviews={master?.reviews} masterId={master?.id} />
         <Contacts
           phone={master?.masterPhone}
           email={master?.masterEmail}
@@ -318,15 +320,14 @@ export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async ({
       const reviewsCount = e.reviews?.length || 0
       const { rating, ratingCount } = getRating(e.ratings)
       return { ...e, rating, ratingCount, reviewsCount }
-    }) || null
+    }) || []
 
   return {
     notFound: !id || !cityData || !masterData,
     props: {
-      masterData:
-        masterData && salons && rating && ratingCount && reviewsCount
-          ? { ...masterData, salons, rating, ratingCount, reviewsCount }
-          : null,
+      masterData: masterData
+        ? { ...masterData, salons, rating, ratingCount, reviewsCount }
+        : null,
       randomMasters: randomMasters.map(e => {
         const reviewsCount = e.reviews?.length
         const { rating, ratingCount } = getRating(e.ratings)
