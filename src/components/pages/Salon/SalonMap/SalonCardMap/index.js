@@ -96,7 +96,7 @@ const SalonCardMap = ({ item, loading }) => {
           </Info>
         </Wrap>
         <Rating
-          averageScore={item?.averageScore}
+          rating={item?.averageScore}
           numberScore={item?.numberScore}
           position={!mobileMedia ? 'justify' : 'start'}
           fontSize={!mobileMedia ? '14px' : '10px'}

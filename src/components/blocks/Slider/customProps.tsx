@@ -51,12 +51,14 @@ import { IDeleteFunction } from './components/SliderItems/BrandSlide'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 import { SlideType } from '.'
-import { ICity } from 'src/types'
+import { ICity, IPhoto } from 'src/types'
+import { IProduct } from 'src/types/product'
+import { IVacancy } from 'src/types/vacancies'
 
 interface PropsICustomProps {
   type: SlideType
-  item?: IMaster | IBrand | ISalon | null
-  typeObject?: { addressFull: { city: string } } | null
+  item?: IMaster | IBrand | ISalon | IPhoto | IProduct | IVacancy | null
+  typeObject?: IMaster | IBrand | ISalon | IPhoto | IProduct | IVacancy | null
   bgColor?: string
   isEditing?: boolean
   deleteFunction?: IDeleteFunction
@@ -178,14 +180,8 @@ export const customProps: ICustomProps = ({
           <Link
             href={
               router.query.id === '62fb9f7884fe720001f6771c'
-                ? `/${
-                    cyrToTranslit(typeObject?.addressFull?.city) ||
-                    city.citySlug
-                  }/beautyFreeShop`
-                : `/${
-                    cyrToTranslit(typeObject?.addressFull?.city) ||
-                    city.citySlug
-                  }/brand/${router.query.id}/products`
+                ? `/${city.citySlug}/beautyFreeShop`
+                : `/${city.citySlug}/brand/${router.query.id}/products`
             }
           >
             <SeeAllMain>
@@ -198,7 +194,21 @@ export const customProps: ICustomProps = ({
             </SeeAllMain>
           </Link>
         ),
-        sliderItem: <GoodSlide item={item as unknown as LazyType} />,
+        sliderItem: item ? (
+          <GoodSlide
+            href={{
+              pathname: `/${(item as IProduct).brand.city.citySlug}/product/${
+                item.id
+              }`,
+              query: {
+                catalog: false,
+              },
+            }}
+            item={item as IProduct}
+          />
+        ) : (
+          <></>
+        ),
         slidesCountWhenAllShow: 6,
         showAllSlide: <AllGoodsSlide />,
         bottom: <GoodBottomButton />,
@@ -235,7 +245,7 @@ export const customProps: ICustomProps = ({
       }
     case 'vacancies':
       return {
-        sliderItem: <VacancySlide item={item} />,
+        sliderItem: <VacancySlide item={item as IVacancy} />,
       }
     case 'ads':
       return {

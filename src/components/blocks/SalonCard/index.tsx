@@ -17,6 +17,7 @@ import {
   SalonShareWrap,
   SalonInfo,
   Activities,
+  Activity,
 } from './styles'
 import { Skeleton } from '@material-ui/lab'
 import {
@@ -31,6 +32,7 @@ import HeartFullFill from '../../pages/MainPage/components/Header/icons/HeartFul
 import { PHOTO_URL } from 'src/api/variables'
 import { ISalon } from 'src/types/salon'
 import { getServicesCategories } from 'src/utils/serviceCatalog'
+import { getGroupedServices } from 'src/utils/getGrupedServices'
 
 interface Props {
   item: ISalon
@@ -70,8 +72,6 @@ const SalonCard: FC<Props> = ({
     setIsFavorit(!isFavorite)
   }
 
-  const servicesCategories = getServicesCategories(item.services)
-
   return loading ? (
     <SkeletonSalonItem variant="rect" />
   ) : (
@@ -110,17 +110,22 @@ const SalonCard: FC<Props> = ({
           </Top>
           <Info>
             <SalonInfo>
-              <Activities>{servicesCategories.join(', ')}</Activities>
+              <Activities>
+                {item.services.slice(0, 3).map(servis => (
+                  <Activity key={servis.id}>{servis.serviceName}</Activity>
+                ))}
+              </Activities>
             </SalonInfo>
             {item?.salonAddress ? <Address>{item.salonAddress}</Address> : null}
           </Info>
         </Wrap>
         <Rating
-          averageScore={item?.salonAverageScore}
-          numberScore={item?.salonSumScore}
+          rating={item?.rating}
+          countRatings={item.ratingCount}
           position={!mobileMedia ? 'justify' : 'start'}
           fontSize={!mobileMedia ? '14px' : '10px'}
           fontWeight={600}
+          countReviews={item?.reviewsCount}
         />
       </Content>
       <FavoriteIcon isFavorite={isFavorite} onClick={e => addFavorite(e, item)}>

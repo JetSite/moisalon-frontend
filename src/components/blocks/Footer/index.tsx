@@ -34,8 +34,8 @@ import { getStoreData } from 'src/store/utils'
 import { FC } from 'react'
 
 interface Props {
-  loading: boolean
-  noMobileFooter: boolean
+  loading?: boolean
+  noMobileFooter?: boolean
 }
 
 const Footer: FC<Props> = ({ loading = false, noMobileFooter }) => {

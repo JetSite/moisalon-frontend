@@ -6,11 +6,12 @@ import Button from '../../../../../ui/Button'
 import Popup from '../../../../../ui/Popup'
 import { NavItem, AdditionalNavContent } from '../styled'
 import { IMainPageHeaderLinks } from '../config'
+import { ISetState } from 'src/types/common'
 
 interface Props {
   isAboutPage: boolean
   showAdditionalNav: boolean
-  setShowAdditionalNav: Dispatch<SetStateAction<boolean>>
+  setShowAdditionalNav: ISetState<boolean>
   links: IMainPageHeaderLinks[]
   catalog?: boolean
   b2bClient?: boolean

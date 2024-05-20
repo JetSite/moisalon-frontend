@@ -104,7 +104,9 @@ const Share: FC<Props> = ({ link, imageLink, title }) => {
             </SocialItem> */}
             </WrapperItems>
           </WrapperSocials>
-        ) : null}
+        ) : (
+          <></>
+        )}
       </OutsideClickHandler>
     </Wrapper>
   )

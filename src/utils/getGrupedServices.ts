@@ -8,7 +8,8 @@ export interface IGroupedService {
 
 export interface IGroupedCategories {
   id: IID
-  serviceCategoryName: string
+  serviceCategoryName?: string
+  categoryName?: string
   services: IGroupedService[]
 }
 
@@ -17,11 +18,16 @@ type IGetGroupedServices = (data: IServices[]) => IGroupedCategories[]
 export const getGroupedServices: IGetGroupedServices = data => {
   const categories: IGroupedCategories[] = []
   data?.forEach(service => {
+    const setviseCategory = service.service.service_categories
+      ? service.service.service_categories[0]
+      : service.service.service_m_category
+
     if (
-      !categories.find(e => service.service.service_categories[0].id === e.id)
+      setviseCategory &&
+      !categories.find(e => setviseCategory?.id === e.id)
     ) {
       categories.push({
-        ...service.service.service_categories[0],
+        ...setviseCategory,
         services: [],
       })
     }
@@ -29,7 +35,11 @@ export const getGroupedServices: IGetGroupedServices = data => {
 
   return categories.map(e => {
     data.forEach(service => {
-      if (service.service.service_categories[0].id === e.id) {
+      const setviseCategory = service.service.service_categories
+        ? service.service.service_categories[0]
+        : service.service.service_m_category
+
+      if (setviseCategory && setviseCategory.id === e.id) {
         e.services.push({ id: service.id, serviceName: service.serviceName })
       }
     })

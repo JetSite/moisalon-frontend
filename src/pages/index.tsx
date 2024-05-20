@@ -1,32 +1,20 @@
-import { initializeApollo } from '../api/apollo-client'
-import { citySuggestionsQuery } from '../_graphql-legacy/city/citySuggestionsQuery'
 import { GetServerSideProps } from 'next'
-import { defaultCitySlug } from 'src/api/authConfig'
-import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { authConfig, defaultValues } from 'src/api/authConfig'
 import { FC } from 'react'
+import { getCookie } from 'cookies-next'
+import { ICity } from 'src/types'
 
 const AppContent: FC = () => {
-  return <div>sdd</div>
+  return null
 }
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
-  // const apolloClient = initializeApollo()
-  // const data = await apolloClient.query({
-  //   query: citySuggestionsQuery,
-  //   variables: {
-  //     city: ctx?.query?.city || defaultCitySlug,
-  //     count: 1,
-  //   },
-  // })
-  console.log('first')
-
-  // const city = flattenStrapiResponse(data.data.cities)
+  const cityCookie = ctx.req.cookies['city']
   return {
-    city: '',
-    // redirect: {
-    //   destination: defaultCitySlug,
-    //   permanent: true,
-    // },
+    redirect: {
+      destination: cityCookie || defaultValues.citySlug,
+      permanent: true,
+    },
   }
 }
 

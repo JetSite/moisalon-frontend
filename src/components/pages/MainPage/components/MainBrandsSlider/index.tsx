@@ -5,13 +5,14 @@ import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { FC } from 'react'
 import { MainSlider } from '../MainMasterSlider'
 
-const MainBrandsSlider: FC<MainSlider> = ({ city }) => {
+const MainBrandsSlider: FC<MainSlider> = ({ city, data }) => {
   const { data: brands, loading } = useQuery(getBrands, {
     variables: {
       itemsCount: 10,
     },
+    skip: !!data,
   })
-  const brandsFlattened = flattenStrapiResponse(brands?.brands?.data)
+  const brandsFlattened = flattenStrapiResponse(brands?.brands?.data) || data
 
   return (
     <Slider

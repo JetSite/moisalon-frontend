@@ -2,7 +2,7 @@ import { FC } from 'react'
 import Stars from '../Stars'
 import styled from 'styled-components'
 
-const Wrapper = styled.div<{ position: string }>`
+const Wrapper = styled.div<{ position?: string }>`
   display: flex;
   align-items: center;
   justify-content: ${props =>
@@ -20,25 +20,33 @@ const Count = styled.p<{ fontSize: string; fontWeight: number }>`
 `
 
 interface Props {
-  averageScore: number
-  numberScore: number
+  rating?: number
+  countRatings?: number
+  countReviews?: number
   position?: string
   fontSize?: string
   fontWeight?: number
 }
 
 const Rating: FC<Props> = ({
-  averageScore,
-  numberScore,
+  rating,
+  countRatings,
+  countReviews,
   position,
   fontSize = '10px',
   fontWeight = 400,
 }) => {
   return (
-    <Wrapper position={position || ''}>
-      <Stars count={Math.round(averageScore)} />
+    <Wrapper position={position}>
+      <Wrapper>
+        <Stars count={Math.round(rating || 0)} />
+        <Count fontSize={fontSize} fontWeight={fontWeight}>
+          {rating ? `${rating}(${countRatings || 1})` : 0}
+        </Count>
+      </Wrapper>
+
       <Count fontSize={fontSize} fontWeight={fontWeight}>
-        {numberScore || 0}
+        {`${countReviews || 0}`}
       </Count>
     </Wrapper>
   )

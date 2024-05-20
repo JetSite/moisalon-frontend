@@ -51,9 +51,13 @@ const httpLink = new HttpLink({
 })
 
 const errorLink = onError(error => {
+  console.log(error)
+
   if (error.networkError?.message.includes('headers')) {
-    deleteCookie(authConfig.tokenKeyName)
-    Router.push('/auth')
+    if (typeof window !== 'undefined') {
+      deleteCookie(authConfig.tokenKeyName)
+      Router.push('/auth')
+    }
     return
   }
 
@@ -61,8 +65,10 @@ const errorLink = onError(error => {
     (error.networkError as ServerError | undefined)?.response?.statusText ===
     'Unauthorized'
   ) {
-    deleteCookie(authConfig.tokenKeyName)
-    Router.push('/auth')
+    if (typeof window !== 'undefined') {
+      deleteCookie(authConfig.tokenKeyName)
+    }
+    Router.push(authConfig.notAuthLink)
     return
   }
 
@@ -72,8 +78,10 @@ const errorLink = onError(error => {
         err?.message === 'Unauthorized' ||
         err?.message === 'Forbidden access'
       ) {
-        deleteCookie(authConfig.tokenKeyName)
-        Router.push('/auth')
+        if (typeof window !== 'undefined') {
+          // deleteCookie(authConfig.tokenKeyName)
+          // Router.push(authConfig.notAuthLink)
+        }
         return
       } else {
         // Router.back()
@@ -149,6 +157,7 @@ export function addApolloState<T>(
 
 export function useApollo<T>(pageProps: PageProps<T>) {
   const state = pageProps.props?.[APOLLO_STATE_PROP_NAME]
+
   const store = useMemo(() => initializeApollo(state), [state])
   return store
 }

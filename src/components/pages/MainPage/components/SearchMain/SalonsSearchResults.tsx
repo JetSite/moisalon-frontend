@@ -1,174 +1,123 @@
-import React, {
-  useCallback,
-  useState,
-  useEffect,
-  Dispatch,
-  SetStateAction,
-  FC,
-} from 'react'
+import React, { useState, FC, useEffect } from 'react'
 import { useQuery } from '@apollo/client'
-import Link from 'next/link'
 import { MobileVisible, MobileHidden } from '../../../../../styles/common'
 import { WrapperItemsSalons, Title, SalonCardWrapper } from './styled'
 import SalonCard from '../../../../blocks/SalonCard'
 import Button from '../../../../ui/Button'
 import FilterSearchResults, {
-  typesFilter,
+  IFiltersType,
+  ISortOrder,
+  filtersType,
 } from '../../../../blocks/FilterSearchResults'
 import { pluralize } from '../../../../../utils/pluralize'
 import SalonMap from '../../../Salon/SalonMap'
-import { cyrToTranslit } from '../../../../../utils/translit'
-import RentFilter from '../../../Rent/RentFilter'
+import RentFilter, { IFilters } from '../../../Rent/RentFilter'
 import useCheckMobileDevice from '../../../../../hooks/useCheckMobileDevice'
 import { useRouter } from 'next/router'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
+import { ISetState } from 'src/types/common'
+import { ISalon } from 'src/types/salon'
+import { IView } from 'src/components/pages/Salon/AllSalons'
+import { ICity, IPagination } from 'src/types'
+import { getSalonsThroughCity } from 'src/api/graphql/salon/queries/getSalonsThroughCity'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { settingsConfig } from 'src/api/authConfig'
+import { getRating } from 'src/utils/newUtils/getRating'
 
-interface Props {
-  me: any
-  salonSearch: any
+export interface ISearchResults {
+  pagination: IPagination | null
+  cityData: ICity
+}
+
+interface Props extends ISearchResults {
   view: string
-  setView: Dispatch<SetStateAction<string>>
-  main: boolean
-  rent: boolean
-  setFilterOpen?: Dispatch<SetStateAction<boolean>>
-  filterOpen?: boolean
-  cityData: string
+  setView: ISetState<IView>
+  salonData: ISalon[]
+  main?: boolean
+  rent?: boolean
 }
 
 const SalonsSearchResults: FC<Props> = ({
-  me,
-  salonSearch,
+  salonData,
   view,
   setView,
   main = false,
   rent = false,
-  setFilterOpen,
-  filterOpen,
-  cityData = '',
+  pagination,
+  cityData,
 }) => {
-  const query = { query: '' } //TODO: query
-  const [salonSearchData, setSalonSearchData] = useState(salonSearch)
-  const [loading, setLoading] = useState<boolean>(false)
-  const [filters, setFilters] = useState<null | Object>(null)
-  const [fetchMoreLoading, setFetchMoreLoading] = useState<boolean>(false)
+  const [updateSalonData, setUpdateSalonData] = useState<ISalon[]>(salonData)
+  const [page, setPage] = useState<number>(2)
+  const hasNextPage = pagination && pagination.pageCount + 1 !== page
+  const [filters, setFilters] = useState<IFilters | null>(null)
+  const [filterOpen, setFilterOpen] = useState<boolean>(false)
   const { city } = useAuthStore(getStoreData)
-  const [sortProperty, setSortProperty] = useState<
-    keyof typeof typesFilter | null
-  >(null)
-  const [sortOrder, setSortOrder] = useState<'ASCENDING' | 'DESCENDING' | null>(
-    null,
-  )
+  const totalCount = pagination?.total || 0
   const router = useRouter()
 
-  const isMobile = useCheckMobileDevice()
-
-  // const { setSearchData, setChosenItemId } = useSearchHistory(
-  //   salonSearchData,
-  //   setSalonSearchData,
-  //   'salon',
-  //   isMobile ? -10 : -120,
-  // )
-
-  let cityInStorage
+  let storageSort
   if (typeof window !== 'undefined') {
-    cityInStorage = localStorage.getItem('citySalon')
+    storageSort =
+      localStorage.getItem(
+        rent ? settingsConfig.rentSort : settingsConfig.salonSort,
+      ) || 'viewsCount:desc'
+    const storageSortProperty = storageSort.includes(filtersType['по отзывам'])
+      ? 'по отзывам'
+      : 'по рейтингу'
+
+    const storageSortOrder = storageSort.includes(':desc') ? ':desc' : ':asc'
+
+    useEffect(() => {
+      setSortOrder(storageSortOrder)
+      setSortProperty(storageSortProperty)
+    }, [])
   }
 
-  // const querySearch = {
-  //   ...EmptySearchQuery,
-  //   //@ts-ignore
-  //   query: (query && query.query) || '',
-  //   city: city ? city : 'Москва',
-  //   lessor: rent ? true : false,
-  //   sortOrder: sortOrder || null,
-  //   sortProperty: sortProperty || null,
-  // }
+  const [sortProperty, setSortProperty] = useState<IFiltersType>(
+    Object.keys(filtersType)[1] as IFiltersType,
+  )
+  const [sortOrder, setSortOrder] = useState<ISortOrder>(':desc')
 
-  // const { fetchMore, refetch } = useQuery(searchQuery, {
-  //   variables: { input: { ...querySearch, ...filters } },
-  //   notifyOnNetworkStatusChange: true,
-  //   skip: true,
-  //   onCompleted: res => {
-  //     setLoading(false)
-  //     if (res?.salonSearch) {
-  //       setSalonSearchData(res.salonSearch)
-  //     }
-  //   },
-  // })
+  const { refetch, loading } = useQuery(getSalonsThroughCity, {
+    skip: true,
+    notifyOnNetworkStatusChange: true,
+    onCompleted: data => {
+      const prepareData: ISalon[] = flattenStrapiResponse(data.salons)
+      const newSalons = prepareData.map(e => {
+        const reviewsCount = e.reviews.length
+        const { rating, ratingCount } = getRating(e.ratings)
+        return { ...e, rating, ratingCount, reviewsCount }
+      })
+      setUpdateSalonData(prev => prev.concat(newSalons))
+    },
+  })
 
-  // useEffect(() => {
-  //   if (sortProperty || querySearch?.query || filters) {
-  //     setSearchData(null)
-  //     setLoading(true)
-  //     setChosenItemId('')
-  //     refetch({
-  //       variables: { input: { ...querySearch, ...filters } },
-  //     })
-  //   }
-  // }, [querySearch?.query, querySearch?.city, filters, sortOrder, sortProperty])
+  const onFetchMore = async () => {
+    const sort = filtersType[sortProperty] + sortOrder
 
-  const salonsSearchResult =
-    typeof window !== 'undefined' ? salonSearchData : salonSearch
-  const slicedList = salonsSearchResult
-  // const hasNextPage = salonSearchData?.salonsConnection?.pageInfo?.hasNextPage
-  // const totalCount =
-  //   typeof window !== 'undefined'
-  //     ? salonSearchData?.meta?.pagination?.total
-  //     : salonSearch?.meta?.pagination?.total
-  const totalCount = salonSearchData?.length
+    await refetch({ citySlug: cityData?.citySlug, page, sort })
+    setPage(page + 1)
+  }
 
-  // const onFetchMore = useCallback(() => {
-  //   setFetchMoreLoading(true)
-  //   setChosenItemId('')
-  //   fetchMore({
-  //     variables: {
-  //       input: { ...querySearch, ...filters },
-  //       cursor: salonSearchData?.salonsConnection?.pageInfo?.endCursor,
-  //     },
+  const handleFilter = async (filter: keyof typeof filtersType) => {
+    if (sortProperty !== filter) {
+      setSortProperty(filter)
+      setSortOrder(':asc')
+    } else {
+      setSortOrder(prev => (prev === ':asc' ? ':desc' : ':asc'))
+    }
+    const sort = filtersType[filter] + sortOrder
+    localStorage.setItem(
+      rent ? settingsConfig.rentSort : settingsConfig.salonSort,
+      sort,
+    )
+    console.log('sort', sort)
 
-  //     updateQuery(previousResult, { fetchMoreResult }) {
-  //       const newNodes = fetchMoreResult.salonSearch.salonsConnection.nodes
-
-  //       setFetchMoreLoading(false)
-  //       setSalonSearchData({
-  //         salonsConnection: {
-  //           ...fetchMoreResult.salonSearch.salonsConnection,
-  //           nodes: [...salonSearchData.salonsConnection.nodes, ...newNodes],
-  //         },
-  //         filterDefinition: fetchMoreResult.salonSearch.filterDefinition,
-  //       })
-  //     },
-  //   })
-  // }, [filters, querySearch])
-
-  // const fetchMoreButton = hasNextPage ? (
-  //   <>
-  //     <MobileHidden>
-  //       <Button
-  //         onClick={onFetchMore}
-  //         size="medium"
-  //         variant="darkTransparent"
-  //         mb="55"
-  //         disabled={fetchMoreLoading}
-  //       >
-  //         Показать еще
-  //       </Button>
-  //     </MobileHidden>
-  //     <MobileVisible>
-  //       <Button
-  //         size="roundSmall"
-  //         variant="withRoundBorder"
-  //         font="roundSmall"
-  //         mb="56"
-  //         onClick={onFetchMore}
-  //         disabled={fetchMoreLoading}
-  //       >
-  //         Показать еще салоны
-  //       </Button>
-  //     </MobileVisible>
-  //   </>
-  // ) : null
+    setUpdateSalonData([])
+    setPage(2)
+    await refetch({ citySlug: cityData?.citySlug, sort: [sort] })
+  }
 
   return (
     <>
@@ -177,17 +126,17 @@ const SalonsSearchResults: FC<Props> = ({
           <>
             {!rent ? (
               <Title>
-                {pluralize(totalCount || 0, 'Найден', 'Найдено', 'Найдено')}
+                {pluralize(totalCount, 'Найден', 'Найдено', 'Найдено')}
                 &nbsp;
-                {totalCount || 0}
+                {totalCount}
                 &nbsp;
-                {pluralize(totalCount || 0, 'салон', 'салона', 'салонов')}
+                {pluralize(totalCount, 'салон', 'салона', 'салонов')}
               </Title>
             ) : (
-              <Title>{`Аренда кабинета, рабочего места в салонах красоты в городе ${cityData}: ${
-                totalCount || 0
-              } ${pluralize(
-                totalCount || 0,
+              <Title>{`Аренда кабинета, рабочего места в салонах красоты в городе ${
+                cityData.cityName
+              }: ${totalCount} ${pluralize(
+                totalCount,
                 'салон',
                 'салона',
                 'салонов',
@@ -202,50 +151,75 @@ const SalonsSearchResults: FC<Props> = ({
               />
             ) : null}
             <FilterSearchResults
+              handleFilter={handleFilter}
               sortProperty={sortProperty}
-              setSortProperty={setSortProperty}
               sortOrder={sortOrder}
-              setSortOrder={setSortOrder}
               salon
+              view={view}
               setView={setView}
             />
             <WrapperItemsSalons>
-              {slicedList &&
-                slicedList.map((salon: any) => (
+              {updateSalonData &&
+                !!updateSalonData.length &&
+                updateSalonData.map(salon => (
                   <li
                     key={salon.id}
                     onClick={() =>
                       router.push(
                         rent
-                          ? `/${
-                              cyrToTranslit(salon.cities.cityName) ||
-                              city.citySlug
-                            }/rent/${salon.id}`
-                          : `/${
-                              cyrToTranslit(salon.cities.cityName) ||
-                              city.citySlug
-                            }/salon/${salon.id}`,
+                          ? `/${salon.cities.citySlug || city.citySlug}/rent/${
+                              salon.id
+                            }`
+                          : `/${salon.cities.citySlug || city.citySlug}/salon/${
+                              salon.id
+                            }`,
                       )
                     }
                   >
-                    <SalonCardWrapper id={salon.id}>
+                    <SalonCardWrapper id={salon.id.toString()}>
                       <SalonCard
-                        seatCount={salon.seatCount}
+                        seatCount={salon.salonWorkplacesCount}
                         rent={rent}
                         loading={loading}
                         item={salon}
                         shareLink={`https://moi.salon/${
-                          cyrToTranslit(salon.cities.cityName) || city.citySlug
+                          salon.cities.cityName || city.citySlug
                         }/salon/${salon.id}`}
                       />
                     </SalonCardWrapper>
                   </li>
                 ))}
             </WrapperItemsSalons>
-            {/* {fetchMoreButton} */}
+            {hasNextPage ? (
+              <>
+                <MobileHidden>
+                  <Button
+                    onClick={onFetchMore}
+                    size="medium"
+                    variant="darkTransparent"
+                    mb="55"
+                    disabled={loading}
+                  >
+                    Показать еще
+                  </Button>
+                </MobileHidden>
+                <MobileVisible>
+                  <Button
+                    size="roundSmall"
+                    variant="withRoundBorder"
+                    font="roundSmall"
+                    mb="56"
+                    onClick={onFetchMore}
+                    disabled={loading}
+                  >
+                    Показать еще салоны
+                  </Button>
+                </MobileVisible>
+              </>
+            ) : null}
           </>
         ) : (
-          <SalonMap rent={rent} me={me} view={view} setView={setView} />
+          <SalonMap rent={rent} view={view} setView={setView} />
         )}
       </div>
     </>

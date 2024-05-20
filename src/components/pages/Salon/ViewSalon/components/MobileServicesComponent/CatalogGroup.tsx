@@ -74,7 +74,7 @@ export const CatalogGroup: FC<Porps> = ({ group, withPrice = false }) => {
   return (
     <Wrapper>
       <TitleWrapper onClick={openGroupHandler}>
-        <Title>{group.serviceCategoryName}</Title>
+        <Title>{group.serviceCategoryName || group.categoryName}</Title>
         <TickIcon open={openGroup}>
           <Icon src="/services-tick.svg" />
         </TickIcon>

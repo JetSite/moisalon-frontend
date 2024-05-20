@@ -5,22 +5,33 @@ import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { ISalon } from 'src/types/salon'
 import { FC } from 'react'
 import { MainSlider } from '../MainMasterSlider'
+import { getRating } from 'src/utils/newUtils/getRating'
 
-const MainSalonsSlider: FC<MainSlider> = ({ city }) => {
+interface Props extends MainSlider {
+  rent?: boolean
+}
+
+const MainSalonsSlider: FC<Props> = ({ city, rent, data }) => {
   const { data: salons, loading } = useQuery(getSalons, {
     variables: {
-      city: city.citySlug,
+      citySlug: city.citySlug,
       itemsCount: 10,
     },
+    skip: !!data,
   })
-  const salonsFlattened = flattenStrapiResponse(
-    salons?.salons?.data,
-  ) as unknown as ISalon[]
+
+  const prepareSalons: ISalon[] =
+    flattenStrapiResponse(salons?.salons?.data) || data
+  const salonsFlattened = prepareSalons?.map(e => {
+    const reviewsCount = e.reviews.length
+    const { rating, ratingCount } = getRating(e.ratings)
+    return { ...e, rating, ratingCount, reviewsCount }
+  })
 
   return (
     <Slider
       city={city}
-      type="salons"
+      type={rent ? 'rentSalons' : 'salons'}
       loading={loading}
       items={salonsFlattened}
       title="Салоны красоты"

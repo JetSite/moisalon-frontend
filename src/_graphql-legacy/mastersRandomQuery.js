@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client'
 
 export const mastersRandomQuery = gql`
   query ($count: Int!, $city: String) {
@@ -46,4 +46,4 @@ export const mastersRandomQuery = gql`
       webSiteUrl
     }
   }
-`;
+`

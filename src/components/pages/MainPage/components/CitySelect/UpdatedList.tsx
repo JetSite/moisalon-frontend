@@ -3,19 +3,22 @@ import { useCitySuggestions } from './useCitySuggestions'
 import CitiesList from './CitiesList'
 
 import { useRouter } from 'next/router'
-import { cyrToTranslit } from '../../../../../utils/translit'
-import useAuthStore from 'src/store/authStore'
-import { getStoreData, getStoreEvent } from 'src/store/utils'
 import { ICity } from 'src/types'
-import { defaultCitySlug } from 'src/api/authConfig'
-import { IAppoloMutationCallback } from 'src/types/common'
+import { authConfig } from 'src/api/authConfig'
+import { IAppoloMutationCallback, ISetState } from 'src/types/common'
+import { setCookie } from 'cookies-next'
+import { redirectCityRoutes } from 'src/utils/newUtils/redirectCityRoutes'
+import { IMe } from 'src/types/me'
+import useAuthStore from 'src/store/authStore'
+import { getStoreEvent } from 'src/store/utils'
 
-interface PropsUpdatedList {
+export interface PropsUpdatedList {
   cityInput: string
-  setCityInput: Dispatch<SetStateAction<string>>
-  setShowCitySelect: Dispatch<SetStateAction<boolean>>
-  setShowHamburgerMenu?: Dispatch<SetStateAction<boolean>>
+  setCityInput: ISetState<string>
+  setShowCitySelect: ISetState<boolean>
+  setShowHamburgerMenu?: ISetState<boolean>
   changeCityFunc: IAppoloMutationCallback
+  me: IMe | null
 }
 
 export const UpdatedList: FC<PropsUpdatedList> = ({
@@ -24,63 +27,26 @@ export const UpdatedList: FC<PropsUpdatedList> = ({
   setShowCitySelect,
   setShowHamburgerMenu,
   changeCityFunc,
+  me,
 }) => {
+  const { setCity } = useAuthStore(getStoreEvent)
   const { suggestions } = useCitySuggestions(cityInput)
   const unicSuggestion = Array.from(new Set(suggestions))
   const router = useRouter()
 
-  console.log(suggestions)
-
-  const { setCity } = useAuthStore(getStoreEvent)
-
   const cityClickHandler = (city: ICity) => {
-    setShowCitySelect(false)
-    setShowHamburgerMenu && setShowHamburgerMenu(false)
+    setCookie(authConfig.cityKeyName, city.citySlug)
     setCityInput('')
-
-    changeCityFunc({
-      variables: {
-        city: city.citySlug || defaultCitySlug,
-      },
-    })
-
-    setCity(city || null)
-
-    if (router.pathname === '/[city]/salon/[id]' && router?.query?.city) {
-      router.push(`/${city.citySlug}/salon`)
-      return
-    }
-    if (router.pathname === '/[city]/master/[id]' && router?.query?.city) {
-      router.push(`/${city.citySlug}/master`)
-      return
-    }
-    if (router.pathname === '/[city]/brand/[id]' && router?.query?.city) {
-      router.push(`/${city.citySlug}/brand`)
-      return
-    }
-    if (
-      router.pathname === '/[city]/brand/[id]/products' &&
-      router?.query?.city
-    ) {
-      router.push(`/${city.citySlug}/brand`)
-      return
-    }
-    if (router.pathname === '/[city]/rent/[id]' && router?.query?.city) {
-      router.push(`/${city.citySlug}/rent`)
-      return
-    }
-    if (
-      router.pathname === '/[city]/rent/[id]room/[roomId]/seat/[seatId]' &&
-      router?.query?.city
-    ) {
-      router.push(`/${city.citySlug}/rent`)
-      return
-    }
-    if (router?.query?.city) {
-      router.replace({
-        query: { ...router.query, city: city.citySlug },
+    if (me?.info.id) {
+      changeCityFunc({
+        variables: { id: me.info.id, data: { selected_city: city.id } },
       })
     }
+    setCity(city)
+
+    redirectCityRoutes(city.citySlug, router)
+    setShowCitySelect(false)
+    setShowHamburgerMenu && setShowHamburgerMenu(false)
   }
 
   return (

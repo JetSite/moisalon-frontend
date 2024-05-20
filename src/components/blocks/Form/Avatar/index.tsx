@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { useDropzone } from 'react-dropzone'
 import uploadPhoto from '../../../../utils/uploadPhoto'
 import { red as redColor, laptopBreakpoint } from '../../../../styles/variables'
-import { IID } from 'src/types/common'
+import { IID, ISetState } from 'src/types/common'
 
 const Wrapper = styled.div`
   width: 120px;
@@ -127,7 +127,7 @@ interface Props {
   photo: { url: string }
   noSetPhoto?: boolean
   noPhotoError: boolean
-  setNoPhotoError: Dispatch<SetStateAction<boolean>>
+  setNoPhotoError: ISetState<boolean>
   title?: string
   red?: boolean
 }

@@ -27,63 +27,60 @@ const progress = new ProgressBar({
 })
 
 function MyApp({ Component, pageProps }: AppProps) {
-  // const mobileMedia = useMedia({ maxWidth: 768 })
-  // const apolloClient = useApollo(pageProps)
+  const mobileMedia = useMedia({ maxWidth: 768 })
+  const apolloClient = useApollo(pageProps)
 
-  // const router = useRouter()
-  // useEffect(() => {
-  //   const handleRouteChange = (url: string) => {
-  //     gtag.pageView(url)
-  //   }
-  //   router.events.on('routeChangeComplete', handleRouteChange)
-  //   return () => {
-  //     router.events.off('routeChangeComplete', handleRouteChange)
-  //   }
-  // }, [router.events])
+  const router = useRouter()
 
-  // useEffect(() => {
-  //   const jssStyles = document.querySelector('#jss-server-side')
-  //   if (jssStyles) {
-  //     jssStyles.parentNode?.removeChild(jssStyles)
-  //   }
-  // }, [])
+  useEffect(() => {
+    const handleRouteChange = (url: string) => {
+      gtag.pageView(url)
+    }
+    router.events.on('routeChangeComplete', handleRouteChange)
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange)
+    }
+  }, [router.events])
 
-  // useEffect(() => {
-  //   router.events.on('routeChangeStart', progress.start)
-  //   router.events.on('routeChangeComplete', progress.finish)
-  //   router.events.on('routeChangeError', progress.finish)
-  //   return () => {
-  //     router.events.off('routeChangeStart', progress.start)
-  //     router.events.off('routeChangeComplete', progress.finish)
-  //     router.events.off('routeChangeError', progress.finish)
-  //   }
-  // }, [router.events])
+  useEffect(() => {
+    const jssStyles = document.querySelector('#jss-server-side')
+    if (jssStyles) {
+      jssStyles.parentNode?.removeChild(jssStyles)
+    }
+  }, [])
+
+  useEffect(() => {
+    router.events.on('routeChangeStart', progress.start)
+    router.events.on('routeChangeComplete', progress.finish)
+    router.events.on('routeChangeError', progress.finish)
+    return () => {
+      router.events.off('routeChangeStart', progress.start)
+      router.events.off('routeChangeComplete', progress.finish)
+      router.events.off('routeChangeError', progress.finish)
+    }
+  }, [router.events])
 
   return (
-    <div
-    // style={{ overflowX: mobileMedia ? 'hidden' : undefined }}
-    >
+    <div style={{ overflowX: mobileMedia ? 'hidden' : undefined }}>
       <MainHead />
       <style global jsx>{`
         ${globalStyle}
         ${normalizeStyle}
       `}</style>
-      {/* <ApolloProvider client={apolloClient}>
+      <ApolloProvider client={apolloClient}>
         <ThemeProvider theme={theme}>
           <StylesProvider injectFirst>
-            <AuthProvider>
-              {/* <ChatProvider> */}
-      {/* <YMInitializer
+            <AuthProvider cityData={pageProps.cityData}>
+              <YMInitializer
                 accounts={[56585698]}
                 options={{ webvisor: true }}
                 version="2"
-              />  */}
-      <Component {...pageProps} />
-      {/* </ChatProvider> */}
-      {/* </AuthProvider>
+              />
+              <Component {...pageProps} />
+            </AuthProvider>
           </StylesProvider>
         </ThemeProvider>
-      </ApolloProvider> */}
+      </ApolloProvider>
     </div>
   )
 }

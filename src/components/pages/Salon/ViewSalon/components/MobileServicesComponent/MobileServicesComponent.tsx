@@ -48,31 +48,13 @@ const MobileServicesComponent: FC<Props> = ({
 
   const handleEditConfirm = () => {
     var services = entriesItems?.filter(s => s.value !== 0)?.map(s => s.id)
-    updateServices({
-      variables: {
-        salonId: salon?.id,
-        input: {
-          services,
-        },
-      },
-    })
   }
 
-  const categories = groupedServices
-    .map(group => {
-      if (group?.services === undefined) {
-        return null
-      }
-
-      return (
-        <CatalogGroup key={group.id} group={group} services={groupedServices} />
-      )
-    })
-    .filter(element => element !== null)
-
-  // if (groups.length === 0) {
-  //   return null;
-  // }
+  const categories = groupedServices.map(group => {
+    return (
+      <CatalogGroup key={group.id} group={group} services={groupedServices} />
+    )
+  })
 
   return (
     <MainContainer id="services">

@@ -5,17 +5,19 @@ import {
   MutationFunctionOptions,
   OperationVariables,
 } from '@apollo/client'
-import { ReactElement } from 'react'
+import { Dispatch, ReactElement, SetStateAction } from 'react'
 
 export type Nullable<T> = { [P in keyof T]: T[P] | null }
 
 export interface LazyType {
-  [K: string]: LazyType
+  [K: string]: LazyType | string | undefined | boolean | Array<any>
 }
 
 export interface InitialValuesForm {
   [K: string]: string
 }
+
+export type ISetState<T> = Dispatch<SetStateAction<T>>
 
 export type IID = string | number
 

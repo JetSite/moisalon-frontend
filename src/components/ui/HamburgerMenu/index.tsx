@@ -36,6 +36,7 @@ import { getStoreData, getStoreEvent } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
 import { deleteCookie } from 'cookies-next'
 import { authConfig } from 'src/api/authConfig'
+import { ISetState } from 'src/types/common'
 
 export interface INavLinks {
   title: string
@@ -46,8 +47,8 @@ export interface INavLinks {
 
 interface Props {
   showHamburgerMenu: boolean
-  setShowHamburgerMenu: Dispatch<SetStateAction<boolean>>
-  setShowCitySelect: Dispatch<SetStateAction<boolean>>
+  setShowHamburgerMenu: ISetState<boolean>
+  setShowCitySelect: ISetState<boolean>
   defaultCity: string
   loading: boolean
 }

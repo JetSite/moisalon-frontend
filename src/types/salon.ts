@@ -1,16 +1,18 @@
 import {
   ICity,
   IMetroStations,
-  ISalonLogo,
   ISalonPhones,
   IServices,
   ISocialNetworks,
   IWorkingHours,
   IPhoto,
+  IRating,
 } from '.'
 import { IBrand } from './brands'
 import { IID } from './common'
 import { IMaster } from './masters'
+import { IReview } from './reviews'
+import { IVacancy } from './vacancies'
 
 export interface ISalon {
   id: IID
@@ -27,10 +29,8 @@ export interface ISalon {
   salonContactPersonName: string
   salonContactPersonPhone: string
   salonContactPersonEmail: string
-  salonAverageScore: number
-  salonRating: number
-  salonReviewsCount: number
-  salonSumScore: number
+  reviewsCount: number
+  rating: number
   salonWorkplacesCount: number
   salonBrandsCount: number
   salonMastersCount: number
@@ -41,22 +41,24 @@ export interface ISalon {
   salonIsNotRent: boolean
   salonOwnerConfirmed: boolean
   salonCover: IPhoto | null
-  salonLogo: ISalonLogo | null
+  salonLogo: IPhoto | null
   salonPhotos: IPhoto[]
   salonPhones: ISalonPhones[]
   cities: ICity
   services: IServices[]
+  ratingCount: number
+  ratings: IRating[]
+  reviews: IReview[]
 }
 
 export interface ISalonPage extends ISalon {
-  metro_stations: IMetroStations[]
+  metro_stations?: IMetroStations[]
+  servicesM: IServices[]
   brands: IBrand[]
   masters: IMaster[]
   user: { id: IID }
   activities: { id: IID; activityName: string }[]
   socialNetworks: ISocialNetworks[]
-  review: {
-    // Поля для отзывов
-  }[]
   workingHours: IWorkingHours[]
+  vacancies: IVacancy[]
 }

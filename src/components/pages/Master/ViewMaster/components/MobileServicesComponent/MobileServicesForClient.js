@@ -29,22 +29,7 @@ const MobileServicesComponent = ({
     return acc + category.services.length
   }, 0)
 
-  // const [updateServices] = useMutation(updateServiceMasterMutation, {
-  //   onCompleted: () => {
-  //     refetchMaster()
-  //   },
-  // })
-
-  const handleEditConfirm = () => {
-    updateServices({
-      variables: {
-        input: {
-          masterId: master?.id,
-          serviceMaster: entriesItems,
-        },
-      },
-    })
-  }
+  const handleEditConfirm = () => {}
 
   const groups = servicesData?.map((serviceBlock, idx) => {
     return (
@@ -67,7 +52,7 @@ const MobileServicesComponent = ({
             {isOwner && (
               <EditIcons
                 handleEditConfirm={handleEditConfirm}
-                setIsEditing={setIsEditing}
+                setIsEditing={() => {}}
               />
             )}
           </TitleWrap>

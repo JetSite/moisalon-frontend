@@ -25,15 +25,15 @@ import Skeleton from '../../pages/MainPage/components/SearchMain/MainSearchSkele
 import EditIcons from '../../ui/EditIcons'
 import CityPingIcon from '../../pages/MainPage/components/Header/icons/CityPingIcon'
 import CitySelect from '../../pages/MainPage/components/CitySelect/CitySelect'
-import { IChildren } from 'src/types/common'
+import { IChildren, ISetState } from 'src/types/common'
 import { IBrand } from 'src/types/brands'
 import { IMaster } from 'src/types/masters'
 import { ISalon, ISalonPage } from 'src/types/salon'
 import { IDeleteFunction } from './components/SliderItems/BrandSlide'
-import useAuthStore from 'src/store/authStore'
-import { getStoreEvent } from 'src/store/utils'
 import { customProps } from './customProps'
-import { ICity } from 'src/types'
+import { ICity, IPhoto } from 'src/types'
+import { IProduct } from 'src/types/product'
+import { IVacancy } from 'src/types/vacancies'
 
 SwiperCore.use([Navigation])
 export type SlideType =
@@ -52,9 +52,9 @@ export type SlideType =
 interface Props {
   children?: IChildren
   type: SlideType
-  items: IMaster[] | IBrand[] | ISalon[]
+  items: IMaster[] | IBrand[] | ISalon[] | IPhoto[] | IProduct[] | IVacancy[]
   title: string
-  typeObject?: { addressFull: { city: string } } | null
+  typeObject?: IMaster | IBrand | ISalon | IPhoto | null
   noBottom?: boolean
   noAll?: boolean
   noAllButton?: boolean
@@ -62,7 +62,7 @@ interface Props {
   bgColor?: string
   isOwner?: boolean
   isEditing?: boolean
-  setIsEditing?: Dispatch<SetStateAction<boolean>>
+  setIsEditing?: ISetState<boolean>
   deleteFunction?: IDeleteFunction
   pt?: number
   pb?: number
@@ -113,7 +113,6 @@ const Slider: FC<Props> = ({
   }
 
   const [showCitySelect, setShowCitySelect] = useState(false)
-  const { setMe } = useAuthStore(getStoreEvent)
   const router = useRouter()
   const landingMaster = router.pathname === '/for_master'
   const landingSalon = router.pathname === '/for_salon'
@@ -142,7 +141,7 @@ const Slider: FC<Props> = ({
     : null
 
   return (
-    <Wrapper id={type} loading={loading} type={type} bgColor={bgColor}>
+    <Wrapper id={type} load={loading} type={type} bgColor={bgColor}>
       <MainContainer>
         {!loading ? (
           <Content
@@ -168,7 +167,8 @@ const Slider: FC<Props> = ({
                 empty={items?.length === 0}
                 mobileTitleWidth={mobileTitleWidth}
               >
-                {title} {isOwner && <EditIcons setIsEditing={setIsEditing} />}
+                <span>{title}</span>
+                {isOwner ? <EditIcons setIsEditing={setIsEditing} /> : null}
               </Title>
               {items?.length > 0 && (
                 <NavigationWrapper>
@@ -280,7 +280,6 @@ const Slider: FC<Props> = ({
       {/* {loading ? <ColorLinearProgress /> : null} */}
       {loading ? <Skeleton /> : null}
       <CitySelect
-        setMe={setMe}
         showCitySelect={showCitySelect}
         setShowCitySelect={setShowCitySelect}
       />

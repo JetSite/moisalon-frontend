@@ -11,10 +11,17 @@ import { getStoreData, getStoreEvent } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
 import { IMe } from 'src/types/me'
 import ChangeCityPopupCityList from './ChangeCityPopupCityList'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { ICity } from 'src/types'
+import { changeMe } from 'src/api/graphql/me/mutations/changeMe'
+import { setCookie } from 'cookies-next'
+import { authConfig } from 'src/api/authConfig'
+import { redirectCityRoutes } from 'src/utils/newUtils/redirectCityRoutes'
+import { ISetState } from 'src/types/common'
 
 interface Props {
   openPopup: boolean
-  setPopupOpen: Dispatch<SetStateAction<boolean>>
+  setPopupOpen: ISetState<boolean>
   me: IMe | null
 }
 
@@ -22,55 +29,16 @@ const ChangeCityPopup: FC<Props> = ({ openPopup, setPopupOpen, me }) => {
   const [changeCity, setChangeCity] = useState<boolean>(false)
   const [cityInput, setCityInput] = useState<string>('')
   const { city } = useAuthStore(getStoreData)
-  const { setMe } = useAuthStore(getStoreEvent)
+  const { setCity } = useAuthStore(getStoreEvent)
 
-  const { refetch } = useQuery(currentUserSalonsAndMasterQuery, {
-    skip: true,
+  const [changeCityFunc] = useMutation(changeMe, {
     onCompleted: res => {
-      setMe({
-        info: res?.me?.info,
-        master: res?.me?.master,
-        locationByIp: res?.locationByIp,
-        salons: res?.me?.salons,
-        rentalRequests: res?.me?.rentalRequests,
-      })
+      const newCity: ICity = flattenStrapiResponse(
+        res.updateUsersPermissionsUser,
+      ).selected_city
+      setCity(newCity)
     },
   })
-
-  const [changeCityFunc] = useMutation(changeCityMutation, {
-    onCompleted: () => {
-      refetch()
-    },
-  })
-
-  const handleSubmit = () => {
-    if (!me?.info) {
-      localStorage.setItem(
-        'citySalon',
-        me?.info?.city
-          ? me.info.city
-          : localStorage.getItem('citySalon')
-          ? localStorage.getItem('citySalon')
-          : me?.locationByIp
-          ? me.locationByIp.data.city
-          : 'Москва',
-      )
-      setPopupOpen(false)
-    } else {
-      changeCityFunc({
-        variables: {
-          city: me?.info?.city
-            ? me.info.city
-            : localStorage.getItem('citySalon')
-            ? localStorage.getItem('citySalon')
-            : me?.locationByIp
-            ? me.locationByIp.data.city
-            : 'Москва',
-        },
-      })
-      setPopupOpen(false)
-    }
-  }
 
   return (
     <Popup
@@ -79,7 +47,7 @@ const ChangeCityPopup: FC<Props> = ({ openPopup, setPopupOpen, me }) => {
       title={
         changeCity ? 'Выберите Ваш город' : 'Вы находитесь в населенном пункте '
       }
-      city={changeCity ? '' : `${city}`}
+      city={changeCity ? '' : `${city.cityName}`}
     >
       {!changeCity ? (
         <Box
@@ -108,7 +76,7 @@ const ChangeCityPopup: FC<Props> = ({ openPopup, setPopupOpen, me }) => {
         </Box>
       ) : (
         <>
-          <form style={{ width: '100%' }} onSubmit={handleSubmit}>
+          <form style={{ width: '100%' }}>
             {/* <Box marginBottom="20px">
               <input type="text" />
             </Box>
@@ -121,10 +89,13 @@ const ChangeCityPopup: FC<Props> = ({ openPopup, setPopupOpen, me }) => {
                 placeholder="Введите город"
                 onChange={e => setCityInput(e.target.value)}
               />
-              {cityInput && cityInput.length > 2 && (
+              {cityInput && cityInput.length >= 2 && (
                 <ChangeCityPopupCityList
-                  setMe={setMe}
-                  handlePopupClose={() => () => setPopupOpen(false)}
+                  me={me}
+                  cityInput={cityInput}
+                  setCityInput={setCityInput}
+                  changeCityFunc={changeCityFunc}
+                  setShowCitySelect={setPopupOpen}
                 />
               )}
             </Box>

@@ -3,15 +3,19 @@ import { metaInfo } from '../../common/metaInfo'
 import { imageInfo } from '../../common/imageInfo'
 import {
   salonAdministratorsFragment,
-  salonBrandsFragment,
-  salonMastersFragment,
-  salonReviewsFragment,
   salonServicesFragment,
 } from '../fragments'
+import { ratingsFragment } from '../../fragments/ratings'
+import { reviewsFragment } from '../../fragments/reviews'
+import { masterFragment } from '../../me/fragments/master'
+import { brandsFragment } from '../../fragments/brands'
+import { socialNetworksFragment } from '../../fragments/socialNetworks'
+import { phonesFragment } from '../../fragments/phones'
+import { cityFragment } from '../../fragments/city'
 
 export const getSalons = gql`
-  query salons($city: String!,$itemsCount: Int!) {
-    salons(filters:{cities:{cityName:{eq:$city }}}, pagination: { page: 1, pageSize: $itemsCount }) {
+  query salons($citySlug: String!,$itemsCount: Int!) {
+    salons(filters:{cities:{citySlug:{eq:$citySlug }}}, pagination: { page: 1, pageSize: $itemsCount }) {
       data {
         id
         attributes {
@@ -23,11 +27,8 @@ export const getSalons = gql`
             salonWebSiteUrl
             salonEmail
             salonPhones {
-              phoneNumber
+              ${phonesFragment}
             }
-            salonAverageScore
-            salonSumScore
-            salonRating
             salonOwnerConfirmed
             salonOnlineBookingUrl
             workingHours {
@@ -50,12 +51,14 @@ export const getSalons = gql`
             salonCantactPresonWorkingHoursAt
             salonCantactPresonWorkingHoursTo
             salonWorkplacesCount
-            salonReviewsCount
             salonMastersCount
             salonBrandsCount
             createdAt
             updatedAt
             publishedAt
+            reviewsCount
+            ratingCount
+            rating
             salonCover {
               ${imageInfo}
             }
@@ -66,29 +69,31 @@ export const getSalons = gql`
               ${imageInfo}
             }
             socialNetworks {
-              id
-              title
-              link
-              s_network {
-                data {
-                  id
-                  attributes {
-                    title
-                    logo {
-                      ${imageInfo}
-                    }
-                    slug
-                  }
-                }
-              }
+              ${socialNetworksFragment}
             }
-            ${salonAdministratorsFragment}
-            ${salonBrandsFragment}
-            ${salonMastersFragment}
-            ${salonReviewsFragment}
-            ${salonServicesFragment}
+            masters {
+              ${masterFragment}
+            }
+            administrators {
+              ${salonAdministratorsFragment}
+            }
+            brands {
+              ${brandsFragment}
+            }
+            services {
+              ${salonServicesFragment}
+            }
+            ratings {
+              ${ratingsFragment}
+            }
+            reviews {
+              ${reviewsFragment}
+            }
+            cities {
+              ${cityFragment}
+            }
+          }
         }
-      }
       ${metaInfo}
     }
   }

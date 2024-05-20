@@ -21,13 +21,13 @@ import { red } from '../../../../../styles/variables'
 import { Dispatch, FC, MouseEvent, SetStateAction } from 'react'
 import { IMaster } from 'src/types/masters'
 import { PHOTO_URL } from 'src/api/variables'
-import { LazyType } from 'src/types/common'
+import { ISetState, LazyType } from 'src/types/common'
 
 interface Props {
   master: IMaster
   catalog: LazyType[] | null
   deleteItem: boolean
-  setDeleteItem: Dispatch<SetStateAction<boolean>>
+  setDeleteItem: ISetState<boolean>
 }
 
 const MasterItem: FC<Props> = ({
@@ -78,8 +78,9 @@ const MasterItem: FC<Props> = ({
         <div>
           <Specializations>{servicesCategories}</Specializations>
           <Rating
-            averageScore={master?.averageScore}
-            numberScore={master?.numberScore}
+            rating={master?.rating}
+            countRatings={master.ratingCount}
+            countReviews={master.reviewsCount}
           />
         </div>
       </MasterInfo>

@@ -1,6 +1,8 @@
 import { addApolloState, initializeApollo } from '../../../api/apollo-client'
 import CategoryPageLayout from '../../../layouts/CategoryPageLayout'
-import AllMastersPage from '../../../components/pages/Master/AllMasters'
+import AllMastersPage, {
+  IMastersPageProps,
+} from '../../../components/pages/Master/AllMasters'
 
 import { GetServerSideProps } from 'next'
 import { totalBrands } from 'src/api/graphql/brand/queries/totalBrands'
@@ -16,46 +18,26 @@ import { getTotalCount } from 'src/utils/getTotalCount'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
 import useCheckMobileDevice from 'src/hooks/useCheckMobileDevice'
+import { fetchCity } from 'src/api/utils/fetchCity'
+import { authConfig, defaultValues } from 'src/api/authConfig'
+import { IBrand } from 'src/types/brands'
+import { getBrands } from 'src/api/graphql/brand/queries/getBrands'
+import { getMasters } from 'src/api/graphql/master/queries/getMasters'
+import { getSalons } from 'src/api/graphql/salon/queries/getSalons'
+import { ISalon } from 'src/types/salon'
+import { getRating } from 'src/utils/newUtils/getRating'
 
-interface Props {
-  masterData: IMaster[]
-  totalBrands: number
-  totalMasters: number
-  totalSalons: number
-  cityData: ICity[]
-  paginations: IPagination
+interface Props extends IMastersPageProps {
+  brands: IBrand[] | null
+  masters: IMaster[] | null
+  salons: ISalon[] | null
 }
 
-const AllMasters: FC<Props> = ({
-  masterData,
-  totalBrands,
-  totalMasters,
-  totalSalons,
-  // masterServices,
-  cityData,
-  paginations,
-}) => {
-  const { me } = useAuthStore(getStoreData)
-  const { setCity } = useAuthStore(getStoreEvent)
-
-  useEffect(() => {
-    setCity(cityData[0].cityName)
-  }, [])
-
-  // const { data: data1 } = useQuery(getMastersTroughCity, {
-  //   variables: { itemsCount: 10, cityName: [cityData[0].cityName] },
-  // })
-
+const AllMasters: FC<Props> = ({ masters, salons, brands, ...props }) => {
+  const layout = { brands, masters, salons }
   return (
-    <CategoryPageLayout rent me={me} loading={false}>
-      <AllMastersPage
-        totalBrands={totalBrands}
-        totalMasters={totalMasters}
-        totalSalons={totalSalons}
-        masterData={masterData}
-        cityData={cityData}
-        paginations={paginations}
-      />
+    <CategoryPageLayout rent {...layout}>
+      <AllMastersPage {...props} />
     </CategoryPageLayout>
   )
 }
@@ -63,58 +45,92 @@ const AllMasters: FC<Props> = ({
 export const getServerSideProps: GetServerSideProps = async ctx => {
   const apolloClient = initializeApollo()
 
-  const { data: city } = await apolloClient.query({
-    query: getCities,
-    variables: { cityName: ['Москва'] },
-  })
-  const normalizeCity = city.cities.data[0].attributes.cityName
+  const cityData = (await fetchCity(ctx.query.city as string)) || {
+    citySlug: defaultValues.citySlug,
+  }
+
+  // const masterData = []
+  // const brands = null
+  // const masters = null
+  // const salons = null
+  // const totalCount = {
+  //   brands: 0,
+  //   masters: 0,
+  //   salons: 0,
+  // }
+  // const cityData = []
+  // const pagination = []
 
   const data = await Promise.all([
     apolloClient.query({
       query: getMastersTroughCity,
       variables: {
         itemsCount: 10,
-        cityName: [normalizeCity],
+        citySlug: [cityData.citySlug],
       },
     }),
     apolloClient.query({
-      query: totalBrands,
+      query: getBrands,
+      variables: {
+        itemsCount: 10,
+      },
     }),
     apolloClient.query({
-      query: totalMasters,
+      query: getMasters,
+      variables: {
+        citySlug: ctx.query.city,
+        itemsCount: 10,
+      },
     }),
     apolloClient.query({
-      query: totalSalons,
+      query: getSalons,
+      variables: {
+        citySlug: ctx.query.city,
+        itemsCount: 10,
+      },
     }),
-    // apolloClient.query({
-    //   query: servicesWithMasterCount,
-    //   variables: {
-    //     city: city?.data?.citySuggestions[0]?.data?.city || '',
-    //   },
-    // }),
   ])
-  if (!normalizeCity) {
-    return {
-      redirect: {
-        destination: '/moskva/master',
-        permanent: true,
-      },
-    }
-  }
 
-  // console.log(data[0].data.masters.meta)
+  const masterData: IMaster[] =
+    flattenStrapiResponse(data[0].data.masters) || []
+  const pagination: IPagination | null =
+    data[0].data.masters.meta.pagination || null
+  const brands: IBrand[] = flattenStrapiResponse(data[1].data.brands) || null
+  const masters: IMaster[] = flattenStrapiResponse(data[2].data.masters) || null
+  const salons: ISalon[] = flattenStrapiResponse(data[3].data.salons) || null
 
-  return addApolloState(apolloClient, {
+  return {
+    notFound: !cityData?.cityName,
     props: {
-      paginations: data[0].data.masters.meta.pagination,
-      masterData: flattenStrapiResponse(data[0]?.data.masters),
-      totalBrands: getTotalCount(data[1]?.data.brands),
-      totalMasters: getTotalCount(data[2]?.data.masters),
-      totalSalons: getTotalCount(data[3]?.data.salons),
-      // masterServices: data[4]?.data?.mastersServicesCount,
-      cityData: flattenStrapiResponse(city.cities.data),
+      masterData: masterData.map(e => {
+        const reviewsCount = e.reviews?.length || null
+        const { rating, ratingCount } = getRating(e.ratings)
+        return { ...e, rating, ratingCount, reviewsCount }
+      }),
+      brands: brands.map(e => {
+        const reviewsCount = e.reviews?.length || null
+        const { rating, ratingCount } = getRating(e.ratings)
+        return { ...e, rating, ratingCount, reviewsCount }
+      }),
+      masters: masters.map(e => {
+        const reviewsCount = e.reviews?.length || null
+        const { rating, ratingCount } = getRating(e.ratings)
+        return { ...e, rating, ratingCount, reviewsCount }
+      }),
+      salons: salons.map(e => {
+        const reviewsCount = e.reviews?.length || null
+        const { rating, ratingCount } = getRating(e.ratings)
+        return { ...e, rating, ratingCount, reviewsCount }
+      }),
+      totalCount: {
+        brands: getTotalCount(data[1].data.brands),
+        masters: getTotalCount(data[2].data.masters),
+        salons: getTotalCount(data[3].data.salons),
+      },
+      cityData,
+      pagination,
     },
-  })
+  }
 }
 
 export default AllMasters

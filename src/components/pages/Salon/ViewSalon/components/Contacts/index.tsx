@@ -41,7 +41,7 @@ interface Props {
   workingHours: IWorkingHours[]
   address: string
   socialNetworkUrls: ISocialNetworks[]
-  metroStations: IMetroStations[]
+  metroStations?: IMetroStations[]
   locationDirections: string
   coordinates: { longitude: string; latitude: string }
 }

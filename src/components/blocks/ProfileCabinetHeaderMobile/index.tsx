@@ -25,12 +25,13 @@ import { Dispatch, FC, SetStateAction } from 'react'
 import { ITab } from 'src/components/ui/TabsSlider'
 import { IMasterCabinetTab } from 'src/components/pages/Master/MasterCabinet'
 import { IMe } from 'src/types/me'
+import { ISetState } from 'src/types/common'
 
 interface Props {
-  setActiveTab: Dispatch<SetStateAction<string>>
+  setActiveTab: ISetState<string>
   tabs: IMasterCabinetTab[]
   toggle: boolean
-  setToggle: Dispatch<SetStateAction<boolean>>
+  setToggle: ISetState<boolean>
   me: IMe | null
 }
 

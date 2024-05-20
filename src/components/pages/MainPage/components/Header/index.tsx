@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { useLazyQuery } from '@apollo/client'
 import {
   HeaderContent,
   Image,
@@ -50,156 +49,20 @@ import { MobileHeader } from './components/MobileHeader'
 import getMainPageHeaderLinks from './config'
 import ym from 'react-yandex-metrika'
 import { authConfig } from 'src/api/authConfig'
+import { getCookie } from 'cookies-next'
 
 const activeLink = (path: string, link?: string[]) => {
   return link?.find(item => item === path)
 }
 
 const Header = ({ loading = false }) => {
-  let cityInStorage
-  if (typeof window !== 'undefined' && window.localStorage) {
-    cityInStorage = localStorage.getItem('citySalon')
-  }
-  const [getCitiesList, { data: citiesData }] = useLazyQuery(getCities)
+  const cityCookie = getCookie(authConfig.cityKeyName)
   const { me, city } = useAuthStore(getStoreData)
-  const { setCity, setMe } = useAuthStore(getStoreEvent)
-  const { products } = useBaseStore(getStoreData)
-
   const { cartItemTotal: quantity } = useAuthStore(getStoreData)
-  const [cities, setCities] = useState<ICity[]>([])
-  // const { refetch } = useQuery(currentUserSalonsAndMasterQuery, {
-  //   skip: true,
-  //   onCompleted: (res) => {
-  //     setMe({
-  //       info: res?.me?.info,
-  //       master: res?.me?.master,
-  //       locationByIp: res?.locationByIp,
-  //       salons: res?.me?.salons,
-  //       rentalRequests: res?.me?.rentalRequests,
-  //     });
-  //   },
-  // });
   const b2bClient = !!me?.master?.id || !!me?.salons?.length
-  // const { refetch: refetchCart } = useQuery(getCart, {
-  //   skip: true,
-  //   onCompleted: (res) => {
-  //     setProductsGet(true);
-  //     setProducts(res?.getCartB2b?.contents || []);
-  //   },
-  // });
-
-  // const { refetch: refetchB2cCart } = useQuery(getB2cCart, {
-  //   skip: true,
-  //   onCompleted: (res) => {
-  //     setProductsGet(true);
-  //     setProducts(res?.getCart?.contents || []);
-  //   },
-  // });
-
-  // useEffect(() => {
-  //   if (!me) {
-  //     refetch();
-  //   }
-  // }, [me]);
-
-  // useEffect(() => {
-  //   if (!productsGet) {
-  //     if (!b2bClient) {
-  //       // refetchB2cCart();
-  //       refetchCart();
-  //     } else {
-  //       refetchCart();
-  //     }
-  //   }
-  // }, [productsGet]);
-
-  if (typeof window !== 'undefined' && window.localStorage) {
-    cityInStorage = localStorage.getItem('citySalon')
-  }
-
-  const isLoggedIn = me?.info !== undefined && me?.info !== null
-
   const router = useRouter()
-
   const isAboutPage = router.pathname === '/about'
-
-  const [openPopup, setPopupOpen] = useState<boolean>(!cityInStorage)
-
-  // useEffect(() => {
-  //   if (!b2bClient) {
-  //     setQuantity(CountProduct(products));
-  //   } else {
-  //     setQuantity(CountProduct(products));
-  //   }
-  // }, [products]);
-
-  useEffect(() => {
-    if (citiesData) {
-      const normalisedCities = flattenStrapiResponse(citiesData.cities?.data)
-      setCities(normalisedCities as unknown as ICity[])
-    } else {
-      getCitiesList()
-    }
-  }, [citiesData])
-
-  useEffect(() => {
-    // if (me) {
-    //   if (typeof window !== 'undefined' && window.localStorage) {
-    //     if (!me?.info) {
-    //       localStorage.setItem(
-    //         'citySalon',
-    //         me?.info?.city
-    //           ? me.info.city
-    //           : localStorage.getItem('citySalon')
-    //           ? localStorage.getItem('citySalon')
-    //           : me?.locationByIp
-    //           ? me?.locationByIp?.data?.city
-    //           : 'Москва',
-    //       )
-    //       setCity(
-    //         me?.info?.city
-    //           ? me.info.city
-    //           : localStorage.getItem('citySalon')
-    //           ? localStorage.getItem('citySalon')
-    //           : me?.locationByIp
-    //           ? me?.locationByIp?.data?.city
-    //           : 'Москва',
-    //       )
-    //     } else {
-    //       setCity(
-    //         localStorage.getItem('citySalon')
-    //           ? localStorage.getItem('citySalon')
-    //           : me?.locationByIp
-    //           ? me?.locationByIp?.data?.city
-    //           : 'Москва',
-    //       )
-    //       localStorage.setItem(
-    //         'citySalon',
-    //         localStorage.getItem('citySalon')
-    //           ? localStorage.getItem('citySalon')
-    //           : me?.locationByIp
-    //           ? me?.locationByIp?.data?.city
-    //           : 'Москва',
-    //       )
-    //     }
-    //   }
-    // }
-  }, [me])
-
-  useEffect(() => {
-    // if (!city) {
-    //   setCity(
-    //     me?.info?.city
-    //       ? me.info.city
-    //       : localStorage.getItem('citySalon')
-    //       ? localStorage.getItem('citySalon')
-    //       : me?.locationByIp
-    //       ? me?.locationByIp?.data?.city
-    //       : 'Москва',
-    //   )
-    // }
-  }, [])
-
+  const [openPopup, setPopupOpen] = useState<boolean>(!cityCookie)
   const [fillFav, setFillFav] = useState(isAboutPage ? '#fff' : '#000')
   const [fillProfile, setFillProfile] = useState(isAboutPage ? '#fff' : '#000')
   const [fillSearch, setFillSearch] = useState(isAboutPage ? '#fff' : '#000')
@@ -241,11 +104,11 @@ const Header = ({ loading = false }) => {
           me={me}
           quantity={quantity}
           loading={loading}
-          isLoggedIn={isLoggedIn}
+          isLoggedIn={!!me?.info}
           setFillProfile={setFillProfile}
           setFillCart={setFillCart}
           setShowCitySelect={setShowCitySelect}
-          defaultCity={city.citySlug}
+          defaultCity={city.cityName || ''}
           showHamburgerMenu={showHamburgerMenu}
           setShowHamburgerMenu={setShowHamburgerMenu}
           showSearchPopup={showSearchPopup}
@@ -311,7 +174,7 @@ const Header = ({ loading = false }) => {
             </AdditionalNavWrapper>
           </HeaderMenu>
           <Links>
-            <LinkCitySelect onClick={() => setShowCitySelect(true)}>
+            <LinkCitySelect onClick={() => setShowCitySelect(!showCitySelect)}>
               <CityPingIcon
                 showCitySelect={showCitySelect}
                 isAboutPage={isAboutPage}
@@ -333,7 +196,7 @@ const Header = ({ loading = false }) => {
                 searchIconClickHandler={searchIconClickHandler}
               />
             </LinkSearch>
-            {isLoggedIn ? (
+            {!!me?.info ? (
               <ProfilePhotoWrap onClick={() => router.push('/masterCabinet')}>
                 <ProfilePhoto
                   src={
@@ -384,23 +247,23 @@ const Header = ({ loading = false }) => {
               onMouseMove={() => setFillCart(red)}
               onMouseLeave={() => setFillCart(isAboutPage ? '#fff' : '#000')}
               onClick={() => {
-                console.log('first')
-
                 me?.info
                   ? router.push(`/cartB2b`)
                   : router.push(
                       {
-                        pathname: '/login',
+                        pathname: 'authConfig.notAuthLink',
                         query: { error: 'notAuthorized' },
                       },
-                      'login',
+                      authConfig.notAuthLink,
                     )
               }}
             >
               <CartIcon fill={fillCart} />
               {quantity != 0 ? (
                 <Count
-                  onClick={() => router.push(me?.info ? `/cartB2b` : '/login')}
+                  onClick={() =>
+                    router.push(me?.info ? `/cartB2b` : authConfig.notAuthLink)
+                  }
                 >
                   {quantity}
                 </Count>
@@ -415,7 +278,6 @@ const Header = ({ loading = false }) => {
         </HeaderContent>
       </Wrapper>
       <CitySelect
-        setMe={setMe}
         showCitySelect={showCitySelect}
         setShowCitySelect={setShowCitySelect}
         setShowHamburgerMenu={setShowHamburgerMenu}

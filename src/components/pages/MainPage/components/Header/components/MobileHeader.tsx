@@ -32,20 +32,21 @@ import { getStoreData, getStoreEvent } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
 import { IMe } from 'src/types/me'
 import { useRouter } from 'next/router'
+import { ISetState } from 'src/types/common'
 
 interface Props {
   isLoggedIn: boolean
-  setFillProfile: Dispatch<SetStateAction<string>>
-  setFillCart: Dispatch<SetStateAction<string>>
+  setFillProfile: ISetState<string>
+  setFillCart: ISetState<string>
   me: IMe | null
   loading: boolean
-  setShowCitySelect: Dispatch<SetStateAction<boolean>>
+  setShowCitySelect: ISetState<boolean>
   defaultCity: string
   showHamburgerMenu: boolean
-  setShowHamburgerMenu: Dispatch<SetStateAction<boolean>>
+  setShowHamburgerMenu: ISetState<boolean>
   quantity: number
   showSearchPopup: boolean
-  setShowSearchPopup: Dispatch<SetStateAction<boolean>>
+  setShowSearchPopup: ISetState<boolean>
 }
 
 export const MobileHeader: FC<Props> = ({

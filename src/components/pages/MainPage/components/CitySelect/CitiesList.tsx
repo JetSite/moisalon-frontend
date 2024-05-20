@@ -1,14 +1,13 @@
 import React, { FC } from 'react'
 import { CitiesListWrapper, CityItem } from './styles'
-import { IID } from 'src/types/common'
 import { ICity } from 'src/types'
 
-interface Props {
+export interface ICitiesListProps {
   cities: ICity[]
-  cityClickHandler: (city: ICity) => void
+  cityClickHandler: (selectCity: ICity) => void
 }
 
-const CitiesList: FC<Props> = ({ cities, cityClickHandler }) => {
+const CitiesList: FC<ICitiesListProps> = ({ cities, cityClickHandler }) => {
   return (
     <CitiesListWrapper>
       {cities?.map((city, i) => {

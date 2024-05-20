@@ -18,15 +18,6 @@ export interface IMetaData {
   pagination: Partial<IPagination>
 }
 
-export interface ISalonLogo {
-  id: IID
-  name: string
-  alternativeText: string | null
-  formats: any // Замените на конкретный тип, если есть
-  url: string
-  previewUrl?: string // Если есть предпросмотр
-}
-
 export interface IPhoto {
   id: IID
   name: string
@@ -51,19 +42,25 @@ export interface ICity {
 
 export interface IServiceCategories {
   id: IID
-  serviceCategoryName: string
+  serviceCategoryName?: string
+  categoryName?: string
 }
 
 export interface IService {
   id: IID
   serviceName: string
-  service_categories: IServiceCategories[]
+  service_categories?: IServiceCategories[]
+  service_m_category?: IServiceCategories
 }
 
 export interface IServices {
   id: IID
   serviceName: string
   service: IService
+  price: string
+  priceFrom: string
+  priceTo: string
+  unitOfMeasurement: string
 }
 
 export interface IWorkingHours {
@@ -73,6 +70,42 @@ export interface IWorkingHours {
 }
 
 export interface ISocialNetworks {
+  id: IID
   link: string
+  s_network: {
+    id: string
+    logo: IPhoto | null
+    slug: string
+    title: string
+  }
   title: string
+}
+
+export interface IRating {
+  id: IID
+  user: { id: IID }
+  rating_value: { id: IID }
+}
+
+export interface IGroupedServices {
+  category: string
+  services: IServices[]
+}
+
+export interface ICountry {
+  id: IID
+  countryName: string
+  description: string | null
+  seoDescription: string | null
+  slug: string
+}
+
+export interface IPhone {
+  id: IID
+  phoneTitle: string
+  phoneNumber: string
+  phoneContact: string
+  haveViber: boolean
+  haveWhatsApp: boolean
+  haveTelegram: boolean
 }

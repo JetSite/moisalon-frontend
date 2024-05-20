@@ -242,7 +242,7 @@ const Education = ({
         </EducationBottom>
         <Rating
           position="start"
-          averageScore={averageScore}
+          rating={averageScore}
           numberScore={numberScore || 0}
         />
       </EducationContent>

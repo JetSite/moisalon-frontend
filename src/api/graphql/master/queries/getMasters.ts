@@ -2,6 +2,9 @@ import { gql } from '@apollo/client'
 import { metaInfo } from '../../common/metaInfo'
 import { imageInfo } from '../../common/imageInfo'
 import { cityInfo } from 'src/api/graphql/common/cityInfo'
+import { reviewsFragment } from '../../fragments/reviews'
+import { ratingsFragment } from '../../fragments/ratings'
+import servicesFragment from '../../fragments/services'
 
 export const getMasters = gql`
   query masters($citySlug: String!,$itemsCount: Int!, $excludeId: ID) {
@@ -12,6 +15,10 @@ export const getMasters = gql`
             masterName
             masterPhone
             masterEmail
+            searchWork
+            rating 
+            ratingCount 
+            reviewsCount
             salons {
               data {
                 id
@@ -21,29 +28,19 @@ export const getMasters = gql`
               }
             }
             services {
-                id
-                service {
-                  data {
-                    id
-                    attributes {
-                      service_categories {
-                        data {
-                          id
-                          attributes {
-                            serviceCategoryName
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-                serviceName
+             ${servicesFragment}
             }
             city {
               ${cityInfo}
             }
             masterPhoto {
               ${imageInfo}
+            }
+            reviews {
+              ${reviewsFragment}
+            }
+            ratings {
+              ${ratingsFragment}
             }
         }
       }

@@ -9,8 +9,6 @@ import React, {
   ChangeEvent,
 } from 'react'
 import { useMutation } from '@apollo/react-hooks'
-import { useCitySuggestions } from './useCitySuggestions'
-import { changeCityMutation } from '../../../../../_graphql-legacy/city/changeCityMutation'
 import CitiesList from './CitiesList'
 import {
   Wrapper,
@@ -24,19 +22,19 @@ import {
 } from './styles'
 import CityPingIcon from '../Header/icons/CityPingIcon'
 import { useQuery } from '@apollo/client'
-import { currentUserSalonsAndMasterQuery } from '../../../../../_graphql-legacy/master/currentUserSalonsAndMasterQuery'
-import { useRouter } from 'next/router'
 import { cyrToTranslit } from '../../../../../utils/translit'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
-import { IMe } from 'src/types/me'
-import { defaultcCitiesList } from 'src/api/authConfig'
-import { IID } from 'src/types/common'
+import { authConfig, defaultcCitiesList } from 'src/api/authConfig'
 import { ICity } from 'src/types'
 import { getCities } from 'src/api/graphql/city/getCities'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { UpdatedList } from './UpdatedList'
 import { changeMe } from 'src/api/graphql/me/mutations/changeMe'
+import { setCookie } from 'cookies-next'
+import { redirectCityRoutes } from 'src/utils/newUtils/redirectCityRoutes'
+import { useRouter } from 'next/router'
+import { ISetState } from 'src/types/common'
 
 const prepareCitiesList: ICity[] = defaultcCitiesList.map((city, i) => ({
   cityName: city,
@@ -46,20 +44,19 @@ const prepareCitiesList: ICity[] = defaultcCitiesList.map((city, i) => ({
 
 interface Props {
   showCitySelect: boolean
-  setShowCitySelect: Dispatch<SetStateAction<boolean>>
-  setShowHamburgerMenu?: Dispatch<SetStateAction<boolean>>
-  setMe: (me: IMe) => void
+  setShowCitySelect: ISetState<boolean>
+  setShowHamburgerMenu?: ISetState<boolean>
 }
 
 const CitySelect: FC<Props> = ({
   showCitySelect,
   setShowCitySelect,
   setShowHamburgerMenu,
-  setMe,
 }) => {
-  const { city } = useAuthStore(getStoreData)
   const { setCity } = useAuthStore(getStoreEvent)
+  const { me } = useAuthStore(getStoreData)
   const [citiesList, setCitiesList] = useState<ICity[]>([])
+  const router = useRouter()
   const { refetch, loading } = useQuery(getCities, {
     variables: { itemsCount: 10 },
     onCompleted: data => {
@@ -74,23 +71,20 @@ const CitySelect: FC<Props> = ({
     notifyOnNetworkStatusChange: true,
   })
 
-  console.log(city)
-
   useEffect(() => {
     refetch()
   }, [])
 
   // useEffect(() => {
   //   if (showCitySelect) {
-  //     document.body.style.overflow = "hidden";
-  // document.documentElement.style.overflowY = "hidden";
+  //     document.body.style.overflow = 'hidden'
+  //     document.documentElement.style.overflowY = 'hidden'
   //   }
   //   return () => {
-  //     document.body.style.overflow = "unset";
-  // document.documentElement.style.overflowY = "scroll";
-  //   };
-  // });
-  const router = useRouter()
+  //     document.body.style.overflow = 'unset'
+  //     document.documentElement.style.overflowY = 'scroll'
+  //   }
+  // })
 
   const [cityInput, setCityInput] = useState('')
   const wrapperRef = useRef<HTMLDivElement>(null)
@@ -127,50 +121,17 @@ const CitySelect: FC<Props> = ({
     setCityInput(e.target.value)
   }
 
-  const cityClickHandler = async (slug: string) => {
-    const city = citiesList.find(city => cyrToTranslit(city) === slug)
+  const cityClickHandler = async (city: ICity) => {
     setShowCitySelect(false)
     setShowHamburgerMenu && setShowHamburgerMenu(false)
-    localStorage.setItem('citySalon', city ? city.citySlug : 'moskva')
-    // await changeCityFunc({
-    //   variables: {
-    //     city: city ? city : "Москва",
-    //   },
-    // });
+    setCookie(authConfig.cityKeyName, city.citySlug)
+    if (me?.info.id) {
+      changeCityFunc({
+        variables: { id: me.info.id, data: { selected_city: city.id } },
+      })
+    }
     setCity(city || null)
-    if (router.pathname === '/[city]/salon/[id]' && router?.query?.city) {
-      router.push(`/${cyrToTranslit(city)}/salon`)
-      return
-    }
-    if (
-      router.pathname === '/[city]/brand/[id]/products' &&
-      router?.query?.city
-    ) {
-      router.push(`/${cyrToTranslit(city)}/brand`)
-      return
-    }
-    if (router.pathname === '/[city]/rent/[id]' && router?.query?.city) {
-      router.push(`/${cyrToTranslit(city)}/rent`)
-      return
-    }
-    if (
-      router.pathname === '/[city]/rent/[id]room/[roomId]/seat/[seatId]' &&
-      router?.query?.city
-    ) {
-      router.push(`/${cyrToTranslit(city)}/rent`)
-      return
-    }
-    if (router.pathname === '/[city]/master/[id]' && router?.query?.city) {
-      router.push(`/${cyrToTranslit(city)}/master`)
-      return
-    }
-    if (router.pathname === '/[city]/brand/[id]' && router?.query?.city) {
-      router.push(`/${cyrToTranslit(city)}/brand`)
-      return
-    }
-    if (router?.query?.city) {
-      router.replace({ query: { ...router.query, city: cyrToTranslit(city) } })
-    }
+    redirectCityRoutes(city.citySlug, router)
   }
 
   let component = (
@@ -180,10 +141,11 @@ const CitySelect: FC<Props> = ({
   if (cityInput.length >= 2) {
     component = (
       <UpdatedList
+        me={me}
         cityInput={cityInput}
         setCityInput={setCityInput}
-        setShowCitySelect={setShowCitySelect}
         changeCityFunc={changeCityFunc}
+        setShowCitySelect={setShowCitySelect}
         setShowHamburgerMenu={setShowHamburgerMenu}
       />
     )

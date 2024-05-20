@@ -10,56 +10,54 @@ import { CSSTransition } from 'react-transition-group'
 import { MobileHidden } from '../../../../styles/common'
 import { IMaster } from 'src/types/masters'
 import { ICity, IPagination } from 'src/types'
+import { ITotalCount } from 'src/pages/[city]/salon'
+import NotFound from '../../404'
 
-interface Props {
-  masterData: IMaster[]
-  totalBrands: number
-  totalMasters: number
-  totalSalons: number
-  cityData?: ICity[]
-  paginations: IPagination
+export interface IMastersPageProps {
+  masterData: IMaster[] | []
+  totalCount: ITotalCount
+  cityData: ICity
+  pagination: IPagination | null
 }
 
-const AllMastersPage: FC<Props> = ({
+const AllMastersPage: FC<IMastersPageProps> = ({
   masterData,
-  totalBrands,
-  totalMasters,
-  totalSalons,
+  totalCount,
   cityData,
-  paginations,
+  pagination,
 }) => {
-  const query = { query: '' } //TODO: query
-
   return (
     <>
-      <MobileViewCards
-        cityData={cityData}
-        totalBrands={totalBrands}
-        totalMasters={totalMasters}
-        totalSalons={totalSalons}
-      />
+      <MobileViewCards totalCount={totalCount} />
       <MobileHidden>
         <SearchBlock title="Найти своего мастера" />
       </MobileHidden>
-      <CSSTransition
-        in={!query?.query}
-        timeout={500}
-        classNames="banner"
-        unmountOnExit
-      >
-        <WrapBanner>
-          <Line text="Вы – профессионал? Присоединяйтесь, чтобы воспользоваться привилегиями." />
-          <CategoryImage />
-        </WrapBanner>
-      </CSSTransition>
-      <MainContainer>
-        <WrapperResults>
-          <MastersSearchResults
-            masterData={masterData}
-            paginations={paginations}
-          />
-        </WrapperResults>
-      </MainContainer>
+      {masterData.length ? (
+        <>
+          <CSSTransition
+            in={true}
+            timeout={500}
+            classNames="banner"
+            unmountOnExit
+          >
+            <WrapBanner>
+              <Line text="Вы – профессионал? Присоединяйтесь, чтобы воспользоваться привилегиями." />
+              <CategoryImage />
+            </WrapBanner>
+          </CSSTransition>
+          <MainContainer>
+            <WrapperResults>
+              <MastersSearchResults
+                cityData={cityData}
+                masterData={masterData}
+                pagination={pagination}
+              />
+            </WrapperResults>
+          </MainContainer>
+        </>
+      ) : (
+        <NotFound />
+      )}
     </>
   )
 }

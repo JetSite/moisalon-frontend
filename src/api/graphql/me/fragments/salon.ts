@@ -1,4 +1,8 @@
 import { imageInfo } from '../../common/imageInfo'
+import { cityFragment } from '../../fragments/city'
+import { ratingsFragment } from '../../fragments/ratings'
+import { reviewsFragment } from '../../fragments/reviews'
+import { socialNetworksFragment } from '../../fragments/socialNetworks'
 import {
   salonAdministratorsFragment,
   salonBrandsFragment,
@@ -6,6 +10,8 @@ import {
   salonReviewsFragment,
   salonServicesFragment,
 } from '../../salon/fragments'
+import { brandsFragment } from './brands'
+import { masterFragment } from './master'
 
 export const salonFragment = `data {
   id
@@ -15,13 +21,7 @@ export const salonFragment = `data {
       longitude
       locationDirections
       cities {
-        data {
-          id
-          attributes {
-            citySlug
-            cityName
-          }
-        }
+        ${cityFragment}
       }
       user {
         data {
@@ -50,12 +50,8 @@ export const salonFragment = `data {
         haveViber
       }
       socialNetworks {
-        title
-        link
+        ${socialNetworksFragment}
       }
-      salonAverageScore
-      salonSumScore
-      salonRating
       salonOwnerConfirmed
       salonOnlineBookingUrl
       workingHours {
@@ -79,25 +75,29 @@ export const salonFragment = `data {
       salonCantactPresonWorkingHoursAt
       salonCantactPresonWorkingHoursTo
       salonWorkplacesCount
-      salonReviewsCount
       salonMastersCount
       salonBrandsCount
       createdAt
       updatedAt
       publishedAt
+      reviewsCount
+            ratingCount
+            rating
       salonCover {
         ${imageInfo}
       }
       salonLogo {
         ${imageInfo}
       }
-      salonPhotos {
-        ${imageInfo}
-      }
-      ${salonAdministratorsFragment}
-      ${salonBrandsFragment}
-      ${salonMastersFragment}
-      ${salonReviewsFragment}
+      services {
       ${salonServicesFragment}
+      }
+      ratings {
+        ${ratingsFragment}
+      }
+      reviews {
+        ${reviewsFragment}
+      }
+
   }
 }`

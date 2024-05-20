@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import Select from '../../blocks/Form/Select'
+import Select from '../../blocks/Form/Select/index.tsx'
 import { red, laptopBreakpoint } from '../../../styles/variables'
 
 export const Wrapper = styled.div`

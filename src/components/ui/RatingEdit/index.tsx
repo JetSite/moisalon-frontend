@@ -6,19 +6,17 @@ import Button from '../Button'
 import { IMe } from 'src/types/me'
 import { getStoreData } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
+import { ISetState } from 'src/types/common'
 
 interface Props {
-  count: number
-  userValue: number
+  rating: number
+  newRating: number
   handleChangeRating: (num: number) => void
 }
 
-const RatingEdit: FC<Props> = ({
-  count,
-  userValue = 0,
-  handleChangeRating,
-}) => {
-  let countNum = count > 0 && count < 6 ? count : 0
+const RatingEdit: FC<Props> = ({ rating, newRating, handleChangeRating }) => {
+  let countNum =
+    Math.round(rating) > 0 && Math.round(rating) < 6 ? Math.round(rating) : 0
   const [hover, setHover] = useState<number | null>(null)
   const [openPopup, setOpenPopup] = useState(false)
   const router = useRouter()
@@ -39,7 +37,7 @@ const RatingEdit: FC<Props> = ({
                 }
               }}
               active={hover ? hover > i : false}
-              userValue={userValue > i}
+              userValue={newRating > i}
               onMouseEnter={() => setHover(i + 1)}
               onMouseLeave={() => setHover(null)}
             />
@@ -53,7 +51,7 @@ const RatingEdit: FC<Props> = ({
                   handleChangeRating(i + 1)
                 }
               }}
-              userValue={userValue > i}
+              userValue={newRating > i}
               key={i}
               onMouseEnter={() => setHover(i + 1)}
               onMouseLeave={() => setHover(null)}

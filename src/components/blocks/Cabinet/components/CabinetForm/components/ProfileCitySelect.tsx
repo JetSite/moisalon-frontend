@@ -1,14 +1,14 @@
 import { Dispatch, FC, RefObject, SetStateAction } from 'react'
 import { useCitySuggestions } from '../../../../../pages/MainPage/components/CitySelect/useCitySuggestions'
 import { Wrapper, CityList, CityItem } from './styles'
-import { CustomWindow, IID } from 'src/types/common'
+import { CustomWindow, IID, ISetState } from 'src/types/common'
 import { ICity } from 'src/types'
 
 interface Props {
   cityInput: string
   setShowCityInput: (value: boolean) => void
   cityPopupRef: RefObject<HTMLDivElement>
-  setCityId: Dispatch<SetStateAction<IID | null>>
+  setCityId: ISetState<IID | null>
 }
 declare let window: CustomWindow
 

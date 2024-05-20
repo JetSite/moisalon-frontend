@@ -13,6 +13,7 @@ import {
   IGroupedCategories,
   IGroupedService,
 } from 'src/utils/getGrupedServices'
+import { ISetState } from 'src/types/common'
 
 export const BpIcon = styledMaterial('span')(() => ({
   borderRadius: 3,
@@ -92,7 +93,7 @@ const ShowMore = styled.span`
 
 interface Props {
   group: IGroupedCategories
-  setEntriesItems: Dispatch<SetStateAction<IEntries[]>>
+  setEntriesItems: ISetState<IEntries[]>
   entriesItems: IEntries[]
   handleDeleteEntries: (items: IGroupedService[]) => void
   handleAddEntries: (items: IGroupedService[]) => void

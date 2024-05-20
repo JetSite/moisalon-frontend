@@ -1,4 +1,6 @@
 import { imageInfo } from '../../common/imageInfo'
+import { brandsFragment } from './brands'
+import { salonFragment } from './salon'
 
 export const vacanciesFragment = `
 data {
@@ -18,20 +20,10 @@ data {
       }
     }
     brand {
-      data {
-        id
-        attributes {
-          brandName
-        }
-      }
+      ${brandsFragment}
     }
     salon {
-      data {
-        id
-        attributes {
-          salonName
-        }
-      }
+      ${salonFragment}
     }
     title
     deleted

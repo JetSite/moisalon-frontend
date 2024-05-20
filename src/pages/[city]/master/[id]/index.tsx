@@ -9,7 +9,7 @@ import Header from '../../../../components/pages/Master/ViewMaster/components/He
 import TabsSlider from '../../../../components/ui/TabsSlider'
 import About from '../../../../components/pages/Master/ViewMaster/components/About'
 import MobileServicesForClient from '../../../../components/pages/Master/ViewMaster/components/MobileServicesComponent/MobileServicesForClient'
-import ReviewsMaster from '../../../../components/pages/Master/ViewMaster/components/MasterReviews'
+import ReviewsMaster from '../../../../components/pages/Master/ViewMaster/components/MasterReviews/index'
 import Line from '../../../../components/pages/MainPage/components/Line'
 import InviteMaster from '../../../../components/pages/Master/ViewMaster/components/Invite'
 import Contacts from '../../../../components/pages/Master/ViewMaster/components/Contacts'
@@ -19,19 +19,30 @@ import AddBrands from '../../../../components/pages/Master/AddBrands'
 import AddSalons from '../../../../components/pages/Master/AddSalons'
 import PhotoAdd from '../../../../components/pages/Master/ViewMaster/components/PhotoAdd'
 import { NoItemsText } from '../../../../styles/common'
-import { getMaster } from 'src/api/graphql/master/queries/getMaster'
+import { MASTER_PAGE } from 'src/api/graphql/master/queries/masterPage'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { getMasters } from 'src/api/graphql/master/queries/getMasters'
 import { getServicesByCategory } from 'src/utils/serviceCatalog'
 import useBaseStore from 'src/store/baseStore'
-import { getStoreData } from 'src/store/utils'
+import { getStoreData, getStoreEvent } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
 import { GetServerSideProps } from 'next'
 import Resume from 'src/components/pages/Master/ViewMaster/components/Resume'
-import { cyrToTranslit } from 'src/utils/translit'
-import { defaultCitySlug, defaultcCitiesList } from 'src/api/authConfig'
+import { defaultValues, defaultcCitiesList } from 'src/api/authConfig'
+import { fetchCity } from 'src/api/utils/fetchCity'
+import { IMaster } from 'src/types/masters'
+import { ICity } from 'src/types'
+import { getGroupedServices } from 'src/utils/getGrupedServices'
+import { getRating } from 'src/utils/newUtils/getRating'
+import { Nullable } from 'src/types/common'
 
-const Master: FC<Props> = ({ masterData, randomMasters }) => {
+interface Props {
+  masterData: IMaster
+  randomMasters: IMaster[]
+  cityData: ICity
+}
+
+const Master: FC<Props> = ({ masterData, randomMasters, cityData }) => {
   const [master, setMaster] = useState(masterData)
   const { me, city } = useAuthStore(getStoreData)
   const { catalogs } = useBaseStore(getStoreData)
@@ -41,34 +52,15 @@ const Master: FC<Props> = ({ masterData, randomMasters }) => {
   const [isSalonsEditing, setIsSalonsEditing] = useState(false)
   const [isPortfolioEditing, setIsPortfolioEditing] = useState(false)
   const [isDiplomsEditing, setIsDiplomsEditing] = useState(false)
+  const salonServicesMasterCatalog: any[] = []
 
-  const { refetch: getMe, loading: meLoading } = useQuery(getMasters, {
-    variables: { city: 'Москва', itemsCount: 10 },
-    onCompleted: data => {
-      console.log(data)
-    },
-    onError: err => {
-      console.log(err)
-    },
-  })
-
-  console.log('randomMasters', randomMasters)
-  console.log(city)
-
-  useEffect(() => {
-    if (masterData?.data) {
-      setMaster(flattenStrapiResponse(masterData.data))
-    }
-    // refetch()
-  }, [masterData])
-
-  const isOwner = me?.master?.id === master?.id
+  const isOwner = !!me?.owner?.masters.find(e => e.id === master.id)
 
   const servicesData = getServicesByCategory(master?.services)
 
   return (
     <MainLayout>
-      <Head>
+      {/* <Head>
         {master?.seo?.title ? <title>{master?.seo?.title}</title> : null}
         {master?.seo?.description ? (
           <meta name="description" content={master?.seo?.description} />
@@ -76,23 +68,13 @@ const Master: FC<Props> = ({ masterData, randomMasters }) => {
         {master?.photo?.url ? (
           <meta property="og:image" content={master?.photo?.url} />
         ) : null}
-      </Head>
+      </Head> */}
       <>
         <SearchBlock />
-        <Header
-          me={me}
-          master={master}
-          isOwner={isOwner}
-          // refetchMaster={refetchMaster}
-          // refetchScore={refetchScore}
-          // scoreMasterCount={dataScore?.value}
-          // loadingScore={loadingScore}
-          // masterSpecializationsCatalog={masterSpecializationsCatalog}
-        />
+        <Header master={master} isOwner={isOwner} />
         <TabsSlider
           activeTab={activeTab}
           setActiveTab={setActiveTab}
-          noPadding
           tabs={[
             { id: 1, text: 'О себе', link: '#about', show: true },
             {
@@ -100,28 +82,28 @@ const Master: FC<Props> = ({ masterData, randomMasters }) => {
               text: 'Услуги',
               link: '#services',
               count: master?.services?.length,
-              show: master?.services?.length || isOwner,
+              show: !!master?.services?.length || isOwner,
             },
             {
               id: 3,
               text: 'Примеры',
               link: '#portfolio',
               count: master?.photosWorks?.length,
-              show: master?.photosWorks?.length || isOwner,
+              show: !!master?.photosWorks?.length || isOwner,
             },
             {
               id: 4,
               text: 'Дипломы',
               link: '#diploms',
               count: master?.photosDiploma?.length,
-              show: master?.photosDiploma?.length || isOwner,
+              show: !!master?.photosDiploma?.length || isOwner,
             },
             {
               id: 5,
               text: 'Бренды',
               link: '#brands',
               count: master?.brands?.length,
-              show: master?.brands?.length || isOwner,
+              show: !!master?.brands?.length || isOwner,
             },
             {
               id: 6,
@@ -139,10 +121,7 @@ const Master: FC<Props> = ({ masterData, randomMasters }) => {
             servicesData={servicesData}
             isOwner={isOwner}
             master={master}
-            // masterDataQuery={refetchMaster}
-            // edit={editClientServices}
-            // setEdit={setEditClientServices}
-            count={master?.service?.length}
+            salonServicesMasterCatalog={salonServicesMasterCatalog}
           />
         ) : null}
         {master?.services?.length || isOwner ? (
@@ -156,6 +135,7 @@ const Master: FC<Props> = ({ masterData, randomMasters }) => {
         {master?.photosWorks?.length || isOwner ? (
           <>
             <Slider
+              city={city}
               type="portfolio"
               items={master?.photosWorks}
               isOwner={isOwner}
@@ -166,7 +146,7 @@ const Master: FC<Props> = ({ masterData, randomMasters }) => {
               pt={52}
               pb={31}
             >
-              {isPortfolioEditing ? <PhotoAdd onAdd={onAdd} /> : null}
+              {isPortfolioEditing ? <PhotoAdd onAdd={() => {}} /> : null}
               {isPortfolioEditing && isOwner ? (
                 <NoItemsText>Нажмите плюс, чтобы добавить работы</NoItemsText>
               ) : !master?.photosWorks?.length && isOwner ? (
@@ -180,6 +160,7 @@ const Master: FC<Props> = ({ masterData, randomMasters }) => {
         ) : null}
         {master?.photosDiploma?.length || isOwner ? (
           <Slider
+            city={city}
             type="diploms"
             items={master?.photosDiploma}
             isOwner={isOwner}
@@ -191,7 +172,7 @@ const Master: FC<Props> = ({ masterData, randomMasters }) => {
             pb={31}
           >
             <>
-              {isDiplomsEditing ? <PhotoAdd onAdd={onAddDiploma} /> : null}
+              {isDiplomsEditing ? <PhotoAdd onAdd={() => {}} /> : null}
               {isDiplomsEditing && isOwner ? (
                 <NoItemsText>
                   Нажмите плюс, чтобы добавить сертификаты или дипломы
@@ -206,17 +187,8 @@ const Master: FC<Props> = ({ masterData, randomMasters }) => {
           </Slider>
         ) : null}
         {master?.salons?.length || isOwner ? (
-          // <SalonMasterSlider
-          //   title="Салоны, в которых я работаю"
-          //   isOwner={isOwner}
-          //   me={me}
-          //   master={master}
-          //   salonsId={salonsId}
-          //   loading={false}
-          //   catalogs={catalogs}
-          //   refetchMaster={refetchMaster}
-          // />
           <Slider
+            city={city}
             type="salons"
             items={master.salons}
             isOwner={isOwner}
@@ -237,13 +209,14 @@ const Master: FC<Props> = ({ masterData, randomMasters }) => {
                 ) : null
               ) : null}
               {isSalonsEditing ? (
-                <AddSalons master={master} refetchMaster={refetchMaster} />
+                <AddSalons master={master} refetchMaster={() => {}} />
               ) : null}
             </>
           </Slider>
         ) : null}
         {master?.brands?.length || isOwner ? (
           <Slider
+            city={city}
             type="brands"
             items={master?.brands}
             isOwner={isOwner}
@@ -265,7 +238,7 @@ const Master: FC<Props> = ({ masterData, randomMasters }) => {
                 </NoItemsText>
               )}
               {isBrandsEditing ? (
-                <AddBrands refetch={refetchBrands} master={me?.master} />
+                <AddBrands refetch={() => {}} master={me?.master} />
               ) : null}
             </>
           </Slider>
@@ -273,12 +246,7 @@ const Master: FC<Props> = ({ masterData, randomMasters }) => {
         {me?.salons?.length && master?.resume ? (
           <Resume master={master} />
         ) : null}
-        <ReviewsMaster
-          data={master?.reviews}
-          me={me}
-          masterId={master.id}
-          refetchReviews={() => {}}
-        />
+        <ReviewsMaster reviews={master?.reviews} masterId={master.id} />
         <Contacts
           phone={master?.masterPhone}
           email={master?.masterEmail}
@@ -306,66 +274,67 @@ const Master: FC<Props> = ({ masterData, randomMasters }) => {
           bgColor="#f2f0f0"
           pt={102}
           pb={91}
+          city={city}
         />
       </>
     </MainLayout>
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async ({
+export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async ({
   params,
   query,
+  res,
 }) => {
   const apolloClient = initializeApollo()
-
   const id = params?.id
-
-  console.log(query.city)
+  const cityData = await fetchCity(query.city as string)
 
   const data = await Promise.all([
     apolloClient.query({
-      query: getMaster,
+      query: MASTER_PAGE,
       variables: { id },
     }),
     apolloClient.query({
       query: getMasters,
       variables: {
-        citySlug: query?.city || defaultCitySlug,
+        citySlug: cityData?.citySlug,
         excludeId: id,
         itemsCount: 10,
       },
     }),
   ])
 
-  const masterData = flattenStrapiResponse(data[0]?.data?.master?.data)
-  const randomMasters = flattenStrapiResponse(data[1]?.data?.masters?.data)
+  const masterData: IMaster | null =
+    flattenStrapiResponse(data[0]?.data?.master?.data) || null
+  const randomMasters: IMaster[] =
+    flattenStrapiResponse(data[1]?.data?.masters?.data) || []
 
-  // const city = await apolloClient.query({
-  //   query: citySuggestionsQuery,
-  //   variables: {
-  //     city: query?.city || '',
-  //     count: 1,
-  //   },
-  // })
+  const reviewsCount = masterData?.reviews?.length || 0
+  const { rating, ratingCount } = getRating(masterData?.ratings)
 
-  // if (!id || !city?.data?.citySuggestions[0]?.data?.city) {
-  //   return {
-  //     notFound: true,
-  //   }
-  // }
+  const salons =
+    masterData?.salons.map(e => {
+      const reviewsCount = e.reviews?.length || 0
+      const { rating, ratingCount } = getRating(e.ratings)
+      return { ...e, rating, ratingCount, reviewsCount }
+    }) || null
 
-  if (!id) {
-    return {
-      notFound: true,
-    }
-  }
-
-  return addApolloState(apolloClient, {
+  return {
+    notFound: !id || !cityData || !masterData,
     props: {
-      masterData,
-      randomMasters,
+      masterData:
+        masterData && salons && rating && ratingCount && reviewsCount
+          ? { ...masterData, salons, rating, ratingCount, reviewsCount }
+          : null,
+      randomMasters: randomMasters.map(e => {
+        const reviewsCount = e.reviews?.length
+        const { rating, ratingCount } = getRating(e.ratings)
+        return { ...e, rating, ratingCount, reviewsCount }
+      }),
+      cityData,
     },
-  })
+  }
 }
 
 export default Master
