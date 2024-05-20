@@ -7,8 +7,8 @@ import {
 } from '../../../styles/variables'
 
 export const Wrapper = styled.div<{
-  loading: boolean
-  noMobileFooter: boolean
+  loading?: boolean
+  noMobileFooter?: boolean
 }>`
   background: #000;
   padding-top: ${props => (props.loading ? '15px' : 0)};

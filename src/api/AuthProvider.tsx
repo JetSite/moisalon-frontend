@@ -5,20 +5,26 @@ import { IChildren } from 'src/types/common'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
 import { getMe as ME } from './graphql/me/queries/getMe'
-import { authConfig } from './authConfig'
-import { getCookie } from 'cookies-next'
+import { authConfig, defaultValues } from './authConfig'
+import { getCookie, setCookie } from 'cookies-next'
 import { getUser as USER } from './graphql/me/queries/getUser'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { IMeInfo, IMeThings } from 'src/types/me'
 import { getCities } from './graphql/city/getCities'
 import { IVacancy } from 'src/types/vacancies'
 import { IReview } from 'src/types/reviews'
+import { ICity } from 'src/types'
+import { fetchCity } from './utils/fetchCity'
 
-const AuthProvider: FC<{ children: IChildren }> = ({ children }) => {
+const AuthProvider: FC<{ children: IChildren; cityData?: ICity }> = ({
+  children,
+  cityData,
+}) => {
   const router = useRouter()
-  const { me, loading } = useAuthStore(getStoreData)
-  const { setMe, setLoading } = useAuthStore(getStoreEvent)
+  const { me, loading, city } = useAuthStore(getStoreData)
+  const { setMe, setLoading, setCity } = useAuthStore(getStoreEvent)
   const accessToken = getCookie(authConfig.tokenKeyName)
+  const cityCookie = getCookie(authConfig.cityKeyName)
 
   const getMeCB = {
     onCompleted: (data: any) => {
@@ -56,7 +62,7 @@ const AuthProvider: FC<{ children: IChildren }> = ({ children }) => {
         masters: prepareData.favorited_masters,
         brand: prepareData.favorited_brands,
       }
-      console.log('usersPermissionsUser', data.usersPermissionsUser)
+      // console.log('usersPermissionsUser', data.usersPermissionsUser)
 
       setMe({
         info,
@@ -65,6 +71,11 @@ const AuthProvider: FC<{ children: IChildren }> = ({ children }) => {
         vacancies: prepareData.vacancies as IVacancy[],
         reviews: prepareData.reviews as IReview[],
       })
+      setCity(prepareData.selected_city as ICity)
+      setCookie(
+        authConfig.cityKeyName,
+        prepareData.selected_city.citySlug || defaultValues.citySlug,
+      )
     },
     onError: err => console.log(err),
     skip: true,
@@ -72,7 +83,19 @@ const AuthProvider: FC<{ children: IChildren }> = ({ children }) => {
   })
 
   useEffect(() => {
-    console.log('AuthProvider', me)
+    const initializeCity = async () => {
+      if (cityData?.cityName) {
+        setCity(cityData)
+      } else {
+        const cityDataRes = await fetchCity(cityCookie)
+        setCity(cityDataRes)
+      }
+    }
+    initializeCity()
+  }, [cityCookie])
+
+  useEffect(() => {
+    // console.log('AuthProvider', me, city)
 
     setLoading(meLoading || userLoading)
     if (router.asPath !== authConfig.notAuthLink) {

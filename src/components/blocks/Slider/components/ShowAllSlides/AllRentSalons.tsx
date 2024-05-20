@@ -8,7 +8,7 @@ const AllRentSalons = () => {
   const { city } = useAuthStore(getStoreData)
 
   return (
-    <Link href={`/${cyrToTranslit(city)}/rent`}>
+    <Link href={`/${city.citySlug}/rent`}>
       <AllSalons>
         <AllIconSalon />
         <FavoriteIcon />

@@ -1,5 +1,8 @@
 import { IPhoto } from '.'
+import { IBrand } from './brands'
 import { IID } from './common'
+import { IMeInfo } from './me'
+import { ISalon } from './salon'
 
 export interface IVacancyType {
   id: IID
@@ -17,6 +20,7 @@ export interface IVacancy {
   cover: IPhoto[]
   deleted: boolean
   vacancy_type: IVacancyType
-  brand: { id: IID; brandName: string } | null
-  salon: { id: IID; salonName: string } | null
+  brand: IBrand | null
+  salon: ISalon | null
+  user: IMeInfo
 }

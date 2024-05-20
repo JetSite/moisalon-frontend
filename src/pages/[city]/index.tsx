@@ -6,38 +6,35 @@ import { getFeedCategories } from 'src/api/graphql/feed/queries/getFeedCategorie
 import { totalSalons } from 'src/api/graphql/salon/queries/totalSalons'
 import { totalMasters } from 'src/api/graphql/master/queries/totalMasters'
 import { totalBrands } from 'src/api/graphql/brand/queries/totalBrands'
-import { getMaster } from 'src/api/graphql/master/queries/getMaster'
+import {} from 'src/api/graphql/master/queries/masterPage'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { GetServerSideProps } from 'next'
-import { getStoreEvent } from 'src/store/utils'
+import { getStoreData, getStoreEvent } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
 import { useEffect } from 'react'
+import { authConfig, defaultValues } from 'src/api/authConfig'
+import { ICity } from 'src/types'
+import { getCookie } from 'cookies-next'
+import { getSearchCity } from 'src/api/graphql/city/getSearchCity'
+import { fetchCity } from 'src/api/utils/fetchCity'
+import { getTotalCount } from 'src/utils/getTotalCount'
+import { ITotalCount } from './salon'
 
 interface Props {
   beautyCategories: any
   beautyAllContent: any
   bannerHooks: any
-  totalSalons: any
-  totalMasters: any
-  totalBrands: any
-  cityData: string
+  totalCount: ITotalCount
+  cityData: ICity
 }
 
 export default function Main({
   beautyCategories,
   beautyAllContent,
   bannerHooks,
-  totalSalons,
-  totalMasters,
-  totalBrands,
+  totalCount,
   cityData,
 }: Props) {
-  const { setCity } = useAuthStore(getStoreEvent)
-  useEffect(() => {
-    setCity(cityData)
-  }, [setCity])
-
-  // setMe(cityData)
   // const [city, setCity] = useContext(CityContext);
   // const [query, setQuery] = useContext(SearchMainQueryContext);
   // const router = useRouter();
@@ -85,12 +82,6 @@ export default function Main({
   //   }
   // }, []);
 
-  // const { data } = useQuery(getMaster, {
-  //   variables: { id: 1 },
-  // })
-
-  // console.log(data)
-
   return (
     <>
       {/* <Head>
@@ -111,24 +102,15 @@ export default function Main({
         beautyCategories={beautyCategories}
         beautyAllContent={beautyAllContent}
         bannerHooks={bannerHooks}
-        totalSalons={totalSalons}
-        totalMasters={totalMasters}
-        totalBrands={totalBrands}
-        cityData={cityData}
+        totalCount={totalCount}
+        cityData={cityData.cityName}
       />
     </>
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async ctx => {
+export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
   const apolloClient = initializeApollo()
-  // const city = await apolloClient.query({
-  //   query: citySuggestionsQuery,
-  //   variables: {
-  //     city: ctx?.query?.city || "",
-  //     count: 1,
-  //   },
-  // });
   const data = await Promise.all([
     apolloClient.query({
       query: getFeedCategories,
@@ -165,14 +147,20 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
     // }),
   ])
 
-  // if (!city?.data?.citySuggestions[0]?.data?.city) {
-  //   return {
-  //     redirect: {
-  //       destination: "/moskva",
-  //       permanent: true,
-  //     },
-  //   };
-  // }
+  const cityCookie = ctx.req.cookies['city']
+  const cityData: ICity = (await fetchCity(ctx.query.city as string)) ||
+    (await fetchCity(cityCookie)) || {
+      citySlug: defaultValues.citySlug,
+    }
+
+  if (!cityCookie && ctx.query.city !== defaultValues.citySlug) {
+    return {
+      redirect: {
+        destination: defaultValues.citySlug,
+        permanent: true,
+      },
+    }
+  }
 
   const normalisedBeautyCategories = flattenStrapiResponse(
     data[0]?.data?.feedCategories,
@@ -181,15 +169,18 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
 
   return addApolloState(apolloClient, {
     props: {
+      data,
       beautyCategories: normalisedBeautyCategories,
       beautyAllContent: normalisedBeautyAllContent,
       bannerHooks: data[2]?.data?.bannerHooks,
-      totalSalons: data[3]?.data?.salons?.meta?.pagination?.total,
-      totalMasters: data[4]?.data?.masters?.meta?.pagination?.total,
-      totalBrands: data[5]?.data?.brands?.meta?.pagination?.total,
+      totalCount: {
+        brands: getTotalCount(data[1].data.brands),
+        masters: getTotalCount(data[2].data.masters),
+        salons: getTotalCount(data[3].data.salons),
+      },
       // sales: data[8]?.data,
       // salons: data[9]?.data,
-      cityData: 'Москва',
+      cityData,
     },
   })
 }

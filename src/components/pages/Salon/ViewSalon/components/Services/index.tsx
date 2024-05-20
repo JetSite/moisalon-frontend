@@ -24,7 +24,7 @@ import { createRequestToSalon } from '../../../../../../_graphql-legacy/salon/cr
 import EditIcons from '../../../../../ui/EditIcons/index'
 import { updateSalonServicesMutation } from '../../../../../../_graphql-legacy/salon/updateSalonServicesMutation'
 import { ISalonPage } from 'src/types/salon'
-import { IApolloRefetch, IID } from 'src/types/common'
+import { IApolloRefetch, IID, ISetState } from 'src/types/common'
 import { IGroupedCategories } from 'src/utils/getGrupedServices'
 
 export interface IEntries {
@@ -36,7 +36,7 @@ interface Props {
   groupedServices: IGroupedCategories[]
   isOwner: boolean
   edit: boolean
-  setEdit: Dispatch<SetStateAction<boolean>>
+  setEdit: ISetState<boolean>
   salon: ISalonPage
   count: number
   refetchSalon: IApolloRefetch
@@ -62,17 +62,7 @@ const Services: FC<Props> = ({
     },
   })
 
-  const handleEditConfirm = () => {
-    const services = groupedServices?.filter(s => s?.id !== 0)?.map(s => s?.id)
-    updateServices({
-      variables: {
-        salonId: salon?.id,
-        input: {
-          services,
-        },
-      },
-    })
-  }
+  const handleEditConfirm = () => {}
 
   const handleCloseWritePopup = useCallback(() => {
     setOpenWritePopup(false)
@@ -100,23 +90,9 @@ const Services: FC<Props> = ({
   //   });
   // };
 
-  const groups = groupedServices
-    .map(group => {
-      if (group.services === undefined) {
-        return null
-      }
-
-      const items = group.services.filter(item =>
-        salon.services.find(entry => entry.id === item.id),
-      )
-
-      if (items.length === 0) {
-        return null
-      }
-
-      return <CatalogGroup key={group.id} group={group} />
-    })
-    .filter(element => element !== null)
+  const groups = groupedServices.map(group => {
+    return <CatalogGroup key={group.id} group={group} />
+  })
 
   // if (groups.length === 0) {
   //   return null;

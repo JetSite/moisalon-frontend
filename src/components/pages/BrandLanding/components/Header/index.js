@@ -27,7 +27,7 @@ const Header = ({ setOpenPopup }) => {
     <Wrapper>
       <Content>
         <LogoSmallWrap>
-          <Link href={`/${cyrToTranslit(city)}`}>
+          <Link href={`/${city.citySlug}`}>
             <LogoSmall src="/for-salon-logo-small.png" alt="logo-big" />
           </Link>
         </LogoSmallWrap>
@@ -36,7 +36,7 @@ const Header = ({ setOpenPopup }) => {
           салонов
         </LogoSmallText>
         <LogoBigWrap>
-          <Link href={`/${cyrToTranslit(city)}`}>
+          <Link href={`/${city.citySlug}`}>
             <LogoBig src="/logo-white.svg" alt="logo-big" />
           </Link>
         </LogoBigWrap>

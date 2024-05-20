@@ -21,13 +21,13 @@ import {
   IGroupedService,
 } from 'src/utils/getGrupedServices'
 import { ISalonPage } from 'src/types/salon'
-import { IApolloRefetch } from 'src/types/common'
+import { IApolloRefetch, ISetState } from 'src/types/common'
 
 interface Props {
   groupedServices: IGroupedCategories[]
   isOwner: boolean
   edit: boolean
-  setEdit: Dispatch<SetStateAction<boolean>>
+  setEdit: ISetState<boolean>
   salon: ISalonPage
   count: number
   refetchSalon: IApolloRefetch
@@ -50,16 +50,7 @@ const Services: FC<Props> = ({
     },
   })
 
-  const handleEditConfirm = () => {
-    updateServices({
-      variables: {
-        input: {
-          salonId: salon?.id,
-          serviceMaster: groupedServices,
-        },
-      },
-    })
-  }
+  const handleEditConfirm = () => {}
 
   const groups = groupedServices
     .map(group => {

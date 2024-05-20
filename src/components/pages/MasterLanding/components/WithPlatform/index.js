@@ -166,7 +166,7 @@ const WithPlatform = () => {
           <ButtonWrap>
             <Button
               style={{ padding: 0 }}
-              onClick={() => router.push(`/${cyrToTranslit(city)}/rent`)}
+              onClick={() => router.push(`/${city.citySlug}/rent`)}
               size="medium"
               variant="red"
               font="medium"

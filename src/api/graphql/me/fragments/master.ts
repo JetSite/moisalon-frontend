@@ -1,5 +1,8 @@
 import { cityInfo } from '../../common/cityInfo'
 import { imageInfo } from '../../common/imageInfo'
+import { ratingsFragment } from '../../fragments/ratings'
+import { reviewsFragment } from '../../fragments/reviews'
+import servicesFragment from '../../fragments/services'
 
 export const masterFragment = `data {
   id
@@ -7,6 +10,9 @@ export const masterFragment = `data {
       masterName
       masterPhone
       masterEmail
+      reviewsCount
+      ratingCount
+      rating
       salons {
         data {
           id
@@ -16,23 +22,7 @@ export const masterFragment = `data {
         }
       }
       services {
-          id
-          service {
-            data {
-              id
-              attributes {
-                service_categories {
-                  data {
-                    id
-                    attributes {
-                      serviceCategoryName
-                    }
-                  }
-                }
-              }
-            }
-          }
-          serviceName
+          ${servicesFragment}
       }
       city {
         ${cityInfo}
@@ -40,5 +30,12 @@ export const masterFragment = `data {
       masterPhoto {
         ${imageInfo}
       }
+      ratings {
+        ${ratingsFragment}
+      }
+      reviews {
+        ${reviewsFragment}
+      }
   }
-}`
+}
+`

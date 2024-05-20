@@ -25,9 +25,10 @@ import HeartFullFill from '../../pages/MainPage/components/Header/icons/HeartFul
 import { red } from '../../../styles/variables'
 import { PHOTO_URL } from 'src/api/variables'
 import { IMaster } from 'src/types/masters'
+import { Activity } from '../SalonCard/styles'
 
 interface Props {
-  master: IMaster | null
+  master: IMaster
   shareLink: string
   loading?: boolean
   type?: string
@@ -46,7 +47,7 @@ const MasterItem: FC<Props> = ({
     setIsFavorit(!!isInStorage)
   }, [])
 
-  const photoUrl = `${PHOTO_URL}${master?.masterPhoto.url}`
+  const photoUrl = `${PHOTO_URL}${master.masterPhoto.url}`
 
   const addFavorite = (e: MouseEvent, master: IMaster | null) => {
     e.preventDefault()
@@ -63,24 +64,25 @@ const MasterItem: FC<Props> = ({
       </FavoriteMaster>
       <Image alt="image" src={photoUrl} />
       <MasterShareWrap>
-        <Share link={shareLink} title={master?.masterName || ''} />
+        <Share link={shareLink} title={master.masterName || ''} />
       </MasterShareWrap>
       <MasterInfo>
         <div>
-          <Name>{master?.masterName || ''}</Name>
+          <Name>{master.masterName || ''}</Name>
         </div>
         <div>
           <Specializations>
-            {master?.serviceCategories
-              ? getServiceCategoriesNames(master?.serviceCategories)
-              : master?.services.map(e => e.serviceName).join(', ')}
+            {master.services.slice(0, 3).map(servis => (
+              <Activity key={servis.id}>{servis.serviceName}</Activity>
+            ))}
           </Specializations>
         </div>
         <RatingWrapper>
-          {master?.city?.cityName ? <City>{master.city.cityName}</City> : null}
+          {master.city?.cityName ? <City>{master.city.cityName}</City> : null}
           <Rating
-            averageScore={master?.averageScore || 0}
-            numberScore={master?.averageScore || 0}
+            rating={master.rating}
+            countRatings={master.ratingCount}
+            countReviews={master.reviewsCount}
           />
         </RatingWrapper>
       </MasterInfo>

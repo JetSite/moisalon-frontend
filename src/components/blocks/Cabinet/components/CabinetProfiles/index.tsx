@@ -35,9 +35,9 @@ const CabinetProfiles = () => {
         <SubTitle>Пользователь </SubTitle>
         {masters?.length && masters[0].id ? (
           <Link
-            href={`/${cyrToTranslit(masters[0].city.cityName || city)}/master/${
-              masters[0].id
-            }`}
+            href={`/${
+              cyrToTranslit(masters[0].city.cityName) || city?.citySlug
+            }/master/${masters[0].id}`}
           >
             <Item>
               <Container>
@@ -61,12 +61,12 @@ const CabinetProfiles = () => {
                 <Link
                   href={
                     item.salonWorkplacesCount
-                      ? `/${cyrToTranslit(item.cities.cityName || city)}/rent/${
-                          item.id
-                        }`
-                      : `/${cyrToTranslit(
-                          item.cities.cityName || city,
-                        )}/salon/${item.id}`
+                      ? `/${
+                          cyrToTranslit(item.cities.cityName) || city?.citySlug
+                        }/rent/${item.id}`
+                      : `/${
+                          cyrToTranslit(item.cities.cityName) || city?.citySlug
+                        }/salon/${item.id}`
                   }
                 >
                   <Item>
@@ -95,9 +95,9 @@ const CabinetProfiles = () => {
           ? brands.map(item => (
               <div key={item.id}>
                 <Link
-                  href={`/${cyrToTranslit(item.city.cityName || city)}/brand/${
-                    item.id
-                  }`}
+                  href={`/${
+                    cyrToTranslit(item.city.cityName) || city?.citySlug
+                  }/brand/${item.id}`}
                 >
                   <Item>
                     <Container>

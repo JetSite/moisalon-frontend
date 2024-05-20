@@ -56,7 +56,7 @@ const BrandItem: FC<Props> = ({
   return loading ? (
     <SkeletonItem />
   ) : (
-    <BItem type={type} id={brand.id}>
+    <BItem type={type} id={brand.id as string}>
       <BrandImage alt="logoBrand" src={logoUrl} />
       {!isEditing ? (
         <Favorite onClick={e => addFavorite(e, brand)}>

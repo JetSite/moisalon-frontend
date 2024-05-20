@@ -10,10 +10,11 @@ import {
   IGroupedCategories,
   IGroupedService,
 } from 'src/utils/getGrupedServices'
+import { ISetState } from 'src/types/common'
 
 interface Props {
   groupedServices: IGroupedCategories[]
-  setEntriesItems: Dispatch<SetStateAction<IEntries[]>>
+  setEntriesItems: ISetState<IEntries[]>
   entriesItems: IEntries[]
   mobile?: boolean
 }
@@ -36,7 +37,8 @@ const EditSalonServices: FC<Props> = ({
     setEntriesItems([...newItems])
   }
 
-  const handleAddEntries = (items: IGroupedService[]) => { //TODO: not working func
+  const handleAddEntries = (items: IGroupedService[]) => {
+    //TODO: not working func
     let newItems = entriesItems
     for (let i = newItems.length - 1; i >= 0; i--) {
       for (let j = 0; j < items.length; j++) {

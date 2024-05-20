@@ -31,7 +31,11 @@ const Seat = ({ salonData, roomData }) => {
       </Head>
       <>
         <SearchBlock />
-        <RentHeader city={city} salonData={salonData} roomData={roomData} />
+        <RentHeader
+          city={city.citySlug}
+          salonData={salonData}
+          roomData={roomData}
+        />
       </>
     </MainLayout>
   )

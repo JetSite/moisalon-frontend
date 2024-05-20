@@ -5,14 +5,12 @@ import {
   createContext,
   useMemo,
   FC,
-  Dispatch,
-  SetStateAction,
 } from 'react'
 import { useQuery } from '@apollo/client/react'
 import { getRooms } from './_graphql-legacy/chat/getRooms'
 import { getStoreData } from './store/utils'
 import useAuthStore from './store/authStore'
-import { IChildren, IID, LazyType } from './types/common'
+import { IChildren, IID, ISetState, LazyType } from './types/common'
 import { ICity } from './types'
 // import { getRoomMessages } from "./_graphql-legacy/chat/getRoomMessages";
 
@@ -30,10 +28,10 @@ export interface IChat {
 
 interface IChatContext {
   messages: LazyType[]
-  setMessages: Dispatch<SetStateAction<LazyType[]>>
+  setMessages: ISetState<LazyType[]>
   chats: IChat[]
   unreadMessagesCount: number
-  setUnreadMessagesCount: Dispatch<SetStateAction<number>>
+  setUnreadMessagesCount: ISetState<number>
 }
 
 const initialChatContext = {

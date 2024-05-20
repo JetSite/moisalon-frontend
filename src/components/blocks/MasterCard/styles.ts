@@ -112,7 +112,7 @@ export const Name = styled.p`
   }
 `
 
-export const Specializations = styled.p`
+export const Specializations = styled.ul`
   color: #727272;
   text-align: center;
   margin-bottom: 2rem;

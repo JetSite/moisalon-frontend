@@ -10,7 +10,7 @@ import Button from '../../Button'
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../styles/variables'
 import { IMe } from 'src/types/me'
-import { LazyType } from 'src/types/common'
+import { ISetState, LazyType } from 'src/types/common'
 
 const Title = styled.h3`
   font-weight: 600;
@@ -73,7 +73,7 @@ interface Props {
   me: IMe
   open: boolean
   onSubmit: NewMassageOnSubmit
-  setChatMessagePopup: Dispatch<SetStateAction<boolean>>
+  setChatMessagePopup: ISetState<boolean>
   title: string
 }
 

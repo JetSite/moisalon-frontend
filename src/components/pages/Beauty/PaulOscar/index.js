@@ -38,14 +38,14 @@ const PaulOscarPage = () => {
           <BackButton
             type="Вернуться на главную"
             onlyType
-            link={`/${cyrToTranslit(city)}`}
+            link={`/${city.citySlug}`}
           />
         </HideMobile>
         <Content>
           <Image alt="img" src="/paul-oscar-1.jpg" />
           <HeadMobile>
             <ImageMobile alt="img" src="/paul-oscar-1.jpg" />
-            <Close onClick={() => router.push(`/${cyrToTranslit(city)}`)} />
+            <Close onClick={() => router.push(`/${city.citySlug}`)} />
             <Autor>
               <AvatarWrap>
                 <Avatar alt="avatar" src="/paul-oscar-2.jpg" />

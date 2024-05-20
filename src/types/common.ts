@@ -1,21 +1,40 @@
-import { ApolloQueryResult, OperationVariables } from '@apollo/client'
-import { ReactElement } from 'react'
+import {
+  ApolloCache,
+  ApolloQueryResult,
+  DefaultContext,
+  MutationFunctionOptions,
+  OperationVariables,
+} from '@apollo/client'
+import { Dispatch, ReactElement, SetStateAction } from 'react'
 
 export type Nullable<T> = { [P in keyof T]: T[P] | null }
 
 export interface LazyType {
-  [K: string]: LazyType
+  [K: string]: LazyType | string | undefined | boolean | Array<any>
 }
 
 export interface InitialValuesForm {
   [K: string]: string
 }
 
+export type ISetState<T> = Dispatch<SetStateAction<T>>
+
 export type IID = string | number
 
 export type IApolloRefetch = (
   variables?: Partial<OperationVariables> | undefined,
 ) => Promise<ApolloQueryResult<any>>
+
+export type IAppoloMutationCallback = (
+  options?:
+    | MutationFunctionOptions<
+        any,
+        OperationVariables,
+        DefaultContext,
+        ApolloCache<any>
+      >
+    | undefined,
+) => Promise<any>
 
 export type IChildren =
   | Array<ReactElement | boolean | string | null>

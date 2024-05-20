@@ -23,17 +23,17 @@ const SalonsResult = ({ salonsData }) => {
             {salonsData?.map(salon => (
               <Link
                 key={salon?.id}
-                href={`/${cyrToTranslit(salon?.address?.city || city)}/salon/${
-                  salon.seo?.slug || salon.id
-                }`}
+                href={`/${
+                  cyrToTranslit(salon?.address?.city) || city.citySlug
+                }/salon/${salon.seo?.slug || salon.id}`}
               >
                 <SalonCardWrapper>
                   <SalonCard
                     seatCount={salon.seatCount}
                     item={salon}
-                    shareLink={`https://moi.salon/${cyrToTranslit(
-                      salon?.address?.city || city,
-                    )}/salon/${salon.seo?.slug || salon.id}`}
+                    shareLink={`https://moi.salon/${
+                      cyrToTranslit(salon?.address?.city) || city.citySlug
+                    }/salon/${salon.seo?.slug || salon.id}`}
                   />
                 </SalonCardWrapper>
               </Link>

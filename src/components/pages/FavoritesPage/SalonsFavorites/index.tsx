@@ -35,6 +35,7 @@ import { getStoreData } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
 import useBaseStore from 'src/store/baseStore'
 import { NavigationOptions } from 'swiper/types'
+import { ISetState } from 'src/types/common'
 
 SwiperCore.use([Navigation])
 
@@ -42,7 +43,7 @@ export interface ThingsProps {
   cabinet?: boolean
   noScroll?: boolean
   title?: string
-  setActiveTab: Dispatch<SetStateAction<string>>
+  setActiveTab: ISetState<string>
   mobile?: boolean
   handleDeleted?: () => void
 }
@@ -133,12 +134,14 @@ const SalonsFavorites: FC<ThingsProps> = ({
                         <Link
                           href={
                             salon.salonWorkplacesCount
-                              ? `/${cyrToTranslit(
-                                  salon.cities.cityName || city,
-                                )}/rent/${salon.id}`
-                              : `/${cyrToTranslit(
-                                  salon.cities.cityName || city,
-                                )}/salon/${salon.id}`
+                              ? `/${
+                                  cyrToTranslit(salon.cities.cityName) ||
+                                  city.citySlug
+                                }/rent/${salon.id}`
+                              : `/${
+                                  cyrToTranslit(salon.cities.cityName) ||
+                                  city.citySlug
+                                }/salon/${salon.id}`
                           }
                         >
                           <SalonCard

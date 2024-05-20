@@ -34,8 +34,8 @@ import { getStoreData } from 'src/store/utils'
 import { FC } from 'react'
 
 interface Props {
-  loading: boolean
-  noMobileFooter: boolean
+  loading?: boolean
+  noMobileFooter?: boolean
 }
 
 const Footer: FC<Props> = ({ loading = false, noMobileFooter }) => {
@@ -73,19 +73,19 @@ const Footer: FC<Props> = ({ loading = false, noMobileFooter }) => {
             </Left>
             <Center>
               <NavFooter>
-                <Link href={`/${cyrToTranslit(city)}`}>
+                <Link href={`/${city?.citySlug}`}>
                   <NavFooterItem>Главная</NavFooterItem>
                 </Link>
-                <Link href={`/${cyrToTranslit(city)}/master`}>
+                <Link href={`/${cyrToTranslit(city?.citySlug)}/master`}>
                   <NavFooterItem>Мастер</NavFooterItem>
                 </Link>
-                <Link href={`/${cyrToTranslit(city)}/salon`}>
+                <Link href={`/${cyrToTranslit(city?.citySlug)}/salon`}>
                   <NavFooterItem>Салон</NavFooterItem>
                 </Link>
-                <Link href={`/${cyrToTranslit(city)}/brand`}>
+                <Link href={`/${cyrToTranslit(city?.citySlug)}/brand`}>
                   <NavFooterItem>Бренд</NavFooterItem>
                 </Link>
-                <Link href={`/${cyrToTranslit(city)}/rent`}>
+                <Link href={`/${cyrToTranslit(city?.citySlug)}/rent`}>
                   <NavFooterItem>Аренда</NavFooterItem>
                 </Link>
                 <Link href="/about">
@@ -153,8 +153,10 @@ const Footer: FC<Props> = ({ loading = false, noMobileFooter }) => {
                   Политика конфиденциальности
                 </Link>
                 <br /> © 2022{' '}
-                <Link href={`/${cyrToTranslit(city)}`}>MOI SALON</Link> Все
-                права защищены
+                <Link href={`/${cyrToTranslit(city?.citySlug)}`}>
+                  MOI SALON
+                </Link>{' '}
+                Все права защищены
               </LawText>
             </Right>
           </Bottom>
@@ -217,7 +219,7 @@ const Footer: FC<Props> = ({ loading = false, noMobileFooter }) => {
                   </Text>
                 </Left>
                 <Right>
-                  <Link href={`/${cyrToTranslit(city)}`}>
+                  <Link href={`/${cyrToTranslit(city?.citySlug)}`}>
                     <MobileItemApple />
                   </Link>
                 </Right>
@@ -233,7 +235,7 @@ const Footer: FC<Props> = ({ loading = false, noMobileFooter }) => {
                   </Text>
                 </Left>
                 <Right>
-                  <Link href={`/${cyrToTranslit(city)}`}>
+                  <Link href={`/${cyrToTranslit(city?.citySlug)}`}>
                     <MobileItemGoogle />
                   </Link>
                 </Right>
@@ -247,7 +249,9 @@ const Footer: FC<Props> = ({ loading = false, noMobileFooter }) => {
                   </Text>
                   <Copyright>
                     © 2022{' '}
-                    <Link href={`/${cyrToTranslit(city)}`}>MOI SALON</Link>{' '}
+                    <Link href={`/${cyrToTranslit(city?.citySlug)}`}>
+                      MOI SALON
+                    </Link>{' '}
                     <Link href="/legals">Пользовательское соглашение</Link>
                     <br />
                     <Link
@@ -263,22 +267,22 @@ const Footer: FC<Props> = ({ loading = false, noMobileFooter }) => {
                 </Left>
                 <Right>
                   <NavFooter>
-                    <Link href={`/${cyrToTranslit(city)}`}>
+                    <Link href={`/${cyrToTranslit(city?.citySlug)}`}>
                       <NavFooterItem>Главная</NavFooterItem>
                     </Link>
-                    <Link href={`/${cyrToTranslit(city)}/master`}>
+                    <Link href={`/${cyrToTranslit(city?.citySlug)}/master`}>
                       <NavFooterItem>Мастер</NavFooterItem>
                     </Link>
-                    <Link href={`/${cyrToTranslit(city)}/rent`}>
+                    <Link href={`/${cyrToTranslit(city?.citySlug)}/rent`}>
                       <NavFooterItem>Аренда</NavFooterItem>
                     </Link>
-                    <Link href={`/${cyrToTranslit(city)}/salon`}>
+                    <Link href={`/${cyrToTranslit(city?.citySlug)}/salon`}>
                       <NavFooterItem>Салон</NavFooterItem>
                     </Link>
                     <Link href="/about">
                       <NavFooterItem>О проекте</NavFooterItem>
                     </Link>
-                    <Link href={`/${cyrToTranslit(city)}/brand`}>
+                    <Link href={`/${cyrToTranslit(city?.citySlug)}/brand`}>
                       <NavFooterItem>Бренд</NavFooterItem>
                     </Link>
                   </NavFooter>

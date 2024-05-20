@@ -11,9 +11,7 @@ import {
 } from './styles'
 import Button from '../../../../../ui/Button'
 
-const InviteBrand = ({ me }) => {
-  const isLoggedIn = me?.info !== undefined && me?.info !== null
-
+const InviteBrand = ({ isLoggedIn }) => {
   return (
     <Wrapper>
       <Image />

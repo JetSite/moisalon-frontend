@@ -40,16 +40,7 @@ const MobileServicesComponent: FC<Props> = ({
     },
   })
 
-  const handleEditConfirm = () => {
-    updateServices({
-      variables: {
-        input: {
-          salonId: salon?.id,
-          serviceMaster: groupedServices,
-        },
-      },
-    })
-  }
+  const handleEditConfirm = () => {}
 
   const groups = groupedServices
     .map(group => {

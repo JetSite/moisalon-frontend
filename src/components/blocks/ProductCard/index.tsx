@@ -23,32 +23,24 @@ import HeartFullFill from '../../pages/MainPage/components/Header/icons/HeartFul
 import { LazyType } from 'src/types/common'
 import { getStoreData } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
+import { IProduct } from 'src/types/product'
 
 interface Props {
-  item: LazyType
-  loading: boolean
-  cart: LazyType[]
+  item: IProduct
+  loading?: boolean
 }
 
-const ProductCard: FC<Props> = ({ item, loading, cart }) => {
+const ProductCard: FC<Props> = ({ item, loading }) => {
   const [isFavorite, setIsFavorit] = useState(false)
   const { city, me } = useAuthStore(getStoreData)
 
-  useEffect(() => {
-    const isInStorage = inStorage('products', {
-      ...item,
-      dontShowPrice: item?.brand?.dontShowPrice,
-    })
-    setIsFavorit(!!isInStorage)
-  }, [])
-
-  const addFavorite = (e: MouseEvent<HTMLButtonElement>, item: LazyType) => {
+  const addFavorite = (e: MouseEvent<HTMLButtonElement>, item: IProduct) => {
     e.preventDefault()
     e.stopPropagation()
-    favoritesInStorage('products', {
-      ...item,
-      dontShowPrice: item?.brand?.dontShowPrice,
-    })
+    // favoritesInStorage('products', {
+    //   ...item,
+    //   dontShowPrice: item?.brand?.dontShowPrice,
+    // })
     setIsFavorit(!isFavorite)
   }
 
@@ -56,67 +48,54 @@ const ProductCard: FC<Props> = ({ item, loading, cart }) => {
     ? `${PHOTO_URL}${item.productCover.url}`
     : ''
 
-  const newItem = cart?.find(el => el?.product?.id === item.id)
-    ? cart?.find(el => el?.product?.id === item.id)
-    : { product: { ...item }, quantity: 0 }
   return loading ? (
     <SkeletonItem
     // variant="rectangular"
     />
   ) : (
-    <Link
-      href={{
-        pathname: `/${cyrToTranslit(city)}/product/${newItem?.product?.id}`,
-        query: {
-          catalog: false,
-        },
-      }}
-    >
-      <Wrapper>
-        <TopGoodWrapper>
-          <Image alt="image" src={imageLink || '/cosmetic_placeholder.jpg'} />
-          <Favorite
-            // isFavorite={isFavorite} TODO: div cange to button
-            onClick={e => addFavorite(e, item)}
-          >
-            <HeartFullFill fill={isFavorite} />
-          </Favorite>
-        </TopGoodWrapper>
-        <BottomGoodWrapper>
-          <Wrap>
-            <Name>{newItem?.product?.productName as unknown as string}</Name>
-            {newItem?.product?.brand?.dontShowPrice && !me?.info ? null : (
-              <Price>
-                <NewPrice>
-                  {newItem?.product?.productSalePrice
-                    ? `${
-                        (newItem?.product?.productSalePrice &&
-                          newItem?.product?.productSalePrice) ||
-                        newItem?.product?.productSalePrice
-                      } ₽`
-                    : 'Цена по запросу'}{' '}
-                </NewPrice>
-                {(newItem?.product?.productPrice as unknown as number) !== 0 ? (
-                  <OldPrice>
-                    {`${
-                      (newItem?.product?.productPrice &&
-                        newItem?.product?.productPrice) ||
-                      newItem?.product?.productPrice
-                    } ₽`}
-                  </OldPrice>
-                ) : null}
-              </Price>
-            )}
-          </Wrap>
-          {/* {loadingCart ? (
+    <Wrapper>
+      <TopGoodWrapper>
+        <Image alt="image" src={imageLink || '/cosmetic_placeholder.jpg'} />
+        <Favorite
+          // isFavorite={isFavorite} TODO: div cange to button
+          onClick={e => addFavorite(e, item)}
+        >
+          <HeartFullFill fill={isFavorite} />
+        </Favorite>
+      </TopGoodWrapper>
+      <BottomGoodWrapper>
+        <Wrap>
+          <Name>{item.productName as unknown as string}</Name>
+          {item.brand.dontShowPrice && !me?.info ? null : (
+            <Price>
+              <NewPrice>
+                {item.productSalePrice
+                  ? `${
+                      (item.productSalePrice && item.productSalePrice) ||
+                      item.productSalePrice
+                    } ₽`
+                  : 'Цена по запросу'}{' '}
+              </NewPrice>
+              {(item.productPrice as unknown as number) !== 0 ? (
+                <OldPrice>
+                  {`${
+                    (item.productPrice && item.productPrice) ||
+                    item.productPrice
+                  } ₽`}
+                </OldPrice>
+              ) : null}
+            </Price>
+          )}
+        </Wrap>
+        {/* {loadingCart ? (
             <SkeletonBottom />
-          ) : newItem?.quantity === 0 ? (
+          ) : item?.quantity === 0 ? (
             <ButtonsWrapper>
               <ButtonCart
                 onClick={e => {
                   e.preventDefault()
                   e.stopPropagation()
-                  chooseProductOneClick(newItem)
+                  chooseProductOneClick(item)
                 }}
               >
                 Заказать
@@ -134,7 +113,7 @@ const ProductCard: FC<Props> = ({ item, loading, cart }) => {
                       '/login',
                     )
                   } else {
-                    !addLoading ? add(newItem?.product, 1) : {}
+                    !addLoading ? add(item?.product, 1) : {}
                   }
                 }}
               >
@@ -147,22 +126,21 @@ const ProductCard: FC<Props> = ({ item, loading, cart }) => {
                 onClick={e => {
                   e.stopPropagation()
                   e.preventDefault()
-                  !deleteLoading ? deleteItem(newItem) : {}
+                  !deleteLoading ? deleteItem(item) : {}
                 }}
               />
-              <Quantity>{`${newItem?.quantity} шт.`}</Quantity>
+              <Quantity>{`${item?.quantity} шт.`}</Quantity>
               <Plus
                 onClick={e => {
                   e.stopPropagation()
                   e.preventDefault()
-                  !addLoading ? add(newItem?.product, 1) : {}
+                  !addLoading ? add(item?.product, 1) : {}
                 }}
               />
             </QuantityWrap>
           )} */}
-        </BottomGoodWrapper>
-      </Wrapper>
-    </Link>
+      </BottomGoodWrapper>
+    </Wrapper>
   )
 }
 

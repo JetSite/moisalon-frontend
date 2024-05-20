@@ -1,5 +1,10 @@
 import { gql } from '@apollo/client'
 import { imageInfo } from '../../common/imageInfo'
+import { salonServicesFragment } from '../fragments'
+import salonServicesMFragment from '../fragments/salonServicesMFragment'
+import { ratingsFragment } from '../../fragments/ratings'
+import { reviewsFragment } from '../../fragments/reviews'
+import { cityFragment } from '../../fragments/city'
 
 export const getOtherSalons = gql`
   query Salons($id:ID) {
@@ -9,13 +14,7 @@ export const getOtherSalons = gql`
         attributes {
             salonName
             cities {
-              data {
-                id
-                attributes {
-                  citySlug
-                  cityName
-                }
-              }
+              ${cityFragment}
             }
             salonID
             salonAddress
@@ -33,9 +32,7 @@ export const getOtherSalons = gql`
               title
               link
             }
-            salonAverageScore
-            salonSumScore
-            salonRating
+            
             salonOwnerConfirmed
             salonOnlineBookingUrl
             salonDescription
@@ -45,12 +42,14 @@ export const getOtherSalons = gql`
             salonCantactPresonWorkingHoursAt
             salonCantactPresonWorkingHoursTo
             salonWorkplacesCount
-            salonReviewsCount
             salonMastersCount
             salonBrandsCount
             createdAt
             updatedAt
             publishedAt
+            reviewsCount
+            ratingCount
+            rating
             salonCover {
               ${imageInfo}
             }
@@ -59,6 +58,15 @@ export const getOtherSalons = gql`
             }
             salonPhotos {
               ${imageInfo}
+            }
+            services {
+              ${salonServicesFragment}
+            }
+            ratings {
+              ${ratingsFragment}
+            }
+            reviews {
+              ${reviewsFragment}
             }
         }
       }

@@ -30,7 +30,7 @@ const ServicesPage = ({
   const { data, refetch: refetchServices } = useQuery(servicesWithMasterCount, {
     skip: true,
     variables: {
-      city,
+      city: city.citySlug,
     },
     onCompleted: res => {
       setServicesList(res?.mastersServicesCount)

@@ -2,7 +2,6 @@ import { FC } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import SalonCard from '../../../SalonCard'
-import { cyrToTranslit } from '../../../../../utils/translit'
 import Button from '../../../../ui/Button'
 import { DeleteSalon } from './styles'
 import { IDeleteFunction } from './BrandSlide'
@@ -23,16 +22,18 @@ const SalonSlide: FC<Props> = ({ item, isEditing, deleteFunction }) => {
   const landingMaster = router.pathname === '/for_master'
 
   return (
-    <Link
-      href={
-        !landingMaster
-          ? `/${cyrToTranslit(city)}/salon/${item?.id}`
-          : `/${cyrToTranslit(city)}/rent`
-      }
+    <div
+      onClick={() => {
+        router.push(
+          !landingMaster
+            ? `/${city.citySlug}/salon/${item?.id}`
+            : `/${city.citySlug}/rent`,
+        )
+      }}
     >
       <SalonCard
         item={item}
-        shareLink={`https://moi.salon/${cyrToTranslit(city)}/salon/${item?.id}`}
+        shareLink={`https://moi.salon/${city.citySlug}/salon/${item?.id}`}
       />
       {isEditing && (
         <DeleteSalon onClick={() => deleteFunction(item.id)}>
@@ -46,7 +47,7 @@ const SalonSlide: FC<Props> = ({ item, isEditing, deleteFunction }) => {
           </Button>
         </DeleteSalon>
       )}
-    </Link>
+    </div>
   )
 }
 

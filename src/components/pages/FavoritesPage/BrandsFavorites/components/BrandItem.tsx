@@ -5,10 +5,11 @@ import HeartFullFill from '../../../MainPage/components/Header/icons/HeartFullFi
 import { red } from '../../../../../styles/variables'
 import { Dispatch, FC, MouseEvent, SetStateAction } from 'react'
 import { IBrand } from 'src/types/brands'
+import { ISetState } from 'src/types/common'
 
 interface Props {
   brand: IBrand
-  setDeleteItem: Dispatch<SetStateAction<boolean>>
+  setDeleteItem: ISetState<boolean>
   deleteItem: boolean
   handleDeleted?: () => void
 }

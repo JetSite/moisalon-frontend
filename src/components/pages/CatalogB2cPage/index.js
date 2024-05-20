@@ -97,7 +97,7 @@ const CatalogB2cPage = ({
           <Link
             key={i}
             href={{
-              pathname: `/${cyrToTranslit(city)}/beautyFreeShop`,
+              pathname: `/${city.citySlug}/beautyFreeShop`,
               query: {
                 id: item.id,
                 title: item.title,
@@ -134,7 +134,7 @@ const CatalogB2cPage = ({
       />
       <Brands brandSearchData={brandSearchData} />
       <WrapButton>
-        <Link href={`/${cyrToTranslit(city)}/beautyFreeShop`}>
+        <Link href={`/${city.citySlug}/beautyFreeShop`}>
           <Button size="noWidth" variant="red">
             Посмотреть все товары
           </Button>

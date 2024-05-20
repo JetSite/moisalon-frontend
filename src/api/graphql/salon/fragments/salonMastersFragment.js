@@ -15,8 +15,9 @@ const salonMastersFragment = `
             }
           }
         }
-        averageScore
-        numberScore
+        rating
+ratingCount
+reviewsCount
         services {
           serviceName
         }

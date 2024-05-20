@@ -83,7 +83,7 @@ const Goods = ({ items, title }) => {
                   style={{ minHeight: '100%', height: 'auto' }}
                   key={i}
                 >
-                  <Link href={`/${cyrToTranslit(city)}`}>
+                  <Link href={`/${cyrToTranslit(city?.citySlug)}`}>
                     <Good>
                       <TopGoodWrapper>
                         <Image
@@ -112,7 +112,7 @@ const Goods = ({ items, title }) => {
               ))}
             </Swiper>
           </SwiperWrap>
-          <Link href={`/${cyrToTranslit(city)}/beautyFreeShop`}>
+          <Link href={`/${cyrToTranslit(city?.citySlug)}/beautyFreeShop`}>
             <AllGoods>
               <AllIcon />
               <AllText>Показать все товары</AllText>
@@ -120,7 +120,7 @@ const Goods = ({ items, title }) => {
           </Link>
         </SliderWpapper>
         <Bottom>
-          <Link href={`/${cyrToTranslit(city)}`}>
+          <Link href={`/${cyrToTranslit(city?.citySlug)}`}>
             <Plus />
             <BottomText>Разместить свой товар</BottomText>
           </Link>

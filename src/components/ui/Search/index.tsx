@@ -91,8 +91,8 @@ const Search: FC<Props> = ({ title, noFilters }) => {
     }
     if (router?.query?.id?.length || router?.query?.slug?.length) {
       router.push(
-        { pathname: `/${cyrToTranslit(city)}`, query: { q: item } },
-        `/${cyrToTranslit(city)}`,
+        { pathname: `/${city.citySlug}`, query: { q: item } },
+        `/${city.citySlug}`,
       )
     }
   }
@@ -126,8 +126,8 @@ const Search: FC<Props> = ({ title, noFilters }) => {
           return
         }
         router.push(
-          { pathname: `/${cyrToTranslit(city)}`, query: { q: inputValue } },
-          `/${cyrToTranslit(city)}`,
+          { pathname: `/${city.citySlug}`, query: { q: inputValue } },
+          `/${city.citySlug}`,
         )
       }
     }

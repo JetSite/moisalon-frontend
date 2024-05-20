@@ -4,11 +4,11 @@ import { laptopBreakpoint, tabletBreakpoint } from '../../../styles/variables'
 import { SlideType } from '.'
 
 export const Wrapper = styled.div<{
-  loading: boolean
+  load: boolean
   bgColor: string
   type: SlideType
 }>`
-  background: ${({ loading, bgColor }) => (loading ? 'transparent' : bgColor)};
+  background: ${({ load, bgColor }) => (load ? 'transparent' : bgColor)};
   @media (max-width: ${laptopBreakpoint}) {
     background-color: ${({ type, bgColor }) =>
       type === 'ribbon' ? '#000' : bgColor};
@@ -43,7 +43,7 @@ export const Top = styled.div`
   }
 `
 
-export const Title = styled.p<{
+export const Title = styled.div<{
   empty: boolean
   bgColor: string
   mobileTitleWidth: boolean

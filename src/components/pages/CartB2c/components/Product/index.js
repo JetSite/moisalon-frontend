@@ -185,7 +185,7 @@ const Product = ({
       <Top>
         <Link
           href={{
-            pathname: `/${cyrToTranslit(city)}/product/${item?.product?.id}`,
+            pathname: `/${city.citySlug}/product/${item?.product?.id}`,
             query: {
               catalog: false,
             },

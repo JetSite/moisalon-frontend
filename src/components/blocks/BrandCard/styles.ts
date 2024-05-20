@@ -5,6 +5,7 @@ import {
   tabletBreakpoint,
   mobileBreakpoint,
 } from '../../../styles/variables'
+import { IID } from 'src/types/common'
 
 export const BItem = styled.div<{ type: string }>`
   width: ${({ type }) => (type === 'slider' ? '17.7rem' : '100%')};

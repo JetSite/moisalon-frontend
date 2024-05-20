@@ -8,7 +8,7 @@ import { cyrToTranslit } from '../../../../../../utils/translit'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
 import { Dispatch, FC, SetStateAction } from 'react'
-import { LazyType } from 'src/types/common'
+import { ISetState, LazyType } from 'src/types/common'
 import { IMasterCabinetTab } from 'src/components/pages/Master/MasterCabinet'
 
 const Wrapper = styled.div`
@@ -78,14 +78,13 @@ const Quantity = styled.div`
 
 interface Props {
   tabs: IMasterCabinetTab[]
-  setActiveTab: Dispatch<SetStateAction<string>>
+  setActiveTab: ISetState<string>
   activeTab: string
 }
 
 const Tabs: FC<Props> = ({ tabs, setActiveTab, activeTab }) => {
   const router = useRouter()
   const { setMe, logout } = useAuthStore(getStoreEvent)
-  const { city } = useAuthStore(getStoreData)
   const { refetch } = useQuery(currentUserSalonsAndMasterQuery, {
     skip: true,
     onCompleted: res => {

@@ -119,9 +119,10 @@ const MastersFavorites: FC<ThingsProps> = ({
                         key={i}
                       >
                         <Link
-                          href={`/${cyrToTranslit(
-                            master?.city.cityName || city,
-                          )}/master/${master?.id}`}
+                          href={`/${
+                            cyrToTranslit(master?.city.cityName) ||
+                            city.citySlug
+                          }/master/${master?.id}`}
                         >
                           <MasterItem
                             master={master}

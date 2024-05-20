@@ -114,7 +114,7 @@ const ProductPageB2c = ({ product, dataReviews, brand }) => {
       <Wrapper>
         <BackButton
           type="Магазин"
-          link={`/${cyrToTranslit(city)}/beautyFreeShop`}
+          link={`/${city.citySlug}/beautyFreeShop`}
           onlyType
         />
         <Wrap>
@@ -130,7 +130,7 @@ const ProductPageB2c = ({ product, dataReviews, brand }) => {
               />
             </ImageBrand>
             <Rating
-              averageScore={brand?.averageScore}
+              rating={brand?.averageScore}
               numberScore={brand?.numberScore}
             />
           </Left>

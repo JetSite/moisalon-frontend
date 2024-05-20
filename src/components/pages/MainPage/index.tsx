@@ -34,12 +34,10 @@ const MainPage = ({
   beautyCategories,
   beautyAllContent,
   bannerHooks,
-  totalSalons,
-  totalMasters,
-  totalBrands,
+  totalCount,
   cityData,
 }) => {
-  const { me } = useAuthStore(getStoreData)
+  const { me, city } = useAuthStore(getStoreData)
   const query = { query: '' } //TODO: query
   return (
     <MainLayout>
@@ -68,9 +66,7 @@ const MainPage = ({
           </WrapBanner>
         </CSSTransition>
         <MobileViewCards
-          totalSalons={totalSalons}
-          totalMasters={totalMasters}
-          totalBrands={totalBrands}
+          totalCount={totalCount}
           // totalSales={sales?.salesSearch?.connection?.nodes?.length}
         />
         <MobileVisible>
@@ -88,10 +84,10 @@ const MainPage = ({
         {/* <MainGoodsSlider me={me} /> */}
         {/* <MainRentSlider me={me} /> */}
         {/* <MainWorkplacesSlider me={me} /> */}
-        <MainMasterSlider me={me} />
-        <MainSalonsSlider me={me} />
-        <MainBrandsSlider me={me} />
-        <About me={me} />
+        <MainMasterSlider city={city} />
+        <MainSalonsSlider city={city} />
+        <MainBrandsSlider city={city} />
+        <About />
         <Ribbon
           title="Бьюти-лента"
           beautyCategories={beautyCategories}

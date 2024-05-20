@@ -31,6 +31,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   const apolloClient = useApollo(pageProps)
 
   const router = useRouter()
+
   useEffect(() => {
     const handleRouteChange = (url: string) => {
       gtag.pageView(url)
@@ -69,15 +70,13 @@ function MyApp({ Component, pageProps }: AppProps) {
       <ApolloProvider client={apolloClient}>
         <ThemeProvider theme={theme}>
           <StylesProvider injectFirst>
-            <AuthProvider>
-              {/* <ChatProvider> */}
+            <AuthProvider cityData={pageProps.cityData}>
               <YMInitializer
                 accounts={[56585698]}
                 options={{ webvisor: true }}
                 version="2"
               />
               <Component {...pageProps} />
-              {/* </ChatProvider> */}
             </AuthProvider>
           </StylesProvider>
         </ThemeProvider>

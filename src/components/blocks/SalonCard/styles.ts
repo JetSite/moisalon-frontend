@@ -72,6 +72,7 @@ export const Name = styled.p`
   font-weight: 600;
   color: #000;
   max-width: 90%;
+  min-height: 42px;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
@@ -130,9 +131,9 @@ export const Address = styled.p`
   }
 `
 
-export const Activities = styled.p`
-  line-height: 23px;
-  font-size: 14px;
+export const Activities = styled.ul`
+  line-height: 1.7;
+  font-size: 12px;
   color: #000;
 
   @media (max-width: ${laptopBreakpoint}) {
@@ -144,6 +145,12 @@ export const Activities = styled.p`
     font-weight: 400;
     line-height: 15px;
   }
+`
+
+export const Activity = styled.li`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `
 
 export const SalonInfo = styled.div`

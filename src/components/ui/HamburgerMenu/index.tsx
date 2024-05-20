@@ -36,6 +36,7 @@ import { getStoreData, getStoreEvent } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
 import { deleteCookie } from 'cookies-next'
 import { authConfig } from 'src/api/authConfig'
+import { ISetState } from 'src/types/common'
 
 export interface INavLinks {
   title: string
@@ -46,8 +47,8 @@ export interface INavLinks {
 
 interface Props {
   showHamburgerMenu: boolean
-  setShowHamburgerMenu: Dispatch<SetStateAction<boolean>>
-  setShowCitySelect: Dispatch<SetStateAction<boolean>>
+  setShowHamburgerMenu: ISetState<boolean>
+  setShowCitySelect: ISetState<boolean>
   defaultCity: string
   loading: boolean
 }
@@ -93,7 +94,7 @@ const HamburgerMenu: FC<Props> = ({
     { title: 'Объявления', link: '/sales', target: '_self' },
     {
       title: 'Магазин',
-      link: `/${cyrToTranslit(city)}/beautyFreeShop`,
+      link: `/${city.citySlug}/beautyFreeShop`,
       target: '_self',
     },
     {
@@ -101,17 +102,17 @@ const HamburgerMenu: FC<Props> = ({
       link: isLoggedIn ? '/createLessorSalon' : '/login',
       target: '_self',
     },
-    { title: 'Снять', link: `/${cyrToTranslit(city)}/rent`, target: '_self' },
+    { title: 'Снять', link: `/${city.citySlug}/rent`, target: '_self' },
   ]
 
   const navLinksBottom: INavLinks[] = [
     {
       title: 'Мастера',
-      link: `/${cyrToTranslit(city)}/master`,
+      link: `/${city.citySlug}/master`,
       target: '_self',
     },
-    { title: 'Салоны', link: `/${cyrToTranslit(city)}/salon`, target: '_self' },
-    { title: 'Бренды', link: `/${cyrToTranslit(city)}/brand`, target: '_self' },
+    { title: 'Салоны', link: `/${city.citySlug}/salon`, target: '_self' },
+    { title: 'Бренды', link: `/${city.citySlug}/brand`, target: '_self' },
     { title: 'Бьюти-лента', link: '/beauty-feed', target: '_self' },
     { title: 'О проекте', link: '/about', target: '_self' },
     // { title: "Советы", link: "/advices", target: "_self" },
@@ -139,10 +140,10 @@ const HamburgerMenu: FC<Props> = ({
     setShowHamburgerMenu(false)
     router.push(
       {
-        pathname: `/${cyrToTranslit(city)}`,
+        pathname: `/${city.citySlug}`,
         query: { q: 'search' },
       },
-      `/${cyrToTranslit(city)}`,
+      `/${city.citySlug}`,
     )
   }
 
@@ -172,7 +173,7 @@ const HamburgerMenu: FC<Props> = ({
           </Icons>
           <LogoMobile>
             <MobileLogoLink onClick={closeMenu}>
-              <Link href={`/${cyrToTranslit(city)}`}>
+              <Link href={`/${city.citySlug}`}>
                 <Image alt="logo" src="/logo.svg" />
               </Link>
             </MobileLogoLink>

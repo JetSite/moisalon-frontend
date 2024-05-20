@@ -153,9 +153,9 @@ const ProductPage = ({ brand, product, dataReviews }) => {
         <BackButton
           type={router?.query?.catalog ? 'Магазин' : 'Бренд'}
           name={product?.brand?.name}
-          link={`/${cyrToTranslit(
-            product?.brand?.addressFull?.city || city,
-          )}/brand/${product?.brand?.seo?.slug || product?.brand?.id}/products`}
+          link={`/${
+            cyrToTranslit(product?.brand?.addressFull?.city) || city.citySlug
+          }/brand/${product?.brand?.seo?.slug || product?.brand?.id}/products`}
         />
         <Wrap>
           <Left>

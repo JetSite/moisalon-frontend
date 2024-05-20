@@ -8,19 +8,20 @@ import Button from '../Button'
 import Popup from '../Popup'
 import { createRoom } from '../../../_graphql-legacy/chat/createRoom'
 import { createMessage } from '../../../_graphql-legacy/chat/createMessage'
-import { IID, LazyType } from 'src/types/common'
+import { IID, ISetState, LazyType } from 'src/types/common'
 import { ISalonPage } from 'src/types/salon'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
+import { IMaster } from 'src/types/masters'
 
 interface Props {
   open: boolean
-  setChatMessagePopup: Dispatch<SetStateAction<boolean>>
+  setChatMessagePopup: ISetState<boolean>
   userId: IID
   buttonText?: string
   successText?: string
   origin: 'SALON' | 'MASTER'
-  originData: ISalonPage
+  originData: ISalonPage | IMaster
 }
 
 const ChatMessagePopup: FC<Props> = ({
@@ -77,8 +78,8 @@ const ChatMessagePopup: FC<Props> = ({
 
   const newMessageTitle =
     origin === 'MASTER'
-      ? `Начать чат с мастером ${originData.salonName}`
-      : `Начать чат с салоном ${originData.salonName}`
+      ? `Начать чат с мастером ${(originData as IMaster).masterName}`
+      : `Начать чат с салоном ${(originData as ISalonPage).salonName}`
 
   return (
     <>

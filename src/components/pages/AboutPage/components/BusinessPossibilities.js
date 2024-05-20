@@ -27,10 +27,9 @@ const BusinessPossibilities = () => {
 
   const masterList = (
     <>
-      – быстро <Link href={`/${cyrToTranslit(city)}/rent`}>арендовать</Link>{' '}
-      рабочее место или кабинет;
-      <br />–{' '}
-      <Link href={`/${cyrToTranslit(city)}/beautyFreeShop`}>купить</Link>{' '}
+      – быстро <Link href={`/${city.citySlug}/rent`}>арендовать</Link> рабочее
+      место или кабинет;
+      <br />– <Link href={`/${city.citySlug}/beautyFreeShop`}>купить</Link>{' '}
       профессиональную косметику и оборудование напрямую у брендов;
       <br />–{' '}
       <Link href={isLoggedIn ? '/masterCabinet' : '/login'}>создать</Link> в

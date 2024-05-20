@@ -27,7 +27,7 @@ const SearchResults = ({ setShowSearchPopup, query }) => {
       variables: {
         input: {
           query: (query && query.query) || '',
-          city: city ? city : 'Москва',
+          city: city.citySlug,
         },
       },
     },
@@ -158,9 +158,10 @@ const SearchResults = ({ setShowSearchPopup, query }) => {
                 {masterSearchData?.length && !masterLoading ? (
                   masterSearchData.map(master => (
                     <Link
-                      href={`/${cyrToTranslit(
-                        master?.addressFull?.city || city,
-                      )}/master/${master.id}`}
+                      href={`/${
+                        cyrToTranslit(master?.addressFull?.city) ||
+                        city.citySlug
+                      }/master/${master.id}`}
                       passHref
                     >
                       <ListItem key={master.id} onClick={clickItemHandler}>
@@ -179,9 +180,10 @@ const SearchResults = ({ setShowSearchPopup, query }) => {
                 {salonSearchData?.length && !salonLoading ? (
                   salonSearchData.map(salon => (
                     <Link
-                      href={`/${cyrToTranslit(
-                        salon?.salon?.address?.city || city,
-                      )}/salon/${salon?.salon?.id}`}
+                      href={`/${
+                        cyrToTranslit(salon?.salon?.address?.city) ||
+                        city.citySlug
+                      }/salon/${salon?.salon?.id}`}
                       passHref
                     >
                       <ListItem key={salon.salon.id}>
@@ -200,9 +202,10 @@ const SearchResults = ({ setShowSearchPopup, query }) => {
                 {salonRentSearchData?.length && !salonRentLoading ? (
                   salonRentSearchData.map(salon => (
                     <Link
-                      href={`/${cyrToTranslit(
-                        salon?.salon?.address?.city || city,
-                      )}/rent/${salon?.salon?.id}`}
+                      href={`/${
+                        cyrToTranslit(salon?.salon?.address?.city) ||
+                        city.citySlug
+                      }/rent/${salon?.salon?.id}`}
                       passHref
                     >
                       <ListItem key={salon.salon.id}>
@@ -223,9 +226,9 @@ const SearchResults = ({ setShowSearchPopup, query }) => {
                 {brandSearchData?.length && !brandLoading ? (
                   brandSearchData.map(brand => (
                     <Link
-                      href={`/${cyrToTranslit(
-                        brand?.addressFull?.city || city,
-                      )}/brand/${brand.id}`}
+                      href={`/${
+                        cyrToTranslit(brand?.addressFull?.city) || city.citySlug
+                      }/brand/${brand.id}`}
                       passHref
                     >
                       <ListItem key={brand.id}>{brand.name}</ListItem>

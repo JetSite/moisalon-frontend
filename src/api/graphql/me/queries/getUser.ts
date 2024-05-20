@@ -4,6 +4,7 @@ import { salonFragment } from '../fragments/salon'
 import { masterFragment } from '../fragments/master'
 import { brandsFragment } from '../fragments/brands'
 import { vacanciesFragment } from '../fragments/vacancies'
+import { cityFragment } from '../../fragments/city'
 
 export const getUser = gql`
   query usersPermissionsUser($id: ID) {
@@ -23,13 +24,11 @@ export const getUser = gql`
             }
           }
           city {
-            data {
-              id
-              attributes {
-                cityName
-              }
-            }
+            ${cityFragment}
           }
+          selected_city {
+            ${cityFragment}
+         }
           avatar {
             ${imageInfo}
           }
@@ -60,7 +59,7 @@ export const getUser = gql`
               attributes {
                 reviewContent
                 reviewTitle
-                salons {
+                salon {
                   data {
                     id
                     attributes {

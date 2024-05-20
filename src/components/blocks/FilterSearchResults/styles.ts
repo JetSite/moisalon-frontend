@@ -75,7 +75,7 @@ export const FilterArrow = styled.img`
 export const Wrap = styled.div`
   display: flex;
 `
-export const FilterWrap = styled.div<{ active: boolean }>`
+export const FilterWrap = styled.div<{ active: boolean; disabled?: boolean }>`
   background: #ffffff;
   border: 1px solid #000000;
   border-radius: 34px;

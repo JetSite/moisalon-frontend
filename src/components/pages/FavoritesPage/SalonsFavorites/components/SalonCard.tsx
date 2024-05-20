@@ -40,11 +40,12 @@ import { ISalon } from 'src/types/salon'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 import { PHOTO_URL } from 'src/api/variables'
+import { ISetState } from 'src/types/common'
 
 interface Props {
   salon: ISalon
   deleteItem: boolean
-  setDeleteItem: Dispatch<SetStateAction<boolean>>
+  setDeleteItem: ISetState<boolean>
   handleDeleted: () => void
 }
 
@@ -127,8 +128,8 @@ const SalonCard: FC<Props> = ({
           </Info>
         </Wrap>
         <Rating>
-          <Stars count={Math.round(salon?.salonAverageScore)} />
-          <Count>{salon?.salonSumScore || 0}</Count>
+          <Stars count={Math.round(salon?.rating)} />
+          <Count>{salon?.rating || 0}</Count>
         </Rating>
       </Content>
     </Wrapper>

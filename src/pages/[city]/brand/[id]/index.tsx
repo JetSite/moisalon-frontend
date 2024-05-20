@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import Head from 'next/head'
 import MainLayout from '../../../../layouts/MainLayout'
 import { addApolloState, initializeApollo } from '../../../../api/apollo-client'
@@ -7,7 +7,7 @@ import Header from '../../../../components/pages/Brand/ViewBrand/components/Head
 import TabsSlider from '../../../../components/ui/TabsSlider'
 import About from '../../../../components/pages/Brand/ViewBrand/components/About'
 import Contacts from '../../../../components/pages/Brand/ViewBrand/components/Contacts'
-import BrandReviews from '../../../../components/pages/Brand/ViewBrand/components/BrandReviews'
+import BrandReviews from '../../../../components/pages/Brand/ViewBrand/components/BrandReviews/index'
 import InviteBrand from '../../../../components/pages/Brand/ViewBrand/components/Invite'
 import Line from '../../../../components/pages/MainPage/components/Line'
 import { removeItemB2cMutation } from '../../../../_graphql-legacy/cart/removeItemB2c'
@@ -20,144 +20,55 @@ import useBaseStore from 'src/store/baseStore'
 import { getStoreData } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
 import { useMutation } from '@apollo/client'
+import { IBrand } from 'src/types/brands'
+import { GetServerSideProps } from 'next'
+import { fetchCity } from 'src/api/utils/fetchCity'
+import { ICity } from 'src/types'
+import { Nullable } from 'src/types/common'
+import { getRating } from 'src/utils/newUtils/getRating'
+import { ISalon } from 'src/types/salon'
+import { IMaster } from 'src/types/masters'
 
-const Brand = ({ brandData, randomBrands }) => {
+interface Props {
+  brandData: IBrand
+  othersBrands: IBrand[]
+  cityData: ICity
+}
+
+const Brand: FC<Props> = ({ brandData, othersBrands }) => {
   const [brand, setBrand] = useState(brandData)
-  // const [dataScore, setDataScore] = useState(dataScoreRes)
-  // const [reviews, setReviews] = useState(dataReviews)
   const { me } = useAuthStore(getStoreData)
-  const { catalogs } = useBaseStore(getStoreData)
-  const b2bClient = !!me?.master?.id || !!me?.salons?.length
-  const setChosenItemId = () => {}
+  const [activeTab, setActiveTab] = useState<number>(0)
+  const isOwner = !!me?.owner?.brand.find(e => e.id === brand.id)
 
-  useEffect(() => {
-    setChosenItemId(brand?.id)
-  }, [])
-
-  // const {
-  //   data: dataCart,
-  //   refetch: refetchCart,
-  //   loading: loadingCart,
-  // } = useQuery(getCart, {
-  //   onCompleted: res => {
-  //     setProductsState(res?.getCartB2b?.contents || [])
-  //   },
-  // })
-
-  const [addToCart] = useMutation(addToCartB2cMutation, {
-    onCompleted: () => {
-      refetchCart()
-    },
+  const salons = brand.salons.map(e => {
+    const reviewsCount = e.reviews.length
+    const { rating, ratingCount } = getRating(e.ratings)
+    return { ...e, rating, ratingCount, reviewsCount }
   })
-
-  const [removeItem] = useMutation(removeItemB2cMutation, {
-    onCompleted: () => {
-      refetchCart()
-    },
+  const masters = brand.masters.map(e => {
+    const reviewsCount = e.reviews.length
+    const { rating, ratingCount } = getRating(e.ratings)
+    return { ...e, rating, ratingCount, reviewsCount }
   })
-
-  const add = (item, quantity) => {
-    if (!b2bClient) {
-      // setOpenPopup(true);
-      // return;
-    }
-    addToCart({
-      variables: {
-        input: {
-          productId: item.id,
-          quantity,
-          isB2b: true,
-        },
-      },
-    })
-  }
-
-  const deleteItem = item => {
-    removeItem({
-      variables: {
-        input: {
-          items: [{ key: item.key, quantity: item.quantity - 1 }],
-          isB2b: true,
-        },
-      },
-    })
-  }
-
-  // const { data, loading, refetch } = useQuery(brandsRandomQuery, {
-  //   variables: { count: 10 },
-  // })
-
-  useEffect(() => {
-    setBrand(brandData)
-    // setReviews(dataReviews)
-    // setDataScore(dataScoreRes)
-    // refetch()
-  }, [brandData])
-
-  // const { refetch: refetchBrand } = useQuery(brandQuery, {
-  //   variables: { id: brand.id },
-  //   skip: true,
-  //   onCompleted: res => {
-  //     setBrand(res.brand)
-  //   },
-  // })
-
-  // const { data: userBrands } = useQuery(userBrandsQuery)
-
-  // const { refetch: refetchReviews } = useQuery(reviewsForBrand, {
-  //   variables: { originId: brand.id },
-  //   skip: true,
-  //   onCompleted: res => {
-  //     setReviews(res.reviewsForBrand)
-  //   },
-  // })
-
-  // const { refetch: refetchScore, loading: loadingScore } = useQuery(
-  //   scoreBrand,
-  //   {
-  //     variables: { id: brand.id },
-  //     onCompleted: res => {
-  //       setDataScore(res.scoreBrand)
-  //     },
-  //   },
-  // )
-
-  // const masterSpecializationsCatalog = catalogOrDefault(
-  //   catalogs?.masterSpecializationsCatalog,
-  // )
-
-  const [activeTab, setActiveTab] = useState(0)
-  const [edit, setEdit] = useState(false)
-
-  // const isOwner = userBrands?.userBrands?.find(item => item.id === brand.id)
-  const isOwner = false
 
   return (
     <MainLayout>
       <Head>
-        {brand?.seo?.title ? <title>{brand?.seo?.title}</title> : null}
-        {brand?.seo?.description ? (
-          <meta name="description" content={brand?.seo?.description} />
+        {brand.seoTitle ? <title>{brand.seoTitle}</title> : null}
+        {brand.seoDescription ? (
+          <meta name="description" content={brand.seoDescription} />
         ) : null}
-        {brand?.photo?.url ? (
-          <meta property="og:image" content={brand?.photo?.url} />
+        {brand.brandLogo?.url ? (
+          <meta property="og:image" content={brand.brandLogo.url} />
         ) : null}
       </Head>
       <>
         <SearchBlock />
-        <Header
-          brand={brand}
-          me={me}
-          isOwner={isOwner}
-          // refetchBrand={refetchBrand}
-          // refetchScore={refetchScore}
-          // scoreBrandCount={dataScore?.value}
-          // loadingScore={loadingScore}
-        />
+        <Header brand={brand} isOwner={isOwner} />
         <TabsSlider
           activeTab={activeTab}
           setActiveTab={setActiveTab}
-          noPadding
           tabs={[
             { id: 1, text: 'О бренде', link: '#about', show: true },
             {
@@ -165,21 +76,21 @@ const Brand = ({ brandData, randomBrands }) => {
               text: 'Продукция',
               link: '#goods',
               count: brand?.products?.length,
-              show: brand?.products?.length,
+              show: !!brand?.products?.length,
             },
             {
               id: 5,
               text: 'Мастера',
               link: '#masters',
               count: brand?.masters?.length,
-              show: brand?.masters?.length,
+              show: !!brand?.masters?.length,
             },
             {
               id: 6,
               text: 'Салоны',
               link: '#salons',
               count: brand?.salons?.length,
-              show: brand?.salons?.length,
+              show: !!brand?.salons?.length,
             },
             {
               id: 3,
@@ -197,51 +108,46 @@ const Brand = ({ brandData, randomBrands }) => {
           ]}
         />
         <About brand={brand} />
-        {brand?.products && brand?.products?.length ? (
+        {brand.products?.length ? (
           <Slider
+            city={brand.city}
             type="goods"
             typeObject={brand}
             title="Продукция"
             isOwner={isOwner}
-            edit={edit}
-            setEdit={setEdit}
             items={brand.products || []}
-            addProductToCart={add}
-            deleteItemFromCart={deleteItem}
-            // cart={productState}
-            // loadingCart={loadingCart}
             pt={102}
             pb={91}
             noBottom
             noAllButton
           />
         ) : null}
-        {brand?.masters && brand?.masters?.length ? (
+        {masters.length ? (
           <Slider
             type="masters"
-            items={brand.masters}
+            items={masters}
             title={`Мастера бренда ${brand.brandName}`}
             bgColor="#f2f0f0"
             isOwner={isOwner}
-            edit={edit}
-            setEdit={setEdit}
             pt={102}
             pb={91}
             noBottom
             noAll
             noAllButton
+            city={brand.masters[0].city}
           />
         ) : null}
-        {brand?.salons && brand?.salons?.length ? (
+        {salons.length ? (
           <Slider
             type="salons"
-            items={brand.salons}
+            items={salons}
             title="Салоны"
             pt={102}
             pb={91}
             noBottom
             noAll
             noAllButton
+            city={salons[0].cities}
           />
         ) : null}
         <Contacts
@@ -249,50 +155,35 @@ const Brand = ({ brandData, randomBrands }) => {
           latitude={brand?.latitude}
           longitude={brand?.longitude}
           email={brand?.email}
-          phone={brand?.phones}
+          phones={brand?.phones}
           title={'Контакты'}
         />
-        <BrandReviews
-          // refetchReviews={refetchReviews}
-          brandId={brand?.id}
-          me={me}
-          data={brand?.reviews}
-        />
-        <InviteBrand me={me} />
+        <BrandReviews brandId={brand?.id} reviews={brand.reviews} />
+        <InviteBrand isLoggedIn={me?.info.id} />
         <Line text="Для просмотра оптовых цен, войдите или зарегистрируйтесь!" />
         <Slider
           type="brands"
           title="Другие бренды"
           noBottom
           noAllButton
-          items={randomBrands || []}
-          // loading={loading}
+          items={othersBrands}
           pt={102}
           pb={91}
+          city={othersBrands[0].city}
         />
       </>
     </MainLayout>
   )
 }
 
-export async function getServerSideProps({ params, query }) {
+export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async ({
+  params,
+  query,
+}) => {
   const apolloClient = initializeApollo()
+  const cityData = await fetchCity(query.city as string)
 
-  // const city = await apolloClient.query({
-  //   query: citySuggestionsQuery,
-  //   variables: {
-  //     city: query?.city || '',
-  //     count: 1,
-  //   },
-  // })
-
-  // if (!id || !city?.data?.citySuggestions[0]?.data?.city) {
-  //   return {
-  //     notFound: true,
-  //   }
-  // }
-
-  const id = params.id
+  const id = params?.id
 
   const data = await Promise.all([
     apolloClient.query({
@@ -307,15 +198,19 @@ export async function getServerSideProps({ params, query }) {
     }),
   ])
 
-  const brandData = flattenStrapiResponse(data[0]?.data?.brand?.data)
-  const randomBrands = flattenStrapiResponse(data[1]?.data?.brands?.data)
+  const brandData: IBrand | null =
+    flattenStrapiResponse(data[0]?.data?.brand?.data) || null
+  const othersBrands: IBrand[] =
+    flattenStrapiResponse(data[1]?.data?.brands?.data) || []
 
-  return addApolloState(apolloClient, {
+  return {
+    notFound: !brandData || !id || !cityData,
     props: {
+      cityData,
       brandData,
-      randomBrands,
+      othersBrands,
     },
-  })
+  }
 }
 
 export default Brand

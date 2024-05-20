@@ -7,6 +7,15 @@ import {
   salonReviewsFragment,
   salonServicesFragment,
 } from '../fragments'
+import salonServicesMFragment from '../fragments/salonServicesMFragment'
+import { ratingsFragment } from '../../fragments/ratings'
+import { reviewsFragment } from '../../fragments/reviews'
+import { cityFragment } from '../../fragments/city'
+import { socialNetworksFragment } from '../../fragments/socialNetworks'
+import { masterFragment } from '../../me/fragments/master'
+import { brandsFragment } from '../../fragments/brands'
+import { phonesFragment } from '../../fragments/phones'
+import { vacanciesFragment } from '../../me/fragments/vacancies'
 
 export const getSalonPage = gql`
   query salon($id: ID) {
@@ -19,13 +28,7 @@ export const getSalonPage = gql`
             longitude
             locationDirections
             cities {
-              data {
-                id
-                attributes {
-                  citySlug
-                  cityName
-                }
-              }
+              ${cityFragment}
             }
             user {
               data {
@@ -48,18 +51,12 @@ export const getSalonPage = gql`
             salonWebSiteUrl
             salonEmail
             salonPhones {
-              phoneNumber
-              haveTelegram
-              haveWhatsApp
-              haveViber
+              ${phonesFragment}
             }
             socialNetworks {
-              title
-              link
+              ${socialNetworksFragment}
             }
-            salonAverageScore
-            salonSumScore
-            salonRating
+
             salonOwnerConfirmed
             salonOnlineBookingUrl
             workingHours {
@@ -83,12 +80,14 @@ export const getSalonPage = gql`
             salonCantactPresonWorkingHoursAt
             salonCantactPresonWorkingHoursTo
             salonWorkplacesCount
-            salonReviewsCount
             salonMastersCount
             salonBrandsCount
             createdAt
             updatedAt
             publishedAt
+            reviewsCount
+            ratingCount
+            rating
             salonCover {
               ${imageInfo}
             }
@@ -98,11 +97,30 @@ export const getSalonPage = gql`
             salonPhotos {
               ${imageInfo}
             }
-            ${salonAdministratorsFragment}
-            ${salonBrandsFragment}
-            ${salonMastersFragment}
-            ${salonReviewsFragment}
+            masters {
+              ${masterFragment}
+            }
+            administrators {
+              ${salonAdministratorsFragment}
+            }
+            brands {
+              ${brandsFragment}
+            }
+            services {
             ${salonServicesFragment}
+            }
+            servicesM {
+              ${salonServicesMFragment}
+            }
+            ratings {
+              ${ratingsFragment}
+            }
+            reviews {
+              ${reviewsFragment}
+            }
+            vacancies {
+              ${vacanciesFragment}
+            }
         }
       }
     }

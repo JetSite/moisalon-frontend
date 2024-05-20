@@ -9,11 +9,11 @@ const RentSalonSlide = ({ item }: { item: ISalon }) => {
   const { city } = useAuthStore(getStoreData)
 
   return (
-    <Link href={`/${cyrToTranslit(city)}/rent/${item?.id}`}>
+    <Link href={`/${city.citySlug}/rent/${item?.id}`}>
       <SalonItem
         item={item}
         // seatCount={item?.seatCount}
-        shareLink={`https://moi.salon/${cyrToTranslit(city)}/salon/${item.id}`}
+        shareLink={`https://moi.salon/${city.citySlug}/salon/${item.id}`}
         rent
       />
     </Link>

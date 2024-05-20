@@ -1,4 +1,4 @@
-import React, {  useState } from 'react'
+import React, { FC, useState } from 'react'
 import Link from 'next/link'
 import { WrapperItemsBrands, Title, LinkStyled } from './styled'
 import { pluralize } from '../../../../../utils/pluralize'
@@ -8,107 +8,49 @@ import useCheckMobileDevice from '../../../../../hooks/useCheckMobileDevice'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 import { IBrand } from 'src/types/brands'
+import { ICity, IPagination } from 'src/types'
+import { ISearchResults } from './SalonsSearchResults'
+import { MobileHidden, MobileVisible } from 'src/styles/common'
+import { useLazyQuery } from '@apollo/client'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { getBrands } from 'src/api/graphql/brand/queries/getBrands'
+import Button from '../../../../ui/Button'
+import { useRouter } from 'next/router'
 
-const BrandsSearchResults = ({ brandsSearch }: {brandsSearch: IBrand[]}) => {
-  const [brandsSearchData, setBrandsSearchData] = useState(brandsSearch)
-  const [loading, setLoading] = useState(false)
-  const [fetchMoreLoading, setFetchMoreLoading] = useState(false)
+interface Props extends ISearchResults {
+  brandData: IBrand[]
+}
+
+const BrandsSearchResults: FC<Props> = ({
+  brandData,
+  pagination,
+  cityData,
+}) => {
+  const [updateBrandData, setUpdateBrandData] = useState<IBrand[]>(brandData)
+  const [page, setPage] = useState<number>(2)
+  const totalCount = pagination?.total || 0
+  const hasNextPage = pagination && pagination.pageCount + 1 !== page
   const { city } = useAuthStore(getStoreData)
+  const router = useRouter()
 
-  const isMobile = useCheckMobileDevice()
+  const [getBrand, { loading }] = useLazyQuery(getBrands, {
+    notifyOnNetworkStatusChange: true,
+    onCompleted: data => {
+      const prepareData = flattenStrapiResponse(data.brands)
+      console.log(prepareData)
 
+      setUpdateBrandData(prev => prev.concat(prepareData))
+    },
+  })
 
-  // const { fetchMore, refetch } = useQuery(brandSearchQuery, {
-  //   variables: {
-  //     query: (query && query.query) || '',
-  //   },
-  //   skip: true,
-  //   notifyOnNetworkStatusChange: true,
-  //   onCompleted: res => {
-  //     setLoading(false)
-  //     if (res) {
-  //       setBrandsSearchData(res.brandsSearch)
-  //     }
-  //   },
-  // })
-
-  const brandsSearchResult = brandsSearchData || []
-  // const hasNextPage = brandsSearchData?.connection?.pageInfo?.hasNextPage
-  // const totalCount = brandsSearchData?.connection?.totalCount
-
-  const totalCount = brandsSearchData?.length
-
-  // useEffect(() => {
-  //   if (query?.query && query.query !== '') {
-  //     setSearchData(null)
-  //     setLoading(true)
-  //     setChosenItemId('')
-  //     refetch({
-  //       variables: {
-  //         query: (query && query.query) || '',
-  //         cursor: null,
-  //       },
-  //     })
-  //   } else {
-  //     // setBrandsSearchData(searchData ? searchData : brandsSearch);
-  //     return
-  //   }
-  // }, [query])
-
-  // const onFetchMore = useCallback(() => {
-  //   setFetchMoreLoading(true)
-  //   setChosenItemId('')
-  //   fetchMore({
-  //     variables: {
-  //       query: (query && query.query) || '',
-  //       cursor: brandsSearchData?.connection?.pageInfo?.endCursor,
-  //     },
-
-  //     updateQuery(previousResult, { fetchMoreResult }) {
-  //       const newNodes = fetchMoreResult.brandsSearch.connection.nodes
-  //       setFetchMoreLoading(false)
-  //       setBrandsSearchData({
-  //         connection: {
-  //           ...fetchMoreResult.brandsSearch.connection,
-  //           nodes: [...brandsSearchData.connection.nodes, ...newNodes],
-  //         },
-  //         filterDefinition: fetchMoreResult.brandsSearch.filterDefinition,
-  //       })
-  //     },
-  //   })
-  // })
-
-  // const fetchMoreButton = hasNextPage ? (
-  //   <>
-  //     <MobileHidden>
-  //       <Button
-  //         onClick={onFetchMore}
-  //         size="medium"
-  //         variant="darkTransparent"
-  //         mb="55"
-  //         disabled={fetchMoreLoading}
-  //       >
-  //         Показать еще
-  //       </Button>
-  //     </MobileHidden>
-  //     <MobileVisible>
-  //       <Button
-  //         size="roundSmall"
-  //         variant="withRoundBorder"
-  //         font="roundSmall"
-  //         mb="56"
-  //         onClick={onFetchMore}
-  //         disabled={fetchMoreLoading}
-  //       >
-  //         Показать еще бренды
-  //       </Button>
-  //     </MobileVisible>
-  //   </>
-  // ) : null
+  const onFetchMore = async () => {
+    await getBrand({ variables: { page } })
+    setPage(page + 1)
+  }
 
   return (
     <>
-      {brandsSearchResult?.length ? (
+      {updateBrandData?.length ? (
         <>
           <Title>
             {`${pluralize(
@@ -124,27 +66,57 @@ const BrandsSearchResults = ({ brandsSearch }: {brandsSearch: IBrand[]}) => {
             )}`}
           </Title>
           <WrapperItemsBrands>
-            {brandsSearchResult?.map(brand => (
-              <Link
-                href={`/${cyrToTranslit(
-                  brand.city || city,
-                )}/brand/${ brand.id}`}
+            {updateBrandData?.map(brand => (
+              <div
+                onClick={() => {
+                  router.push(
+                    `/${brand.city.citySlug || city.citySlug}/brand/${
+                      brand.id
+                    }`,
+                  )
+                }}
                 key={brand.id}
               >
                 <LinkStyled>
                   <BrandItem
                     loading={loading}
                     brand={brand}
-                    shareLink={`https://moi.salon/${cyrToTranslit(
-                      brand.city || city,
-                    )}/brand/${ brand.id}`}
+                    shareLink={`https://moi.salon/${
+                      brand.city.citySlug || city.citySlug
+                    }/brand/${brand.id}`}
                     type="search-page"
                   />
                 </LinkStyled>
-              </Link>
+              </div>
             ))}
           </WrapperItemsBrands>
-          {/* {fetchMoreButton} */}
+          {hasNextPage ? (
+            <>
+              <MobileHidden>
+                <Button
+                  onClick={onFetchMore}
+                  size="medium"
+                  variant="darkTransparent"
+                  mb="55"
+                  disabled={loading}
+                >
+                  Показать еще
+                </Button>
+              </MobileHidden>
+              <MobileVisible>
+                <Button
+                  size="roundSmall"
+                  variant="withRoundBorder"
+                  font="roundSmall"
+                  mb="56"
+                  onClick={onFetchMore}
+                  disabled={loading}
+                >
+                  Показать еще бренды
+                </Button>
+              </MobileVisible>
+            </>
+          ) : null}
         </>
       ) : null}
     </>

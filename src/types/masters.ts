@@ -1,16 +1,52 @@
-import { ICity, IPhoto, IServiceCategories, IServices } from '.'
+import {
+  ICity,
+  IPhoto,
+  IRating,
+  IServiceCategories,
+  IServices,
+  ISocialNetworks,
+} from '.'
+import { IBrand } from './brands'
 import { IID } from './common'
+import { IReview } from './reviews'
+import { ISalon } from './salon'
+
+export interface IMasterServices extends IServices {
+  price: string
+  priceTo: string
+  priceFrom: string
+}
 
 export interface IMaster {
   id: IID
-  masterAddress: string
-  masterEmail: string
   masterName: string
+  reviewsCount: number
+  rating: number
+  ratingCount: number
+  webSiteUrl: string
+  slug: string
+  seoDescription: string
+  haveViber: boolean
+  haveTelegram: boolean
+  haveWhatsApp: boolean
+  searchWork: boolean
   masterPhone: string
-  city: ICity
+  masterEmail: string
+  masterAddress: string
+  description: string
+  latitude: string
+  longitude: string
+  office: string
+  onlineBookingUrl: string
+  resume: string | null // TODO: в запросе пока нет поня
+  photosDiploma: IPhoto[]
+  salons: ISalon[]
   masterPhoto: IPhoto
-  averageScore: number
-  numberScore: number
+  reviews: IReview[]
+  ratings: IRating[]
   services: IServices[]
-  serviceCategories: IServiceCategories[]
+  brands: IBrand[]
+  photosWorks: IPhoto[]
+  socialNetworks: ISocialNetworks[]
+  city: ICity
 }

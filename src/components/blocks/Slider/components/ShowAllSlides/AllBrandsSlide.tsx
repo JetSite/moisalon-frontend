@@ -17,8 +17,8 @@ const AllBrandsSlide: FC = () => {
     <Link
       href={
         !landingBrand
-          ? `/${cyrToTranslit(city)}/brand`
-          : `/${cyrToTranslit(city)}/beautyFreeShop`
+          ? `/${city.citySlug}/brand`
+          : `/${city.citySlug}/beautyFreeShop`
       }
     >
       <AllBrands>

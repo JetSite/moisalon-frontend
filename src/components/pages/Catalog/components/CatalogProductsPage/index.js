@@ -145,7 +145,7 @@ const CatalogProductsPage = ({
         <BackButton
           type="Магазин"
           name={brand.name}
-          link={`/${cyrToTranslit(city)}/beautyFreeShop`}
+          link={`/${city.citySlug}/beautyFreeShop`}
         />
         <Header brand={brand} />
         <Title>Вся продукция</Title>

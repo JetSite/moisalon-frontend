@@ -135,9 +135,10 @@ const EducationPage = ({
           originName: item.masterOrigin?.name,
           customTitle: `у мастера ${item.masterOrigin?.name}`,
           buttonLink: 'master',
-          originLink: `/${cyrToTranslit(
-            item?.masterOrigin?.addressFull?.city || city,
-          )}/master/${item?.originId}`,
+          originLink: `/${
+            cyrToTranslit(item?.masterOrigin?.addressFull?.city) ||
+            city.citySlug
+          }/master/${item?.originId}`,
           originUserId: item?.masterOrigin?.userId,
         }
       case 'SALON':
@@ -146,9 +147,9 @@ const EducationPage = ({
           originName: item.salonOrigin?.name,
           customTitle: `в салоне ${item.salonOrigin?.name}`,
           buttonLink: 'salon',
-          originLink: `/${cyrToTranslit(
-            item?.salonOrigin?.address?.city || city,
-          )}/salon/${item?.originId}`,
+          originLink: `/${
+            cyrToTranslit(item?.salonOrigin?.address?.city) || city.citySlug
+          }/salon/${item?.originId}`,
           originUserId: item?.salonOrigin?.ownerId,
         }
       case 'BRAND':

@@ -3,7 +3,7 @@ import { laptopBreakpoint } from '../../../../styles/variables'
 import Avatar from '../Avatar'
 import Tabs from './components/Tabs'
 import { Dispatch, FC, SetStateAction } from 'react'
-import { IID } from 'src/types/common'
+import { IID, ISetState } from 'src/types/common'
 import { IMasterCabinetTab } from 'src/components/pages/Master/MasterCabinet'
 
 const Wrapper = styled.div`
@@ -29,9 +29,9 @@ interface Props {
   photo: { url: string }
   noSetPhoto?: boolean
   noPhotoError: boolean
-  setNoPhotoError: Dispatch<SetStateAction<boolean>>
+  setNoPhotoError: ISetState<boolean>
   activeTab: string
-  setActiveTab: Dispatch<SetStateAction<string>>
+  setActiveTab: ISetState<string>
 }
 
 const ControlsTabs: FC<Props> = ({

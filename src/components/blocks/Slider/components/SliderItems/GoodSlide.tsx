@@ -10,85 +10,19 @@ import { removeItemB2cMutation } from '../../../../../_graphql-legacy/cart/remov
 import { LazyType } from 'src/types/common'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
 import useBaseStore from 'src/store/baseStore'
+import { IBrand } from 'src/types/brands'
+import { IProduct } from 'src/types/product'
+import { UrlObject } from 'url'
 
 interface Props {
-  item: LazyType
+  item: IProduct
+  href: UrlObject | string
 }
 
-const GoodSlide: FC<Props> = ({ item }) => {
-  const { city } = useBaseStore(getStoreData)
-  const { setProducts } = useBaseStore(getStoreEvent)
-
-  const {
-    data: dataCart,
-    refetch: refetchCart,
-    loading: loadingCart,
-  } = useQuery(getCart, {
-    onCompleted: res => {
-      setProducts(res?.getCartB2b?.contents || [])
-    },
-  })
-
-  const cart = dataCart?.getCartB2b?.contents || []
-
-  const [addToCart, { loading: addLoading }] = useMutation(
-    addToCartB2cMutation,
-    {
-      onCompleted: () => {
-        refetchCart()
-      },
-    },
-  )
-
-  const [removeItem, { loading: deleteLoading }] = useMutation(
-    removeItemB2cMutation,
-    {
-      onCompleted: () => {
-        refetchCart()
-      },
-    },
-  )
-
-  const add = (item: LazyType, quantity: number) => {
-    addToCart({
-      variables: {
-        input: {
-          productId: item.id,
-          quantity,
-          isB2b: true,
-        },
-      },
-    })
-  }
-
-  const deleteItem = (item: LazyType) => {
-    removeItem({
-      variables: {
-        input: {
-          items: [
-            {
-              key: item.key,
-              quantity: (item.quantity as unknown as number) - 1,
-            },
-          ],
-          isB2b: true,
-        },
-      },
-    })
-  }
-
+const GoodSlide: FC<Props> = ({ item, href }) => {
   return (
-    <Link href={`/${cyrToTranslit(city)}`}>
-      <ProductCard
-        item={item}
-        cart={cart}
-        loading={loadingCart}
-        // loadingCart={loadingCart}
-        // add={add}
-        // addLoading={addLoading}
-        // deleteItem={deleteItem}
-        // deleteLoading={deleteLoading}
-      />
+    <Link href={href}>
+      <ProductCard item={item} />
     </Link>
   )
 }

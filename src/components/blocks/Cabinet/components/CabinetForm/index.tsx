@@ -77,6 +77,8 @@ const CabinetForm: FC<Props> = ({ photoId, setNoPhotoError, auth }) => {
     setCityInput(city)
   }
 
+  console.log(me)
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -141,7 +143,7 @@ const CabinetForm: FC<Props> = ({ photoId, setNoPhotoError, auth }) => {
     const initialValues: ICabinetFormIvitialValues = {
       phone: me.info.phone,
       email: me.info.email,
-      city: me.info.city?.cityName,
+      city: me.info.city?.cityName || '',
       username: me.info.username,
     }
 
@@ -160,7 +162,7 @@ const CabinetForm: FC<Props> = ({ photoId, setNoPhotoError, auth }) => {
           )}
         </Flex>
         <AutoFocusedForm
-          defaultValues={initialValues}
+          initialValues={initialValues}
           subscription={{ values: true }}
           mutators={{
             setCity: ([field, value], state, { changeValue }) => {

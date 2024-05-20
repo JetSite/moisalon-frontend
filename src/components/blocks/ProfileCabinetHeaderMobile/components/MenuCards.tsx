@@ -12,11 +12,12 @@ import { getStoreEvent } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
 import { Dispatch, FC, SetStateAction } from 'react'
 import { IMasterCabinetTab } from 'src/components/pages/Master/MasterCabinet'
+import { ISetState } from 'src/types/common'
 
 interface Props {
   tabs: IMasterCabinetTab[]
-  setActiveTab: Dispatch<SetStateAction<string>>
-  setToggle: Dispatch<SetStateAction<boolean>>
+  setActiveTab: ISetState<string>
+  setToggle: ISetState<boolean>
 }
 
 const MenuCards: FC<Props> = ({ tabs, setActiveTab, setToggle }) => {

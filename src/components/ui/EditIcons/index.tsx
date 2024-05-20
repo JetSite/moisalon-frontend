@@ -1,6 +1,7 @@
 import { Dispatch, FC, SetStateAction, useState } from 'react'
 import styled from 'styled-components'
 import { red, laptopBreakpoint } from '../../../styles/variables'
+import { ISetState } from 'src/types/common'
 
 const Wrapper = styled.div`
   display: inline-block;
@@ -37,7 +38,7 @@ const EditConfirmIcon = styled.div`
 `
 
 interface Props {
-  setIsEditing?: Dispatch<SetStateAction<boolean>>
+  setIsEditing?: ISetState<boolean>
   handleEditConfirm?: () => void
   disable?: boolean
 }

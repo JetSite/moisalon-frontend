@@ -12,7 +12,6 @@ import { getStoreData } from 'src/store/utils'
 const SalonsList = ({ salons, ref3 }) => {
   const [sliceNumber, setSliceNumber] = useState(3)
   const slicedList = salons?.slice(0, sliceNumber)
-  const { city } = useAuthStore(getStoreData)
 
   const onFetchMore = () => {
     setSliceNumber(sliceNumber + 3)

@@ -17,12 +17,12 @@ import { IApolloRefetch, IID } from 'src/types/common'
 
 interface Props {
   id: IID
-  name: string
+  name?: string
   title: string
   create?: boolean
   photo: string
   type?: string
-  removeVacancy: () => void
+  removeVacancy?: () => void
   onAdd?: () => void
   amountFrom?: string
   amountTo?: string
@@ -42,7 +42,7 @@ const Vacancy: FC<Props> = ({
   const { pathname } = useRouter()
 
   const removeVacancyHandler = (vacancyId: IID) => {
-    removeVacancy()
+    removeVacancy && removeVacancy()
   }
 
   return (

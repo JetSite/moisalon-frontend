@@ -60,7 +60,7 @@ export const BottomText = styled.p<{ bgColor?: string }>`
   }
 `
 
-export const Plus = styled.div<{ bgColor?: string }>`
+export const Plus = styled.span<{ bgColor?: string }>`
   width: 56px;
   height: 56px;
   background: ${({ bgColor }) => (bgColor === '#f2f0f0' ? '#fff' : '#f0f0f0')};

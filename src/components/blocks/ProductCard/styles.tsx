@@ -67,6 +67,9 @@ export const Image = styled.img`
 `
 
 export const Favorite = styled.button`
+  border: none;
+  padding: 0;
+  margin: 0;
   position: absolute;
   cursor: pointer;
   right: 10px;

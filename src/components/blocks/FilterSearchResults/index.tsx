@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, SetStateAction } from 'react'
+import React, { FC } from 'react'
 import {
   Wrapper,
   FilterItem,
@@ -9,27 +9,27 @@ import {
   Wrap,
   TextFilter,
 } from './styles'
+import { ISetState } from 'src/types/common'
+import { IView } from 'src/components/pages/Salon/AllSalons'
 
-const filters = ['по рейтингу', 'по отзывам']
-export const typesFilter = {
-  RATING: 'по рейтингу',
-  AVERAGESCORE: 'по отзывам',
+export const filtersType = {
+  'по отзывам': 'reviewsCount',
+  'по рейтингу': 'rating',
 }
-const typesFilterProp = {
-  'по рейтингу': 'RATING',
-  'по отзывам': 'AVERAGESCORE',
-}
+
+export type IFiltersType = keyof typeof filtersType
+
+export type ISortOrder = ':asc' | ':desc'
 
 interface Props {
-  view?: 'list' | string
-  setView?: Dispatch<SetStateAction<'list' | string>>
+  view?: IView
+  setView?: ISetState<IView>
   salon?: boolean
   main?: boolean
   master?: boolean
-  sortOrder: 'ASCENDING' | 'DESCENDING' | null
-  setSortOrder: Dispatch<SetStateAction<'ASCENDING' | 'DESCENDING' | null>>
-  sortProperty: keyof typeof typesFilter | null
-  setSortProperty: Dispatch<SetStateAction<keyof typeof typesFilter | null>>
+  sortOrder: ISortOrder
+  sortProperty: IFiltersType
+  handleFilter: (filter: IFiltersType) => void
 }
 
 const FilterSearchResults: FC<Props> = ({
@@ -38,63 +38,34 @@ const FilterSearchResults: FC<Props> = ({
   salon = false,
   main,
   sortProperty,
-  setSortProperty,
   sortOrder,
-  setSortOrder,
   master = false,
+  handleFilter,
 }) => {
-  const handleFilter = (filter: string) => {
-    if (sortProperty) {
-      if (typesFilter[sortProperty] === filter && sortOrder === 'ASCENDING') {
-        setSortProperty(null)
-        setSortOrder(null)
-        return
-      }
-      // @ts-ignore
-      setSortProperty(typesFilter[filter])
-      if (typesFilter[sortProperty] !== filter) {
-        setSortOrder('DESCENDING')
-        return
-      }
-      if (!sortOrder) {
-        setSortOrder('DESCENDING')
-      }
-      if (sortOrder === 'DESCENDING') {
-        setSortOrder('ASCENDING')
-      }
-      if (sortOrder === 'ASCENDING') {
-        setSortOrder('DESCENDING')
-      }
-    }
-  }
-
   return (
-    sortProperty && (
+    true && (
       <Wrapper view={view}>
         {view === 'list' ? (
           <Wrap>
-            {filters.map((filter, i) => (
-              <FilterItem
-                onClick={
-                  master || salon ? () => handleFilter(filter) : undefined
-                }
-                salon={salon}
-                active={filter === typesFilter[sortProperty]}
-                key={i}
-              >
-                <Text active={filter === typesFilter[sortProperty]}>
-                  {filter}
-                </Text>
-                <FilterArrowWrap
-                  active={
-                    sortOrder === 'ASCENDING' &&
-                    filter === typesFilter[sortProperty]
+            {(Object.keys(filtersType) as IFiltersType[]).map((filter, i) => {
+              return (
+                <FilterItem
+                  onClick={
+                    master || salon ? () => handleFilter(filter) : undefined
                   }
+                  salon={salon}
+                  active={filter === sortProperty}
+                  key={i}
                 >
-                  <FilterArrow src="/filter-arrow.png" />
-                </FilterArrowWrap>
-              </FilterItem>
-            ))}
+                  <Text active={filter === sortProperty}>{filter}</Text>
+                  <FilterArrowWrap
+                    active={filter === sortProperty && sortOrder === ':desc'}
+                  >
+                    <FilterArrow src="/filter-arrow.png" />
+                  </FilterArrowWrap>
+                </FilterItem>
+              )
+            })}
           </Wrap>
         ) : null}
         {salon && !main ? (
@@ -106,8 +77,9 @@ const FilterSearchResults: FC<Props> = ({
               Список
             </TextFilter>
             <TextFilter
-              onClick={() => setView && setView('map')}
-              active={view === 'map'}
+              // onClick={() => setView && setView('map')}
+              // active={view === 'map'}
+              active
             >
               На карте
             </TextFilter>

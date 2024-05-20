@@ -52,61 +52,51 @@ import { ICatalog } from 'src/utils/catalogOrDefault'
 import { PHOTO_URL } from 'src/api/variables'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
+import { getRating } from 'src/utils/newUtils/getRating'
+import { RATE_SALON } from 'src/api/graphql/salon/mutations/rateSalon'
 
 interface Props {
   salon: ISalonPage
-  salonActivitiesCatalog: ICatalog
   isOwner: boolean
-  loadingScore: boolean
-  refetchSalon: IApolloRefetch
-  refetchScore: IApolloRefetch
 }
 
-const Header: FC<Props> = ({
-  salon,
-  salonActivitiesCatalog,
-  isOwner,
-  loadingScore,
-  refetchSalon,
-  refetchScore,
-}) => {
+const Header: FC<Props> = ({ salon, isOwner }) => {
   const router = useRouter()
+  const [newRating, setNewRating] = useState<number>(0)
+
   const logo = salon.salonLogo ? (
     <Logo background={`url(${PHOTO_URL}${salon?.salonLogo?.url})`} />
   ) : (
     <SkeletonCircle />
   )
-  const { city } = useAuthStore(getStoreData)
+  const { city, me } = useAuthStore(getStoreData)
+  const isRateBefore = salon.ratings.find(e => e.user.id === me?.info.id)
   const [isFavorite, setIsFavorit] = useState<boolean>(false)
   const [showSocials, setShowSocials] = useState<boolean>(false)
   const [showAllActivities, setShowAllActivities] = useState<boolean>(false)
   const [chatMessagePopup, setChatMessagePopup] = useState<boolean>(false)
+  const [rateSalon, { loading }] = useMutation(RATE_SALON)
 
-  useEffect(() => {
-    const isInStorage = inStorage('salons', salon)
-    setIsFavorit(!!isInStorage)
-  }, [])
+  const { rating, ratingCount } = getRating(salon.ratings, newRating)
 
   const addFavorite = (e: MouseEvent<HTMLDivElement>, salon: ISalonPage) => {
     e.preventDefault()
     e.stopPropagation()
-    favoritesInStorage('salons', salon)
+    // favoritesInStorage('salons', salon)
     setIsFavorit(!isFavorite)
   }
 
-  const [createScore] = useMutation(createScopesSalon, {
-    onCompleted: () => {
-      refetchSalon()
-      refetchScore()
-    },
-  })
-
   const handleChangeRating = (num: number) => {
-    if (salon.salonAverageScore || loadingScore) return
-    createScore({
+    if (loading || isOwner || isRateBefore) {
+      console.log(isOwner || !!isRateBefore)
+      return
+    }
+    setNewRating(num)
+    rateSalon({
       variables: {
+        user: me?.info.id,
         value: num,
-        salonId: salon.id,
+        salon: salon.id,
       },
     })
   }
@@ -124,7 +114,7 @@ const Header: FC<Props> = ({
         <Wrapper>
           <BackButton
             type="Салон"
-            link={isOwner ? '/masterCabinet' : `/${cyrToTranslit(city)}/salon`}
+            link={isOwner ? '/masterCabinet' : `/${city.citySlug}/salon`}
             name={salon.salonName}
           />
         </Wrapper>
@@ -158,14 +148,13 @@ const Header: FC<Props> = ({
             {logo}
             <SocialsWrapper>
               <ActiveSocials
-                // active={
-                //   salon?.salonPhones &&
-                //   salon.salonPhones[0] &&
-                //   (salon?.salonPhones[0]?.haveTelegram ||
-                //     salon?.salonPhones[0]?.haveWhatsApp ||
-                //     salon?.salonPhones[0]?.haveViber)
-                // }
-                active
+                active={
+                  salon?.salonPhones &&
+                  salon.salonPhones[0] &&
+                  (salon?.salonPhones[0]?.haveTelegram ||
+                    salon?.salonPhones[0]?.haveWhatsApp ||
+                    !!salon?.salonPhones[0]?.haveViber)
+                }
                 onClick={() => setShowSocials(!showSocials)}
               />
               <noindex>
@@ -282,10 +271,10 @@ const Header: FC<Props> = ({
           <Rating>
             <RatingEdit
               handleChangeRating={handleChangeRating}
-              userValue={salon.salonAverageScore}
-              count={salon.salonAverageScore || 0}
+              newRating={newRating}
+              rating={rating}
             />
-            <Count>{salon.salonAverageScore || 0}</Count>
+            {ratingCount ? <Count>{`${rating}(${ratingCount})`}</Count> : null}
           </Rating>
         </Wrapper>
       </MainContainer>
