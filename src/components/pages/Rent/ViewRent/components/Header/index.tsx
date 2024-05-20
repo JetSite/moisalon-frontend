@@ -106,8 +106,6 @@ const Header: FC<Props> = ({ isOwner, salon, setActiveTab }) => {
     })
   }
 
-  console.log(salon.salonOnlineBookingUrl)
-
   return (
     <MainContainer>
       <Wrapper>
