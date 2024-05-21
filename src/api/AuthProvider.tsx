@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import React, { FC, useEffect } from 'react'
-import { useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { IChildren } from 'src/types/common'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
@@ -15,6 +15,7 @@ import { IVacancy } from 'src/types/vacancies'
 import { IReview } from 'src/types/reviews'
 import { ICity } from 'src/types'
 import { fetchCity } from './utils/fetchCity'
+import { changeMe } from './graphql/me/mutations/changeMe'
 
 const AuthProvider: FC<{ children: IChildren; cityData?: ICity }> = ({
   children,
@@ -38,11 +39,28 @@ const AuthProvider: FC<{ children: IChildren; cityData?: ICity }> = ({
     skip: true,
     notifyOnNetworkStatusChange: true,
   }
+  const [changeCityFunc] = useMutation(changeMe, {
+    onCompleted: res => {
+      const newCity: ICity = flattenStrapiResponse(
+        res.updateUsersPermissionsUser,
+      ).selected_city
+      setCity(newCity)
+    },
+  })
 
   const { refetch: getMe, loading: meLoading } = useQuery(ME, getMeCB)
   const { refetch: getUser, loading: userLoading } = useQuery(USER, {
     onCompleted: data => {
       const prepareData = flattenStrapiResponse(data.usersPermissionsUser)
+
+      if (!prepareData.selected_city) {
+        changeCityFunc({
+          variables: {
+            id: prepareData.id,
+            data: { selected_city: cityData?.id || 1 },
+          },
+        })
+      }
       const info: IMeInfo = {
         city: prepareData.city,
         username: prepareData.username,
@@ -74,7 +92,7 @@ const AuthProvider: FC<{ children: IChildren; cityData?: ICity }> = ({
       setCity(prepareData.selected_city as ICity)
       setCookie(
         authConfig.cityKeyName,
-        prepareData.selected_city.citySlug || defaultValues.citySlug,
+        prepareData.selected_city?.citySlug || defaultValues.citySlug,
       )
     },
     onError: err => console.log(err),
