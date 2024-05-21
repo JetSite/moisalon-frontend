@@ -25,16 +25,7 @@ export type IApolloRefetch = (
   variables?: Partial<OperationVariables> | undefined,
 ) => Promise<ApolloQueryResult<any>>
 
-export type IAppoloMutationCallback = (
-  options?:
-    | MutationFunctionOptions<
-        any,
-        OperationVariables,
-        DefaultContext,
-        ApolloCache<any>
-      >
-    | undefined,
-) => Promise<any>
+export type IAppoloMutationCallback = (variables?: any) => Promise<any>
 
 export type IChildren =
   | Array<ReactElement | boolean | string | null>

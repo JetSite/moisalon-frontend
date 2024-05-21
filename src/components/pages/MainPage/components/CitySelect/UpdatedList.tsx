@@ -1,7 +1,6 @@
-import React, { FC, Dispatch, SetStateAction } from 'react'
+import React, { FC } from 'react'
 import { useCitySuggestions } from './useCitySuggestions'
 import CitiesList from './CitiesList'
-
 import { useRouter } from 'next/router'
 import { ICity } from 'src/types'
 import { authConfig } from 'src/api/authConfig'
