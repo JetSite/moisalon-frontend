@@ -55,7 +55,6 @@ const SalonCard: FC<Props> = ({
   setDeleteItem,
   handleDeleted,
 }) => {
-  const { me } = useAuthStore(getStoreData)
   const { salonCover } = salon
   const imageUrl = salonCover?.url
   const [seatCount, setSeatCount] = useState(0)

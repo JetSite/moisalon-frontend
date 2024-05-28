@@ -123,12 +123,10 @@ const DisabledText = styled.p`
   }
 `
 
-const CreateProfiles = ({ currentMe }) => {
+const CreateProfiles = ({ user }) => {
   return (
     <Wrapper>
-      {currentMe?.master?.id ||
-      currentMe?.salons?.length ||
-      currentMe?.userBrands?.length ? (
+      {user?.master?.id || user?.salons?.length || user?.userBrands?.length ? (
         <Title>Добавить профиль на платформе</Title>
       ) : (
         <Title>Выбрать свою роль на платформе</Title>
@@ -138,7 +136,7 @@ const CreateProfiles = ({ currentMe }) => {
         создать эти профили и переключаться между ними из вашего личного
         кабинета). Кто вы?
       </Description>
-      {!currentMe?.master?.id ? (
+      {!user?.master?.id ? (
         <Link href="/createMaster">
           <WrapperItem>
             <Type>мастер</Type>

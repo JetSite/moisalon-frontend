@@ -54,7 +54,7 @@ interface Props {
 }
 
 const CabinetForm: FC<Props> = ({ photoId, setNoPhotoError, auth }) => {
-  const { me } = useAuthStore(getStoreData)
+  const { user } = useAuthStore(getStoreData)
   const { setMe } = useAuthStore(getStoreEvent)
 
   const [errors, setErrors] = useState<string[]>([])
@@ -77,7 +77,7 @@ const CabinetForm: FC<Props> = ({ photoId, setNoPhotoError, auth }) => {
     setCityInput(city)
   }
 
-  console.log(me)
+  console.log(user)
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -121,7 +121,7 @@ const CabinetForm: FC<Props> = ({ photoId, setNoPhotoError, auth }) => {
       // }
 
       const input = {
-        city: values.city !== me?.info.city.cityName ? cityId : undefined,
+        city: values.city !== user?.info.city.cityName ? cityId : undefined,
         username: values.username,
         email: values.email,
         phone: values.phone,
@@ -131,7 +131,7 @@ const CabinetForm: FC<Props> = ({ photoId, setNoPhotoError, auth }) => {
       setLoading(true)
       mutate({
         variables: {
-          id: me?.info.id,
+          id: user?.info.id,
           data: input,
         },
       })
@@ -139,12 +139,12 @@ const CabinetForm: FC<Props> = ({ photoId, setNoPhotoError, auth }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [photoId],
   )
-  if (me) {
+  if (user) {
     const initialValues: ICabinetFormIvitialValues = {
-      phone: me.info.phone,
-      email: me.info.email,
-      city: me.info.city?.cityName || '',
-      username: me.info.username,
+      phone: user.info.phone,
+      email: user.info.email,
+      city: user.info.city?.cityName || '',
+      username: user.info.username,
     }
 
     return (
@@ -236,7 +236,7 @@ const CabinetForm: FC<Props> = ({ photoId, setNoPhotoError, auth }) => {
         />
         {auth ? (
           <MobileHidden>
-            <CreateProfiles currentMe={me} />
+            <CreateProfiles user={user} />
           </MobileHidden>
         ) : null}
       </Wrapper>

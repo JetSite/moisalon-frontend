@@ -66,13 +66,13 @@ const SalonsFavorites: FC<ThingsProps> = ({
     }
   }
 
-  const { city, me } = useAuthStore(getStoreData)
+  const { city, user } = useAuthStore(getStoreData)
   const { catalogs } = useBaseStore(getStoreData)
 
   const [deleteItem, setDeleteItem] = useState<boolean>(false)
   const [toggle, setToggle] = useState(mobile && cabinet && true)
 
-  const salons = me?.favorite?.salons
+  const salons = user?.favorite?.salons
 
   useEffect(() => {
     if (!salons) setActiveTab('all')
@@ -135,12 +135,10 @@ const SalonsFavorites: FC<ThingsProps> = ({
                           href={
                             salon.salonWorkplacesCount
                               ? `/${
-                                  cyrToTranslit(salon.cities.cityName) ||
-                                  city.citySlug
+                                  salon.cities.citySlug || city.citySlug
                                 }/rent/${salon.id}`
                               : `/${
-                                  cyrToTranslit(salon.cities.cityName) ||
-                                  city.citySlug
+                                  salon.cities.citySlug || city.citySlug
                                 }/salon/${salon.id}`
                           }
                         >

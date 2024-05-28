@@ -21,6 +21,7 @@ export const authConfig = {
   tokenKeyName: 'accessToken',
   notAuthLink: '/login',
   cityKeyName: 'city',
+  meKeyName: 'me',
 }
 
 export const settingsConfig = {

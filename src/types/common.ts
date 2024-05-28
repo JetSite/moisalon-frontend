@@ -5,6 +5,8 @@ import {
   MutationFunctionOptions,
   OperationVariables,
 } from '@apollo/client'
+import { GetServerSidePropsContext, PreviewData } from 'next'
+import { ParsedUrlQuery } from 'querystring'
 import { Dispatch, ReactElement, SetStateAction } from 'react'
 
 export type Nullable<T> = { [P in keyof T]: T[P] | null }
@@ -37,3 +39,8 @@ export type IChildren =
 export interface CustomWindow extends Window {
   setFormValue?: (fieldName: string, value: any) => void
 }
+
+export type INextContext = GetServerSidePropsContext<
+  ParsedUrlQuery,
+  PreviewData
+>

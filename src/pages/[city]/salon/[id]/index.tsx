@@ -82,7 +82,7 @@ const Salon: FC<Props> = ({ salonData, othersSalons, cityData }) => {
     },
   })
 
-  const isOwner = !!me?.owner?.salons.find(e => e.id === salon.id)
+  const isOwner = !!me?.owner?.salons?.find(e => e.id === salon.id)
 
   const handleRemoveBrand = (id: IID) => {}
 

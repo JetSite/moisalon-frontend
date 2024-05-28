@@ -10,7 +10,7 @@ import { GetServerSideProps } from 'next'
 import { getSalonsThroughCity } from 'src/api/graphql/salon/queries/getSalonsThroughCity'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { fetchCity } from 'src/api/utils/fetchCity'
-import { defaultValues } from 'src/api/authConfig'
+import { authConfig, defaultValues } from 'src/api/authConfig'
 import { ISalon } from 'src/types/salon'
 import { IPagination } from 'src/types'
 import { getBrands } from 'src/api/graphql/brand/queries/getBrands'
@@ -20,6 +20,10 @@ import { IMaster } from 'src/types/masters'
 import { getSalons } from 'src/api/graphql/salon/queries/getSalons'
 import { checkErr } from 'src/api/utils/checkErr'
 import { getRating } from 'src/utils/newUtils/getRating'
+import { INextContext, Nullable } from 'src/types/common'
+import { ApolloQueryResult } from '@apollo/client'
+import { serverProvider } from 'src/api/server'
+import Cookies from 'cookies'
 
 export interface ITotalCount {
   brands: number | null
@@ -33,8 +37,15 @@ interface Props extends ISalonsPageProps {
   salons: ISalon[] | null
 }
 
-const AllSalons: FC<Props> = ({ brands, masters, salons, ...props }) => {
+const AllSalons: FC<Props> = ({
+  serverProviderData,
+  brands,
+  masters,
+  salons,
+  ...props
+}) => {
   const layout = { brands, masters, salons }
+  console.log(JSON.stringify(serverProviderData.props.user.me))
 
   return (
     <CategoryPageLayout {...layout}>
@@ -47,9 +58,6 @@ export const getServerSideProps: GetServerSideProps<
   ISalonsPageProps
 > = async ctx => {
   const apolloClient = initializeApollo()
-  const cityData = (await fetchCity(ctx.query.city as string)) || {
-    citySlug: defaultValues.citySlug,
-  }
 
   // const salonData = []
   // const brands = null
@@ -66,7 +74,7 @@ export const getServerSideProps: GetServerSideProps<
   const data = await Promise.all([
     apolloClient.query({
       query: getSalonsThroughCity,
-      variables: { citySlug: cityData?.citySlug || defaultValues.citySlug },
+      variables: { citySlug: ctx.query.city },
     }),
     apolloClient.query({
       query: getBrands,
@@ -90,18 +98,32 @@ export const getServerSideProps: GetServerSideProps<
     }),
   ])
 
-  checkErr(data, ctx.res)
+  const serverProviderData = await serverProvider<ISalonsPageProps>({
+    data: {
+      pageData: data[0],
+      otherData: [data[1], data[2], data[3]],
+      totalCount: [data[1], data[2], data[3]],
+      pagination: [data[0]],
+    },
+    ctx,
+  })
+
+  const cityData = (await fetchCity(ctx.query.city as string, ctx)) || {
+    citySlug: defaultValues.citySlug,
+  }
 
   const salonData: ISalon[] = flattenStrapiResponse(data[0].data.salons) || []
   const pagination: IPagination | null =
     data[0].data.salons.meta.pagination || null
   const brands: IBrand[] = flattenStrapiResponse(data[1].data.brands)
   const masters: IMaster[] = flattenStrapiResponse(data[2].data.masters)
-  const salons: ISalon[] = flattenStrapiResponse(data[3]?.data.salons)
+  const salons: ISalon[] = flattenStrapiResponse(data[3]?.data.salons) // TODO: отделить главный контент от допа
 
+  // return dataaaaa
   return {
     notFound: !cityData?.cityName,
     props: {
+      serverProviderData,
       salonData: salonData.map(e => {
         const reviewsCount = e.reviews.length
         const { rating, ratingCount } = getRating(e.ratings)

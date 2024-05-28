@@ -3,12 +3,13 @@ import { NextRouter } from 'next/router'
 import { authConfig, defaultValues } from 'src/api/authConfig'
 import { ICity } from 'src/types'
 import { Nullable } from 'src/types/common'
-import { IMe } from 'src/types/me'
+import { IMe, IUser } from 'src/types/me'
 import { cyrToTranslit } from 'src/utils/translit'
 import { create } from 'zustand'
 
 export interface IInitialAuthData {
   me: IMe | null
+  user: IUser | null
   city: ICity
   cartItemTotal: number
   loading: boolean
@@ -17,6 +18,7 @@ export interface IInitialAuthData {
 interface IUseAuthStore {
   data: IInitialAuthData
   setMe: (me: IMe | null) => void
+  setUser: (user: IUser | null) => void
   setCity: (city: ICity | null) => void
   setLoading: (bool: boolean) => void
   logout: (router: NextRouter) => void
@@ -24,6 +26,7 @@ interface IUseAuthStore {
 
 const initialData = {
   me: null,
+  user: null,
   city: { citySlug: defaultValues.citySlug },
   cartItemTotal: 1,
   loading: false,
@@ -32,6 +35,7 @@ const initialData = {
 const useAuthStore = create<IUseAuthStore>((set, get) => ({
   data: initialData,
   setMe: me => set(state => ({ data: { ...state.data, me } })),
+  setUser: user => set(state => ({ data: { ...state.data, user } })),
   setCity: city =>
     set(state => ({
       data: {

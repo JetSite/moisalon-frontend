@@ -1,29 +1,35 @@
 import { useRouter } from 'next/router'
 import React, { FC, useEffect } from 'react'
 import { useMutation, useQuery } from '@apollo/client'
-import { IChildren } from 'src/types/common'
+import { IChildren, INextContext } from 'src/types/common'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
-import { getMe as ME } from './graphql/me/queries/getMe'
+import { ME } from './graphql/me/queries/getMe'
 import { authConfig, defaultValues } from './authConfig'
 import { getCookie, setCookie } from 'cookies-next'
-import { getUser as USER } from './graphql/me/queries/getUser'
+import { USER } from './graphql/me/queries/getUser'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
-import { IMeInfo, IMeThings } from 'src/types/me'
+import { IMeInfo, IUserThings } from 'src/types/me'
 import { getCities } from './graphql/city/getCities'
 import { IVacancy } from 'src/types/vacancies'
 import { IReview } from 'src/types/reviews'
 import { ICity } from 'src/types'
 import { fetchCity } from './utils/fetchCity'
 import { changeMe } from './graphql/me/mutations/changeMe'
+import { Nullable } from '../types/common'
+import { GetServerSidePropsContext, PreviewData } from 'next'
+import { ParsedUrlQuery } from 'querystring'
+import { IServerProps } from './server/types'
 
-const AuthProvider: FC<{ children: IChildren; cityData?: ICity }> = ({
+const AuthProvider: FC<{ children: IChildren; cityData?: IServerProps }> = ({
   children,
   cityData,
 }) => {
+  // console.log(cityData)
+
   const router = useRouter()
-  const { me, loading, city } = useAuthStore(getStoreData)
-  const { setMe, setLoading, setCity } = useAuthStore(getStoreEvent)
+  const { me, loading, user } = useAuthStore(getStoreData)
+  const { setMe, setLoading, setCity, setUser } = useAuthStore(getStoreEvent)
   const accessToken = getCookie(authConfig.tokenKeyName)
   const cityCookie = getCookie(authConfig.cityKeyName)
 
@@ -69,25 +75,28 @@ const AuthProvider: FC<{ children: IChildren; cityData?: ICity }> = ({
         email: prepareData.email,
         avatar: prepareData.avatar,
       }
-      const owner: IMeThings = {
+      const owner: IUserThings = {
         salons: prepareData.salons,
         masters: prepareData.masters,
         brand: prepareData.brands,
       }
 
-      const favorite: IMeThings = {
+      const favorite: IUserThings = {
         salons: prepareData.favorited_salons,
         masters: prepareData.favorited_masters,
         brand: prepareData.favorited_brands,
       }
       // console.log('usersPermissionsUser', data.usersPermissionsUser)
 
-      setMe({
+      setUser({
         info,
         owner,
         favorite,
         vacancies: prepareData.vacancies as IVacancy[],
         reviews: prepareData.reviews as IReview[],
+      })
+      setMe({
+        info,
       })
       setCity(prepareData.selected_city as ICity)
       setCookie(
@@ -120,7 +129,7 @@ const AuthProvider: FC<{ children: IChildren; cityData?: ICity }> = ({
       if (!me && accessToken) {
         getMe()
       }
-      if (me && !me.favorite) {
+      if (me && !user) {
         getUser({ id: me.info.id })
       }
     }

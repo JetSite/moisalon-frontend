@@ -25,11 +25,11 @@ import { IID } from 'src/types/common'
 import { CabinetReviews } from './CabinetReviews'
 
 const CabinetListReviews = () => {
-  const { me, loading: loading } = useAuthStore(getStoreData)
-  const salons = me?.owner?.salons
-  const master = me?.owner?.masters
-  const brands = me?.owner?.brand
-  const reviews = me?.reviews
+  const { user, loading: loading } = useAuthStore(getStoreData)
+  const salons = user?.owner?.salons
+  const masters = user?.owner?.masters
+  const brands = user?.owner?.brand
+  const reviews = user?.reviews
 
   const [id, setId] = useState<IID>('')
   const [type, setType] = useState<string | null>(null)
@@ -113,29 +113,31 @@ const CabinetListReviews = () => {
     <Wrapper>
       <TitlePage>Отзывы клиентов</TitlePage>
       <Subtitle>Нажмите на профиль для просмотра его отзывов</Subtitle>
-      {!master?.length && !salons?.length && !brands?.length ? (
+      {!masters?.length && !salons?.length && !brands?.length ? (
         <Subtitle>У Вас нет профиля</Subtitle>
       ) : null}
-      {master && master[0].id && !activeProfile ? (
-        <Item
-          onClick={() => {
-            setType('master')
-            setId(master[0].id)
-            setActiveProfile(master[0] as IMaster)
-          }}
-        >
-          <Container>
-            <Avatar
-              alt="avatar"
-              src={PHOTO_URL + master[0].masterPhoto.url || 'empty-photo.svg'}
-            />
-            <Content>
-              <Name>{master[0].masterName}</Name>
-              <Type>Профиль мастера</Type>
-            </Content>
-          </Container>
-        </Item>
-      ) : null}
+      {masters && masters.length && !activeProfile
+        ? masters.map(master => (
+            <Item
+              onClick={() => {
+                setType('master')
+                setId(master.id)
+                setActiveProfile(master)
+              }}
+            >
+              <Container>
+                <Avatar
+                  alt="avatar"
+                  src={PHOTO_URL + master.masterPhoto.url || 'empty-photo.svg'}
+                />
+                <Content>
+                  <Name>{master.masterName}</Name>
+                  <Type>Профиль мастера</Type>
+                </Content>
+              </Container>
+            </Item>
+          ))
+        : null}
       {salons?.length && !activeProfile
         ? salons.map(item => (
             <div key={item.id}>
@@ -216,13 +218,7 @@ const CabinetListReviews = () => {
               </Content>
             </Container>
           </Item>
-          <CabinetReviews
-            reviews={
-              reviews?.filter(item => item.master?.id === activeProfile.id) ||
-              []
-            }
-            loading={loading}
-          />
+          <CabinetReviews reviews={activeProfile.reviews} loading={loading} />
         </>
       ) : null}
       {type === 'salon' && activeProfile ? (

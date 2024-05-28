@@ -1,6 +1,6 @@
 import React, { Dispatch, FC, FormEventHandler, SetStateAction } from 'react'
 import { Dialog, DialogContent } from '@material-ui/core'
-import { Field } from 'react-final-form'
+import { Field, FormRenderProps } from 'react-final-form'
 import AutoFocusedForm from '../../../blocks/Form/AutoFocusedForm'
 import TextField from '../../../blocks/Form/TextField'
 import { FormField } from '../../../../styles/common'
@@ -98,17 +98,16 @@ const NewMessagePopup: FC<Props> = ({
           <Title>{title}</Title>
           <AutoFocusedForm
             initialValues={{
-              name: me?.info?.displayName || '',
+              name: me?.info?.username || '',
             }}
             onSubmit={onSubmit}
-            render={({ handleSubmit, form }: LazyType) => {
+            render={({
+              handleSubmit,
+              form,
+            }: FormRenderProps<Record<string, any>>) => {
               return (
                 <>
-                  <form
-                    onSubmit={
-                      handleSubmit as unknown as FormEventHandler<HTMLFormElement>
-                    }
-                  >
+                  <form onSubmit={handleSubmit}>
                     <FormField>
                       <FieldStyled
                         name="name"

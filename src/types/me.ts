@@ -1,7 +1,8 @@
 import { ICity, IPhoto } from '.'
 import { IBrand } from './brands'
-import { IID } from './common'
+import { IID, LazyType } from './common'
 import { IMaster } from './masters'
+import { IProduct } from './product'
 import { IReview } from './reviews'
 import { ISalon } from './salon'
 import { IVacancy } from './vacancies'
@@ -15,20 +16,38 @@ export interface IMeInfo {
   avatar: IPhoto | null
 }
 
-export interface IMeThings {
-  salons: ISalon[]
-  masters: IMaster[]
-  brand: IBrand[]
-  products?: any
+export interface IUserThings {
+  salons?: ISalon[]
+  masters?: IMaster[]
+  brand?: IBrand[]
+  products?: IProduct[]
   educations?: any
-  [K: string]: any
+}
+
+export interface IUserReviews extends IReview {
+  salons?: { id: IID }
+  master?: { id: IID }
+  brand?: { id: IID }
+  product?: { id: IID }
+}
+
+export interface IOwnersIds {
+  salons: { id: IID }[]
+  masters: { id: IID }[]
+  brand: { id: IID }[]
+  products?: { id: IID }[]
+  educations?: { id: IID }[]
 }
 
 export interface IMe {
   info: IMeInfo
-  owner?: IMeThings
-  favorite?: IMeThings
+  owner?: IOwnersIds
+}
+
+export interface IUser extends Omit<IMe, 'owner'> {
+  owner?: IUserThings
+  favorite?: IUserThings
   vacancies?: IVacancy[]
-  reviews?: IReview[]
-  [K: string]: any
+  reviews?: IUserReviews[]
+  orders?: LazyType[]
 }

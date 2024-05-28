@@ -20,24 +20,24 @@ import { cyrToTranslit } from '../../../../../utils/translit'
 import { PHOTO_URL } from '../../../../../api/variables'
 
 const CabinetProfiles = () => {
-  const { city, me } = useAuthStore(getStoreData)
-  const salons = me?.owner?.salons
-  const masters = me?.owner?.masters
-  const brands = me?.owner?.brand
+  const { city, user } = useAuthStore(getStoreData)
+  const salons = user?.owner?.salons
+  const masters = user?.owner?.masters
+  const brands = user?.owner?.brand
   const [openCreate, setOpenCreate] = useState(false)
 
-  if (!me || !me.owner) return null
+  if (!user || !user.owner) return null
 
   return (
     <>
       <Wrapper>
-        <Title>{me.info.username}</Title>
+        <Title>{user.info.username}</Title>
         <SubTitle>Пользователь </SubTitle>
         {masters?.length && masters[0].id ? (
           <Link
-            href={`/${
-              cyrToTranslit(masters[0].city.cityName) || city?.citySlug
-            }/master/${masters[0].id}`}
+            href={`/${masters[0].city.citySlug || city?.citySlug}/master/${
+              masters[0].id
+            }`}
           >
             <Item>
               <Container>
@@ -61,12 +61,12 @@ const CabinetProfiles = () => {
                 <Link
                   href={
                     item.salonWorkplacesCount
-                      ? `/${
-                          cyrToTranslit(item.cities.cityName) || city?.citySlug
-                        }/rent/${item.id}`
-                      : `/${
-                          cyrToTranslit(item.cities.cityName) || city?.citySlug
-                        }/salon/${item.id}`
+                      ? `/${item.cities.citySlug || city?.citySlug}/rent/${
+                          item.id
+                        }`
+                      : `/${item.cities.citySlug || city?.citySlug}/salon/${
+                          item.id
+                        }`
                   }
                 >
                   <Item>
@@ -95,9 +95,9 @@ const CabinetProfiles = () => {
           ? brands.map(item => (
               <div key={item.id}>
                 <Link
-                  href={`/${
-                    cyrToTranslit(item.city.cityName) || city?.citySlug
-                  }/brand/${item.id}`}
+                  href={`/${item.city.citySlug || city?.citySlug}/brand/${
+                    item.id
+                  }`}
                 >
                   <Item>
                     <Container>
@@ -122,11 +122,11 @@ const CabinetProfiles = () => {
         {!openCreate ? (
           <Button onClick={() => setOpenCreate(true)}>Добавить профиль</Button>
         ) : (
-          <CreateProfiles currentMe={me} />
+          <CreateProfiles user={user} />
         )}
       </Wrapper>
       <MobileWrapper>
-        <CreateProfiles currentMe={me} />
+        <CreateProfiles user={user} />
       </MobileWrapper>
     </>
   )

@@ -22,7 +22,7 @@ import CabinetBanner from '../../../blocks/Cabinet/components/CabinetBanner'
 import { PHOTO_URL } from '../../../../api/variables'
 import { useChat } from '../../../../chatContext'
 import { IRefetch } from 'src/api/types'
-import { IMe } from 'src/types/me'
+import { IUser } from 'src/types/me'
 import { IID } from 'src/types/common'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
@@ -37,12 +37,12 @@ export interface IMasterCabinetTab {
 
 interface Props {
   refetch: IRefetch
-  me: IMe
+  user: IUser
 }
 
 const MasterCabinet: FC = () => {
-  const { me } = useAuthStore(getStoreData)
-  const [photoId, setPhotoId] = useState<IID>(me?.info?.avatar?.id || '')
+  const { user } = useAuthStore(getStoreData)
+  const [photoId, setPhotoId] = useState<IID>(user?.info?.avatar?.id || '')
   const [noPhotoError, setNoPhotoError] = useState<boolean>(false)
   const [, setErrors] = useState<string[] | null>(null)
   const [, setErrorPopupOpen] = useState<boolean | null>(null)
@@ -66,10 +66,10 @@ const MasterCabinet: FC = () => {
       mutate({
         variables: {
           input: {
-            defaultCity: me?.info?.city.cityName,
-            displayName: me?.info?.username,
-            email: me?.info?.email,
-            phoneNumber: me?.info?.phone,
+            defaultCity: user?.info?.city.cityName,
+            displayName: user?.info?.username,
+            email: user?.info?.email,
+            phoneNumber: user?.info?.phone,
             avatar: id,
           },
         },
@@ -91,14 +91,14 @@ const MasterCabinet: FC = () => {
       <Header />
       <MainContainer>
         <ProfileCabinetHeaderMobile
-          me={me}
+          user={user}
           tabs={[
             { title: 'Мои данные', value: 'about', icon: '/icon-about.svg' },
             {
               title: 'Мои заказы',
               value: 'orders',
               icon: '/icon-orders.svg',
-              quantity: me?.orders?.length,
+              quantity: user?.orders?.length,
               disable: true,
             },
             {
@@ -168,9 +168,9 @@ const MasterCabinet: FC = () => {
             noPhotoError={noPhotoError}
             setNoPhotoError={setNoPhotoError}
             photo={
-              me?.info?.avatar
+              user?.info?.avatar
                 ? {
-                    url: `${PHOTO_URL}${me?.info?.avatar.url}`,
+                    url: `${PHOTO_URL}${user?.info?.avatar.url}`,
                   }
                 : { url: '/empty-photo.svg' }
             }
@@ -182,7 +182,7 @@ const MasterCabinet: FC = () => {
               auth
             />
           ) : activeTab === 'orders' ? (
-            <CabinetOrders me={me} />
+            <CabinetOrders me={user} />
           ) : activeTab === 'profiles' ? (
             <CabinetProfiles />
           ) : activeTab === 'chat' ? (
@@ -192,15 +192,15 @@ const MasterCabinet: FC = () => {
           ) : activeTab === 'favorits' ? (
             <CabinetFavorits />
           ) : activeTab === 'sales' ? (
-            <CabinetSales me={me} />
+            <CabinetSales me={user} />
           ) : activeTab === 'educations' ? (
-            <CabinetEducations me={me} />
+            <CabinetEducations me={user} />
           ) : activeTab === 'vacancies' ? (
             <CabinetVacancies />
           ) : activeTab === 'events' ? (
-            <CabinetEvents me={me} />
+            <CabinetEvents me={user} />
           ) : activeTab === 'priority' ? (
-            <CabinetPriority me={me} />
+            <CabinetPriority me={user} />
           ) : activeTab === 'banner' ? (
             <CabinetBanner />
           ) : null}

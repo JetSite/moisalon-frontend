@@ -26,10 +26,10 @@ import { IBrand } from 'src/types/brands'
 import { CabinetVacanciesList } from './components/CabinetVacanciesList'
 
 const CabinetVacancies = () => {
-  const { city, me, loading } = useAuthStore(getStoreData)
-  const salons = me?.owner?.salons
-  const brands = me?.owner?.brand
-  const vacancies = me?.vacancies
+  const { city, user, loading } = useAuthStore(getStoreData)
+  const salons = user?.owner?.salons
+  const brands = user?.owner?.brand
+  const vacancies = user?.vacancies
 
   const [id, setId] = useState<IID>('')
   const [type, setType] = useState<string | null>(null)

@@ -6,7 +6,7 @@ import { brandsFragment } from '../fragments/brands'
 import { vacanciesFragment } from '../fragments/vacancies'
 import { cityFragment } from '../../fragments/city'
 
-export const getUser = gql`
+export const USER = gql`
   query usersPermissionsUser($id: ID) {
     usersPermissionsUser(id: $id) {
       data {
