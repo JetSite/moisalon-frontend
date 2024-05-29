@@ -33,6 +33,7 @@ const WrapBig = styled.div`
   width: 785px;
   height: 275px;
   background: ${props => `url(${props.image}) no-repeat center`};
+  background-size: cover;
   border-radius: 5px;
   display: flex;
   justify-content: space-between;
@@ -53,6 +54,7 @@ const WrapBig = styled.div`
     padding-left: 12px;
     padding-top: 12px;
     padding-bottom: 12px;
+    background-position: left;
   }
 `
 
@@ -61,6 +63,7 @@ const WrapSmall = styled.div`
   height: 125px;
   color: #000;
   background: ${props => `url(${props.image}) no-repeat center`};
+  background-size: cover;
   display: flex;
   padding: 15px;
   padding-right: 25px;
@@ -73,7 +76,7 @@ const WrapSmall = styled.div`
   }
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
-    background-position: right;
+    background-position: left;
   }
 `
 
@@ -211,7 +214,7 @@ const Banners = ({
   const bannerSmall2 =
     bannersByHookSmall2?.attributes?.banners?.data[0]?.attributes
   const bannerSmall2Image = bannerSmall2?.bannerImage?.data?.attributes?.url
-    ? `${PHOTO_URL}${bannerSmall1?.bannerImage?.data?.attributes?.url}`
+    ? `${PHOTO_URL}${bannerSmall2?.bannerImage?.data?.attributes?.url}`
     : ''
 
   return (
@@ -219,31 +222,18 @@ const Banners = ({
       {bannersByHookWide?.attributes?.banners?.data?.length ? (
         <noindex>
           <WrapBig image={bannerWideImage}>
-            <Big href="#" rel="nofollow" target="_blank">
+            <Big
+              href={bannerWide?.linkUrl ? bannerWide.linkUrl : '#'}
+              rel="nofollow"
+              target="_blank"
+            >
               <LeftBig>
-                <div>
-                  <Title>{bannerWide?.bannerName}</Title>
-                  {/* {bannersByHookWide[0]?.subTitle ? (
-                    <SubTitle
-                      dangerouslySetInnerHTML={{
-                        __html: bannersByHookWide[0].subTitle,
-                      }}
-                    />
-                  ) : null} */}
-                </div>
-                {/* {bannersByHookWide[0].link ? (
-                  <Link
-                    href={bannersByHookWide[0].link}
-                    target="_blank"
-                    rel="nofollow"
-                  >
-                    {bannersByHookWide[0].titleLink}
-                  </Link>
-                ) : null} */}
+                {bannerWide?.title ? (
+                  <div>
+                    <Title>{bannerWide.title}</Title>
+                  </div>
+                ) : null}
               </LeftBig>
-              {/* <RightBig>
-            <Image alt="logoBig" src={bannersByHookWide[0]?.photo?.url} />
-          </RightBig> */}
             </Big>
           </WrapBig>
         </noindex>
@@ -253,25 +243,16 @@ const Banners = ({
           {bannerSmall1 ? (
             <noindex>
               <WrapSmall image={bannerSmall1Image}>
-                <Small href="#" target="_blank" rel="nofollow">
+                <Small
+                  href={bannerSmall1?.linkUrl ? bannerSmall1.linkUrl : '#'}
+                  target="_blank"
+                  rel="nofollow"
+                >
                   <LeftSmall>
-                    <TitleSmall>{bannerSmall1?.bannerName}</TitleSmall>
-                    {/* {bannersByHookSmall1[0].link ? (
-                      <Link
-                        href={bannersByHookSmall1[0].link}
-                        target="_blank"
-                        rel="nofollow"
-                      >
-                        {bannersByHookSmall1[0].titleLink}
-                      </Link>
-                    ) : null} */}
+                    {bannerSmall1?.title ? (
+                      <TitleSmall>{bannerSmall1.title}</TitleSmall>
+                    ) : null}
                   </LeftSmall>
-                  {/* <RightSmall>
-                <Image
-                  alt="logoSmall"
-                  src={bannersByHookSmall1[0]?.photo?.url}
-                />
-              </RightSmall> */}
                 </Small>
               </WrapSmall>
             </noindex>
@@ -279,18 +260,15 @@ const Banners = ({
           {bannerSmall2 ? (
             <noindex>
               <WrapSmall image={bannerSmall2Image}>
-                <Small href="#" target="_blank" rel="nofollow">
+                <Small
+                  href={bannerSmall2?.linkUrl ? bannerSmall2.linkUrl : '#'}
+                  target="_blank"
+                  rel="nofollow"
+                >
                   <LeftSmall>
-                    <TitleSmall>{bannerSmall2?.bannerName}</TitleSmall>
-                    {/* {bannersByHookSmall2[0].link ? (
-                      <Link
-                        href={bannersByHookSmall2[0].link}
-                        target="_blank"
-                        rel="nofollow"
-                      >
-                        {bannersByHookSmall2[0].titleLink}
-                      </Link>
-                    ) : null} */}
+                    {bannerSmall2?.title ? (
+                      <TitleSmall>{bannerSmall2.title}</TitleSmall>
+                    ) : null}
                   </LeftSmall>
                 </Small>
               </WrapSmall>

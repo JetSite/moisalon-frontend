@@ -27,10 +27,16 @@ const Ribbon = ({ title, beautyCategories, beautyAllContent }) => {
   const [searchQuery, setSearchQuery] = useState('')
 
   useEffect(() => {
-    if (beautyCategories?.length > 0) {
-      setCategories([{ id: '', feedCategoryName: 'Все' }, ...beautyCategories])
+    if (beautyCategories?.data?.length > 0) {
+      setCategories([
+        { id: '', feedCategoryName: 'Все' },
+        ...beautyCategories.data.map(category => ({
+          id: category.id,
+          feedCategoryName: category.attributes.feedCategoryName,
+        })),
+      ])
     }
-    setAllContent(beautyAllContent)
+    setAllContent(beautyAllContent.data)
   }, [])
 
   useEffect(() => {
@@ -38,10 +44,10 @@ const Ribbon = ({ title, beautyCategories, beautyAllContent }) => {
       setCategoryContent(null)
       return
     }
-    const categoryContentData = beautyCategories.find(
+    const categoryContentData = beautyCategories.data.find(
       category => category.id === activeTab,
     )
-    setCategoryContent(categoryContentData.feeds)
+    setCategoryContent(categoryContentData.attributes.feeds.data)
   }, [activeTab])
 
   useEffect(() => {

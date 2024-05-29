@@ -13,6 +13,15 @@ export const getFeeds = gql`
           beautyFeedCover {
             ${imageInfo}
           }
+          shortDescription
+          feed_category {
+            data {
+              id
+              attributes {
+                feedCategoryName
+              }
+            }
+          }
           createdAt
           updatedAt
           publishedAt

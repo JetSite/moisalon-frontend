@@ -9,6 +9,7 @@ export const getFeedCategories = gql`
         id
         attributes {
             feedCategoryName
+            title
             feeds {
               data {
                 id
@@ -17,6 +18,15 @@ export const getFeedCategories = gql`
                   beautyFeedContent
                   beautyFeedCover {
                     ${imageInfo}
+                  }
+                  shortDescription
+                  feed_category {
+                    data {
+                      id
+                      attributes {
+                        feedCategoryName
+                      }
+                    }
                   }
                 }
               }

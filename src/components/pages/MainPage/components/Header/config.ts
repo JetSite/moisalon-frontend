@@ -57,11 +57,11 @@ export default function getMainPageHeaderLinks(
     { title: 'Мероприятия', link: '/events', target: '_self' },
     { title: 'Вакансии', link: '/vacancies', target: '_self' },
     { title: 'Новости', link: '/advices', target: '_self' },
-    {
-      title: 'Тренды',
-      link: '/trends',
-      target: '_self',
-    },
+    // {
+    //   title: 'Тренды',
+    //   link: '/trends',
+    //   target: '_self',
+    // },
   ]
 
   const addCatalogLinks: IMainPageHeaderLinks[] = [

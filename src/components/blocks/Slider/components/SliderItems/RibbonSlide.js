@@ -10,24 +10,27 @@ import {
 } from './styles'
 
 const RibbonSlide = ({ item }) => {
-  const imageUrl = item?.beautyFeedCover?.url
-    ? `${PHOTO_URL}${item.beautyFeedCover.url}`
+  const imageUrl = item?.attributes?.beautyFeedCover?.data?.attributes?.url
+    ? `${PHOTO_URL}${item?.attributes.beautyFeedCover.data.attributes.url}`
     : ''
 
   return (
     <Link
-      href="#"
-      // href={{
-      //   pathname: '/advices',
-      //   query: { category: item.categoryId, item: item.id },
-      // }}
+      href={{
+        pathname: '/advices',
+        query: {
+          category: item.attributes.feed_category.data[0].id,
+          item: item.id,
+        },
+      }}
+      as="/advices"
     >
       <SliderItem>
         <SliderContent>
           <SliderImageWrap imageUrl={imageUrl}>
             {/* <SliderImage alt={item.title} src={item.image} /> */}
           </SliderImageWrap>
-          <SliderText>{item?.beautyFeedTitle}</SliderText>
+          <SliderText>{item?.attributes?.beautyFeedTitle}</SliderText>
         </SliderContent>
       </SliderItem>
     </Link>
