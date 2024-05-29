@@ -1,5 +1,5 @@
-import CategoryAdvicesList from "../CategoryAdvicesList";
-import { NavItem, Text, Icon } from "../../styles";
+import CategoryAdvicesList from '../CategoryAdvicesList'
+import { NavItem, Text, Icon } from '../../styles'
 
 const NavigationItem = ({
   category,
@@ -11,14 +11,14 @@ const NavigationItem = ({
   setAdviceClicked,
   loading,
 }) => {
-
   const itemClickHandler = () => {
-    setAdviceClicked("");
-    setCategoryClicked(category.id !== categoryClicked ? category.id : "");
-  };
+    setAdviceClicked('')
+    setCategoryClicked(category.id !== categoryClicked ? category.id : '')
+  }
 
   const editedTitle =
-    category.title.charAt(0).toUpperCase() + category.title.slice(1);
+    category.attributes.title.charAt(0).toUpperCase() +
+    category.attributes.title.slice(1)
 
   return (
     <>
@@ -34,7 +34,7 @@ const NavigationItem = ({
         />
       ) : null}
     </>
-  );
-};
+  )
+}
 
-export default NavigationItem;
+export default NavigationItem

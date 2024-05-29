@@ -162,16 +162,11 @@ export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
     }
   }
 
-  const normalisedBeautyCategories = flattenStrapiResponse(
-    data[0]?.data?.feedCategories,
-  )
-  const normalisedBeautyAllContent = flattenStrapiResponse(data[1]?.data?.feeds)
-
   return addApolloState(apolloClient, {
     props: {
       data,
-      beautyCategories: normalisedBeautyCategories,
-      beautyAllContent: normalisedBeautyAllContent,
+      beautyCategories: data[0]?.data?.feedCategories,
+      beautyAllContent: data[1]?.data?.feeds,
       bannerHooks: data[2]?.data?.bannerHooks,
       totalCount: {
         brands: getTotalCount(data[1].data.brands),

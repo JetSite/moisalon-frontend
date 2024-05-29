@@ -1,5 +1,5 @@
-import NavAdvicesListItem from "./NavAdvicesListItem";
-import { NavAdvicesList } from "../../styles";
+import NavAdvicesListItem from './NavAdvicesListItem'
+import { NavAdvicesList } from '../../styles'
 
 const CategoryAdvicesList = ({
   categoryAdvices,
@@ -8,7 +8,7 @@ const CategoryAdvicesList = ({
 }) => {
   return (
     <NavAdvicesList>
-      {categoryAdvices?.map((item) => (
+      {categoryAdvices?.map(item => (
         <NavAdvicesListItem
           key={item.id}
           item={item}
@@ -17,7 +17,7 @@ const CategoryAdvicesList = ({
         />
       ))}
     </NavAdvicesList>
-  );
-};
+  )
+}
 
-export default CategoryAdvicesList;
+export default CategoryAdvicesList

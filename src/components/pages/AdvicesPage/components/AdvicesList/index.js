@@ -1,5 +1,5 @@
-import AdviceItem from "./AdviceItem";
-import { AdvList } from "../../styles";
+import AdviceItem from './AdviceItem'
+import { AdvList } from '../../styles'
 
 const AdvicesList = ({
   items,
@@ -10,7 +10,7 @@ const AdvicesList = ({
   return (
     <>
       <AdvList>
-        {items?.map((item) => (
+        {items?.map(item => (
           <AdviceItem
             item={item}
             key={item.id}
@@ -21,7 +21,7 @@ const AdvicesList = ({
         ))}
       </AdvList>
     </>
-  );
-};
+  )
+}
 
-export default AdvicesList;
+export default AdvicesList
