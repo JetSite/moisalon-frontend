@@ -1,5 +1,14 @@
-import { useRef, useState, useCallback, useEffect } from 'react'
-import Header from '../../../pages/MainPage/components/Header'
+import {
+  useRef,
+  useState,
+  useCallback,
+  useEffect,
+  RefAttributes,
+  RefObject,
+  FC,
+  LegacyRef,
+} from 'react'
+import Header from '../../MainPage/components/Header'
 import { MainContainer } from '../../../../styles/common'
 import { Wrapper } from './styled'
 import Controls from '../../../blocks/Form/Controls'
@@ -7,45 +16,44 @@ import RegistrationForm from './components/RegistrationForm'
 import scrollIntoView from 'scroll-into-view'
 import BackArrow from '../../../ui/BackArrow'
 import { PHOTO_URL } from '../../../../api/variables'
+import { getTabs } from './config'
+import { ISalon, ISalonPage } from 'src/types/salon'
+import { IID, ISetState } from 'src/types/common'
+import { getDadataAddress } from 'src/api/dadata/getAddress'
 
-const CreateSalon = ({ onAdd, salon, setMe, lessor = false }) => {
-  const allTabs = useRef()
-  const ref1 = useRef()
-  const ref2 = useRef()
-  const ref3 = useRef()
-  const ref4 = useRef()
-  const ref5 = useRef()
-  const ref6 = useRef()
+export type IHandleClickNextTabInForm = (number: number) => void
 
-  const [tabs] = useState([
-    { id: '1', value: 'Информация о салоне', anchor: 'about' },
-    { id: '2', value: 'Вид деятельности', anchor: 'vid' },
-    { id: '3', value: 'Сервис для посетителей', anchor: 'services' },
-    { id: '4', value: 'График работы', anchor: 'schedule' },
-    { id: '5', value: 'Маршрут и администратор', anchor: 'administartor' },
-    { id: '6', value: 'Дополнительная информация', anchor: 'socials' },
-    salon?.lessor
-      ? {
-          id: '7',
-          value: 'Рабочие места',
-          anchor: 'cabinet',
-          href: '/rentSalonSeat',
-          link: salon?.id,
-        }
-      : {},
-  ])
+interface Props {
+  lessor?: boolean
+  salon: ISalon
+  onAdd: () => void
+}
 
-  const [refActive, setRefActive] = useState(false)
-  const [ref1Visible, setRef1Visible] = useState(true)
-  const [ref2Visible, setRef2Visible] = useState(false)
-  const [ref3Visible, setRef3Visible] = useState(false)
-  const [ref4Visible, setRef4Visible] = useState(false)
-  const [ref5Visible, setRef5Visible] = useState(false)
-  const [ref6Visible, setRef6Visible] = useState(false)
-  const [photoSalonId, setPhotoId] = useState(null)
-  const [noPhotoError, setNoPhotoError] = useState(false)
+const CreateSalon: FC<Props> = ({ onAdd, salon, lessor = false }) => {
+  const allTabs = useRef<HTMLFormElement>(null)
+  const ref1 = useRef<HTMLDivElement>(null)
+  const ref2 = useRef<HTMLDivElement>(null)
+  const ref3 = useRef<HTMLDivElement>(null)
+  const ref4 = useRef<HTMLDivElement>(null)
+  const ref5 = useRef<HTMLDivElement>(null)
+  const ref6 = useRef<HTMLDivElement>(null)
 
-  const handleElementPosition = (element, func, top) => {
+  const [refActive, setRefActive] = useState<boolean | string>(false)
+  const [ref1Visible, setRef1Visible] = useState<boolean | string>(true)
+  const [ref2Visible, setRef2Visible] = useState<boolean | string>(false)
+  const [ref3Visible, setRef3Visible] = useState<boolean | string>(false)
+  const [ref4Visible, setRef4Visible] = useState<boolean | string>(false)
+  const [ref5Visible, setRef5Visible] = useState<boolean | string>(false)
+  const [ref6Visible, setRef6Visible] = useState<boolean | string>(false)
+  const [photoSalonId, setPhotoId] = useState<null | IID>(null)
+  const [noPhotoError, setNoPhotoError] = useState<boolean>(false)
+
+  const handleElementPosition = (
+    element: HTMLDivElement | null,
+    func: ISetState<string | boolean>,
+    top: number,
+  ) => {
+    if (!element) return
     const posTop = element?.getBoundingClientRect()?.top
     if (
       posTop > 0
@@ -129,8 +137,9 @@ const CreateSalon = ({ onAdd, salon, setMe, lessor = false }) => {
     ref6Visible,
   ])
 
-  const handleClickNextTab = number => {
-    const newTab = tabs.find(item => +item.id === number + 1)
+  const handleClickNextTab: IHandleClickNextTabInForm = number => {
+    const tabs = getTabs(salon)
+    const newTab = tabs.find(item => +item?.id === number + 1) || tabs[0]
     const element = document.getElementById(newTab.anchor.replace('#', ''))
     if (element) {
       scrollIntoView(element, {
@@ -148,13 +157,11 @@ const CreateSalon = ({ onAdd, salon, setMe, lessor = false }) => {
       <Header />
       <MainContainer>
         <BackArrow
-          link={
-            salon?.lessor ? `rentSalonSeat?id=${salon?.id}` : 'masterCabinet'
-          }
+          link={lessor ? `rentSalonSeat?id=${salon?.id}` : 'masterCabinet'}
         />
         <Wrapper>
           <Controls
-            tabs={tabs}
+            tabs={getTabs(salon)}
             photoType={'salonPhoto'}
             refActive={refActive}
             photo={
@@ -162,8 +169,8 @@ const CreateSalon = ({ onAdd, salon, setMe, lessor = false }) => {
                 ? {
                     url: `${PHOTO_URL}${photoSalonId}/original`,
                   }
-                : salon?.logo?.url
-                ? { url: salon?.logo?.url }
+                : salon?.salonLogo?.url
+                ? { url: salon?.salonLogo?.url }
                 : null
             }
             id={null}
@@ -182,7 +189,6 @@ const CreateSalon = ({ onAdd, salon, setMe, lessor = false }) => {
             ref4={ref4}
             ref5={ref5}
             ref6={ref6}
-            setMe={setMe}
             photoSalonId={photoSalonId}
             salon={salon}
             setNoPhotoError={setNoPhotoError}

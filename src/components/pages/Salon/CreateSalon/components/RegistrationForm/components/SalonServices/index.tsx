@@ -3,6 +3,9 @@ import DictionaryGroupsField from '../../../../../../../blocks/Form/DictionaryGr
 import styled from 'styled-components'
 import { MobileHidden } from '../../../../../../../../styles/common'
 import { laptopBreakpoint } from '../../../../../../../../styles/variables'
+import { FC, RefObject } from 'react'
+import { IServiceInForm } from 'src/types/services'
+import { IHandleClickNextTabInForm } from '../../../..'
 
 const Wrapper = styled.div`
   margin-top: 91px;
@@ -27,13 +30,19 @@ const Title = styled.div`
   }
 `
 
-const SalonServices = ({
-  serviceCatalog,
+interface Props {
+  services: IServiceInForm[]
+  ref3: RefObject<HTMLDivElement>
+  number: number
+  handleClickNextTab: IHandleClickNextTabInForm
+}
+
+const SalonServices: FC<Props> = ({
+  services,
   ref3,
   handleClickNextTab,
   number,
 }) => {
-  const { groups: services = [] } = serviceCatalog
   return (
     <Wrapper ref={ref3} id="services">
       <Title>Сервис для посетителей</Title>

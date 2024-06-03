@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { FC, useState } from 'react'
 import styled from 'styled-components'
 import { FieldArray } from 'react-final-form-arrays'
 import DictionaryItem from './DictionaryItem'
@@ -7,8 +7,10 @@ import Group from '../Group'
 import { pluralize } from '../../../../utils/pluralize'
 import { FormHelperText, Box, useMediaQuery, useTheme } from '@material-ui/core'
 import { laptopBreakpoint } from '../../../../styles/variables'
+import { ILengthValidate } from 'src/utils/validations'
+import { IActivitiesInForm } from 'src/components/pages/Salon/CreateSalon/components/RegistrationForm/components/SalonActivities'
 
-const AllChecked = styled.input`
+const AllChecked = styled.input<{ check?: boolean }>`
   margin: 5px;
   background: ${props => (!props.check ? '#fff' : '#f03')};
   border: ${props => (!props.check ? '1px solid #000000' : '1px solid #f03')};
@@ -44,7 +46,26 @@ const ShowMore = styled.div`
   }
 `
 
-const DictionaryField = props => {
+interface Props {
+  title?: string
+  description: string
+  name: string
+  groups: IActivitiesInForm[]
+  fullWidth?: boolean
+  withButton?: boolean
+  validate?: ILengthValidate
+  defaultSpecialization?: boolean
+  mbDesc?: number
+  mbWrapper?: number
+  onlyOneChoose?: boolean
+}
+
+export interface IActivitiesItemInForm extends IActivitiesInForm {
+  checked: boolean
+  index: number
+}
+
+const DictionaryField: FC<Props> = props => {
   const {
     title,
     description,
@@ -52,7 +73,7 @@ const DictionaryField = props => {
     groups = [],
     fullWidth = true,
     withButton = false,
-    validate = false,
+    validate,
     defaultSpecialization = false,
     mbDesc = 75,
     mbWrapper = 54,
@@ -61,7 +82,7 @@ const DictionaryField = props => {
   const [isOpenMore, setIsOpenMore] = useState(false)
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('xs'))
-  const items = groups.map((group, index) => ({
+  const items: IActivitiesItemInForm[] = groups.map((group, index) => ({
     ...group,
     checked: false,
     index,
@@ -81,7 +102,7 @@ const DictionaryField = props => {
           const { fields, meta } = arrayField
           const { value = [] } = fields
 
-          const onChangeDefault = (item, i) => {
+          const onChangeDefault = (item: IActivitiesInForm, i: number) => {
             if (fields.value[0] !== item) {
               fields.swap(0, i)
             }
@@ -117,6 +138,7 @@ const DictionaryField = props => {
                 index,
                 name: index === 0 ? name : undefined,
               }
+
               return (
                 <DictionaryItem
                   {...itemProps}
@@ -150,7 +172,7 @@ const DictionaryField = props => {
           const checkAllHandler = () => {
             if (isAllChecked) {
               return items.forEach((item, i, arr) => {
-                fields.pop(item.id)
+                fields.pop()
               })
             } else {
               return items

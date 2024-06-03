@@ -1,25 +1,46 @@
 import { gql } from '@apollo/client'
-import { reviewsFragment } from '../../fragments/reviews'
-import { metaInfo } from '../../common/metaInfo'
-import { ratingsFragment } from '../../fragments/ratings'
+import { cityFragment } from '../../fragments/city'
+import { phonesFragment } from '../../fragments/phones'
+import { socialNetworksFragment } from '../../fragments/socialNetworks'
+import { imageInfo } from '../../common/imageInfo'
+import { masterFragment } from '../../me/fragments/master'
 import {
   salonAdministratorsFragment,
   salonServicesFragment,
 } from '../fragments'
 import { brandsFragment } from '../../fragments/brands'
-import { masterFragment } from '../../me/fragments/master'
-import { socialNetworksFragment } from '../../fragments/socialNetworks'
-import { imageInfo } from '../../common/imageInfo'
-import { phonesFragment } from '../../fragments/phones'
-import { cityFragment } from '../../fragments/city'
+import salonServicesMFragment from '../fragments/salonServicesMFragment'
+import { ratingsFragment } from '../../fragments/ratings'
+import { reviewsFragment } from '../../fragments/reviews'
+import { vacanciesFragment } from '../../me/fragments/vacancies'
 
-export const GET_RENT_SALONS = gql`
-  query salons($citySlug: String!,$itemsCount: Int!, $id: ID) {
-    salons(filters:{cities:{citySlug:{eq:$citySlug }}, and: [{salonWorkplacesCount: {gt: 0}}, {id: {ne: $id}}]}, pagination: { page: 1, pageSize: $itemsCount }) {
+export const SALON_USER_ID = gql`
+  query Salons($id: ID!) {
+    salons(filters: { user: { id: { eq: $id } } }) {
       data {
         id
         attributes {
             salonName
+            latitude
+            longitude
+            locationDirections
+            cities {
+              ${cityFragment}
+            }
+            user {
+              data {
+                id
+              }
+            }
+            activities {
+                data {
+                  id
+                  attributes {
+                    activityName
+                  }
+                }
+              }
+              
             salonID
             salonAddress
             salonIsPublished
@@ -29,6 +50,10 @@ export const GET_RENT_SALONS = gql`
             salonPhones {
               ${phonesFragment}
             }
+            socialNetworks {
+              ${socialNetworksFragment}
+            }
+
             salonOwnerConfirmed
             salonOnlineBookingUrl
             workingHours {
@@ -41,6 +66,7 @@ export const GET_RENT_SALONS = gql`
                 id
                 attributes {
                   title
+                  
                 }
               }
             }
@@ -68,9 +94,6 @@ export const GET_RENT_SALONS = gql`
             salonPhotos {
               ${imageInfo}
             }
-            socialNetworks {
-              ${socialNetworksFragment}
-            }
             masters {
               ${masterFragment}
             }
@@ -83,18 +106,20 @@ export const GET_RENT_SALONS = gql`
             services {
             ${salonServicesFragment}
             }
+            servicesM {
+              ${salonServicesMFragment}
+            }
             ratings {
               ${ratingsFragment}
             }
             reviews {
               ${reviewsFragment}
             }
-            cities {
-              ${cityFragment}
+            vacancies {
+              ${vacanciesFragment}
             }
-          }
         }
-      ${metaInfo}
+      }
     }
   }
 `

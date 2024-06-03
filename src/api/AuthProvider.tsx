@@ -4,7 +4,7 @@ import { useMutation, useQuery } from '@apollo/client'
 import { IChildren } from 'src/types/common'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
-import { getMe as ME } from './graphql/me/queries/getMe'
+import { ME } from './graphql/me/queries/getMe'
 import { authConfig, defaultValues } from './authConfig'
 import { getCookie, setCookie } from 'cookies-next'
 import { getUser as USER } from './graphql/me/queries/getUser'
@@ -51,6 +51,8 @@ const AuthProvider: FC<{ children: IChildren; cityData?: ICity }> = ({
   const { refetch: getMe, loading: meLoading } = useQuery(ME, getMeCB)
   const { refetch: getUser, loading: userLoading } = useQuery(USER, {
     onCompleted: data => {
+      console.log(data)
+
       const prepareData = flattenStrapiResponse(data.usersPermissionsUser)
 
       if (!prepareData.selected_city) {

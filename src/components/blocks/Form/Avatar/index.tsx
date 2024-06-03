@@ -124,7 +124,7 @@ interface Props {
   onAdd: (id: IID) => void
   setPhotoId: (id: IID) => void
   photoType: string
-  photo: { url: string }
+  photo: { url: string } | null
   noSetPhoto?: boolean
   noPhotoError: boolean
   setNoPhotoError: ISetState<boolean>

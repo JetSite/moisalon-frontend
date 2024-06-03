@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, FC } from 'react'
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../styles/variables'
+import { FieldArrayRenderProps } from 'react-final-form-arrays'
+import { IServiceInForm, IServiceInFormItem } from 'src/types/services'
+import { IDictionaryGroupFormProps } from './DictionaryGroup'
 
 const CheckboxWrapper = styled.div`
   display: inline-flex;
@@ -14,7 +17,7 @@ const CheckboxWrapper = styled.div`
   }
 `
 
-const Checkbox = styled.div`
+const Checkbox = styled.input<{ checked?: boolean }>`
   position: absolute;
   z-index: -1;
   opacity: 0;
@@ -51,10 +54,20 @@ export const Label = styled.p`
   }
 `
 
-const DictionaryItem = ({ push, remove, value = [], name, ...item }) => {
-  const { checked, id, title: label } = item
+interface Props extends IDictionaryGroupFormProps, IServiceInFormItem {
+  checked: boolean
+}
 
-  const [check, setCheck] = useState(checked)
+const DictionaryItem: FC<Props> = ({
+  push,
+  remove,
+  value = [],
+  name,
+  checked,
+  id,
+  title,
+}) => {
+  const [check, setCheck] = useState<boolean>(checked)
 
   useEffect(() => {
     if (!check) {
@@ -74,7 +87,7 @@ const DictionaryItem = ({ push, remove, value = [], name, ...item }) => {
   return (
     <CheckboxWrapper onClick={clickHandler}>
       <Checkbox name={name} type="checkbox" checked={check} />
-      <Label>{label}</Label>
+      <Label>{title}</Label>
     </CheckboxWrapper>
   )
 }

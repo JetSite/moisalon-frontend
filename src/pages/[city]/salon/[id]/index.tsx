@@ -23,7 +23,6 @@ import AddBrands from '../../../../components/pages/Salon/AddBrands'
 import { NoItemsText } from '../../../../styles/common'
 import { GetServerSideProps } from 'next'
 import { getCities } from 'src/api/graphql/city/getCities'
-import { getSalonId } from 'src/api/graphql/salon/queries/getSalonId'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { ISalon, ISalonPage } from 'src/types/salon'
 import { IID, Nullable } from 'src/types/common'
@@ -86,7 +85,7 @@ const Salon: FC<Props> = ({ salonData, othersSalons, cityData }) => {
 
   const handleRemoveBrand = (id: IID) => {}
 
-  console.log(salon)
+  console.log(salonData)
 
   return (
     <MainLayout>

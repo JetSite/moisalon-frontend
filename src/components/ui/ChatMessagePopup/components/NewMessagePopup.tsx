@@ -98,10 +98,10 @@ const NewMessagePopup: FC<Props> = ({
           <Title>{title}</Title>
           <AutoFocusedForm
             initialValues={{
-              name: me?.info?.displayName || '',
+              name: me?.info?.username || '',
             }}
             onSubmit={onSubmit}
-            render={({ handleSubmit, form }: LazyType) => {
+            render={({ handleSubmit, form }) => {
               return (
                 <>
                   <form

@@ -1,4 +1,12 @@
-import { useState, useMemo } from 'react'
+import {
+  useState,
+  useMemo,
+  FC,
+  RefObject,
+  RefAttributes,
+  LegacyRef,
+  MutableRefObject,
+} from 'react'
 import { useRouter } from 'next/router'
 import { Wrapper, Title } from './styled'
 import { MobileVisible, MobileHidden } from '../../../../../../styles/common'
@@ -17,13 +25,31 @@ import { createSalonMutation } from '../../../../../../_graphql-legacy/salon/cre
 import { updateSalonMutation } from '../../../../../../_graphql-legacy/salon/updateSalonMutation'
 import { updateSalonIdentityMutation } from '../../../../../../_graphql-legacy/salon/updateSalonIdentityMutation'
 import { updateSalonLogoMutation } from '../../../../../../_graphql-legacy/salon/updateSalonLogoMutation'
-import { CatalogsContext } from '../../'
 import { useQuery } from '@apollo/client'
 import { currentUserSalonsAndMasterQuery } from '../../../../../../_graphql-legacy/master/currentUserSalonsAndMasterQuery'
 import useBaseStore from 'src/store/baseStore'
 import { getStoreData } from 'src/store/utils'
+import { ISalon, ISalonPage } from 'src/types/salon'
+import { IID, ISetState } from 'src/types/common'
+import { IServiceInForm } from 'src/types/services'
+import { IHandleClickNextTabInForm } from '../..'
 
-const RegistrationForm = ({
+interface Props {
+  allTabs: RefObject<HTMLFormElement>
+  ref1: RefObject<HTMLDivElement>
+  ref2: RefObject<HTMLDivElement>
+  ref3: RefObject<HTMLDivElement>
+  ref4: RefObject<HTMLDivElement>
+  ref5: RefObject<HTMLDivElement>
+  ref6: RefObject<HTMLDivElement>
+  lessor: boolean
+  handleClickNextTab: IHandleClickNextTabInForm
+  salon: ISalon
+  setNoPhotoError: ISetState<boolean>
+  photoSalonId: IID | null
+}
+
+const RegistrationForm: FC<Props> = ({
   allTabs,
   ref1,
   ref2,
@@ -35,14 +61,13 @@ const RegistrationForm = ({
   photoSalonId,
   salon,
   setNoPhotoError,
-  setMe,
   lessor,
 }) => {
   const router = useRouter()
-  const [clickAddress, setClickAddress] = useState(true)
+  const [clickAddress, setClickAddress] = useState<boolean>(true)
   const [errors, setErrors] = useState(null)
   const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
-  const { catalogs } = useBaseStore(getStoreData)
+  const { services, activities } = useBaseStore(getStoreData)
 
   const { refetch } = useQuery(currentUserSalonsAndMasterQuery, {
     skip: true,
@@ -57,14 +82,34 @@ const RegistrationForm = ({
     },
   })
 
-  const salonServicesCatalog = catalogOrDefault(catalogs?.salonServicesCatalog)
-  const salonActivitiesCatalog = catalogOrDefault(
-    catalogs?.salonActivitiesCatalog,
-  )
+  const salonServicesCatalog: IServiceInForm[] = services?.length
+    ? services?.map(
+        ({ id, serviceCategoryName, services: insideServices }) => ({
+          id,
+          description: serviceCategoryName,
+          items: insideServices.map(({ id, serviceName }) => ({
+            groupName: serviceName,
+            title: serviceName,
+            id,
+          })),
+        }),
+      )
+    : []
+
+  console.log('services')
+
+  const salonActivitiesCatalog = activities
+    ? activities.map(({ activityName, id }) => ({
+        id,
+        name: id,
+        title: activityName,
+      }))
+    : []
 
   const salonWithInitialArrays = useMemo(() => {
     return {
-      phones: [
+      ...salon,
+      salonPhones: [
         {
           haveTelegram: false,
           haveViber: false,
@@ -92,8 +137,7 @@ const RegistrationForm = ({
           endMinute: 59,
         },
       ],
-      ...salon,
-      address: salon?.address?.full,
+      address: salon?.salonAddress,
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -152,89 +196,91 @@ const RegistrationForm = ({
   })
 
   const onSubmit = values => {
-    if (!clickAddress || !values.address) {
-      setErrors(['Выберите адрес салона из выпадающего списка'])
-      setErrorPopupOpen(true)
-      return
-    }
-    if (!salon && !photoSalonId) {
-      setNoPhotoError(true)
-      setErrors(['Необходимо добавить логотип салона'])
-      setErrorPopupOpen(true)
-      return
-    }
-    if (!salon && !values.photos) {
-      setErrors(['Необходимо добавить фото салона'])
-      setErrorPopupOpen(true)
-      return
-    }
+    console.log(values)
 
-    if (!salon) {
-      const { photos = [], contactPersonPhone = {} } = values
-      const personPhone = {
-        haveTelegram: false,
-        haveViber: false,
-        haveWhatsApp: false,
-        phoneNumber: '',
-      }
+    //   if (!clickAddress || !values.address) {
+    //     setErrors(['Выберите адрес салона из выпадающего списка'])
+    //     setErrorPopupOpen(true)
+    //     return
+    //   }
+    //   if (!salon && !photoSalonId) {
+    //     setNoPhotoError(true)
+    //     setErrors(['Необходимо добавить логотип салона'])
+    //     setErrorPopupOpen(true)
+    //     return
+    //   }
+    //   if (!salon && !values.photos) {
+    //     setErrors(['Необходимо добавить фото салона'])
+    //     setErrorPopupOpen(true)
+    //     return
+    //   }
 
-      createSalon({
-        variables: {
-          input: {
-            ...values,
-            contactPersonPhone: { ...personPhone, ...contactPersonPhone },
-            isNotRent: false,
-            photoIds: photos.map(photo => photo.id),
-            logoId: photoSalonId,
-            lessor: lessor ? true : false,
-          },
-        },
-      })
-    }
+    //   if (!salon) {
+    //     const { photos = [], contactPersonPhone = {} } = values
+    //     const personPhone = {
+    //       haveTelegram: false,
+    //       haveViber: false,
+    //       haveWhatsApp: false,
+    //       phoneNumber: '',
+    //     }
 
-    if (salon) {
-      const { photos = [], contactPersonPhone = {} } = values
-      const personPhone = {
-        haveTelegram: false,
-        haveViber: false,
-        haveWhatsApp: false,
-        phoneNumber: '',
-      }
+    //     createSalon({
+    //       variables: {
+    //         input: {
+    //           ...values,
+    //           contactPersonPhone: { ...personPhone, ...contactPersonPhone },
+    //           isNotRent: false,
+    //           photoIds: photos.map(photo => photo.id),
+    //           logoId: photoSalonId,
+    //           lessor: lessor ? true : false,
+    //         },
+    //       },
+    //     })
+    //   }
 
-      if (
-        salon?.name !== values.name ||
-        salon?.address?.full !== values.address
-      ) {
-        mutateNameAndAddress({
-          variables: {
-            input: {
-              name: values.name,
-              address: values.address,
-              salonId: salon.id,
-            },
-          },
-        })
-      }
+    //   if (salon) {
+    //     const { photos = [], contactPersonPhone = {} } = values
+    //     const personPhone = {
+    //       haveTelegram: false,
+    //       haveViber: false,
+    //       haveWhatsApp: false,
+    //       phoneNumber: '',
+    //     }
 
-      if (photoSalonId) {
-        mutateLogo({
-          variables: { input: { salonId: salon.id, logoId: photoSalonId } },
-        })
-      }
+    //     if (
+    //       salon?.name !== values.name ||
+    //       salon?.address?.full !== values.address
+    //     ) {
+    //       mutateNameAndAddress({
+    //         variables: {
+    //           input: {
+    //             name: values.name,
+    //             address: values.address,
+    //             salonId: salon.id,
+    //           },
+    //         },
+    //       })
+    //     }
 
-      mutate({
-        variables: {
-          input: {
-            ...values,
-            isNotRent: false,
-            contactPersonPhone: { ...personPhone, ...contactPersonPhone },
-            salonId: salon.id,
-            photoIds: photos.map(t => t.id),
-            lessor: salon?.lessor ? true : false,
-          },
-        },
-      })
-    }
+    //     if (photoSalonId) {
+    //       mutateLogo({
+    //         variables: { input: { salonId: salon.id, logoId: photoSalonId } },
+    //       })
+    //     }
+
+    //     mutate({
+    //       variables: {
+    //         input: {
+    //           ...values,
+    //           isNotRent: false,
+    //           contactPersonPhone: { ...personPhone, ...contactPersonPhone },
+    //           salonId: salon.id,
+    //           photoIds: photos.map(t => t.id),
+    //           lessor: salon?.lessor ? true : false,
+    //         },
+    //       },
+    //     })
+    //   }
   }
 
   return (
@@ -245,26 +291,25 @@ const RegistrationForm = ({
         keepDirtyOnReinitialize
         initialValuesEqual={() => true}
         onSubmit={onSubmit}
-        render={({ handleSubmit, form, pristine }) => {
+        render={({ handleSubmit, form, pristine, ...rest }) => {
           return (
             <form onSubmit={handleSubmit} ref={allTabs}>
               <About
                 ref1={ref1}
                 setClickAddress={setClickAddress}
-                form={form}
                 number={1}
                 handleClickNextTab={handleClickNextTab}
               />
               <SalonActivities
                 ref2={ref2}
                 number={2}
-                serviceCatalog={salonActivitiesCatalog}
+                activities={salonActivitiesCatalog}
                 handleClickNextTab={handleClickNextTab}
               />
               <SalonServices
                 ref3={ref3}
                 number={3}
-                serviceCatalog={salonServicesCatalog}
+                services={salonServicesCatalog}
                 handleClickNextTab={handleClickNextTab}
               />
               <Schedule
@@ -317,3 +362,63 @@ const RegistrationForm = ({
 }
 
 export default RegistrationForm
+
+const salonInput = {
+  activities: ['1'], // +
+  salonContactPersonEmail: 'sprttt@nail.ru', // +
+  salonContactPersonName: 'Anatoliy', // +
+  salonContactPersonPhone: '43453434', // +
+  salonDescription:
+    'Стильная парикмахерская, предлагающая профессиональные стрижки, окрашивание, укладку и ух', // +
+  salonEmail: 'shpun_06@mail.ru', // +
+  locationDirections: 'go to dor', // +
+  salonName: 'Salon PASHA', // +
+  salonOnlineBookingUrl: 'http://localhost:3000/createLessorSalon', // +
+  salonPhones: [
+    // +
+    {
+      haveTelegram: true,
+      haveViber: false,
+      haveWhatsApp: false,
+      phoneNumber: '4345534534',
+    },
+  ],
+  services: [
+    // value remove
+    // +
+    { id: '1', value: 1 },
+    { id: '2', value: 1 },
+    { id: '3', value: 1 },
+    { id: '5', value: 1 },
+    { id: '8', value: 1 },
+    { id: '11', value: 1 },
+  ],
+  // socialNetworks: [{title: string, link: string}]
+  socialNetworks: {
+    odnoklassniki: 'https://music.youtube.com',
+    vKontakte: 'https://music.youtube.com',
+    youTube: 'https://music.youtube.com',
+  },
+  salonWebSiteUrl: 'https://music.youtube.com', // +
+  workingHours: [
+    {
+      // dayOfWeek:  "Понедельник - Пятница"
+      // endTime:  "21:45:00.000"
+      // startTime   "10:00:00.000"
+      endDayOfWeek: 'FRIDAY',
+      endHour: 23,
+      endMinute: 59,
+      startDayOfWeek: 'MONDAY',
+      startHour: 0,
+      startMinute: 0,
+    },
+    {
+      endDayOfWeek: 'SATURDAY',
+      endHour: 5,
+      endMinute: 59,
+      startDayOfWeek: 'THURSDAY',
+      startHour: 3,
+      startMinute: 0,
+    },
+  ],
+}

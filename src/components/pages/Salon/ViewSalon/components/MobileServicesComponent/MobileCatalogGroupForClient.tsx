@@ -2,7 +2,6 @@ import { FC, useState } from 'react'
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../../../styles/variables'
 import MobileCatalogSubGroup from './MobileCatalogSubGroup'
-import { IServiceCategories } from 'src/types'
 import { IGroupedCategories } from 'src/utils/getGrupedServices'
 
 const Wrapper = styled.div`
@@ -51,7 +50,7 @@ const ItemWrapper = styled.div<{ open: boolean }>`
   margin-bottom: ${({ open }) => (open ? '40px' : '0')};
 `
 
-const ucFirst = (str: string) => {
+const ucFirst = (str?: string) => {
   if (!str) return str
 
   return str[0].toUpperCase() + str.slice(1)

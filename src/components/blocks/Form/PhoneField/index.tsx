@@ -1,27 +1,31 @@
-import { forwardRef } from "react";
-import styled from "styled-components";
-import { Field } from "react-final-form";
-import Grid from "@material-ui/core/Grid";
-import { TextField } from "../../Form";
-import { composeValidators, phone, required } from "../../../../utils/validations";
-import Icon from "./Icon";
-import { FieldStyled } from "../../../pages/Salon/CreateSalon/components/RegistrationForm/styled";
+import { forwardRef } from 'react'
+import styled from 'styled-components'
+import { Field, FieldRenderProps } from 'react-final-form'
+import Grid from '@material-ui/core/Grid'
+import { TextField } from '..'
+import {
+  composeValidators,
+  phone,
+  required,
+} from '../../../../utils/validations'
+import Icon from './Icon'
+import { FieldStyled } from '../../../pages/Salon/CreateSalon/components/RegistrationForm/styled'
 
 const PhoneWrapper = styled(Grid)`
   position: relative;
-`;
+`
 
 const IcoContainer = styled.div`
   position: absolute;
   right: 12px;
   top: 24px;
-`;
+`
 
 const IcoWrapper = styled.div`
   display: inline-block;
   position: relative;
   margin-left: 10px;
-`;
+`
 
 const Checkbox = styled(Field)`
   cursor: pointer;
@@ -41,11 +45,22 @@ const Checkbox = styled(Field)`
       fill: #8f5db7;
     }
   }
-`;
+`
 
-const PhoneField = forwardRef((props, ref) => {
-  const { name, label = "Номер телефона", validate = phone } = props;
-  const { requiredField } = props;
+interface Props {
+  name: string
+  label?: string
+  validate?: (value: string) => string | undefined
+  requiredField: boolean
+}
+
+const PhoneField = forwardRef<HTMLInputElement, Props>((props, ref) => {
+  const {
+    name,
+    label = 'Номер телефона',
+    validate = phone,
+    requiredField,
+  } = props
 
   return (
     <PhoneWrapper container spacing={3}>
@@ -53,13 +68,13 @@ const PhoneField = forwardRef((props, ref) => {
         <FieldStyled
           name={`${name}.phoneNumber`}
           type="phone"
-          render={(props) => {
+          render={(props: FieldRenderProps<any, HTMLElement, any>) => {
             return (
               <TextField {...props} maxLength="30" ref={ref} inputMode="tel" />
-            );
+            )
           }}
           label={label}
-          validate={requiredField ? composeValidators(required, validate) : ""}
+          validate={requiredField ? composeValidators(required, validate) : ''}
           requiredField={requiredField}
         />
         <IcoContainer>
@@ -69,7 +84,7 @@ const PhoneField = forwardRef((props, ref) => {
               component="input"
               type="checkbox"
             />
-            <Icon type={"telegram"}>
+            <Icon type={'telegram'}>
               <path
                 fill="#FFF"
                 fillRule="nonzero"
@@ -83,7 +98,7 @@ const PhoneField = forwardRef((props, ref) => {
               component="input"
               type="checkbox"
             />
-            <Icon type={"whatsapp"}>
+            <Icon type={'whatsapp'}>
               <circle cx="14" cy="14" r="10" stroke="#FFF" strokeWidth="2" />
               <path
                 fill="#FFF"
@@ -98,7 +113,7 @@ const PhoneField = forwardRef((props, ref) => {
               component="input"
               type="checkbox"
             />
-            <Icon type={"viber"}>
+            <Icon type={'viber'}>
               <path
                 fill="#FFF"
                 d="M19.672 17.153c.58.468 1.314.858.967 1.84-.36 1.02-1.609 2.048-2.674 2.038-.15-.042-.446-.088-.713-.203-4.679-2.018-8.077-5.326-10.009-10.076-.647-1.593.029-2.938 1.66-3.488.294-.098.58-.105.869 0 .696.257 2.458 2.688 2.498 3.416.03.557-.348.86-.724 1.115-.709.482-.713 1.094-.41 1.777.685 1.543 1.855 2.603 3.37 3.291.55.25 1.075.225 1.45-.344.669-1.015 1.488-.966 2.384-.335.449.316.905.625 1.332.97zm-5.246-9.401c-.283-.044-.715.018-.694-.357.032-.557.545-.35.793-.386 3.286.111 6.115 3.125 6.075 6.376-.004.32.11.792-.364.783-.454-.009-.336-.489-.376-.807-.436-3.452-2.013-5.082-5.434-5.609zm.67.946c2.11.254 3.834 2.09 3.817 4.105-.032.239.107.647-.278.706-.52.079-.418-.398-.47-.704-.347-2.1-1.082-2.87-3.195-3.343-.311-.07-.795-.021-.715-.501.077-.458.511-.302.84-.263zm.193 1.649c.937-.023 2.034 1.101 2.019 2.074.01.266-.02.546-.333.583-.227.027-.376-.163-.399-.398-.086-.866-.543-1.378-1.41-1.518-.259-.041-.514-.125-.393-.477.081-.235.297-.259.516-.264z"
@@ -108,7 +123,7 @@ const PhoneField = forwardRef((props, ref) => {
         </IcoContainer>
       </Grid>
     </PhoneWrapper>
-  );
-});
+  )
+})
 
-export default PhoneField;
+export default PhoneField

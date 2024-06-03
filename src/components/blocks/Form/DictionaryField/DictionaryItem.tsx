@@ -1,8 +1,9 @@
 import styled from 'styled-components'
-import { useCallback } from 'react'
+import { FC, useCallback } from 'react'
 import { laptopBreakpoint } from '../../../../styles/variables'
+import { FieldArrayRenderProps } from 'react-final-form-arrays'
 
-const Input = styled.input`
+const Input = styled.input<{ check?: boolean }>`
   margin: 5px;
   background: ${props => (!props.check ? '#fff' : '#f03')};
   border: ${props => (!props.check ? '1px solid #000000' : '1px solid #f03')};
@@ -22,7 +23,14 @@ const Input = styled.input`
   }
 `
 
-const DictionaryItem = ({ item, fields, name, onlyOneChoose }) => {
+interface Props
+  extends Pick<FieldArrayRenderProps<any, HTMLElement>, 'fields'> {
+  name?: string
+  onlyOneChoose: boolean
+  item: any
+}
+
+const DictionaryItem: FC<Props> = ({ item, fields, name, onlyOneChoose }) => {
   const { id, checked, label } = item
   const onClick = useCallback(() => {
     if (onlyOneChoose) {

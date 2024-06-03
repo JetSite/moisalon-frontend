@@ -1,34 +1,50 @@
-import { Field } from "react-final-form";
-import { TextField } from "../../../../../../../blocks/Form";
-import Button from "../../../../../../../ui/Button";
+import { Field } from 'react-final-form'
+import { TextField } from '../../../../../../../blocks/Form'
+import Button from '../../../../../../../ui/Button'
 import {
   required,
   email,
   composeValidators,
-} from "../../../../../../../../utils/validations";
+} from '../../../../../../../../utils/validations'
 import {
   WrapperForm,
   FieldWrap,
   VideoFieldWrap,
   FieldTitleStyled,
   FieldStyled,
-} from "../../styled";
-import { MobileHidden } from "../../../../../../../../styles/common";
-import AddressNoSalonField from "../../../../../../../blocks/Form/AddressField/AddressNoSalonField";
-import PhotoArrayField from "../../../../../../../blocks/Form/PhotoArrayField/PhotoArrayField";
-import PhoneArrayField from "../../../../../../../blocks/Form/PhoneField/PhoneArrayField";
-import { CheckBoxCustom } from "../../../../../../../pages/Rent/RentFilter";
+} from '../../styled'
+import { MobileHidden } from '../../../../../../../../styles/common'
+import AddressNoSalonField from '../../../../../../../blocks/Form/AddressField/AddressNoSalonField'
+import PhotoArrayField from '../../../../../../../blocks/Form/PhotoArrayField/PhotoArrayField'
+import PhoneArrayField from '../../../../../../../blocks/Form/PhoneField/PhoneArrayField'
+import { Checkbox, Label } from '../../../../../../Rent/RentFilter/style'
+import { FC, RefObject, useState } from 'react'
+import { ISetState } from 'src/types/common'
 
-const About = ({ setClickAddress, ref1, handleClickNextTab, number }) => {
+interface Props {
+  number: number
+  ref1: RefObject<HTMLDivElement>
+  setClickAddress: ISetState<boolean>
+  handleClickNextTab: (number: number) => void
+}
+
+const About: FC<Props> = ({
+  setClickAddress,
+  ref1,
+  handleClickNextTab,
+  number,
+}) => {
+  const [view, setView] = useState<boolean>(false)
   const photoArrayProps = {
-    photoType: "salonPhoto",
-    kind: "small",
-  };
+    photoType: 'salonPhoto',
+    kind: 'small',
+  }
+
   return (
     <WrapperForm ref={ref1} id="about">
       <FieldWrap>
         <FieldStyled
-          name="name"
+          name="salonName"
           component={TextField}
           label="Название"
           validate={required}
@@ -36,11 +52,11 @@ const About = ({ setClickAddress, ref1, handleClickNextTab, number }) => {
         />
       </FieldWrap>
       <FieldWrap>
-        <PhoneArrayField name="phones" />
+        <PhoneArrayField name="salonPhones" />
       </FieldWrap>
       <FieldWrap>
         <FieldStyled
-          name="email"
+          name="salonEmail"
           component={TextField}
           label="E-mail"
           validate={composeValidators(required, email)}
@@ -51,17 +67,28 @@ const About = ({ setClickAddress, ref1, handleClickNextTab, number }) => {
       <FieldWrap>
         <FieldStyled
           name="address"
+          // disabled
           setClickAddress={setClickAddress}
           component={AddressNoSalonField}
           label="Адрес"
           requiredField
+          view={view}
         />
       </FieldWrap>
       <FieldWrap>
         <Field name="checkCart" type="checkbox">
-          {({ input }) => (
-            <CheckBoxCustom input={input} label="Показать на карте" />
-          )}
+          {({ input }) => {
+            return (
+              <>
+                <Checkbox
+                  onClick={() => setView(!view)}
+                  {...input}
+                  id={input?.name}
+                />
+                <Label htmlFor={'checkCart'}>{'Показать на карте'}</Label>
+              </>
+            )
+          }}
         </Field>
       </FieldWrap>
       <FieldTitleStyled requiredField>Фото салона</FieldTitleStyled>
@@ -78,16 +105,18 @@ const About = ({ setClickAddress, ref1, handleClickNextTab, number }) => {
       </VideoFieldWrap>
       <VideoFieldWrap>
         <Field
-          name="onlineBookingUrl"
+          name="salonOnlineBookingUrl"
           component={TextField}
           label="Ссылка на ваш сервис онлайн записи"
         />
       </VideoFieldWrap>
       <FieldWrap>
         <FieldStyled
-          name="description"
+          name="salonDescription"
           component={TextField}
           multiline={true}
+          minRows={1}
+          maxRows={5}
           maxLength={1200}
           validate={required}
           label="О салоне: Что делает ваш салон особенным? Расскажите здесь"
@@ -96,9 +125,9 @@ const About = ({ setClickAddress, ref1, handleClickNextTab, number }) => {
       </FieldWrap>
       <MobileHidden>
         <Button
-          onClick={(e) => {
-            e.preventDefault();
-            handleClickNextTab(number);
+          onClick={e => {
+            e.preventDefault()
+            handleClickNextTab(number)
           }}
           variant="red"
           size="width374"
@@ -108,7 +137,7 @@ const About = ({ setClickAddress, ref1, handleClickNextTab, number }) => {
         </Button>
       </MobileHidden>
     </WrapperForm>
-  );
-};
+  )
+}
 
-export default About;
+export default About

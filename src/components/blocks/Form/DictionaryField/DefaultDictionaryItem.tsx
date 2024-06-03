@@ -1,8 +1,10 @@
 import styled from 'styled-components'
-import { useState } from 'react'
+import { FC, useState } from 'react'
 import { laptopBreakpoint } from '../../../../styles/variables'
+import { IActivitiesItemInForm } from '.'
+import { IActivitiesInForm } from 'src/components/pages/Salon/CreateSalon/components/RegistrationForm/components/SalonActivities'
 
-const Input = styled.input`
+const Input = styled.input<{ check?: boolean }>`
   margin: 5px;
   background: ${props => (!props.check ? '#fff' : '#f03')};
   border: ${props => (!props.check ? '1px solid #000000' : '1px solid #f03')};
@@ -55,7 +57,13 @@ const AllChecked = styled.div`
   }
 `
 
-const DictionaryItem = ({ items, group, onChangeDefault }) => {
+interface Props {
+  items: IActivitiesItemInForm[]
+  group: IActivitiesInForm[]
+  onChangeDefault: (item: IActivitiesInForm, i: number) => void
+}
+
+const DictionaryItem: FC<Props> = ({ items, group, onChangeDefault }) => {
   const [showAll, setShowAll] = useState(false)
   const allCheckedValue = !showAll ? 'Выбрать другую' : 'Отмена'
   return (
@@ -71,7 +79,7 @@ const DictionaryItem = ({ items, group, onChangeDefault }) => {
                 setShowAll(!showAll)
               }}
               type="button"
-              value={group?.find(el => el?.id === item)?.title}
+              value={group?.find(el => el?.id === item.id)?.title}
               name="defaultItem"
             />
           ))}
@@ -86,7 +94,7 @@ const DictionaryItem = ({ items, group, onChangeDefault }) => {
           <Input
             check={true}
             type="button"
-            value={group?.find(el => el?.id === items[0])?.title}
+            value={group?.find(el => el?.id === items[0].id)?.title}
             name="defaultItem"
           />
           {items?.length > 1 ? (

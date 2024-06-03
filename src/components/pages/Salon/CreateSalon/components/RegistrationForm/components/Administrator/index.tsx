@@ -7,6 +7,8 @@ import { MobileHidden } from '../../../../../../../../styles/common'
 import Button from '../../../../../../../ui/Button'
 import { laptopBreakpoint } from '../../../../../../../../styles/variables'
 import { email } from '../../../../../../../../utils/validations'
+import { FC, RefObject } from 'react'
+import { IHandleClickNextTabInForm } from '../../../..'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -36,14 +38,20 @@ const FieldWrap = styled.div`
   margin-bottom: 14px;
 `
 
-const Administartor = ({ ref5, handleClickNextTab, number }) => {
+interface Props {
+  ref5: RefObject<HTMLDivElement>
+  handleClickNextTab: IHandleClickNextTabInForm
+  number: number
+}
+
+const Administartor: FC<Props> = ({ ref5, handleClickNextTab, number }) => {
   return (
     <Wrapper id="administartor" ref={ref5}>
       <Title>Маршрут и администратор</Title>
       <Group
         description="Опишите маршрут от ближайшего метро, указав ориентиры по пути, чтобы мастерам и клиентам было проще вас найти. Для быстрой связи укажите контакты администратора.
 "
-        mbDesc="30"
+        mbDesc={30}
       >
         <WrapperForm>
           <FieldWrap>
@@ -55,21 +63,21 @@ const Administartor = ({ ref5, handleClickNextTab, number }) => {
           </FieldWrap>
           <FieldWrap>
             <Field
-              name="contactPersonName"
+              name="salonContactPersonName"
               component={TextField}
               label="Имя администратора"
             />
           </FieldWrap>
           <FieldWrap>
             <PhoneField
-              name="contactPersonPhone"
+              name="salonContactPersonPhone"
               label="Телефон"
               requiredField={false}
             />
           </FieldWrap>
           <FieldWrap>
             <Field
-              name="contactPersonEmail"
+              name="salonContactPersonEmail"
               component={TextField}
               label="E-mail"
               validate={email}

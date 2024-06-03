@@ -3,6 +3,9 @@ import { useAddressSuggestions } from './useAddressSuggestions'
 import Map from '../../Map'
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../styles/variables'
+import { FC } from 'react'
+import { TextFieldProps } from '@material-ui/core'
+import { FieldInputProps } from 'react-final-form'
 
 const AutosuggestFieldStyled = styled(AutosuggestField)`
   .MuiInputBase-inputMultiline {
@@ -22,10 +25,10 @@ const AutosuggestFieldStyled = styled(AutosuggestField)`
   }
 `
 
-const AddressWrap = styled.div`
+const AddressWrap = styled.div<{ noMap?: boolean }>`
   position: relative;
   width: 100%;
-  min-height: 345px;
+  min-height: ${({ noMap }) => (noMap ? '345px' : 'none')};
 
   @media (max-width: ${laptopBreakpoint}) {
     min-height: 180px;
@@ -37,20 +40,28 @@ const MapWrap = styled.div`
   width: 100%;
 `
 
-const AddressNoSalonField = ({
+interface Props extends FieldInputProps<any, HTMLElement> {
+  fullWidth?: boolean
+  salonId?: string | null
+  label: string
+  noMap?: boolean
+}
+
+const AddressNoSalonField: FC<Props> = ({
   label = 'Адрес',
   fullWidth = true,
   salonId = null,
+  view,
   ...rest
 }) => {
-  const { suggestions } = useAddressSuggestions(rest.input.value)
-  const { coordinates } = useAddressSuggestions(rest.input.value, 1)
+  const { suggestions, coordinates } = useAddressSuggestions(rest.input.value)
   const address = {
-    longitude: coordinates.geoLon,
-    latitude: coordinates.geoLat,
+    longitude: coordinates?.geoLon,
+    latitude: coordinates?.geoLat,
   }
+
   return (
-    <AddressWrap>
+    <AddressWrap noMap={!rest.noMap}>
       <AutosuggestFieldStyled
         {...rest}
         fullWidth={fullWidth}
@@ -59,7 +70,7 @@ const AddressNoSalonField = ({
       />
       {!rest.noMap ? (
         <MapWrap>
-          <Map address={address} />
+          <Map view={view} address={address} />
         </MapWrap>
       ) : null}
     </AddressWrap>

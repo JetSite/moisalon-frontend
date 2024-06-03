@@ -1,21 +1,11 @@
-import {
-  ICity,
-  IPhoto,
-  IRating,
-  IServiceCategories,
-  IServices,
-  ISocialNetworks,
-} from '.'
+import { ICity, IPhoto, IRating, ISocialNetworks } from '.'
 import { IBrand } from './brands'
 import { IID } from './common'
 import { IReview } from './reviews'
 import { ISalon } from './salon'
+import { IServices } from './services'
 
-export interface IMasterServices extends IServices {
-  price: string
-  priceTo: string
-  priceFrom: string
-}
+export interface IMasterServices extends IServices {}
 
 export interface IMaster {
   id: IID

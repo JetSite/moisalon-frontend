@@ -48,8 +48,8 @@ export const getSalons = gql`
             salonContactPersonName
             salonContactPersonPhone
             salonContactPersonEmail
-            salonCantactPresonWorkingHoursAt
-            salonCantactPresonWorkingHoursTo
+            salonContactPersonWorkingHoursAt
+            salonContactPersonWorkingHoursTo
             salonWorkplacesCount
             salonMastersCount
             salonBrandsCount

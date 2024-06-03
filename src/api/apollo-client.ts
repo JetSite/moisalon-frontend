@@ -43,65 +43,70 @@ const defaultOptions: DefaultOptions = {
   },
 }
 
-const httpLink = new HttpLink({
-  uri: server,
-  fetchOptions: {
-    credentials: 'include',
-  },
-})
+export const getAuthLink = (accessToken?: string) => {
+  const httpLink = new HttpLink({
+    uri: server,
+    fetchOptions: {
+      credentials: 'include',
+    },
+  })
 
-const errorLink = onError(error => {
-  console.log(error)
+  const authLink = new ApolloLink((operation, forward) => {
+    const token = getCookie(authConfig.tokenKeyName) || accessToken
 
-  if (error.networkError?.message.includes('headers')) {
-    if (typeof window !== 'undefined') {
-      deleteCookie(authConfig.tokenKeyName)
-      Router.push('/auth')
+    operation.setContext(({ headers = {} }) => {
+      return {
+        headers: {
+          ...headers,
+          authorization: token ? `Bearer ${token}` : '',
+        },
+      }
+    })
+
+    return forward(operation)
+  })
+  const errorLink = onError(error => {
+    console.log(error)
+
+    if (error.networkError?.message.includes('headers')) {
+      if (typeof window !== 'undefined') {
+        deleteCookie(authConfig.tokenKeyName)
+        Router.push('/auth')
+      }
+      return
     }
-    return
-  }
 
-  if (
-    (error.networkError as ServerError | undefined)?.response?.statusText ===
-    'Unauthorized'
-  ) {
-    if (typeof window !== 'undefined') {
-      deleteCookie(authConfig.tokenKeyName)
+    if (
+      (error.networkError as ServerError | undefined)?.response?.statusText ===
+      'Unauthorized'
+    ) {
+      if (typeof window !== 'undefined') {
+        deleteCookie(authConfig.tokenKeyName)
+      }
+      Router.push(authConfig.notAuthLink)
+      return
     }
-    Router.push(authConfig.notAuthLink)
-    return
-  }
 
-  if (error.graphQLErrors) {
-    for (const err of error.graphQLErrors) {
-      if (
-        err?.message === 'Unauthorized' ||
-        err?.message === 'Forbidden access'
-      ) {
-        if (typeof window !== 'undefined') {
-          // deleteCookie(authConfig.tokenKeyName)
-          // Router.push(authConfig.notAuthLink)
+    if (error.graphQLErrors) {
+      for (const err of error.graphQLErrors) {
+        if (
+          err?.message === 'Unauthorized' ||
+          err?.message === 'Forbidden access'
+        ) {
+          if (typeof window !== 'undefined') {
+            deleteCookie(authConfig.tokenKeyName)
+            Router.push(authConfig.notAuthLink)
+          }
+          return
+        } else {
+          // Router.back()
+          return
         }
-        return
-      } else {
-        // Router.back()
-        return
       }
     }
-  }
-})
-
-const authLink = new ApolloLink((operation, forward) => {
-  const accessToken = getCookie(authConfig.tokenKeyName)
-  operation.setContext(({ headers = {} }) => ({
-    headers: {
-      ...headers,
-      authorization: accessToken ? `Bearer ${accessToken}` : '',
-    },
-  }))
-
-  return forward(operation)
-})
+  })
+  return ApolloLink.from([errorLink, authLink, httpLink])
+}
 
 const cache = isServer
   ? new InMemoryCacheForServerSide({
@@ -109,28 +114,36 @@ const cache = isServer
     })
   : new InMemoryCache()
 
-function createApolloClient(): ApolloClient<NormalizedCacheObject> {
+interface IApolloClientProps {
+  accessToken?: string
+  initialState?: NormalizedCacheObject | null
+}
+
+function createApolloClient(data: IApolloClientProps) {
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
-    link: ApolloLink.from([errorLink, authLink, httpLink]),
+    link: getAuthLink(data?.accessToken),
     cache,
     defaultOptions,
   })
 }
 
-export function initializeApollo(
-  initialState: NormalizedCacheObject | null = null,
-) {
-  const _apolloClient = apolloClient ?? createApolloClient()
-  if (initialState) {
+export function initializeApollo(data?: IApolloClientProps) {
+  const _apolloClient =
+    apolloClient ??
+    createApolloClient({
+      accessToken: data?.accessToken,
+      initialState: data?.initialState,
+    })
+  if (data?.initialState) {
     const existingCache = _apolloClient.extract()
-    const data = merge(initialState, existingCache, {
+    const mergedData = merge(data?.initialState, existingCache, {
       arrayMerge: (destinationArray, sourceArray) => [
         ...sourceArray,
         ...destinationArray.filter(d => sourceArray.every(s => !isEqual(d, s))),
       ],
     })
-    _apolloClient.cache.restore(data)
+    _apolloClient.cache.restore(mergedData)
   }
   if (isServer) return _apolloClient
   if (!apolloClient) apolloClient = _apolloClient
@@ -158,6 +171,9 @@ export function addApolloState<T>(
 export function useApollo<T>(pageProps: PageProps<T>) {
   const state = pageProps.props?.[APOLLO_STATE_PROP_NAME]
 
-  const store = useMemo(() => initializeApollo(state), [state])
+  const store = useMemo(
+    () => initializeApollo({ initialState: state }),
+    [state],
+  )
   return store
 }

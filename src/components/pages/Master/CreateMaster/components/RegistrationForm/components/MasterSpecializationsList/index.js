@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import Button from '../../../../../../../ui/Button'
-import DictionaryField from '../../../../../../../blocks/Form/DictionaryField'
+import DictionaryField from '../../../../../../../blocks/Form/DictionaryField/index.tsx'
 import { lengthValidate } from '../../../../../../../../utils/validations'
 import { MobileHidden } from '../../../../../../../../styles/common'
 import { laptopBreakpoint } from '../../../../../../../../styles/variables'

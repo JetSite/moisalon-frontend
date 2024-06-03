@@ -1,5 +1,4 @@
-import { IGroupedServices, IService, IServiceCategories } from 'src/types'
-import { LazyType } from 'src/types/common'
+import { IGroupedServices } from 'src/types'
 
 export function selectedGroupNames(selection, catalog, separator) {
   let names = catalog.groups

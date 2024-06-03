@@ -1,9 +1,12 @@
 import styled from 'styled-components'
 import { MobileHidden } from '../../../../../../../../styles/common'
 import Button from '../../../../../../../ui/Button'
-import DictionaryField from '../../../../../../../blocks/Form/DictionaryField'
+import DictionaryField from '../../../../../../../blocks/Form/DictionaryField/'
 import { lengthValidate } from '../../../../../../../../utils/validations'
 import { laptopBreakpoint } from '../../../../../../../../styles/variables'
+import { FC, RefObject } from 'react'
+import { IHandleClickNextTabInForm } from '../../../..'
+import { IID } from 'src/types/common'
 
 const Text = styled.p`
   margin-top: 70px;
@@ -33,13 +36,25 @@ const Wrap = styled.div`
   padding-top: 15px;
 `
 
-const SalonActivities = ({
-  serviceCatalog,
+export interface IActivitiesInForm {
+  id: IID
+  name: IID
+  title: string
+}
+
+interface Props {
+  ref2: RefObject<HTMLDivElement>
+  activities: IActivitiesInForm[]
+  number: number
+  handleClickNextTab: IHandleClickNextTabInForm
+}
+
+const SalonActivities: FC<Props> = ({
+  activities,
   ref2,
   handleClickNextTab,
   number,
 }) => {
-  const { groups: specializations = [] } = serviceCatalog
   return (
     <Wrap ref={ref2} id="vid">
       <Title>Вид деятельности</Title>
@@ -47,7 +62,7 @@ const SalonActivities = ({
         mbDesc={35}
         description="Расскажите своим клиентам, какие услуги предоставляет ваш салон."
         name="activities"
-        groups={specializations}
+        groups={activities}
         withButton={true}
         validate={lengthValidate}
         onlyOneChoose
