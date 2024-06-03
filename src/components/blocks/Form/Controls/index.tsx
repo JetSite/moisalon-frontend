@@ -5,6 +5,7 @@ import Tabs from '../Tabs'
 import { FC } from 'react'
 import { ITab } from 'src/components/pages/Salon/CreateSalon/config'
 import { IID, ISetState } from 'src/types/common'
+import { IPhoto } from 'src/types'
 
 const Wrapper = styled.div`
   max-width: 395px;
@@ -23,13 +24,13 @@ interface Props {
   tabs: ITab[]
   photoType: string
   refActive: string | boolean
-  photo: { url: string } | null
+  photo: IPhoto | null
   id: IID | null
-  onAdd: () => void
-  setPhotoId: ISetState<IID | null>
+  onAdd: (photo: string) => void
   noPhotoError: boolean
   setNoPhotoError: ISetState<boolean>
   noSetPhoto?: boolean
+  setPhoto: ISetState<IPhoto | null>
 }
 
 const Controls: FC<Props> = ({

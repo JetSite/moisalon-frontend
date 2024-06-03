@@ -57,7 +57,6 @@ export const getSalonsThroughCity = gql`
           salonBrandsCount
           createdAt
           updatedAt
-          publishedAt
           reviewsCount
             ratingCount
             rating

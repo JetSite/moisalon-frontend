@@ -46,7 +46,6 @@ export const getOtherSalons = gql`
             salonBrandsCount
             createdAt
             updatedAt
-            publishedAt
             reviewsCount
             ratingCount
             rating

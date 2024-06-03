@@ -32,7 +32,6 @@ const CreateOrEditLessorSalon: FC<Props> = ({
   activities,
 }) => {
   const router = useRouter()
-  const onAdd = () => {}
   const { me } = useAuthStore(getStoreData)
   const { setServices, setSalonActivities } = useBaseStore(getStoreEvent)
 
@@ -50,7 +49,7 @@ const CreateOrEditLessorSalon: FC<Props> = ({
     router.push('/login')
     return <CreatePageSkeleton />
   } else {
-    return <CreateSalon lessor onAdd={onAdd} salon={salon} />
+    return <CreateSalon lessor salon={salon} />
   }
 }
 

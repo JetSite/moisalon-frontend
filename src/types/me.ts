@@ -13,7 +13,6 @@ export interface IMeInfo {
   phone: string
   city: ICity
   avatar: IPhoto | null
-  masters: IMaster[]
 }
 
 export interface IMeThings {

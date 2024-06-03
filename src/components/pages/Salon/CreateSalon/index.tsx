@@ -20,16 +20,18 @@ import { getTabs } from './config'
 import { ISalon, ISalonPage } from 'src/types/salon'
 import { IID, ISetState } from 'src/types/common'
 import { getDadataAddress } from 'src/api/dadata/getAddress'
+import { IPhoto } from 'src/types'
+import { useMutation } from '@apollo/client'
+import { UPDATE_SALON_PHOTO } from 'src/api/graphql/salon/mutations/updateSalonPhoto'
 
 export type IHandleClickNextTabInForm = (number: number) => void
 
 interface Props {
   lessor?: boolean
   salon: ISalon
-  onAdd: () => void
 }
 
-const CreateSalon: FC<Props> = ({ onAdd, salon, lessor = false }) => {
+const CreateSalon: FC<Props> = ({ salon, lessor = false }) => {
   const allTabs = useRef<HTMLFormElement>(null)
   const ref1 = useRef<HTMLDivElement>(null)
   const ref2 = useRef<HTMLDivElement>(null)
@@ -47,6 +49,17 @@ const CreateSalon: FC<Props> = ({ onAdd, salon, lessor = false }) => {
   const [ref6Visible, setRef6Visible] = useState<boolean | string>(false)
   const [photoSalonId, setPhotoId] = useState<null | IID>(null)
   const [noPhotoError, setNoPhotoError] = useState<boolean>(false)
+  const [logo, setLogo] = useState<IPhoto | null>(
+    salon?.salonLogo ? salon?.salonLogo : null,
+  )
+
+  const [updateMasterPhoto] = useMutation(UPDATE_SALON_PHOTO)
+  const onAdd = useCallback(
+    (photo: string) => {
+      updateMasterPhoto({ variables: { input: { photo } } })
+    },
+    [updateMasterPhoto],
+  )
 
   const handleElementPosition = (
     element: HTMLDivElement | null,
@@ -164,18 +177,10 @@ const CreateSalon: FC<Props> = ({ onAdd, salon, lessor = false }) => {
             tabs={getTabs(salon)}
             photoType={'salonPhoto'}
             refActive={refActive}
-            photo={
-              photoSalonId
-                ? {
-                    url: `${PHOTO_URL}${photoSalonId}/original`,
-                  }
-                : salon?.salonLogo?.url
-                ? { url: salon?.salonLogo?.url }
-                : null
-            }
+            setPhoto={setLogo}
+            photo={logo ? { ...logo, url: `${PHOTO_URL}${logo?.url}` } : null}
             id={null}
             onAdd={onAdd}
-            setPhotoId={setPhotoId}
             noPhotoError={noPhotoError}
             setNoPhotoError={setNoPhotoError}
           />

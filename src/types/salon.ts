@@ -25,7 +25,6 @@ export interface ISalon {
   latitude: string
   longitude: string
   locationDirections: string
-  publishedAt: string
   updatedAt: string
   salonID: string
   salonName: string

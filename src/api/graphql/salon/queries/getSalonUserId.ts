@@ -81,7 +81,6 @@ export const SALON_USER_ID = gql`
             salonBrandsCount
             createdAt
             updatedAt
-            publishedAt
             reviewsCount
             ratingCount
             rating
