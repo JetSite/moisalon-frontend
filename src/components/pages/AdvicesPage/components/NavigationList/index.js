@@ -1,5 +1,5 @@
-import NavigationItem from "./NavigationItem";
-import { NavList } from "../../styles";
+import NavigationItem from './NavigationItem'
+import { NavList } from '../../styles'
 
 const NavigationList = ({
   categories,
@@ -12,7 +12,7 @@ const NavigationList = ({
 }) => {
   return (
     <NavList>
-      {categories?.map((category) => (
+      {categories?.data?.map(category => (
         <NavigationItem
           loading={loading}
           key={category.id}
@@ -26,7 +26,7 @@ const NavigationList = ({
         />
       ))}
     </NavList>
-  );
-};
+  )
+}
 
-export default NavigationList;
+export default NavigationList

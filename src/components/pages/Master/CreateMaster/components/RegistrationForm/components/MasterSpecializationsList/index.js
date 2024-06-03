@@ -44,12 +44,17 @@ const Wrap = styled.div`
 `
 
 const MasterSpecializationsList = ({
-  serviceCatalog,
+  serviceCatalogs,
   ref2,
   handleClickNextTab,
   number,
 }) => {
-  const { groups: specializations = [] } = serviceCatalog
+  const services = []
+  serviceCatalogs.forEach(item => {
+    item.services.forEach(service => {
+      services.push(service)
+    })
+  })
 
   return (
     <Wrap ref={ref2} id="spec">
@@ -59,7 +64,7 @@ const MasterSpecializationsList = ({
       который описывает вас как профессионала."
         name="specializations"
         defaultSpecialization
-        groups={specializations}
+        groups={services}
         withButton={true}
         validate={lengthValidate}
       />

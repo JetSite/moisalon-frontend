@@ -113,7 +113,7 @@ const HamburgerMenu: FC<Props> = ({
     },
     { title: 'Салоны', link: `/${city.citySlug}/salon`, target: '_self' },
     { title: 'Бренды', link: `/${city.citySlug}/brand`, target: '_self' },
-    { title: 'Бьюти-лента', link: '/beauty-feed', target: '_self' },
+    { title: 'Бьюти-лента', link: '/advices', target: '_self' },
     { title: 'О проекте', link: '/about', target: '_self' },
     // { title: "Советы", link: "/advices", target: "_self" },
     // {

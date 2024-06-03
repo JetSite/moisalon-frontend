@@ -1,15 +1,15 @@
-import { Field } from "react-final-form";
-import { PhoneField, TextField } from "../../../../../../../blocks/Form";
-import Button from "../../../../../../../ui/Button";
+import { Field } from 'react-final-form'
+import { PhoneField, TextField } from '../../../../../../../blocks/Form'
+import Button from '../../../../../../../ui/Button'
 import {
   required,
   email,
   composeValidators,
-} from "../../../../../../../../utils/validations";
-import { MobileHidden } from "../../../../../../../../styles/common";
-import { WrapperForm, FieldWrap, FieldStyled } from "../../styled";
-import AddressNoSalonField from "../../../../../../../blocks/Form/AddressField/AddressNoSalonField";
-import { CheckBoxCustom } from "../../../../../../../pages/Rent/RentFilter";
+} from '../../../../../../../../utils/validations'
+import { MobileHidden } from '../../../../../../../../styles/common'
+import { WrapperForm, FieldWrap, FieldStyled } from '../../styled'
+import AddressNoSalonField from '../../../../../../../blocks/Form/AddressField/AddressNoSalonField'
+import { CheckBoxCustom } from '../../../../../../../pages/Rent/RentFilter'
 
 const About = ({ setClickAddress, ref1, handleClickNextTab, number }) => {
   return (
@@ -37,30 +37,37 @@ const About = ({ setClickAddress, ref1, handleClickNextTab, number }) => {
         />
       </FieldWrap>
       <FieldWrap>
-        <FieldStyled
+        {/* <FieldStyled
           name="address"
           setClickAddress={setClickAddress}
           component={AddressNoSalonField}
           label="Адрес"
           validate={required}
           requiredField
+        /> */}
+        <FieldStyled
+          name="address"
+          component={TextField}
+          label="Address"
+          validate={required}
+          requiredField
         />
       </FieldWrap>
-      <FieldWrap>
+      {/* <FieldWrap>
         <Field name="checkCart" type="checkbox">
           {({ input }) => (
             <CheckBoxCustom input={input} label="Показать на карте" />
           )}
         </Field>
-      </FieldWrap>
+      </FieldWrap> */}
       <FieldWrap>
         <Field name="birthday" component={TextField} label="Дата рождения" />
       </FieldWrap>
       <MobileHidden>
         <Button
-          onClick={(e) => {
-            e.preventDefault();
-            handleClickNextTab(number);
+          onClick={e => {
+            e.preventDefault()
+            handleClickNextTab(number)
           }}
           variant="red"
           size="width374"
@@ -70,7 +77,7 @@ const About = ({ setClickAddress, ref1, handleClickNextTab, number }) => {
         </Button>
       </MobileHidden>
     </WrapperForm>
-  );
-};
+  )
+}
 
-export default About;
+export default About

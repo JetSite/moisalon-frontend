@@ -59,7 +59,7 @@ const IconBack = styled.div`
 const Controls = ({
   id,
   onAdd,
-  setPhotoId,
+  setPhoto,
   photoType,
   photo,
   noSetPhoto = false,
@@ -74,7 +74,7 @@ const Controls = ({
   return (
     <Wrapper>
       <Avatar
-        setPhotoId={setPhotoId}
+        setPhoto={setPhoto}
         id={id}
         photo={photo}
         onAdd={onAdd}

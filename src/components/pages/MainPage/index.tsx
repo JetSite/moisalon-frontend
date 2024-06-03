@@ -14,6 +14,7 @@ import SearchBlock from '../../blocks/SearchBlock'
 import Banners from '../Catalog/components/Banners'
 import { CSSTransition } from 'react-transition-group'
 import { WrapBanner } from '../Brand/AllBrands/styles'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 
 const Title = styled.h1`
   max-width: 1440px;

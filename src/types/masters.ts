@@ -39,4 +39,5 @@ export interface IMaster {
   photosWorks: IPhoto[]
   socialNetworks: ISocialNetworks[]
   city: ICity
+  photo: IPhoto
 }
