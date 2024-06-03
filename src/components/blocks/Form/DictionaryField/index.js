@@ -61,8 +61,10 @@ const DictionaryField = props => {
   const [isOpenMore, setIsOpenMore] = useState(false)
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('xs'))
+
   const items = groups.map((group, index) => ({
     ...group,
+    title: group.serviceName,
     checked: false,
     index,
   }))

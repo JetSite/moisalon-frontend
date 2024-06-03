@@ -26,6 +26,7 @@ import { IMe } from 'src/types/me'
 import { IID } from 'src/types/common'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
+import { IPhoto } from 'src/types'
 
 export interface IMasterCabinetTab {
   title: string
@@ -42,7 +43,9 @@ interface Props {
 
 const MasterCabinet: FC = () => {
   const { me } = useAuthStore(getStoreData)
-  const [photoId, setPhotoId] = useState<IID>(me?.info?.avatar?.id || '')
+  const [photo, setPhoto] = useState<IPhoto | undefined>(
+    !!me?.info?.masters?.length ? me.info.masters[0].photo : undefined,
+  )
   const [noPhotoError, setNoPhotoError] = useState<boolean>(false)
   const [, setErrors] = useState<string[] | null>(null)
   const [, setErrorPopupOpen] = useState<boolean | null>(null)
@@ -60,22 +63,22 @@ const MasterCabinet: FC = () => {
     },
   })
 
-  const handlePhoto = (id: IID) => {
-    setPhotoId(id)
-    if (id) {
-      mutate({
-        variables: {
-          input: {
-            defaultCity: me?.info?.city.cityName,
-            displayName: me?.info?.username,
-            email: me?.info?.email,
-            phoneNumber: me?.info?.phone,
-            avatar: id,
-          },
-        },
-      })
-    }
-  }
+  // const handlePhoto = (id: IID) => {
+  //   setPhotoId(id)
+  //   if (id) {
+  //     mutate({
+  //       variables: {
+  //         input: {
+  //           defaultCity: me?.info?.city.cityName,
+  //           displayName: me?.info?.username,
+  //           email: me?.info?.email,
+  //           phoneNumber: me?.info?.phone,
+  //           avatar: id,
+  //         },
+  //       },
+  //     })
+  //   }
+  // }
 
   const [activeTab, setActiveTab] = useState<string>('about')
   const router = useRouter()
@@ -85,6 +88,8 @@ const MasterCabinet: FC = () => {
       setActiveTab(router?.query?.tab as string)
     }
   }, [router?.query?.tab])
+
+  console.log('me', me)
 
   return (
     <>
@@ -142,7 +147,7 @@ const MasterCabinet: FC = () => {
           <ControlsTabs
             onAdd={() => {}}
             activeTab={activeTab}
-            setPhotoId={handlePhoto}
+            setPhoto={setPhoto}
             setActiveTab={setActiveTab}
             tabs={[
               { title: 'Мои данные', value: 'about' },
@@ -168,19 +173,15 @@ const MasterCabinet: FC = () => {
             noPhotoError={noPhotoError}
             setNoPhotoError={setNoPhotoError}
             photo={
-              me?.info?.avatar
+              photo
                 ? {
-                    url: `${PHOTO_URL}${me?.info?.avatar.url}`,
+                    url: `${PHOTO_URL}${photo.url}`,
                   }
                 : { url: '/empty-photo.svg' }
             }
           />
           {activeTab === 'about' ? (
-            <CabinetForm
-              setNoPhotoError={setNoPhotoError}
-              photoId={photoId}
-              auth
-            />
+            <CabinetForm setNoPhotoError={setNoPhotoError} photo={photo} auth />
           ) : activeTab === 'orders' ? (
             <CabinetOrders me={me} />
           ) : activeTab === 'profiles' ? (

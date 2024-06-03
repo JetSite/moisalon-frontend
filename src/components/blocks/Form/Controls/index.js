@@ -21,7 +21,7 @@ const Controls = ({
   onAdd,
   refActive,
   tabs,
-  setPhotoId,
+  setPhoto,
   photoType,
   photo,
   noSetPhoto = false,
@@ -31,7 +31,7 @@ const Controls = ({
   return (
     <Wrapper>
       <Avatar
-        setPhotoId={setPhotoId}
+        setPhoto={setPhoto}
         id={id}
         photo={photo}
         onAdd={onAdd}

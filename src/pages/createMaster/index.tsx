@@ -1,20 +1,20 @@
 import { useCallback } from 'react'
 import { useRouter } from 'next/router'
 import { useMutation } from '@apollo/client'
-import { updateMasterPhotoMutation } from '../../_graphql-legacy/master/updateMasterPhotoMutation'
-import CreateMaster from '../../components/pages/Master/CreateMaster'
 import CreatePageSkeleton from '../../components/ui/ContentSkeleton/CreatePageSkeleton'
 import { getStoreData } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
+import CreateMaster from 'src/components/pages/Master/CreateMaster'
+import { UPDATE_MASTER_PHOTO } from 'src/api/graphql/master/mutations/updateMasterPhoto'
 
 const CreateOrEditMaster = () => {
   const router = useRouter()
   const { me } = useAuthStore(getStoreData)
-  const [updateMasterPhoto] = useMutation(updateMasterPhotoMutation)
+  const [updateMasterPhoto] = useMutation(UPDATE_MASTER_PHOTO)
 
   const onAdd = useCallback(
-    photoId => {
-      updateMasterPhoto({ variables: { input: { photoId } } })
+    (photoUrl: string) => {
+      updateMasterPhoto({ variables: { input: { photoUrl } } })
     },
     [updateMasterPhoto],
   )

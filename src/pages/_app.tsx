@@ -18,6 +18,7 @@ import { AppProps } from 'next/app'
 import { MainHead } from './MainHead'
 import { ChatProvider } from 'src/chatContext'
 import AuthProvider from 'src/api/AuthProvider'
+import ServicesProvider from 'src/providers/ServicesProvider'
 
 const progress = new ProgressBar({
   size: 2,
@@ -71,12 +72,14 @@ function MyApp({ Component, pageProps }: AppProps) {
         <ThemeProvider theme={theme}>
           <StylesProvider injectFirst>
             <AuthProvider cityData={pageProps.cityData}>
-              <YMInitializer
-                accounts={[56585698]}
-                options={{ webvisor: true }}
-                version="2"
-              />
-              <Component {...pageProps} />
+              <ServicesProvider>
+                <YMInitializer
+                  accounts={[56585698]}
+                  options={{ webvisor: true }}
+                  version="2"
+                />
+                <Component {...pageProps} />
+              </ServicesProvider>
             </AuthProvider>
           </StylesProvider>
         </ThemeProvider>

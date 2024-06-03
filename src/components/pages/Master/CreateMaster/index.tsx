@@ -1,12 +1,12 @@
 import { useRef, useState, useCallback, useEffect } from 'react'
 import scrollIntoView from 'scroll-into-view'
-import Header from '../../../pages/MainPage/components/Header'
+import Header from '../../MainPage/components/Header'
 import { MainContainer } from '../../../../styles/common'
 import Controls from '../../../blocks/Form/Controls'
-import RegistrationForm from './components/RegistrationForm'
 import { Wrapper } from './styled'
 import BackArrow from '../../../ui/BackArrow'
 import { PHOTO_URL } from '../../../../api/variables'
+import RegistrationForm from './components/RegistrationForm'
 
 const CreateMaster = ({ onAdd, master }) => {
   const allTabs = useRef()
@@ -22,17 +22,17 @@ const CreateMaster = ({ onAdd, master }) => {
     { id: '4', value: 'Дополнительная информация', anchor: 'socials' },
   ])
 
-  const [refActive, setRefActive] = useState(false)
+  const [refActive, setRefActive] = useState<string | boolean>(false)
   const [ref1Visible, setRef1Visible] = useState(true)
   const [ref2Visible, setRef2Visible] = useState(false)
   const [ref3Visible, setRef3Visible] = useState(false)
   const [ref4Visible, setRef4Visible] = useState(false)
-  const [photoMasterId, setPhotoId] = useState(master?.photo?.id)
+  const [photo, setPhoto] = useState<any>(master?.photo)
   const [noPhotoError, setNoPhotoError] = useState(false)
 
   useEffect(() => {
-    if (master?.photo?.id) {
-      setPhotoId(master?.photo?.id)
+    if (master?.photo) {
+      setPhoto(master?.photo)
     }
   }, [master])
 
@@ -116,9 +116,9 @@ const CreateMaster = ({ onAdd, master }) => {
             photoType={'master'}
             refActive={refActive}
             photo={
-              photoMasterId
+              photo
                 ? {
-                    url: `${PHOTO_URL}${photoMasterId}/original`,
+                    url: `${PHOTO_URL}${photo.url}`,
                   }
                 : master?.photo
                 ? master?.photo
@@ -126,7 +126,7 @@ const CreateMaster = ({ onAdd, master }) => {
             }
             id={master?.id}
             onAdd={onAdd}
-            setPhotoId={setPhotoId}
+            setPhoto={setPhoto}
             noPhotoError={noPhotoError}
             setNoPhotoError={setNoPhotoError}
           />
@@ -138,7 +138,7 @@ const CreateMaster = ({ onAdd, master }) => {
             ref3={ref3}
             ref4={ref4}
             master={master}
-            photoMasterId={photoMasterId}
+            photo={photo}
             setNoPhotoError={setNoPhotoError}
           />
         </Wrapper>

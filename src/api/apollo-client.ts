@@ -14,6 +14,7 @@ import { deleteCookie, getCookie } from 'cookies-next'
 import { authConfig, baseUrl } from './authConfig'
 import Router from 'next/router'
 import { onError } from '@apollo/client/link/error'
+import createUploadLink from 'apollo-upload-client/createUploadLink.mjs'
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__'
 
@@ -43,7 +44,7 @@ const defaultOptions: DefaultOptions = {
   },
 }
 
-const httpLink = new HttpLink({
+const httpLink = createUploadLink({
   uri: server,
   fetchOptions: {
     credentials: 'include',

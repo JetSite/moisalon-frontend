@@ -37,6 +37,7 @@ import { changeMe } from 'src/api/graphql/me/mutations/changeMe'
 import { CustomWindow, IID, InitialValuesForm } from 'src/types/common'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { IMeInfo } from 'src/types/me'
+import { IPhoto } from 'src/types'
 
 declare let window: CustomWindow
 
@@ -48,12 +49,12 @@ interface ICabinetFormIvitialValues extends InitialValuesForm {
 }
 
 interface Props {
-  photoId?: IID
+  photo?: IPhoto
   setNoPhotoError: Dispatch<SetStateAction<boolean>>
   auth?: boolean
 }
 
-const CabinetForm: FC<Props> = ({ photoId, setNoPhotoError, auth }) => {
+const CabinetForm: FC<Props> = ({ photo, setNoPhotoError, auth }) => {
   const { me } = useAuthStore(getStoreData)
   const { setMe } = useAuthStore(getStoreEvent)
 
@@ -137,7 +138,7 @@ const CabinetForm: FC<Props> = ({ photoId, setNoPhotoError, auth }) => {
       })
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [photoId],
+    [photo],
   )
   if (me) {
     const initialValues: ICabinetFormIvitialValues = {

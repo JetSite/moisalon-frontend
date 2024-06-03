@@ -19,13 +19,15 @@ const MainMasterSlider: FC<MainSlider> = ({ city, data }) => {
   const { data: masters, loading } = useQuery(getMasters, {
     variables: {
       citySlug: city.citySlug,
-      itemsCount: 10,
+      itemsCount: 100,
     },
     skip: !!data,
   })
   const mastersFlattened =
     (flattenStrapiResponse(masters?.masters?.data) as unknown as IMaster[]) ||
     data
+
+  console.log('mastersFlattened', mastersFlattened)
 
   return (
     <Slider

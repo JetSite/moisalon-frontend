@@ -20,7 +20,7 @@ const CabinetPage: FC<Props> = ({ accessToken }) => {
   if (loading || !me) return <CreatePageSkeleton />
 
   return !me.info?.username ||
-    !me.info?.city?.cityName ||
+    // !me.info?.city?.cityName ||
     !me.info?.phone ||
     !me.info?.email ? (
     <Cabinet />

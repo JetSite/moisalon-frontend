@@ -7,18 +7,17 @@ import { MobileHidden, MobileVisible } from '../../../../../../styles/common'
 import Button from '../../../../../ui/Button'
 import AutoFocusedForm from '../../../../../blocks/Form/AutoFocusedForm'
 import Error from '../../../../../blocks/Form/Error'
-import { updateMasterPersonalInformationMutation } from '../../../../../../_graphql-legacy/master/updateMasterPersonalInformationMutation'
-import { createMasterMutation } from '../../../../../../_graphql-legacy/master/createMasterMutation'
 import Socials from './components/Socials'
 import Work from './components/Work'
 import { useRouter } from 'next/router'
 // import ym from "react-yandex-metrika";
-import catalogOrDefault from '../../../../../../utils/catalogOrDefault'
-import { useQuery } from '@apollo/client'
-import { currentUserSalonsAndMasterQuery } from '../../../../../../_graphql-legacy/master/currentUserSalonsAndMasterQuery'
 import useBaseStore from 'src/store/baseStore'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
+import { CREATE_MASTER } from 'src/api/graphql/master/mutations/createMaster'
+import { UPDATE_MASTER } from 'src/api/graphql/master/mutations/updateMaster'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { changeMe } from 'src/api/graphql/me/mutations/changeMe'
 
 const RegistrationForm = ({
   master,
@@ -28,58 +27,60 @@ const RegistrationForm = ({
   ref3,
   ref4,
   handleClickNextTab,
-  photoMasterId,
+  photo,
   setNoPhotoError,
 }) => {
   const { catalogs } = useBaseStore(getStoreData)
   const { me } = useAuthStore(getStoreData)
   const { setMe } = useAuthStore(getStoreEvent)
 
-  const masterSpecializationsCatalog = catalogOrDefault(
-    catalogs?.masterSpecializationsCatalog,
-  )
   const router = useRouter()
   const [clickAddress, setClickAddress] = useState(true)
   const [errors, setErrors] = useState(null)
   const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
-  const { refetch } = useQuery(currentUserSalonsAndMasterQuery, {
-    skip: true,
-    onCompleted: res => {
-      setMe({
-        info: res?.me?.info,
-        master: res?.me?.master,
-        locationByIp: res?.locationByIp,
-        salons: res?.me?.salons,
-        rentalRequests: res?.me?.rentalRequests,
-      })
+  const [updateMe] = useMutation(changeMe, {
+    onCompleted: async data => {
+      const prepareData = flattenStrapiResponse(data.updateUsersPermissionsUser)
+      prepareData && setMe({ info: prepareData })
+    },
+    onError: error => {
+      const errorMessages = error.graphQLErrors.map(e => e.message)
+      setErrors(errorMessages)
+      setErrorPopupOpen(true)
     },
   })
-  const [mutate, { loading }] = useMutation(
-    updateMasterPersonalInformationMutation,
-    {
-      onError: error => {
-        const errorMessages = error.graphQLErrors.map(e => e.message)
-        setErrors(errorMessages)
-        setErrorPopupOpen(true)
-      },
-      onCompleted: async () => {
-        // ym("reachGoal", "create_profile_success");
-        // window?.dataLayer?.push({
-        //   event: "event",
-        //   eventProps: {
-        //     category: "form",
-        //     action: "create_profile_success",
-        //   },
-        // });
-        await refetch()
-        router.push('/masterCabinet')
-      },
+  const [mutate, { loading }] = useMutation(UPDATE_MASTER, {
+    onError: error => {
+      const errorMessages = error.graphQLErrors.map(e => e.message)
+      setErrors(errorMessages)
+      setErrorPopupOpen(true)
     },
-  )
+    onCompleted: async res => {
+      // ym("reachGoal", "create_profile_success");
+      // window?.dataLayer?.push({
+      //   event: "event",
+      //   eventProps: {
+      //     category: "form",
+      //     action: "create_profile_success",
+      //   },
+      // });
+      if (res?.updateMaster?.data?.id) {
+        await updateMe({
+          variables: {
+            id: me?.info.id,
+            data: {
+              masters: [res.updateMaster.data.id],
+            },
+          },
+        })
+      }
+      router.push('/masterCabinet')
+    },
+  })
   const [createMaster, { loading: loadingCreate }] = useMutation(
-    createMasterMutation,
+    CREATE_MASTER,
     {
-      onCompleted: async () => {
+      onCompleted: async res => {
         // ym("reachGoal", "create_profile");
         // window?.dataLayer?.push({
         //   event: "event",
@@ -88,7 +89,16 @@ const RegistrationForm = ({
         //     action: "create_profile",
         //   },
         // });
-        await refetch()
+        if (res?.createMaster?.data?.id) {
+          await updateMe({
+            variables: {
+              id: me?.info.id,
+              data: {
+                masters: [res.createMaster.data.id],
+              },
+            },
+          })
+        }
         router.push('/masterCabinet')
       },
     },
@@ -96,47 +106,49 @@ const RegistrationForm = ({
 
   const onSubmit = useCallback(
     values => {
-      const { specializations = [] } = values
-      const { groups = [] } = masterSpecializationsCatalog
-      const validSpecializations = specializations.filter(
-        s => groups.find(g => g.id === s) !== undefined,
-      )
-      if (!clickAddress || !values.address) {
-        setErrors(['Выберите адрес места работы из выпадающего списка'])
+      if (!values.address) {
+        setErrors(['Введите адрес места работы из выпадающего списка'])
         setErrorPopupOpen(true)
         return
       }
-      if (!master && !photoMasterId) {
+      if (!master && !photo) {
         setNoPhotoError(true)
         setErrors(['Необходимо добавить фото мастера'])
         setErrorPopupOpen(true)
         return
       }
+      console.log('values', values)
+      const servicesForInput = values.specializations.map(item => ({
+        service: item,
+      }))
       const input = {
-        ...values,
-        addressFull: null,
-        specializations: validSpecializations,
+        name: values.name,
+        email: values.email,
+        phone: values.phone.phoneNumber,
+        description: values.description,
+        address: values.address,
+        searchWork: values.searchWork,
+        services: servicesForInput,
+        webSiteUrl: values?.webSiteUrl || '',
+        haveTelegram: values?.phone?.haveTelegram || false,
+        haveViber: values?.phone?.haveViber || false,
+        haveWhatsApp: values?.phone?.haveWhatsApp || false,
+        photo: photo?.id,
       }
-      if (!master) {
-        const phone = {
-          phoneNumber: values?.phone?.phoneNumber,
-          haveTelegram: values?.phone?.haveTelegram || false,
-          haveViber: values?.phone?.haveViber || false,
-          haveWhatsApp: values?.phone?.haveWhatsApp || false,
-        }
 
+      if (!master) {
         createMaster({
           variables: {
-            input: { ...values, phone, photoId: photoMasterId },
+            input: { ...input },
           },
         })
       }
       if (master) {
-        mutate({ variables: { input } })
+        mutate({ variables: { masterId: master.id, input: { ...input } } })
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [clickAddress, masterSpecializationsCatalog, photoMasterId],
+    [clickAddress, photo],
   )
 
   return (
@@ -170,7 +182,7 @@ const RegistrationForm = ({
               <MasterSpecializationsList
                 handleClickNextTab={handleClickNextTab}
                 ref2={ref2}
-                serviceCatalog={masterSpecializationsCatalog}
+                serviceCatalogs={catalogs}
                 number={2}
               />
               <Work
