@@ -77,6 +77,7 @@ export const Avatar = styled.img`
   width: 56px;
   height: 56px;
   border-radius: 100%;
+  object-fit: cover;
 `
 
 export const Title = styled.p`

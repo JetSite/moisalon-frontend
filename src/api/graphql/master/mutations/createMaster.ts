@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client'
 import servicesFragment from '../../fragments/services'
+import { cityInfo } from '../../common/cityInfo'
 
 export const CREATE_MASTER = gql`
   mutation createMaster($input: MasterInput!) {
@@ -27,6 +28,9 @@ export const CREATE_MASTER = gql`
                 url
               }
             }
+          }
+          city {
+            ${cityInfo}
           }
         }
       }

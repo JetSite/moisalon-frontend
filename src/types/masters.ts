@@ -10,6 +10,7 @@ export interface IMasterServices extends IServices {}
 export interface IMaster {
   id: IID
   masterName: string
+  name: string
   reviewsCount: number
   rating: number
   ratingCount: number
@@ -22,6 +23,8 @@ export interface IMaster {
   searchWork: boolean
   masterPhone: string
   masterEmail: string
+  phone: string
+  email: string
   masterAddress: string
   description: string
   latitude: string

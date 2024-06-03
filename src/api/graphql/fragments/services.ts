@@ -4,6 +4,7 @@ service {
   data {
     id
     attributes {
+      serviceName
       service_categories {
         data {
           id

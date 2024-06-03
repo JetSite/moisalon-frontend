@@ -58,8 +58,6 @@ const Master: FC<Props> = ({ masterData, randomMasters, cityData }) => {
 
   const servicesData = getServicesByCategory(master?.services)
 
-  console.log(master)
-
   return (
     <MainLayout>
       {/* <Head>
@@ -250,8 +248,8 @@ const Master: FC<Props> = ({ masterData, randomMasters, cityData }) => {
         ) : null}
         <ReviewsMaster reviews={master?.reviews} masterId={master?.id} />
         <Contacts
-          phone={master?.masterPhone}
-          email={master?.masterEmail}
+          phone={master?.masterPhone || master?.phone}
+          email={master?.masterEmail || master?.email}
           address={master?.masterAddress}
           addressCoordinates={{
             latitude: master?.latitude,

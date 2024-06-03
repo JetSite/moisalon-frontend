@@ -18,6 +18,7 @@ import { CREATE_MASTER } from 'src/api/graphql/master/mutations/createMaster'
 import { UPDATE_MASTER } from 'src/api/graphql/master/mutations/updateMaster'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { changeMe } from 'src/api/graphql/me/mutations/changeMe'
+import { IID } from 'src/types/common'
 
 const RegistrationForm = ({
   master,
@@ -29,8 +30,8 @@ const RegistrationForm = ({
   handleClickNextTab,
   photo,
   setNoPhotoError,
+  serviceCategories,
 }) => {
-  const { catalogs } = useBaseStore(getStoreData)
   const { me } = useAuthStore(getStoreData)
   const { setMe } = useAuthStore(getStoreEvent)
 
@@ -65,11 +66,16 @@ const RegistrationForm = ({
       //   },
       // });
       if (res?.updateMaster?.data?.id) {
+        let masterIds: IID[] = []
+        if (me?.owner?.masters) {
+          masterIds = me.owner.masters.map(item => item.id)
+        }
+
         await updateMe({
           variables: {
             id: me?.info.id,
             data: {
-              masters: [res.updateMaster.data.id],
+              masters: [...masterIds, res.updateMaster.data.id],
             },
           },
         })
@@ -90,11 +96,16 @@ const RegistrationForm = ({
         //   },
         // });
         if (res?.createMaster?.data?.id) {
+          let masterIds: IID[] = []
+          if (me?.owner?.masters) {
+            masterIds = me.owner.masters.map(item => item.id)
+          }
+
           await updateMe({
             variables: {
               id: me?.info.id,
               data: {
-                masters: [res.createMaster.data.id],
+                masters: [...masterIds, res.createMaster.data.id],
               },
             },
           })
@@ -117,10 +128,19 @@ const RegistrationForm = ({
         setErrorPopupOpen(true)
         return
       }
-      console.log('values', values)
+
       const servicesForInput = values.specializations.map(item => ({
         service: item,
       }))
+      // const resumeForInput = {
+      //   age: values.resume_age,
+      //   gender: values.resume_gender,
+      //   specialization: values.resume_specialization,
+      //   region: values.resume_region,
+      //   workSchedule: values.resume_workSchedule,
+      //   salary: values.resume_salary,
+      //   content: values.resume_content,
+      // }
       const input = {
         name: values.name,
         email: values.email,
@@ -134,6 +154,7 @@ const RegistrationForm = ({
         haveViber: values?.phone?.haveViber || false,
         haveWhatsApp: values?.phone?.haveWhatsApp || false,
         photo: photo?.id,
+        city: me?.info?.city?.id || 1,
       }
 
       if (!master) {
@@ -144,7 +165,17 @@ const RegistrationForm = ({
         })
       }
       if (master) {
-        mutate({ variables: { masterId: master.id, input: { ...input } } })
+        const masterResumes = master.resumes.map(item => {
+          return item.id
+        })
+        mutate({
+          variables: {
+            masterId: master.id,
+            input: {
+              ...input,
+            },
+          },
+        })
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -182,7 +213,7 @@ const RegistrationForm = ({
               <MasterSpecializationsList
                 handleClickNextTab={handleClickNextTab}
                 ref2={ref2}
-                serviceCatalogs={catalogs}
+                serviceCatalogs={serviceCategories}
                 number={2}
               />
               <Work

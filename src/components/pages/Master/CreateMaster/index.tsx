@@ -8,7 +8,7 @@ import BackArrow from '../../../ui/BackArrow'
 import { PHOTO_URL } from '../../../../api/variables'
 import RegistrationForm from './components/RegistrationForm'
 
-const CreateMaster = ({ onAdd, master }) => {
+const CreateMaster = ({ onAdd, master, serviceCategories }) => {
   const allTabs = useRef()
   const ref1 = useRef()
   const ref2 = useRef()
@@ -140,6 +140,7 @@ const CreateMaster = ({ onAdd, master }) => {
             master={master}
             photo={photo}
             setNoPhotoError={setNoPhotoError}
+            serviceCategories={serviceCategories}
           />
         </Wrapper>
       </MainContainer>

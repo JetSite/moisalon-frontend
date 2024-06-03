@@ -72,14 +72,12 @@ function MyApp({ Component, pageProps }: AppProps) {
         <ThemeProvider theme={theme}>
           <StylesProvider injectFirst>
             <AuthProvider cityData={pageProps.cityData}>
-              {/* <ServicesProvider> */}
               <YMInitializer
                 accounts={[56585698]}
                 options={{ webvisor: true }}
                 version="2"
               />
               <Component {...pageProps} />
-              {/* </ServicesProvider> */}
             </AuthProvider>
           </StylesProvider>
         </ThemeProvider>
