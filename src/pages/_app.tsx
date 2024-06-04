@@ -16,9 +16,7 @@ import { useMedia } from 'use-media'
 import { red } from '../styles/variables'
 import { AppProps } from 'next/app'
 import { MainHead } from './MainHead'
-import { ChatProvider } from 'src/chatContext'
 import AuthProvider from 'src/api/AuthProvider'
-import ServicesProvider from 'src/providers/ServicesProvider'
 
 const progress = new ProgressBar({
   size: 2,

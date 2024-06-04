@@ -229,11 +229,10 @@ const RegistrationForm: FC<Props> = ({
   // })
 
   const onSubmit = values => {
-    console.log(values)
     const findCity =
       cities?.find(e => e.citySlug === cyrToTranslit(clickCity)) || null
 
-    if (!findCity) {
+    if (!findCity && clickCity) {
       addCity({
         variables: { name: clickCity, slug: cyrToTranslit(clickCity) },
       })
@@ -334,8 +333,6 @@ const RegistrationForm: FC<Props> = ({
     //     })
     //   }
   }
-
-  console.log(activities)
 
   return (
     <Wrapper>

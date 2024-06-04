@@ -22,8 +22,6 @@ const RatingEdit: FC<Props> = ({ rating, newRating, handleChangeRating }) => {
   const router = useRouter()
   const { me } = useAuthStore(getStoreData)
 
-  console.log(me?.info)
-
   return (
     <>
       <Wrapper>
