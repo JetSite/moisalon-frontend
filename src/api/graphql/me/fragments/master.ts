@@ -43,6 +43,19 @@ export const masterFragment = `data {
       reviews {
         ${reviewsFragment}
       }
+      resumes {
+        data {
+          id
+          attributes {
+            title
+            content
+            specialization
+            age
+            workSchedule
+            salary
+          }
+        }
+      }
   }
 }
 `

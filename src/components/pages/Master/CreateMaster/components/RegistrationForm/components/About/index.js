@@ -37,18 +37,11 @@ const About = ({ setClickAddress, ref1, handleClickNextTab, number }) => {
         />
       </FieldWrap>
       <FieldWrap>
-        {/* <FieldStyled
+        <FieldStyled
           name="address"
           setClickAddress={setClickAddress}
           component={AddressNoSalonField}
           label="Адрес"
-          validate={required}
-          requiredField
-        /> */}
-        <FieldStyled
-          name="address"
-          component={TextField}
-          label="Address"
           validate={required}
           requiredField
         />

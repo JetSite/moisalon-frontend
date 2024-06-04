@@ -113,7 +113,14 @@ const Work = ({ ref3, handleClickNextTab, number }) => {
             </>
           )}
         </Field>
-        {/* <FieldResumeWrapper>
+        <FieldResumeWrapper>
+          <FieldWrap>
+            <FieldStyled
+              name="resume_title"
+              component={TextField}
+              label="Заголовок резюме"
+            />
+          </FieldWrap>
           <FieldWrap>
             <FieldStyled
               name="resume_specialization"
@@ -128,13 +135,13 @@ const Work = ({ ref3, handleClickNextTab, number }) => {
               label="Возраст"
             />
           </FieldWrap>
-          <FieldWrap>
+          {/* <FieldWrap>
             <FieldStyled
               name="resume_gender"
               component={TextField}
               label="Пол"
             />
-          </FieldWrap>
+          </FieldWrap> */}
           <FieldWrap>
             <FieldStyled
               name="resume_region"
@@ -165,7 +172,7 @@ const Work = ({ ref3, handleClickNextTab, number }) => {
               maxLength={1200}
             />
           </FieldWrap>
-        </FieldResumeWrapper> */}
+        </FieldResumeWrapper>
       </SearchWorkWrapper>
       <MobileHidden>
         <Button

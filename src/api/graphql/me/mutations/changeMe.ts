@@ -64,6 +64,19 @@ export const changeMe = gql`
                 city {
                   ${cityInfo}
                 }
+                resumes {
+                  data {
+                    id
+                    attributes {
+                      title
+                      content
+                      specialization
+                      age
+                      workSchedule
+                      salary
+                    }
+                  }
+                }
               }
             }
           }

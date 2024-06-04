@@ -69,6 +69,19 @@ export const MASTER_PAGE = gql`
           services {
            ${servicesFragment}
           }
+          resumes {
+            data {
+              id
+              attributes {
+                title
+                content
+                specialization
+                age
+                workSchedule
+                salary
+              }
+            }
+          }
         }
       }
     }
