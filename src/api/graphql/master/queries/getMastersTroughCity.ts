@@ -15,8 +15,11 @@ export const getMastersTroughCity = gql`
         id
         attributes {
             masterName
+            name
             masterPhone
+            phone
             masterEmail
+            email
             searchWork
             rating 
             ratingCount 
@@ -43,6 +46,9 @@ export const getMastersTroughCity = gql`
             }
             ratings {
               ${ratingsFragment}
+            }
+            photo {
+              ${imageInfo}
             }
         }
       }
