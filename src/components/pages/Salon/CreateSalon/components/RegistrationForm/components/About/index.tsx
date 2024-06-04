@@ -20,24 +20,32 @@ import PhoneArrayField from '../../../../../../../blocks/Form/PhoneField/PhoneAr
 import { Checkbox, Label } from '../../../../../../Rent/RentFilter/style'
 import { FC, RefObject, useState } from 'react'
 import { ISetState } from 'src/types/common'
+import { IPhoto } from 'src/types'
+import { ISalonPage } from 'src/types/salon'
 
 interface Props {
   number: number
   ref1: RefObject<HTMLDivElement>
-  setClickAddress: ISetState<boolean>
+  setClickCity: ISetState<string | null>
   handleClickNextTab: (number: number) => void
+  photos: IPhoto[]
+  salon: ISalonPage | null
 }
 
 const About: FC<Props> = ({
-  setClickAddress,
+  setClickCity,
   ref1,
   handleClickNextTab,
   number,
+  photos,
+  salon,
 }) => {
   const [view, setView] = useState<boolean>(false)
   const photoArrayProps = {
     photoType: 'salonPhoto',
     kind: 'small',
+    photos,
+    editEntityId: salon?.id || null,
   }
 
   return (
@@ -67,8 +75,7 @@ const About: FC<Props> = ({
       <FieldWrap>
         <FieldStyled
           name="address"
-          // disabled
-          setClickAddress={setClickAddress}
+          setClickCity={setClickCity}
           component={AddressNoSalonField}
           label="Адрес"
           requiredField

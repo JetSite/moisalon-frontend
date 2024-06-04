@@ -24,10 +24,13 @@ export const getDadataAddress: IGetDadataAddress = async query => {
     const data = await response.json()
 
     if (data && data.suggestions && data.suggestions.length > 0) {
+      console.log(data)
+
       res = data.suggestions.map((e: { data: any; value: string }) => ({
         geoLat: e.data.geo_lat ? Number(e.data.geo_lat) : null,
         geoLon: e.data.geo_lon ? Number(e.data.geo_lon) : null,
         value: e.value,
+        city: e.data.city || null,
       }))
     }
   } catch (error) {

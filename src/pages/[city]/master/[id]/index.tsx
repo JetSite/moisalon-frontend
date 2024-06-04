@@ -58,8 +58,6 @@ const Master: FC<Props> = ({ masterData, randomMasters, cityData }) => {
 
   const servicesData = getServicesByCategory(master?.services)
 
-  console.log(master)
-
   return (
     <MainLayout>
       {/* <Head>

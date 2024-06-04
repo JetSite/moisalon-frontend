@@ -85,8 +85,6 @@ const Salon: FC<Props> = ({ salonData, othersSalons, cityData }) => {
 
   const handleRemoveBrand = (id: IID) => {}
 
-  console.log(salonData)
-
   return (
     <MainLayout>
       <SearchBlock />

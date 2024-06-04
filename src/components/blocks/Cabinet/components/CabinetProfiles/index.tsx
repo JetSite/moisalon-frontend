@@ -28,8 +28,6 @@ const CabinetProfiles = () => {
 
   if (!me || !me.owner) return null
 
-  console.log(salons)
-
   return (
     <>
       <Wrapper>

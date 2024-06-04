@@ -49,9 +49,8 @@ const AuthProvider: FC<{ children: IChildren; cityData?: ICity }> = ({
   const [getMe, { loading: meLoading }] = useLazyQuery(ME, getMeCB)
   const [getUser, { loading: userLoading }] = useLazyQuery(USER, {
     onCompleted: data => {
-      console.log(data)
-
       const prepareData = flattenStrapiResponse(data.usersPermissionsUser)
+      console.log('prepareData', prepareData)
 
       if (!prepareData.selected_city) {
         changeCityFunc({

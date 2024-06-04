@@ -50,7 +50,7 @@ const MasterSpecializationsList = ({
   number,
 }) => {
   const services = []
-  serviceCatalogs.forEach(item => {
+  serviceCatalogs?.forEach(item => {
     item.services.forEach(service => {
       services.push(service)
     })

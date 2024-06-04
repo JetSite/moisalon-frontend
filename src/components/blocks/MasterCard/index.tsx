@@ -47,7 +47,7 @@ const MasterItem: FC<Props> = ({
     setIsFavorit(!!isInStorage)
   }, [])
 
-  const photoUrl = `${PHOTO_URL}${master.masterPhoto.url}`
+  const photoUrl = `${PHOTO_URL}${master?.masterPhoto?.url}`
 
   const addFavorite = (e: MouseEvent, master: IMaster | null) => {
     e.preventDefault()

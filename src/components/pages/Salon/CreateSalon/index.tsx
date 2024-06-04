@@ -20,18 +20,21 @@ import { getTabs } from './config'
 import { ISalon, ISalonPage } from 'src/types/salon'
 import { IID, ISetState } from 'src/types/common'
 import { getDadataAddress } from 'src/api/dadata/getAddress'
-import { IPhoto } from 'src/types'
+import { ICity, IPhoto } from 'src/types'
 import { useMutation } from '@apollo/client'
 import { UPDATE_SALON_PHOTO } from 'src/api/graphql/salon/mutations/updateSalonPhoto'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 
 export type IHandleClickNextTabInForm = (number: number) => void
 
 interface Props {
   lessor?: boolean
-  salon: ISalon
+  salon: ISalonPage
+  cities: ICity[]
 }
 
-const CreateSalon: FC<Props> = ({ salon, lessor = false }) => {
+const CreateSalon: FC<Props> = ({ salon, cities, lessor = false }) => {
   const allTabs = useRef<HTMLFormElement>(null)
   const ref1 = useRef<HTMLDivElement>(null)
   const ref2 = useRef<HTMLDivElement>(null)
@@ -53,12 +56,14 @@ const CreateSalon: FC<Props> = ({ salon, lessor = false }) => {
     salon?.salonLogo ? salon?.salonLogo : null,
   )
 
-  const [updateMasterPhoto] = useMutation(UPDATE_SALON_PHOTO)
+  const [updateSalonePhoto] = useMutation(UPDATE_SALON_PHOTO)
   const onAdd = useCallback(
     (photo: string) => {
-      updateMasterPhoto({ variables: { input: { photo } } })
+      updateSalonePhoto({
+        variables: { id: salon.id, input: { salonLogo: photo } },
+      })
     },
-    [updateMasterPhoto],
+    [updateSalonePhoto],
   )
 
   const handleElementPosition = (
@@ -185,6 +190,7 @@ const CreateSalon: FC<Props> = ({ salon, lessor = false }) => {
             setNoPhotoError={setNoPhotoError}
           />
           <RegistrationForm
+            cities={cities}
             allTabs={allTabs}
             lessor={lessor}
             handleClickNextTab={handleClickNextTab}
@@ -197,6 +203,7 @@ const CreateSalon: FC<Props> = ({ salon, lessor = false }) => {
             photoSalonId={photoSalonId}
             salon={salon}
             setNoPhotoError={setNoPhotoError}
+            logo={logo}
           />
         </Wrapper>
       </MainContainer>

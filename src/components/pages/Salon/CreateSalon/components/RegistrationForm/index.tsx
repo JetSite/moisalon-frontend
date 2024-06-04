@@ -33,6 +33,16 @@ import { ISalon, ISalonPage } from 'src/types/salon'
 import { IID, ISetState } from 'src/types/common'
 import { IServiceInForm } from 'src/types/services'
 import { IHandleClickNextTabInForm } from '../..'
+import { ICity, IPhoto } from 'src/types'
+import { workingHoursOptions } from 'src/components/blocks/Form/WorkingTimeField/WorkingTime'
+import { transformWorkingHours } from 'src/utils/newUtils/transformWorkingHoursInput'
+import { UPDATE_SALON } from 'src/api/graphql/salon/mutations/updateSalon'
+import { getServicesForCatalog } from 'src/utils/newUtils/getServicesForCatalog'
+import { cyrToTranslit } from '../../../../../../utils/translit'
+import { CREATE_CITY } from 'src/api/graphql/city/mutations/createCity'
+import { getPrepareInputSalonForm } from './utils'
+import { CREATE_SALON } from 'src/api/graphql/salon/mutations/createSalon'
+import useAuthStore from 'src/store/authStore'
 
 interface Props {
   allTabs: RefObject<HTMLFormElement>
@@ -44,9 +54,11 @@ interface Props {
   ref6: RefObject<HTMLDivElement>
   lessor: boolean
   handleClickNextTab: IHandleClickNextTabInForm
-  salon: ISalon
+  salon: ISalonPage
   setNoPhotoError: ISetState<boolean>
   photoSalonId: IID | null
+  logo: IPhoto | null
+  cities: ICity[]
 }
 
 const RegistrationForm: FC<Props> = ({
@@ -62,41 +74,17 @@ const RegistrationForm: FC<Props> = ({
   salon,
   setNoPhotoError,
   lessor,
+  logo,
+  cities,
 }) => {
   const router = useRouter()
-  const [clickAddress, setClickAddress] = useState<boolean>(true)
+  const [clickCity, setClickCity] = useState<string | null>(null)
   const [errors, setErrors] = useState(null)
   const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
   const { services, activities } = useBaseStore(getStoreData)
-
-  const { refetch } = useQuery(currentUserSalonsAndMasterQuery, {
-    skip: true,
-    onCompleted: res => {
-      setMe({
-        info: res?.me?.info,
-        master: res?.me?.master,
-        locationByIp: res?.locationByIp,
-        salons: res?.me?.salons,
-        rentalRequests: res?.me?.rentalRequests,
-      })
-    },
-  })
-
-  const salonServicesCatalog: IServiceInForm[] = services?.length
-    ? services?.map(
-        ({ id, serviceCategoryName, services: insideServices }) => ({
-          id,
-          description: serviceCategoryName,
-          items: insideServices.map(({ id, serviceName }) => ({
-            groupName: serviceName,
-            title: serviceName,
-            id,
-          })),
-        }),
-      )
-    : []
-
-  console.log('services')
+  const [selectCityId, setSelectCityId] = useState(null)
+  const { me } = useAuthStore(getStoreData)
+  const salonServicesCatalog: IServiceInForm[] = getServicesForCatalog(services)
 
   const salonActivitiesCatalog = activities
     ? activities.map(({ activityName, id }) => ({
@@ -107,16 +95,40 @@ const RegistrationForm: FC<Props> = ({
     : []
 
   const salonWithInitialArrays = useMemo(() => {
+    const initialInput = salon
+      ? {
+          salonName: salon.salonName,
+          salonEmail: salon.salonEmail,
+          salonDescription: salon.salonDescription,
+          locationDirections: salon.locationDirections,
+          salonContactPersonEmail: salon.salonContactPersonEmail,
+          salonContactPersonName: salon.salonContactPersonName,
+          salonOnlineBookingUrl: salon.salonOnlineBookingUrl,
+          salonWebSiteUrl: salon.salonWebSiteUrl,
+          salonPhones: salon.salonPhones.map(e => ({
+            phoneNumber: e.phoneNumber,
+            haveTelegram: e.haveTelegram,
+            haveViber: e.haveViber,
+            haveWhatsApp: e.haveWhatsApp,
+          })),
+          activities: salon.activities.map(e => e.id),
+          services: getServicesForCatalog([]),
+        }
+      : {
+          salonName: '',
+          salonPhones: [
+            {
+              haveTelegram: false,
+              haveViber: false,
+              haveWhatsApp: false,
+              phoneNumber: '',
+            },
+          ],
+        }
     return {
-      ...salon,
-      salonPhones: [
-        {
-          haveTelegram: false,
-          haveViber: false,
-          haveWhatsApp: false,
-          phoneNumber: '',
-        },
-      ],
+      ...initialInput,
+      socialNetworks: [],
+      services: [],
       workingHours: [
         {
           startDayOfWeek: 'MONDAY',
@@ -139,64 +151,104 @@ const RegistrationForm: FC<Props> = ({
       ],
       address: salon?.salonAddress,
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const [mutate, { loading }] = useMutation(updateSalonMutation, {
-    onError: error => {
-      const errorMessages = error.graphQLErrors.map(e => e.message)
-      setErrors(errorMessages)
-      setErrorPopupOpen(true)
-    },
-    onCompleted: async () => {
-      await refetch()
-      router.push(
-        {
-          pathname: lessor ? '/rentSalonSeat' : '/masterCabinet',
-          query: { id: salon.id },
-        },
-        lessor ? '/rentSalonSeat' : '/masterCabinet',
-      )
+  const [addCity, { loading: addCityLoad }] = useMutation(CREATE_CITY, {
+    onCompleted: data => {
+      setSelectCityId(data.createCity.data.id)
+      console.log(data)
     },
   })
 
-  const [mutateNameAndAddress] = useMutation(updateSalonIdentityMutation, {
-    onError: error => {
-      const errorMessages = error.graphQLErrors.map(e => e.message)
-      setErrors(errorMessages)
-      setErrorPopupOpen(true)
+  // const { refetch } = useQuery(currentUserSalonsAndMasterQuery, {
+  //   skip: true,
+  //   onCompleted: res => {
+  //     setMe({
+  //       info: res?.me?.info,
+  //       master: res?.me?.master,
+  //       locationByIp: res?.locationByIp,
+  //       salons: res?.me?.salons,
+  //       rentalRequests: res?.me?.rentalRequests,
+  //     })
+  //   },
+  // })
+
+  const [mutate, { loading }] = useMutation(UPDATE_SALON, {
+    // onError: error => {
+    //   const errorMessages = error.graphQLErrors.map(e => e.message)
+    //   setErrors(errorMessages)
+    //   setErrorPopupOpen(true)
+    // },
+    onCompleted: async data => {
+      console.log(data)
+
+      // await refetch()
+      // router.push(
+      //   {
+      //     pathname: lessor ? '/rentSalonSeat' : '/masterCabinet',
+      //     query: { id: salon.id },
+      //   },
+      //   lessor ? '/rentSalonSeat' : '/masterCabinet',
+      // )
     },
   })
 
-  const [mutateLogo] = useMutation(updateSalonLogoMutation, {
-    onError: error => {
-      const errorMessages = error.graphQLErrors.map(e => e.message)
-      setErrors(errorMessages)
-      setErrorPopupOpen(true)
-    },
+  // const [mutateNameAndAddress] = useMutation(updateSalonIdentityMutation, {
+  //   onError: error => {
+  //     const errorMessages = error.graphQLErrors.map(e => e.message)
+  //     setErrors(errorMessages)
+  //     setErrorPopupOpen(true)
+  //   },
+  // })
+
+  // const [mutateLogo] = useMutation(updateSalonLogoMutation, {
+  //   onError: error => {
+  //     const errorMessages = error.graphQLErrors.map(e => e.message)
+  //     setErrors(errorMessages)
+  //     setErrorPopupOpen(true)
+  //   },
+  // })
+
+  const [createSalon, { loading: loadingCreate }] = useMutation(CREATE_SALON, {
+    // onCompleted: async ({ createSalon }) => {
+    //   await refetch()
+    //   router.push(
+    //     {
+    //       pathname: lessor ? '/rentSalonSeat' : '/masterCabinet',
+    //       query: { id: createSalon.id },
+    //     },
+    //     lessor ? '/rentSalonSeat' : '/masterCabinet',
+    //   )
   })
 
-  const [createSalon, { loadingCreate }] = useMutation(createSalonMutation, {
-    onCompleted: async ({ createSalon }) => {
-      await refetch()
-      router.push(
-        {
-          pathname: lessor ? '/rentSalonSeat' : '/masterCabinet',
-          query: { id: createSalon.id },
-        },
-        lessor ? '/rentSalonSeat' : '/masterCabinet',
-      )
-    },
-
-    onError: error => {
-      const errorMessages = error.graphQLErrors.map(e => e.message)
-      setErrors(errorMessages)
-      setErrorPopupOpen(true)
-    },
-  })
+  //   onError: error => {
+  //     const errorMessages = error.graphQLErrors.map(e => e.message)
+  //     setErrors(errorMessages)
+  //     setErrorPopupOpen(true)
+  //   },
+  // })
 
   const onSubmit = values => {
     console.log(values)
+    const findCity =
+      cities?.find(e => e.citySlug === cyrToTranslit(clickCity)) || null
+
+    if (!findCity) {
+      addCity({
+        variables: { name: clickCity, slug: cyrToTranslit(clickCity) },
+      })
+    }
+    const input = getPrepareInputSalonForm({
+      values,
+      selectCityId,
+      logo,
+      findCity,
+    })
+    if (salon?.id) {
+      mutate({ variables: { salonId: salon.id, input } })
+    } else {
+      createSalon({ variables: { input: { user: me?.info.id, ...input } } })
+    }
 
     //   if (!clickAddress || !values.address) {
     //     setErrors(['Выберите адрес салона из выпадающего списка'])
@@ -295,8 +347,10 @@ const RegistrationForm: FC<Props> = ({
           return (
             <form onSubmit={handleSubmit} ref={allTabs}>
               <About
+                salon={salon}
+                photos={salon?.salonPhotos || []}
                 ref1={ref1}
-                setClickAddress={setClickAddress}
+                setClickCity={setClickCity}
                 number={1}
                 handleClickNextTab={handleClickNextTab}
               />
@@ -362,63 +416,3 @@ const RegistrationForm: FC<Props> = ({
 }
 
 export default RegistrationForm
-
-const salonInput = {
-  activities: ['1'], // +
-  salonContactPersonEmail: 'sprttt@nail.ru', // +
-  salonContactPersonName: 'Anatoliy', // +
-  salonContactPersonPhone: '43453434', // +
-  salonDescription:
-    'Стильная парикмахерская, предлагающая профессиональные стрижки, окрашивание, укладку и ух', // +
-  salonEmail: 'shpun_06@mail.ru', // +
-  locationDirections: 'go to dor', // +
-  salonName: 'Salon PASHA', // +
-  salonOnlineBookingUrl: 'http://localhost:3000/createLessorSalon', // +
-  salonPhones: [
-    // +
-    {
-      haveTelegram: true,
-      haveViber: false,
-      haveWhatsApp: false,
-      phoneNumber: '4345534534',
-    },
-  ],
-  services: [
-    // value remove
-    // +
-    { id: '1', value: 1 },
-    { id: '2', value: 1 },
-    { id: '3', value: 1 },
-    { id: '5', value: 1 },
-    { id: '8', value: 1 },
-    { id: '11', value: 1 },
-  ],
-  // socialNetworks: [{title: string, link: string}]
-  socialNetworks: {
-    odnoklassniki: 'https://music.youtube.com',
-    vKontakte: 'https://music.youtube.com',
-    youTube: 'https://music.youtube.com',
-  },
-  salonWebSiteUrl: 'https://music.youtube.com', // +
-  workingHours: [
-    {
-      // dayOfWeek:  "Понедельник - Пятница"
-      // endTime:  "21:45:00.000"
-      // startTime   "10:00:00.000"
-      endDayOfWeek: 'FRIDAY',
-      endHour: 23,
-      endMinute: 59,
-      startDayOfWeek: 'MONDAY',
-      startHour: 0,
-      startMinute: 0,
-    },
-    {
-      endDayOfWeek: 'SATURDAY',
-      endHour: 5,
-      endMinute: 59,
-      startDayOfWeek: 'THURSDAY',
-      startHour: 3,
-      startMinute: 0,
-    },
-  ],
-}

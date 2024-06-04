@@ -71,9 +71,9 @@ const CabinetHeaderMobile: FC<Props> = ({
         <Wrap>
           {master.id ? (
             <Link
-              href={`/${
-                cyrToTranslit(master.city.cityName) || city?.citySlug
-              }/master/${master?.id}`}
+              href={`/${master.city.citySlug || city?.citySlug}/master/${
+                master?.id
+              }`}
             >
               <Item>
                 <Container>
@@ -97,14 +97,12 @@ const CabinetHeaderMobile: FC<Props> = ({
                   <Link
                     href={
                       item.salonWorkplacesCount
-                        ? `/${
-                            cyrToTranslit(item.cities.cityName) ||
-                            city?.citySlug
-                          }/rent/${item?.id}`
-                        : `/${
-                            cyrToTranslit(item.cities.cityName) ||
-                            city?.citySlug
-                          }/salon/${item?.id}`
+                        ? `/${item.cities?.citySlug || city?.citySlug}/rent/${
+                            item?.id
+                          }`
+                        : `/${item.cities?.citySlug || city?.citySlug}/salon/${
+                            item?.id
+                          }`
                     }
                   >
                     <Item>
@@ -112,8 +110,7 @@ const CabinetHeaderMobile: FC<Props> = ({
                         <Avatar
                           alt="avatar"
                           src={
-                            PHOTO_URL + item.salonCover?.url ||
-                            'empty-photo.svg'
+                            PHOTO_URL + item.salonLogo?.url || 'empty-photo.svg'
                           }
                         />
                         <Content>
@@ -134,9 +131,9 @@ const CabinetHeaderMobile: FC<Props> = ({
             ? brands.map(item => (
                 <div key={item.id}>
                   <Link
-                    href={`/${
-                      cyrToTranslit(item.city.cityName) || city?.citySlug
-                    }/brand/${item.id}`}
+                    href={`/${item.city.citySlug || city?.citySlug}/brand/${
+                      item.id
+                    }`}
                   >
                     <Item>
                       <Container>

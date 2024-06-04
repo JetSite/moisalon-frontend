@@ -135,17 +135,18 @@ const RegistrationForm = ({
         haveWhatsApp: values?.phone?.haveWhatsApp || false,
         photo: photo?.id,
       }
+      console.log(input)
 
-      if (!master) {
-        createMaster({
-          variables: {
-            input: { ...input },
-          },
-        })
-      }
-      if (master) {
-        mutate({ variables: { masterId: master.id, input: { ...input } } })
-      }
+      // if (!master) {
+      //   createMaster({
+      //     variables: {
+      //       input: { ...input },
+      //     },
+      //   })
+      // }
+      // if (master) {
+      //   mutate({ variables: { masterId: master.id, input: { ...input } } })
+      // }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [clickAddress, photo],

@@ -76,7 +76,7 @@ const DictionaryItem: FC<Props> = ({
         remove(index)
       }
     } else {
-      push({ id, value: 1 })
+      push({ id })
     }
   }, [check])
 

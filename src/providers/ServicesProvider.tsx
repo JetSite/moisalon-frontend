@@ -16,7 +16,7 @@ const ServicesProvider: FC<{ children: IChildren }> = ({ children }) => {
       const prepareData = flattenStrapiResponse(data.serviceCategories)
       setCatalogs(prepareData)
     },
-    skip: !!catalogs?.length,
+    // skip: !!catalogs?.length,
     onError: err => console.log(err),
     notifyOnNetworkStatusChange: true,
   })

@@ -1,9 +1,14 @@
 import React, { useCallback, useState } from 'react'
-import Select from '../Select/index.tsx'
+import Select from '../Select'
 import TimeSpanInput from '../TimeSpanInput'
 import Grid from '@material-ui/core/Grid'
 
-export const options = [
+export interface IOptions {
+  label: string
+  value: string
+}
+
+export const workingHoursOptions: IOptions[] = [
   {
     label: 'Понедельник',
     value: 'MONDAY',
@@ -39,7 +44,7 @@ const allOptions = [
     label: '',
     value: '',
   },
-  ...options,
+  ...workingHoursOptions,
 ]
 
 const initialWorkingTime = {
@@ -58,7 +63,7 @@ const WorkingTime = ({ onChange }) => {
       onChange({
         ...workingTime,
         startDayOfWeek: event.target.value,
-        endDayOfWeek: options[options.length - 1].value,
+        endDayOfWeek: workingHoursOptions[workingHoursOptions.length - 1].value,
       })
       setWorkingTime(initialWorkingTime)
     },
@@ -69,7 +74,7 @@ const WorkingTime = ({ onChange }) => {
     event => {
       onChange({
         ...workingTime,
-        startDayOfWeek: options[0].value,
+        startDayOfWeek: workingHoursOptions[0].value,
         endDayOfWeek: event.target.value,
       })
       setWorkingTime(initialWorkingTime)
@@ -81,8 +86,8 @@ const WorkingTime = ({ onChange }) => {
     time => {
       const value = {
         ...time,
-        startDayOfWeek: options[0].value,
-        endDayOfWeek: options[options.length - 1].value,
+        startDayOfWeek: workingHoursOptions[0].value,
+        endDayOfWeek: workingHoursOptions[workingHoursOptions.length - 1].value,
       }
 
       onChange(value)
