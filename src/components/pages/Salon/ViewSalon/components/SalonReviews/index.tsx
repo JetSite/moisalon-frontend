@@ -22,8 +22,6 @@ const SalonReviews: FC<Props> = ({ reviews, salonId }) => {
 
   const [refetch] = useLazyQuery(GET_SALON_REVIEWS, {
     onCompleted: data => {
-      console.log(data)
-
       const prepareData: IReview[] = flattenStrapiResponse(
         data.salon.data,
       ).reviews

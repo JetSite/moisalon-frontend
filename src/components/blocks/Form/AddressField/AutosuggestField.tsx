@@ -116,7 +116,6 @@ const AutosuggestField: FC<Props> = ({ suggestions, label, ...rest }) => {
         onChange(newValue)
       }
       setIsClearRequested(false)
-      rest.setClickAddress && rest.setClickAddress(false)
     },
     // eslint-disable-next-line
     [onChange],
@@ -129,7 +128,6 @@ const AutosuggestField: FC<Props> = ({ suggestions, label, ...rest }) => {
         onChange(suggestion)
       }
       setIsClearRequested(false)
-      rest.setClickAddress && rest.setClickAddress(true)
     },
     // eslint-disable-next-line
     [onChange],

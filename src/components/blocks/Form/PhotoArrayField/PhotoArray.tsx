@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { FC, useCallback } from 'react'
 import PhotoAdd from './PhotoAdd'
 import PhotoItem from './PhotoItem'
 import { Grid } from '@material-ui/core'
 import usePhotos from './usePhotos'
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../styles/variables'
+import { useMutation } from '@apollo/client'
+import { IPhoto } from 'src/types'
+import { PhotoArrayFieldProps } from './PhotoArrayField'
 
 const Description = styled.p`
   font-size: 14px;
@@ -25,9 +28,14 @@ const Wrap = styled.div`
   align-items: flex-start;
 `
 
-const PhotoArray = props => {
+interface Props extends PhotoArrayFieldProps {
+  description?: string
+  photos: IPhoto[]
+}
+
+const PhotoArray: FC<Props> = props => {
   const { photos, defaultPhotoId, onSetDefault, description, variant } = props
-  const { onAdd, onRemove, onChange } = usePhotos(props)
+  const { onRemove, onChange, onAdd } = usePhotos(props)
 
   const photoList = photos.map(photo => {
     return (

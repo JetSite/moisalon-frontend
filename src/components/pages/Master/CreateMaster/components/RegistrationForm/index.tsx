@@ -154,6 +154,7 @@ const RegistrationForm = ({
         photo: photo?.id,
         city: me?.info?.city?.id || 1,
       }
+      console.log(input)
 
       let resumeId = null
       if (values.searchWork) {

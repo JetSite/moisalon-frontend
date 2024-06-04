@@ -3,7 +3,7 @@ import { useAddressSuggestions } from './useAddressSuggestions'
 import Map from '../../Map'
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../styles/variables'
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import { TextFieldProps } from '@material-ui/core'
 import { FieldInputProps } from 'react-final-form'
 
@@ -59,6 +59,10 @@ const AddressNoSalonField: FC<Props> = ({
     longitude: coordinates?.geoLon,
     latitude: coordinates?.geoLat,
   }
+
+  useEffect(() => {
+    rest.setClickCity(coordinates?.city)
+  }, [coordinates])
 
   return (
     <AddressWrap noMap={!rest.noMap}>

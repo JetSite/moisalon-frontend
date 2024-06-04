@@ -124,8 +124,8 @@ const PhotoBack = styled.div`
 
 interface Props {
   id: IID | null
-  onAdd: (id: IID) => void
-  setPhoto: (photo: IPhoto) => void
+  onAdd: (id: string) => void
+  setPhoto: ISetState<IPhoto | null>
   photoType: string
   photo: { url: string } | null
   noSetPhoto?: boolean
@@ -162,8 +162,8 @@ const Avatar: FC<Props> = ({
           if (res?.data?.upload?.data?.id) {
             const normalisedPhoto = flattenStrapiResponse(res.data.upload.data)
             setPhoto(normalisedPhoto)
-            if (id) {
-              onAdd(normalisedPhoto)
+            if (normalisedPhoto.id) {
+              onAdd(normalisedPhoto.id)
             }
           }
         } catch (e) {
