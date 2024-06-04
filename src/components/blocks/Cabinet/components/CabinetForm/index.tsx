@@ -120,9 +120,8 @@ const CabinetForm: FC<Props> = ({ photo, setNoPhotoError, auth }) => {
       //   setErrorPopupOpen(true)
       //   return
       // }
-
       const input = {
-        city: values.city !== me?.info.city.cityName ? cityId : undefined,
+        city: '1',
         username: values.username,
         email: values.email,
         phone: values.phone,

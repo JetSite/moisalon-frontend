@@ -16,6 +16,8 @@ import {
   ButtonMobileWrapper,
   Content,
   NotAuthorized,
+  TitleWrapper,
+  SwitchButton,
 } from './styles'
 import Button from '../../ui/Button'
 import Error from '../../blocks/Form/Error'
@@ -24,9 +26,11 @@ import { getStoreEvent } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
 import { setCookie } from 'cookies-next'
 import { authConfig } from 'src/api/authConfig'
+import { register } from 'src/api/graphql/me/mutations/register'
 
 const LoginPage = () => {
   const { setMe } = useAuthStore(getStoreEvent)
+  const [isRegister, setIsRegister] = useState(false)
   const [checked, setChecked] = useState<boolean>(false)
   const [valueEmail, setValueEmail] = useState<string>('')
   const [valuePassword, setValuePassword] = useState<string>('')
@@ -45,6 +49,21 @@ const LoginPage = () => {
       console.log(data.login.jwt)
 
       router.push('/masterCabinet')
+    },
+    onError: error => {
+      setErrors([error.message])
+      setErrorPopupOpen(true)
+    },
+  })
+
+  const [registerMutation] = useMutation(register, {
+    onCompleted: data => {
+      if (data) {
+        setCookie(authConfig.tokenKeyName, data.register.jwt)
+        setMe({ info: { ...data.register.user } })
+
+        router.push('/masterCabinet')
+      }
     },
     onError: error => {
       setErrors([error.message])
@@ -73,7 +92,11 @@ const LoginPage = () => {
     email: string
     password: string
   }) => {
-    Login({ variables: { email, password } })
+    if (isRegister) {
+      registerMutation({ variables: { email, username: email, password } })
+    } else {
+      Login({ variables: { email, password } })
+    }
   }
 
   return (
@@ -82,14 +105,27 @@ const LoginPage = () => {
         <Wrapper>
           <Content>
             <FormWrapper>
-              <Title>Войти или зарегистрироваться</Title>
+              <TitleWrapper>
+                <SwitchButton
+                  isActive={!isRegister}
+                  onClick={() => setIsRegister(false)}
+                >
+                  <Title>Войти</Title>
+                </SwitchButton>
+                <SwitchButton
+                  isActive={isRegister}
+                  onClick={() => setIsRegister(true)}
+                >
+                  <Title>Зарегистрироваться</Title>
+                </SwitchButton>
+              </TitleWrapper>
               <Form
                 onSubmit={e => {
                   e.preventDefault()
                   handleSubmit({ email: valueEmail, password: valuePassword })
                 }}
               >
-                <Label style={{ marginTop: '20rem' }}>Ведите email</Label>
+                <Label>Введите email</Label>
                 <Input
                   style={{ marginTop: '0' }}
                   value={valueEmail}
@@ -100,7 +136,7 @@ const LoginPage = () => {
                     setValueEmail(e.target.value)
                   }}
                 />
-                <Label>Ведите пароль</Label>
+                <Label>Введите пароль</Label>
                 <Input
                   style={{ marginTop: '0' }}
                   value={valuePassword}
