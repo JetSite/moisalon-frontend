@@ -1,3 +1,4 @@
+import { defaultValues } from 'src/api/authConfig'
 import { workingHoursOptions } from 'src/components/blocks/Form/WorkingTimeField/WorkingTime'
 import { ICity, IPhoto } from 'src/types'
 import { IID } from 'src/types/common'
@@ -69,7 +70,7 @@ export const getPrepareInputSalonForm: IGetPrepareInputSalonForm = ({
     ),
     services: servicesForInput,
     activities: values.activities,
-    cities: findCity?.id || selectCityId,
+    cities: findCity?.id || selectCityId || '1',
     salonAddress: values.address,
     salonLogo: logo?.id,
   }
