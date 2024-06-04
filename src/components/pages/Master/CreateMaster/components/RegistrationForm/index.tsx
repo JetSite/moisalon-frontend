@@ -18,6 +18,10 @@ import { CREATE_MASTER } from 'src/api/graphql/master/mutations/createMaster'
 import { UPDATE_MASTER } from 'src/api/graphql/master/mutations/updateMaster'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { changeMe } from 'src/api/graphql/me/mutations/changeMe'
+import { IID } from 'src/types/common'
+import { CREATE_RESUME } from 'src/api/graphql/master/mutations/createResume'
+import { title } from 'process'
+import { IMasterCreateInput } from 'src/types/masters'
 
 const RegistrationForm = ({
   master,
@@ -29,8 +33,8 @@ const RegistrationForm = ({
   handleClickNextTab,
   photo,
   setNoPhotoError,
+  serviceCategories,
 }) => {
-  const { catalogs } = useBaseStore(getStoreData)
   const { me } = useAuthStore(getStoreData)
   const { setMe } = useAuthStore(getStoreEvent)
 
@@ -49,7 +53,7 @@ const RegistrationForm = ({
       setErrorPopupOpen(true)
     },
   })
-  const [mutate, { loading }] = useMutation(UPDATE_MASTER, {
+  const [mutate, { loading: loadingUpdate }] = useMutation(UPDATE_MASTER, {
     onError: error => {
       const errorMessages = error.graphQLErrors.map(e => e.message)
       setErrors(errorMessages)
@@ -65,11 +69,16 @@ const RegistrationForm = ({
       //   },
       // });
       if (res?.updateMaster?.data?.id) {
+        let masterIds: IID[] = []
+        if (me?.owner?.masters) {
+          masterIds = me.owner.masters.map(item => item.id)
+        }
+
         await updateMe({
           variables: {
             id: me?.info.id,
             data: {
-              masters: [res.updateMaster.data.id],
+              masters: [...masterIds, res.updateMaster.data.id],
             },
           },
         })
@@ -90,11 +99,16 @@ const RegistrationForm = ({
         //   },
         // });
         if (res?.createMaster?.data?.id) {
+          let masterIds: IID[] = []
+          if (me?.owner?.masters) {
+            masterIds = me.owner.masters.map(item => item.id)
+          }
+
           await updateMe({
             variables: {
               id: me?.info.id,
               data: {
-                masters: [res.createMaster.data.id],
+                masters: [...masterIds, res.createMaster.data.id],
               },
             },
           })
@@ -104,8 +118,11 @@ const RegistrationForm = ({
     },
   )
 
+  const [createResume, { loading: loadingCreateResume }] =
+    useMutation(CREATE_RESUME)
+
   const onSubmit = useCallback(
-    values => {
+    async (values: any) => {
       if (!values.address) {
         setErrors(['Введите адрес места работы из выпадающего списка'])
         setErrorPopupOpen(true)
@@ -117,40 +134,102 @@ const RegistrationForm = ({
         setErrorPopupOpen(true)
         return
       }
-      console.log('values', values)
+
       const servicesForInput = values.specializations.map(item => ({
         service: item,
       }))
-      const input = {
+
+      let input: IMasterCreateInput = {
         name: values.name,
         email: values.email,
         phone: values.phone.phoneNumber,
-        description: values.description,
+        description: values.description || '',
         address: values.address,
-        searchWork: values.searchWork,
+        searchWork: values.searchWork || false,
         services: servicesForInput,
         webSiteUrl: values?.webSiteUrl || '',
         haveTelegram: values?.phone?.haveTelegram || false,
         haveViber: values?.phone?.haveViber || false,
         haveWhatsApp: values?.phone?.haveWhatsApp || false,
         photo: photo?.id,
+        city: me?.info?.city?.id || 1,
       }
       console.log(input)
 
-      // if (!master) {
-      //   createMaster({
-      //     variables: {
-      //       input: { ...input },
-      //     },
-      //   })
-      // }
-      // if (master) {
-      //   mutate({ variables: { masterId: master.id, input: { ...input } } })
-      // }
+      let resumeId = null
+      if (values.searchWork) {
+        const resumeForInput = {
+          title: values.resume_title,
+          content: values.resume_content,
+          specialization: values.resume_specialization,
+          age: parseInt(values.resume_age) || 0,
+          workSchedule: values.resume_workSchedule,
+          salary: values.resume_salary,
+          // region: values.resume_region,
+          region: '1',
+          // gender: values.resume_gender,
+          user: me?.info?.id,
+          publishedAt: new Date().toISOString(),
+        }
+
+        await createResume({
+          variables: {
+            input: {
+              ...resumeForInput,
+            },
+          },
+          onCompleted: res => {
+            if (res?.createMasterResume?.data?.id) {
+              resumeId = res.createMasterResume.data.id
+              input = {
+                ...input,
+                resumes: [resumeId],
+              }
+              if (!master) {
+                createMaster({
+                  variables: {
+                    input: { ...input },
+                  },
+                })
+              }
+              if (master) {
+                mutate({
+                  variables: {
+                    masterId: master.id,
+                    input: {
+                      ...input,
+                    },
+                  },
+                })
+              }
+            }
+          },
+        })
+      } else {
+        if (!master) {
+          createMaster({
+            variables: {
+              input: { ...input },
+            },
+          })
+        }
+        if (master) {
+          mutate({
+            variables: {
+              masterId: master.id,
+              input: {
+                ...input,
+              },
+            },
+          })
+        }
+      }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [clickAddress, photo],
   )
+
+  const loading = loadingCreate || loadingUpdate || loadingCreateResume
 
   return (
     <Wrapper>
@@ -183,7 +262,7 @@ const RegistrationForm = ({
               <MasterSpecializationsList
                 handleClickNextTab={handleClickNextTab}
                 ref2={ref2}
-                serviceCatalogs={catalogs}
+                serviceCatalogs={serviceCategories}
                 number={2}
               />
               <Work
@@ -202,11 +281,9 @@ const RegistrationForm = ({
                   variant="red"
                   size="noWidth"
                   type="submit"
-                  disabled={pristine || loading || loadingCreate}
+                  disabled={pristine || loading}
                 >
-                  {loading || loadingCreate
-                    ? 'Подождите'
-                    : 'Сохранить и перейти в кабинет'}
+                  {loading ? 'Подождите' : 'Сохранить и перейти в кабинет'}
                 </Button>
               </MobileHidden>
               <MobileVisible>

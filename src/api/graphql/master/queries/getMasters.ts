@@ -15,6 +15,9 @@ export const getMasters = gql`
             masterName
             masterPhone
             masterEmail
+            name
+            phone
+            email
             searchWork
             rating 
             ratingCount 
@@ -34,6 +37,9 @@ export const getMasters = gql`
               ${cityInfo}
             }
             masterPhoto {
+              ${imageInfo}
+            }
+            photo {
               ${imageInfo}
             }
             reviews {

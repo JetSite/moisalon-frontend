@@ -50,7 +50,8 @@ interface Props {
   title?: string
   description: string
   name: string
-  groups: IActivitiesInForm[]
+  // groups: IActivitiesInForm[]
+  groups: any[]
   fullWidth?: boolean
   withButton?: boolean
   validate?: ILengthValidate
@@ -82,8 +83,15 @@ const DictionaryField: FC<Props> = props => {
   const [isOpenMore, setIsOpenMore] = useState(false)
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('xs'))
-  const items: IActivitiesItemInForm[] = groups.map((group, index) => ({
+  // const items: IActivitiesItemInForm[] = groups.map((group, index) => ({
+  //   ...group,
+  //   checked: false,
+  //   index,
+  // }))
+
+  const items = groups.map((group, index) => ({
     ...group,
+    title: group.serviceName,
     checked: false,
     index,
   }))
@@ -204,13 +212,13 @@ const DictionaryField: FC<Props> = props => {
               {dictionary}
               <br />
               {moreItems}
-              {value?.length > 1 && defaultSpecialization ? (
+              {/* {value?.length > 1 && defaultSpecialization ? (
                 <DefaultDictionaryItem
                   onChangeDefault={onChangeDefault}
                   group={dictionaryItems}
                   items={value}
                 />
-              ) : null}
+              ) : null} */}
             </>
           )
         }}

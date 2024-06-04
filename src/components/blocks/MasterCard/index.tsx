@@ -28,7 +28,7 @@ import { IMaster } from 'src/types/masters'
 import { Activity } from '../SalonCard/styles'
 
 interface Props {
-  master: IMaster
+  master: IMaster | null
   shareLink: string
   loading?: boolean
   type?: string
@@ -47,7 +47,9 @@ const MasterItem: FC<Props> = ({
     setIsFavorit(!!isInStorage)
   }, [])
 
-  const photoUrl = `${PHOTO_URL}${master?.masterPhoto?.url}`
+  const photoUrl = master
+    ? `${PHOTO_URL}${master.masterPhoto?.url || master.photo?.url}`
+    : ''
 
   const addFavorite = (e: MouseEvent, master: IMaster | null) => {
     e.preventDefault()
@@ -64,25 +66,33 @@ const MasterItem: FC<Props> = ({
       </FavoriteMaster>
       <Image alt="image" src={photoUrl} />
       <MasterShareWrap>
-        <Share link={shareLink} title={master.masterName || ''} />
+        <Share
+          link={shareLink}
+          title={master?.masterName || master?.name || ''}
+        />
       </MasterShareWrap>
       <MasterInfo>
         <div>
-          <Name>{master.masterName || ''}</Name>
+          <Name>{master?.masterName || master?.name || ''}</Name>
         </div>
         <div>
           <Specializations>
-            {master.services.slice(0, 3).map(servis => (
-              <Activity key={servis.id}>{servis.serviceName}</Activity>
-            ))}
+            {master &&
+              master.services
+                .slice(0, 3)
+                .map(service => (
+                  <Activity key={service.id}>
+                    {service.service.serviceName}
+                  </Activity>
+                ))}
           </Specializations>
         </div>
         <RatingWrapper>
-          {master.city?.cityName ? <City>{master.city.cityName}</City> : null}
+          {master?.city?.cityName ? <City>{master.city.cityName}</City> : null}
           <Rating
-            rating={master.rating}
-            countRatings={master.ratingCount}
-            countReviews={master.reviewsCount}
+            rating={master?.rating}
+            countRatings={master?.ratingCount}
+            countReviews={master?.reviewsCount}
           />
         </RatingWrapper>
       </MasterInfo>

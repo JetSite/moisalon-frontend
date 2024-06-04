@@ -115,37 +115,57 @@ const Work = ({ ref3, handleClickNextTab, number }) => {
         </Field>
         <FieldResumeWrapper>
           <FieldWrap>
-            <FieldStyled name="name1" component={TextField} label="ФИО" />
+            <FieldStyled
+              name="resume_title"
+              component={TextField}
+              label="Заголовок резюме"
+            />
           </FieldWrap>
           <FieldWrap>
             <FieldStyled
-              name="name2"
+              name="resume_specialization"
               component={TextField}
               label="Специальность"
             />
           </FieldWrap>
           <FieldWrap>
-            <FieldStyled name="name3" component={TextField} label="Возраст" />
+            <FieldStyled
+              name="resume_age"
+              component={TextField}
+              label="Возраст"
+            />
           </FieldWrap>
+          {/* <FieldWrap>
+            <FieldStyled
+              name="resume_gender"
+              component={TextField}
+              label="Пол"
+            />
+          </FieldWrap> */}
           <FieldWrap>
-            <FieldStyled name="name4" component={TextField} label="Пол" />
-          </FieldWrap>
-          <FieldWrap>
-            <FieldStyled name="name5" component={TextField} label="Регион" />
+            <FieldStyled
+              name="resume_region"
+              component={TextField}
+              label="Регион"
+            />
           </FieldWrap>
           <FieldWrap>
             <FieldStyled
-              name="name6"
+              name="resume_workSchedule"
               component={TextField}
               label="График работы"
             />
           </FieldWrap>
           <FieldWrap>
-            <FieldStyled name="name7" component={TextField} label="З/п" />
+            <FieldStyled
+              name="resume_salary"
+              component={TextField}
+              label="З/п"
+            />
           </FieldWrap>
           <FieldWrap>
             <FieldStyled
-              name="resume"
+              name="resume_content"
               component={TextField}
               label="Вставьте здесь свое резюме"
               multiline={true}
@@ -154,7 +174,6 @@ const Work = ({ ref3, handleClickNextTab, number }) => {
           </FieldWrap>
         </FieldResumeWrapper>
       </SearchWorkWrapper>
-
       <MobileHidden>
         <Button
           onClick={e => {

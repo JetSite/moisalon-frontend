@@ -87,3 +87,8 @@ export interface IPhone {
   haveWhatsApp: boolean
   haveTelegram: boolean
 }
+
+export interface IGender {
+  id: IID
+  title: string
+}

@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client'
 import servicesFragment from '../../fragments/services'
+import { cityInfo } from '../../common/cityInfo'
 
 export const changeMe = gql`
   mutation changeMe($id: ID!, $data: UsersPermissionsUserInput!) {
@@ -57,6 +58,22 @@ export const changeMe = gql`
                     id
                     attributes {
                       url
+                    }
+                  }
+                }
+                city {
+                  ${cityInfo}
+                }
+                resumes {
+                  data {
+                    id
+                    attributes {
+                      title
+                      content
+                      specialization
+                      age
+                      workSchedule
+                      salary
                     }
                   }
                 }
