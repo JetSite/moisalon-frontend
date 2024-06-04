@@ -335,6 +335,8 @@ const RegistrationForm: FC<Props> = ({
     //   }
   }
 
+  console.log(activities)
+
   return (
     <Wrapper>
       <Title>Расскажите о своем салоне</Title>
