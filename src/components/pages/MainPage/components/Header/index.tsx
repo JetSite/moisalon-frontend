@@ -128,7 +128,7 @@ const Header = ({ loading = false }) => {
             </LogoWrap>
             <Nav>
               <NavItemWrapper>
-                {getMainPageHeaderLinks(city.citySlug).navLinks.map(
+                {getMainPageHeaderLinks(city.citySlug, !!me?.info).navLinks.map(
                   (link, i) => (
                     <NavItem
                       key={i}

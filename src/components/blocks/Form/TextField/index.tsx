@@ -30,7 +30,7 @@ const TextFieldStyled = styled(TextField)`
 interface Props extends Omit<TextFieldProps, 'input'> {
   input: FieldInputProps<any, HTMLElement>
   meta: FieldMetaState<any>
-  maxLength?: number
+  maxLength?: number | string
 }
 
 const TextFieldAdapter = forwardRef<HTMLDivElement, Props>((props, ref) => {

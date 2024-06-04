@@ -34,7 +34,7 @@ export default function MobileCatalogItem({ item, masterPage }) {
   return (
     <Wrapper masterPage={masterPage}>
       <Top>
-        <Title>{item?.serviceName}</Title>
+        <Title>{item?.service?.serviceName}</Title>
         {item?.priceFrom ? (
           <Price>
             от {item.priceFrom} {item.unitOfMeasurement}

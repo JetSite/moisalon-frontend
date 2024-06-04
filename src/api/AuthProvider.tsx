@@ -1,10 +1,10 @@
 import { useRouter } from 'next/router'
 import React, { FC, useEffect } from 'react'
-import { useMutation, useQuery } from '@apollo/client'
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client'
 import { IChildren } from 'src/types/common'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
-import { getMe as ME } from './graphql/me/queries/getMe'
+import { ME } from './graphql/me/queries/getMe'
 import { authConfig, defaultValues } from './authConfig'
 import { getCookie, setCookie } from 'cookies-next'
 import { getUser as USER } from './graphql/me/queries/getUser'
@@ -36,8 +36,6 @@ const AuthProvider: FC<{ children: IChildren; cityData?: ICity }> = ({
     onError: () => {
       setLoading(false)
     },
-    skip: true,
-    notifyOnNetworkStatusChange: true,
   }
   const [changeCityFunc] = useMutation(changeMe, {
     onCompleted: res => {
@@ -48,9 +46,11 @@ const AuthProvider: FC<{ children: IChildren; cityData?: ICity }> = ({
     },
   })
 
-  const { refetch: getMe, loading: meLoading } = useQuery(ME, getMeCB)
-  const { refetch: getUser, loading: userLoading } = useQuery(USER, {
+  const [getMe, { loading: meLoading }] = useLazyQuery(ME, getMeCB)
+  const [getUser, { loading: userLoading }] = useLazyQuery(USER, {
     onCompleted: data => {
+      console.log(data)
+
       const prepareData = flattenStrapiResponse(data.usersPermissionsUser)
 
       if (!prepareData.selected_city) {
@@ -80,7 +80,6 @@ const AuthProvider: FC<{ children: IChildren; cityData?: ICity }> = ({
         masters: prepareData.favorited_masters,
         brand: prepareData.favorited_brands,
       }
-      // console.log('usersPermissionsUser', data.usersPermissionsUser)
 
       setMe({
         info,
@@ -96,7 +95,6 @@ const AuthProvider: FC<{ children: IChildren; cityData?: ICity }> = ({
       )
     },
     onError: err => console.log(err),
-    skip: true,
     notifyOnNetworkStatusChange: true,
   })
 
@@ -121,7 +119,7 @@ const AuthProvider: FC<{ children: IChildren; cityData?: ICity }> = ({
         getMe()
       }
       if (me && !me.favorite) {
-        getUser({ id: me.info.id })
+        getUser({ variables: { id: me.info.id } })
       }
     }
   }, [me, router])

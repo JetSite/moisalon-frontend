@@ -1,4 +1,4 @@
-import DictionaryField from "../../../../../../blocks/Form/DictionaryField";
+import DictionaryField from '../../../../../../blocks/Form/DictionaryField/index.tsx'
 
 const EquipmentList = ({ catalog, mbDesc }) => {
   return (
@@ -8,7 +8,7 @@ const EquipmentList = ({ catalog, mbDesc }) => {
       withButton={true}
       mbDesc={mbDesc}
     />
-  );
-};
+  )
+}
 
-export default EquipmentList;
+export default EquipmentList

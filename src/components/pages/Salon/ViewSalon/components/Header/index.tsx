@@ -101,6 +101,8 @@ const Header: FC<Props> = ({ salon, isOwner }) => {
     })
   }
 
+  console.log(isOwner)
+
   return (
     <>
       <MainContainer>
@@ -215,11 +217,11 @@ const Header: FC<Props> = ({ salon, isOwner }) => {
               <EditButton
                 onClick={() =>
                   router.push(
+                    // TODO: вернуть путь на createSalon
                     {
-                      pathname: '/createSalon',
+                      pathname: '/createLessorSalon',
                       query: { id: salon?.id },
                     },
-                    '/createSalon',
                   )
                 }
               >

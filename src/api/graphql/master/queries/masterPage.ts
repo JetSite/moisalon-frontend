@@ -15,6 +15,7 @@ export const MASTER_PAGE = gql`
         id
         attributes {
           masterName
+          name
           reviewsCount
           rating
           ratingCount
@@ -27,7 +28,9 @@ export const MASTER_PAGE = gql`
           haveWhatsApp
           searchWork
           masterPhone
+          phone
           masterEmail
+          email
           masterAddress
           office
           onlineBookingUrl
@@ -51,6 +54,9 @@ export const MASTER_PAGE = gql`
           masterPhoto {
             ${imageInfo}
           }
+          photo {
+            ${imageInfo}
+          }
           photosWorks{
             ${imageInfo}
           }
@@ -62,6 +68,19 @@ export const MASTER_PAGE = gql`
           }
           services {
            ${servicesFragment}
+          }
+          resumes {
+            data {
+              id
+              attributes {
+                title
+                content
+                specialization
+                age
+                workSchedule
+                salary
+              }
+            }
           }
         }
       }

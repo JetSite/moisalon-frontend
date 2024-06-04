@@ -64,11 +64,16 @@ const Header: FC<Props> = ({ master, isOwner }) => {
 
   const { rating, ratingCount } = getRating(master.ratings, newRating)
 
-  const logo = master?.masterPhoto?.url ? (
-    <Logo background={`url(${PHOTO_URL}${master?.masterPhoto?.url})`} />
-  ) : (
-    <SkeletonCircle />
-  )
+  const logo =
+    master?.masterPhoto?.url || master?.photo?.url ? (
+      <Logo
+        background={`url(${PHOTO_URL}${
+          master?.masterPhoto?.url || master.photo.url
+        })`}
+      />
+    ) : (
+      <SkeletonCircle />
+    )
 
   const [isFavorite, setIsFavorit] = useState(false)
   const [showSocials, setShowSocials] = useState(false)
@@ -109,14 +114,18 @@ const Header: FC<Props> = ({ master, isOwner }) => {
           <BackButton
             link={isOwner ? '/masterCabinet' : `/${city.citySlug}/master`}
             type="Мастер"
-            name={master?.masterName}
+            name={master?.masterName || master?.name}
           />
         </Wrapper>
         <Wrapper>
           <Socials>
             <Phone
-              active={!!master?.masterPhone}
-              href={master?.masterPhone ? `tel:${master.masterPhone}` : '#'}
+              active={!!master?.masterPhone || !!master?.phone}
+              href={
+                master?.masterPhone || master?.phone
+                  ? `tel:${master.masterPhone || master.phone}`
+                  : '#'
+              }
             />
             {logo}
             <SocialsWrapper>
@@ -141,7 +150,7 @@ const Header: FC<Props> = ({ master, isOwner }) => {
                       rel="nofollow"
                       showSocials={showSocials}
                       href={`https://tlgg.ru/${numberForSocials(
-                        master?.masterPhone,
+                        master?.masterPhone || master?.phone,
                       )}`}
                     />
                   ) : null}
@@ -151,7 +160,7 @@ const Header: FC<Props> = ({ master, isOwner }) => {
                       rel="nofollow"
                       showSocials={showSocials}
                       href={`https://api.whatsapp.com/send?phone=${numberForSocials(
-                        master?.masterPhone,
+                        master?.masterPhone || master?.phone,
                       )}`}
                     />
                   ) : null}
@@ -161,7 +170,7 @@ const Header: FC<Props> = ({ master, isOwner }) => {
                       rel="nofollow"
                       showSocials={showSocials}
                       href={`viber://chat?number=%2B${numberForSocials(
-                        master?.masterPhone,
+                        master?.masterPhone || master?.phone,
                       )}`}
                     />
                   ) : null}
@@ -171,7 +180,7 @@ const Header: FC<Props> = ({ master, isOwner }) => {
           </Socials>
           <NameWrapper>
             <NameContent>
-              <Name>{master.masterName}</Name>
+              <Name>{master.masterName || master.name}</Name>
               <Favorite
                 isFavorite={isFavorite}
                 onClick={e => addFavorite(e, master)}

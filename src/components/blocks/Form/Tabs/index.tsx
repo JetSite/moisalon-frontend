@@ -9,39 +9,18 @@ import { getStoreData, getStoreEvent } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
 import { Back, Quantity, Tab, Text, TextRed, Wrapper } from './style'
 import { FC } from 'react'
+import { ITab } from 'src/components/pages/Salon/CreateSalon/config'
 
-interface tabs {
-  id: string
-  href?: string
-  back?: boolean
-  link?: string
-  value?: string
-  quantity: string
-  anchor: string
-}
 interface Props {
-  tabs: tabs[]
-  refActive: string
+  tabs: ITab[]
+  refActive: string | boolean
 }
 
 const Tabs: FC<Props> = ({ tabs, refActive }) => {
   const router = useRouter()
-  const { setMe, logout } = useAuthStore(getStoreEvent)
-  const { city } = useAuthStore(getStoreData)
-  const { refetch } = useQuery(currentUserSalonsAndMasterQuery, {
-    skip: true,
-    onCompleted: res => {
-      setMe({
-        info: res?.me?.info,
-        master: res?.me?.master,
-        locationByIp: res?.locationByIp,
-        salons: res?.me?.salons,
-        rentalRequests: res?.me?.rentalRequests,
-      })
-    },
-  })
-  const dev = process.env.NEXT_PUBLIC_ENV !== 'production'
-  const handleClick = (item: tabs) => {
+  const { logout } = useAuthStore(getStoreEvent)
+
+  const handleClick = (item: ITab) => {
     const element = document.getElementById(item.anchor.replace('#', ''))
     if (element) {
       scrollIntoView(element, {

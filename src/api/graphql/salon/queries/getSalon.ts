@@ -77,14 +77,13 @@ export const getSalonPage = gql`
             salonContactPersonName
             salonContactPersonPhone
             salonContactPersonEmail
-            salonCantactPresonWorkingHoursAt
-            salonCantactPresonWorkingHoursTo
+            salonContactPersonWorkingHoursAt
+            salonContactPersonWorkingHoursTo
             salonWorkplacesCount
             salonMastersCount
             salonBrandsCount
             createdAt
             updatedAt
-            publishedAt
             reviewsCount
             ratingCount
             rating
