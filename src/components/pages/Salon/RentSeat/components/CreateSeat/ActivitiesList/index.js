@@ -1,4 +1,4 @@
-import DictionaryField from "../../../../../../blocks/Form/DictionaryField";
+import DictionaryField from '../../../../../../blocks/Form/DictionaryField/index.tsx'
 
 const ActivitiesList = ({ catalog, mbDesc, onlyOneChoose }) => {
   return (
@@ -9,7 +9,7 @@ const ActivitiesList = ({ catalog, mbDesc, onlyOneChoose }) => {
       mbDesc={mbDesc}
       onlyOneChoose={onlyOneChoose}
     />
-  );
-};
+  )
+}
 
-export default ActivitiesList;
+export default ActivitiesList

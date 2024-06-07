@@ -8,8 +8,12 @@ export const masterFragment = `data {
   id
   attributes {
       masterName
+      name
       masterPhone
+      phone
       masterEmail
+      email
+      description
       reviewsCount
       ratingCount
       rating
@@ -30,11 +34,27 @@ export const masterFragment = `data {
       masterPhoto {
         ${imageInfo}
       }
+      photo {
+        ${imageInfo}
+      }
       ratings {
         ${ratingsFragment}
       }
       reviews {
         ${reviewsFragment}
+      }
+      resumes {
+        data {
+          id
+          attributes {
+            title
+            content
+            specialization
+            age
+            workSchedule
+            salary
+          }
+        }
       }
   }
 }

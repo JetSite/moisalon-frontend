@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import React, { FC, useEffect } from 'react'
-import { useMutation, useQuery } from '@apollo/client'
-import { IChildren, INextContext } from 'src/types/common'
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client'
+import { IChildren } from 'src/types/common'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
 import { ME } from './graphql/me/queries/getMe'
@@ -42,8 +42,6 @@ const AuthProvider: FC<{ children: IChildren; cityData?: IServerProps }> = ({
     onError: () => {
       setLoading(false)
     },
-    skip: true,
-    notifyOnNetworkStatusChange: true,
   }
   const [changeCityFunc] = useMutation(changeMe, {
     onCompleted: res => {
@@ -54,10 +52,11 @@ const AuthProvider: FC<{ children: IChildren; cityData?: IServerProps }> = ({
     },
   })
 
-  const { refetch: getMe, loading: meLoading } = useQuery(ME, getMeCB)
-  const { refetch: getUser, loading: userLoading } = useQuery(USER, {
+  const [getMe, { loading: meLoading }] = useLazyQuery(ME, getMeCB)
+  const [getUser, { loading: userLoading }] = useLazyQuery(USER, {
     onCompleted: data => {
       const prepareData = flattenStrapiResponse(data.usersPermissionsUser)
+      console.log('prepareData', prepareData)
 
       if (!prepareData.selected_city) {
         changeCityFunc({
@@ -86,7 +85,6 @@ const AuthProvider: FC<{ children: IChildren; cityData?: IServerProps }> = ({
         masters: prepareData.favorited_masters,
         brand: prepareData.favorited_brands,
       }
-      // console.log('usersPermissionsUser', data.usersPermissionsUser)
 
       setUser({
         info,
@@ -105,7 +103,6 @@ const AuthProvider: FC<{ children: IChildren; cityData?: IServerProps }> = ({
       )
     },
     onError: err => console.log(err),
-    skip: true,
     notifyOnNetworkStatusChange: true,
   })
 
@@ -129,8 +126,8 @@ const AuthProvider: FC<{ children: IChildren; cityData?: IServerProps }> = ({
       if (!me && accessToken) {
         getMe()
       }
-      if (me && !user) {
-        getUser({ id: me.info.id })
+      if (me && !me.favorite) {
+        getUser({ variables: { id: me.info.id } })
       }
     }
   }, [me, router])

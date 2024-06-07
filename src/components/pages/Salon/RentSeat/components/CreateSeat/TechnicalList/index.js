@@ -1,4 +1,4 @@
-import DictionaryField from "../../../../../../blocks/Form/DictionaryField";
+import DictionaryField from '../../../../../../blocks/Form/DictionaryField/index.tsx'
 
 const TechnicalList = ({ catalog, mbDesc, mbWrapper }) => {
   return (
@@ -9,7 +9,7 @@ const TechnicalList = ({ catalog, mbDesc, mbWrapper }) => {
       mbDesc={mbDesc}
       mbWrapper={mbWrapper}
     />
-  );
-};
+  )
+}
 
-export default TechnicalList;
+export default TechnicalList

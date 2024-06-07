@@ -71,9 +71,9 @@ const CabinetHeaderMobile: FC<Props> = ({
         <Wrap>
           {master.id ? (
             <Link
-              href={`/${
-                cyrToTranslit(master.city.cityName) || city?.citySlug
-              }/master/${master?.id}`}
+              href={`/${master.city.citySlug || city?.citySlug}/master/${
+                master?.id
+              }`}
             >
               <Item>
                 <Container>
@@ -97,10 +97,10 @@ const CabinetHeaderMobile: FC<Props> = ({
                   <Link
                     href={
                       item.salonWorkplacesCount
-                        ? `/${item.cities.citySlug || city?.citySlug}/rent/${
+                        ? `/${item.cities?.citySlug || city?.citySlug}/rent/${
                             item?.id
                           }`
-                        : `/${item.cities.citySlug || city?.citySlug}/salon/${
+                        : `/${item.cities?.citySlug || city?.citySlug}/salon/${
                             item?.id
                           }`
                     }
@@ -110,8 +110,7 @@ const CabinetHeaderMobile: FC<Props> = ({
                         <Avatar
                           alt="avatar"
                           src={
-                            PHOTO_URL + item.salonCover?.url ||
-                            'empty-photo.svg'
+                            PHOTO_URL + item.salonLogo?.url || 'empty-photo.svg'
                           }
                         />
                         <Content>

@@ -1,5 +1,5 @@
-import { IServices } from 'src/types'
 import { IID } from 'src/types/common'
+import { IServices } from 'src/types/services'
 
 export interface IGroupedService {
   id: IID

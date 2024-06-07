@@ -15,7 +15,7 @@ import { deleteCookie, getCookie } from 'cookies-next'
 import { authConfig, baseUrl } from './authConfig'
 import Router from 'next/router'
 import { onError } from '@apollo/client/link/error'
-import { INextContext } from 'src/types/common'
+import createUploadLink from 'apollo-upload-client/createUploadLink.mjs'
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__'
 
@@ -45,14 +45,8 @@ const defaultOptions: DefaultOptions = {
   },
 }
 
-const cache = isServer
-  ? new InMemoryCacheForServerSide({
-      resultCaching: false,
-    })
-  : new InMemoryCache()
-
 export const getAuthLink = (accessToken?: string) => {
-  const httpLink = new HttpLink({
+  const httpLink = createUploadLink({
     uri: server,
     fetchOptions: {
       credentials: 'include',
@@ -74,7 +68,7 @@ export const getAuthLink = (accessToken?: string) => {
     return forward(operation)
   })
   const errorLink = onError(error => {
-    console.log(error)
+    console.log(error.graphQLErrors)
 
     if (error.networkError?.message.includes('headers')) {
       if (typeof window !== 'undefined') {
@@ -102,8 +96,8 @@ export const getAuthLink = (accessToken?: string) => {
           err?.message === 'Forbidden access'
         ) {
           if (typeof window !== 'undefined') {
-            // deleteCookie(authConfig.tokenKeyName)
-            // Router.push(authConfig.notAuthLink)
+            deleteCookie(authConfig.tokenKeyName)
+            Router.push(authConfig.notAuthLink)
           }
           return
         } else {
@@ -115,11 +109,19 @@ export const getAuthLink = (accessToken?: string) => {
   })
   return ApolloLink.from([errorLink, authLink, httpLink])
 }
+
+const cache = isServer
+  ? new InMemoryCacheForServerSide({
+      resultCaching: false,
+    })
+  : new InMemoryCache()
+
 interface IApolloClientProps {
   accessToken?: string
   initialState?: NormalizedCacheObject | null
 }
-function createApolloClient(data?: IApolloClientProps) {
+
+function createApolloClient(data: IApolloClientProps) {
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
     link: getAuthLink(data?.accessToken),

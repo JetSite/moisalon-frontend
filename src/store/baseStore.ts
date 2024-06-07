@@ -1,4 +1,6 @@
 import { LazyType, Nullable } from 'src/types/common'
+import { ISalonActivity } from 'src/types/salon'
+import { IServiceCategories } from 'src/types/services'
 import { create } from 'zustand'
 
 export interface IInitialBaseData {
@@ -6,7 +8,8 @@ export interface IInitialBaseData {
   brands: LazyType[]
   salons: LazyType[]
   masters: LazyType[]
-  services: LazyType[]
+  services: IServiceCategories[]
+  activities: ISalonActivity[]
   products: LazyType[]
   cities: LazyType[]
   city: string
@@ -18,7 +21,8 @@ interface IUseBaseStore {
   setBrands: (brands: LazyType[]) => void
   setSalons: (salons: LazyType[]) => void
   setMasters: (masters: LazyType[]) => void
-  setServices: (services: LazyType[]) => void
+  setServices: (services: IServiceCategories[]) => void
+  setSalonActivities: (activities: ISalonActivity[]) => void
   setProducts: (products: LazyType[]) => void
   setSities: (cities: LazyType[]) => void
   setCity: (city: string) => void
@@ -30,6 +34,7 @@ const initialData = {
   salons: null,
   masters: null,
   services: null,
+  activities: null,
   products: null,
   cities: null,
   city: null,
@@ -44,6 +49,8 @@ const useBaseStore = create<IUseBaseStore>((set, get) => ({
   setMasters: masters => set(state => ({ data: { ...state.data, masters } })),
   setServices: services =>
     set(state => ({ data: { ...state.data, services } })),
+  setSalonActivities: activities =>
+    set(state => ({ data: { ...state.data, activities } })),
   setProducts: products =>
     set(state => ({ data: { ...state.data, products } })),
   setSities: cities => set(state => ({ data: { ...state.data, cities } })),

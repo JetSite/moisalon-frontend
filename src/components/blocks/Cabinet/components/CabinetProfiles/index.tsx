@@ -33,27 +33,32 @@ const CabinetProfiles = () => {
       <Wrapper>
         <Title>{user.info.username}</Title>
         <SubTitle>Пользователь </SubTitle>
-        {masters?.length && masters[0].id ? (
-          <Link
-            href={`/${masters[0].city.citySlug || city?.citySlug}/master/${
-              masters[0].id
-            }`}
-          >
-            <Item>
-              <Container>
-                <Avatar
-                  alt="avatar"
-                  src={
-                    PHOTO_URL + masters[0].masterPhoto.url || 'empty-photo.svg'
-                  }
-                />
-                <Content>
-                  <Name>{masters[0].masterName}</Name>
-                  <Type>Профиль мастера</Type>
-                </Content>
-              </Container>
-            </Item>
-          </Link>
+        {!!masters && !!masters.length ? (
+          <>
+            {masters.map(item => (
+              <Link
+                key={item.id}
+                href={`/${
+                  masters[0]?.city?.citySlug || city?.citySlug
+                }/master/${item.id}`}
+              >
+                <Item>
+                  <Container>
+                    <Avatar
+                      alt="avatar"
+                      src={
+                        `${PHOTO_URL}${item?.photo?.url}` || 'empty-photo.svg'
+                      }
+                    />
+                    <Content>
+                      <Name>{item.name}</Name>
+                      <Type>Профиль мастера</Type>
+                    </Content>
+                  </Container>
+                </Item>
+              </Link>
+            ))}
+          </>
         ) : null}
         {!!salons && salons.length
           ? salons.map(item => (
@@ -61,10 +66,10 @@ const CabinetProfiles = () => {
                 <Link
                   href={
                     item.salonWorkplacesCount
-                      ? `/${item.cities.citySlug || city?.citySlug}/rent/${
+                      ? `/${item.cities?.citySlug || city?.citySlug}/rent/${
                           item.id
                         }`
-                      : `/${item.cities.citySlug || city?.citySlug}/salon/${
+                      : `/${item.cities?.citySlug || city?.citySlug}/salon/${
                           item.id
                         }`
                   }
@@ -74,7 +79,7 @@ const CabinetProfiles = () => {
                       <Avatar
                         alt="avatar"
                         src={
-                          PHOTO_URL + item.salonLogo?.url || 'empty-photo.svg'
+                          PHOTO_URL + item?.salonLogo?.url || 'empty-photo.svg'
                         }
                       />
                       <Content>

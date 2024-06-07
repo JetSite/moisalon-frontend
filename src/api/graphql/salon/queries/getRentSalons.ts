@@ -48,14 +48,13 @@ export const GET_RENT_SALONS = gql`
             salonContactPersonName
             salonContactPersonPhone
             salonContactPersonEmail
-            salonCantactPresonWorkingHoursAt
-            salonCantactPresonWorkingHoursTo
+            salonContactPersonWorkingHoursAt
+            salonContactPersonWorkingHoursTo
             salonWorkplacesCount
             salonMastersCount
             salonBrandsCount
             createdAt
             updatedAt
-            publishedAt
             reviewsCount
             ratingCount
             rating

@@ -3,7 +3,7 @@ import { laptopBreakpoint } from '../../../../../../styles/variables'
 import { MainContainer } from '../../../../../../styles/common'
 import { FC } from 'react'
 import { IGroupedCategories } from 'src/utils/getGrupedServices'
-import { IService } from 'src/types'
+import { IService } from 'src/types/services'
 
 const Wrapper = styled.div`
   padding: 0 140px;

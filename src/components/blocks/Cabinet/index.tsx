@@ -3,18 +3,24 @@ import { useMutation } from '@apollo/client'
 import Controls from './components/Controls'
 import Header from '../../pages/MainPage/components/Header'
 import { MainContainer, Wrapper } from './styled'
-import { updateMasterPhotoMutation } from '../../../_graphql-legacy/master/updateMasterPhotoMutation'
 import CabinetForm from './components/CabinetForm'
 import { PHOTO_URL } from '../../../api/variables'
+import { UPDATE_MASTER_PHOTO } from 'src/_graphql-legacy/master/updateMasterPhotoMutation'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
+import { IPhoto } from 'src/types'
 
 const Cabinet = () => {
-  const [photoId, setPhotoId] = useState<string>('')
+  const { me, loading } = useAuthStore(getStoreData)
+  const [photo, setPhoto] = useState<IPhoto | undefined>(
+    !!me?.info?.masters?.length ? me.info.masters[0].photo : undefined,
+  )
   const [noPhotoError, setNoPhotoError] = useState(false)
 
-  const [updateMasterPhoto] = useMutation(updateMasterPhotoMutation)
+  const [updateMasterPhoto] = useMutation(UPDATE_MASTER_PHOTO)
   const onAdd = useCallback(
-    (photoId: string) => {
-      updateMasterPhoto({ variables: { input: { photoId } } })
+    (photo: string) => {
+      updateMasterPhoto({ variables: { input: { photo } } })
     },
     [updateMasterPhoto],
   )
@@ -26,20 +32,20 @@ const Cabinet = () => {
         <Wrapper>
           <Controls
             photo={
-              photoId
+              photo
                 ? {
-                    url: `${PHOTO_URL}${photoId}/original`,
+                    url: `${PHOTO_URL}${photo.url}`,
                   }
                 : null
             }
             id={null}
             photoType="master"
-            setPhotoId={setPhotoId}
+            setPhoto={setPhoto}
             onAdd={onAdd}
             noPhotoError={noPhotoError}
             setNoPhotoError={setNoPhotoError}
           />
-          <CabinetForm setNoPhotoError={setNoPhotoError} photoId={photoId} />
+          <CabinetForm setNoPhotoError={setNoPhotoError} photo={photo} />
         </Wrapper>
       </MainContainer>
     </>

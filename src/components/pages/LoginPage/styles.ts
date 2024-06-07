@@ -26,6 +26,7 @@ export const Form = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  margin-top: 80px;
 `
 
 export const Input = styled.input`
@@ -98,6 +99,23 @@ export const Checkbox = styled.input`
     background: ${props =>
       props.checked ? `url("/tick-checkbox.png") no-repeat center` : ''};
   }
+`
+
+export const TitleWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 40px;
+`
+
+export const SwitchButton = styled.div<{ isActive: boolean }>`
+  padding: 10px 15px;
+  border: 2px solid ${props => (props.isActive ? '#797979' : 'transparent')};
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 27px;
+  color: #797979;
 `
 
 export const Title = styled.h2`

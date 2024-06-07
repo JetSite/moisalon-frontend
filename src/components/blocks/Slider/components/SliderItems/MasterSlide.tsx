@@ -16,9 +16,9 @@ const MasterSlide = ({
     <Link href={`/${city}/master/${item?.id}`}>
       <MasterItem
         master={item}
-        shareLink={`https://moi.salon/${
-          cyrToTranslit(item?.city?.citySlug) || city
-        }/master/${item?.id}`}
+        shareLink={`https://moi.salon/${item?.city?.citySlug || city}/master/${
+          item?.id
+        }`}
       />
     </Link>
   )

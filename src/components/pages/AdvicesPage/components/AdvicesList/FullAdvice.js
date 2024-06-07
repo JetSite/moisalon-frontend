@@ -7,18 +7,20 @@ import {
   AdvDescription,
   BackWrapper,
 } from '../../styles'
-import { getFullAdvice } from '../../../../../_graphql-legacy/advices/getFullAdvice'
 import BackButton from '../../../../ui/BackButton'
 import { PHOTO_URL } from '../../../../../api/variables'
+import { getFeed } from 'src/api/graphql/feed/queries/getFeed'
 
 const FullAdvice = ({ adviceClicked, backHandler }) => {
-  const { data: fullAdviceData, loading } = useQuery(getFullAdvice, {
-    context: { uri: 'https://moi.salon/graphql' },
+  const { data: fullAdviceData, loading } = useQuery(getFeed, {
     variables: { id: adviceClicked },
   })
 
-  const item = fullAdviceData?.page
-  const photoUrl = `${PHOTO_URL}${item?.photoId}/original`
+  const item = fullAdviceData?.feed?.data?.attributes
+  const photoUrl = item?.beautyFeedCover?.data?.attributes?.url
+    ? `${PHOTO_URL}${item.beautyFeedCover.data.attributes.url}`
+    : ''
+
   return !loading ? (
     <>
       <BackWrapper onClick={backHandler}>
@@ -27,14 +29,14 @@ const FullAdvice = ({ adviceClicked, backHandler }) => {
       <AdvItem opened={adviceClicked.length > 0}>
         <AdvImage photoUrl={photoUrl} />
         <MobileHidden>
-          <AdvTitle>{item?.title}</AdvTitle>
+          <AdvTitle>{item?.beautyFeedTitle}</AdvTitle>
         </MobileHidden>
         <MobileVisible>
-          <AdvTitle>{item?.title}</AdvTitle>
+          <AdvTitle>{item?.beautyFeedTitle}</AdvTitle>
         </MobileVisible>
         <AdvDescription
           dangerouslySetInnerHTML={{
-            __html: item?.desc,
+            __html: item?.beautyFeedContent,
           }}
         />
       </AdvItem>

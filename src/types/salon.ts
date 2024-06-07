@@ -2,7 +2,6 @@ import {
   ICity,
   IMetroStations,
   ISalonPhones,
-  IServices,
   ISocialNetworks,
   IWorkingHours,
   IPhoto,
@@ -12,7 +11,13 @@ import { IBrand } from './brands'
 import { IID } from './common'
 import { IMaster } from './masters'
 import { IReview } from './reviews'
+import { IServices } from './services'
 import { IVacancy } from './vacancies'
+
+export interface ISalonActivity {
+  id: IID
+  activityName: string
+}
 
 export interface ISalon {
   id: IID
@@ -20,7 +25,6 @@ export interface ISalon {
   latitude: string
   longitude: string
   locationDirections: string
-  publishedAt: string
   updatedAt: string
   salonID: string
   salonName: string
@@ -49,6 +53,7 @@ export interface ISalon {
   ratingCount: number
   ratings: IRating[]
   reviews: IReview[]
+  workingHours: IWorkingHours[]
 }
 
 export interface ISalonPage extends ISalon {
@@ -57,8 +62,7 @@ export interface ISalonPage extends ISalon {
   brands: IBrand[]
   masters: IMaster[]
   user: { id: IID }
-  activities: { id: IID; activityName: string }[]
+  activities: ISalonActivity[]
   socialNetworks: ISocialNetworks[]
-  workingHours: IWorkingHours[]
   vacancies: IVacancy[]
 }

@@ -101,10 +101,7 @@ const NewMessagePopup: FC<Props> = ({
               name: me?.info?.username || '',
             }}
             onSubmit={onSubmit}
-            render={({
-              handleSubmit,
-              form,
-            }: FormRenderProps<Record<string, any>>) => {
+            render={({ handleSubmit, form }) => {
               return (
                 <>
                   <form onSubmit={handleSubmit}>

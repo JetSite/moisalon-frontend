@@ -53,8 +53,6 @@ const AllBrands: FC<Props> = ({
 
   const layout = { brands, masters, salons }
 
-  console.log(salons)
-
   return (
     <CategoryPageLayout {...layout}>
       <AllBrandsPage {...props} />

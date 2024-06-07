@@ -1,6 +1,7 @@
 import { IBrand } from './brands'
 import { IID } from './common'
 import { IMaster } from './masters'
+import { IServices } from './services'
 
 export interface IPagination {
   total: number
@@ -38,29 +39,6 @@ export interface ICity {
   id?: IID
   cityName?: string
   citySlug: string
-}
-
-export interface IServiceCategories {
-  id: IID
-  serviceCategoryName?: string
-  categoryName?: string
-}
-
-export interface IService {
-  id: IID
-  serviceName: string
-  service_categories?: IServiceCategories[]
-  service_m_category?: IServiceCategories
-}
-
-export interface IServices {
-  id: IID
-  serviceName: string
-  service: IService
-  price: string
-  priceFrom: string
-  priceTo: string
-  unitOfMeasurement: string
 }
 
 export interface IWorkingHours {
@@ -102,10 +80,15 @@ export interface ICountry {
 
 export interface IPhone {
   id: IID
-  phoneTitle: string
+  phoneTitle?: string
   phoneNumber: string
-  phoneContact: string
+  phoneContact?: string
   haveViber: boolean
   haveWhatsApp: boolean
   haveTelegram: boolean
+}
+
+export interface IGender {
+  id: IID
+  title: string
 }

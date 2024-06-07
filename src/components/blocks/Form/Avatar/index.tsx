@@ -1,9 +1,12 @@
 import { Dispatch, FC, SetStateAction, useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { useDropzone } from 'react-dropzone'
-import uploadPhoto from '../../../../utils/uploadPhoto'
 import { red as redColor, laptopBreakpoint } from '../../../../styles/variables'
 import { IID, ISetState } from 'src/types/common'
+import { useMutation } from '@apollo/client'
+import { UPLOAD } from 'src/api/graphql/common/upload'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { IPhoto } from 'src/types'
 
 const Wrapper = styled.div`
   width: 120px;
@@ -121,10 +124,10 @@ const PhotoBack = styled.div`
 
 interface Props {
   id: IID | null
-  onAdd: (id: IID) => void
-  setPhotoId: (id: IID) => void
+  onAdd: (id: string) => void
+  setPhoto: ISetState<IPhoto | null>
   photoType: string
-  photo: { url: string }
+  photo: { url: string } | null
   noSetPhoto?: boolean
   noPhotoError: boolean
   setNoPhotoError: ISetState<boolean>
@@ -137,7 +140,7 @@ const Avatar: FC<Props> = ({
   photoType,
   onAdd,
   photo,
-  setPhotoId,
+  setPhoto,
   noSetPhoto,
   title,
   red,
@@ -148,22 +151,27 @@ const Avatar: FC<Props> = ({
   const image = photo ? photo.url : null
   const isEmpty = !image
 
+  const [uploadImage] = useMutation(UPLOAD)
+
   const onDrop = useCallback(
-    (files: File[]) => {
-      const file = files[0]
-      const uploadFile = async () => {
-        await uploadPhoto(file, photoType).then(photoId => {
-          if (id) {
-            onAdd(photoId)
-          } else {
-            setPhotoId(photoId)
+    async (acceptedFiles: File[]) => {
+      if (acceptedFiles.length > 0) {
+        const file = acceptedFiles[0]
+        try {
+          const res = await uploadImage({ variables: { file } })
+          if (res?.data?.upload?.data?.id) {
+            const normalisedPhoto = flattenStrapiResponse(res.data.upload.data)
+            setPhoto(normalisedPhoto)
+            if (normalisedPhoto.id) {
+              onAdd(normalisedPhoto.id)
+            }
           }
-        })
+        } catch (e) {
+          console.error('Error uploading file', e)
+        }
       }
-      uploadFile()
-      setNoPhotoError(false)
     },
-    [photoType, onAdd],
+    [uploadImage],
   )
 
   const { getRootProps, getInputProps } = useDropzone({

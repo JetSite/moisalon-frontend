@@ -27,7 +27,6 @@ import useBaseStore from 'src/store/baseStore'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
 import { GetServerSideProps } from 'next'
-import Resume from 'src/components/pages/Master/ViewMaster/components/Resume'
 import { defaultValues, defaultcCitiesList } from 'src/api/authConfig'
 import { fetchCity } from 'src/api/utils/fetchCity'
 import { IMaster } from 'src/types/masters'
@@ -35,6 +34,7 @@ import { ICity } from 'src/types'
 import { getGroupedServices } from 'src/utils/getGrupedServices'
 import { getRating } from 'src/utils/newUtils/getRating'
 import { Nullable } from 'src/types/common'
+import Resume from 'src/components/pages/Master/ViewMaster/components/Resume'
 
 interface Props {
   masterData: IMaster
@@ -57,8 +57,6 @@ const Master: FC<Props> = ({ masterData, randomMasters, cityData }) => {
   const isOwner = !!me?.owner?.masters.find(e => e.id === master?.id)
 
   const servicesData = getServicesByCategory(master?.services)
-
-  console.log(master)
 
   return (
     <MainLayout>
@@ -245,13 +243,13 @@ const Master: FC<Props> = ({ masterData, randomMasters, cityData }) => {
             </>
           </Slider>
         ) : null}
-        {me?.salons?.length && master?.resume ? (
-          <Resume master={master} />
+        {masterData?.resumes && !!masterData.resumes.length ? (
+          <Resume resume={masterData.resumes[0]} />
         ) : null}
         <ReviewsMaster reviews={master?.reviews} masterId={master?.id} />
         <Contacts
-          phone={master?.masterPhone}
-          email={master?.masterEmail}
+          phone={master?.masterPhone || master?.phone}
+          email={master?.masterEmail || master?.email}
           address={master?.masterAddress}
           addressCoordinates={{
             latitude: master?.latitude,
