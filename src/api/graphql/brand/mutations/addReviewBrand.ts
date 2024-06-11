@@ -6,7 +6,7 @@ export const ADD_REVIEW_BRAND = gql`
       data: {
         user: $user
         brand: $id
-        reviewContent: $content
+        content: $content
         publishedAt: "2024-04-28T12:00:00.000Z"
       }
     ) {

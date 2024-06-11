@@ -134,7 +134,7 @@ const FastBuyPopup = ({ item, openBuyPopup, setOpenBuyPopup, me, brand }) => {
 
   const minimalPrice =
     brand?.minimalOrderPrice || item?.brand?.minimalOrderPrice
-  const brandName = brand?.name || item?.brand?.name
+  const name = brand?.name || item?.brand?.name
 
   return (
     <CSSTransition
@@ -169,7 +169,7 @@ const FastBuyPopup = ({ item, openBuyPopup, setOpenBuyPopup, me, brand }) => {
                       поводу заказа`}
                     </Title>
                     {minimalPrice ? (
-                      <MinimalOrder>{`*Минимальная сумма заказа бренда - ${brandName}: ${minimalPrice}`}</MinimalOrder>
+                      <MinimalOrder>{`*Минимальная сумма заказа бренда - ${name}: ${minimalPrice}`}</MinimalOrder>
                     ) : null}
                     <PopupInput
                       type="text"

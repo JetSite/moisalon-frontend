@@ -27,10 +27,11 @@ const Text = styled.p`
 
 interface Props {
   type: string
-  name: string
+  name?: string
   link?: string
   onlyType?: boolean
   noLink?: boolean
+  queryLink?: { [K: string]: string }
 }
 
 const BackButton: FC<Props> = ({
@@ -39,14 +40,14 @@ const BackButton: FC<Props> = ({
   link,
   onlyType = false,
   noLink = false,
+  queryLink,
 }) => {
   const router = useRouter()
-
   return (
     <Wrapper
       onClick={() => {
         if (noLink) return
-        link ? router.push(link) : router.back()
+        link ? router.push({ path: link, query: queryLink }) : router.back()
       }}
     >
       <Icon alt="back" src="/arrow-back.svg" />

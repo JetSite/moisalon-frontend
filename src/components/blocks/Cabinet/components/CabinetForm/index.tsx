@@ -55,7 +55,7 @@ interface Props {
 }
 
 const CabinetForm: FC<Props> = ({ photo, setNoPhotoError, auth }) => {
-  const { me } = useAuthStore(getStoreData)
+  const { user } = useAuthStore(getStoreData)
   const { setMe } = useAuthStore(getStoreEvent)
 
   const [errors, setErrors] = useState<string[]>([])
@@ -143,7 +143,7 @@ const CabinetForm: FC<Props> = ({ photo, setNoPhotoError, auth }) => {
     const initialValues: ICabinetFormIvitialValues = {
       phone: user.info.phone,
       email: user.info.email,
-      city: user.info.city?.cityName || '',
+      city: user.info.city?.name || '',
       username: user.info.username,
     }
 

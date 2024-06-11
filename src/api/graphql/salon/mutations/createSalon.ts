@@ -6,7 +6,7 @@ export const CREATE_SALON = gql`
       data {
         id
         attributes {
-          salonName
+          name
         }
       }
     }

@@ -7,14 +7,11 @@ import { ratingsFragment } from '../../fragments/ratings'
 import servicesFragment from '../../fragments/services'
 
 export const getMasters = gql`
-  query masters($citySlug: String!,$itemsCount: Int!, $excludeId: ID) {
-    masters(filters:{city:{citySlug:{eq:$citySlug }}, id:{ne: $excludeId}}, pagination: { page: 1, pageSize: $itemsCount }) {
+  query masters($slug: String!,$itemsCount: Int!, $excludeId: ID) {
+    masters(filters:{city:{slug:{eq:$slug }}, id:{ne: $excludeId}}, pagination: { page: 1, pageSize: $itemsCount }) {
       data {
         id
         attributes {
-            masterName
-            masterPhone
-            masterEmail
             name
             phone
             email
@@ -26,7 +23,7 @@ export const getMasters = gql`
               data {
                 id
                 attributes {
-                    salonName
+                    name
                 }
               }
             }
@@ -36,7 +33,7 @@ export const getMasters = gql`
             city {
               ${cityInfo}
             }
-            masterPhoto {
+            photo {
               ${imageInfo}
             }
             photo {

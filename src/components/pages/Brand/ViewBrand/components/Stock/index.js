@@ -80,7 +80,7 @@ const Stock = ({ items, title }) => {
                       <DescriptionBlock>
                         <DescriptionTitle>{item.name}</DescriptionTitle>
                         <Description>{item.description}</Description>
-                        <Link href={`/${city.citySlug}`}>
+                        <Link href={`/${city.slug}`}>
                           <GoOver>В магазин</GoOver>
                         </Link>
                       </DescriptionBlock>
@@ -92,7 +92,7 @@ const Stock = ({ items, title }) => {
                       <StockBrand>
                         <TitleBlock>
                           <SecondTitle>{item.second.name}</SecondTitle>
-                          <Link href={`/${city.citySlug}`}>
+                          <Link href={`/${city.slug}`}>
                             <GoOver>В магазин</GoOver>
                           </Link>
                         </TitleBlock>
@@ -103,7 +103,7 @@ const Stock = ({ items, title }) => {
                       <StockBrand>
                         <TitleBlock>
                           <SecondTitle>{item.last.name}</SecondTitle>
-                          <Link href={`/${city.citySlug}`}>
+                          <Link href={`/${city.slug}`}>
                             <GoOver>В магазин</GoOver>
                           </Link>
                         </TitleBlock>

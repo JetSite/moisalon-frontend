@@ -9,16 +9,13 @@ import { reviewsFragment } from '../../fragments/reviews'
 import { ratingsFragment } from '../../fragments/ratings'
 
 export const getMastersTroughCity = gql`
-  query masters($citySlug: [String], $sort: [String], $page: Int, $pageSize: Int, $searchWork: Boolean) {
-    masters(filters: {city: {citySlug: {in: $citySlug}}, and: [{searchWork:{eq: $searchWork}}]}, pagination: { page: $page, pageSize: $pageSize }, sort: $sort) {
+  query masters($slug: [String], $sort: [String], $page: Int, $pageSize: Int, $searchWork: Boolean) {
+    masters(filters: {city: {slug: {in: $slug}}, and: [{searchWork:{eq: $searchWork}}]}, pagination: { page: $page, pageSize: $pageSize }, sort: $sort) {
       data {
         id
         attributes {
-            masterName
             name
-            masterPhone
             phone
-            masterEmail
             email
             searchWork
             rating 
@@ -28,7 +25,7 @@ export const getMastersTroughCity = gql`
               data {
                 id
                 attributes {
-                    salonName
+                    name
                 }
               }
             }
@@ -38,7 +35,7 @@ export const getMastersTroughCity = gql`
             city {
               ${cityInfo}
             }
-            masterPhoto {
+            photo {
               ${imageInfo}
             }
             reviews {

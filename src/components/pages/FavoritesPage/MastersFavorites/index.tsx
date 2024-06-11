@@ -120,8 +120,7 @@ const MastersFavorites: FC<ThingsProps> = ({
                       >
                         <Link
                           href={`/${
-                            cyrToTranslit(master?.city.cityName) ||
-                            city.citySlug
+                            cyrToTranslit(master?.city.name) || city.slug
                           }/master/${master?.id}`}
                         >
                           <MasterItem
@@ -131,8 +130,8 @@ const MastersFavorites: FC<ThingsProps> = ({
                             setDeleteItem={setDeleteItem}
                           />
                         </Link>
-                        {master?.masterPhone && !cabinet ? (
-                          <PhoneButton href={`tel:${master?.masterPhone}`}>
+                        {master?.phone && !cabinet ? (
+                          <PhoneButton href={`tel:${master?.phone}`}>
                             Онлайн-запись
                           </PhoneButton>
                         ) : null}

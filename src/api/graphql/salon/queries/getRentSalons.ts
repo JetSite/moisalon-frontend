@@ -14,23 +14,23 @@ import { phonesFragment } from '../../fragments/phones'
 import { cityFragment } from '../../fragments/city'
 
 export const GET_RENT_SALONS = gql`
-  query salons($citySlug: String!,$itemsCount: Int!, $id: ID) {
-    salons(filters:{cities:{citySlug:{eq:$citySlug }}, and: [{salonWorkplacesCount: {gt: 0}}, {id: {ne: $id}}]}, pagination: { page: 1, pageSize: $itemsCount }) {
+  query salons($slug: String!,$itemsCount: Int!, $id: ID) {
+    salons(filters:{city:{slug:{eq:$slug }}, and: [{workplacesCount: {gt: 0}}, {id: {ne: $id}}]}, pagination: { page: 1, pageSize: $itemsCount }) {
       data {
         id
         attributes {
-            salonName
+            name
             salonID
-            salonAddress
-            salonIsPublished
-            salonIsNotRent
-            salonWebSiteUrl
-            salonEmail
+            address
+            published
+            rent
+            webSiteUrl
+            email
             salonPhones {
               ${phonesFragment}
             }
-            salonOwnerConfirmed
-            salonOnlineBookingUrl
+            ownerConfirmed
+            onlineBookingUrl
             workingHours {
               endTime
               startTime
@@ -44,27 +44,27 @@ export const GET_RENT_SALONS = gql`
                 }
               }
             }
-            salonDescription
-            salonContactPersonName
-            salonContactPersonPhone
-            salonContactPersonEmail
+            description
+            contactPersonName
+            contactPersonPhone
+            contactPersonEmail
             salonContactPersonWorkingHoursAt
             salonContactPersonWorkingHoursTo
-            salonWorkplacesCount
-            salonMastersCount
-            salonBrandsCount
+            workplacesCount
+            mastersCount
+            brandsCount
             createdAt
             updatedAt
             reviewsCount
             ratingCount
             rating
-            salonCover {
+            cover {
               ${imageInfo}
             }
-            salonLogo {
+            logo {
               ${imageInfo}
             }
-            salonPhotos {
+            photos {
               ${imageInfo}
             }
             socialNetworks {
@@ -88,7 +88,7 @@ export const GET_RENT_SALONS = gql`
             reviews {
               ${reviewsFragment}
             }
-            cities {
+            city {
               ${cityFragment}
             }
           }

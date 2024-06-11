@@ -22,8 +22,11 @@ export interface IResume {
 
 export interface IMaster {
   id: IID
-  masterName: string
   name: string
+  phone: string
+  email: string
+  address: string
+
   reviewsCount: number
   rating: number
   ratingCount: number
@@ -34,11 +37,6 @@ export interface IMaster {
   haveTelegram: boolean
   haveWhatsApp: boolean
   searchWork: boolean
-  masterPhone: string
-  masterEmail: string
-  phone: string
-  email: string
-  masterAddress: string
   description: string
   latitude: string
   longitude: string
@@ -47,7 +45,7 @@ export interface IMaster {
   resumes: IResume[]
   photosDiploma: IPhoto[]
   salons: ISalon[]
-  masterPhoto: IPhoto
+  photo: IPhoto
   reviews: IReview[]
   ratings: IRating[]
   services: IServices[]
@@ -55,7 +53,6 @@ export interface IMaster {
   photosWorks: IPhoto[]
   socialNetworks: ISocialNetworks[]
   city: ICity
-  photo: IPhoto
 }
 
 export interface IMasterCreateInput {

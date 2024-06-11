@@ -42,7 +42,7 @@ export const CatalogItem = ({
   return (
     <Wrapper>
       <Content>
-        <Title>{item.serviceName}</Title>
+        <Title>{item.title}</Title>
         {withPrice ? <Price>от 10 000</Price> : null}
       </Content>
     </Wrapper>

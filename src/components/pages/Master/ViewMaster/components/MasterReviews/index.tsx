@@ -28,7 +28,6 @@ const MasterReviews: FC<Props> = ({ reviews, masterId }) => {
       setLoading(false)
     },
   })
-  console.log(updatedReviews)
 
   return (
     <Reviews

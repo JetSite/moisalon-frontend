@@ -136,8 +136,7 @@ const EducationPage = ({
           customTitle: `у мастера ${item.masterOrigin?.name}`,
           buttonLink: 'master',
           originLink: `/${
-            cyrToTranslit(item?.masterOrigin?.addressFull?.city) ||
-            city.citySlug
+            cyrToTranslit(item?.masterOrigin?.addressFull?.city) || city.slug
           }/master/${item?.originId}`,
           originUserId: item?.masterOrigin?.userId,
         }
@@ -148,7 +147,7 @@ const EducationPage = ({
           customTitle: `в салоне ${item.salonOrigin?.name}`,
           buttonLink: 'salon',
           originLink: `/${
-            cyrToTranslit(item?.salonOrigin?.address?.city) || city.citySlug
+            cyrToTranslit(item?.salonOrigin?.address?.city) || city.slug
           }/salon/${item?.originId}`,
           originUserId: item?.salonOrigin?.ownerId,
         }

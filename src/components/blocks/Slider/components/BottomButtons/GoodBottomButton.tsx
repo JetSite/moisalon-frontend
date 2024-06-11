@@ -10,7 +10,7 @@ const GoodBottomButton: FC<IBottomButtons> = () => {
   const { city } = useAuthStore(getStoreData)
 
   return (
-    <Link href={`/${city.citySlug}`}>
+    <Link href={`/${city.slug}`}>
       <Plus />
       <BottomText>Разместить свой товар</BottomText>
     </Link>

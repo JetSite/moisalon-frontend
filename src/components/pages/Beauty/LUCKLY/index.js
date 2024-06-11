@@ -37,14 +37,14 @@ const LucklyPage = () => {
           <BackButton
             type="Вернуться на главную"
             onlyType
-            link={`/${city.citySlug}`}
+            link={`/${city.slug}`}
           />
         </HideMobile>
         <Content>
           <Image alt="img" src="/luckly-1.jpg" />
           <HeadMobile>
             <ImageMobile alt="img" src="/luckly-1.jpg" />
-            <Close onClick={() => router.push(`/${city.citySlug}`)} />
+            <Close onClick={() => router.push(`/${city.slug}`)} />
             <Autor>
               <Avatar alt="avatar" src="/beauty-avatar.png" />
               <Info>

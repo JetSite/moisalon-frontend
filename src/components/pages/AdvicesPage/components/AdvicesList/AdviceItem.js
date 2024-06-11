@@ -36,8 +36,8 @@ const AdviceItem = ({
     window.scrollTo({ top: 0 })
   }
 
-  const photoUrl = item?.attributes?.beautyFeedCover?.data?.attributes?.url
-    ? `${PHOTO_URL}${item.attributes.beautyFeedCover.data.attributes.url}`
+  const photoUrl = item?.attributes?.cover?.data?.attributes?.url
+    ? `${PHOTO_URL}${item.attributes.cover.data.attributes.url}`
     : ''
 
   return (
@@ -45,15 +45,15 @@ const AdviceItem = ({
       <AdvImage photoUrl={photoUrl} />
       {/* <Favorite isFavorite={isFavorite} onClick={(e) => addFavorite(e, item)} /> */}
       <MobileHidden>
-        <AdvTitle>{item.attributes.beautyFeedTitle}</AdvTitle>
+        <AdvTitle>{item.attributes.title}</AdvTitle>
       </MobileHidden>
       <MobileVisible>
-        <AdvTitle>{item.attributes.beautyFeedTitle}</AdvTitle>
+        <AdvTitle>{item.attributes.title}</AdvTitle>
       </MobileVisible>
       {!!adviceClicked ? (
         <AdvDescription
           dangerouslySetInnerHTML={{
-            __html: item.attributes.beautyFeedContent,
+            __html: item.attributes.content,
           }}
         />
       ) : (

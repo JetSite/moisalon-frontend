@@ -22,14 +22,14 @@ const ChangeCityPopupCityList: FC<PropsUpdatedList> = ({
   setCityInput,
   cityInput,
   changeCityFunc,
-  me,
 }) => {
   const router = useRouter()
   const { suggestions } = useCitySuggestions(cityInput)
   const { setCity } = useAuthStore(getStoreEvent)
+  const { me } = useAuthStore(getStoreData)
 
   const cityClickHandler = (city: ICity) => {
-    setCookie(authConfig.cityKeyName, city.citySlug)
+    setCookie(authConfig.cityKeyName, city.slug)
     setCityInput('')
     if (me?.info.id) {
       changeCityFunc({
@@ -38,7 +38,7 @@ const ChangeCityPopupCityList: FC<PropsUpdatedList> = ({
     }
     setCity(city)
     setShowCitySelect(false)
-    redirectCityRoutes(city.citySlug, router)
+    redirectCityRoutes(city.slug, router)
   }
 
   return <CitiesList cities={suggestions} cityClickHandler={cityClickHandler} />

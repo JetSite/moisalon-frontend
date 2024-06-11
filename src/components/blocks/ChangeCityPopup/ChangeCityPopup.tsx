@@ -22,10 +22,9 @@ import { ISetState } from 'src/types/common'
 interface Props {
   openPopup: boolean
   setPopupOpen: ISetState<boolean>
-  me: IMe | null
 }
 
-const ChangeCityPopup: FC<Props> = ({ openPopup, setPopupOpen, me }) => {
+const ChangeCityPopup: FC<Props> = ({ openPopup, setPopupOpen }) => {
   const [changeCity, setChangeCity] = useState<boolean>(false)
   const [cityInput, setCityInput] = useState<string>('')
   const { city } = useAuthStore(getStoreData)
@@ -47,7 +46,7 @@ const ChangeCityPopup: FC<Props> = ({ openPopup, setPopupOpen, me }) => {
       title={
         changeCity ? 'Выберите Ваш город' : 'Вы находитесь в населенном пункте '
       }
-      city={changeCity ? '' : `${city.cityName}`}
+      city={changeCity ? '' : `${city.name}`}
     >
       {!changeCity ? (
         <Box
@@ -91,7 +90,6 @@ const ChangeCityPopup: FC<Props> = ({ openPopup, setPopupOpen, me }) => {
               />
               {cityInput && cityInput.length >= 2 && (
                 <ChangeCityPopupCityList
-                  me={me}
                   cityInput={cityInput}
                   setCityInput={setCityInput}
                   changeCityFunc={changeCityFunc}

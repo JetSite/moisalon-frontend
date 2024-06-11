@@ -133,13 +133,13 @@ const SalonsFavorites: FC<ThingsProps> = ({
                       >
                         <Link
                           href={
-                            salon.salonWorkplacesCount
-                              ? `/${
-                                  salon.cities.citySlug || city.citySlug
-                                }/rent/${salon.id}`
-                              : `/${
-                                  salon.cities.citySlug || city.citySlug
-                                }/salon/${salon.id}`
+                            salon.workplacesCount
+                              ? `/${salon.cities.slug || city.slug}/rent/${
+                                  salon.id
+                                }`
+                              : `/${salon.cities.slug || city.slug}/salon/${
+                                  salon.id
+                                }`
                           }
                         >
                           <SalonCard

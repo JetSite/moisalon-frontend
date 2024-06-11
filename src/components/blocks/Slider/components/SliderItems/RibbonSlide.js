@@ -10,8 +10,8 @@ import {
 } from './styles'
 
 const RibbonSlide = ({ item }) => {
-  const imageUrl = item?.attributes?.beautyFeedCover?.data?.attributes?.url
-    ? `${PHOTO_URL}${item?.attributes.beautyFeedCover.data.attributes.url}`
+  const imageUrl = item?.attributes?.cover?.data?.attributes?.url
+    ? `${PHOTO_URL}${item?.attributes.cover.data.attributes.url}`
     : ''
 
   return (
@@ -30,7 +30,7 @@ const RibbonSlide = ({ item }) => {
           <SliderImageWrap imageUrl={imageUrl}>
             {/* <SliderImage alt={item.title} src={item.image} /> */}
           </SliderImageWrap>
-          <SliderText>{item?.attributes?.beautyFeedTitle}</SliderText>
+          <SliderText>{item?.attributes?.title}</SliderText>
         </SliderContent>
       </SliderItem>
     </Link>

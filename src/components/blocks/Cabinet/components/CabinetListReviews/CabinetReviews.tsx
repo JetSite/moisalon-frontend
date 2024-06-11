@@ -31,16 +31,16 @@ export const CabinetReviews: FC<Props> = ({ reviews, loading }) => {
       {reviews?.length > 0 ? (
         <>
           {reviews?.slice(0, offset).map(item => {
-            if (item.reviewTitle || item.reviewContent) {
+            if (item.title || item.content) {
               return (
                 <Review key={item.id}>
                   <ReviewTop>
                     <ReviewsName>
-                      {nameRedact(item.reviewTitle || item.reviewContent)}
+                      {nameRedact(item.title || item.content)}
                     </ReviewsName>
                     <Stars count={0} />
                   </ReviewTop>
-                  <ReviewsText>{item.reviewContent}</ReviewsText>
+                  <ReviewsText>{item.content}</ReviewsText>
                 </Review>
               )
             } else {

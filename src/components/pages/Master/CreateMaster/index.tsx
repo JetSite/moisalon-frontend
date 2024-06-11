@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback, useEffect } from 'react'
+import { useRef, useState, useCallback, useEffect, FC } from 'react'
 import scrollIntoView from 'scroll-into-view'
 import Header from '../../MainPage/components/Header'
 import { MainContainer } from '../../../../styles/common'
@@ -7,13 +7,28 @@ import { Wrapper } from './styled'
 import BackArrow from '../../../ui/BackArrow'
 import { PHOTO_URL } from '../../../../api/variables'
 import RegistrationForm from './components/RegistrationForm'
+import { IMaster } from 'src/types/masters'
+import { IServiceCategories } from 'src/types/services'
+import {
+  IHandleClickNextTabInForm,
+  IHandleElementPosition,
+} from '../../Salon/CreateSalon'
+import { useMutation } from '@apollo/client'
+import { UPDATE_MASTER_PHOTO } from 'src/_graphql-legacy/master/updateMasterPhotoMutation'
+import { ICity, IPhone, IPhoto } from 'src/types'
 
-const CreateMaster = ({ onAdd, master, serviceCategories }) => {
-  const allTabs = useRef()
-  const ref1 = useRef()
-  const ref2 = useRef()
-  const ref3 = useRef()
-  const ref4 = useRef()
+interface Props {
+  master: IMaster | null
+  serviceCategories: IServiceCategories[]
+  cities: ICity[]
+}
+
+const CreateMaster: FC<Props> = ({ master, serviceCategories, cities }) => {
+  const allTabs = useRef<HTMLFormElement>(null)
+  const ref1 = useRef<HTMLDivElement>(null)
+  const ref2 = useRef<HTMLDivElement>(null)
+  const ref3 = useRef<HTMLDivElement>(null)
+  const ref4 = useRef<HTMLDivElement>(null)
 
   const [tabs] = useState([
     { id: '1', value: 'Личная информация', anchor: 'about' },
@@ -23,12 +38,22 @@ const CreateMaster = ({ onAdd, master, serviceCategories }) => {
   ])
 
   const [refActive, setRefActive] = useState<string | boolean>(false)
-  const [ref1Visible, setRef1Visible] = useState(true)
-  const [ref2Visible, setRef2Visible] = useState(false)
-  const [ref3Visible, setRef3Visible] = useState(false)
-  const [ref4Visible, setRef4Visible] = useState(false)
-  const [photo, setPhoto] = useState<any>(master?.photo)
-  const [noPhotoError, setNoPhotoError] = useState(false)
+  const [ref1Visible, setRef1Visible] = useState<string | boolean>(true)
+  const [ref2Visible, setRef2Visible] = useState<string | boolean>(false)
+  const [ref3Visible, setRef3Visible] = useState<string | boolean>(false)
+  const [ref4Visible, setRef4Visible] = useState<string | boolean>(false)
+  const [photo, setPhoto] = useState<IPhoto | null>(master?.photo || null)
+  const [noPhotoError, setNoPhotoError] = useState<boolean>(false)
+
+  const [updateMasterPhoto] = useMutation(UPDATE_MASTER_PHOTO)
+  const onAdd = useCallback(
+    (photoUrl: string) => {
+      if (master) {
+        updateMasterPhoto({ variables: { input: { photoUrl } } })
+      }
+    },
+    [updateMasterPhoto],
+  )
 
   useEffect(() => {
     if (master?.photo) {
@@ -36,7 +61,12 @@ const CreateMaster = ({ onAdd, master, serviceCategories }) => {
     }
   }, [master])
 
-  const handleElementPosition = (element, func, top) => {
+  const handleElementPosition: IHandleElementPosition = (
+    element,
+    func,
+    top,
+  ) => {
+    if (!element) return
     const posTop = element?.getBoundingClientRect()?.top
     if (
       posTop > 0
@@ -92,8 +122,8 @@ const CreateMaster = ({ onAdd, master, serviceCategories }) => {
     }
   }, [ref1Visible, ref2Visible, ref3Visible, ref4Visible])
 
-  const handleClickNextTab = number => {
-    const newTab = tabs.find(item => +item.id === number + 1)
+  const handleClickNextTab: IHandleClickNextTabInForm = number => {
+    const newTab = tabs.find(item => +item.id === number + 1) || tabs[0]
     const element = document.getElementById(newTab.anchor.replace('#', ''))
     if (element) {
       scrollIntoView(element, {
@@ -115,16 +145,8 @@ const CreateMaster = ({ onAdd, master, serviceCategories }) => {
             tabs={tabs}
             photoType={'master'}
             refActive={refActive}
-            photo={
-              photo
-                ? {
-                    url: `${PHOTO_URL}${photo.url}`,
-                  }
-                : master?.photo
-                ? master?.photo
-                : null
-            }
-            id={master?.id}
+            photo={photo ? { ...photo, url: `${PHOTO_URL}${photo.url}` } : null}
+            id={master?.id || null}
             onAdd={onAdd}
             setPhoto={setPhoto}
             noPhotoError={noPhotoError}
@@ -141,6 +163,7 @@ const CreateMaster = ({ onAdd, master, serviceCategories }) => {
             photo={photo}
             setNoPhotoError={setNoPhotoError}
             serviceCategories={serviceCategories}
+            cities={cities}
           />
         </Wrapper>
       </MainContainer>

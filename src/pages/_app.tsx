@@ -71,7 +71,7 @@ function MyApp({ Component, pageProps }: AppProps<IServerProps>) {
       <ApolloProvider client={apolloClient}>
         <ThemeProvider theme={theme}>
           <StylesProvider injectFirst>
-            <AuthProvider cityData={pageProps}>
+            <AuthProvider serverData={pageProps}>
               <YMInitializer
                 accounts={[56585698]}
                 options={{ webvisor: true }}

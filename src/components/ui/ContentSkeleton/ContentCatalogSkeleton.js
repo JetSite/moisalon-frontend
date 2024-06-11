@@ -75,7 +75,7 @@ const ContentCatalogSkeleton = ({
       <MobileViewCards />
       <SearchBlock />
       <Wrap>
-        <BackButton onlyType type="На главную" link={`/${city.citySlug}`} />
+        <BackButton onlyType type="На главную" link={`/${city.slug}`} />
       </Wrap>
       {bannersByHookWide?.bannersByHookCode?.length ||
       bannersByHookSmall1?.bannersByHookCode?.length ||

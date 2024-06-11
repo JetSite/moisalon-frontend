@@ -42,9 +42,9 @@ interface Props {
 }
 
 const MasterCabinet: FC = () => {
-  const { me } = useAuthStore(getStoreData)
+  const { user } = useAuthStore(getStoreData)
   const [photo, setPhoto] = useState<IPhoto | undefined>(
-    !!me?.info?.masters?.length ? me.info.masters[0].photo : undefined,
+    !!user?.owner?.masters?.length ? user.owner.masters[0].photo : undefined,
   )
   const [noPhotoError, setNoPhotoError] = useState<boolean>(false)
   const [, setErrors] = useState<string[] | null>(null)
@@ -69,7 +69,7 @@ const MasterCabinet: FC = () => {
   //     mutate({
   //       variables: {
   //         input: {
-  //           defaultCity: me?.info?.city.cityName,
+  //           defaultCity: me?.info?.city.name,
   //           displayName: me?.info?.username,
   //           email: me?.info?.email,
   //           phoneNumber: me?.info?.phone,
@@ -88,8 +88,6 @@ const MasterCabinet: FC = () => {
       setActiveTab(router?.query?.tab as string)
     }
   }, [router?.query?.tab])
-
-  console.log('me', me)
 
   return (
     <>

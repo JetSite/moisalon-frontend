@@ -33,7 +33,7 @@ export const CatalogItem: FC<Props> = ({ item }) => {
   return (
     <Wrapper>
       <Top>
-        <Title>{item?.serviceName}</Title>
+        <Title>{item?.title}</Title>
         {/* {service?.price ? (
           <Price>от {service.price}</Price>
         ) : null} */}

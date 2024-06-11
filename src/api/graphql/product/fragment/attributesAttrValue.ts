@@ -5,12 +5,12 @@ attr_value {
   data {
     id
     attributes {
-      attributeValueName
+      title
       attr_groups {
         data {
           id
           attributes {
-            attributeGroupName
+            title
             attributeGroupType
           }
         }

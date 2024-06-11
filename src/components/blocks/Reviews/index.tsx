@@ -107,7 +107,7 @@ const Reviews: FC<Props> = ({
                 </Name>
                 <Stars count={Number(item.rating?.title)} />
               </ReviewTop>
-              <Text>{item.reviewContent}</Text>
+              <Text>{item.content}</Text>
             </Review>
           ))}
           {loading && <ReviewSkeleton />}

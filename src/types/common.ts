@@ -21,7 +21,7 @@ export interface InitialValuesForm {
 
 export type ISetState<T> = Dispatch<SetStateAction<T>>
 
-export type IID = string | number
+export type IID = string
 
 export type IApolloRefetch = (
   variables?: Partial<OperationVariables> | undefined,

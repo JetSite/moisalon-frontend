@@ -45,7 +45,12 @@ const AllSalons: FC<Props> = ({
   ...props
 }) => {
   const layout = { brands, masters, salons }
-  console.log(JSON.stringify(serverProviderData.props.user.me))
+  console.log(
+    'serverCookieMe: ',
+    JSON.stringify(serverProviderData.props.user.me),
+    'server: ',
+    serverProviderData,
+  )
 
   return (
     <CategoryPageLayout {...layout}>
@@ -74,7 +79,7 @@ export const getServerSideProps: GetServerSideProps<
   const data = await Promise.all([
     apolloClient.query({
       query: getSalonsThroughCity,
-      variables: { citySlug: ctx.query.city },
+      variables: { slug: ctx.query.city },
     }),
     apolloClient.query({
       query: getBrands,
@@ -85,14 +90,14 @@ export const getServerSideProps: GetServerSideProps<
     apolloClient.query({
       query: getMasters,
       variables: {
-        citySlug: ctx.query.city,
+        slug: ctx.query.city,
         itemsCount: 10,
       },
     }),
     apolloClient.query({
       query: getSalons,
       variables: {
-        citySlug: ctx.query.city,
+        slug: ctx.query.city,
         itemsCount: 10,
       },
     }),
@@ -109,7 +114,7 @@ export const getServerSideProps: GetServerSideProps<
   })
 
   const cityData = (await fetchCity(ctx.query.city as string, ctx)) || {
-    citySlug: defaultValues.citySlug,
+    slug: defaultValues.citySlug,
   }
 
   const salonData: ISalon[] = flattenStrapiResponse(data[0].data.salons) || []
@@ -121,7 +126,7 @@ export const getServerSideProps: GetServerSideProps<
 
   // return dataaaaa
   return {
-    notFound: !cityData?.cityName,
+    notFound: !cityData?.name,
     props: {
       serverProviderData,
       salonData: salonData.map(e => {

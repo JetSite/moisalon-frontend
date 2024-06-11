@@ -27,7 +27,7 @@ interface IUseAuthStore {
 const initialData = {
   me: null,
   user: null,
-  city: { citySlug: defaultValues.citySlug },
+  city: { slug: defaultValues.citySlug },
   cartItemTotal: 1,
   loading: false,
 }
@@ -40,7 +40,7 @@ const useAuthStore = create<IUseAuthStore>((set, get) => ({
     set(state => ({
       data: {
         ...state.data,
-        city: city || { citySlug: defaultValues.citySlug },
+        city: city || { slug: defaultValues.citySlug },
       },
     })),
   setLoading: bool =>

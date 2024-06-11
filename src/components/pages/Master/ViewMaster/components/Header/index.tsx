@@ -48,27 +48,27 @@ import { getRating } from 'src/utils/newUtils/getRating'
 import { RATE_MASTER } from 'src/api/graphql/master/mutations/rateMaster'
 
 interface Props {
-  master: IMaster
+  master: IMaster | null
   isOwner: boolean
 }
 
 const Header: FC<Props> = ({ master, isOwner }) => {
   const router = useRouter()
   const { city, me } = useAuthStore(getStoreData)
-  const isRateBefore = master.ratings.find(e => e.user.id === me?.info.id)
+  const isRateBefore = master?.ratings.find(e => e.user.id === me?.info.id)
   const [chatMessagePopup, setChatMessagePopup] = useState(false)
   const [newRating, setNewRating] = useState<number>(0)
   const [rateMaster, { loading }] = useMutation(RATE_MASTER, {
     onCompleted: () => {},
   })
 
-  const { rating, ratingCount } = getRating(master.ratings, newRating)
+  const { rating, ratingCount } = getRating(master?.ratings, newRating)
 
   const logo =
-    master?.masterPhoto?.url || master?.photo?.url ? (
+    master?.photo?.url || master?.photo?.url ? (
       <Logo
         background={`url(${PHOTO_URL}${
-          master?.masterPhoto?.url || master.photo.url
+          master?.photo?.url || master.photo.url
         })`}
       />
     ) : (
@@ -95,7 +95,7 @@ const Header: FC<Props> = ({ master, isOwner }) => {
       variables: {
         user: me?.info.id,
         value: num,
-        master: master.id,
+        master: master?.id,
       },
     })
   }
@@ -106,25 +106,23 @@ const Header: FC<Props> = ({ master, isOwner }) => {
         <ChatMessagePopup
           open={chatMessagePopup}
           setChatMessagePopup={setChatMessagePopup}
-          userId={master.id}
+          userId={master?.id || null}
           origin="MASTER"
           originData={master}
         />
         <Wrapper>
           <BackButton
-            link={isOwner ? '/masterCabinet' : `/${city.citySlug}/master`}
+            link={isOwner ? '/masterCabinet' : `/${city.slug}/master`}
             type="Мастер"
-            name={master?.masterName || master?.name}
+            name={master?.name}
           />
         </Wrapper>
         <Wrapper>
           <Socials>
             <Phone
-              active={!!master?.masterPhone || !!master?.phone}
+              active={!!master?.phone}
               href={
-                master?.masterPhone || master?.phone
-                  ? `tel:${master.masterPhone || master.phone}`
-                  : '#'
+                master?.phone || master?.phone ? `tel:${master.phone}` : '#'
               }
             />
             {logo}
@@ -150,7 +148,7 @@ const Header: FC<Props> = ({ master, isOwner }) => {
                       rel="nofollow"
                       showSocials={showSocials}
                       href={`https://tlgg.ru/${numberForSocials(
-                        master?.masterPhone || master?.phone,
+                        master?.phone || master?.phone,
                       )}`}
                     />
                   ) : null}
@@ -160,7 +158,7 @@ const Header: FC<Props> = ({ master, isOwner }) => {
                       rel="nofollow"
                       showSocials={showSocials}
                       href={`https://api.whatsapp.com/send?phone=${numberForSocials(
-                        master?.masterPhone || master?.phone,
+                        master?.phone || master?.phone,
                       )}`}
                     />
                   ) : null}
@@ -170,7 +168,7 @@ const Header: FC<Props> = ({ master, isOwner }) => {
                       rel="nofollow"
                       showSocials={showSocials}
                       href={`viber://chat?number=%2B${numberForSocials(
-                        master?.masterPhone || master?.phone,
+                        master?.phone || master?.phone,
                       )}`}
                     />
                   ) : null}
@@ -180,15 +178,22 @@ const Header: FC<Props> = ({ master, isOwner }) => {
           </Socials>
           <NameWrapper>
             <NameContent>
-              <Name>{master.masterName || master.name}</Name>
+              <Name>{master?.name}</Name>
               <Favorite
                 isFavorite={isFavorite}
-                onClick={e => addFavorite(e, master)}
+                onClick={e => (master ? addFavorite(e, master) : null)}
               />
               {/* <Bell /> */}
             </NameContent>
             {isOwner ? (
-              <EditButton onClick={() => router.push('/createMaster')}>
+              <EditButton
+                onClick={() => {
+                  router.push({
+                    pathname: '/createMaster',
+                    query: master ? { id: master?.id } : undefined,
+                  })
+                }}
+              >
                 Редактировать профиль
               </EditButton>
             ) : null}

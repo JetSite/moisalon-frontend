@@ -116,7 +116,7 @@ const CabinetChat = () => {
               href={`/${
                 chatClicked?.chat.origin === 'MASTER'
                   ? cyrToTranslit(chatClicked?.originData.city)
-                  : city?.citySlug
+                  : city?.slug
               }/${chatClicked?.chat.origin === 'MASTER' ? 'master' : 'salon'}/${
                 chatClicked?.originData.id
               }`}

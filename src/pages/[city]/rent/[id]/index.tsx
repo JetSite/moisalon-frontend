@@ -79,8 +79,8 @@ const Rent: FC<Props> = ({
         {salon?.seo?.description ? (
           <meta name="description" content={salon?.seo?.description} />
         ) : null}
-        {salon.salonLogo?.url ? (
-          <meta property="og:image" content={salon.salonLogo.url} />
+        {salon.logo?.url ? (
+          <meta property="og:image" content={salon.logo.url} />
         ) : null}
       </Head> */}
       <>
@@ -127,7 +127,7 @@ const Rent: FC<Props> = ({
             type="vacancies"
             title="Наши вакансии"
             items={salon.vacancies}
-            city={salon.cities}
+            city={salon.city}
           />
         ) : null}
         <SalonReviews salonId={salon.id} reviews={salon.reviews} />
@@ -136,9 +136,9 @@ const Rent: FC<Props> = ({
           locationDirections={salon.locationDirections}
           coordinates={{ longitude: salon.longitude, latitude: salon.latitude }}
           phones={salon?.salonPhones}
-          email={salon?.salonEmail}
+          email={salon?.email}
           workingHours={salon?.workingHours}
-          address={salon?.salonAddress}
+          address={salon?.address}
           socialNetworkUrls={salon?.socialNetworks}
         />
         <Ribbon
@@ -167,7 +167,7 @@ export const getServerSideProps: GetServerSideProps<
     }),
     apolloClient.query({
       query: GET_RENT_SALONS,
-      variables: { id, itemsCount: 10, citySlug: cityData?.citySlug },
+      variables: { id, itemsCount: 10, slug: cityData?.slug },
     }),
     apolloClient.query({
       query: getFeedCategories,

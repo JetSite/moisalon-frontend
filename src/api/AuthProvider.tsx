@@ -21,9 +21,9 @@ import { GetServerSidePropsContext, PreviewData } from 'next'
 import { ParsedUrlQuery } from 'querystring'
 import { IServerProps } from './server/types'
 
-const AuthProvider: FC<{ children: IChildren; cityData?: IServerProps }> = ({
+const AuthProvider: FC<{ children: IChildren; serverData?: IServerProps }> = ({
   children,
-  cityData,
+  serverData,
 }) => {
   // console.log(cityData)
 
@@ -62,7 +62,7 @@ const AuthProvider: FC<{ children: IChildren; cityData?: IServerProps }> = ({
         changeCityFunc({
           variables: {
             id: prepareData.id,
-            data: { selected_city: cityData?.id || 1 },
+            data: { selected_city: serverData?.props.city?.id || 1 },
           },
         })
       }
@@ -99,7 +99,7 @@ const AuthProvider: FC<{ children: IChildren; cityData?: IServerProps }> = ({
       setCity(prepareData.selected_city as ICity)
       setCookie(
         authConfig.cityKeyName,
-        prepareData.selected_city?.citySlug || defaultValues.citySlug,
+        prepareData.selected_city?.slug || defaultValues.citySlug,
       )
     },
     onError: err => console.log(err),
@@ -107,15 +107,15 @@ const AuthProvider: FC<{ children: IChildren; cityData?: IServerProps }> = ({
   })
 
   useEffect(() => {
-    const initializeCity = async () => {
-      if (cityData?.cityName) {
-        setCity(cityData)
-      } else {
-        const cityDataRes = await fetchCity(cityCookie)
-        setCity(cityDataRes)
-      }
-    }
-    initializeCity()
+    // const initializeCity = async () => {
+    //   if (cityData?.name) {
+    //     setCity(cityData)
+    //   } else {
+    //     const cityDataRes = await fetchCity(cityCookie)
+    //     setCity(cityDataRes)
+    //   }
+    // }
+    // initializeCity()
   }, [cityCookie])
 
   useEffect(() => {
@@ -126,7 +126,7 @@ const AuthProvider: FC<{ children: IChildren; cityData?: IServerProps }> = ({
       if (!me && accessToken) {
         getMe()
       }
-      if (me && !me.favorite) {
+      if (me && !user) {
         getUser({ variables: { id: me.info.id } })
       }
     }

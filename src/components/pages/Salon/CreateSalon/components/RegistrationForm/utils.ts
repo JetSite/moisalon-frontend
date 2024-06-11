@@ -7,23 +7,23 @@ import {
 } from 'src/utils/newUtils/transformWorkingHoursInput'
 
 export interface IPrepareInputSalonForm {
-  salonName: string
-  salonEmail: string
+  name: string
+  email: string
   salonPhones: string
-  salonDescription: string
+  description: string
   locationDirections: string
-  salonContactPersonEmail: string
-  salonContactPersonName: string
-  salonContactPersonPhone: string
-  salonOnlineBookingUrl: string
+  contactPersonEmail: string
+  contactPersonName: string
+  contactPersonPhone: string
+  onlineBookingUrl: string
   socialNetworks: { title: string; link: string }[]
-  salonWebSiteUrl: string
+  webSiteUrl: string
   workingHours: IWorkingHoursInputResolve[]
   services: { setvice: string }[]
   activities: string[]
-  cities: IID | null
-  salonAddress: string
-  salonLogo?: IID
+  city: IID | null
+  address: string
+  logo?: IID
 }
 
 interface Props {
@@ -31,6 +31,7 @@ interface Props {
   findCity: ICity | null
   logo: IPhoto | null
   selectCityId: IID | null
+  photos: string[]
 }
 
 type IGetPrepareInputSalonForm = (props: Props) => IPrepareInputSalonForm
@@ -40,6 +41,7 @@ export const getPrepareInputSalonForm: IGetPrepareInputSalonForm = ({
   findCity,
   logo,
   selectCityId,
+  photos,
 }) => {
   const servicesForInput = values.services?.map((item: { id: IID }) => ({
     service: item.id,
@@ -52,25 +54,26 @@ export const getPrepareInputSalonForm: IGetPrepareInputSalonForm = ({
       }))
     : []
   return {
-    salonName: values.salonName,
-    salonEmail: values.salonEmail,
+    name: values.name,
+    email: values.email,
     salonPhones: values.salonPhones,
-    salonDescription: values.salonDescription,
+    description: values.description,
     locationDirections: values.locationDirections,
-    salonContactPersonEmail: values.salonContactPersonEmail,
-    salonContactPersonName: values.salonContactPersonName,
-    salonContactPersonPhone: values.salonContactPersonPhone?.phoneNumber,
-    salonOnlineBookingUrl: values.salonOnlineBookingUrl,
+    contactPersonEmail: values.contactPersonEmail,
+    contactPersonName: values.contactPersonName,
+    contactPersonPhone: values.contactPersonPhone?.phoneNumber,
+    onlineBookingUrl: values.onlineBookingUrl,
     socialNetworks,
-    salonWebSiteUrl: values.salonWebSiteUrl,
+    webSiteUrl: values.webSiteUrl,
     workingHours: transformWorkingHours(
       workingHoursOptions,
       values.workingHours,
     ),
     services: servicesForInput,
     activities: values.activities,
-    cities: findCity?.id || selectCityId,
-    salonAddress: values.address,
-    salonLogo: logo?.id,
+    city: findCity?.id || selectCityId,
+    address: values.address,
+    logo: logo?.id,
+    photos,
   }
 }

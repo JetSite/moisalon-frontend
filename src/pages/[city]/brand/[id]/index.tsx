@@ -59,8 +59,8 @@ const Brand: FC<Props> = ({ brandData, othersBrands }) => {
         {brand.seoDescription ? (
           <meta name="description" content={brand.seoDescription} />
         ) : null}
-        {brand.brandLogo?.url ? (
-          <meta property="og:image" content={brand.brandLogo.url} />
+        {brand.logo?.url ? (
+          <meta property="og:image" content={brand.logo.url} />
         ) : null}
       </Head>
       <>
@@ -126,7 +126,7 @@ const Brand: FC<Props> = ({ brandData, othersBrands }) => {
           <Slider
             type="masters"
             items={masters}
-            title={`Мастера бренда ${brand.brandName}`}
+            title={`Мастера бренда ${brand.name}`}
             bgColor="#f2f0f0"
             isOwner={isOwner}
             pt={102}

@@ -3,13 +3,13 @@ import { IServices } from 'src/types/services'
 
 export interface IGroupedService {
   id: IID
-  serviceName: string
+  title: string
 }
 
 export interface IGroupedCategories {
   id: IID
-  serviceCategoryName?: string
-  categoryName?: string
+  title?: string
+  title?: string
   services: IGroupedService[]
 }
 
@@ -40,7 +40,7 @@ export const getGroupedServices: IGetGroupedServices = data => {
         : service.service.service_m_category
 
       if (setviseCategory && setviseCategory.id === e.id) {
-        e.services.push({ id: service.id, serviceName: service.serviceName })
+        e.services.push({ id: service.id, title: service.title })
       }
     })
     return e

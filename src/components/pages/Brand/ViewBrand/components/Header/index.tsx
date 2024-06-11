@@ -44,8 +44,8 @@ const Header: FC<Props> = ({ brand, isOwner }) => {
     setMyPrice(brand?.minimalOrderPrice?.toLocaleString() || null)
   }, [])
 
-  const logo = brand.brandLogo?.url ? (
-    <Logo background={`url(${PHOTO_URL}${brand.brandLogo?.url})`} />
+  const logo = brand.logo?.url ? (
+    <Logo background={`url(${PHOTO_URL}${brand.logo?.url})`} />
   ) : (
     <SkeletonCircle />
   )
@@ -56,8 +56,8 @@ const Header: FC<Props> = ({ brand, isOwner }) => {
         <Wrapper>
           <BackButton
             type="Бренд"
-            name={brand?.brandName}
-            link={isOwner ? '/brandCabinet' : `/${brand.city.citySlug}/brand`}
+            name={brand?.name}
+            link={isOwner ? '/brandCabinet' : `/${brand.city.slug}/brand`}
           />
         </Wrapper>
         <Wrapper>

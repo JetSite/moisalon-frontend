@@ -71,20 +71,16 @@ const CabinetHeaderMobile: FC<Props> = ({
         <Wrap>
           {master.id ? (
             <Link
-              href={`/${master.city.citySlug || city?.citySlug}/master/${
-                master?.id
-              }`}
+              href={`/${master.city.slug || city?.slug}/master/${master?.id}`}
             >
               <Item>
                 <Container>
                   <Avatar
                     alt="avatar"
-                    src={
-                      PHOTO_URL + master?.masterPhoto.url || 'empty-photo.svg'
-                    }
+                    src={PHOTO_URL + master?.photo.url || 'empty-photo.svg'}
                   />
                   <Content>
-                    <Name>{master?.masterName}</Name>
+                    <Name>{master?.name}</Name>
                     <Type>Профиль мастера</Type>
                   </Content>
                 </Container>
@@ -96,11 +92,9 @@ const CabinetHeaderMobile: FC<Props> = ({
                 <div key={item.id}>
                   <Link
                     href={
-                      item.salonWorkplacesCount
-                        ? `/${item.cities?.citySlug || city?.citySlug}/rent/${
-                            item?.id
-                          }`
-                        : `/${item.cities?.citySlug || city?.citySlug}/salon/${
+                      item.workplacesCount
+                        ? `/${item.cities?.slug || city?.slug}/rent/${item?.id}`
+                        : `/${item.cities?.slug || city?.slug}/salon/${
                             item?.id
                           }`
                     }
@@ -109,14 +103,12 @@ const CabinetHeaderMobile: FC<Props> = ({
                       <Container>
                         <Avatar
                           alt="avatar"
-                          src={
-                            PHOTO_URL + item.salonLogo?.url || 'empty-photo.svg'
-                          }
+                          src={PHOTO_URL + item.logo?.url || 'empty-photo.svg'}
                         />
                         <Content>
-                          <Name>{item?.salonName}</Name>
+                          <Name>{item?.name}</Name>
                           <Type>
-                            {item?.salonWorkplacesCount
+                            {item?.workplacesCount
                               ? 'Профиль салона арендодателя'
                               : 'Профиль салона'}
                           </Type>
@@ -131,22 +123,20 @@ const CabinetHeaderMobile: FC<Props> = ({
             ? brands.map(item => (
                 <div key={item.id}>
                   <Link
-                    href={`/${item.city.citySlug || city?.citySlug}/brand/${
-                      item.id
-                    }`}
+                    href={`/${item.city.slug || city?.slug}/brand/${item.id}`}
                   >
                     <Item>
                       <Container>
                         <Avatar
                           alt="avatar"
                           src={
-                            item.brandLogo
-                              ? `${PHOTO_URL}${item.brandLogo.url}`
+                            item.logo
+                              ? `${PHOTO_URL}${item.logo.url}`
                               : 'empty-photo.svg'
                           }
                         />
                         <Content>
-                          <Name>{item.brandName}</Name>
+                          <Name>{item.name}</Name>
                           <Type>Профиль бренда</Type>
                         </Content>
                       </Container>

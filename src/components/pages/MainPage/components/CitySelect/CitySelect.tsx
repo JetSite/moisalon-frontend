@@ -35,8 +35,8 @@ import { useRouter } from 'next/router'
 import { ISetState } from 'src/types/common'
 
 const prepareCitiesList: ICity[] = defaultcCitiesList.map((city, i) => ({
-  cityName: city,
-  citySlug: cyrToTranslit(city) as string,
+  name: city,
+  slug: cyrToTranslit(city) as string,
   id: (i + 1).toString(),
 }))
 
@@ -122,14 +122,14 @@ const CitySelect: FC<Props> = ({
   const cityClickHandler = async (city: ICity) => {
     setShowCitySelect(false)
     setShowHamburgerMenu && setShowHamburgerMenu(false)
-    setCookie(authConfig.cityKeyName, city.citySlug)
+    setCookie(authConfig.cityKeyName, city.slug)
     if (me?.info.id) {
       changeCityFunc({
         variables: { id: me.info.id, data: { selected_city: city.id } },
       })
     }
     setCity(city || null)
-    redirectCityRoutes(city.citySlug, router)
+    redirectCityRoutes(city.slug, router)
   }
 
   let component = (

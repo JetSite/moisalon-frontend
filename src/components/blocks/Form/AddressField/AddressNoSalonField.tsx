@@ -40,14 +40,15 @@ const MapWrap = styled.div`
   width: 100%;
 `
 
-interface Props extends FieldInputProps<any, HTMLElement> {
+export interface IAddressNoSalonFieldProps
+  extends FieldInputProps<any, HTMLElement> {
   fullWidth?: boolean
   salonId?: string | null
   label: string
   noMap?: boolean
 }
 
-const AddressNoSalonField: FC<Props> = ({
+const AddressNoSalonField: FC<IAddressNoSalonFieldProps> = ({
   label = 'Адрес',
   fullWidth = true,
   salonId = null,

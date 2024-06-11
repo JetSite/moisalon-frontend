@@ -16,11 +16,11 @@ import { masterFragment } from './master'
 export const salonFragment = `data {
   id
   attributes {
-      salonName
+      name
       latitude
       longitude
       locationDirections
-      cities {
+      city {
         ${cityFragment}
       }
       user {
@@ -32,17 +32,17 @@ export const salonFragment = `data {
           data {
             id
             attributes {
-              activityName
+              title
             }
           }
         }
         
       salonID
-      salonAddress
-      salonIsPublished
-      salonIsNotRent
-      salonWebSiteUrl
-      salonEmail
+      address
+      published
+      rent
+      webSiteUrl
+      email
       salonPhones {
         phoneNumber
         haveTelegram
@@ -52,8 +52,8 @@ export const salonFragment = `data {
       socialNetworks {
         ${socialNetworksFragment}
       }
-      salonOwnerConfirmed
-      salonOnlineBookingUrl
+      ownerConfirmed
+      onlineBookingUrl
       workingHours {
         endTime
         startTime
@@ -68,24 +68,24 @@ export const salonFragment = `data {
           }
         }
       }
-      salonDescription
-      salonContactPersonName
-      salonContactPersonPhone
-      salonContactPersonEmail
+      description
+      contactPersonName
+      contactPersonPhone
+      contactPersonEmail
       salonContactPersonWorkingHoursAt
       salonContactPersonWorkingHoursTo
-      salonWorkplacesCount
-      salonMastersCount
-      salonBrandsCount
+      workplacesCount
+      mastersCount
+      brandsCount
       createdAt
       updatedAt
       reviewsCount
             ratingCount
             rating
-      salonCover {
+      cover {
         ${imageInfo}
       }
-      salonLogo {
+      logo {
         ${imageInfo}
       }
       services {

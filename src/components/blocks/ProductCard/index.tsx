@@ -44,9 +44,7 @@ const ProductCard: FC<Props> = ({ item, loading }) => {
     setIsFavorit(!isFavorite)
   }
 
-  const imageLink = item?.productCover?.url
-    ? `${PHOTO_URL}${item.productCover.url}`
-    : ''
+  const imageLink = item?.cover?.url ? `${PHOTO_URL}${item.cover.url}` : ''
 
   return loading ? (
     <SkeletonItem
@@ -65,22 +63,19 @@ const ProductCard: FC<Props> = ({ item, loading }) => {
       </TopGoodWrapper>
       <BottomGoodWrapper>
         <Wrap>
-          <Name>{item.productName as unknown as string}</Name>
+          <Name>{item.name as unknown as string}</Name>
           {item.brand.dontShowPrice && !me?.info ? null : (
             <Price>
               <NewPrice>
-                {item.productSalePrice
-                  ? `${
-                      (item.productSalePrice && item.productSalePrice) ||
-                      item.productSalePrice
-                    } ₽`
+                {item.salePrice
+                  ? `${(item.salePrice && item.salePrice) || item.salePrice} ₽`
                   : 'Цена по запросу'}{' '}
               </NewPrice>
-              {(item.productPrice as unknown as number) !== 0 ? (
+              {(item.regularPrice as unknown as number) !== 0 ? (
                 <OldPrice>
                   {`${
-                    (item.productPrice && item.productPrice) ||
-                    item.productPrice
+                    (item.regularPrice && item.regularPrice) ||
+                    item.regularPrice
                   } ₽`}
                 </OldPrice>
               ) : null}

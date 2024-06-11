@@ -244,7 +244,7 @@ const Product = ({
   return (
     <Wrapper>
       <Top>
-        <Link href={`/${city.citySlug}/product/${item?.product?.id}`}>
+        <Link href={`/${city.slug}/product/${item?.product?.id}`}>
           <Image>
             <img
               src={

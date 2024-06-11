@@ -128,10 +128,10 @@ const CabinetListReviews = () => {
               <Container>
                 <Avatar
                   alt="avatar"
-                  src={PHOTO_URL + master.masterPhoto.url || 'empty-photo.svg'}
+                  src={PHOTO_URL + master.photo.url || 'empty-photo.svg'}
                 />
                 <Content>
-                  <Name>{master.masterName}</Name>
+                  <Name>{master.name}</Name>
                   <Type>Профиль мастера</Type>
                 </Content>
               </Container>
@@ -151,12 +151,12 @@ const CabinetListReviews = () => {
                 <Container>
                   <Avatar
                     alt="avatar"
-                    src={PHOTO_URL + item?.salonCover?.url || 'empty-photo.svg'}
+                    src={PHOTO_URL + item?.cover?.url || 'empty-photo.svg'}
                   />
                   <Content>
-                    <Name>{item?.salonName}</Name>
+                    <Name>{item?.name}</Name>
                     <Type>
-                      {item?.salonWorkplacesCount
+                      {item?.workplacesCount
                         ? 'Профиль салона арендодателя'
                         : 'Профиль салона'}
                     </Type>
@@ -180,13 +180,13 @@ const CabinetListReviews = () => {
                   <Avatar
                     alt="avatar"
                     src={
-                      item?.brandLogo
-                        ? `${PHOTO_URL}${item?.brandLogo.url}`
+                      item?.logo
+                        ? `${PHOTO_URL}${item?.logo.url}`
                         : 'empty-photo.svg'
                     }
                   />
                   <Content>
-                    <Name>{item?.brandName}</Name>
+                    <Name>{item?.name}</Name>
                     <Type>Профиль бренда</Type>
                   </Content>
                 </Container>
@@ -208,12 +208,12 @@ const CabinetListReviews = () => {
               <Avatar
                 alt="avatar"
                 src={
-                  PHOTO_URL + (activeProfile as IMaster).masterPhoto.url ||
+                  PHOTO_URL + (activeProfile as IMaster).photo.url ||
                   'empty-photo.svg'
                 }
               />
               <Content>
-                <Name>{(activeProfile as IMaster).masterName}</Name>
+                <Name>{(activeProfile as IMaster).name}</Name>
                 <Type>Профиль мастера</Type>
               </Content>
             </Container>
@@ -235,12 +235,12 @@ const CabinetListReviews = () => {
               <Avatar
                 alt="avatar"
                 src={
-                  PHOTO_URL + (activeProfile as ISalon).salonCover?.url ||
+                  PHOTO_URL + (activeProfile as ISalon).cover?.url ||
                   'empty-photo.svg'
                 }
               />
               <Content>
-                <Name>{(activeProfile as ISalon)?.salonName}</Name>
+                <Name>{(activeProfile as ISalon)?.name}</Name>
                 <Type>Профиль салона</Type>
               </Content>
             </Container>
@@ -268,13 +268,13 @@ const CabinetListReviews = () => {
               <Avatar
                 alt="avatar"
                 src={
-                  (activeProfile as IBrand)?.brandLogo
-                    ? `${PHOTO_URL}${(activeProfile as IBrand).brandLogo.url}`
+                  (activeProfile as IBrand)?.logo
+                    ? `${PHOTO_URL}${(activeProfile as IBrand).logo.url}`
                     : 'empty-photo.svg'
                 }
               />
               <Content>
-                <Name>{(activeProfile as IBrand)?.brandName}</Name>
+                <Name>{(activeProfile as IBrand)?.name}</Name>
                 <Type>Профиль бренда</Type>
               </Content>
             </Container>

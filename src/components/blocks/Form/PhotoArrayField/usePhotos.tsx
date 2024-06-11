@@ -5,16 +5,15 @@ import { UPDATE_SALON_PHOTO } from 'src/api/graphql/salon/mutations/updateSalonP
 import { IPhoto } from 'src/types'
 import { UPLOAD } from 'src/api/graphql/common/upload'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
-import { IID } from 'src/types/common'
+import { IID, ISetState } from 'src/types/common'
 
 interface Props {
   photos: IPhoto[]
-  editEntityId: IID | null
+  setPhotosArray: ISetState<string[]>
 }
 
 const usePhotos = ({
   photos = [],
-  editEntityId,
   photoType,
   kind,
   onAdd: addPhoto,
@@ -22,22 +21,18 @@ const usePhotos = ({
   onChange: updatePhoto,
   onSetDefault,
   defaultPhotoId,
+  setPhotosArray,
 }: Props) => {
   const [error, setError] = useState(undefined)
-  const [addImage] = useMutation(UPDATE_SALON_PHOTO)
-
-  console.log(editEntityId)
 
   const [uploadImage] = useMutation(UPLOAD, {
     onCompleted: data => {
       const photo = flattenStrapiResponse(data.upload.data)
+      setPhotosArray(prev => prev.concat(photo.id))
       addPhoto(0, photo)
       if (defaultPhotoId === '' || photos.length === 0) {
         onSetDefault(photo.id)
       }
-      addImage({
-        variables: { id: editEntityId, input: { salonPhotos: photo.id } },
-      })
     },
   })
 

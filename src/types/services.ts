@@ -14,21 +14,21 @@ export interface IServiceInForm {
 
 export interface IServiceCategories {
   id: IID
-  serviceCategoryName?: string
-  categoryName?: string
+  title?: string
+  title?: string
   services: IService[]
 }
 
 export interface IService {
   id: IID
-  serviceName: string
+  title: string
   service_categories?: IServiceCategories[]
   service_m_category?: IServiceCategories
 }
 
 export interface IServices {
   id: IID
-  serviceName: string
+  title: string
   service: IService
   price: string
   priceFrom: string

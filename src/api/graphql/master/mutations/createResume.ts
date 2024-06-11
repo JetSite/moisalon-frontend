@@ -24,7 +24,7 @@ export const CREATE_RESUME = gql`
             data {
               id
               attributes {
-                cityName
+                name
               }
             }
           }

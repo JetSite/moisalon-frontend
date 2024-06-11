@@ -88,7 +88,7 @@ export const MobileCatalogGroupForClient: FC<Props> = ({
   return (
     <Wrapper>
       <TitleWrapper onClick={openGroupHandler}>
-        <Title>{ucFirst(group?.serviceCategoryName)}</Title>
+        <Title>{ucFirst(group?.title)}</Title>
         <TickIcon open={openGroup}>
           <Icon src="/services-tick.svg" />
         </TickIcon>

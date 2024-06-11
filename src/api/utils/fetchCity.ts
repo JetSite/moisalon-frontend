@@ -12,7 +12,7 @@ export type IFetchCity = (
   ctx?: INextContext,
 ) => Promise<ICity>
 
-export const fetchCity: IFetchCity = async (slug = null, ctx) => {
+export const fetchCity: IFetchCity = async (citySlug = null, ctx) => {
   let cityCookie = getCookie(authConfig.cityKeyName) || null
   if (ctx) {
     const cookies = new Cookies(ctx.req, ctx.res)
@@ -20,11 +20,19 @@ export const fetchCity: IFetchCity = async (slug = null, ctx) => {
   }
   const apolloClient = initializeApollo()
 
-  const citySlug = slug || cityCookie || defaultValues.citySlug
+  let slug = cityCookie || defaultValues.citySlug
+
+  if (
+    citySlug
+    // &&  citySlug !== 'null'
+  ) {
+    slug = citySlug
+  }
+
   const city = await apolloClient.query({
     query: getCities,
     variables: {
-      citySlug,
+      slug,
     },
   })
 
@@ -34,5 +42,5 @@ export const fetchCity: IFetchCity = async (slug = null, ctx) => {
     return response[0]
   }
 
-  return { citySlug: defaultValues.citySlug, id: 1 }
+  return { slug: defaultValues.citySlug, id: 1 }
 }

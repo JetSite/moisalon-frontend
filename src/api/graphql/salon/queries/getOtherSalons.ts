@@ -12,16 +12,16 @@ export const getOtherSalons = gql`
       data {
         id
         attributes {
-            salonName
-            cities {
+            name
+            city {
               ${cityFragment}
             }
             salonID
-            salonAddress
-            salonIsPublished
-            salonIsNotRent
-            salonWebSiteUrl
-            salonEmail
+            address
+            published
+            rent
+            webSiteUrl
+            email
             salonPhones {
               phoneNumber
               haveTelegram
@@ -33,29 +33,29 @@ export const getOtherSalons = gql`
               link
             }
             
-            salonOwnerConfirmed
-            salonOnlineBookingUrl
-            salonDescription
-            salonContactPersonName
-            salonContactPersonPhone
-            salonContactPersonEmail
+            ownerConfirmed
+            onlineBookingUrl
+            description
+            contactPersonName
+            contactPersonPhone
+            contactPersonEmail
             salonContactPersonWorkingHoursAt
             salonContactPersonWorkingHoursTo
-            salonWorkplacesCount
-            salonMastersCount
-            salonBrandsCount
+            workplacesCount
+            mastersCount
+            brandsCount
             createdAt
             updatedAt
             reviewsCount
             ratingCount
             rating
-            salonCover {
+            cover {
               ${imageInfo}
             }
-            salonLogo {
+            logo {
               ${imageInfo}
             }
-            salonPhotos {
+            photos {
               ${imageInfo}
             }
             services {

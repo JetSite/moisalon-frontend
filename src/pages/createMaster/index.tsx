@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { FC, useCallback } from 'react'
 import { useRouter } from 'next/router'
 import { useMutation } from '@apollo/client'
 import CreatePageSkeleton from '../../components/ui/ContentSkeleton/CreatePageSkeleton'
@@ -9,52 +9,79 @@ import { UPDATE_MASTER_PHOTO } from 'src/api/graphql/master/mutations/updateMast
 import { getServiceCategories } from 'src/api/graphql/service/queries/getServiceCategories'
 import { addApolloState, initializeApollo } from 'src/api/apollo-client'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { MASTER_PAGE } from 'src/api/graphql/master/queries/masterPage'
+import { GetServerSideProps } from 'next'
+import { Nullable } from 'src/types/common'
+import { IServiceCategories } from 'src/types/services'
+import { IMaster } from 'src/types/masters'
+import { ICity } from 'src/types'
+import { getCities } from 'src/api/graphql/city/getCities'
 
-const CreateOrEditMaster = ({ serviceCategories }) => {
+interface Props {
+  serviceCategories: IServiceCategories[]
+  master: IMaster | null
+  cities: ICity[]
+}
+
+const CreateOrEditMaster: FC<Props> = ({
+  serviceCategories,
+  master,
+  cities,
+}) => {
   const router = useRouter()
-  const { me } = useAuthStore(getStoreData)
-  const [updateMasterPhoto] = useMutation(UPDATE_MASTER_PHOTO)
+  const { user } = useAuthStore(getStoreData)
 
-  const onAdd = useCallback(
-    (photoUrl: string) => {
-      updateMasterPhoto({ variables: { input: { photoUrl } } })
-    },
-    [updateMasterPhoto],
-  )
-
-  if (me === null) {
+  if (user === null) {
     return <CreatePageSkeleton />
   }
-  if (me && !me.info) {
+  if (user && !user.info) {
     router.push('/login')
     return <CreatePageSkeleton />
   } else {
     return (
       <CreateMaster
-        master={me?.master || null}
+        master={master}
         serviceCategories={serviceCategories}
-        onAdd={onAdd}
+        cities={cities}
       />
     )
   }
 }
 
-export async function getServerSideProps() {
+export const getServerSideProps: GetServerSideProps<
+  Nullable<Props>
+> = async ctx => {
   const apolloClient = initializeApollo()
 
-  let data
-  const serviceCategories = await apolloClient.query({
-    query: getServiceCategories,
-  })
-  if (serviceCategories?.data?.serviceCategories) {
-    data = flattenStrapiResponse(serviceCategories.data.serviceCategories)
+  let master: IMaster | null = null
+  const id = ctx.query.id
+
+  if (id) {
+    const masterRes = await apolloClient.query({
+      query: MASTER_PAGE,
+      variables: { id },
+    })
+    master = flattenStrapiResponse(masterRes.data.master)
   }
 
-  return addApolloState(apolloClient, {
+  const data = await Promise.all([
+    apolloClient.query({
+      query: getServiceCategories,
+    }),
+    apolloClient.query({ query: getCities, variables: { itemsCount: 100 } }),
+  ])
+
+  const serviceCategories: IServiceCategories[] | null =
+    flattenStrapiResponse(data[0].data.serviceCategories) || []
+  const cities = flattenStrapiResponse(data[1].data.cities) || []
+
+  return {
     props: {
-      serviceCategories: data || null,
+      serviceCategories,
+      master,
+      cities,
     },
-  })
+  }
 }
 
 export default CreateOrEditMaster

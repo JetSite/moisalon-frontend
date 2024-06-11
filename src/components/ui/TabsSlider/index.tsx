@@ -59,16 +59,16 @@ const TabsSlider: FC<Props> = ({
           ) : null,
         )}
         {rent ? (
-          salon?.salonOnlineBookingUrl ? (
+          salon?.onlineBookingUrl ? (
             <noindex style={{ width: '100%' }}>
               <OnlineButton
                 target="_blank"
                 rel="nofollow"
                 href={
-                  urlPatternHttp.test(salon?.salonOnlineBookingUrl) ||
-                  urlPatternHttps.test(salon?.salonOnlineBookingUrl)
-                    ? salon?.salonOnlineBookingUrl
-                    : `https://${salon?.salonOnlineBookingUrl}`
+                  urlPatternHttp.test(salon?.onlineBookingUrl) ||
+                  urlPatternHttps.test(salon?.onlineBookingUrl)
+                    ? salon?.onlineBookingUrl
+                    : `https://${salon?.onlineBookingUrl}`
                 }
               >
                 Онлайн бронирование

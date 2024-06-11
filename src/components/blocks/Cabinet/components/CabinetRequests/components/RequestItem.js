@@ -1,6 +1,6 @@
-import { useState } from "react";
-import Button from "../../../../../ui/Button";
-import { selectedGroupNamesMax } from "../../../../../../utils/serviceCatalog";
+import { useState } from 'react'
+import Button from '../../../../../ui/Button'
+import { selectedGroupNamesMax } from '../../../../../../utils/serviceCatalog'
 import {
   ItemWrapper,
   MasterContent,
@@ -20,18 +20,18 @@ import {
   SalonName,
   ButtonWrapper,
   ButtonStyled,
-} from "../styles";
+} from '../styles'
 
 const RequestItem = ({ request, masterSpecializationsCatalog }) => {
-  const [accept, setAccept] = useState();
-  const [deny, setDeny] = useState();
+  const [accept, setAccept] = useState()
+  const [deny, setDeny] = useState()
 
-  const name = request?.master?.name || null;
-  const phone = request?.master?.phone || null;
-  const email = request?.master?.email || null;
-  const salonName = request?.salon?.name || null;
-  const salonPhoto = request?.salon?.rentalRequestListLogo?.url || null;
-  const specializations = request?.master?.specializations || [];
+  const name = request?.master?.name || null
+  const phone = request?.master?.phone || null
+  const email = request?.master?.email || null
+  const name = request?.salon?.name || null
+  const salonPhoto = request?.salon?.rentalRequestListLogo?.url || null
+  const specializations = request?.master?.specializations || []
   return (
     <ItemWrapper>
       <MasterContent>
@@ -44,8 +44,8 @@ const RequestItem = ({ request, masterSpecializationsCatalog }) => {
             {selectedGroupNamesMax(
               specializations,
               masterSpecializationsCatalog,
-              ", ",
-              2
+              ', ',
+              2,
             )}
           </Spec>
           <Phone>{phone}</Phone>
@@ -59,7 +59,7 @@ const RequestItem = ({ request, masterSpecializationsCatalog }) => {
             <Text>Хочет арендовать</Text>
             <Position>Помещение №1</Position>
           </PositionWrap>
-          <SalonName>{salonName}</SalonName>
+          <SalonName>{name}</SalonName>
         </RequestInfo>
       </Request>
       <ButtonWrapper>
@@ -70,7 +70,7 @@ const RequestItem = ({ request, masterSpecializationsCatalog }) => {
           disabled={accept || deny}
           onClick={() => setAccept(true)}
         >
-          {deny ? "Отклонено" : "Подтвердить"}
+          {deny ? 'Отклонено' : 'Подтвердить'}
         </ButtonStyled>
         <Button
           size="roundMedium"
@@ -78,11 +78,11 @@ const RequestItem = ({ request, masterSpecializationsCatalog }) => {
           font="roundMedium"
           onClick={() => setDeny(true)}
         >
-          {accept || deny ? "Удалить заявку" : "Отклонить"}
+          {accept || deny ? 'Удалить заявку' : 'Отклонить'}
         </Button>
       </ButtonWrapper>
     </ItemWrapper>
-  );
-};
+  )
+}
 
-export default RequestItem;
+export default RequestItem

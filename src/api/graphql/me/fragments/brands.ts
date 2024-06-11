@@ -4,16 +4,16 @@ export const brandsFragment = `
 data {
   id
   attributes {
-      brandName
-      brandLogo {
+      name
+      logo {
         ${imageInfo}
       }
       city {
         data {
           id
           attributes {
-            cityName
-            citySlug
+            name
+            slug
           }
         }
 

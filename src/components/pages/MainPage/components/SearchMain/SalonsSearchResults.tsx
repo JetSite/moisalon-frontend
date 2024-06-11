@@ -96,7 +96,7 @@ const SalonsSearchResults: FC<Props> = ({
   const onFetchMore = async () => {
     const sort = filtersType[sortProperty] + sortOrder
 
-    await refetch({ citySlug: cityData?.citySlug, page, sort })
+    await refetch({ slug: cityData?.slug, page, sort })
     setPage(page + 1)
   }
 
@@ -116,7 +116,7 @@ const SalonsSearchResults: FC<Props> = ({
 
     setUpdateSalonData([])
     setPage(2)
-    await refetch({ citySlug: cityData?.citySlug, sort: [sort] })
+    await refetch({ slug: cityData?.slug, sort: [sort] })
   }
 
   return (
@@ -134,7 +134,7 @@ const SalonsSearchResults: FC<Props> = ({
               </Title>
             ) : (
               <Title>{`Аренда кабинета, рабочего места в салонах красоты в городе ${
-                cityData.cityName
+                cityData.name
               }: ${totalCount} ${pluralize(
                 totalCount,
                 'салон',
@@ -167,10 +167,8 @@ const SalonsSearchResults: FC<Props> = ({
                     onClick={() =>
                       router.push(
                         rent
-                          ? `/${salon.cities.citySlug || city.citySlug}/rent/${
-                              salon.id
-                            }`
-                          : `/${salon.cities.citySlug || city.citySlug}/salon/${
+                          ? `/${salon.city.slug || city.slug}/rent/${salon.id}`
+                          : `/${salon.city.slug || city.slug}/salon/${
                               salon.id
                             }`,
                       )
@@ -178,12 +176,12 @@ const SalonsSearchResults: FC<Props> = ({
                   >
                     <SalonCardWrapper id={salon.id.toString()}>
                       <SalonCard
-                        seatCount={salon.salonWorkplacesCount}
+                        seatCount={salon.workplacesCount}
                         rent={rent}
                         loading={loading}
                         item={salon}
                         shareLink={`https://moi.salon/${
-                          salon.cities.cityName || city.citySlug
+                          salon.city.name || city.slug
                         }/salon/${salon.id}`}
                       />
                     </SalonCardWrapper>

@@ -57,13 +57,13 @@ export const USER = gql`
             data {
               id
               attributes {
-                reviewContent
-                reviewTitle
+                content
+                title
                 salon {
                   data {
                     id
                     attributes {
-                      salonName
+                      name
                     }
                   }
                 }
@@ -71,7 +71,7 @@ export const USER = gql`
                   data {
                     id
                     attributes {
-                      masterName
+                      name
                     }
                   }
                 }
@@ -79,7 +79,7 @@ export const USER = gql`
                   data {
                     id
                     attributes {
-                      brandName
+                      name
                     }
                   }
                 }
@@ -87,7 +87,7 @@ export const USER = gql`
                   data {
                     id
                     attributes {
-                      productName
+                      name
                     }
                   }
                 }

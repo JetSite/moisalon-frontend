@@ -37,14 +37,14 @@ const Beauty = () => {
           <BackButton
             type="Вернуться на главную"
             onlyType
-            link={`/${city.citySlug}`}
+            link={`/${city.slug}`}
           />
         </HideMobile>
         <Content>
           <Image alt="img" src="/beauty-1.png" />
           <HeadMobile>
             <ImageMobile alt="img" src="/beauty-1-mobile.png" />
-            <Close onClick={() => router.push(`/${city.citySlug}`)} />
+            <Close onClick={() => router.push(`/${city.slug}`)} />
             <Autor>
               <Avatar alt="avatar" src="/beauty-avatar.png" />
               <Info>

@@ -18,7 +18,7 @@ export const getBrand = gql`
       data {
         id
         attributes {
-          brandName
+          name
           slug
           seoTitle
           seoDescription
@@ -57,7 +57,7 @@ export const getBrand = gql`
           city {
             ${cityFragment}
           }
-          brandLogo {
+          logo {
             ${imageInfo}
           }
           salons {

@@ -68,16 +68,15 @@ const Education = ({ item }) => {
             item.origin === 'MASTER'
               ? `/${
                   cyrToTranslit(item?.masterOrigin?.addressFull?.city) ||
-                  city.citySlug
+                  city.slug
                 }/master/${item.originId}`
               : item.origin === 'SALON'
               ? `/${
-                  cyrToTranslit(item?.salonOrigin?.address?.city) ||
-                  city.citySlug
+                  cyrToTranslit(item?.salonOrigin?.address?.city) || city.slug
                 }/salon/${item.originId}`
               : `/${
                   cyrToTranslit(item?.brandOrigin?.addressFull?.city) ||
-                  city.citySlug
+                  city.slug
                 }/brand/${item.originId}`
           }
         >

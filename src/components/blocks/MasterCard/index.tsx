@@ -48,7 +48,7 @@ const MasterItem: FC<Props> = ({
   }, [])
 
   const photoUrl = master
-    ? `${PHOTO_URL}${master.masterPhoto?.url || master.photo?.url}`
+    ? `${PHOTO_URL}${master.photo?.url || master.photo?.url}`
     : ''
 
   const addFavorite = (e: MouseEvent, master: IMaster | null) => {
@@ -66,14 +66,11 @@ const MasterItem: FC<Props> = ({
       </FavoriteMaster>
       <Image alt="image" src={photoUrl} />
       <MasterShareWrap>
-        <Share
-          link={shareLink}
-          title={master?.masterName || master?.name || ''}
-        />
+        <Share link={shareLink} title={master?.name || master?.name || ''} />
       </MasterShareWrap>
       <MasterInfo>
         <div>
-          <Name>{master?.masterName || master?.name || ''}</Name>
+          <Name>{master?.name || master?.name || ''}</Name>
         </div>
         <div>
           <Specializations>
@@ -81,14 +78,12 @@ const MasterItem: FC<Props> = ({
               master.services
                 .slice(0, 3)
                 .map(service => (
-                  <Activity key={service.id}>
-                    {service.service.serviceName}
-                  </Activity>
+                  <Activity key={service.id}>{service.service.title}</Activity>
                 ))}
           </Specializations>
         </div>
         <RatingWrapper>
-          {master?.city?.cityName ? <City>{master.city.cityName}</City> : null}
+          {master?.city?.name ? <City>{master.city.name}</City> : null}
           <Rating
             rating={master?.rating}
             countRatings={master?.ratingCount}

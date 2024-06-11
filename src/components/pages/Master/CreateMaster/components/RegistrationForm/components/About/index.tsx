@@ -9,9 +9,27 @@ import {
 import { MobileHidden } from '../../../../../../../../styles/common'
 import { WrapperForm, FieldWrap, FieldStyled } from '../../styled'
 import AddressNoSalonField from '../../../../../../../blocks/Form/AddressField/AddressNoSalonField'
-import { CheckBoxCustom } from '../../../../../../../pages/Rent/RentFilter'
+import { Checkbox, Label } from '../../../../../../Rent/RentFilter/style'
+import { FC, RefObject, useState } from 'react'
+import { ISetState } from 'src/types/common'
+import { ICity } from 'src/types'
+import { IHandleClickNextTabInForm } from 'src/components/pages/Salon/CreateSalon'
 
-const About = ({ setClickAddress, ref1, handleClickNextTab, number }) => {
+export interface IFormAboutProps {
+  setClickCity: ISetState<string | null>
+  number: number
+  handleClickNextTab: IHandleClickNextTabInForm
+  ref1: RefObject<HTMLDivElement>
+}
+
+const About: FC<IFormAboutProps> = ({
+  ref1,
+  handleClickNextTab,
+  number,
+  setClickCity,
+}) => {
+  const [view, setView] = useState<boolean>(false)
+
   return (
     <WrapperForm ref={ref1} id="about">
       <FieldWrap>
@@ -39,20 +57,30 @@ const About = ({ setClickAddress, ref1, handleClickNextTab, number }) => {
       <FieldWrap>
         <FieldStyled
           name="address"
-          setClickAddress={setClickAddress}
+          setClickCity={setClickCity}
           component={AddressNoSalonField}
           label="Адрес"
           validate={required}
           requiredField
+          view={view}
         />
       </FieldWrap>
-      {/* <FieldWrap>
+      <FieldWrap>
         <Field name="checkCart" type="checkbox">
-          {({ input }) => (
-            <CheckBoxCustom input={input} label="Показать на карте" />
-          )}
+          {({ input }) => {
+            return (
+              <>
+                <Checkbox
+                  onClick={() => setView(!view)}
+                  {...input}
+                  id={input?.name}
+                />
+                <Label htmlFor={'checkCart'}>{'Показать на карте'}</Label>
+              </>
+            )
+          }}
         </Field>
-      </FieldWrap> */}
+      </FieldWrap>
       <FieldWrap>
         <Field name="birthday" component={TextField} label="Дата рождения" />
       </FieldWrap>

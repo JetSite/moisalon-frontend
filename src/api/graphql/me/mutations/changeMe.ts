@@ -22,8 +22,8 @@ export const changeMe = gql`
           city {
             data {
               attributes {
-                cityName
-                citySlug
+                name
+                slug
               }
             }
           }
@@ -31,8 +31,8 @@ export const changeMe = gql`
             data {
               id
               attributes {
-                cityName
-                citySlug
+                name
+                slug
               }
             }
           }

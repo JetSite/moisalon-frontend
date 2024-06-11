@@ -68,12 +68,12 @@ const CabinetVacancies = () => {
                 <Container>
                   <Avatar
                     alt="avatar"
-                    src={PHOTO_URL + item?.salonLogo?.url || 'empty-photo.svg'}
+                    src={PHOTO_URL + item?.logo?.url || 'empty-photo.svg'}
                   />
                   <Content>
-                    <Name>{item?.salonName}</Name>
+                    <Name>{item?.name}</Name>
                     <Type>
-                      {item?.salonWorkplacesCount
+                      {item?.workplacesCount
                         ? 'Профиль салона арендодателя'
                         : 'Профиль салона'}
                     </Type>
@@ -97,13 +97,13 @@ const CabinetVacancies = () => {
                   <Avatar
                     alt="avatar"
                     src={
-                      item?.brandLogo
-                        ? `${PHOTO_URL}${item?.brandLogo.url}`
+                      item?.logo
+                        ? `${PHOTO_URL}${item?.logo.url}`
                         : 'empty-photo.svg'
                     }
                   />
                   <Content>
-                    <Name>{item?.brandName}</Name>
+                    <Name>{item?.name}</Name>
                     <Type>Профиль бренда</Type>
                   </Content>
                 </Container>
@@ -126,12 +126,12 @@ const CabinetVacancies = () => {
               <Avatar
                 alt="avatar"
                 src={
-                  PHOTO_URL + (activeProfile as ISalon).salonLogo?.url ||
+                  PHOTO_URL + (activeProfile as ISalon).logo?.url ||
                   'empty-photo.svg'
                 }
               />
               <Content>
-                <Name>{(activeProfile as ISalon).salonName}</Name>
+                <Name>{(activeProfile as ISalon).name}</Name>
                 <Type>Профиль салона</Type>
               </Content>
             </Container>
@@ -193,13 +193,13 @@ const CabinetVacancies = () => {
               <Avatar
                 alt="avatar"
                 src={
-                  (activeProfile as IBrand).brandLogo
-                    ? `${PHOTO_URL}${(activeProfile as IBrand).brandLogo.url}`
+                  (activeProfile as IBrand).logo
+                    ? `${PHOTO_URL}${(activeProfile as IBrand).logo.url}`
                     : 'empty-photo.svg'
                 }
               />
               <Content>
-                <Name>{(activeProfile as IBrand).brandName}</Name>
+                <Name>{(activeProfile as IBrand).name}</Name>
                 <Type>Профиль бренда</Type>
               </Content>
             </Container>

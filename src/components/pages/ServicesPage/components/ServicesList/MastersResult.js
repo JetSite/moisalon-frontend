@@ -38,7 +38,7 @@ const MastersResult = ({ mastersData }) => {
             {mastersData?.map(master => (
               <Link
                 href={`/${
-                  cyrToTranslit(master?.addressFull?.city) || city.citySlug
+                  cyrToTranslit(master?.addressFull?.city) || city.slug
                 }/master/${master?.seo?.slug || master?.id}`}
                 key={master.id}
               >
@@ -47,7 +47,7 @@ const MastersResult = ({ mastersData }) => {
                     master={master}
                     catalog={masterSpecializationsCatalog}
                     shareLink={`https://moi.salon/${
-                      cyrToTranslit(master?.addressFull?.city) || city.citySlug
+                      cyrToTranslit(master?.addressFull?.city) || city.slug
                     }/master/${master?.seo?.slug || master?.id}`}
                   />
                 </LinkStyled>
