@@ -119,8 +119,6 @@ const AuthProvider: FC<{ children: IChildren; serverData?: IServerProps }> = ({
   }, [cityCookie])
 
   useEffect(() => {
-    // console.log('AuthProvider', me, city)
-
     setLoading(meLoading || userLoading)
     if (router.asPath !== authConfig.notAuthLink) {
       if (!me && accessToken) {
@@ -130,6 +128,7 @@ const AuthProvider: FC<{ children: IChildren; serverData?: IServerProps }> = ({
         getUser({ variables: { id: me.info.id } })
       }
     }
+    console.log('AuthProvider', me, city)
   }, [me, router])
 
   return <>{!loading && children}</>

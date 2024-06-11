@@ -228,7 +228,6 @@ const RegistrationForm: FC<Props> = ({
   // })
 
   const onSubmit = values => {
-    console.log(values)
     const findCity =
       citiesArray?.find(e => e.slug === cyrToTranslit(clickCity)) || null
     if (!findCity) {

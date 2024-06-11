@@ -91,6 +91,8 @@ const Right = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  row-gap: 25px;
+
   @media (max-width: ${tabletBreakpoint}) {
     width: 100%;
     flex-direction: row;

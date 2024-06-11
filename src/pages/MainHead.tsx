@@ -10,6 +10,10 @@ export const MainHead = () => {
         <meta name="theme-color" content="#000000" />
         <meta name="yandex-verification" content="e5eb15699df5a43e" />
         <meta
+          http-equiv="Content-Security-Policy"
+          content="upgrade-insecure-requests"
+        />
+        <meta
           name="viewport"
           content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1"
         />

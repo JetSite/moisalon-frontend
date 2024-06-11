@@ -78,8 +78,6 @@ const CabinetForm: FC<Props> = ({ photo, setNoPhotoError, auth }) => {
     setCityInput(city)
   }
 
-  console.log(user)
-
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (

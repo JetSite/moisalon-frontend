@@ -55,8 +55,6 @@ const SalonActivities: FC<Props> = ({
   handleClickNextTab,
   number,
 }) => {
-  console.log('activities', activities)
-
   return (
     <Wrap ref={ref2} id="vid">
       <Title>Вид деятельности</Title>
