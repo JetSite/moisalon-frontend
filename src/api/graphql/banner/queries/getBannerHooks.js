@@ -8,7 +8,7 @@ export const getBannerHooks = gql`
 				id
 				attributes {
 					title
-					hookName
+					name
 					banners {
 						data {
 							id
