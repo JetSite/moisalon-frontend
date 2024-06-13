@@ -58,9 +58,9 @@ const MainPage = ({
               {bannerHooks?.data[0]?.attributes?.banners?.data?.length ||
               bannerHooks?.data[1]?.attributes?.banners?.data?.length ? (
                 <Banners
-                  bannersByHookWide={bannerHooks?.data[0]}
-                  bannersByHookSmall1={bannerHooks?.data[1]}
-                  bannersByHookSmall2={bannerHooks?.data[2]}
+                  bannersByHookWide={bannerHooks?.data[1]}
+                  bannersByHookSmall1={bannerHooks?.data[2]}
+                  bannersByHookSmall2={bannerHooks?.data[3]}
                 />
               ) : null}
             </MobileHidden>

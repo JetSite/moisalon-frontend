@@ -1,8 +1,9 @@
 import { addApolloState, initializeApollo } from '../../../api/apollo-client'
-import { vacancySearchById } from '../../../_graphql-legacy/vacancies/vacancySearchById'
 import VacancyPage from '../../../components/pages/VacancyPage'
-import { getCategories } from '../../../_graphql-legacy/advices/getCategories'
-import { getAll } from '../../../_graphql-legacy/advices/getAll'
+import { getVacancyById } from 'src/api/graphql/vacancy/queries/getVacancyById'
+import { getFeedCategories } from 'src/api/graphql/feed/queries/getFeedCategories'
+import { getFeeds } from 'src/api/graphql/feed/queries/getFeeds'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 
 const VacancyDetailed = ({ vacancy, beautyCategories, beautyAllContent }) => {
   return (
@@ -17,24 +18,26 @@ const VacancyDetailed = ({ vacancy, beautyCategories, beautyAllContent }) => {
 export async function getServerSideProps({ params }) {
   const apolloClient = initializeApollo()
 
-  const vacRes = await apolloClient.query({
-    query: vacancySearchById,
-    variables: { id: params.id },
-  })
-  const categories = await apolloClient.query({
-    query: getCategories,
-    context: { uri: 'https://moi.salon/graphql' },
-  })
-  const all = await apolloClient.query({
-    query: getAll,
-    context: { uri: 'https://moi.salon/graphql' },
-  })
+  const data = await Promise.all([
+    apolloClient.query({
+      query: getVacancyById,
+      variables: { id: params.id },
+    }),
+    apolloClient.query({
+      query: getFeedCategories,
+    }),
+    apolloClient.query({
+      query: getFeeds,
+    }),
+  ])
+
+  const vacancyNormalised = flattenStrapiResponse(data[0]?.data?.vacancy)
 
   return addApolloState(apolloClient, {
     props: {
-      vacancy: vacRes?.data?.vacancy,
-      beautyCategories: categories?.data?.catagories,
-      beautyAllContent: all.data?.pages,
+      vacancy: vacancyNormalised,
+      beautyCategories: data[1]?.data?.feedCategories,
+      beautyAllContent: data[2]?.data?.feeds,
     },
   })
 }

@@ -24,6 +24,7 @@ import {
   Promo,
   VacancyInfo,
   VacancyConditions,
+  Salary,
 } from './styles'
 import moment from 'moment'
 import 'moment/locale/ru'
@@ -37,35 +38,40 @@ const VacancyPage = ({ vacancy, beautyCategories, beautyAllContent }) => {
   const router = useRouter()
   const { city } = useAuthStore(getStoreData)
 
+  console.log('vacancy', vacancy)
+
+  const photoUrl =
+    vacancy?.cover && vacancy?.cover[0]?.url ? vacancy.cover[0].url : ''
+
   const originInfo = item => {
-    switch (item?.origin) {
+    switch (item?.vacancy_type?.title) {
       case 'MASTER':
         return {
           originType: 'Мастер',
-          originName: item.masterOrigin?.name,
-          customTitle: `у мастера ${item.masterOrigin?.name}`,
+          originName: item.master?.name,
+          customTitle: `у мастера ${item.master?.name}`,
           buttonLink: 'master',
-          originLink: `/master/${item.originId}`,
+          originLink: `/master/${item.master?.id}`,
         }
       case 'SALON':
         return {
           originType: 'Салон',
-          originName: item.salonOrigin?.name,
-          customTitle: `в салоне ${item.salonOrigin?.name}`,
+          originName: item.salon?.salonName,
+          customTitle: `в салоне ${item.salon?.salonName}`,
           buttonLink: 'salon',
           originLink: `/${
             cyrToTranslit(item?.salonOrigin?.address?.city) || city.slug
-          }/salon/${item?.originId}`,
+          }/salon/${item?.salon?.id}`,
         }
       case 'BRAND':
         return {
           originType: 'Бренд',
-          originName: item.brandOrigin?.name,
-          customTitle: `у бренда ${item.brandOrigin?.name}`,
+          originName: item.brand?.brandName,
+          customTitle: `у бренда ${item.bran?.brandName}`,
           buttonLink: 'brand',
           originLink: `/${
             cyrToTranslit(item?.brandOrigin?.addressFull?.city) || city.slug
-          }/brand/${item?.originId}`,
+          }/brand/${item?.brand?.id}`,
         }
     }
   }
@@ -83,10 +89,7 @@ const VacancyPage = ({ vacancy, beautyCategories, beautyAllContent }) => {
           <Content>
             <Left>
               <ImageWrap>
-                <Image
-                  alt="photo"
-                  src={`${PHOTO_URL}${vacancy.photoId}/original`}
-                />
+                <Image alt="photo" src={`${PHOTO_URL}${photoUrl}`} />
               </ImageWrap>
             </Left>
             <Right>
@@ -115,7 +118,7 @@ const VacancyPage = ({ vacancy, beautyCategories, beautyAllContent }) => {
                 <DateWrap>
                   <Date>
                     Дата публикации:&nbsp;
-                    {moment(vacancy.dateStart).format('DD MMMM YYYY')}
+                    {moment(vacancy.createdAt).format('DD MMMM YYYY')}
                   </Date>
                   {/* <Date>
                     Дата окончания:&nbsp;
@@ -134,16 +137,16 @@ const VacancyPage = ({ vacancy, beautyCategories, beautyAllContent }) => {
                   __html: vacancy.desc,
                 }}
               />
-              {/* {vacancy?.amountFrom || vacancy?.amountTo ? (
+              {vacancy?.amountFrom || vacancy?.amountTo ? (
                 <Salary>
                   Зарплата:&nbsp;
-                  {`${new Intl.NumberFormat("ru-RU").format(
-                    vacancy.amountFrom
+                  {`${new Intl.NumberFormat('ru-RU').format(
+                    vacancy.amountFrom,
                   )} - `}
-                  {`${new Intl.NumberFormat("ru-RU").format(vacancy.amountTo)}`}
+                  {`${new Intl.NumberFormat('ru-RU').format(vacancy.amountTo)}`}
                   &nbsp; руб.
                 </Salary>
-              ) : null} */}
+              ) : null}
               {vacancy?.conditions ? (
                 <VacancyConditions>{vacancy?.conditions}</VacancyConditions>
               ) : null}

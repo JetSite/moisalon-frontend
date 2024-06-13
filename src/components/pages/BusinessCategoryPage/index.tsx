@@ -19,10 +19,10 @@ import { educationSearch } from '../../../_graphql-legacy/education/educationSea
 import { eventsSearch } from '../../../_graphql-legacy/events/eventsSearch'
 import { vacanciesSearch } from '../../../_graphql-legacy/vacancies/vacanciesSearch'
 import { masterSearchQuery } from '../../../_graphql-legacy/search/masterSearch'
-import SalesSearchResults from '../../pages/MainPage/components/SearchMain/SalesSearchResults'
-import EducationsSearchResults from '../../pages/MainPage/components/SearchMain/EducationsSearchResults'
-import EventsSearchResults from '../../pages/MainPage/components/SearchMain/EventsSearchResults'
-import VacanciesSearchResults from '../../pages/MainPage/components/SearchMain/VacanciesSearchResults'
+import SalesSearchResults from '../MainPage/components/SearchMain/SalesSearchResults'
+import EducationsSearchResults from '../MainPage/components/SearchMain/EducationsSearchResults'
+import EventsSearchResults from '../MainPage/components/SearchMain/EventsSearchResults'
+import VacanciesSearchResults from '../MainPage/components/SearchMain/VacanciesSearchResults'
 
 const customProps = {
   sales: {
@@ -91,8 +91,9 @@ const ListItem = ({ type, item }) => {
         return (
           <Link href={`/vacancies/${item.id}`} passHref>
             <Vacancy
+              id={item.id}
               title={item.title}
-              photoId={item.photoId}
+              photos={item.cover}
               amountFrom={item.amountFrom}
               amountTo={item.amountTo}
             />
@@ -109,84 +110,84 @@ const BusinessCategoryPage = ({ type, title, data, link }) => {
   const [listData, setListData] = useState(data)
   const [fetchMoreLoading, setFetchMoreLoading] = useState(false)
   const [, setLoading] = useState(false)
-  const slicedList = listData?.connection?.nodes
-  const hasNextPage = listData?.connection?.pageInfo?.hasNextPage
+  const slicedList = listData
+  // const hasNextPage = listData?.connection?.pageInfo?.hasNextPage
   const query = { query: '' } //TODO: query
 
-  const { fetchMore } = useQuery(customProps[type].query, {
-    variables: customProps[type]?.variables || {
-      query: '',
-    },
-    notifyOnNetworkStatusChange: true,
-    skip: true,
-    onCompleted: res => {
-      setLoading(false)
-      if (
-        res?.salesSearch ||
-        res?.educationSearch ||
-        res?.eventsSearch ||
-        res?.vacanciesSearch
-      ) {
-        setListData(
-          res.salesSearch ||
-            res.educationSearch ||
-            res.eventsSearch ||
-            res.vacanciesSearch,
-        )
-      }
-    },
-  })
+  // const { fetchMore } = useQuery(customProps[type].query, {
+  //   variables: customProps[type]?.variables || {
+  //     query: '',
+  //   },
+  //   notifyOnNetworkStatusChange: true,
+  //   skip: true,
+  //   onCompleted: res => {
+  //     setLoading(false)
+  //     if (
+  //       res?.salesSearch ||
+  //       res?.educationSearch ||
+  //       res?.eventsSearch ||
+  //       res?.vacanciesSearch
+  //     ) {
+  //       setListData(
+  //         res.salesSearch ||
+  //           res.educationSearch ||
+  //           res.eventsSearch ||
+  //           res.vacanciesSearch,
+  //       )
+  //     }
+  //   },
+  // })
 
-  const onFetchMore = useCallback(() => {
-    setFetchMoreLoading(true)
-    fetchMore({
-      variables: {
-        query: '',
-        cursor: listData?.connection?.pageInfo?.endCursor,
-      },
+  // const onFetchMore = useCallback(() => {
+  //   setFetchMoreLoading(true)
+  //   fetchMore({
+  //     variables: {
+  //       query: '',
+  //       cursor: listData?.connection?.pageInfo?.endCursor,
+  //     },
 
-      updateQuery({ fetchMoreResult }) {
-        const newNodes = fetchMoreResult.salesSearch?.connection?.nodes
+  //     updateQuery({ fetchMoreResult }) {
+  //       const newNodes = fetchMoreResult.salesSearch?.connection?.nodes
 
-        setFetchMoreLoading(false)
-        setListData({
-          connection: {
-            ...fetchMoreResult.salesSearch?.connection,
-            nodes: [...listData?.connection?.nodes, ...newNodes],
-          },
-          filterDefinition: fetchMoreResult.salesSearch.filterDefinition,
-        })
-      },
-    })
-  })
+  //       setFetchMoreLoading(false)
+  //       setListData({
+  //         connection: {
+  //           ...fetchMoreResult.salesSearch?.connection,
+  //           nodes: [...listData?.connection?.nodes, ...newNodes],
+  //         },
+  //         filterDefinition: fetchMoreResult.salesSearch.filterDefinition,
+  //       })
+  //     },
+  //   })
+  // })
 
-  const fetchMoreButton = hasNextPage ? (
-    <>
-      <MobileHidden>
-        <Button
-          onClick={onFetchMore}
-          size="medium"
-          variant="darkTransparent"
-          mt="60"
-          disabled={fetchMoreLoading}
-        >
-          Показать еще
-        </Button>
-      </MobileHidden>
-      <MobileVisible>
-        <Button
-          size="roundSmall"
-          variant="withRoundBorder"
-          font="roundSmall"
-          mb="56"
-          onClick={onFetchMore}
-          disabled={fetchMoreLoading}
-        >
-          Показать еще
-        </Button>
-      </MobileVisible>
-    </>
-  ) : null
+  // const fetchMoreButton = hasNextPage ? (
+  //   <>
+  //     <MobileHidden>
+  //       <Button
+  //         onClick={onFetchMore}
+  //         size="medium"
+  //         variant="darkTransparent"
+  //         mt="60"
+  //         disabled={fetchMoreLoading}
+  //       >
+  //         Показать еще
+  //       </Button>
+  //     </MobileHidden>
+  //     <MobileVisible>
+  //       <Button
+  //         size="roundSmall"
+  //         variant="withRoundBorder"
+  //         font="roundSmall"
+  //         mb="56"
+  //         onClick={onFetchMore}
+  //         disabled={fetchMoreLoading}
+  //       >
+  //         Показать еще
+  //       </Button>
+  //     </MobileVisible>
+  //   </>
+  // ) : null
 
   return (
     <>
@@ -205,7 +206,7 @@ const BusinessCategoryPage = ({ type, title, data, link }) => {
                 <ListItem key={item.id} type={type} item={item} />
               ))}
             </List>
-            {fetchMoreButton}
+            {/* {fetchMoreButton} */}
           </Content>
         )}
       </Wrapper>
