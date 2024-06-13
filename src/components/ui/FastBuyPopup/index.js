@@ -169,7 +169,7 @@ const FastBuyPopup = ({ item, openBuyPopup, setOpenBuyPopup, me, brand }) => {
                       поводу заказа`}
                     </Title>
                     {minimalPrice ? (
-                      <MinimalOrder>{`*Минимальная сумма заказа бренда - ${brandName}: ${minimalPrice}`}</MinimalOrder>
+                      <MinimalOrder>{`*Минимальная сумма заказа бренда - ${name}: ${minimalPrice}`}</MinimalOrder>
                     ) : null}
                     <PopupInput
                       type="text"

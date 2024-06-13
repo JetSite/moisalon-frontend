@@ -3,8 +3,8 @@ const salonReviewsFragment = `
     data {
       id
       attributes {
-        reviewTitle
-        reviewContent
+        title
+        content
         user {
           data {
             id
@@ -19,6 +19,6 @@ const salonReviewsFragment = `
       }
     }
   }
-`;
+`
 
-export default salonReviewsFragment;
+export default salonReviewsFragment

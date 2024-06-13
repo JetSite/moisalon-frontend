@@ -97,14 +97,14 @@ const MastersSearchResults: FC<Props> = ({
     resumeFilter
       ? await refetch({
           variables: {
-            citySlug: cityData?.citySlug,
+            slug: cityData?.slug,
             page,
             searchWork: resumeFilter,
           },
         })
       : await refetch({
           variables: {
-            citySlug: cityData?.citySlug,
+            slug: cityData?.slug,
             page,
           },
         })
@@ -126,14 +126,14 @@ const MastersSearchResults: FC<Props> = ({
     resumeFilter
       ? await refetch({
           variables: {
-            citySlug: cityData?.citySlug,
+            slug: cityData?.slug,
             sort: [sort],
             searchWork: resumeFilter,
           },
         })
       : await refetch({
           variables: {
-            citySlug: cityData?.citySlug,
+            slug: cityData?.slug,
             sort: [sort],
           },
         })
@@ -175,7 +175,7 @@ const MastersSearchResults: FC<Props> = ({
                     refetch({
                       variables: {
                         searchWork: true,
-                        citySlug: cityData?.citySlug,
+                        slug: cityData?.slug,
                       },
                     })
                   } else {
@@ -183,7 +183,7 @@ const MastersSearchResults: FC<Props> = ({
                     // setTotalCount(pagination?.total || 0)
                     refetch({
                       variables: {
-                        citySlug: cityData?.citySlug,
+                        slug: cityData?.slug,
                       },
                     })
                   }
@@ -200,9 +200,7 @@ const MastersSearchResults: FC<Props> = ({
                 <div
                   onClick={() => {
                     router.push(
-                      `/${master.city.citySlug || city.citySlug}/master/${
-                        master.id
-                      }`,
+                      `/${master.city.slug || city.slug}/master/${master.id}`,
                     )
                   }}
                   key={master.id}
@@ -212,7 +210,7 @@ const MastersSearchResults: FC<Props> = ({
                       loading={false}
                       master={master}
                       shareLink={`https://moi.salon/${
-                        master.city.citySlug || city.citySlug
+                        master.city.slug || city.slug
                       }/master/${master.id}`}
                       type="search-page"
                     />

@@ -8,13 +8,12 @@ import { IVacancy } from './vacancies'
 
 export interface IBrand {
   id: IID
-  brandName: string
+  name: string
   slug: string
   seoTitle?: string
   seoDescription?: string
   description?: string
   address?: string
-  name?: string
   history?: string
   rating?: number
   ratingCount?: number | string
@@ -33,7 +32,7 @@ export interface IBrand {
   masters: IMaster[]
   photos: IPhoto[]
   city: ICity
-  brandLogo: IPhoto
+  logo: IPhoto
   salons: ISalon[]
   country: ICountry | null
   products: IProduct[]

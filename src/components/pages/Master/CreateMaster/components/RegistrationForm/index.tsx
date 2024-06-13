@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react'
-import { useMutation } from '@apollo/react-hooks'
+import { ApolloError, useMutation } from '@apollo/react-hooks'
 import About from './components/About'
 import MasterSpecializationsList from './components/MasterSpecializationsList'
 import { Wrapper, Title } from './styled'
@@ -22,6 +22,10 @@ import { IID } from 'src/types/common'
 import { CREATE_RESUME } from 'src/api/graphql/master/mutations/createResume'
 import { title } from 'process'
 import { IMasterCreateInput } from 'src/types/masters'
+import { ICity } from 'src/types'
+import { cyrToTranslit } from 'src/utils/translit'
+import { CREATE_CITY } from 'src/api/graphql/city/mutations/createCity'
+import { getPrepareInputMasterForm } from './components/utils'
 
 const RegistrationForm = ({
   master,
@@ -34,95 +38,74 @@ const RegistrationForm = ({
   photo,
   setNoPhotoError,
   serviceCategories,
+  cities,
 }) => {
   const { me } = useAuthStore(getStoreData)
-  const { setMe } = useAuthStore(getStoreEvent)
-
+  const [clickCity, setClickCity] = useState<string | null>(null)
+  const [loading, setLoading] = useState<boolean>(false)
+  const [selectCityId, setSelectCityId] = useState<IID | null>(null)
+  const [citiesArray, setCitiesArray] = useState<ICity[]>(cities)
   const router = useRouter()
   const [clickAddress, setClickAddress] = useState(true)
-  const [errors, setErrors] = useState(null)
+  const [errors, setErrors] = useState<string[] | null>(null)
   const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
-  const [updateMe] = useMutation(changeMe, {
-    onCompleted: async data => {
-      const prepareData = flattenStrapiResponse(data.updateUsersPermissionsUser)
-      prepareData && setMe({ info: prepareData })
-    },
-    onError: error => {
-      const errorMessages = error.graphQLErrors.map(e => e.message)
-      setErrors(errorMessages)
-      setErrorPopupOpen(true)
-    },
-  })
-  const [mutate, { loading: loadingUpdate }] = useMutation(UPDATE_MASTER, {
-    onError: error => {
-      const errorMessages = error.graphQLErrors.map(e => e.message)
-      setErrors(errorMessages)
-      setErrorPopupOpen(true)
-    },
-    onCompleted: async res => {
-      // ym("reachGoal", "create_profile_success");
-      // window?.dataLayer?.push({
-      //   event: "event",
-      //   eventProps: {
-      //     category: "form",
-      //     action: "create_profile_success",
-      //   },
-      // });
-      if (res?.updateMaster?.data?.id) {
-        let masterIds: IID[] = []
-        if (me?.owner?.masters) {
-          masterIds = me.owner.masters.map(item => item.id)
-        }
+  const [resumeInput, setResumeInput] = useState<Object | null>(null)
 
-        await updateMe({
-          variables: {
-            id: me?.info.id,
-            data: {
-              masters: [...masterIds, res.updateMaster.data.id],
-            },
+  const [createResume] = useMutation(CREATE_RESUME)
+  const [addCity] = useMutation(CREATE_CITY)
+
+  const onErrorMutate = (err: ApolloError) => {
+    const errorMessages = err.graphQLErrors.map(e => e.message)
+    setErrors(errorMessages)
+    setErrorPopupOpen(true)
+    setLoading(false)
+  }
+
+  const onCompleted = async data => {
+    // ym("reachGoal", "create_profile_success");
+    // window?.dataLayer?.push({
+    //   event: "event",
+    //   eventProps: {
+    //     category: "form",
+    //     action: "create_profile_success",
+    //   },
+    // });
+
+    console.log('masterData', data)
+
+    if (resumeInput) {
+      console.log('resumeForInput', resumeInput)
+      const masterId = data.createMaster.data.id
+
+      console.log(masterId)
+
+      await createResume({
+        variables: {
+          input: {
+            ...resumeInput,
+            master: masterId,
           },
-        })
-      }
-      router.push('/masterCabinet')
-    },
+        },
+      })
+    }
+    setLoading(false)
+    router.push('/masterCabinet')
+  }
+
+  const [mutate] = useMutation(UPDATE_MASTER, {
+    onError: onErrorMutate,
+    onCompleted: data => onCompleted(data),
   })
-  const [createMaster, { loading: loadingCreate }] = useMutation(
-    CREATE_MASTER,
-    {
-      onCompleted: async res => {
-        // ym("reachGoal", "create_profile");
-        // window?.dataLayer?.push({
-        //   event: "event",
-        //   eventProps: {
-        //     category: "form",
-        //     action: "create_profile",
-        //   },
-        // });
-        if (res?.createMaster?.data?.id) {
-          let masterIds: IID[] = []
-          if (me?.owner?.masters) {
-            masterIds = me.owner.masters.map(item => item.id)
-          }
-
-          await updateMe({
-            variables: {
-              id: me?.info.id,
-              data: {
-                masters: [...masterIds, res.createMaster.data.id],
-              },
-            },
-          })
-        }
-        router.push('/masterCabinet')
-      },
-    },
-  )
-
-  const [createResume, { loading: loadingCreateResume }] =
-    useMutation(CREATE_RESUME)
+  const [createMaster] = useMutation(CREATE_MASTER, {
+    onError: onErrorMutate,
+    onCompleted: data => onCompleted(data),
+  })
 
   const onSubmit = useCallback(
-    async (values: any) => {
+    async values => {
+      setLoading(true)
+      console.log('values', values)
+
       if (!values.address) {
         setErrors(['Введите адрес места работы из выпадающего списка'])
         setErrorPopupOpen(true)
@@ -134,31 +117,8 @@ const RegistrationForm = ({
         setErrorPopupOpen(true)
         return
       }
-
-      const servicesForInput = values.specializations.map(item => ({
-        service: item,
-      }))
-
-      let input: IMasterCreateInput = {
-        name: values.name,
-        email: values.email,
-        phone: values.phone.phoneNumber,
-        description: values.description || '',
-        address: values.address,
-        searchWork: values.searchWork || false,
-        services: servicesForInput,
-        webSiteUrl: values?.webSiteUrl || '',
-        haveTelegram: values?.phone?.haveTelegram || false,
-        haveViber: values?.phone?.haveViber || false,
-        haveWhatsApp: values?.phone?.haveWhatsApp || false,
-        photo: photo?.id,
-        city: me?.info?.city?.id || 1,
-      }
-      console.log(input)
-
-      let resumeId = null
       if (values.searchWork) {
-        const resumeForInput = {
+        setResumeInput({
           title: values.resume_title,
           content: values.resume_content,
           specialization: values.resume_specialization,
@@ -170,66 +130,86 @@ const RegistrationForm = ({
           // gender: values.resume_gender,
           user: me?.info?.id,
           publishedAt: new Date().toISOString(),
-        }
+        })
+      } else {
+        setResumeInput(null)
+      }
 
-        await createResume({
-          variables: {
-            input: {
-              ...resumeForInput,
-            },
+      const findCity =
+        citiesArray?.find(e => e.slug === cyrToTranslit(clickCity)) || null
+
+      if (!findCity) {
+        await addCity({
+          variables: { name: clickCity, slug: cyrToTranslit(clickCity) },
+          onError: () => {
+            setNoPhotoError(true)
+            setErrors(['город не найден'])
+            setErrorPopupOpen(true)
           },
-          onCompleted: res => {
-            if (res?.createMasterResume?.data?.id) {
-              resumeId = res.createMasterResume.data.id
-              input = {
-                ...input,
-                resumes: [resumeId],
-              }
-              if (!master) {
-                createMaster({
-                  variables: {
-                    input: { ...input },
-                  },
-                })
-              }
-              if (master) {
-                mutate({
-                  variables: {
-                    masterId: master.id,
-                    input: {
-                      ...input,
-                    },
-                  },
-                })
-              }
+          onCompleted: async data => {
+            setSelectCityId(data.data.createCity.data.id)
+            const findCityData = flattenStrapiResponse(
+              data.data.createCity.data,
+            )
+            setCitiesArray(prev => prev.concat(findCityData))
+
+            const input = getPrepareInputMasterForm({
+              values,
+              selectCityId,
+              findCity: findCityData,
+              photoId: photo?.id,
+            })
+            console.log('input not found city', input)
+            if (master.id) {
+              await mutate({
+                variables: { masterId: master?.id, input },
+                onError: onErrorMutate,
+                onCompleted,
+              })
+            } else {
+              await createMaster({
+                variables: {
+                  input: { user: me?.info.id, ...input },
+                },
+              })
             }
           },
         })
       } else {
-        if (!master) {
-          createMaster({
-            variables: {
-              input: { ...input },
-            },
+        const input = getPrepareInputMasterForm({
+          values,
+          selectCityId,
+          findCity,
+          photoId: photo?.id,
+        })
+        console.log('input found city without resume', input)
+        if (master?.id) {
+          await mutate({
+            variables: { masterId: master?.id, input },
+            onError: onErrorMutate,
+            onCompleted,
           })
-        }
-        if (master) {
-          mutate({
+        } else {
+          await createMaster({
             variables: {
-              masterId: master.id,
-              input: {
-                ...input,
-              },
+              input: { user: me?.info.id, ...input },
+              onCompleted,
+              onError: onErrorMutate,
             },
           })
         }
       }
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [clickAddress, photo],
+    [
+      clickAddress,
+      photo,
+      clickCity,
+      citiesArray,
+      addCity,
+      mutate,
+      createMaster,
+    ],
   )
-
-  const loading = loadingCreate || loadingUpdate || loadingCreateResume
 
   return (
     <Wrapper>
@@ -241,8 +221,8 @@ const RegistrationForm = ({
             : me?.info
             ? {
                 email: me?.info?.email,
-                phone: { phoneNumber: me?.info?.phoneNumber },
-                name: me?.info?.displayName,
+                phone: { phoneNumber: me?.info?.phone },
+                name: me?.info?.username,
                 city: me?.info?.city,
               }
             : null
@@ -255,9 +235,9 @@ const RegistrationForm = ({
             <form onSubmit={handleSubmit} ref={allTabs}>
               <About
                 ref1={ref1}
-                setClickAddress={setClickAddress}
                 handleClickNextTab={handleClickNextTab}
                 number={1}
+                setClickCity={setClickCity}
               />
               <MasterSpecializationsList
                 handleClickNextTab={handleClickNextTab}

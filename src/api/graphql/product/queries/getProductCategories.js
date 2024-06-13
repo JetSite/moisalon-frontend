@@ -1,6 +1,6 @@
-import { gql } from "@apollo/client";
-import { metaInfo } from "../../common/metaInfo";
-import { imageInfo } from "../../common/imageInfo";
+import { gql } from '@apollo/client'
+import { metaInfo } from '../../common/metaInfo'
+import { imageInfo } from '../../common/imageInfo'
 
 export const getProductCategories = gql`
   query productCategories {
@@ -8,25 +8,25 @@ export const getProductCategories = gql`
       data {
         id
         attributes {
-            productCategoryName
+            title
             products {
               data {
                 id
                 attributes {  
-                    productName
-                    productShortDescription
-                    productFullDescription
-                    productPrice
-                    productSalePrice
-                    productAvailableInStock
-                    productCover {
+                    name
+                    shortDescription
+                    fullDescription
+                    regularPrice
+                    salePrice
+                    availableInStock
+                    cover {
                       ${imageInfo}
                     }
                     brands {
                       data {
                         id
                         attributes {
-                            brandName
+                            name
                         }
                       }
                     }
@@ -36,13 +36,13 @@ export const getProductCategories = gql`
                         data {
                           id
                           attributes {
-                              attributeGroupName
+                              title
                               attributeGroupType
                               attr_values {
                                 data {
                                   id
                                   attributes {
-                                      attributeValueName
+                                      title
                                   }
                                 }
                               }
@@ -58,4 +58,4 @@ export const getProductCategories = gql`
       ${metaInfo}
     }
   }
-`;
+`

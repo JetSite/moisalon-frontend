@@ -9,24 +9,24 @@ export const productFragment = `
 data {
   id
   attributes {
-    productName
-    productSKU
-    productPrice
-    productBarcode
-    productSalePrice
-    productFullDescription
-    productShortDescription
-    productAvailableInStock
+    name
+    sku
+    regularPrice
+    barcode
+    salePrice
+    fullDescription
+    shortDescription
+    availableInStock
     product_categories {
       ${poductCategoryFragment}
     }
     brand {
       ${brandsFragment}
     }
-    productCover {
+    cover {
       ${imageInfo}
     }
-    productGallery {
+    gallery {
       ${imageInfo}
     }
     attributes {

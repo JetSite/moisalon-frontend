@@ -7,11 +7,8 @@ import servicesFragment from '../../fragments/services'
 export const masterFragment = `data {
   id
   attributes {
-      masterName
       name
-      masterPhone
       phone
-      masterEmail
       email
       description
       reviewsCount
@@ -21,7 +18,7 @@ export const masterFragment = `data {
         data {
           id
           attributes {
-              salonName
+              name
           }
         }
       }
@@ -31,7 +28,7 @@ export const masterFragment = `data {
       city {
         ${cityInfo}
       }
-      masterPhoto {
+      photo {
         ${imageInfo}
       }
       photo {

@@ -202,14 +202,14 @@ const Cart = ({ cart, me, refetchCart, total }) => {
       <BackButton
         type="Вернуться к покупкам"
         onlyType
-        link={`/${city.citySlug}/beautyFreeShop`}
+        link={`/${city.slug}/beautyFreeShop`}
       />
       {!cart?.length ? (
         <>
           {' '}
           <NoItemsText>Ваша корзина пуста, наполните её товарами.</NoItemsText>
           <NoItemsTextRed
-            onClick={() => router.push(`/${city.citySlug}/beautyFreeShop`)}
+            onClick={() => router.push(`/${city.slug}/beautyFreeShop`)}
           >
             Перейти в магазин.
           </NoItemsTextRed>{' '}

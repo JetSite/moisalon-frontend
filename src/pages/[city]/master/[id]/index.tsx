@@ -44,7 +44,7 @@ interface Props {
 
 const Master: FC<Props> = ({ masterData, randomMasters, cityData }) => {
   const [master, setMaster] = useState<IMaster>(masterData)
-  const { me, city } = useAuthStore(getStoreData)
+  const { user, city } = useAuthStore(getStoreData)
   const { catalogs } = useBaseStore(getStoreData)
   const [editClientServices, setEditClientServices] = useState(false)
   const [activeTab, setActiveTab] = useState(0)
@@ -54,7 +54,7 @@ const Master: FC<Props> = ({ masterData, randomMasters, cityData }) => {
   const [isDiplomsEditing, setIsDiplomsEditing] = useState(false)
   const salonServicesMasterCatalog: any[] = []
 
-  const isOwner = !!me?.owner?.masters.find(e => e.id === master?.id)
+  const isOwner = !!user?.owner?.masters?.find(e => e.id === master?.id)
 
   const servicesData = getServicesByCategory(master?.services)
 
@@ -238,7 +238,7 @@ const Master: FC<Props> = ({ masterData, randomMasters, cityData }) => {
                 </NoItemsText>
               )}
               {isBrandsEditing ? (
-                <AddBrands refetch={() => {}} master={me?.master} />
+                <AddBrands refetch={() => {}} master={master} />
               ) : null}
             </>
           </Slider>
@@ -248,9 +248,9 @@ const Master: FC<Props> = ({ masterData, randomMasters, cityData }) => {
         ) : null}
         <ReviewsMaster reviews={master?.reviews} masterId={master?.id} />
         <Contacts
-          phone={master?.masterPhone || master?.phone}
-          email={master?.masterEmail || master?.email}
-          address={master?.masterAddress}
+          phone={master?.phone || master?.phone}
+          email={master?.email || master?.email}
+          address={master?.address}
           addressCoordinates={{
             latitude: master?.latitude,
             longitude: master?.longitude,
@@ -260,7 +260,7 @@ const Master: FC<Props> = ({ masterData, randomMasters, cityData }) => {
           haveWhatsApp={master?.haveWhatsApp}
           haveViber={master?.haveViber}
         />
-        <InviteMaster me={me} />
+        <InviteMaster me={user} />
         <Line text="Вы мастер или владелец салона? Расскажите о себе и мы поможем найти новых клиентов и мастеров!" />
         <Slider
           type="masters"
@@ -298,7 +298,7 @@ export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async ({
     apolloClient.query({
       query: getMasters,
       variables: {
-        citySlug: cityData?.citySlug,
+        slug: cityData?.slug,
         excludeId: id,
         itemsCount: 10,
       },

@@ -14,7 +14,7 @@ export const getBannerHooks = gql`
 							id
 							attributes {
 									title
-									bannerName
+									title
 									bannerImage {
 										${imageInfo}
 									}

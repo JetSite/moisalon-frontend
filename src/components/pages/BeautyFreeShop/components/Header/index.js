@@ -29,9 +29,7 @@ const Header = ({
   const router = useRouter()
   const [toggleTerms, setToggleTerms] = useState(false)
 
-  const imageUrl = brand?.brandLogo?.url
-    ? `${PHOTO_URL}${brand.brandLogo.url}`
-    : ''
+  const imageUrl = brand?.logo?.url ? `${PHOTO_URL}${brand.logo.url}` : ''
 
   return (
     <>
@@ -48,8 +46,8 @@ const Header = ({
               me={me}
               brandUrl={brand?.email}
               socialUrl={brand?.socialNetworks}
-              countryName={brand?.country}
-              brandName={brand?.brandName}
+              name={brand?.country}
+              name={brand?.name}
               brand={brand}
               refetchScore={refetchScore}
               scoreBrandCount={scoreBrandCount}

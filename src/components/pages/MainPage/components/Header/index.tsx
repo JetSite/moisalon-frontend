@@ -57,9 +57,10 @@ const activeLink = (path: string, link?: string[]) => {
 
 const Header = ({ loading = false }) => {
   const cityCookie = getCookie(authConfig.cityKeyName)
-  const { me, city } = useAuthStore(getStoreData)
+  const { user, city } = useAuthStore(getStoreData)
   const { cartItemTotal: quantity } = useAuthStore(getStoreData)
-  const b2bClient = !!me?.master?.id || !!me?.salons?.length
+  const b2bClient =
+    !!user?.owner?.masters?.length || !!user?.owner?.salons?.length
   const router = useRouter()
   const isAboutPage = router.pathname === '/about'
   const [openPopup, setPopupOpen] = useState<boolean>(!cityCookie)
@@ -78,7 +79,7 @@ const Header = ({ loading = false }) => {
   // const { unreadMessagesCount } = useChat();
 
   const logoClickHandler = () => {
-    router.push(`/${city.citySlug}`)
+    router.push(`/${city.slug}`)
   }
 
   const searchIconClickHandler = () => {
@@ -101,14 +102,14 @@ const Header = ({ loading = false }) => {
       ) : null}
       <WrappperMobile>
         <MobileHeader
-          me={me}
+          user={user}
           quantity={quantity}
           loading={loading}
-          isLoggedIn={!!me?.info}
+          isLoggedIn={!!user?.info}
           setFillProfile={setFillProfile}
           setFillCart={setFillCart}
           setShowCitySelect={setShowCitySelect}
-          defaultCity={city.cityName || ''}
+          defaultCity={city.name || ''}
           showHamburgerMenu={showHamburgerMenu}
           setShowHamburgerMenu={setShowHamburgerMenu}
           showSearchPopup={showSearchPopup}
@@ -128,7 +129,7 @@ const Header = ({ loading = false }) => {
             </LogoWrap>
             <Nav>
               <NavItemWrapper>
-                {getMainPageHeaderLinks(city.citySlug, !!me?.info).navLinks.map(
+                {getMainPageHeaderLinks(city.slug, !!user?.info).navLinks.map(
                   (link, i) => (
                     <NavItem
                       key={i}
@@ -148,7 +149,7 @@ const Header = ({ loading = false }) => {
                   isAboutPage={isAboutPage}
                   showAdditionalNav={showCatalogMenu}
                   setShowAdditionalNav={setShowCatalogMenu}
-                  links={getMainPageHeaderLinks(city.citySlug).addCatalogLinks}
+                  links={getMainPageHeaderLinks(city.slug).addCatalogLinks}
                 />
               </NavItemWrapper>
             </Nav>
@@ -169,7 +170,7 @@ const Header = ({ loading = false }) => {
                 isAboutPage={isAboutPage}
                 showAdditionalNav={showAdditionalNav}
                 setShowAdditionalNav={setShowAdditionalNav}
-                links={getMainPageHeaderLinks(city.citySlug).addNavLinks}
+                links={getMainPageHeaderLinks(city.slug).addNavLinks}
               />
             </AdditionalNavWrapper>
           </HeaderMenu>
@@ -180,7 +181,7 @@ const Header = ({ loading = false }) => {
                 isAboutPage={isAboutPage}
               />
               <CitySelectText showCitySelect={showCitySelect}>
-                {city.cityName}
+                {city.name}
               </CitySelectText>
             </LinkCitySelect>
             <LinkSearch
@@ -196,12 +197,12 @@ const Header = ({ loading = false }) => {
                 searchIconClickHandler={searchIconClickHandler}
               />
             </LinkSearch>
-            {!!me?.info ? (
+            {!!user?.info ? (
               <ProfilePhotoWrap onClick={() => router.push('/masterCabinet')}>
                 <ProfilePhoto
                   src={
-                    me?.info?.avatar
-                      ? `${PHOTO_URL}${me?.info?.avatar.url}`
+                    user?.info?.avatar
+                      ? `${PHOTO_URL}${user?.info?.avatar.url}`
                       : '/empty-photo.svg'
                   }
                 />
@@ -216,9 +217,7 @@ const Header = ({ loading = false }) => {
                   setFillProfile(isAboutPage ? '#fff' : '#000')
                 }
                 onClick={() => {
-                  console.log('li')
-
-                  if (me === null) {
+                  if (user === null) {
                     router.push(authConfig.notAuthLink)
                     return
                   }
@@ -247,7 +246,7 @@ const Header = ({ loading = false }) => {
               onMouseMove={() => setFillCart(red)}
               onMouseLeave={() => setFillCart(isAboutPage ? '#fff' : '#000')}
               onClick={() => {
-                me?.info
+                user?.info
                   ? router.push(`/cartB2b`)
                   : router.push(
                       {
@@ -262,7 +261,9 @@ const Header = ({ loading = false }) => {
               {quantity != 0 ? (
                 <Count
                   onClick={() =>
-                    router.push(me?.info ? `/cartB2b` : authConfig.notAuthLink)
+                    router.push(
+                      user?.info ? `/cartB2b` : authConfig.notAuthLink,
+                    )
                   }
                 >
                   {quantity}
@@ -271,8 +272,7 @@ const Header = ({ loading = false }) => {
             </CartIconWrap>
           </Links>
           <ChangeCityPopup
-            openPopup={openPopup && !loading && !!me}
-            me={me}
+            openPopup={openPopup && !loading && !!user}
             setPopupOpen={setPopupOpen}
           />
         </HeaderContent>

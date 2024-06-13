@@ -7,8 +7,8 @@ export interface IReview {
     id: string
     title: string
   } | null
-  reviewContent: string
-  reviewTitle: string
+  content: string
+  title: string
   title: string
   user: {
     avatar: IPhoto

@@ -58,7 +58,7 @@ const CatalogProductsSkeleton = ({
         <BackButton
           type="Магазин"
           name={brand.name}
-          link={`/${city.citySlug}/beautyFreeShop`}
+          link={`/${city.slug}/beautyFreeShop`}
         />
         <Header brand={brand} />
         <Title>Вся продукция</Title>

@@ -39,7 +39,7 @@ const MastersFavorites: FC<ThingsProps> = ({
 }) => {
   const navigationPrevRef = useRef(null)
   const navigationNextRef = useRef(null)
-  const { city, me } = useAuthStore(getStoreData)
+  const { city, user } = useAuthStore(getStoreData)
   const { catalogs } = useBaseStore(getStoreData)
 
   const onBeforeInit = (Swiper: SwiperClass) => {
@@ -53,7 +53,7 @@ const MastersFavorites: FC<ThingsProps> = ({
   const [deleteItem, setDeleteItem] = useState(false)
   const [toggle, setToggle] = useState(mobile && cabinet && true)
 
-  const masters = me?.favorite?.masters
+  const masters = user?.favorite?.masters
 
   if (!masters?.length) {
     setActiveTab('all')
@@ -120,8 +120,7 @@ const MastersFavorites: FC<ThingsProps> = ({
                       >
                         <Link
                           href={`/${
-                            cyrToTranslit(master?.city.cityName) ||
-                            city.citySlug
+                            cyrToTranslit(master?.city.name) || city.slug
                           }/master/${master?.id}`}
                         >
                           <MasterItem
@@ -131,8 +130,8 @@ const MastersFavorites: FC<ThingsProps> = ({
                             setDeleteItem={setDeleteItem}
                           />
                         </Link>
-                        {master?.masterPhone && !cabinet ? (
-                          <PhoneButton href={`tel:${master?.masterPhone}`}>
+                        {master?.phone && !cabinet ? (
+                          <PhoneButton href={`tel:${master?.phone}`}>
                             Онлайн-запись
                           </PhoneButton>
                         ) : null}

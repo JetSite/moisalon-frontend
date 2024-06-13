@@ -76,7 +76,7 @@ const Service: FC<Props> = ({ services }) => {
           {services?.map(item => (
             <Item key={item.id}>
               <Icon src="/service-rent-icon.svg" />
-              <Text>{item?.serviceName}</Text>
+              <Text>{item?.title}</Text>
             </Item>
           ))}
         </Content>

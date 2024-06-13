@@ -60,7 +60,7 @@ const Services: FC<Props> = ({
 
   const secondColumnStart = Math.round(groups?.length / 2)
 
-  const phone = master?.masterPhone
+  const phone = master?.phone
 
   return (
     <MainContainer id="services">

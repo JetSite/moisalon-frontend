@@ -55,7 +55,7 @@ const Brands = ({ brandSearchData }) => {
               <Link
                 key={item.id}
                 href={{
-                  pathname: `/${city.citySlug}/beautyFreeShop`,
+                  pathname: `/${city.slug}/beautyFreeShop`,
                   query: {
                     id: item.id,
                     title: item.name,

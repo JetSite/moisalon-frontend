@@ -32,7 +32,7 @@ const Seat = ({ salonData, roomData }) => {
       <>
         <SearchBlock />
         <RentHeader
-          city={city.citySlug}
+          city={city.slug}
           salonData={salonData}
           roomData={roomData}
         />

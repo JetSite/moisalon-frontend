@@ -103,7 +103,7 @@ export default function Main({
         beautyAllContent={beautyAllContent}
         bannerHooks={bannerHooks}
         totalCount={totalCount}
-        cityData={cityData.cityName}
+        cityData={cityData.name}
       />
     </>
   )
@@ -150,7 +150,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
   const cityCookie = ctx.req.cookies['city']
   const cityData: ICity = (await fetchCity(ctx.query.city as string)) ||
     (await fetchCity(cityCookie)) || {
-      citySlug: defaultValues.citySlug,
+      slug: defaultValues.citySlug,
     }
 
   if (!cityCookie && ctx.query.city !== defaultValues.citySlug) {

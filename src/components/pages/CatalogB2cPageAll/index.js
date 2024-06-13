@@ -188,7 +188,7 @@ const CatalogB2cPageAll = ({
         <BackButton
           type="Магазин"
           onlyType
-          link={`/${city.citySlug}/beautyFreeShop`}
+          link={`/${city.slug}/beautyFreeShop`}
         />
         <Content>
           <FiltersWrap>

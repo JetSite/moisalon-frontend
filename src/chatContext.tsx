@@ -46,7 +46,7 @@ const ChatContext = createContext<IChatContext>(initialChatContext)
 
 const useChatContext = () => {
   debugger
-  const { me } = useAuthStore(getStoreData)
+  const { user } = useAuthStore(getStoreData)
   const [chats, setChats] = useState<IChat[]>([])
   const [messages, setMessages] = useState<LazyType[]>([])
   const [websocketMessage, setWebsocketMessage] = useState<LazyType | null>(
@@ -61,7 +61,7 @@ const useChatContext = () => {
     },
   })
 
-  if (!me?.info) return
+  if (!user?.info) return
   refetchChats()
 
   // useEffect(() => {

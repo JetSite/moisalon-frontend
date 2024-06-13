@@ -24,7 +24,7 @@ import { getStoreData } from 'src/store/utils'
 import { Dispatch, FC, SetStateAction } from 'react'
 import { ITab } from 'src/components/ui/TabsSlider'
 import { IMasterCabinetTab } from 'src/components/pages/Master/MasterCabinet'
-import { IMe } from 'src/types/me'
+import { IUser } from 'src/types/me'
 import { ISetState } from 'src/types/common'
 
 interface Props {
@@ -32,19 +32,19 @@ interface Props {
   tabs: IMasterCabinetTab[]
   toggle: boolean
   setToggle: ISetState<boolean>
-  me: IMe | null
+  user: IUser | null
 }
 
 const CabinetHeaderMobile: FC<Props> = ({
-  me,
+  user,
   setActiveTab,
   tabs,
   toggle,
   setToggle,
 }) => {
-  const salons = me?.owner?.salons
-  const master = me?.owner?.masters[0]
-  const brands = me?.owner?.brand
+  const salons = user?.owner?.salons
+  const master = user?.owner?.masters[0]
+  const brands = user?.owner?.brand
   const { city } = useAuthStore(getStoreData)
 
   return (
@@ -52,13 +52,13 @@ const CabinetHeaderMobile: FC<Props> = ({
       <Info>
         <Logo
           url={
-            me?.info?.avatar
-              ? `${PHOTO_URL}${me?.info?.avatar.url}`
+            user?.info?.avatar
+              ? `${PHOTO_URL}${user?.info?.avatar.url}`
               : '/empty-photo.svg'
           }
         />
         <Text>
-          <Title>{me?.info?.username}</Title>
+          <Title>{user?.info?.username}</Title>
           <Subtitle>Кабинет пользователя</Subtitle>
           {salons?.length || master?.id || brands?.length ? (
             <ProfilesButton toggle={toggle} onClick={() => setToggle(!toggle)}>
@@ -71,20 +71,16 @@ const CabinetHeaderMobile: FC<Props> = ({
         <Wrap>
           {master.id ? (
             <Link
-              href={`/${master.city.citySlug || city?.citySlug}/master/${
-                master?.id
-              }`}
+              href={`/${master.city.slug || city?.slug}/master/${master?.id}`}
             >
               <Item>
                 <Container>
                   <Avatar
                     alt="avatar"
-                    src={
-                      PHOTO_URL + master?.masterPhoto.url || 'empty-photo.svg'
-                    }
+                    src={PHOTO_URL + master?.photo.url || 'empty-photo.svg'}
                   />
                   <Content>
-                    <Name>{master?.masterName}</Name>
+                    <Name>{master?.name}</Name>
                     <Type>Профиль мастера</Type>
                   </Content>
                 </Container>
@@ -96,11 +92,9 @@ const CabinetHeaderMobile: FC<Props> = ({
                 <div key={item.id}>
                   <Link
                     href={
-                      item.salonWorkplacesCount
-                        ? `/${item.cities?.citySlug || city?.citySlug}/rent/${
-                            item?.id
-                          }`
-                        : `/${item.cities?.citySlug || city?.citySlug}/salon/${
+                      item.workplacesCount
+                        ? `/${item.cities?.slug || city?.slug}/rent/${item?.id}`
+                        : `/${item.cities?.slug || city?.slug}/salon/${
                             item?.id
                           }`
                     }
@@ -109,14 +103,12 @@ const CabinetHeaderMobile: FC<Props> = ({
                       <Container>
                         <Avatar
                           alt="avatar"
-                          src={
-                            PHOTO_URL + item.salonLogo?.url || 'empty-photo.svg'
-                          }
+                          src={PHOTO_URL + item.logo?.url || 'empty-photo.svg'}
                         />
                         <Content>
-                          <Name>{item?.salonName}</Name>
+                          <Name>{item?.name}</Name>
                           <Type>
-                            {item?.salonWorkplacesCount
+                            {item?.workplacesCount
                               ? 'Профиль салона арендодателя'
                               : 'Профиль салона'}
                           </Type>
@@ -131,22 +123,20 @@ const CabinetHeaderMobile: FC<Props> = ({
             ? brands.map(item => (
                 <div key={item.id}>
                   <Link
-                    href={`/${item.city.citySlug || city?.citySlug}/brand/${
-                      item.id
-                    }`}
+                    href={`/${item.city.slug || city?.slug}/brand/${item.id}`}
                   >
                     <Item>
                       <Container>
                         <Avatar
                           alt="avatar"
                           src={
-                            item.brandLogo
-                              ? `${PHOTO_URL}${item.brandLogo.url}`
+                            item.logo
+                              ? `${PHOTO_URL}${item.logo.url}`
                               : 'empty-photo.svg'
                           }
                         />
                         <Content>
-                          <Name>{item.brandName}</Name>
+                          <Name>{item.name}</Name>
                           <Type>Профиль бренда</Type>
                         </Content>
                       </Container>

@@ -9,7 +9,6 @@ import useBaseStore from 'src/store/baseStore'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
 import { IID } from 'src/types/common'
 import { Dispatch, FC, SetStateAction } from 'react'
-import { IMe } from 'src/types/me'
 import { ICity } from 'src/types'
 import { setCookie } from 'cookies-next'
 import { authConfig } from 'src/api/authConfig'
@@ -23,14 +22,14 @@ const ChangeCityPopupCityList: FC<PropsUpdatedList> = ({
   setCityInput,
   cityInput,
   changeCityFunc,
-  me,
 }) => {
   const router = useRouter()
   const { suggestions } = useCitySuggestions(cityInput)
   const { setCity } = useAuthStore(getStoreEvent)
+  const { me } = useAuthStore(getStoreData)
 
   const cityClickHandler = (city: ICity) => {
-    setCookie(authConfig.cityKeyName, city.citySlug)
+    setCookie(authConfig.cityKeyName, city.slug)
     setCityInput('')
     if (me?.info.id) {
       changeCityFunc({
@@ -39,7 +38,7 @@ const ChangeCityPopupCityList: FC<PropsUpdatedList> = ({
     }
     setCity(city)
     setShowCitySelect(false)
-    redirectCityRoutes(city.citySlug, router)
+    redirectCityRoutes(city.slug, router)
   }
 
   return <CitiesList cities={suggestions} cityClickHandler={cityClickHandler} />

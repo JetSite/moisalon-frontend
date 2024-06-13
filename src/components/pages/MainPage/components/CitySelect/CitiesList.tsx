@@ -13,7 +13,7 @@ const CitiesList: FC<ICitiesListProps> = ({ cities, cityClickHandler }) => {
       {cities?.map((city, i) => {
         return (
           <CityItem key={i} onClick={() => cityClickHandler(city)}>
-            {city?.cityName}
+            {city?.name}
           </CityItem>
         )
       })}

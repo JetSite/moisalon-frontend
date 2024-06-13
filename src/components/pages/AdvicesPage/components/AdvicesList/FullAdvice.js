@@ -17,8 +17,8 @@ const FullAdvice = ({ adviceClicked, backHandler }) => {
   })
 
   const item = fullAdviceData?.feed?.data?.attributes
-  const photoUrl = item?.beautyFeedCover?.data?.attributes?.url
-    ? `${PHOTO_URL}${item.beautyFeedCover.data.attributes.url}`
+  const photoUrl = item?.cover?.data?.attributes?.url
+    ? `${PHOTO_URL}${item.cover.data.attributes.url}`
     : ''
 
   return !loading ? (
@@ -29,14 +29,14 @@ const FullAdvice = ({ adviceClicked, backHandler }) => {
       <AdvItem opened={adviceClicked.length > 0}>
         <AdvImage photoUrl={photoUrl} />
         <MobileHidden>
-          <AdvTitle>{item?.beautyFeedTitle}</AdvTitle>
+          <AdvTitle>{item?.title}</AdvTitle>
         </MobileHidden>
         <MobileVisible>
-          <AdvTitle>{item?.beautyFeedTitle}</AdvTitle>
+          <AdvTitle>{item?.title}</AdvTitle>
         </MobileVisible>
         <AdvDescription
           dangerouslySetInnerHTML={{
-            __html: item?.beautyFeedContent,
+            __html: item?.content,
           }}
         />
       </AdvItem>

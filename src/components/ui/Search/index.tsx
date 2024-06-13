@@ -91,8 +91,8 @@ const Search: FC<Props> = ({ title, noFilters }) => {
     }
     if (router?.query?.id?.length || router?.query?.slug?.length) {
       router.push(
-        { pathname: `/${city.citySlug}`, query: { q: item } },
-        `/${city.citySlug}`,
+        { pathname: `/${city.slug}`, query: { q: item } },
+        `/${city.slug}`,
       )
     }
   }
@@ -126,8 +126,8 @@ const Search: FC<Props> = ({ title, noFilters }) => {
           return
         }
         router.push(
-          { pathname: `/${city.citySlug}`, query: { q: inputValue } },
-          `/${city.citySlug}`,
+          { pathname: `/${city.slug}`, query: { q: inputValue } },
+          `/${city.slug}`,
         )
       }
     }

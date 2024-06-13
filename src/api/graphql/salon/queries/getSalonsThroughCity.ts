@@ -8,22 +8,22 @@ import { phonesFragment } from '../../fragments/phones'
 import { cityFragment } from '../../fragments/city'
 
 export const getSalonsThroughCity = gql`
-  query getSalonsThroughCity($citySlug: [String], $pageSize: Int, $page: Int, $sort: [String]) {
+  query getSalonsThroughCity($slug: [String], $pageSize: Int, $page: Int, $sort: [String]) {
     salons(
-      filters: { cities: { citySlug: { in: $citySlug } } }
+      filters: { city: { slug: { in: $slug } } }
       pagination: { pageSize: $pageSize, page: $page }, sort: $sort
     ) {
       data {
         id
         attributes {
-          salonName
+          name
           slug
           salonID
-          salonAddress
-          salonIsPublished
-          salonIsNotRent
-          salonWebSiteUrl
-          salonEmail
+          address
+          published
+          rent
+          webSiteUrl
+          email
           salonPhones {
             ${phonesFragment}
           }
@@ -31,8 +31,8 @@ export const getSalonsThroughCity = gql`
             title
             link
           }
-          salonOwnerConfirmed
-          salonOnlineBookingUrl
+          ownerConfirmed
+          onlineBookingUrl
           workingHours {
             endTime
             startTime
@@ -46,32 +46,32 @@ export const getSalonsThroughCity = gql`
               }
             }
           }
-          salonDescription
-          salonContactPersonName
-          salonContactPersonPhone
-          salonContactPersonEmail
+          description
+          contactPersonName
+          contactPersonPhone
+          contactPersonEmail
           salonContactPersonWorkingHoursAt
           salonContactPersonWorkingHoursTo
-          salonWorkplacesCount
-          salonMastersCount
-          salonBrandsCount
+          workplacesCount
+          mastersCount
+          brandsCount
           createdAt
           updatedAt
           reviewsCount
             ratingCount
             rating
-            cities {
+            city {
               ${cityFragment}
             }
-          salonCover {
+          cover {
             ${imageInfo}
 
           }
-          salonLogo {
+          logo {
             ${imageInfo}
 
           }
-          salonPhotos {
+          photos {
             ${imageInfo}
           }
           services {

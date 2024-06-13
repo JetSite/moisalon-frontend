@@ -8,7 +8,7 @@ const AllRentSalons = () => {
   const { city } = useAuthStore(getStoreData)
 
   return (
-    <Link href={`/${city.citySlug}/rent`}>
+    <Link href={`/${city.slug}/rent`}>
       <AllSalons>
         <AllIconSalon />
         <FavoriteIcon />

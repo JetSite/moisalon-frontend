@@ -7,6 +7,7 @@ import {
   NormalizedCacheObject,
   DefaultOptions,
   ServerError,
+  Operation,
 } from '@apollo/client'
 import merge from 'deepmerge'
 import isEqual from 'lodash/isEqual'
@@ -170,7 +171,7 @@ export function addApolloState<T>(
 }
 
 export function useApollo<T>(pageProps: PageProps<T>) {
-  const state = pageProps.props?.[APOLLO_STATE_PROP_NAME]
+  const state = pageProps.props?.[APOLLO_STATE_PROP_NAME] || null
 
   const store = useMemo(
     () => initializeApollo({ initialState: state }),

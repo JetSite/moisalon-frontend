@@ -159,7 +159,7 @@ const OrderPage = () => {
       for (let i = 0; i < checkedProducts.length; i++) {
         newArray.push({
           id: checkedProducts[i].product.id,
-          brandName: checkedProducts[i].product?.brand?.name || '',
+          name: checkedProducts[i].product?.brand?.name || '',
           description: checkedProducts[i].product.title,
           count: checkedProducts[i].quantity,
           price: parseToFloat(

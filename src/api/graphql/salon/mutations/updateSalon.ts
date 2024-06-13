@@ -6,7 +6,7 @@ export const UPDATE_SALON = gql`
       data {
         id
         attributes {
-          salonName
+          name
         }
       }
     }

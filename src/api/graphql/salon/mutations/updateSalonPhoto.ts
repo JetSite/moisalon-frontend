@@ -6,10 +6,10 @@ export const UPDATE_SALON_PHOTO = gql`
     updateSalon(id: $id, data: $input) {
       data {
         attributes {
-          salonPhotos{
+          photos{
             ${imageInfo}
           }
-          salonLogo {
+          logo {
             ${imageInfo}
           }
         }

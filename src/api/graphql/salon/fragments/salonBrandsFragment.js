@@ -3,17 +3,17 @@ const salonBrandsFragment = `
     data {
       id
       attributes {
-        brandName
+        name
         city {
           data {
             id
             attributes {
-              cityName
-              citySlug
+              name
+              slug
             }
           }
         }
-        brandLogo {
+        logo {
           data {
             id
             attributes {

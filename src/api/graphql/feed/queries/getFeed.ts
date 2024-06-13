@@ -7,9 +7,9 @@ export const getFeed = gql`
       data {
         id
         attributes {
-          beautyFeedTitle
-          beautyFeedContent
-          beautyFeedCover {
+          title
+          content
+          cover {
             ${imageInfo}
           }
           shortDescription
@@ -17,7 +17,7 @@ export const getFeed = gql`
             data {
               id
               attributes {
-                feedCategoryName
+                title
               }
             }
           }

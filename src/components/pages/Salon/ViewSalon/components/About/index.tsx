@@ -68,7 +68,7 @@ interface Props {
 }
 
 const About: FC<Props> = ({ salon }) => {
-  const description = salon.salonDescription
+  const description = salon.description
   const [collapsed, setCollapsed] = useState(false)
   const collapsedDescription =
     collapsed && description ? textTruncate(description, 180) : description

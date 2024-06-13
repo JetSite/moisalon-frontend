@@ -8,11 +8,11 @@ service {
         data {
           id
           attributes {
-            categoryName
+            title
           }
         }
       }
-      serviceName
+      title
     }
   }
 }`

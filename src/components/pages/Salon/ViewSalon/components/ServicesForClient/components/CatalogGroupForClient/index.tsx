@@ -69,7 +69,7 @@ export const CatalogGroupForClient: FC<Props> = ({ group, withPrice }) => {
 
   return (
     <Wrapper>
-      <Title>{ucFirst(group?.serviceCategoryName)}</Title>
+      <Title>{ucFirst(group?.title)}</Title>
       <Item>{visibleItems}</Item>
       {!collapsed && <Item>{collapsedItems}</Item>}
       {subGroups?.length > 3 && (

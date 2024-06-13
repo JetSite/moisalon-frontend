@@ -23,7 +23,7 @@ const ProfileCitySelect: FC<Props> = ({
 
   const cityClickHandler = (city: ICity) => {
     if (window && window.setFormValue) {
-      window.setFormValue('city', city.cityName)
+      window.setFormValue('city', city.name)
     }
     setCityId(city.id)
     setShowCityInput(false)
@@ -41,7 +41,7 @@ const ProfileCitySelect: FC<Props> = ({
           <CityList>
             {suggestions.map((city, i) => (
               <CityItem key={i} onClick={() => cityClickHandler(city)}>
-                {city.cityName}
+                {city.name}
               </CityItem>
             ))}
           </CityList>

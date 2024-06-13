@@ -26,14 +26,14 @@ const SalonSlide: FC<Props> = ({ item, isEditing, deleteFunction }) => {
       onClick={() => {
         router.push(
           !landingMaster
-            ? `/${city.citySlug}/salon/${item?.id}`
-            : `/${city.citySlug}/rent`,
+            ? `/${city.slug}/salon/${item?.id}`
+            : `/${city.slug}/rent`,
         )
       }}
     >
       <SalonCard
         item={item}
-        shareLink={`https://moi.salon/${city.citySlug}/salon/${item?.id}`}
+        shareLink={`https://moi.salon/${city.slug}/salon/${item?.id}`}
       />
       {isEditing && (
         <DeleteSalon onClick={() => deleteFunction(item.id)}>

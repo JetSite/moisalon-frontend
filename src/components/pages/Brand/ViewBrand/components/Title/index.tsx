@@ -73,7 +73,7 @@ const Title: FC<Props> = ({ brand, isOwner }) => {
     <>
       <ContentLeft>
         <TitleBlock>
-          <BrandName>{brand.brandName}</BrandName>
+          <BrandName>{brand.name}</BrandName>
           <Notification>
             <Favorite
               isFavorite={isFavorite}
@@ -82,7 +82,7 @@ const Title: FC<Props> = ({ brand, isOwner }) => {
             <Bell />
           </Notification>
         </TitleBlock>
-        <CountryName>{brand.country?.countryName}</CountryName>
+        <CountryName>{brand.country?.name}</CountryName>
         <Rating>
           <RatingEdit
             handleChangeRating={handleChangeRating}

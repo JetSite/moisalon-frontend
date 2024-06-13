@@ -20,7 +20,6 @@ import { masterQuery } from '../../../../../../_graphql-legacy/master/masterQuer
 import { salonQuery } from '../../../../../../_graphql-legacy/salon/salonQuery'
 import { PHOTO_URL } from '../../../../../../api/variables'
 import { IChat, IChatChat } from 'src/chatContext'
-import { IMe } from 'src/types/me'
 
 moment.locale('ru', {
   calendar: {

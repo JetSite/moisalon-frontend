@@ -6,7 +6,7 @@ export const GET_SALON_ACTIVITIES = gql`
       data {
         id
         attributes {
-          activityName
+          title
         }
       }
     }

@@ -111,15 +111,15 @@ const Header: FC<Props> = ({ isOwner, salon, setActiveTab }) => {
       <Wrapper>
         <BackButton
           type="Аренда"
-          link={isOwner ? '/masterCabinet' : `/${salon.cities.citySlug}/rent`}
-          name={salon.salonName}
+          link={isOwner ? '/masterCabinet' : `/${salon.city.slug}/rent`}
+          name={salon.name}
         />
         <Content>
           <Info>
             <SalonInfo>
-              <Avatar src={PHOTO_URL + salon.salonLogo?.url} />
+              <Avatar src={PHOTO_URL + salon.logo?.url} />
               <SalonInfoRight>
-                <Name>{salon.salonName}</Name>
+                <Name>{salon.name}</Name>
                 <Rating>
                   <RatingEdit
                     handleChangeRating={handleChangeRating}
@@ -183,7 +183,7 @@ const Header: FC<Props> = ({ isOwner, salon, setActiveTab }) => {
               <div style={{ position: 'relative', top: 3 }}>
                 <Icon src="/icon-city.svg" />
               </div>
-              <CityText>{salon?.salonAddress}</CityText>
+              <CityText>{salon?.address}</CityText>
             </City>
             {salon?.salonPhones?.length ? (
               <Phones>
@@ -251,15 +251,15 @@ const Header: FC<Props> = ({ isOwner, salon, setActiveTab }) => {
               </Working>
             ) : null}
             <noindex>
-              {salon?.salonOnlineBookingUrl ? (
+              {salon?.onlineBookingUrl ? (
                 <ButtonOnline
                   target="_blank"
                   rel="nofollow"
                   href={
-                    urlPatternHttps.test(salon?.salonOnlineBookingUrl) ||
-                    urlPatternHttp.test(salon?.salonOnlineBookingUrl)
-                      ? salon?.salonOnlineBookingUrl
-                      : `https://${salon?.salonOnlineBookingUrl}`
+                    urlPatternHttps.test(salon?.onlineBookingUrl) ||
+                    urlPatternHttp.test(salon?.onlineBookingUrl)
+                      ? salon?.onlineBookingUrl
+                      : `https://${salon?.onlineBookingUrl}`
                   }
                 >
                   Онлайн бронирование
@@ -274,17 +274,17 @@ const Header: FC<Props> = ({ isOwner, salon, setActiveTab }) => {
             </noindex>
           </Info>
           <ImageContent>
-            <Image src={PHOTO_URL + salon?.salonPhotos[0]?.url} />
+            <Image src={PHOTO_URL + salon?.photos[0]?.url} />
             <noindex>
-              {salon?.salonOnlineBookingUrl ? (
+              {salon?.onlineBookingUrl ? (
                 <OnlineBooking
                   target="_blank"
                   rel="nofollow"
                   href={
-                    urlPatternHttps.test(salon?.salonOnlineBookingUrl) ||
-                    urlPatternHttp.test(salon?.salonOnlineBookingUrl)
-                      ? salon?.salonOnlineBookingUrl
-                      : `https://${salon?.salonOnlineBookingUrl}`
+                    urlPatternHttps.test(salon?.onlineBookingUrl) ||
+                    urlPatternHttp.test(salon?.onlineBookingUrl)
+                      ? salon?.onlineBookingUrl
+                      : `https://${salon?.onlineBookingUrl}`
                   }
                 >
                   <Icon src="/booking-blank.svg" />

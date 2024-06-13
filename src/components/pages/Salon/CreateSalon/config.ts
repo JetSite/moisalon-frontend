@@ -23,7 +23,7 @@ const tabs = [
 ]
 
 export const getTabs: IGetTabs = salon => {
-  if (salon?.salonIsNotRent) {
+  if (salon?.rent) {
     const salonRent = {
       id: '7',
       value: 'Рабочие места',

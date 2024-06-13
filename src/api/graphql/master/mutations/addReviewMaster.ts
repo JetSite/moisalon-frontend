@@ -6,7 +6,7 @@ export const ADD_REVIEW_MASTER = gql`
       data: {
         user: $user
         master: $id
-        reviewContent: $content
+        content: $content
         publishedAt: "2024-04-28T12:00:00.000Z"
       }
     ) {

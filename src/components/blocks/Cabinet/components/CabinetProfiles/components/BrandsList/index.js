@@ -13,7 +13,7 @@ const BrandsList = ({ brands, handlePublish }) => {
           {brands.map(brand => (
             <Link
               href={`/${
-                cyrToTranslit(brand?.addressFull?.city) || city?.citySlug
+                cyrToTranslit(brand?.addressFull?.city) || city?.slug
               }/brand/${brand?.seo?.slug || brand.id}`}
               key={brand.id}
             >

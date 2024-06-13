@@ -30,15 +30,23 @@ export const CabinetReviews: FC<Props> = ({ reviews, loading }) => {
     <ReviewsWrapper>
       {reviews?.length > 0 ? (
         <>
-          {reviews?.slice(0, offset).map(item => (
-            <Review key={item.id}>
-              <ReviewTop>
-                <ReviewsName>{nameRedact(item.reviewTitle)}</ReviewsName>
-                <Stars count={5} />
-              </ReviewTop>
-              <ReviewsText>{item.reviewContent}</ReviewsText>
-            </Review>
-          ))}
+          {reviews?.slice(0, offset).map(item => {
+            if (item.title || item.content) {
+              return (
+                <Review key={item.id}>
+                  <ReviewTop>
+                    <ReviewsName>
+                      {nameRedact(item.title || item.content)}
+                    </ReviewsName>
+                    <Stars count={0} />
+                  </ReviewTop>
+                  <ReviewsText>{item.content}</ReviewsText>
+                </Review>
+              )
+            } else {
+              return null
+            }
+          })}
           {reviews?.length > offset ? (
             <ReviewsButton onClick={() => setOffset(offset + 4)}>
               Смотреть раннее

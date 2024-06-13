@@ -27,7 +27,7 @@ const Header = ({ setOpenPopup }) => {
     <Wrapper>
       <Content>
         <LogoSmallWrap>
-          <Link href={`/${city.citySlug}`}>
+          <Link href={`/${city.slug}`}>
             <LogoSmall src="/for-salon-logo-small.png" alt="logo-big" />
           </Link>
         </LogoSmallWrap>
@@ -36,7 +36,7 @@ const Header = ({ setOpenPopup }) => {
           салонов
         </LogoSmallText>
         <LogoBigWrap>
-          <Link href={`/${city.citySlug}`}>
+          <Link href={`/${city.slug}`}>
             <LogoBig src="/logo-white.svg" alt="logo-big" />
           </Link>
         </LogoBigWrap>

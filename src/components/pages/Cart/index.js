@@ -233,7 +233,7 @@ const Cart = ({ cart, total, me, refetchCart }) => {
       newArray.push({
         // brand: checkedProducts[i].brandId,
         id: checkedProducts[i].product.id,
-        brandName: checkedProducts[i].product?.brand?.name || '',
+        name: checkedProducts[i].product?.brand?.name || '',
         description: checkedProducts[i].product.description,
         count: checkedProducts[i].quantity,
         price: parseToFloat(
@@ -258,14 +258,14 @@ const Cart = ({ cart, total, me, refetchCart }) => {
       <BackButton
         type="Вернуться к покупкам"
         onlyType
-        link={`/${city.citySlug}/beautyFreeShop`}
+        link={`/${city.slug}/beautyFreeShop`}
       />
       {!cart?.length ? (
         <>
           {' '}
           <NoItemsText>Ваша корзина пуста, наполните её товарами.</NoItemsText>
           <NoItemsTextRed
-            onClick={() => router.push(`/${city.citySlug}/beautyFreeShop`)}
+            onClick={() => router.push(`/${city.slug}/beautyFreeShop`)}
           >
             Перейти в магазин.
           </NoItemsTextRed>{' '}

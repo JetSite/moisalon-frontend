@@ -63,21 +63,21 @@ const Administartor: FC<Props> = ({ ref5, handleClickNextTab, number }) => {
           </FieldWrap>
           <FieldWrap>
             <Field
-              name="salonContactPersonName"
+              name="contactPersonName"
               component={TextField}
               label="Имя администратора"
             />
           </FieldWrap>
           <FieldWrap>
             <PhoneField
-              name="salonContactPersonPhone"
+              name="contactPersonPhone"
               label="Телефон"
               requiredField={false}
             />
           </FieldWrap>
           <FieldWrap>
             <Field
-              name="salonContactPersonEmail"
+              name="contactPersonEmail"
               component={TextField}
               label="E-mail"
               validate={email}

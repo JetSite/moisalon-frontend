@@ -299,7 +299,7 @@ const SalonMap = ({ view, setView, rent }) => {
   //     refetchChange({
   //       input: {
   //         ...querySearch,
-  //         city: city.citySlug,
+  //         city: city.slug,
   //       },
   //     })
   //     refetchAllSalons()
@@ -326,7 +326,7 @@ const SalonMap = ({ view, setView, rent }) => {
   //     refetchChange({
   //       input: {
   //         ...querySearch,
-  //         city: city.citySlug,
+  //         city: city.slug,
   //       },
   //     })
   //   }
@@ -345,7 +345,7 @@ const SalonMap = ({ view, setView, rent }) => {
   //   firstFetch({
   //     input: {
   //       ...querySearch,
-  //       city: city.citySlug,
+  //       city: city.slug,
   //     },
   //   })
   // }, [])
@@ -624,11 +624,11 @@ const SalonMap = ({ view, setView, rent }) => {
   //                       rent
   //                         ? `/${
   //                             cyrToTranslit(salon?.salon?.address?.city) ||
-  //                             city.citySlug
+  //                             city.slug
   //                           }/rent/${salon.salon?.seo?.slug || salon.salon.id}`
   //                         : `/${
   //                             cyrToTranslit(salon?.salon?.address?.city) ||
-  //                             city.citySlug
+  //                             city.slug
   //                           }/salon/${salon.salon?.seo?.slug || salon.salon.id}`
   //                     }
   //                     key={salon.salon.id}
@@ -641,7 +641,7 @@ const SalonMap = ({ view, setView, rent }) => {
   //                         item={salon.salon}
   //                         shareLink={`https://moi.salon/${
   //                           cyrToTranslit(salon?.salon?.address?.city) ||
-  //                           city.citySlug
+  //                           city.slug
   //                         }/salon/${salon.salon?.seo?.slug || salon.salon.id}`}
   //                       />
   //                     </SalonCardWrapper>
@@ -708,11 +708,11 @@ const SalonMap = ({ view, setView, rent }) => {
   //                       rent
   //                         ? `/${
   //                             cyrToTranslit(salon?.address?.city) ||
-  //                             city.citySlug
+  //                             city.slug
   //                           }/rent/${salon?.seo?.slug || salon.id}`
   //                         : `/${
   //                             cyrToTranslit(salon?.address?.city) ||
-  //                             city.citySlug
+  //                             city.slug
   //                           }/salon/${salon?.seo?.slug || salon.id}`
   //                     }
   //                     key={salon.id}
@@ -724,7 +724,7 @@ const SalonMap = ({ view, setView, rent }) => {
   //                         loading={loading}
   //                         item={salon}
   //                         shareLink={`https://moi.salon/${
-  //                           cyrToTranslit(salon?.address?.city) || city.citySlug
+  //                           cyrToTranslit(salon?.address?.city) || city.slug
   //                         }/salon/${salon?.seo?.slug || salon.id}`}
   //                       />
   //                     </SalonCardWrapper>
@@ -761,13 +761,13 @@ const SalonMap = ({ view, setView, rent }) => {
   //                         rent
   //                           ? `/${
   //                               cyrToTranslit(salon?.salon?.address?.city) ||
-  //                               city.citySlug
+  //                               city.slug
   //                             }/rent/${
   //                               salon.salon?.seo?.slug || salon.salon.id
   //                             }`
   //                           : `/${
   //                               cyrToTranslit(salon?.salon?.address?.city) ||
-  //                               city.citySlug
+  //                               city.slug
   //                             }/salon/${
   //                               salon.salon?.seo?.slug || salon.salon.id
   //                             }`
@@ -782,7 +782,7 @@ const SalonMap = ({ view, setView, rent }) => {
   //                           item={salon.salon}
   //                           shareLink={`https://moi.salon/${
   //                             cyrToTranslit(salon?.salon?.address?.city) ||
-  //                             city.citySlug
+  //                             city.slug
   //                           }/salon/${
   //                             salon.salon?.seo?.slug || salon.salon.id
   //                           }`}
@@ -805,11 +805,11 @@ const SalonMap = ({ view, setView, rent }) => {
   //                         rent
   //                           ? `/${
   //                               cyrToTranslit(salon?.address?.city) ||
-  //                               city.citySlug
+  //                               city.slug
   //                             }/rent/${salon?.seo?.slug || salon.id}`
   //                           : `/${
   //                               cyrToTranslit(salon?.address?.city) ||
-  //                               city.citySlug
+  //                               city.slug
   //                             }/salon/${salon?.seo?.slug || salon.id}`
   //                       }
   //                       key={salon.id}
@@ -822,7 +822,7 @@ const SalonMap = ({ view, setView, rent }) => {
   //                           item={salon}
   //                           shareLink={`https://moi.salon/${
   //                             cyrToTranslit(salon?.address?.city) ||
-  //                             city.citySlug
+  //                             city.slug
   //                           }/salon/${salon?.seo?.slug || salon.id}`}
   //                         />
   //                       </SalonCardWrapper>

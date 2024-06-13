@@ -154,7 +154,7 @@ const ProductPage = ({ brand, product, dataReviews }) => {
           type={router?.query?.catalog ? 'Магазин' : 'Бренд'}
           name={product?.brand?.name}
           link={`/${
-            cyrToTranslit(product?.brand?.addressFull?.city) || city.citySlug
+            cyrToTranslit(product?.brand?.addressFull?.city) || city.slug
           }/brand/${product?.brand?.seo?.slug || product?.brand?.id}/products`}
         />
         <Wrap>

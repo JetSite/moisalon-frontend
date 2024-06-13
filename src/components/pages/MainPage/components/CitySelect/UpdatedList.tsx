@@ -9,7 +9,7 @@ import { setCookie } from 'cookies-next'
 import { redirectCityRoutes } from 'src/utils/newUtils/redirectCityRoutes'
 import { IMe } from 'src/types/me'
 import useAuthStore from 'src/store/authStore'
-import { getStoreEvent } from 'src/store/utils'
+import { getStoreData, getStoreEvent } from 'src/store/utils'
 
 export interface PropsUpdatedList {
   cityInput: string
@@ -17,7 +17,6 @@ export interface PropsUpdatedList {
   setShowCitySelect: ISetState<boolean>
   setShowHamburgerMenu?: ISetState<boolean>
   changeCityFunc: IAppoloMutationCallback
-  me: IMe | null
 }
 
 export const UpdatedList: FC<PropsUpdatedList> = ({
@@ -26,15 +25,15 @@ export const UpdatedList: FC<PropsUpdatedList> = ({
   setShowCitySelect,
   setShowHamburgerMenu,
   changeCityFunc,
-  me,
 }) => {
   const { setCity } = useAuthStore(getStoreEvent)
+  const { me } = useAuthStore(getStoreData)
   const { suggestions } = useCitySuggestions(cityInput)
   const unicSuggestion = Array.from(new Set(suggestions))
   const router = useRouter()
 
   const cityClickHandler = (city: ICity) => {
-    setCookie(authConfig.cityKeyName, city.citySlug)
+    setCookie(authConfig.cityKeyName, city.slug)
     setCityInput('')
     if (me?.info.id) {
       changeCityFunc({
@@ -43,7 +42,7 @@ export const UpdatedList: FC<PropsUpdatedList> = ({
     }
     setCity(city)
 
-    redirectCityRoutes(city.citySlug, router)
+    redirectCityRoutes(city.slug, router)
     setShowCitySelect(false)
     setShowHamburgerMenu && setShowHamburgerMenu(false)
   }

@@ -8,8 +8,8 @@ data {
     city {
       ${cityFragment}
     }
-      brandName
-      brandLogo {
+      name
+      logo {
         ${imageInfo}
       }
       

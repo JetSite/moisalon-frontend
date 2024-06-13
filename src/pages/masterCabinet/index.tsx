@@ -1,7 +1,6 @@
 import { useLazyQuery, useQuery } from '@apollo/client'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
-import { getMe } from 'src/api/graphql/me/queries/getMe'
 import { getCookie } from 'cookies-next'
 import { OptionsType } from 'cookies-next/lib/types'
 import { authConfig } from 'src/api/authConfig'
@@ -14,15 +13,14 @@ interface Props {
 }
 
 const CabinetPage: FC<Props> = ({ accessToken }) => {
-  const { me, loading } = useAuthStore(getStoreData)
-  const { setMe } = useAuthStore(getStoreEvent)
+  const { user, loading } = useAuthStore(getStoreData)
 
-  if (loading || !me) return <CreatePageSkeleton />
+  if (loading || !user) return <CreatePageSkeleton />
 
-  return !me.info?.username ||
-    !me.info?.city?.cityName ||
-    !me.info?.phone ||
-    !me.info?.email ? (
+  return !user.info?.username ||
+    !user.info?.city?.name ||
+    !user.info?.phone ||
+    !user.info?.email ? (
     <Cabinet />
   ) : (
     <MasterCabinet />

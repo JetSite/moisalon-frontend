@@ -55,7 +55,7 @@ interface Props {
 }
 
 const CabinetForm: FC<Props> = ({ photo, setNoPhotoError, auth }) => {
-  const { me } = useAuthStore(getStoreData)
+  const { user } = useAuthStore(getStoreData)
   const { setMe } = useAuthStore(getStoreEvent)
 
   const [errors, setErrors] = useState<string[]>([])
@@ -129,7 +129,7 @@ const CabinetForm: FC<Props> = ({ photo, setNoPhotoError, auth }) => {
       setLoading(true)
       mutate({
         variables: {
-          id: me?.info.id,
+          id: user?.info.id,
           data: input,
         },
       })
@@ -137,12 +137,12 @@ const CabinetForm: FC<Props> = ({ photo, setNoPhotoError, auth }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [photo],
   )
-  if (me) {
+  if (user) {
     const initialValues: ICabinetFormIvitialValues = {
-      phone: me.info.phone,
-      email: me.info.email,
-      city: me.info.city?.cityName || '',
-      username: me.info.username,
+      phone: user.info.phone,
+      email: user.info.email,
+      city: user.info.city?.name || '',
+      username: user.info.username,
     }
 
     return (
@@ -234,7 +234,7 @@ const CabinetForm: FC<Props> = ({ photo, setNoPhotoError, auth }) => {
         />
         {auth ? (
           <MobileHidden>
-            <CreateProfiles currentMe={me} />
+            <CreateProfiles user={user} />
           </MobileHidden>
         ) : null}
       </Wrapper>

@@ -52,29 +52,29 @@ const MasterItem: FC<Props> = ({
       <Image
         style={{ width: 140, height: 140 }}
         alt="image"
-        src={PHOTO_URL + master?.masterPhoto.url}
+        src={PHOTO_URL + master?.photo.url}
       />
       <Socials>
-        {master?.masterPhone ? (
+        {master?.phone ? (
           <PhoneLink
             onClick={e => {
               e.stopPropagation()
             }}
-            href={`tel:${master?.masterPhone}`}
+            href={`tel:${master?.phone}`}
           />
         ) : null}
-        {master?.masterEmail ? (
+        {master?.email ? (
           <EmailLink
             onClick={e => {
               e.stopPropagation()
             }}
-            href={`mailto:${master?.masterEmail}`}
+            href={`mailto:${master?.email}`}
           />
         ) : null}
       </Socials>
       <MasterInfo>
-        <Name>{master?.masterName || ''}</Name>
-        {master?.city.cityName ? <City>{master?.city.cityName}</City> : null}
+        <Name>{master?.name || ''}</Name>
+        {master?.city.name ? <City>{master?.city.name}</City> : null}
         <div>
           <Specializations>{servicesCategories}</Specializations>
           <Rating

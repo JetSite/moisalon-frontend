@@ -2,10 +2,10 @@ const salonAdministratorsFragment = `
   data {
     id
     attributes {
-      administratorName
-      administratorPhone
-      administratorEmail
-      administratorPhoto {
+      name
+      phone
+      email
+      photo {
         data {
           id
           attributes {

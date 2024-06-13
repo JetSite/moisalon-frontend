@@ -52,7 +52,7 @@ export default function MobileCatalogSubGroup({
   return (
     <Wrapper>
       <Top>
-        <Title>{ucFirst(subGroup?.serviceName)}</Title>
+        <Title>{ucFirst(subGroup?.title)}</Title>
         {/* {subGroup?.price ? <Price>от {item.price}</Price> : null} */}
       </Top>
     </Wrapper>

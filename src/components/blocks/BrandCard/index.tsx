@@ -40,9 +40,7 @@ const BrandItem: FC<Props> = ({
     setIsFavorit(!!isInStorage)
   }, [])
 
-  const logoUrl = brand?.brandLogo?.url
-    ? `${PHOTO_URL}${brand.brandLogo.url}`
-    : ''
+  const logoUrl = brand?.logo?.url ? `${PHOTO_URL}${brand.logo.url}` : ''
 
   const addFavorite = (
     e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>,
@@ -64,7 +62,7 @@ const BrandItem: FC<Props> = ({
         </Favorite>
       ) : null}
       <BrandShareWrap>
-        <Share link={shareLink} title={brand?.brandName} />
+        <Share link={shareLink} title={brand?.name} />
       </BrandShareWrap>
       {children}
     </BItem>

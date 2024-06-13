@@ -6,7 +6,7 @@ import { brandsFragment } from '../fragments/brands'
 import { vacanciesFragment } from '../fragments/vacancies'
 import { cityFragment } from '../../fragments/city'
 
-export const getUser = gql`
+export const USER = gql`
   query usersPermissionsUser($id: ID) {
     usersPermissionsUser(id: $id) {
       data {
@@ -57,13 +57,13 @@ export const getUser = gql`
             data {
               id
               attributes {
-                reviewContent
-                reviewTitle
+                content
+                title
                 salon {
                   data {
                     id
                     attributes {
-                      salonName
+                      name
                     }
                   }
                 }
@@ -71,7 +71,7 @@ export const getUser = gql`
                   data {
                     id
                     attributes {
-                      masterName
+                      name
                     }
                   }
                 }
@@ -79,7 +79,7 @@ export const getUser = gql`
                   data {
                     id
                     attributes {
-                      brandName
+                      name
                     }
                   }
                 }
@@ -87,7 +87,7 @@ export const getUser = gql`
                   data {
                     id
                     attributes {
-                      productName
+                      name
                     }
                   }
                 }

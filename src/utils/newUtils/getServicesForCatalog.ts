@@ -6,15 +6,13 @@ type IGetServicesForCatalog = (
 
 export const getServicesForCatalog: IGetServicesForCatalog = services => {
   if (!services || !services.length) return []
-  return services?.map(
-    ({ id, serviceCategoryName, services: insideServices }) => ({
+  return services?.map(({ id, title, services: insideServices }) => ({
+    id,
+    description: title,
+    items: insideServices?.map(({ id, title }) => ({
+      groupName: title,
+      title: title,
       id,
-      description: serviceCategoryName,
-      items: insideServices?.map(({ id, serviceName }) => ({
-        groupName: serviceName,
-        title: serviceName,
-        id,
-      })),
-    }),
-  )
+    })),
+  }))
 }

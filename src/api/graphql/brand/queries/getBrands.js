@@ -12,13 +12,13 @@ export const getBrands = gql`
             data {
               id
               attributes {
-                cityName
-                citySlug
+                name
+                slug
               }
             }
           }
-            brandName
-            brandLogo {
+            name
+            logo {
               ${imageInfo}
             }
             

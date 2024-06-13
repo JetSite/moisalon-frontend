@@ -10,7 +10,7 @@ export const RATE_SALON = gql`
             data {
               id
               attributes {
-                salonName
+                name
                 ratings {
                   data {
                     id

@@ -17,11 +17,11 @@ import { IMaster } from 'src/types/masters'
 interface Props {
   open: boolean
   setChatMessagePopup: ISetState<boolean>
-  userId: IID
+  userId: IID | null
   buttonText?: string
   successText?: string
   origin: 'SALON' | 'MASTER'
-  originData: ISalonPage | IMaster
+  originData: ISalonPage | IMaster | null
 }
 
 const ChatMessagePopup: FC<Props> = ({
@@ -78,8 +78,8 @@ const ChatMessagePopup: FC<Props> = ({
 
   const newMessageTitle =
     origin === 'MASTER'
-      ? `Начать чат с мастером ${(originData as IMaster).masterName}`
-      : `Начать чат с салоном ${(originData as ISalonPage).salonName}`
+      ? `Начать чат с мастером ${(originData as IMaster).name}`
+      : `Начать чат с салоном ${(originData as ISalonPage).name}`
 
   return (
     <>

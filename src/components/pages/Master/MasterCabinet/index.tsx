@@ -22,7 +22,7 @@ import CabinetBanner from '../../../blocks/Cabinet/components/CabinetBanner'
 import { PHOTO_URL } from '../../../../api/variables'
 import { useChat } from '../../../../chatContext'
 import { IRefetch } from 'src/api/types'
-import { IMe } from 'src/types/me'
+import { IUser } from 'src/types/me'
 import { IID } from 'src/types/common'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
@@ -38,13 +38,13 @@ export interface IMasterCabinetTab {
 
 interface Props {
   refetch: IRefetch
-  me: IMe
+  user: IUser
 }
 
 const MasterCabinet: FC = () => {
-  const { me } = useAuthStore(getStoreData)
+  const { user } = useAuthStore(getStoreData)
   const [photo, setPhoto] = useState<IPhoto | undefined>(
-    !!me?.info?.masters?.length ? me.info.masters[0].photo : undefined,
+    !!user?.owner?.masters?.length ? user.owner.masters[0].photo : undefined,
   )
   const [noPhotoError, setNoPhotoError] = useState<boolean>(false)
   const [, setErrors] = useState<string[] | null>(null)
@@ -69,7 +69,7 @@ const MasterCabinet: FC = () => {
   //     mutate({
   //       variables: {
   //         input: {
-  //           defaultCity: me?.info?.city.cityName,
+  //           defaultCity: me?.info?.city.name,
   //           displayName: me?.info?.username,
   //           email: me?.info?.email,
   //           phoneNumber: me?.info?.phone,
@@ -89,21 +89,19 @@ const MasterCabinet: FC = () => {
     }
   }, [router?.query?.tab])
 
-  console.log('me', me)
-
   return (
     <>
       <Header />
       <MainContainer>
         <ProfileCabinetHeaderMobile
-          me={me}
+          user={user}
           tabs={[
             { title: 'Мои данные', value: 'about', icon: '/icon-about.svg' },
             {
               title: 'Мои заказы',
               value: 'orders',
               icon: '/icon-orders.svg',
-              quantity: me?.orders?.length,
+              quantity: user?.orders?.length,
               disable: true,
             },
             {
@@ -183,7 +181,7 @@ const MasterCabinet: FC = () => {
           {activeTab === 'about' ? (
             <CabinetForm setNoPhotoError={setNoPhotoError} photo={photo} auth />
           ) : activeTab === 'orders' ? (
-            <CabinetOrders me={me} />
+            <CabinetOrders me={user} />
           ) : activeTab === 'profiles' ? (
             <CabinetProfiles />
           ) : activeTab === 'chat' ? (
@@ -193,15 +191,15 @@ const MasterCabinet: FC = () => {
           ) : activeTab === 'favorits' ? (
             <CabinetFavorits />
           ) : activeTab === 'sales' ? (
-            <CabinetSales me={me} />
+            <CabinetSales me={user} />
           ) : activeTab === 'educations' ? (
-            <CabinetEducations me={me} />
+            <CabinetEducations me={user} />
           ) : activeTab === 'vacancies' ? (
             <CabinetVacancies />
           ) : activeTab === 'events' ? (
-            <CabinetEvents me={me} />
+            <CabinetEvents me={user} />
           ) : activeTab === 'priority' ? (
-            <CabinetPriority me={me} />
+            <CabinetPriority me={user} />
           ) : activeTab === 'banner' ? (
             <CabinetBanner />
           ) : null}

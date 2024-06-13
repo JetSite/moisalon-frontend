@@ -138,9 +138,9 @@ const Services: FC<Props> = ({
           // />
         )}
         <noindex>
-          {salon?.salonOnlineBookingUrl ? (
+          {salon?.onlineBookingUrl ? (
             <PhoneButton
-              href={salon?.salonOnlineBookingUrl}
+              href={salon?.onlineBookingUrl}
               rel="nofollow"
               target="_blank"
             >
