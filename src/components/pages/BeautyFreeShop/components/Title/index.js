@@ -31,7 +31,6 @@ import HeartFullFill from '../../../MainPage/components/Header/icons/HeartFullFi
 
 const Title = ({
   name,
-  name,
   socialUrl,
   brandUrl,
   brand,

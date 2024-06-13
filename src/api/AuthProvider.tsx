@@ -128,7 +128,7 @@ const AuthProvider: FC<{ children: IChildren; serverData?: IServerProps }> = ({
         getUser({ variables: { id: me.info.id } })
       }
     }
-    console.log('AuthProvider', me, city)
+    console.log('AuthProvider', me)
   }, [me, router])
 
   return <>{!loading && children}</>

@@ -111,7 +111,7 @@ const Header: FC<Props> = ({ isOwner, salon, setActiveTab }) => {
       <Wrapper>
         <BackButton
           type="Аренда"
-          link={isOwner ? '/masterCabinet' : `/${salon.cities.slug}/rent`}
+          link={isOwner ? '/masterCabinet' : `/${salon.city.slug}/rent`}
           name={salon.name}
         />
         <Content>

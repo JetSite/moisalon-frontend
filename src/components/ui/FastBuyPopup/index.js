@@ -134,7 +134,7 @@ const FastBuyPopup = ({ item, openBuyPopup, setOpenBuyPopup, me, brand }) => {
 
   const minimalPrice =
     brand?.minimalOrderPrice || item?.brand?.minimalOrderPrice
-  const name = brand?.name || item?.brand?.name
+  const brandName = brand?.name || item?.brand?.name
 
   return (
     <CSSTransition
