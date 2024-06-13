@@ -3,14 +3,22 @@ import { YMaps, Map, Placemark } from '@pbe/react-yandex-maps'
 import { Map as YandexMap } from 'yandex-maps'
 
 interface Props {
-  address: { latitude?: number; longitude?: number }
+  address: { latitude?: number | string; longitude?: number | string }
   view?: boolean
 }
 
 export default function MapBlock({ address, view }: Props) {
+  if (!address) return <></>
   const mapRef = useRef<YandexMap | null>(null)
+  let center = [55.751267, 37.621226]
+  if (
+    typeof Number(address?.latitude) === 'number' ||
+    typeof Number(address.longitude) === 'number'
+  ) {
+    center = [Number(address?.latitude), Number(address?.longitude)]
+  }
   const mapData = {
-    center: [address.latitude || 55.751267, address.longitude || 37.621226],
+    center,
     zoom: 15,
     behaviors: ['default', 'scrollZoom'],
   }
@@ -18,7 +26,7 @@ export default function MapBlock({ address, view }: Props) {
   useEffect(() => {
     if (view) {
       if (mapRef.current && address.latitude && address.longitude) {
-        mapRef.current.setCenter([address.latitude, address.longitude])
+        mapRef.current.setCenter(center)
       }
     }
   }, [address, view])

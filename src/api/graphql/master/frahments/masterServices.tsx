@@ -1,6 +1,6 @@
 const masterServicesFragment = `
 id
-  serviceName
+  title
   price
   priceTo
   priceFrom
@@ -12,11 +12,11 @@ id
           data {
             id
             attributes {
-              serviceCategoryName
+              title
             }
           }
         }
-        serviceName
+        title
       }
     }
   }

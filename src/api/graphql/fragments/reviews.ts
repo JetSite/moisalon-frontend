@@ -5,8 +5,8 @@ data {
   id
   attributes {
     title
-    reviewTitle
-    reviewContent
+    title
+    content
     rating {
       data {
         id

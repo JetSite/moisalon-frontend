@@ -70,7 +70,7 @@ const RentSlider = ({ salon, title }) => {
                     >
                       <Link
                         href={`/${
-                          cyrToTranslit(salon?.address?.city) || city.citySlug
+                          cyrToTranslit(salon?.address?.city) || city.slug
                         }/rent/${salon?.id}/room/${item.id}/seat/${
                           el?.seo?.slug || el?.id
                         }`}

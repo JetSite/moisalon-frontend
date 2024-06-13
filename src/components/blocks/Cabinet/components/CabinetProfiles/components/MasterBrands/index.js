@@ -100,9 +100,9 @@ const MasterBrands = ({ dataSearch, handlePublish, me }) => {
         key={item.id}
         onClick={() =>
           router.push(
-            `/${
-              cyrToTranslit(item?.addressFull?.city) || city?.citySlug
-            }/brand/${item?.seo?.slug || item.id}`,
+            `/${cyrToTranslit(item?.addressFull?.city) || city?.slug}/brand/${
+              item?.seo?.slug || item.id
+            }`,
           )
         }
       >

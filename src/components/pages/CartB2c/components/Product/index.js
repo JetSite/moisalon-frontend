@@ -185,7 +185,7 @@ const Product = ({
       <Top>
         <Link
           href={{
-            pathname: `/${city.citySlug}/product/${item?.product?.id}`,
+            pathname: `/${city.slug}/product/${item?.product?.id}`,
             query: {
               catalog: false,
             },

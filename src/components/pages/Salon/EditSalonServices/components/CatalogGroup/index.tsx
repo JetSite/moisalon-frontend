@@ -172,7 +172,7 @@ export const CatalogGroup: FC<Props> = ({
     <Wrapper>
       <Content>
         <FormControlLabel
-          label={<Title>{group.serviceCategoryName}</Title>}
+          label={<Title>{group.title}</Title>}
           control={
             <Checkbox
               className={classes.root}

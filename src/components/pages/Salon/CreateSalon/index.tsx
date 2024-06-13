@@ -28,6 +28,12 @@ import { getStoreData } from 'src/store/utils'
 
 export type IHandleClickNextTabInForm = (number: number) => void
 
+export type IHandleElementPosition = (
+  element: HTMLDivElement | null,
+  func: ISetState<string | boolean>,
+  top: number,
+) => void
+
 interface Props {
   lessor?: boolean
   salon: ISalonPage
@@ -50,26 +56,27 @@ const CreateSalon: FC<Props> = ({ salon, cities, lessor = false }) => {
   const [ref4Visible, setRef4Visible] = useState<boolean | string>(false)
   const [ref5Visible, setRef5Visible] = useState<boolean | string>(false)
   const [ref6Visible, setRef6Visible] = useState<boolean | string>(false)
-  const [photoSalonId, setPhotoId] = useState<null | IID>(null)
   const [noPhotoError, setNoPhotoError] = useState<boolean>(false)
   const [logo, setLogo] = useState<IPhoto | null>(
-    salon?.salonLogo ? salon?.salonLogo : null,
+    salon?.logo ? salon?.logo : null,
   )
 
   const [updateSalonePhoto] = useMutation(UPDATE_SALON_PHOTO)
   const onAdd = useCallback(
     (photo: string) => {
-      updateSalonePhoto({
-        variables: { id: salon.id, input: { salonLogo: photo } },
-      })
+      if (salon) {
+        updateSalonePhoto({
+          variables: { id: salon.id, input: { logo: photo } },
+        })
+      }
     },
     [updateSalonePhoto],
   )
 
-  const handleElementPosition = (
-    element: HTMLDivElement | null,
-    func: ISetState<string | boolean>,
-    top: number,
+  const handleElementPosition: IHandleElementPosition = (
+    element,
+    func,
+    top,
   ) => {
     if (!element) return
     const posTop = element?.getBoundingClientRect()?.top
@@ -200,7 +207,6 @@ const CreateSalon: FC<Props> = ({ salon, cities, lessor = false }) => {
             ref4={ref4}
             ref5={ref5}
             ref6={ref6}
-            photoSalonId={photoSalonId}
             salon={salon}
             setNoPhotoError={setNoPhotoError}
             logo={logo}

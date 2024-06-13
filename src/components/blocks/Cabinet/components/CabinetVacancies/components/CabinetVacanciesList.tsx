@@ -37,7 +37,7 @@ export const CabinetVacanciesList: FC<Props> = ({
                   : item.vacancy_type.title.toLowerCase() === 'brand'
                   ? 'Бренд'
                   : ''
-              } ${item?.salon?.salonName || item?.brand?.brandName || ''}`}
+              } ${item?.salon?.name || item?.brand?.name || ''}`}
               type={'master'}
               photo={item.cover[0].url}
               // amountFrom={item.amountFrom}

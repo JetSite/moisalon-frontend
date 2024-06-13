@@ -51,7 +51,7 @@ const Salon: FC<Props> = ({ salonData, othersSalons, cityData }) => {
   const [editClientServices, setEditClientServices] = useState<boolean>(false)
   const [salon, setSalon] = useState<ISalonPage>(salonData)
   const [brands, setBrands] = useState<IBrand[]>(salonData?.brands)
-  const { me } = useAuthStore(getStoreData)
+  const { user } = useAuthStore(getStoreData)
   const groupedServices = useMemo(
     () => getGroupedServices(salon.services),
     [salon],
@@ -81,7 +81,7 @@ const Salon: FC<Props> = ({ salonData, othersSalons, cityData }) => {
     },
   })
 
-  const isOwner = !!me?.owner?.salons.find(e => e.id === salon.id)
+  const isOwner = !!user?.owner?.salons?.find(e => e.id === salon.id)
 
   const handleRemoveBrand = (id: IID) => {}
 
@@ -135,7 +135,7 @@ const Salon: FC<Props> = ({ salonData, othersSalons, cityData }) => {
           refetchSalon={refetchSalon}
         />
       ) : null}
-      {salon?.salonPhotos?.length > 0 && <MobileSalonPhotos salon={salon} />}
+      {salon?.photos?.length > 0 && <MobileSalonPhotos salon={salon} />}
       {salon?.masters?.length || isOwner ? (
         <MobileServicesForClient
           isOwner={isOwner}
@@ -171,7 +171,7 @@ const Salon: FC<Props> = ({ salonData, othersSalons, cityData }) => {
           type="vacancies"
           title="Наши вакансии"
           items={salon.vacancies}
-          city={salon.cities}
+          city={salon.city}
         />
       ) : null}
       {brands?.length || isOwner ? (
@@ -221,15 +221,15 @@ const Salon: FC<Props> = ({ salonData, othersSalons, cityData }) => {
       <SalonReviews salonId={salon.id} reviews={salon.reviews} />
       <Contacts
         phones={salon?.salonPhones}
-        email={salon?.salonEmail}
+        email={salon?.email}
         workingHours={salon?.workingHours}
-        address={salon?.salonAddress}
+        address={salon?.address}
         socialNetworkUrls={salon?.socialNetworks}
         metroStations={salon?.metro_stations}
         locationDirections={salon.locationDirections}
         coordinates={{ longitude: salon.longitude, latitude: salon.latitude }}
       />
-      <InviteSalon me={me} />
+      <InviteSalon me={user} />
       <Slider
         city={cityData}
         type="salons"

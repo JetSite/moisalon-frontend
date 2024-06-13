@@ -64,8 +64,8 @@ const Header: FC<Props> = ({ salon, isOwner }) => {
   const router = useRouter()
   const [newRating, setNewRating] = useState<number>(0)
 
-  const logo = salon.salonLogo ? (
-    <Logo background={`url(${PHOTO_URL}${salon?.salonLogo?.url})`} />
+  const logo = salon.logo ? (
+    <Logo background={`url(${PHOTO_URL}${salon?.logo?.url})`} />
   ) : (
     <SkeletonCircle />
   )
@@ -116,17 +116,17 @@ const Header: FC<Props> = ({ salon, isOwner }) => {
         <Wrapper>
           <BackButton
             type="Салон"
-            link={isOwner ? '/masterCabinet' : `/${city.citySlug}/salon`}
-            name={salon.salonName}
+            link={isOwner ? '/masterCabinet' : `/${city.slug}/salon`}
+            name={salon.name}
           />
         </Wrapper>
         <Wrapper>
           <Socials>
             <noindex>
-              {salon?.salonOnlineBookingUrl ? (
+              {salon?.onlineBookingUrl ? (
                 <Phone
                   active={true}
-                  href={salon?.salonOnlineBookingUrl}
+                  href={salon?.onlineBookingUrl}
                   target="_blank"
                   rel="nofollow"
                 />
@@ -204,7 +204,7 @@ const Header: FC<Props> = ({ salon, isOwner }) => {
             <NameContent>
               <Name
                 dangerouslySetInnerHTML={{
-                  __html: salon.salonName,
+                  __html: salon.name,
                 }}
               />
               <Favorite
@@ -231,7 +231,7 @@ const Header: FC<Props> = ({ salon, isOwner }) => {
           </NameWrapper>
           {salon?.activities?.length < 8 || showAllActivities ? (
             <Activities>
-              {salon?.activities.map(e => e.activityName).join(', ')}
+              {salon?.activities.map(e => e.title).join(', ')}
               {showAllActivities ? (
                 <More onClick={() => setShowAllActivities(!showAllActivities)}>
                   Скрыть
@@ -241,7 +241,7 @@ const Header: FC<Props> = ({ salon, isOwner }) => {
           ) : (
             <Activities>
               {salon?.activities
-                .map(e => e.activityName)
+                .map(e => e.title)
                 .slice(0, 8)
                 .join(', ')}
 
@@ -251,18 +251,18 @@ const Header: FC<Props> = ({ salon, isOwner }) => {
             </Activities>
           )}
           <noindex>
-            {salon?.salonWebSiteUrl ? (
+            {salon?.webSiteUrl ? (
               <WebSite
                 href={
-                  urlPatternHttps.test(salon?.salonWebSiteUrl) ||
-                  urlPatternHttp.test(salon?.salonWebSiteUrl)
-                    ? salon?.salonWebSiteUrl
-                    : `https://${salon?.salonWebSiteUrl}`
+                  urlPatternHttps.test(salon?.webSiteUrl) ||
+                  urlPatternHttp.test(salon?.webSiteUrl)
+                    ? salon?.webSiteUrl
+                    : `https://${salon?.webSiteUrl}`
                 }
                 target="_blank"
                 rel="noreferrer nofollow"
               >
-                {salon.salonWebSiteUrl}
+                {salon.webSiteUrl}
               </WebSite>
             ) : null}
           </noindex>

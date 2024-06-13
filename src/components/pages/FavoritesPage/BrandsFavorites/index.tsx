@@ -36,7 +36,7 @@ const BrandsFavorites: FC<ThingsProps> = ({
 }) => {
   const navigationPrevRef = useRef(null)
   const navigationNextRef = useRef(null)
-  const { city, me } = useAuthStore(getStoreData)
+  const { city, user } = useAuthStore(getStoreData)
 
   const onBeforeInit = (Swiper: SwiperClass) => {
     if (typeof Swiper.params.navigation !== 'boolean') {
@@ -49,7 +49,7 @@ const BrandsFavorites: FC<ThingsProps> = ({
   const [deleteItem, setDeleteItem] = useState(false)
   const [toggle, setToggle] = useState(mobile && cabinet && true)
 
-  const brands = me?.favorite?.brand
+  const brands = user?.favorite?.brand
 
   if (!brands?.length) {
     setActiveTab('all')
@@ -119,7 +119,7 @@ const BrandsFavorites: FC<ThingsProps> = ({
                       >
                         <Link
                           href={`/${
-                            cyrToTranslit(brand.city?.cityName) || city.citySlug
+                            cyrToTranslit(brand.city?.name) || city.slug
                           }/brand/${brand.id}`}
                         >
                           <BrandItem

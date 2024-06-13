@@ -7,23 +7,29 @@ import { getStoreData, getStoreEvent } from 'src/store/utils'
 import { ME } from './graphql/me/queries/getMe'
 import { authConfig, defaultValues } from './authConfig'
 import { getCookie, setCookie } from 'cookies-next'
-import { getUser as USER } from './graphql/me/queries/getUser'
+import { USER } from './graphql/me/queries/getUser'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
-import { IMeInfo, IMeThings } from 'src/types/me'
+import { IMeInfo, IUserThings } from 'src/types/me'
 import { getCities } from './graphql/city/getCities'
 import { IVacancy } from 'src/types/vacancies'
 import { IReview } from 'src/types/reviews'
 import { ICity } from 'src/types'
 import { fetchCity } from './utils/fetchCity'
 import { changeMe } from './graphql/me/mutations/changeMe'
+import { Nullable } from '../types/common'
+import { GetServerSidePropsContext, PreviewData } from 'next'
+import { ParsedUrlQuery } from 'querystring'
+import { IServerProps } from './server/types'
 
-const AuthProvider: FC<{ children: IChildren; cityData?: ICity }> = ({
+const AuthProvider: FC<{ children: IChildren; serverData?: IServerProps }> = ({
   children,
-  cityData,
+  serverData,
 }) => {
+  // console.log(cityData)
+
   const router = useRouter()
-  const { me, loading, city } = useAuthStore(getStoreData)
-  const { setMe, setLoading, setCity } = useAuthStore(getStoreEvent)
+  const { me, loading, user } = useAuthStore(getStoreData)
+  const { setMe, setLoading, setCity, setUser } = useAuthStore(getStoreEvent)
   const accessToken = getCookie(authConfig.tokenKeyName)
   const cityCookie = getCookie(authConfig.cityKeyName)
 
@@ -56,7 +62,7 @@ const AuthProvider: FC<{ children: IChildren; cityData?: ICity }> = ({
         changeCityFunc({
           variables: {
             id: prepareData.id,
-            data: { selected_city: cityData?.id || 1 },
+            data: { selected_city: serverData?.props.city?.id || 1 },
           },
         })
       }
@@ -68,29 +74,32 @@ const AuthProvider: FC<{ children: IChildren; cityData?: ICity }> = ({
         email: prepareData.email,
         avatar: prepareData.avatar,
       }
-      const owner: IMeThings = {
+      const owner: IUserThings = {
         salons: prepareData.salons,
         masters: prepareData.masters,
         brand: prepareData.brands,
       }
 
-      const favorite: IMeThings = {
+      const favorite: IUserThings = {
         salons: prepareData.favorited_salons,
         masters: prepareData.favorited_masters,
         brand: prepareData.favorited_brands,
       }
 
-      setMe({
+      setUser({
         info,
         owner,
         favorite,
         vacancies: prepareData.vacancies as IVacancy[],
         reviews: prepareData.reviews as IReview[],
       })
+      setMe({
+        info,
+      })
       setCity(prepareData.selected_city as ICity)
       setCookie(
         authConfig.cityKeyName,
-        prepareData.selected_city?.citySlug || defaultValues.citySlug,
+        prepareData.selected_city?.slug || defaultValues.citySlug,
       )
     },
     onError: err => console.log(err),
@@ -98,15 +107,15 @@ const AuthProvider: FC<{ children: IChildren; cityData?: ICity }> = ({
   })
 
   useEffect(() => {
-    const initializeCity = async () => {
-      if (cityData?.cityName) {
-        setCity(cityData)
-      } else {
-        const cityDataRes = await fetchCity(cityCookie)
-        setCity(cityDataRes)
-      }
-    }
-    initializeCity()
+    // const initializeCity = async () => {
+    //   if (cityData?.name) {
+    //     setCity(cityData)
+    //   } else {
+    //     const cityDataRes = await fetchCity(cityCookie)
+    //     setCity(cityDataRes)
+    //   }
+    // }
+    // initializeCity()
   }, [cityCookie])
 
   useEffect(() => {
@@ -115,11 +124,11 @@ const AuthProvider: FC<{ children: IChildren; cityData?: ICity }> = ({
       if (!me && accessToken) {
         getMe()
       }
-      if (me && !me.favorite) {
+      if (me && !user) {
         getUser({ variables: { id: me.info.id } })
       }
     }
-    console.log('AuthProvider', me, city)
+    console.log('AuthProvider', me)
   }, [me, router])
 
   return <>{!loading && children}</>

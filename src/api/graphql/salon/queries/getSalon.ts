@@ -23,11 +23,11 @@ export const getSalonPage = gql`
       data {
         id
         attributes {
-            salonName
+            name
             latitude
             longitude
             locationDirections
-            cities {
+            city {
               ${cityFragment}
             }
             user {
@@ -39,17 +39,17 @@ export const getSalonPage = gql`
                 data {
                   id
                   attributes {
-                    activityName
+                    title
                   }
                 }
               }
               
             salonID
-            salonAddress
-            salonIsPublished
-            salonIsNotRent
-            salonWebSiteUrl
-            salonEmail
+            address
+            published
+            rent
+            webSiteUrl
+            email
             salonPhones {
               ${phonesFragment}
             }
@@ -57,8 +57,8 @@ export const getSalonPage = gql`
               ${socialNetworksFragment}
             }
 
-            salonOwnerConfirmed
-            salonOnlineBookingUrl
+            ownerConfirmed
+            onlineBookingUrl
             workingHours {
               endTime
               startTime
@@ -73,27 +73,27 @@ export const getSalonPage = gql`
                 }
               }
             }
-            salonDescription
-            salonContactPersonName
-            salonContactPersonPhone
-            salonContactPersonEmail
+            description
+            contactPersonName
+            contactPersonPhone
+            contactPersonEmail
             salonContactPersonWorkingHoursAt
             salonContactPersonWorkingHoursTo
-            salonWorkplacesCount
-            salonMastersCount
-            salonBrandsCount
+            workplacesCount
+            mastersCount
+            brandsCount
             createdAt
             updatedAt
             reviewsCount
             ratingCount
             rating
-            salonCover {
+            cover {
               ${imageInfo}
             }
-            salonLogo {
+            logo {
               ${imageInfo}
             }
-            salonPhotos {
+            photos {
               ${imageInfo}
             }
             masters {

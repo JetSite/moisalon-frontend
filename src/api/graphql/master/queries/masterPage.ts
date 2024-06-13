@@ -14,7 +14,7 @@ export const MASTER_PAGE = gql`
       data {
         id
         attributes {
-          masterName
+          name
           name
           reviewsCount
           rating
@@ -27,11 +27,11 @@ export const MASTER_PAGE = gql`
           haveTelegram
           haveWhatsApp
           searchWork
-          masterPhone
           phone
-          masterEmail
+          phone
           email
-          masterAddress
+          email
+          address
           office
           onlineBookingUrl
           latitude
@@ -51,7 +51,7 @@ export const MASTER_PAGE = gql`
           brands{
             ${brandsFragment}
           }
-          masterPhoto {
+          photo {
             ${imageInfo}
           }
           photo {

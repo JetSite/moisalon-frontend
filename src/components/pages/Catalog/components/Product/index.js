@@ -327,8 +327,8 @@ const Product = ({
     setIsFavorit(!isFavorite)
   }
 
-  const productImage = newItem.product?.productCover?.url
-    ? `${PHOTO_URL}${newItem.product.productCover.url}`
+  const productImage = newItem.product?.cover?.url
+    ? `${PHOTO_URL}${newItem.product.cover.url}`
     : ''
 
   return loading ? (
@@ -343,7 +343,7 @@ const Product = ({
       />
       <Link
         href={{
-          pathname: `/${city.citySlug}/product/${newItem?.product?.id}`,
+          pathname: `/${city.slug}/product/${newItem?.product?.id}`,
           query: {
             catalog,
           },
@@ -363,17 +363,15 @@ const Product = ({
             </Favorite>
           </ImageWrapper>
           <Content>
-            <Name>{newItem?.product?.productName}</Name>
+            <Name>{newItem?.product?.name}</Name>
             <Available>
-              {newItem?.product?.productAvailableInStock > 0
+              {newItem?.product?.availableInStock > 0
                 ? 'В наличии'
                 : 'Нет в наличии'}
             </Available>
-            <Description>
-              {newItem?.product?.productShortDescription}
-            </Description>
+            <Description>{newItem?.product?.shortDescription}</Description>
             <ProductDetails>
-              {item?.sku ? <Detail>Артикул: {item?.productSKU}</Detail> : null}
+              {item?.sku ? <Detail>Артикул: {item?.sku}</Detail> : null}
               {/* {item?.material ? (
                 <Detail>Материал: {item?.material}</Detail>
               ) : null} */}
@@ -383,20 +381,20 @@ const Product = ({
             {newItem?.product?.brand?.dontShowPrice && !me?.info ? null : (
               <Price>
                 <NewPrice>
-                  {newItem?.product?.productSalePrice
+                  {newItem?.product?.salePrice
                     ? `${
-                        (newItem?.product?.productSalePrice &&
-                          newItem?.product?.productSalePrice) ||
-                        newItem?.product?.productSalePrice
+                        (newItem?.product?.salePrice &&
+                          newItem?.product?.salePrice) ||
+                        newItem?.product?.salePrice
                       } ₽`
                     : 'Цена по запросу'}{' '}
                 </NewPrice>
-                {newItem?.product?.productPrice !== 0 ? (
+                {newItem?.product?.regularPrice !== 0 ? (
                   <OldPrice>
                     {`${
-                      (newItem?.product?.productPrice &&
-                        newItem?.product?.productPrice) ||
-                      newItem?.product?.productPrice
+                      (newItem?.product?.regularPrice &&
+                        newItem?.product?.regularPrice) ||
+                      newItem?.product?.regularPrice
                     } ₽`}
                   </OldPrice>
                 ) : null}

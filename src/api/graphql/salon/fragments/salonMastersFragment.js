@@ -3,10 +3,10 @@ const salonMastersFragment = `
     data {
       id
       attributes {
-        masterName
-        masterPhone
-        masterEmail
-        masterPhoto {
+        name
+        phone
+        email
+        photo {
           data {
             id
             attributes {
@@ -19,14 +19,14 @@ const salonMastersFragment = `
 ratingCount
 reviewsCount
         services {
-          serviceName
+          title
         }
         city {
           data {
             id
             attributes {
-              cityName
-              citySlug
+              name
+              slug
             }
           }
         }

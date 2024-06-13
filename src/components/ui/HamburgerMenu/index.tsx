@@ -94,7 +94,7 @@ const HamburgerMenu: FC<Props> = ({
     { title: 'Объявления', link: '/sales', target: '_self' },
     {
       title: 'Магазин',
-      link: `/${city.citySlug}/beautyFreeShop`,
+      link: `/${city.slug}/beautyFreeShop`,
       target: '_self',
     },
     {
@@ -102,17 +102,17 @@ const HamburgerMenu: FC<Props> = ({
       link: isLoggedIn ? '/createLessorSalon' : '/login',
       target: '_self',
     },
-    { title: 'Снять', link: `/${city.citySlug}/rent`, target: '_self' },
+    { title: 'Снять', link: `/${city.slug}/rent`, target: '_self' },
   ]
 
   const navLinksBottom: INavLinks[] = [
     {
       title: 'Мастера',
-      link: `/${city.citySlug}/master`,
+      link: `/${city.slug}/master`,
       target: '_self',
     },
-    { title: 'Салоны', link: `/${city.citySlug}/salon`, target: '_self' },
-    { title: 'Бренды', link: `/${city.citySlug}/brand`, target: '_self' },
+    { title: 'Салоны', link: `/${city.slug}/salon`, target: '_self' },
+    { title: 'Бренды', link: `/${city.slug}/brand`, target: '_self' },
     { title: 'Бьюти-лента', link: '/advices', target: '_self' },
     { title: 'О проекте', link: '/about', target: '_self' },
     // { title: "Советы", link: "/advices", target: "_self" },
@@ -140,10 +140,10 @@ const HamburgerMenu: FC<Props> = ({
     setShowHamburgerMenu(false)
     router.push(
       {
-        pathname: `/${city.citySlug}`,
+        pathname: `/${city.slug}`,
         query: { q: 'search' },
       },
-      `/${city.citySlug}`,
+      `/${city.slug}`,
     )
   }
 
@@ -173,7 +173,7 @@ const HamburgerMenu: FC<Props> = ({
           </Icons>
           <LogoMobile>
             <MobileLogoLink onClick={closeMenu}>
-              <Link href={`/${city.citySlug}`}>
+              <Link href={`/${city.slug}`}>
                 <Image alt="logo" src="/logo.svg" />
               </Link>
             </MobileLogoLink>

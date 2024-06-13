@@ -3,7 +3,7 @@ import { Field } from 'react-final-form'
 import { FieldArray } from 'react-final-form-arrays'
 import PhotoArray from './PhotoArray'
 import { IPhoto } from 'src/types'
-import { IID } from 'src/types/common'
+import { IID, ISetState } from 'src/types/common'
 
 export interface PhotoArrayFieldProps {
   variant?: 'normal' | string
@@ -11,7 +11,7 @@ export interface PhotoArrayFieldProps {
   kind: 'small' | string
   description?: string
   photos: IPhoto[]
-  editEntityId: IID | null
+  setPhotosArray: ISetState<string[]>
 }
 
 const PhotoArrayField: FC<PhotoArrayFieldProps> = ({
@@ -20,7 +20,7 @@ const PhotoArrayField: FC<PhotoArrayFieldProps> = ({
   photoType,
   description,
   photos,
-  editEntityId,
+  setPhotosArray,
 }) => {
   return (
     <Field name="defaultPhotoId">
@@ -45,7 +45,7 @@ const PhotoArrayField: FC<PhotoArrayFieldProps> = ({
                 onAdd,
                 onRemove,
                 onChange,
-                editEntityId,
+                setPhotosArray,
               }
               return (
                 <PhotoArray

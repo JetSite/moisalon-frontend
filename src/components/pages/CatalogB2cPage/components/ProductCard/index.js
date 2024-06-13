@@ -239,7 +239,7 @@ const ProductCard = ({ item, loading, add, deleteItem, loadingCart, cart }) => {
   ) : (
     <Link
       href={{
-        pathname: `/${city.citySlug}/product/${newItem?.product?.id}`,
+        pathname: `/${city.slug}/product/${newItem?.product?.id}`,
         query: {
           catalog: false,
         },

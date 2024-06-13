@@ -140,7 +140,7 @@ const Main = () => {
   return (
     <Wrapper>
       <Top>
-        <Link href={`/${city.citySlug}`}>
+        <Link href={`/${city.slug}`}>
           <Logo src="/master-landing-logo.svg" />
         </Link>
       </Top>

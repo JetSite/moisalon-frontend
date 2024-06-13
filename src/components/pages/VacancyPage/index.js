@@ -54,7 +54,7 @@ const VacancyPage = ({ vacancy, beautyCategories, beautyAllContent }) => {
           customTitle: `в салоне ${item.salonOrigin?.name}`,
           buttonLink: 'salon',
           originLink: `/${
-            cyrToTranslit(item?.salonOrigin?.address?.city) || city.citySlug
+            cyrToTranslit(item?.salonOrigin?.address?.city) || city.slug
           }/salon/${item?.originId}`,
         }
       case 'BRAND':
@@ -64,7 +64,7 @@ const VacancyPage = ({ vacancy, beautyCategories, beautyAllContent }) => {
           customTitle: `у бренда ${item.brandOrigin?.name}`,
           buttonLink: 'brand',
           originLink: `/${
-            cyrToTranslit(item?.brandOrigin?.addressFull?.city) || city.citySlug
+            cyrToTranslit(item?.brandOrigin?.addressFull?.city) || city.slug
           }/brand/${item?.originId}`,
         }
     }

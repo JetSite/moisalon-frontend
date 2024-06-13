@@ -29,10 +29,10 @@ const Ribbon = ({ title, beautyCategories, beautyAllContent }) => {
   useEffect(() => {
     if (beautyCategories?.data?.length > 0) {
       setCategories([
-        { id: '', feedCategoryName: 'Все' },
+        { id: '', title: 'Все' },
         ...beautyCategories.data.map(category => ({
           id: category.id,
-          feedCategoryName: category.attributes.feedCategoryName,
+          title: category.attributes.title,
         })),
       ])
     }

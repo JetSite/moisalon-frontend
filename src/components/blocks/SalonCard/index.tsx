@@ -51,12 +51,8 @@ const SalonCard: FC<Props> = ({
 }) => {
   const mobileMedia = useMedia({ maxWidth: 768 })
 
-  const logoUrl = item?.salonLogo?.url
-    ? `${PHOTO_URL}${item.salonLogo.url}`
-    : ''
-  const imageUrl = item?.salonCover?.url
-    ? `${PHOTO_URL}${item.salonCover.url}`
-    : ''
+  const logoUrl = item?.logo?.url ? `${PHOTO_URL}${item.logo.url}` : ''
+  const imageUrl = item?.cover?.url ? `${PHOTO_URL}${item.cover.url}` : ''
 
   const [isFavorite, setIsFavorit] = useState<boolean>(false)
 
@@ -92,7 +88,7 @@ const SalonCard: FC<Props> = ({
       <Content>
         <Wrap>
           <Top>
-            <Name>{item?.salonName || ''}</Name>
+            <Name>{item?.name || ''}</Name>
             <Socials>
               {item?.salonPhones && item?.salonPhones?.length ? (
                 <PhoneLink
@@ -100,10 +96,10 @@ const SalonCard: FC<Props> = ({
                   href={`tel:${item.salonPhones[0].phoneNumber}`}
                 />
               ) : null}
-              {item?.salonEmail ? (
+              {item?.email ? (
                 <EmailLink
                   onClick={e => e.stopPropagation()}
-                  href={`mailto:${item.salonEmail}`}
+                  href={`mailto:${item.email}`}
                 />
               ) : null}
             </Socials>
@@ -112,11 +108,11 @@ const SalonCard: FC<Props> = ({
             <SalonInfo>
               <Activities>
                 {item.services.slice(0, 3).map(servis => (
-                  <Activity key={servis.id}>{servis.serviceName}</Activity>
+                  <Activity key={servis.id}>{servis.service.title}</Activity>
                 ))}
               </Activities>
             </SalonInfo>
-            {item?.salonAddress ? <Address>{item.salonAddress}</Address> : null}
+            {item?.address ? <Address>{item.address}</Address> : null}
           </Info>
         </Wrap>
         <Rating
@@ -133,7 +129,7 @@ const SalonCard: FC<Props> = ({
       </FavoriteIcon>
       {!!shareLink && (
         <SalonShareWrap>
-          <Share link={shareLink} title={item?.salonName} />
+          <Share link={shareLink} title={item?.name} />
         </SalonShareWrap>
       )}
     </Wrapper>

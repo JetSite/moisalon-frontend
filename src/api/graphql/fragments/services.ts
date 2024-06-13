@@ -4,12 +4,12 @@ service {
   data {
     id
     attributes {
-      serviceName
+      title
       service_categories {
         data {
           id
           attributes {
-            serviceCategoryName
+            title
           }
         }
       }

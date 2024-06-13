@@ -11,11 +11,7 @@ const AllSalonsSlide = () => {
   const landingMaster = router.pathname === '/for_master'
 
   return (
-    <Link
-      href={
-        !landingMaster ? `/${city.citySlug}/salon` : `/${city.citySlug}/rent`
-      }
-    >
+    <Link href={!landingMaster ? `/${city.slug}/salon` : `/${city.slug}/rent`}>
       <AllSalons>
         <AllIconSalon />
         <FavoriteIcon />

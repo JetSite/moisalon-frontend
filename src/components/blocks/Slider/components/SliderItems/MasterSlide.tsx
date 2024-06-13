@@ -16,7 +16,7 @@ const MasterSlide = ({
     <Link href={`/${city}/master/${item?.id}`}>
       <MasterItem
         master={item}
-        shareLink={`https://moi.salon/${item?.city?.citySlug || city}/master/${
+        shareLink={`https://moi.salon/${item?.city?.slug || city}/master/${
           item?.id
         }`}
       />

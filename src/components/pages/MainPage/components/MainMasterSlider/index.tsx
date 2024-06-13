@@ -18,7 +18,7 @@ export interface MainSlider {
 const MainMasterSlider: FC<MainSlider> = ({ city, data }) => {
   const { data: masters, loading } = useQuery(getMasters, {
     variables: {
-      citySlug: city.citySlug,
+      slug: city.slug,
       itemsCount: 10,
     },
     skip: !!data,

@@ -1,13 +1,13 @@
 import { gql } from '@apollo/client'
 
 export const getSearchCity = gql`
-  query cities($cityName: String) {
-    cities(filters: { cityName: { containsi: $cityName } }) {
+  query cities($name: String) {
+    cities(filters: { name: { containsi: $name } }) {
       data {
         id
         attributes {
-          cityName
-          citySlug
+          name
+          slug
         }
       }
     }

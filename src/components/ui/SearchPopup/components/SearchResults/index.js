@@ -27,7 +27,7 @@ const SearchResults = ({ setShowSearchPopup, query }) => {
       variables: {
         input: {
           query: (query && query.query) || '',
-          city: city.citySlug,
+          city: city.slug,
         },
       },
     },
@@ -159,8 +159,7 @@ const SearchResults = ({ setShowSearchPopup, query }) => {
                   masterSearchData.map(master => (
                     <Link
                       href={`/${
-                        cyrToTranslit(master?.addressFull?.city) ||
-                        city.citySlug
+                        cyrToTranslit(master?.addressFull?.city) || city.slug
                       }/master/${master.id}`}
                       passHref
                     >
@@ -181,8 +180,7 @@ const SearchResults = ({ setShowSearchPopup, query }) => {
                   salonSearchData.map(salon => (
                     <Link
                       href={`/${
-                        cyrToTranslit(salon?.salon?.address?.city) ||
-                        city.citySlug
+                        cyrToTranslit(salon?.salon?.address?.city) || city.slug
                       }/salon/${salon?.salon?.id}`}
                       passHref
                     >
@@ -203,8 +201,7 @@ const SearchResults = ({ setShowSearchPopup, query }) => {
                   salonRentSearchData.map(salon => (
                     <Link
                       href={`/${
-                        cyrToTranslit(salon?.salon?.address?.city) ||
-                        city.citySlug
+                        cyrToTranslit(salon?.salon?.address?.city) || city.slug
                       }/rent/${salon?.salon?.id}`}
                       passHref
                     >
@@ -227,7 +224,7 @@ const SearchResults = ({ setShowSearchPopup, query }) => {
                   brandSearchData.map(brand => (
                     <Link
                       href={`/${
-                        cyrToTranslit(brand?.addressFull?.city) || city.citySlug
+                        cyrToTranslit(brand?.addressFull?.city) || city.slug
                       }/brand/${brand.id}`}
                       passHref
                     >

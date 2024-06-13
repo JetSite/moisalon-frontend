@@ -41,7 +41,7 @@ export function convertServiceIdsToCatalogEntries(ids) {
 
 export function getServiceCategoriesNames(serviceCategories) {
   const names = serviceCategories.map(
-    serviceCategory => serviceCategory.category.serviceCategoryName,
+    serviceCategory => serviceCategory.category.title,
   )
   return names.join(', ')
 }
@@ -51,7 +51,7 @@ export function getServicesCategories(services) {
   if (services && !!services.length) {
     services.forEach(service => {
       service.service.service_categories.forEach(category => {
-        values.push(category.serviceCategoryName)
+        values.push(category.title)
       })
     })
     return [...new Set(values)]
@@ -65,7 +65,7 @@ export const getServicesByCategory: IServicesByCategory = services => {
   if (services && !!services.length) {
     services.forEach(service => {
       service.service.service_categories.forEach((categoryItem: any) => {
-        const category: string = categoryItem.serviceCategoryName as string
+        const category: string = categoryItem.title as string
         if (!servicesData[category]) {
           servicesData[category] = {
             category,

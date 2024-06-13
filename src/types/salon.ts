@@ -16,39 +16,39 @@ import { IVacancy } from './vacancies'
 
 export interface ISalonActivity {
   id: IID
-  activityName: string
+  title: string
 }
 
 export interface ISalon {
   id: IID
+  name: string
+  email: string
+  address: string
+
   createdAt: string
   latitude: string
   longitude: string
   locationDirections: string
   updatedAt: string
-  salonID: string
-  salonName: string
-  salonAddress: string
-  salonEmail: string
-  salonContactPersonName: string
-  salonContactPersonPhone: string
-  salonContactPersonEmail: string
+  contactPersonName: string
+  contactPersonPhone: string
+  contactPersonEmail: string
   reviewsCount: number
   rating: number
-  salonWorkplacesCount: number
-  salonBrandsCount: number
-  salonMastersCount: number
-  salonDescription: string
-  salonOnlineBookingUrl: string
-  salonWebSiteUrl: string
-  salonIsPublished: boolean
-  salonIsNotRent: boolean
-  salonOwnerConfirmed: boolean
-  salonCover: IPhoto | null
-  salonLogo: IPhoto | null
-  salonPhotos: IPhoto[]
+  workplacesCount: number
+  brandsCount: number
+  mastersCount: number
+  description: string
+  onlineBookingUrl: string
+  webSiteUrl: string
+  published: boolean
+  rent: boolean
+  ownerConfirmed: boolean
+  cover: IPhoto | null
+  logo: IPhoto | null
+  photos: IPhoto[]
   salonPhones: ISalonPhones[]
-  cities: ICity
+  city: ICity
   services: IServices[]
   ratingCount: number
   ratings: IRating[]

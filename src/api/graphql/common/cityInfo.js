@@ -2,10 +2,10 @@ export const cityInfo = `
     data {
         id
         attributes {
-                cityName
+                name
                 latitude
                 longitude
-                citySlug
+                slug
         }
     }
 `

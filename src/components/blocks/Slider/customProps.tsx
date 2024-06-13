@@ -94,12 +94,12 @@ export const customProps: ICustomProps = ({
   switch (type) {
     case 'masters':
       return {
-        sliderItem: <MasterSlide city={city.citySlug} item={item as IMaster} />,
+        sliderItem: <MasterSlide city={city.slug} item={item as IMaster} />,
         isAllPage: router.pathname === '/[city]/master',
         slidesCountWhenAllShow: 5,
-        showAllSlide: <AllMastersSlide city={city.citySlug} />,
+        showAllSlide: <AllMastersSlide city={city.slug} />,
         showAllLink: (
-          <Link href={`/${city.citySlug}/master`}>
+          <Link href={`/${city.slug}/master`}>
             <ShowAll bgColor={bgColor}>Показать все</ShowAll>
           </Link>
         ),
@@ -119,11 +119,7 @@ export const customProps: ICustomProps = ({
         showAllSlide: <AllSalonsSlide />,
         showAllLink: (
           <Link
-            href={
-              !landingMaster
-                ? `/${city.citySlug}/salon`
-                : `/${city.citySlug}/rent`
-            }
+            href={!landingMaster ? `/${city.slug}/salon` : `/${city.slug}/rent`}
           >
             <ShowAll bgColor={bgColor}>Показать все</ShowAll>
           </Link>
@@ -156,7 +152,7 @@ export const customProps: ICustomProps = ({
         slidesCountWhenAllShow: 6,
         showAllSlide: <AllBrandsSlide />,
         showAllLink: (
-          <Link href={`/${city.citySlug}/brand`}>
+          <Link href={`/${city.slug}/brand`}>
             <ShowAll bgColor={bgColor}>Показать все</ShowAll>
           </Link>
         ),
@@ -180,8 +176,8 @@ export const customProps: ICustomProps = ({
           <Link
             href={
               router.query.id === '62fb9f7884fe720001f6771c'
-                ? `/${city.citySlug}/beautyFreeShop`
-                : `/${city.citySlug}/brand/${router.query.id}/products`
+                ? `/${city.slug}/beautyFreeShop`
+                : `/${city.slug}/brand/${router.query.id}/products`
             }
           >
             <SeeAllMain>
@@ -197,7 +193,7 @@ export const customProps: ICustomProps = ({
         sliderItem: item ? (
           <GoodSlide
             href={{
-              pathname: `/${(item as IProduct).brand.city.citySlug}/product/${
+              pathname: `/${(item as IProduct).brand.city.slug}/product/${
                 item.id
               }`,
               query: {
@@ -213,7 +209,7 @@ export const customProps: ICustomProps = ({
         showAllSlide: <AllGoodsSlide />,
         bottom: <GoodBottomButton />,
         showAllLink: (
-          <Link href={`/${city.citySlug}/beautyFreeShop`}>
+          <Link href={`/${city.slug}/beautyFreeShop`}>
             <ShowAll bgColor={bgColor}>Показать все</ShowAll>
           </Link>
         ),
@@ -254,7 +250,7 @@ export const customProps: ICustomProps = ({
         slidesCountWhenAllShow: 3,
         showAllSlide: <AllAdsSlide />,
         showAllLink: (
-          <Link href={`/${city.citySlug}/sales`}>
+          <Link href={`/${city.slug}/sales`}>
             <ShowAll bgColor={bgColor}>Показать все</ShowAll>
           </Link>
         ),
@@ -262,7 +258,7 @@ export const customProps: ICustomProps = ({
     case 'rentSalons':
       return {
         showAllLink: (
-          <Link href={`/${city.citySlug}/rent`}>
+          <Link href={`/${city.slug}/rent`}>
             <ShowAll bgColor={bgColor}>Показать все</ShowAll>
           </Link>
         ),
@@ -278,9 +274,7 @@ export const customProps: ICustomProps = ({
         slidesCountWhenAllShow: 3,
         showAllSlide: <AllRentWorkplaces salon={salon} />,
         showAllLink: (
-          <Link
-            href={`/${cyrToTranslit(salon?.salonAddress)}/rent/${salon?.id}`}
-          >
+          <Link href={`/${cyrToTranslit(salon?.address)}/rent/${salon?.id}`}>
             <ShowAll bgColor={bgColor}>Показать все</ShowAll>
           </Link>
         ),

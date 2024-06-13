@@ -38,14 +38,14 @@ const PaulOscarPage = () => {
           <BackButton
             type="Вернуться на главную"
             onlyType
-            link={`/${city.citySlug}`}
+            link={`/${city.slug}`}
           />
         </HideMobile>
         <Content>
           <Image alt="img" src="/paul-oscar-1.jpg" />
           <HeadMobile>
             <ImageMobile alt="img" src="/paul-oscar-1.jpg" />
-            <Close onClick={() => router.push(`/${city.citySlug}`)} />
+            <Close onClick={() => router.push(`/${city.slug}`)} />
             <Autor>
               <AvatarWrap>
                 <Avatar alt="avatar" src="/paul-oscar-2.jpg" />

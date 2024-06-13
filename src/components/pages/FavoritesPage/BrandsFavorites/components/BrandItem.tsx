@@ -28,7 +28,7 @@ const BrandItem: FC<Props> = ({
   }
   return (
     <Item>
-      <Image alt="logoBrand" src={PHOTO_URL + brand.brandLogo.url} />
+      <Image alt="logoBrand" src={PHOTO_URL + brand.logo.url} />
       <Favorite onClick={e => addFavorite(e, brand)}>
         <HeartFullFill fill={red} />
       </Favorite>

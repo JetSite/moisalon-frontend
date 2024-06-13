@@ -114,7 +114,7 @@ const ProductPageB2c = ({ product, dataReviews, brand }) => {
       <Wrapper>
         <BackButton
           type="Магазин"
-          link={`/${city.citySlug}/beautyFreeShop`}
+          link={`/${city.slug}/beautyFreeShop`}
           onlyType
         />
         <Wrap>

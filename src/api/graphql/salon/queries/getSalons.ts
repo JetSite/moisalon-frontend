@@ -14,23 +14,23 @@ import { phonesFragment } from '../../fragments/phones'
 import { cityFragment } from '../../fragments/city'
 
 export const getSalons = gql`
-  query salons($citySlug: String!,$itemsCount: Int!) {
-    salons(filters:{cities:{citySlug:{eq:$citySlug }}}, pagination: { page: 1, pageSize: $itemsCount }) {
+  query salons($slug: String!,$itemsCount: Int!) {
+    salons(filters:{city:{slug:{eq:$slug }}}, pagination: { page: 1, pageSize: $itemsCount }) {
       data {
         id
         attributes {
-            salonName
+            name
             salonID
-            salonAddress
-            salonIsPublished
-            salonIsNotRent
-            salonWebSiteUrl
-            salonEmail
+            address
+            published
+            rent
+            webSiteUrl
+            email
             salonPhones {
               ${phonesFragment}
             }
-            salonOwnerConfirmed
-            salonOnlineBookingUrl
+            ownerConfirmed
+            onlineBookingUrl
             workingHours {
               endTime
               startTime
@@ -44,27 +44,27 @@ export const getSalons = gql`
                 }
               }
             }
-            salonDescription
-            salonContactPersonName
-            salonContactPersonPhone
-            salonContactPersonEmail
+            description
+            contactPersonName
+            contactPersonPhone
+            contactPersonEmail
             salonContactPersonWorkingHoursAt
             salonContactPersonWorkingHoursTo
-            salonWorkplacesCount
-            salonMastersCount
-            salonBrandsCount
+            workplacesCount
+            mastersCount
+            brandsCount
             createdAt
             updatedAt
             reviewsCount
             ratingCount
             rating
-            salonCover {
+            cover {
               ${imageInfo}
             }
-            salonLogo {
+            logo {
               ${imageInfo}
             }
-            salonPhotos {
+            photos {
               ${imageInfo}
             }
             socialNetworks {
@@ -88,7 +88,7 @@ export const getSalons = gql`
             reviews {
               ${reviewsFragment}
             }
-            cities {
+            city {
               ${cityFragment}
             }
           }

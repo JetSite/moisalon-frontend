@@ -70,9 +70,7 @@ const BrandsSearchResults: FC<Props> = ({
               <div
                 onClick={() => {
                   router.push(
-                    `/${brand.city.citySlug || city.citySlug}/brand/${
-                      brand.id
-                    }`,
+                    `/${brand.city.slug || city.slug}/brand/${brand.id}`,
                   )
                 }}
                 key={brand.id}
@@ -82,7 +80,7 @@ const BrandsSearchResults: FC<Props> = ({
                     loading={loading}
                     brand={brand}
                     shareLink={`https://moi.salon/${
-                      brand.city.citySlug || city.citySlug
+                      brand.city.slug || city.slug
                     }/brand/${brand.id}`}
                     type="search-page"
                   />

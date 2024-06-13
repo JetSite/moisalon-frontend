@@ -16,9 +16,7 @@ const AllBrandsSlide: FC = () => {
   return (
     <Link
       href={
-        !landingBrand
-          ? `/${city.citySlug}/brand`
-          : `/${city.citySlug}/beautyFreeShop`
+        !landingBrand ? `/${city.slug}/brand` : `/${city.slug}/beautyFreeShop`
       }
     >
       <AllBrands>

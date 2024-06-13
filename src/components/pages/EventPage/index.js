@@ -50,8 +50,7 @@ const EventPage = ({ event, beautyCategories, beautyAllContent }) => {
           customTitle: `у мастера ${item.masterOrigin?.name}`,
           buttonLink: 'master',
           originLink: `/${
-            cyrToTranslit(item?.masterOrigin?.addressFull?.city) ||
-            city.citySlug
+            cyrToTranslit(item?.masterOrigin?.addressFull?.city) || city.slug
           }/master/${item?.originId}`,
         }
       case 'SALON':
@@ -61,7 +60,7 @@ const EventPage = ({ event, beautyCategories, beautyAllContent }) => {
           customTitle: `в салоне ${item.salonOrigin?.name}`,
           buttonLink: 'salon',
           originLink: `/${
-            cyrToTranslit(item?.salonOrigin?.address?.city) || city.citySlug
+            cyrToTranslit(item?.salonOrigin?.address?.city) || city.slug
           }/salon/${item?.originId}`,
         }
       case 'BRAND':
@@ -71,7 +70,7 @@ const EventPage = ({ event, beautyCategories, beautyAllContent }) => {
           customTitle: `у бренда ${item.brandOrigin?.name}`,
           buttonLink: 'brand',
           originLink: `/${
-            cyrToTranslit(item?.brandOrigin?.addressFull?.city) || city.citySlug
+            cyrToTranslit(item?.brandOrigin?.addressFull?.city) || city.slug
           }/brand/${item?.originId}`,
         }
     }

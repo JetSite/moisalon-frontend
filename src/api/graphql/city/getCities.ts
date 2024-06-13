@@ -1,16 +1,16 @@
 import { gql } from '@apollo/client'
 
 export const getCities = gql`
-  query cities($citySlug: [String], $itemsCount: Int) {
+  query cities($slug: [String], $itemsCount: Int) {
     cities(
-      filters: { citySlug: { in: $citySlug } }
+      filters: { slug: { in: $slug } }
       pagination: { page: 1, pageSize: $itemsCount }
     ) {
       data {
         id
         attributes {
-          cityName
-          citySlug
+          name
+          slug
         }
       }
     }

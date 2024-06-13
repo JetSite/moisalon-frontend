@@ -2,13 +2,7 @@ import { useState, useEffect } from 'react'
 import { Wrapper, InputWrap, Input } from '../styled'
 
 const Search = () => {
-  const query = { query: '' } //TODO: query
-  const setQuery = e => {} //TODO: query
   const [inputValue, setInputValue] = useState('')
-
-  useEffect(() => {
-    setQuery({ ...query, query: '' })
-  }, [])
 
   const queryHandler = e => {
     setInputValue(e.target.value)

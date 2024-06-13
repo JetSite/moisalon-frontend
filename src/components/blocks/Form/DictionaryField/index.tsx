@@ -91,7 +91,7 @@ const DictionaryField: FC<Props> = props => {
 
   const items = groups.map((group, index) => ({
     ...group,
-    // title: group.serviceName,
+    // title: group.title,
     checked: false,
     index,
   }))

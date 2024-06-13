@@ -43,6 +43,8 @@ import { CREATE_CITY } from 'src/api/graphql/city/mutations/createCity'
 import { getPrepareInputSalonForm } from './utils'
 import { CREATE_SALON } from 'src/api/graphql/salon/mutations/createSalon'
 import useAuthStore from 'src/store/authStore'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { UPDATE_SALON_PHOTO } from 'src/api/graphql/salon/mutations/updateSalonPhoto'
 
 interface Props {
   allTabs: RefObject<HTMLFormElement>
@@ -56,7 +58,6 @@ interface Props {
   handleClickNextTab: IHandleClickNextTabInForm
   salon: ISalonPage
   setNoPhotoError: ISetState<boolean>
-  photoSalonId: IID | null
   logo: IPhoto | null
   cities: ICity[]
 }
@@ -70,7 +71,6 @@ const RegistrationForm: FC<Props> = ({
   ref5,
   ref6,
   handleClickNextTab,
-  photoSalonId,
   salon,
   setNoPhotoError,
   lessor,
@@ -78,33 +78,37 @@ const RegistrationForm: FC<Props> = ({
   cities,
 }) => {
   const router = useRouter()
+  const [citiesArray, setCitiesArray] = useState<ICity[]>(cities)
   const [clickCity, setClickCity] = useState<string | null>(null)
   const [errors, setErrors] = useState(null)
   const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
   const { services, activities } = useBaseStore(getStoreData)
-  const [selectCityId, setSelectCityId] = useState(null)
+  const [selectCityId, setSelectCityId] = useState<IID | null>(null)
   const { me } = useAuthStore(getStoreData)
   const salonServicesCatalog: IServiceInForm[] = getServicesForCatalog(services)
+  const [photosArray, setPhotosArray] = useState<string[]>(
+    salon?.photos?.map(e => e.id) || [],
+  )
 
   const salonActivitiesCatalog = activities
-    ? activities.map(({ activityName, id }) => ({
+    ? activities.map(({ title, id }) => ({
         id,
         name: id,
-        title: activityName,
+        title: title,
       }))
     : []
 
   const salonWithInitialArrays = useMemo(() => {
     const initialInput = salon
       ? {
-          salonName: salon.salonName,
-          salonEmail: salon.salonEmail,
-          salonDescription: salon.salonDescription,
+          name: salon.name,
+          email: salon.email,
+          description: salon.description,
           locationDirections: salon.locationDirections,
-          salonContactPersonEmail: salon.salonContactPersonEmail,
-          salonContactPersonName: salon.salonContactPersonName,
-          salonOnlineBookingUrl: salon.salonOnlineBookingUrl,
-          salonWebSiteUrl: salon.salonWebSiteUrl,
+          contactPersonEmail: salon.contactPersonEmail,
+          contactPersonName: salon.contactPersonName,
+          onlineBookingUrl: salon.onlineBookingUrl,
+          webSiteUrl: salon.webSiteUrl,
           salonPhones: salon.salonPhones.map(e => ({
             phoneNumber: e.phoneNumber,
             haveTelegram: e.haveTelegram,
@@ -115,7 +119,7 @@ const RegistrationForm: FC<Props> = ({
           services: getServicesForCatalog([]),
         }
       : {
-          salonName: '',
+          name: '',
           salonPhones: [
             {
               haveTelegram: false,
@@ -149,16 +153,11 @@ const RegistrationForm: FC<Props> = ({
           endMinute: 59,
         },
       ],
-      address: salon?.salonAddress,
+      address: salon?.address,
     }
   }, [])
 
-  const [addCity, { loading: addCityLoad }] = useMutation(CREATE_CITY, {
-    onCompleted: data => {
-      setSelectCityId(data.createCity.data.id)
-      console.log(data)
-    },
-  })
+  const [addCity, { loading: addCityLoad }] = useMutation(CREATE_CITY)
 
   // const { refetch } = useQuery(currentUserSalonsAndMasterQuery, {
   //   skip: true,
@@ -230,23 +229,40 @@ const RegistrationForm: FC<Props> = ({
 
   const onSubmit = values => {
     const findCity =
-      cities?.find(e => e.citySlug === cyrToTranslit(clickCity)) || null
-
-    if (!findCity && clickCity) {
+      citiesArray?.find(e => e.slug === cyrToTranslit(clickCity)) || null
+    if (!findCity) {
       addCity({
         variables: { name: clickCity, slug: cyrToTranslit(clickCity) },
+      }).then(data => {
+        setSelectCityId(data.data.createCity.data.id)
+        const findCityData = flattenStrapiResponse(data.data.createCity.data)
+        setCitiesArray(prev => prev.concat(findCityData))
+        const input = getPrepareInputSalonForm({
+          values,
+          selectCityId,
+          logo,
+          findCity: findCityData,
+          photos: photosArray,
+        })
+        if (salon?.id) {
+          mutate({ variables: { salonId: salon.id, input } })
+        } else {
+          createSalon({ variables: { input: { user: me?.info.id, ...input } } })
+        }
       })
-    }
-    const input = getPrepareInputSalonForm({
-      values,
-      selectCityId,
-      logo,
-      findCity,
-    })
-    if (salon?.id) {
-      mutate({ variables: { salonId: salon.id, input } })
     } else {
-      createSalon({ variables: { input: { user: me?.info.id, ...input } } })
+      const input = getPrepareInputSalonForm({
+        values,
+        selectCityId,
+        logo,
+        findCity,
+        photos: photosArray,
+      })
+      if (salon?.id) {
+        mutate({ variables: { salonId: salon.id, input } })
+      } else {
+        createSalon({ variables: { input: { user: me?.info.id, ...input } } })
+      }
     }
 
     //   if (!clickAddress || !values.address) {
@@ -346,12 +362,12 @@ const RegistrationForm: FC<Props> = ({
           return (
             <form onSubmit={handleSubmit} ref={allTabs}>
               <About
-                salon={salon}
-                photos={salon?.salonPhotos || []}
+                photos={salon?.photos || []}
                 ref1={ref1}
                 setClickCity={setClickCity}
                 number={1}
                 handleClickNextTab={handleClickNextTab}
+                setPhotosArray={setPhotosArray}
               />
               <SalonActivities
                 ref2={ref2}

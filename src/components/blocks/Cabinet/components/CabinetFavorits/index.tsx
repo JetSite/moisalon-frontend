@@ -9,35 +9,35 @@ import BrandsFavorites from '../../../../pages/FavoritesPage/BrandsFavorites'
 import { useMedia } from 'use-media'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
-import { IMeThings } from 'src/types/me'
+import { IUserThings } from 'src/types/me'
 
 const CabinetFavorits: FC = () => {
-  const { me } = useAuthStore(getStoreData)
+  const { user } = useAuthStore(getStoreData)
   const [activeTab, setActiveTab] = useState<string>('all')
   const mobileMedia = useMedia({ maxWidth: 992 }) // 768
 
   const handleDeleted = () => {
     console.log('delete')
   }
-  if (!me) return null
+  if (!user) return null
 
   const { salons, brand, masters, products, educations } =
-    me.favorite as IMeThings
+    user.favorite as IUserThings
 
   useEffect(() => {
-    if (salons.length) {
+    if (salons?.length) {
       setActiveTab('salons')
       return
     }
-    if (brand.length) {
+    if (brand?.length) {
       setActiveTab('brands')
       return
     }
-    if (masters.length) {
+    if (masters?.length) {
       setActiveTab('masters')
       return
     }
-    if (products.length) {
+    if (products?.length) {
       setActiveTab('products')
       return
     }

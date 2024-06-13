@@ -5,10 +5,6 @@ const Search = () => {
   const [inputValue, setInputValue] = useState('')
   const query = { query: '' } //TODO: query
 
-  useEffect(() => {
-    setQuery({ ...query, query: '' })
-  }, [])
-
   const queryHandler = e => {
     setInputValue(e.target.value)
     setQuery({

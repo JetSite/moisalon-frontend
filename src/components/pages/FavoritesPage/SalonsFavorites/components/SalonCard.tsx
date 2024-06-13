@@ -55,9 +55,8 @@ const SalonCard: FC<Props> = ({
   setDeleteItem,
   handleDeleted,
 }) => {
-  const { me } = useAuthStore(getStoreData)
-  const { salonCover } = salon
-  const imageUrl = salonCover?.url
+  const { cover } = salon
+  const imageUrl = cover?.url
   const [seatCount, setSeatCount] = useState(0)
 
   const addFavorite = (e: MouseEvent<HTMLDivElement>, salon: ISalon) => {
@@ -84,9 +83,9 @@ const SalonCard: FC<Props> = ({
       ) : (
         <Skeleton variant="rect" height="190px" animation={false} />
       )}
-      {salon?.salonWorkplacesCount ? (
-        <Rent>{`Доступно ${salon.salonWorkplacesCount} ${pluralize(
-          salon.salonWorkplacesCount,
+      {salon?.workplacesCount ? (
+        <Rent>{`Доступно ${salon.workplacesCount} ${pluralize(
+          salon.workplacesCount,
           'место',
           'места',
           'мест',
@@ -95,7 +94,7 @@ const SalonCard: FC<Props> = ({
       <Content>
         <Wrap>
           <Top>
-            <Name>{salon?.salonName || ''}</Name>
+            <Name>{salon?.name || ''}</Name>
             <Socials>
               {salon?.salonPhones && salon?.salonPhones.length ? (
                 <PhoneLink
@@ -105,12 +104,12 @@ const SalonCard: FC<Props> = ({
                   href={`tel:${salon?.salonPhones[0].phoneNumber}`}
                 />
               ) : null}
-              {salon?.salonEmail ? (
+              {salon?.email ? (
                 <EmailLink
                   onClick={e => {
                     e.stopPropagation()
                   }}
-                  href={`mailto:${salon?.salonEmail}`}
+                  href={`mailto:${salon?.email}`}
                 />
               ) : null}
             </Socials>
@@ -122,9 +121,7 @@ const SalonCard: FC<Props> = ({
             <SalonInfo>
               <Activities>{servicesCategories}</Activities>
             </SalonInfo>
-            {salon?.salonAddress ? (
-              <Address>{salon?.salonAddress}</Address>
-            ) : null}
+            {salon?.address ? <Address>{salon?.address}</Address> : null}
           </Info>
         </Wrap>
         <Rating>

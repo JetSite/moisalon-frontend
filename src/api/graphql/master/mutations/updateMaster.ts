@@ -3,7 +3,7 @@ import servicesFragment from '../../fragments/services'
 import { cityInfo } from '../../common/cityInfo'
 
 export const UPDATE_MASTER = gql`
-  mutation updateMaster($masteriId: ID!, $input: MasterInput!) {
+  mutation updateMaster($masterId: ID!, $input: MasterInput!) {
     updateMaster(id: $masterId, data: $input) {
       data {
         id

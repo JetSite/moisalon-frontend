@@ -57,7 +57,7 @@ const MobileSalonPhotos: FC<{ salon: ISalonPage }> = ({ salon }) => {
   return (
     <Wrapper>
       <Title>Фотографии салона</Title>
-      {salon.salonPhotos.length ? (
+      {salon.photos.length ? (
         <Slider
           mousewheel={true}
           pagination={{ clickable: true }}
@@ -87,7 +87,7 @@ const MobileSalonPhotos: FC<{ salon: ISalonPage }> = ({ salon }) => {
             },
           }}
         >
-          {salon.salonPhotos.map((item, i) => (
+          {salon.photos.map((item, i) => (
             <SwiperSlide key={i}>
               <Item background={PHOTO_URL + item.url} />
             </SwiperSlide>

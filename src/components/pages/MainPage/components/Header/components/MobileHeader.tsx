@@ -30,7 +30,7 @@ import { PHOTO_URL } from '../../../../../../api/variables'
 
 import { getStoreData, getStoreEvent } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
-import { IMe } from 'src/types/me'
+import { IMe, IUser } from 'src/types/me'
 import { useRouter } from 'next/router'
 import { ISetState } from 'src/types/common'
 
@@ -38,7 +38,7 @@ interface Props {
   isLoggedIn: boolean
   setFillProfile: ISetState<string>
   setFillCart: ISetState<string>
-  me: IMe | null
+  user: IUser | null
   loading: boolean
   setShowCitySelect: ISetState<boolean>
   defaultCity: string
@@ -53,7 +53,7 @@ export const MobileHeader: FC<Props> = ({
   isLoggedIn,
   setFillProfile,
   setFillCart,
-  me,
+  user,
   loading = false,
   setShowCitySelect,
   defaultCity,
@@ -64,12 +64,12 @@ export const MobileHeader: FC<Props> = ({
   setShowSearchPopup,
 }) => {
   const router = useRouter()
+  const { city } = useAuthStore(getStoreData)
   useEffect(() => {
     if (router.query?.q === 'search') {
       setShowSearchPopup(true)
     }
   }, [router.query])
-  const { city } = useAuthStore(getStoreData)
 
   return (
     <>
@@ -108,7 +108,7 @@ export const MobileHeader: FC<Props> = ({
         <LogoMobile>
           <MobileLogoLink>
             <Link
-              href={`/${city.citySlug}`}
+              href={`/${city.slug}`}
               // onClick={() => setActiveLink('')}
             >
               <Image alt="logo" src="/logo.svg" />
@@ -123,8 +123,8 @@ export const MobileHeader: FC<Props> = ({
             <ProfilePhotoWrap onClick={() => router.push('/masterCabinet')}>
               <ProfilePhoto
                 src={
-                  me?.info?.avatar
-                    ? `${PHOTO_URL}${me?.info?.avatar.url}`
+                  user?.info?.avatar
+                    ? `${PHOTO_URL}${user?.info?.avatar.url}`
                     : '/empty-photo.svg'
                 }
               />
@@ -143,7 +143,7 @@ export const MobileHeader: FC<Props> = ({
             onMouseLeave={() => setFillCart('#000')}
             onClick={() =>
               router.push(
-                me?.info
+                user?.info
                   ? `/cartB2b`
                   : {
                       pathname: '/login',
@@ -155,7 +155,7 @@ export const MobileHeader: FC<Props> = ({
             <CartIcon fill="#000" />
             {quantity != 0 ? (
               <Count
-                onClick={() => router.push(me?.info ? `/cartB2b` : '/login')}
+                onClick={() => router.push(user?.info ? `/cartB2b` : '/login')}
               >
                 {quantity}
               </Count>

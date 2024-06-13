@@ -65,7 +65,7 @@ export const getServerSideProps: GetServerSideProps<
 > = async ctx => {
   const apolloClient = initializeApollo()
   const cityData = (await fetchCity(ctx.query.city as string)) || {
-    citySlug: defaultValues.citySlug,
+    slug: defaultValues.citySlug,
   }
   const data = await Promise.all([
     apolloClient.query({
@@ -83,14 +83,14 @@ export const getServerSideProps: GetServerSideProps<
     apolloClient.query({
       query: getMasters,
       variables: {
-        citySlug: ctx.query.city,
+        slug: ctx.query.city,
         itemsCount: 10,
       },
     }),
     apolloClient.query({
       query: getSalons,
       variables: {
-        citySlug: ctx.query.city,
+        slug: ctx.query.city,
         itemsCount: 10,
       },
     }),
@@ -106,7 +106,7 @@ export const getServerSideProps: GetServerSideProps<
   const salons: ISalon[] = flattenStrapiResponse(data[3]?.data.salons) || null
 
   return {
-    notFound: !cityData?.cityName,
+    notFound: !cityData?.name,
     props: {
       data: data,
       brandData,

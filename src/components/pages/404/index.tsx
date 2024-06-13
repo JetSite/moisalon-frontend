@@ -13,14 +13,14 @@ const NotFound: FC = () => {
       <Title>404:</Title>
       <Text>Страница не найдена</Text>
       <MobileHidden>
-        <Link href={`/${city.citySlug}`} passHref>
+        <Link href={`/${city.slug}`} passHref>
           <Button size="medium" variant="red" mt="103" z="10">
             На главную
           </Button>
         </Link>
       </MobileHidden>
       <MobileVisible>
-        <Link href={`/${city.citySlug}`} passHref>
+        <Link href={`/${city.slug}`} passHref>
           <Button size="fullWidth" variant="red" mt="300" z="10">
             На главную
           </Button>

@@ -30,8 +30,7 @@ import { red } from '../../../../../styles/variables'
 import HeartFullFill from '../../../MainPage/components/Header/icons/HeartFullFill'
 
 const Title = ({
-  brandName,
-  countryName,
+  name,
   socialUrl,
   brandUrl,
   brand,
@@ -72,15 +71,13 @@ const Title = ({
     })
   }
 
-  const imageUrl = brand?.brandLogo?.url
-    ? `${PHOTO_URL}${brand.brandLogo.url}`
-    : ''
+  const imageUrl = brand?.logo?.url ? `${PHOTO_URL}${brand.logo.url}` : ''
 
   return (
     <>
       <ContentLeft>
         <TitleBlock>
-          <BrandName>{brandName}</BrandName>
+          <BrandName>{name}</BrandName>
           <Notification>
             <Favorite
               isFavorite={isFavorite}
@@ -91,7 +88,7 @@ const Title = ({
             <Bell />
           </Notification>
         </TitleBlock>
-        <CountryName>{countryName}</CountryName>
+        <CountryName>{name}</CountryName>
         <Rating>
           <RatingEdit
             handleChangeRating={handleChangeRating}

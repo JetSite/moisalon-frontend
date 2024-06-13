@@ -217,7 +217,7 @@ const FastSearch = () => {
           </div>
           <ButtonWrap>
             <Button
-              onClick={() => router.push(`/${city.citySlug}/rent`)}
+              onClick={() => router.push(`/${city.slug}/rent`)}
               size="medium"
               variant="red"
               font="medium"

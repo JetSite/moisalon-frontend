@@ -37,8 +37,8 @@ export interface IMetroStations {
 
 export interface ICity {
   id?: IID
-  cityName?: string
-  citySlug: string
+  name?: string
+  slug: string
 }
 
 export interface IWorkingHours {
@@ -72,7 +72,7 @@ export interface IGroupedServices {
 
 export interface ICountry {
   id: IID
-  countryName: string
+  name: string
   description: string | null
   seoDescription: string | null
   slug: string

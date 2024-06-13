@@ -22,14 +22,12 @@ import { FC, RefObject, useState } from 'react'
 import { ISetState } from 'src/types/common'
 import { IPhoto } from 'src/types'
 import { ISalonPage } from 'src/types/salon'
+import { IHandleClickNextTabInForm } from '../../../..'
+import { IFormAboutProps } from 'src/components/pages/Master/CreateMaster/components/RegistrationForm/components/About'
 
-interface Props {
-  number: number
-  ref1: RefObject<HTMLDivElement>
-  setClickCity: ISetState<string | null>
-  handleClickNextTab: (number: number) => void
+interface Props extends IFormAboutProps {
   photos: IPhoto[]
-  salon: ISalonPage | null
+  setPhotosArray: ISetState<string[]>
 }
 
 const About: FC<Props> = ({
@@ -38,21 +36,21 @@ const About: FC<Props> = ({
   handleClickNextTab,
   number,
   photos,
-  salon,
+  setPhotosArray,
 }) => {
   const [view, setView] = useState<boolean>(false)
   const photoArrayProps = {
     photoType: 'salonPhoto',
     kind: 'small',
     photos,
-    editEntityId: salon?.id || null,
+    setPhotosArray,
   }
 
   return (
     <WrapperForm ref={ref1} id="about">
       <FieldWrap>
         <FieldStyled
-          name="salonName"
+          name="name"
           component={TextField}
           label="Название"
           validate={required}
@@ -64,7 +62,7 @@ const About: FC<Props> = ({
       </FieldWrap>
       <FieldWrap>
         <FieldStyled
-          name="salonEmail"
+          name="email"
           component={TextField}
           label="E-mail"
           validate={composeValidators(required, email)}
@@ -112,14 +110,14 @@ const About: FC<Props> = ({
       </VideoFieldWrap>
       <VideoFieldWrap>
         <Field
-          name="salonOnlineBookingUrl"
+          name="onlineBookingUrl"
           component={TextField}
           label="Ссылка на ваш сервис онлайн записи"
         />
       </VideoFieldWrap>
       <FieldWrap>
         <FieldStyled
-          name="salonDescription"
+          name="description"
           component={TextField}
           multiline={true}
           minRows={1}

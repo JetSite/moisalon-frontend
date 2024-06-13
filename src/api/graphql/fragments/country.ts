@@ -2,7 +2,7 @@ export const countryFragment = `
 data{
   id
   attributes{
-    countryName
+    name
     description
     seoDescription
     slug

@@ -14,7 +14,7 @@ interface Props extends MainSlider {
 const MainSalonsSlider: FC<Props> = ({ city, rent, data }) => {
   const { data: salons, loading } = useQuery(getSalons, {
     variables: {
-      citySlug: city.citySlug,
+      slug: city.slug,
       itemsCount: 10,
     },
     skip: !!data,
