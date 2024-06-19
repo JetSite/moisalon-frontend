@@ -53,6 +53,24 @@ export const USER = gql`
           vacancies {
             ${vacanciesFragment}
           }
+          carts {
+            data {
+              id
+              attributes {
+                total
+                cartContent {
+                  product {
+                    data {
+                      attributes {
+                        name
+                      }
+                    }
+                  }
+                  quantity
+                }
+              }
+            }
+          }
           reviews {
             data {
               id

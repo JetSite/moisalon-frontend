@@ -2,7 +2,7 @@ import { ICity, IPhoto } from '.'
 import { IBrand } from './brands'
 import { IID, LazyType } from './common'
 import { IMaster } from './masters'
-import { IProduct } from './product'
+import { ICart, IProduct } from './product'
 import { IReview } from './reviews'
 import { ISalon } from './salon'
 import { IVacancy } from './vacancies'
@@ -22,6 +22,7 @@ export interface IUserThings {
   brand?: IBrand[]
   products?: IProduct[]
   educations?: any
+  carts?: ICart[]
 }
 
 export interface IUserReviews extends IReview {

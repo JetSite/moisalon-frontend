@@ -78,6 +78,7 @@ const AuthProvider: FC<{ children: IChildren; serverData?: IServerProps }> = ({
         salons: prepareData.salons,
         masters: prepareData.masters,
         brand: prepareData.brands,
+        carts: prepareData.carts,
       }
 
       const favorite: IUserThings = {

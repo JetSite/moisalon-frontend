@@ -290,22 +290,21 @@ const Product = ({
   item,
   cart,
   me,
-  add,
-  deleteItem,
-  deleteLoading,
-  addLoading,
+  addToCart,
+  deleteFromCart,
   catalog,
   loading = false,
-  loadingCart,
   brand,
 }) => {
   const router = useRouter()
   const { city } = useAuthStore(getStoreData)
   const [openBuyPopup, setOpenBuyPopup] = useState(false)
 
-  const newItem = cart?.find(el => el?.product?.id === item.id)
-    ? cart?.find(el => el?.product?.id === item.id)
+  const newItem = cart?.cartContent?.find(el => el?.product?.id === item.id)
+    ? cart?.cartContent?.find(el => el?.product?.id === item.id)
     : { product: { ...item }, quantity: 0 }
+
+  console.log('newItem', newItem)
 
   const [isFavorite, setIsFavorit] = useState(false)
 
@@ -405,7 +404,7 @@ const Product = ({
             ) : (
               <QuantityInPack></QuantityInPack>
             )} */}
-            {loadingCart ? (
+            {loading ? (
               <SkeletonBottom />
             ) : newItem?.quantity === 0 ? (
               <ButtonsWrapper>
@@ -415,12 +414,18 @@ const Product = ({
                     e.stopPropagation()
                     setOpenBuyPopup(true)
                   }}
-                  disabled={newItem?.product?.countAvailable === 0}
+                  disabled={
+                    !newItem?.product?.availableInStock ||
+                    newItem?.product?.availableInStock === 0
+                  }
                 >
                   Заказать
                 </ButtonCart>
                 <ButtonCart
-                  disabled={newItem?.product?.countAvailable === 0}
+                  disabled={
+                    !newItem?.product?.availableInStock ||
+                    newItem?.product?.availableInStock === 0
+                  }
                   onClick={e => {
                     e.preventDefault()
                     e.stopPropagation()
@@ -433,7 +438,7 @@ const Product = ({
                         '/login',
                       )
                     } else {
-                      !addLoading ? add(newItem?.product, 1) : {}
+                      !loading ? addToCart(newItem?.product, 1) : {}
                     }
                   }}
                 >
@@ -446,7 +451,7 @@ const Product = ({
                   onClick={e => {
                     e.stopPropagation()
                     e.preventDefault()
-                    !deleteLoading ? deleteItem(newItem) : {}
+                    !loading ? deleteFromCart(newItem) : {}
                   }}
                 />
                 <Quantity>{`${newItem?.quantity} шт.`}</Quantity>
@@ -454,7 +459,7 @@ const Product = ({
                   onClick={e => {
                     e.stopPropagation()
                     e.preventDefault()
-                    !addLoading ? add(newItem?.product, 1) : {}
+                    !loading ? addToCart(newItem?.product, 1) : {}
                   }}
                 />
               </QuantityWrap>
