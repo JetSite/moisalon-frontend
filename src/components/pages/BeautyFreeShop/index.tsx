@@ -31,7 +31,7 @@ const BeautyFreeShopPage: FC<IBeautyFreeShopPageProps> = ({
   const { setCart } = useBaseStore(getStoreEvent)
   const [filter, setFilter] = useState(null)
   const [productsData, setProductsData] = useState(dataProducts)
-  const [refetchLoading, setRefetchLoading] = useState(false)
+  // const [refetchLoading, setRefetchLoading] = useState(false)
   const [selectedProduct, setSelectedProduct] = useState('Все категории')
 
   const isMobile = useCheckMobileDevice()
@@ -55,17 +55,20 @@ const BeautyFreeShopPage: FC<IBeautyFreeShopPageProps> = ({
     },
   })
 
-  const { refetch: refectchProducts } = useQuery(getProducts, {
-    skip: !filter,
-    notifyOnNetworkStatusChange: true,
-    onCompleted: res => {
-      if (res?.products?.data) {
-        const normalisedProducts = flattenStrapiResponse(res.products.data)
-        setRefetchLoading(false)
-        setProductsData(normalisedProducts)
-      }
+  const { refetch: refectchProducts, loading: refetchLoading } = useQuery(
+    getProducts,
+    {
+      skip: !filter,
+      notifyOnNetworkStatusChange: true,
+      onCompleted: res => {
+        if (res?.products?.data) {
+          const normalisedProducts = flattenStrapiResponse(res.products.data)
+          setRefetchLoading(false)
+          setProductsData(normalisedProducts)
+        }
+      },
     },
-  })
+  )
 
   useEffect(() => {
     if (!filter?.value || filter?.value === 'Все категории') {
@@ -112,9 +115,8 @@ const BeautyFreeShopPage: FC<IBeautyFreeShopPageProps> = ({
           products={productsData}
           // hasNextPage={goodsData?.connection?.pageInfo?.hasNextPage}
           // fetchMore={loadMore}
-          // loading={fetchMoreLoading}
+          loading={refetchLoading}
           // loadingCart={loadingCart}
-          // refetchLoading={refetchLoading}
           noTitle
           me={me}
           brand={brand}

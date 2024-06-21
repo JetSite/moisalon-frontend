@@ -11,7 +11,7 @@ import { TextField } from '../../../blocks/Form'
 import AddressNoSalonField from '../../../blocks/Form/AddressField/AddressNoSalonField'
 import AutoFocusedForm from '../../../blocks/Form/AutoFocusedForm'
 import Error from '../../../blocks/Form/Error'
-import { YMaps, Map, Placemark } from 'react-yandex-maps'
+// import { YMaps, Map, Placemark } from 'react-yandex-maps'
 import {
   Content,
   Title,
@@ -164,7 +164,7 @@ const OrderForm = ({
                         Курьер
                       </ShipingItem>
                     </ShipingWrap>
-                    {shippingMethod === 'courier' ? (
+                    {/* {shippingMethod === 'courier' ? (
                       <Field
                         name="address"
                         fullWidth={true}
@@ -204,7 +204,7 @@ const OrderForm = ({
                           </Map>
                         </YMaps>
                       </>
-                    )}
+                    )} */}
                   </Right>
                 </ContentForm>
                 <Desc>Способ оплаты</Desc>

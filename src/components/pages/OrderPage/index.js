@@ -28,9 +28,9 @@ const OrderPage = () => {
   const [errors, setErrors] = useState(null)
   const [shippingMethod, setShippingMethod] = useState('courier')
   const [shippingType, setShippingType] = useState(0)
-  const [mapCoordinates, setMapCoordinates] = useState([])
+  // const [mapCoordinates, setMapCoordinates] = useState([])
   const mapRef = useRef(null)
-  const [clickAddress, setClickAddress] = useState(true)
+  // const [clickAddress, setClickAddress] = useState(true)
   const [formValues, setFormValues] = useState(null)
   const [open, setOpen] = useState(false)
   const router = useRouter()
@@ -77,32 +77,32 @@ const OrderPage = () => {
     }
   }
 
-  useEffect(() => {
-    if (!sessionStorage.getItem('cartChecked')) {
-      router.push('cart')
-    } else {
-      orderToRepeat = JSON.parse(sessionStorage.getItem('cartChecked')).order
-      productBrands = JSON.parse(
-        sessionStorage.getItem('cartChecked'),
-      ).productBrands
-    }
-    if (orderToRepeat) {
-      setFormValues({
-        ...orderToRepeat,
-        repeatOrder: true,
-      })
-      setShippingMethod(orderToRepeat?.delivery === 0 ? 'self' : 'courier')
-      setShippingType(orderToRepeat?.payment)
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (!sessionStorage.getItem('cartChecked')) {
+  //     router.push('cart')
+  //   } else {
+  //     orderToRepeat = JSON.parse(sessionStorage.getItem('cartChecked')).order
+  //     productBrands = JSON.parse(
+  //       sessionStorage.getItem('cartChecked'),
+  //     ).productBrands
+  //   }
+  //   if (orderToRepeat) {
+  //     setFormValues({
+  //       ...orderToRepeat,
+  //       repeatOrder: true,
+  //     })
+  //     setShippingMethod(orderToRepeat?.delivery === 0 ? 'self' : 'courier')
+  //     setShippingType(orderToRepeat?.payment)
+  //   }
+  // }, [])
 
-  const mapData = {
-    center: mapCoordinates?.length ? mapCoordinates[0] : [55.751574, 37.573856],
-    zoom: 5,
-    behaviors: ['default', 'scrollZoom'],
-  }
+  // const mapData = {
+  //   center: mapCoordinates?.length ? mapCoordinates[0] : [55.751574, 37.573856],
+  //   zoom: 5,
+  //   behaviors: ['default', 'scrollZoom'],
+  // }
 
-  const coordinates = mapCoordinates
+  // const coordinates = mapCoordinates
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -180,20 +180,20 @@ const OrderPage = () => {
     })
   }
 
-  useEffect(() => {
-    let coordArray = []
-    productBrands?.length &&
-      productBrands[0]?.length &&
-      productBrands[0]?.forEach(item => {
-        if (item?.addressFull?.latitude && item?.addressFull?.longitude) {
-          coordArray.push([
-            item?.addressFull?.latitude,
-            item?.addressFull?.longitude,
-          ])
-        }
-      })
-    setMapCoordinates(coordArray)
-  }, [])
+  // useEffect(() => {
+  //   let coordArray = []
+  //   productBrands?.length &&
+  //     productBrands[0]?.length &&
+  //     productBrands[0]?.forEach(item => {
+  //       if (item?.addressFull?.latitude && item?.addressFull?.longitude) {
+  //         coordArray.push([
+  //           item?.addressFull?.latitude,
+  //           item?.addressFull?.longitude,
+  //         ])
+  //       }
+  //     })
+  //   setMapCoordinates(coordArray)
+  // }, [])
 
   return (
     <MainLayout>
@@ -218,10 +218,10 @@ const OrderPage = () => {
               errors={errors}
               isErrorPopupOpen={isErrorPopupOpen}
               setErrorPopupOpen={setErrorPopupOpen}
-              setClickAddress={setClickAddress}
+              // setClickAddress={setClickAddress}
               mapRef={mapRef}
-              mapData={mapData}
-              coordinates={coordinates}
+              // mapData={mapData}
+              // coordinates={coordinates}
               masterSpecializationsCatalog={masterSpecializationsCatalog}
               setShippingMethod={setShippingMethod}
               setShippingType={setShippingType}

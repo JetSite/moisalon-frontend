@@ -58,9 +58,7 @@ const activeLink = (path: string, link?: string[]) => {
 const Header = ({ loading = false }) => {
   const cityCookie = getCookie(authConfig.cityKeyName)
   const { user, city } = useAuthStore(getStoreData)
-  const { cartItemTotal: quantity } = useAuthStore(getStoreData)
-  const b2bClient =
-    !!user?.owner?.masters?.length || !!user?.owner?.salons?.length
+  const { cart } = useBaseStore(getStoreData)
   const router = useRouter()
   const isAboutPage = router.pathname === '/about'
   const [openPopup, setPopupOpen] = useState<boolean>(!cityCookie)
@@ -77,6 +75,8 @@ const Header = ({ loading = false }) => {
   const [showCatalogMenu, setShowCatalogMenu] = useState(false)
   const [showSearchPopup, setShowSearchPopup] = useState(false)
   // const { unreadMessagesCount } = useChat();
+  const quantity =
+    cart?.cartContent?.reduce((acc, item) => acc + item.quantity, 0) || 0
 
   const logoClickHandler = () => {
     router.push(`/${city.slug}`)
@@ -145,7 +145,6 @@ const Header = ({ loading = false }) => {
                 )}
                 <AdditionalNav
                   catalog
-                  b2bClient={b2bClient}
                   isAboutPage={isAboutPage}
                   showAdditionalNav={showCatalogMenu}
                   setShowAdditionalNav={setShowCatalogMenu}
@@ -247,7 +246,7 @@ const Header = ({ loading = false }) => {
               onMouseLeave={() => setFillCart(isAboutPage ? '#fff' : '#000')}
               onClick={() => {
                 user?.info
-                  ? router.push(`/cartB2b`)
+                  ? router.push(`/cart`)
                   : router.push(
                       {
                         pathname: 'authConfig.notAuthLink',
@@ -261,9 +260,7 @@ const Header = ({ loading = false }) => {
               {quantity != 0 ? (
                 <Count
                   onClick={() =>
-                    router.push(
-                      user?.info ? `/cartB2b` : authConfig.notAuthLink,
-                    )
+                    router.push(user?.info ? `/cart` : authConfig.notAuthLink)
                   }
                 >
                   {quantity}

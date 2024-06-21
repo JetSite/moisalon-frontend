@@ -14,7 +14,6 @@ interface Props {
   setShowAdditionalNav: ISetState<boolean>
   links: IMainPageHeaderLinks[]
   catalog?: boolean
-  b2bClient?: boolean
 }
 
 const AdditionalNav: FC<Props> = ({
@@ -23,7 +22,6 @@ const AdditionalNav: FC<Props> = ({
   setShowAdditionalNav,
   links,
   catalog,
-  b2bClient,
 }) => {
   const router = useRouter()
   const addNavRef = useRef<HTMLDivElement>(null)
@@ -45,30 +43,18 @@ const AdditionalNav: FC<Props> = ({
           ref={addNavRef}
           showAdditionalNav={showAdditionalNav}
         >
-          {links.map((link, i) =>
-            !b2bClient && link.link === '/catalogB2b' ? (
-              <NavItem
-                key={i}
-                active={router.pathname == link.link}
-                isAboutPage={isAboutPage}
-                // visible={link?.visible}
-                onClick={() => setOpenPopup(true)}
-              >
-                <p style={{ cursor: 'pointer' }}>B2B магазин</p>
-              </NavItem>
-            ) : (
-              <NavItem
-                key={i}
-                active={router.pathname == link.link}
-                isAboutPage={isAboutPage}
-                // visible={link?.visible}
-              >
-                <Link href={link.link} target={link.target}>
-                  {link.title}
-                </Link>
-              </NavItem>
-            ),
-          )}
+          {links.map((link, i) => (
+            <NavItem
+              key={i}
+              active={router.pathname == link.link}
+              isAboutPage={isAboutPage}
+              // visible={link?.visible}
+            >
+              <Link href={link.link} target={link.target}>
+                {link.title}
+              </Link>
+            </NavItem>
+          ))}
         </AdditionalNavContent>
       </OutsideClickHandler>
       <Popup

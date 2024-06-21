@@ -61,8 +61,20 @@ export const USER = gql`
                 cartContent {
                   product {
                     data {
+                      id
                       attributes {
                         name
+                        regularPrice
+                        salePrice
+                        fullDescription
+                        shortDescription
+                        availableInStock
+                        cover {
+                          ${imageInfo}
+                        }
+                        brand {
+                          ${brandsFragment}
+                        }
                       }
                     }
                   }

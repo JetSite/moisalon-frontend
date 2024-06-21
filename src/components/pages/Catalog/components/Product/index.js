@@ -19,6 +19,7 @@ import useAuthStore from 'src/store/authStore'
 
 const Wrapper = styled.div`
   width: 175px;
+  height: 490px;
   display: flex;
   cursor: pointer;
   flex-direction: column;
@@ -293,7 +294,8 @@ const Product = ({
   addToCart,
   deleteFromCart,
   catalog,
-  loading = false,
+  loadingItems = false,
+  loadingBottom = false,
   brand,
 }) => {
   const router = useRouter()
@@ -303,8 +305,6 @@ const Product = ({
   const newItem = cart?.cartContent?.find(el => el?.product?.id === item.id)
     ? cart?.cartContent?.find(el => el?.product?.id === item.id)
     : { product: { ...item }, quantity: 0 }
-
-  console.log('newItem', newItem)
 
   const [isFavorite, setIsFavorit] = useState(false)
 
@@ -330,7 +330,7 @@ const Product = ({
     ? `${PHOTO_URL}${newItem.product.cover.url}`
     : ''
 
-  return loading ? (
+  return loadingItems ? (
     <SkeletonItem variant="rectangular" />
   ) : (
     <>
@@ -404,7 +404,7 @@ const Product = ({
             ) : (
               <QuantityInPack></QuantityInPack>
             )} */}
-            {loading ? (
+            {loadingBottom && newItem?.product?.availableInStock ? (
               <SkeletonBottom />
             ) : newItem?.quantity === 0 ? (
               <ButtonsWrapper>
@@ -438,7 +438,7 @@ const Product = ({
                         '/login',
                       )
                     } else {
-                      !loading ? addToCart(newItem?.product, 1) : {}
+                      !loadingBottom ? addToCart(newItem?.product, 1) : {}
                     }
                   }}
                 >
@@ -451,7 +451,7 @@ const Product = ({
                   onClick={e => {
                     e.stopPropagation()
                     e.preventDefault()
-                    !loading ? deleteFromCart(newItem) : {}
+                    !loadingBottom ? deleteFromCart(newItem) : {}
                   }}
                 />
                 <Quantity>{`${newItem?.quantity} шт.`}</Quantity>
@@ -459,7 +459,7 @@ const Product = ({
                   onClick={e => {
                     e.stopPropagation()
                     e.preventDefault()
-                    !loading ? addToCart(newItem?.product, 1) : {}
+                    !loadingBottom ? addToCart(newItem?.product, 1) : {}
                   }}
                 />
               </QuantityWrap>

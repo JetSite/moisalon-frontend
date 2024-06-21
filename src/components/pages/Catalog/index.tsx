@@ -13,39 +13,29 @@ import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 
 interface ICatalogProps {
   products: any
-  fetchMore: any
-  hasNextPage: any
   loading: any
   user: any
   cart: ICart
   me: any
   noTitle: any
-  refetchLoading: any
   catalog: any
-  loadingCart: any
   refetchCart: any
   brand: any
 }
 
 const Catalog: FC<ICatalogProps> = ({
   products,
-  fetchMore,
-  hasNextPage,
   loading,
   user,
   me,
   noTitle,
-  refetchLoading,
   catalog = false,
-  loadingCart,
   refetchCart,
   brand,
 }) => {
   const { cart } = useBaseStore(getStoreData)
   const { setCart } = useBaseStore(getStoreEvent)
   const [openPopup, setOpenPopup] = useState(false)
-
-  console.log('cart', cart)
 
   const [createCart, { loading: createCartLoading }] = useMutation(
     CREATE_CART,
@@ -123,14 +113,46 @@ const Catalog: FC<ICatalogProps> = ({
   }
 
   const deleteFromCart = item => {
-    // removeItem({
-    //   variables: {
-    //     input: {
-    //       items: [{ key: item.key, quantity: item.quantity - 1 }],
-    //       isB2b: true,
-    //     },
-    //   },
-    // })
+    const itemInCart = cart?.cartContent?.find(
+      el => el?.product?.id === item.product.id,
+    )
+    console.log('itemInCart', itemInCart)
+    console.log('item', item)
+    if (itemInCart?.quantity === 1) {
+      updateCart({
+        variables: {
+          data: {
+            cartContent: cart?.cartContent
+              ?.filter(el => el?.product?.id !== item.product.id)
+              .map(el => ({
+                product: el?.product?.id,
+                quantity: el?.quantity,
+              })),
+          },
+          id: cart?.id,
+        },
+      })
+    } else {
+      updateCart({
+        variables: {
+          data: {
+            cartContent: cart?.cartContent?.map(el => {
+              if (el?.product?.id === item.product.id) {
+                return {
+                  product: el?.product?.id,
+                  quantity: el?.quantity - 1,
+                }
+              }
+              return {
+                product: el?.product?.id,
+                quantity: el?.quantity,
+              }
+            }),
+          },
+          id: cart?.id,
+        },
+      })
+    }
   }
 
   const closePopup = () => {
@@ -146,7 +168,8 @@ const Catalog: FC<ICatalogProps> = ({
             {products?.map(item => (
               <Product
                 addToCart={addToCart}
-                loading={createCartLoading || updateCartLoading}
+                loadingItems={loading}
+                loadingBottom={createCartLoading || updateCartLoading}
                 deleteFromCart={deleteFromCart}
                 me={me}
                 cart={cart}
