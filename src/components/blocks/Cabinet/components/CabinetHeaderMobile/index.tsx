@@ -3,8 +3,24 @@ import MenuCards from './components/MenuCards'
 import catalogOrDefault from '../../../../../utils/catalogOrDefault'
 import { selectedGroupNamesMax } from '../../../../../utils/serviceCatalog'
 import { Wrapper, Info, Logo, Text, Title, Subtitle } from './styles'
+import { ITab } from 'src/components/pages/Salon/CreateSalon/config'
+import { FC } from 'react'
+import { ISalonPage } from 'src/types/salon'
+import { IMaster } from 'src/types/masters'
+import { IReview } from 'src/types/reviews'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
+import { PHOTO_URL } from 'src/api/variables'
 
-const salon = [
+export interface IMobileHeaderTab {
+  title: string
+  icon?: string
+  anchor?: string
+  href?: string
+  quantity?: number
+}
+
+const salon: IMobileHeaderTab[] = [
   {
     title: 'Рабочие места',
     href: '/rentSalonSeat',
@@ -22,7 +38,7 @@ const salon = [
   },
 ]
 
-const rentSalonSeat = [
+const rentSalonSeat: IMobileHeaderTab[] = [
   {
     title: 'Назад в профиль',
     icon: '/arrow-back.svg',
@@ -36,7 +52,7 @@ const rentSalonSeat = [
   },
 ]
 
-const brand = [
+const brand: IMobileHeaderTab[] = [
   {
     title: 'Данные бренда',
     icon: '/arrow-back.svg',
@@ -50,17 +66,20 @@ const brand = [
   },
 ]
 
-const CabinetHeaderMobile = ({ master, category, reviews, me }) => {
+interface Props {
+  category?: ISalonPage
+  master?: IMaster
+  reviews?: IReview[]
+}
+
+const CabinetHeaderMobile: FC<Props> = ({ master, category, reviews }) => {
+  const { user } = useAuthStore(getStoreData)
   const router = useRouter()
-  let cards = []
+  let cards: IMobileHeaderTab[] = []
   let id = category?.id
   let subtitle = ''
 
-  const { catalog } = useBaseStore(getStoreData)
-
-  const masterSpecializationsCatalog = catalogOrDefault(
-    catalogs?.masterSpecializationsCatalog,
-  )
+  const masterSpecializationsCatalog = { groups: [] }
 
   switch (router.pathname) {
     case '/masterCabinet':
@@ -74,25 +93,25 @@ const CabinetHeaderMobile = ({ master, category, reviews, me }) => {
         {
           title: 'Мои салоны',
           icon: '/cabinet-salons-icon.svg',
-          quantity: me?.salons?.length || 0,
+          quantity: user?.owner?.salons?.length || 0,
           anchor: '#salons',
         },
         {
           title: 'Мои бренды',
           icon: '/cabinet-brands-icon.svg',
-          quantity: me?.userBrands?.length || 0,
+          quantity: user?.owner?.brand?.length || 0,
           anchor: '#brands',
         },
         {
           title: 'Мои заказы',
           icon: '/cabinet-orders-icon.svg',
-          quantity: me?.orders?.length || 0,
+          quantity: user?.orders?.length || 0,
           anchor: '#orders',
         },
         {
           title: 'Сообще-ния',
           icon: '/cabinet-reviews-icon.svg',
-          quantity: reviews?.reviewsForMaster?.length || 0,
+          quantity: user?.reviews?.length || 0,
           anchor: '#reviews',
         },
         {
@@ -119,16 +138,17 @@ const CabinetHeaderMobile = ({ master, category, reviews, me }) => {
       break
     case '/rentSalonSeat':
       cards = rentSalonSeat
-      subtitle = category?.lessor ? 'Рабочие места' : 'Кабинет'
+      subtitle = category?.rent ? 'Рабочие места' : 'Кабинет'
       break
 
     default:
       return cards
   }
+
   return (
     <Wrapper>
       <Info>
-        <Logo url={category?.photo?.url || category?.logo?.url} />
+        <Logo url={PHOTO_URL + category?.logo?.url} />
         <Text>
           <Title>{category?.name}</Title>
           <Subtitle>{subtitle}</Subtitle>

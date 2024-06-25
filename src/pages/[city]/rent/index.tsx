@@ -84,7 +84,7 @@ export const getServerSideProps: GetServerSideProps<
     }),
   ])
 
-  console.log(checkErr(data))
+  checkErr(data, ctx.res)
 
   const rentData: ISalon[] = flattenStrapiResponse(data[0].data.salons) || []
   const pagination: IPagination | null =

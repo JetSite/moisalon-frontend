@@ -304,26 +304,20 @@ const Header: FC<Props> = ({ isOwner, salon, setActiveTab }) => {
           <EditButtonsWrapper>
             <EditButton
               onClick={() =>
-                router.push(
-                  {
-                    pathname: '/createLessorSalon',
-                    query: { id: salon?.id },
-                  },
-                  '/createLessorSalon',
-                )
+                router.push({
+                  pathname: '/createLessorSalon',
+                  query: { id: salon?.id },
+                })
               }
             >
               Редактировать профиль
             </EditButton>
             <EditButton
               onClick={() =>
-                router.push(
-                  {
-                    pathname: '/rentSalonSeat',
-                    query: { id: salon?.id },
-                  },
-                  '/rentSalonSeat',
-                )
+                router.push({
+                  pathname: '/rentSalonSeat',
+                  query: { id: salon?.id },
+                })
               }
             >
               Редактировать рабочие места

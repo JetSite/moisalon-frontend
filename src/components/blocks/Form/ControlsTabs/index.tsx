@@ -25,7 +25,7 @@ interface Props {
   id: IID | null
   onAdd: (id: IID) => void
   tabs: IMasterCabinetTab[]
-  setPhoto: (photo: IPhoto) => void
+  setPhoto: ISetState<IPhoto | null>
   photoType: string
   photo: { url: string }
   noSetPhoto?: boolean

@@ -25,7 +25,6 @@ interface Props {
   photoType: string
   refActive: string | boolean
   photo: IPhoto | null
-  id: IID | null
   onAdd: (photo: string) => void
   noPhotoError: boolean
   setNoPhotoError: ISetState<boolean>
@@ -34,7 +33,6 @@ interface Props {
 }
 
 const Controls: FC<Props> = ({
-  id,
   onAdd,
   refActive,
   tabs,
@@ -49,7 +47,6 @@ const Controls: FC<Props> = ({
     <Wrapper>
       <Avatar
         setPhoto={setPhoto}
-        id={id}
         photo={photo}
         onAdd={onAdd}
         photoType={photoType}

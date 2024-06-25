@@ -19,13 +19,16 @@ export const Info = styled.div`
   background-color: ${red};
 `
 
-export const Logo = styled.div`
+export const Logo = styled.div<{ url: string }>`
   flex-shrink: 0;
   width: 89px;
   height: 89px;
   margin-right: 21px;
   border-radius: 50%;
-  background: ${({ url }) => (url ? `url(${url})` : '#fff')} no-repeat center;
+  background: ${({ url }) => {
+      return url ? `url(${url})` : '#fff'
+    }}
+    no-repeat center;
   background-size: cover;
 `
 
@@ -68,6 +71,7 @@ export const Card = styled.div`
   padding: 11px 8px 10px 8px;
   background: #fff;
   border-radius: 5px;
+  cursor: pointer;
   box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
   &:not(:last-child) {
     margin-right: 10px;
@@ -82,7 +86,7 @@ export const CardTitle = styled.h3`
   overflow-wrap: break-word;
 `
 
-export const CardBottom = styled.div`
+export const CardBottom = styled.div<{ quantity?: number }>`
   display: flex;
   justify-content: ${({ quantity }) => (quantity ? 'space-between' : 'center')};
   width: 100%;

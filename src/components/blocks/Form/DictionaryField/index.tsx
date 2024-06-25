@@ -134,13 +134,15 @@ const DictionaryField: FC<Props> = props => {
             isMobile && !isOpenMore ? collapsedItems : items
 
           const dictionary = dictionaryItems.map(
-            ({ index, title, ...group }) => {
+            ({ index, service, ...group }) => {
+              console.log(dictionaryItems)
+
               const checked = value.indexOf(group.id) > -1
 
               const itemProps = {
                 item: {
                   ...group,
-                  label: title,
+                  label: service.title,
                   checked,
                 },
                 fields,

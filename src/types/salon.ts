@@ -6,6 +6,7 @@ import {
   IWorkingHours,
   IPhoto,
   IRating,
+  ISalonWorkplaces,
 } from '.'
 import { IBrand } from './brands'
 import { IID } from './common'
@@ -24,7 +25,6 @@ export interface ISalon {
   name: string
   email: string
   address: string
-
   createdAt: string
   latitude: string
   longitude: string
@@ -65,4 +65,6 @@ export interface ISalonPage extends ISalon {
   activities: ISalonActivity[]
   socialNetworks: ISocialNetworks[]
   vacancies: IVacancy[]
+  rental_requests: any[]
+  workplaces: ISalonWorkplaces[]
 }

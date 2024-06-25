@@ -5,7 +5,7 @@ import Header from '../../../pages/MainPage/components/Header'
 import { Wrapper } from './styled'
 import Controls from '../../../blocks/Form/Controls'
 import CabinetForm from './components/CabinetForm'
-import CabinetHeaderMobile from '../../../blocks/Cabinet/components/CabinetHeaderMobile'
+import CabinetHeaderMobile from '../../../blocks/Cabinet/components/CabinetHeaderMobile/index.tsx'
 
 const BrandCabinet = ({ me, brand }) => {
   const allTabs = useRef()

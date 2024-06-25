@@ -80,7 +80,7 @@ export const MediumTitle = styled.h3`
   }
 `
 
-export const WorkplacePreview = styled.div`
+export const WorkplacePreview = styled.div<{ url: string }>`
   width: 400px;
   height: 250px;
   margin-bottom: 40px;

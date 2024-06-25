@@ -7,6 +7,7 @@ import { useMutation } from '@apollo/client'
 import { UPLOAD } from 'src/api/graphql/common/upload'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { IPhoto } from 'src/types'
+import { PHOTO_URL } from 'src/api/variables'
 
 const Wrapper = styled.div`
   width: 120px;
@@ -123,7 +124,6 @@ const PhotoBack = styled.div`
 `
 
 interface Props {
-  id: IID | null
   onAdd: (id: string) => void
   setPhoto: ISetState<IPhoto | null>
   photoType: string

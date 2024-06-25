@@ -1,5 +1,4 @@
-import { useState } from 'react'
-import { CatalogsContext } from '../../'
+import { FC, useState } from 'react'
 import { MobileHidden, MobileVisible } from '../../../../../../styles/common'
 import catalogOrDefault from '../../../../../../utils/catalogOrDefault'
 import AutoFocusedForm from '../../../../../blocks/Form/AutoFocusedForm'
@@ -31,6 +30,9 @@ import PhotoGallery from './PhotoGallery'
 import SupportPopup from './SupportPopup'
 import useBaseStore from 'src/store/baseStore'
 import { getStoreData } from 'src/store/utils'
+import { ISalonPage } from 'src/types/salon'
+import { IApolloRefetch, IID, ISetState } from 'src/types/common'
+import { ISalonWorkplaces } from 'src/types'
 
 function convertNumber(text) {
   if (text === undefined) {
@@ -64,18 +66,24 @@ const findServices = (type, catalog, roomServices) => {
   return resultArray
 }
 
-const CreateSeat = ({
+interface Props {
+  salon: ISalonPage
+  workplace: ISalonWorkplaces | null
+  setWorkplace: ISetState<ISalonWorkplaces | null>
+  refetchSalon: IApolloRefetch
+  setWorkplaceId: ISetState<IID | null>
+  workplaceId: IID | null
+  setCreateWorkplace: ISetState<boolean>
+}
+
+const CreateSeat: FC<Props> = ({
   salon,
-  seatSalon,
-  room,
-  setCreateSeat,
+  workplace: seatSalon,
   refetchSalon,
-  setSeatSalon,
-  setRoomSeatId,
-  setRoom,
-  roomSeatId,
-  seatActivities,
-  seatEquipment,
+  setWorkplace: setSeatSalon,
+  setWorkplaceId: setRoomSeatId,
+  workplaceId: roomSeatId,
+  setCreateWorkplace,
 }) => {
   const [errors, setErrors] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -100,7 +108,11 @@ const CreateSeat = ({
   })
   const [defaultPhoto, setDefaultPhoto] = useState(seatSalon?.photo?.id)
 
-  const { catalogs } = useBaseStore(getStoreData)
+  const catalogs = {
+    salonRoomServicesCatalog: {
+      groups: [{ subGroups: [{ id: 'equipment_lighting' }] }],
+    },
+  }
   const salonActivitiesCatalog = catalogOrDefault(
     catalogs?.salonActivitiesCatalog,
   )
@@ -115,27 +127,12 @@ const CreateSeat = ({
     })
   }
 
-  const equipment_lighting = findServices(
-    'equipment_lighting',
-    catalogs.salonRoomServicesCatalog.groups[0].subGroups,
-    room?.services,
-  )
+  const equipment_lighting = ''
 
-  const equipment_vent = findServices(
-    'equipment_vent',
-    catalogs.salonRoomServicesCatalog.groups[0].subGroups,
-    room?.services,
-  )
-  const equipment_water = findServices(
-    'equipment_water',
-    catalogs.salonRoomServicesCatalog.groups[0].subGroups,
-    room?.services,
-  )
-  const equipment_heating = findServices(
-    'equipment_heating',
-    catalogs.salonRoomServicesCatalog.groups[0].subGroups,
-    room?.services,
-  )
+  const equipment_vent = ''
+  const equipment_water = ''
+
+  const equipment_heating = ''
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
@@ -381,7 +378,7 @@ const CreateSeat = ({
     setShowAdditionalInfo(true)
   }
 
-  const photos = room?.photoIds?.map(photoId => {
+  const photos = seatSalon?.photoIds?.map(photoId => {
     return {
       id: photoId,
       kind: 'original',
@@ -404,31 +401,31 @@ const CreateSeat = ({
               rentalPaymentMethods: seatSalon?.rentalPaymentMethods,
               services: seatSalon?.services,
               withLicense: seatSalon?.withLicense,
-              wetPointsHands: room?.wetPointsHands,
-              wetPointsHead: room?.wetPointsHead,
-              wetPointsShower: room?.wetPointsShower,
+              wetPointsHands: seatSalon?.wetPointsHands,
+              wetPointsHead: seatSalon?.wetPointsHead,
+              wetPointsShower: seatSalon?.wetPointsShower,
               electricity_sockets_count:
-                room?.services?.filter(
+                seatSalon?.services?.filter(
                   service => service.id === 'electricity_sockets_count',
                 )[0]?.value || 0,
               electricity_sockets_extenders_count:
-                room?.services?.filter(
+                seatSalon?.services?.filter(
                   service =>
                     service.id === 'electricity_sockets_extenders_count',
                 )[0]?.value || 0,
               electricity_sockets_ups_count:
-                room?.services?.filter(
+                seatSalon?.services?.filter(
                   service => service.id === 'electricity_sockets_ups_count',
                 )[0]?.value || 0,
-              space: room?.space,
-              floor: room?.floor,
-              description: room?.description,
+              space: seatSalon?.space,
+              floor: seatSalon?.floor,
+              description: seatSalon?.description,
               photos,
               equipment_heating,
               equipment_lighting,
               equipment_vent,
               equipment_water,
-              hasWindows: room?.hasWindows,
+              hasWindows: seatSalon?.hasWindows,
               equipment: seatSalon?.equipments,
             }
           : { isAvailableForRent: true }
@@ -447,7 +444,7 @@ const CreateSeat = ({
                 setRoomSeatId={setRoomSeatId}
                 resetRentalRate={resetRentalRate}
                 roomSeatId={roomSeatId}
-                activitiesCatalog={seatActivities.groups}
+                activitiesCatalog={{}}
               />
             ) : showAdditionalInfo ? (
               <RentalAdditionalInfo
@@ -499,7 +496,7 @@ const CreateSeat = ({
                   осуществляют на этом рабочем месте
                 </Subdesc> */}
                 <ActivitiesList
-                  catalog={seatActivities.groups}
+                  catalog={salon.services}
                   mbDesc={30}
                   onlyOneChoose
                 />

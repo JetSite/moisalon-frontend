@@ -3,8 +3,14 @@ import Button from '../../../../../../../ui/Button'
 import { deleteSeatMutation } from '../../../../../../../../_graphql-legacy/salon/deleteSeatMutation'
 import { useMutation } from '@apollo/client'
 import { laptopBreakpoint } from '../../../../../../../../styles/variables'
+import { FC, MouseEvent } from 'react'
+import { ISalonWorkplaces } from 'src/types'
+import { PHOTO_URL } from 'src/api/variables'
+import { ISalonPage } from 'src/types/salon'
+import { IApolloRefetch, IID } from 'src/types/common'
+import { DELETE_WORKPLACE } from 'src/api/graphql/salon/mutations/deleteWorkPlace'
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ url: string }>`
   height: 200px;
   width: 300px;
   box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.1);
@@ -45,37 +51,31 @@ const Name = styled.p`
   right: 15px;
 `
 
-const Seat = ({
-  seat,
-  onClick,
-  salon,
-  refetchSalon,
-  roomId,
-  seatActivities,
-}) => {
-  const [deleteSeat] = useMutation(deleteSeatMutation, {
+interface Props {
+  seat: ISalonWorkplaces
+  onClick: (e: MouseEvent<HTMLDivElement>) => void
+  salon: ISalonPage
+  refetchSalon: IApolloRefetch
+}
+
+const Seat: FC<Props> = ({ seat, onClick, salon, refetchSalon }) => {
+  const [deleteWorkplace] = useMutation(DELETE_WORKPLACE, {
     onCompleted: () => {
       refetchSalon()
     },
   })
   const handleDelete = () => {
-    deleteSeat({
+    deleteWorkplace({
       variables: {
-        salonId: salon.id,
-        roomId,
-        seatId: seat.id,
+        id: seat.id,
       },
     })
   }
 
-  const seatActivity = seatActivities?.groups?.filter(
-    activity => activity.id === seat?.activities[0],
-  )
-
   return (
     <Wrap>
-      <Wrapper onClick={onClick} url={seat?.photo?.url}>
-        {seatActivity[0]?.title ? <Name>{seatActivity[0]?.title}</Name> : null}
+      <Wrapper onClick={onClick} url={PHOTO_URL + seat?.gallery[0].url}>
+        {seat.title ? <Name>{seat.title}</Name> : null}
       </Wrapper>
       <Button onClick={() => handleDelete()} size="fullWidth" variant="red">
         Удалить

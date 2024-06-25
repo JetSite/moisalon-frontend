@@ -13,21 +13,30 @@ import {
 } from '../styles'
 import { getStoreEvent } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
+import { FC } from 'react'
+import { IMobileHeaderTab } from '..'
 
-const MenuCards = ({ cards, itemId }) => {
+interface Props {
+  cards: IMobileHeaderTab[]
+  itemId: string | undefined
+}
+
+const MenuCards: FC<Props> = ({ cards, itemId }) => {
   const router = useRouter()
   const { setMe, logout } = useAuthStore(getStoreEvent)
 
-  const handleClick = item => {
-    const element = document.getElementById(item?.anchor?.replace('#', ''))
-    if (element) {
-      scrollIntoView(element, {
-        time: 500,
-        align: {
-          top: 0,
-          topOffset: 100,
-        },
-      })
+  const handleClick = (item: IMobileHeaderTab) => {
+    if (item?.anchor) {
+      const element = document.getElementById(item?.anchor?.replace('#', ''))
+      if (element) {
+        scrollIntoView(element, {
+          time: 500,
+          align: {
+            top: 0,
+            topOffset: 100,
+          },
+        })
+      }
     }
   }
 
@@ -36,7 +45,7 @@ const MenuCards = ({ cards, itemId }) => {
     onCompleted: res => {
       setMe({
         info: res?.me?.info,
-        master: res?.me?.master,
+        masters: res?.me?.master,
         locationByIp: res?.locationByIp,
         salons: res?.me?.salons,
         rentalRequests: res?.me?.rentalRequests,

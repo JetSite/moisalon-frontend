@@ -15,7 +15,7 @@ import { cityFragment } from '../../fragments/city'
 
 export const GET_RENT_SALONS = gql`
   query salons($slug: String!,$itemsCount: Int!, $id: ID) {
-    salons(filters:{city:{slug:{eq:$slug }}, and: [{workplacesCount: {gt: 0}}, {id: {ne: $id}}]}, pagination: { page: 1, pageSize: $itemsCount }) {
+    salons(filters:{city:{slug:{eq:$slug }}, and: [{workplacesCount: {gt: 0}}, {rent: {eq: true}}, {id: {ne: $id}}]}, pagination: { page: 1, pageSize: $itemsCount }) {
       data {
         id
         attributes {

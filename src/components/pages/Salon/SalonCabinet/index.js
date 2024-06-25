@@ -1,56 +1,56 @@
-import { useRef, useState, useEffect, useCallback } from "react";
-import { MainContainer, MobileHidden } from "../../../../styles/common";
-import Header from "../../../pages/MainPage/components/Header";
-import Controls from "../../../blocks/Form/Controls";
-import CabinetForm from "./components/CabinetForm";
-import { Wrapper } from "./styles";
-import CabinetHeaderMobile from "../../../blocks/Cabinet/components/CabinetHeaderMobile";
+import { useRef, useState, useEffect, useCallback } from 'react'
+import { MainContainer, MobileHidden } from '../../../../styles/common'
+import Header from '../../../pages/MainPage/components/Header'
+import Controls from '../../../blocks/Form/Controls'
+import CabinetForm from './components/CabinetForm'
+import { Wrapper } from './styles'
+import CabinetHeaderMobile from '../../../blocks/Cabinet/components/CabinetHeaderMobile/index.tsx'
 
 const SalonCabinet = ({ salon }) => {
-  const allTabs = useRef();
-  const ref1 = useRef();
-  const ref2 = useRef();
-  const ref3 = useRef();
+  const allTabs = useRef()
+  const ref1 = useRef()
+  const ref2 = useRef()
+  const ref3 = useRef()
 
   const [tabs] = useState([
-    { id: "1", value: "Наши услуги", anchor: "services" },
-    { id: "2", value: "Отзывы клиентов", anchor: "reviews" },
-    { id: "3", value: "Наши профили", anchor: "profiles" },
+    { id: '1', value: 'Наши услуги', anchor: 'services' },
+    { id: '2', value: 'Отзывы клиентов', anchor: 'reviews' },
+    { id: '3', value: 'Наши профили', anchor: 'profiles' },
     {
-      id: "4",
-      value: "Данные салона",
-      anchor: "cabinet",
-      href: "/createSalon",
+      id: '4',
+      value: 'Данные салона',
+      anchor: 'cabinet',
+      href: '/createSalon',
       link: salon?.id,
       back: true,
     },
-  ]);
+  ])
 
-  const [refActive, setRefActive] = useState(false);
-  const [ref1Visible, setRef1Visible] = useState(true);
-  const [ref2Visible, setRef2Visible] = useState(false);
-  const [ref3Visible, setRef3Visible] = useState(false);
+  const [refActive, setRefActive] = useState(false)
+  const [ref1Visible, setRef1Visible] = useState(true)
+  const [ref2Visible, setRef2Visible] = useState(false)
+  const [ref3Visible, setRef3Visible] = useState(false)
 
   const handleElementPosition = (element, func, top) => {
-    const posTop = element?.getBoundingClientRect()?.top;
+    const posTop = element?.getBoundingClientRect()?.top
     if (
       posTop > 0
         ? window?.innerHeight > posTop + top
         : element?.clientHeight + posTop > window?.innerHeight
     ) {
-      func(true);
-    } else func(false);
-  };
+      func(true)
+    } else func(false)
+  }
 
   useEffect(() => {
     ref1Visible
-      ? setRefActive("1")
+      ? setRefActive('1')
       : ref2Visible
-      ? setRefActive("2")
+      ? setRefActive('2')
       : ref3Visible
-      ? setRefActive("3")
-      : null;
-  }, [ref1Visible, ref2Visible, ref3Visible]);
+      ? setRefActive('3')
+      : null
+  }, [ref1Visible, ref2Visible, ref3Visible])
 
   const handleScroll = useCallback(() => {
     const elements = [
@@ -69,16 +69,16 @@ const SalonCabinet = ({ salon }) => {
         func: setRef3Visible,
         top: 600,
       },
-    ];
-    elements.forEach((el) => handleElementPosition(el.el, el.func, el.top));
-  }, []);
+    ]
+    elements.forEach(el => handleElementPosition(el.el, el.func, el.top))
+  }, [])
 
   useEffect(() => {
-    document.addEventListener("scroll", handleScroll);
+    document.addEventListener('scroll', handleScroll)
     return () => {
-      document.removeEventListener("scroll", handleScroll);
-    };
-  }, [ref1Visible, ref2Visible, ref3Visible]);
+      document.removeEventListener('scroll', handleScroll)
+    }
+  }, [ref1Visible, ref2Visible, ref3Visible])
 
   return (
     <>
@@ -89,7 +89,7 @@ const SalonCabinet = ({ salon }) => {
           <MobileHidden>
             <Controls
               tabs={tabs}
-              photoType={"salon"}
+              photoType={'salon'}
               refActive={refActive}
               noSetPhoto={true}
               photo={salon?.logo ? salon?.logo : null}
@@ -106,7 +106,7 @@ const SalonCabinet = ({ salon }) => {
         </Wrapper>
       </MainContainer>
     </>
-  );
-};
+  )
+}
 
-export default SalonCabinet;
+export default SalonCabinet
