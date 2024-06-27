@@ -20,6 +20,7 @@ import { Nullable } from '../types/common'
 import { GetServerSidePropsContext, PreviewData } from 'next'
 import { ParsedUrlQuery } from 'querystring'
 import { IServerProps } from './server/types'
+import useBaseStore from 'src/store/baseStore'
 
 const AuthProvider: FC<{ children: IChildren; serverData?: IServerProps }> = ({
   children,
@@ -30,6 +31,7 @@ const AuthProvider: FC<{ children: IChildren; serverData?: IServerProps }> = ({
   const router = useRouter()
   const { me, loading, user } = useAuthStore(getStoreData)
   const { setMe, setLoading, setCity, setUser } = useAuthStore(getStoreEvent)
+  const { setCart } = useBaseStore(getStoreEvent)
   const accessToken = getCookie(authConfig.tokenKeyName)
   const cityCookie = getCookie(authConfig.cityKeyName)
 
@@ -55,6 +57,7 @@ const AuthProvider: FC<{ children: IChildren; serverData?: IServerProps }> = ({
   const [getMe, { loading: meLoading }] = useLazyQuery(ME, getMeCB)
   const [getUser, { loading: userLoading }] = useLazyQuery(USER, {
     onCompleted: data => {
+      console.log('data', data)
       const prepareData = flattenStrapiResponse(data.usersPermissionsUser)
       console.log('prepareData', prepareData)
 
@@ -78,7 +81,7 @@ const AuthProvider: FC<{ children: IChildren; serverData?: IServerProps }> = ({
         salons: prepareData.salons,
         masters: prepareData.masters,
         brand: prepareData.brands,
-        carts: prepareData.carts,
+        cart: prepareData.cart,
       }
 
       const favorite: IUserThings = {
@@ -93,6 +96,7 @@ const AuthProvider: FC<{ children: IChildren; serverData?: IServerProps }> = ({
         favorite,
         vacancies: prepareData.vacancies as IVacancy[],
         reviews: prepareData.reviews as IReview[],
+        orders: prepareData.orders as any,
       })
       setMe({
         info,
@@ -102,6 +106,9 @@ const AuthProvider: FC<{ children: IChildren; serverData?: IServerProps }> = ({
         authConfig.cityKeyName,
         prepareData.selected_city?.slug || defaultValues.citySlug,
       )
+      if (prepareData.cart) {
+        setCart(prepareData.cart)
+      }
     },
     onError: err => console.log(err),
     notifyOnNetworkStatusChange: true,

@@ -2,13 +2,15 @@ import { useQuery } from '@apollo/client'
 import { ProductWrapper } from '../styles'
 import { productSearch } from '../../../../../../_graphql-legacy/product'
 import { PHOTO_URL } from '../../../../../../api/variables'
+import { IProductCart } from 'src/types/product'
+import { FC } from 'react'
 
-const Product = ({ item }) => {
-  const { data } = useQuery(productSearch, {
-    variables: { id: item.id },
-  })
+interface IProps {
+  item: IProductCart
+}
 
-  const link = `${PHOTO_URL}${data?.product?.photoIds[0]}/original`
+const Product: FC<IProps> = ({ item }) => {
+  const link = `${PHOTO_URL}${item?.product?.cover?.url}`
   return <ProductWrapper link={link} />
 }
 

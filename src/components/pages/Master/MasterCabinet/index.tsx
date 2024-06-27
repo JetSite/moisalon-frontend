@@ -7,7 +7,6 @@ import ControlsTabs from '../../../blocks/Form/ControlsTabs'
 import { useMutation } from '@apollo/client'
 import CabinetForm from '../../../blocks/Cabinet/components/CabinetForm'
 import { changeDataMutation } from '../../../../_graphql-legacy/changeDataMutation'
-import CabinetOrders from '../../../blocks/Cabinet/components/CabinetOrders'
 import CabinetProfiles from '../../../blocks/Cabinet/components/CabinetProfiles'
 import CabinetListReviews from '../../../blocks/Cabinet/components/CabinetListReviews'
 import ProfileCabinetHeaderMobile from '../../../blocks/ProfileCabinetHeaderMobile'
@@ -19,6 +18,7 @@ import CabinetEvents from '../../../blocks/Cabinet/components/CabinetEvents'
 import CabinetVacancies from '../../../blocks/Cabinet/components/CabinetVacancies'
 import CabinetPriority from '../../../blocks/Cabinet/components/CabinetPriority'
 import CabinetBanner from '../../../blocks/Cabinet/components/CabinetBanner'
+import CabinetOrders from '../../../blocks/Cabinet/components/CabinetOrders'
 import { PHOTO_URL } from '../../../../api/variables'
 import { useChat } from '../../../../chatContext'
 import { IRefetch } from 'src/api/types'
@@ -63,6 +63,8 @@ const MasterCabinet: FC = () => {
     },
   })
 
+  console.log('user', user)
+
   // const handlePhoto = (id: IID) => {
   //   setPhotoId(id)
   //   if (id) {
@@ -89,6 +91,8 @@ const MasterCabinet: FC = () => {
     }
   }, [router?.query?.tab])
 
+  console.log('activeTab', activeTab)
+
   return (
     <>
       <Header />
@@ -101,8 +105,6 @@ const MasterCabinet: FC = () => {
               title: 'Мои заказы',
               value: 'orders',
               icon: '/icon-orders.svg',
-              quantity: user?.orders?.length,
-              disable: true,
             },
             {
               title: 'Моё избранное',
@@ -156,7 +158,10 @@ const MasterCabinet: FC = () => {
                 quantity: unreadMessagesCount,
                 disable: true,
               },
-              { title: 'Мои заказы', value: 'orders', disable: true },
+              {
+                title: 'Мои заказы',
+                value: 'orders',
+              },
               { title: 'Моё избранное', value: 'favorits' },
               { title: 'Отзывы клиентов', value: 'reviews' },
               { title: 'Мои акции', value: 'sales', disable: true },
@@ -181,7 +186,7 @@ const MasterCabinet: FC = () => {
           {activeTab === 'about' ? (
             <CabinetForm setNoPhotoError={setNoPhotoError} photo={photo} auth />
           ) : activeTab === 'orders' ? (
-            <CabinetOrders me={user} />
+            <CabinetOrders />
           ) : activeTab === 'profiles' ? (
             <CabinetProfiles />
           ) : activeTab === 'chat' ? (

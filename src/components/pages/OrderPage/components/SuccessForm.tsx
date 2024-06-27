@@ -1,6 +1,6 @@
 import parseToFloat from '../../../../utils/parseToFloat'
 import Button from '../../../ui/Button'
-import { useEffect } from 'react'
+import { FC, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import {
   SuccessWrapper,
@@ -22,34 +22,35 @@ import {
   TextSumm,
   TextTotal,
   ButtonWrap,
-} from './../styles'
+} from '../styles'
 import { useMedia } from 'use-media'
 import PopupOrder from './PopupOrder'
 import Steps from './Steps'
 import RepeatOrderProduct from './RepeatOrderProduct'
 import { PHOTO_URL } from '../../../../api/variables'
+import { ICart } from 'src/types/product'
+import { IUser } from 'src/types/me'
+import { IOrderInput } from 'src/types/orders'
 
-const totalSumm = items => {
-  if (!items?.length) {
-    return 0
-  } else {
-    let count = 0
-    for (let i = 0; i < items.length; i++) {
-      count +=
-        parseToFloat(items[i].product.currentAmount.toString()) *
-        items[i].quantity
-    }
-    return count
-  }
+interface IProps {
+  formValues: Partial<IOrderInput> | null
+  user: IUser | null
+  cart: ICart | null
+  addressFull?: string
+  onSuccess: () => void
+  open: boolean
+  handleClose: () => void
+  setSuccessPage: (value: boolean) => void
 }
 
-const SuccessForm = ({
+const SuccessForm: FC<IProps> = ({
   formValues,
-  checkedProducts,
+  user,
+  cart,
+  addressFull,
   onSuccess,
   open,
   handleClose,
-  loading,
   setSuccessPage,
 }) => {
   const router = useRouter()
@@ -72,10 +73,13 @@ const SuccessForm = ({
     }
   }, [router])
 
-  const amount = formValues?.product?.reduce(
-    (sum, { price, count }) => sum + price * count,
-    0,
-  )
+  const amount =
+    cart?.cartContent?.reduce((acc, item) => {
+      const price = item.product.salePrice || item.product.regularPrice
+      return acc + price * item.quantity
+    }, 0) || 0
+
+  console.log('cart', cart)
 
   return (
     <>
@@ -86,30 +90,24 @@ const SuccessForm = ({
           <SuccessLeft>
             <ContentWrap>
               <Desc>Данные получателя</Desc>
-              <Text>{formValues?.name}</Text>
-              <Text>{formValues?.phone}</Text>
-              <Text>{formValues?.email}</Text>
+              <Text>{user?.info?.username}</Text>
+              <Text>{user?.info?.phone}</Text>
+              <Text>{user?.info?.email}</Text>
             </ContentWrap>
             {formValues?.address ? (
               <ContentWrap>
                 <Desc>Адрес доставки</Desc>
-                <Text>{formValues?.address}</Text>
-              </ContentWrap>
-            ) : null}
-            {formValues?.inn ? (
-              <ContentWrap>
-                <Desc>ИНН</Desc>
-                <Text>{formValues?.inn}</Text>
+                <Text>{addressFull}</Text>
               </ContentWrap>
             ) : null}
             <ContentWrap>
               <Desc>Способ оплаты</Desc>
               <Text>
-                {formValues.payment === 0
-                  ? 'Оплата картой на сайте'
-                  : formValues.payment === 1
-                  ? 'Наличными'
-                  : 'Безналичный расчёт'}
+                {formValues?.payment_method === '1'
+                  ? 'Оплата при доставке'
+                  : formValues?.payment_method === '5'
+                  ? 'Оплата по номеру карты'
+                  : ''}
               </Text>
             </ContentWrap>
             {formValues?.comment ? (
@@ -121,41 +119,42 @@ const SuccessForm = ({
           </SuccessLeft>
           <SuccessRight>
             <Desc>Состав заказа</Desc>
-            {checkedProducts
-              ? checkedProducts?.map((item, i) => (
-                  <ItemChecked key={i}>
+            {cart &&
+              cart.cartContent.map(cartItem => {
+                return (
+                  <ItemChecked key={cartItem.product.id}>
                     <Image>
                       <img
                         src={
-                          item?.product?.photoIds[0]
-                            ? ` ${PHOTO_URL}${item?.product?.photoIds[0]}/original`
+                          cartItem?.product?.cover?.url
+                            ? ` ${PHOTO_URL}${cartItem.product.cover.url}`
                             : '/cosmetic_placeholder.jpg'
                         }
                         alt="logo"
                       />
                     </Image>
                     <ItemCheckedRight>
-                      <Name>{item?.product?.title}</Name>
+                      <Name>{cartItem.product.name}</Name>
                       <Bottom>
-                        <Price>{`${parseToFloat(
-                          item?.product?.currentAmount.toString(),
-                        ).toLocaleString()} ₽`}</Price>
-                        <Quantity>{item?.quantity} шт.</Quantity>
+                        <Price>{`${
+                          cartItem.product.salePrice
+                            ? cartItem.product.salePrice * cartItem.quantity
+                            : cartItem.product.regularPrice * cartItem.quantity
+                        } ₽`}</Price>
+                        <Quantity>{cartItem.quantity} шт.</Quantity>
                       </Bottom>
                     </ItemCheckedRight>
                   </ItemChecked>
-                ))
-              : null}
-            {formValues?.product
+                )
+              })}
+            {/* {formValues?.product
               ? formValues?.product.map(product => (
                   <RepeatOrderProduct product={product} key={product.id} />
                 ))
-              : null}
+              : null} */}
             <Total>
               <TextSumm>Сумма заказа:</TextSumm>
-              <TextTotal>{`${
-                amount || totalSumm(checkedProducts).toLocaleString()
-              } ₽`}</TextTotal>
+              <TextTotal>{`${amount} ₽`}</TextTotal>
             </Total>
             <ButtonWrap>
               <Button
@@ -163,9 +162,8 @@ const SuccessForm = ({
                 size="medium"
                 autoFocus
                 onClick={() => onSuccess()}
-                disabled={loading}
               >
-                Оплатить заказ
+                Оформить заказ
               </Button>
             </ButtonWrap>
           </SuccessRight>

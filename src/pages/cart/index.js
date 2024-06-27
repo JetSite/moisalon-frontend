@@ -24,8 +24,8 @@ const CartPage = () => {
   })
 
   useEffect(() => {
-    if (!!user?.owner?.carts?.length) {
-      setCart(user.owner.carts[0])
+    if (!!user?.owner?.cart) {
+      setCart(user.owner.cart)
     }
   }, [user])
 

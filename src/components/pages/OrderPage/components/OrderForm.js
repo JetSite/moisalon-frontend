@@ -11,7 +11,7 @@ import { TextField } from '../../../blocks/Form'
 import AddressNoSalonField from '../../../blocks/Form/AddressField/AddressNoSalonField'
 import AutoFocusedForm from '../../../blocks/Form/AutoFocusedForm'
 import Error from '../../../blocks/Form/Error'
-// import { YMaps, Map, Placemark } from 'react-yandex-maps'
+import { YMaps, Map, Placemark } from '@pbe/react-yandex-maps'
 import {
   Content,
   Title,
@@ -40,23 +40,28 @@ const OrderForm = ({
   errors,
   isErrorPopupOpen,
   setErrorPopupOpen,
+  clickAddress,
   setClickAddress,
+  setClickCity,
   mapRef,
   mapData,
   coordinates,
   masterSpecializationsCatalog,
   setShippingMethod,
-  setShippingType,
-  shippingType,
+  setPaymentType,
+  paymentType,
   shippingMethod,
   formValues,
   productBrands,
+  user,
 }) => {
   const mobileMedia = useMedia({ maxWidth: 768 })
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
   const { me } = useAuthStore(getStoreData)
+
+  console.log('formValues', formValues)
 
   return (
     <Content>
@@ -66,33 +71,17 @@ const OrderForm = ({
         initialValues={
           formValues
             ? {
-                name: formValues?.name,
-                address: formValues?.address || '',
-                email: formValues?.email,
-                phone: formValues?.phone,
+                name: user?.info?.username,
+                address: clickAddress?.value || '',
+                email: user?.info?.email,
+                phone: user?.info?.phone,
                 comment: formValues?.comment,
-                specialization: formValues?.specialization,
-                inn: formValues?.inn,
-                products: formValues?.products,
               }
             : {
-                name: me?.master?.name || '',
-                address:
-                  (me &&
-                    me.master &&
-                    me.master.addressFull &&
-                    me.master.addressFull.full) ||
-                  '',
-                email: me?.info?.email,
-                phone: me?.info?.phoneNumber,
-                specialization: selectedGroupNamesMax(
-                  me?.master?.specializations
-                    ? me?.master?.specializations[0]
-                    : [],
-                  masterSpecializationsCatalog,
-                  ', ',
-                  1,
-                ),
+                name: user?.info?.username || '',
+                address: clickAddress?.value || '',
+                email: user?.info?.email || '',
+                phone: user?.info?.phone || '',
               }
         }
         onSubmit={onSubmit}
@@ -136,17 +125,32 @@ const OrderForm = ({
                         validate={composeValidators(required, email)}
                       />
                     </FieldWrap>
-                    <FieldWrap>
+                    {/* <FieldWrap>
                       <Field
                         name="specialization"
                         component={TextField}
                         label="Специализация *"
                         validate={required}
                       />
-                    </FieldWrap>
-                    <FieldWrap>
-                      <Field name="inn" component={TextField} label="ИНН" />
-                    </FieldWrap>
+                    </FieldWrap> */}
+                    <Desc>Способ оплаты</Desc>
+                    <RadioWrap>
+                      <RadioItem
+                        active={paymentType === '1'}
+                        onClick={() => setPaymentType('1')}
+                      >
+                        Оплата при доставке
+                      </RadioItem>
+                    </RadioWrap>
+                    <Desc>Комментарий к заказу</Desc>
+                    <TextAreaWrap>
+                      <Field
+                        name="comment"
+                        multiple={true}
+                        component={TextField}
+                        label=""
+                      />
+                    </TextAreaWrap>
                   </Left>
                   <Right>
                     <Desc>Способ доставки</Desc>
@@ -164,12 +168,13 @@ const OrderForm = ({
                         Курьер
                       </ShipingItem>
                     </ShipingWrap>
-                    {/* {shippingMethod === 'courier' ? (
+                    {shippingMethod === 'courier' ? (
                       <Field
                         name="address"
                         fullWidth={true}
                         component={AddressNoSalonField}
                         setClickAddress={setClickAddress}
+                        setClickCity={setClickCity}
                         label="Адрес доставки *"
                       />
                     ) : (
@@ -204,27 +209,10 @@ const OrderForm = ({
                           </Map>
                         </YMaps>
                       </>
-                    )} */}
+                    )}
                   </Right>
                 </ContentForm>
-                <Desc>Способ оплаты</Desc>
-                <RadioWrap>
-                  <RadioItem
-                    active={shippingType === 0}
-                    onClick={() => setShippingType(0)}
-                  >
-                    Оплата картой на сайте
-                  </RadioItem>
-                </RadioWrap>
-                <Desc>Комментарий к заказу</Desc>
-                <TextAreaWrap>
-                  <Field
-                    name="comment"
-                    multiple={true}
-                    component={TextField}
-                    label=""
-                  />
-                </TextAreaWrap>
+
                 <ButtonWrap>
                   <Button variant="red" size="medium" autoFocus type="submit">
                     Подтвердить заказ

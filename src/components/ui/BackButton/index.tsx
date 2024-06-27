@@ -47,6 +47,7 @@ const BackButton: FC<Props> = ({
     <Wrapper
       onClick={() => {
         if (noLink) return
+        console.log('click back')
         link ? router.push({ path: link, query: queryLink }) : router.back()
       }}
     >

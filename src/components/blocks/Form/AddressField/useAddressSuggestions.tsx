@@ -13,6 +13,7 @@ export interface IAddressSuggestion {
   geoLon: number
   value: string
   city: string
+  zipcode: string
 }
 
 type IuseAddressSuggestions = (

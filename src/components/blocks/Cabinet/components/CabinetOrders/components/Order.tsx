@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { FC, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useMutation } from '@apollo/react-hooks'
 import {
@@ -22,20 +22,25 @@ import {
   OrderDetailMobileWrap,
 } from '../styles'
 import BrandContacts from './BrandContacts'
-import Product from './Product'
 import BrandAddresses from './BrandAddresses'
 import { cyrToTranslit } from '../../../../../../utils/translit'
 import { getOrderPayLink } from '../../../../../../_graphql-legacy/orders/getOrderPayLink'
+import { IOrder } from 'src/types/orders'
+import Product from './Product'
 
-const Order = ({ order, me }) => {
+interface IProps {
+  order: IOrder
+}
+
+const Order: FC<IProps> = ({ order }) => {
   const [productBrands, setProductBrands] = useState([])
   const [mobileOrderProducts, setMobileOrderProducts] = useState(false)
   const router = useRouter()
 
-  const amount = order?.product.reduce(
-    (sum, { price, count }) => sum + price * count,
-    0,
-  )
+  // const amount = order?.product.reduce(
+  //   (sum, { price, count }) => sum + price * count,
+  //   0,
+  // )
   const paymentType = {
     0: 'оплата картой на сайте',
     1: 'оплата наличными',
@@ -55,44 +60,52 @@ const Order = ({ order, me }) => {
     deleted: 'Удален',
   }
 
-  const orderDate = new Date(order?.createAt)
+  console.log('order', order)
 
-  const repeatHandler = () => {
-    if (!me?.info) {
-      router.push('/login')
-    } else {
-      sessionStorage.setItem(
-        'cartChecked',
-        JSON.stringify({
-          items: [],
-          productBrands: [...productBrands],
-          order,
-        }),
-      )
-      router.push(`/order`)
-    }
-  }
+  const orderDate = new Date(order?.createdAt)
+  const totalAmount = order?.cartContent?.reduce(
+    (acc, item) =>
+      acc +
+      (item.product.salePrice || item.product.regularPrice) * item.quantity,
+    0,
+  )
 
-  const [getPayLink] = useMutation(getOrderPayLink, {
-    variables: {
-      orderId: order.id,
-    },
-    onCompleted: result => {
-      router.push(result.orderPayLink)
-    },
-  })
+  // const repeatHandler = () => {
+  //   if (!me?.info) {
+  //     router.push('/login')
+  //   } else {
+  //     sessionStorage.setItem(
+  //       'cartChecked',
+  //       JSON.stringify({
+  //         items: [],
+  //         productBrands: [...productBrands],
+  //         order,
+  //       }),
+  //     )
+  //     router.push(`/order`)
+  //   }
+  // }
 
-  const payHandler = () => {
-    if (!me?.info) {
-      router.push('/login')
-    } else {
-      getPayLink({
-        variables: {
-          orderId: order.id,
-        },
-      })
-    }
-  }
+  // const [getPayLink] = useMutation(getOrderPayLink, {
+  //   variables: {
+  //     orderId: order.id,
+  //   },
+  //   onCompleted: result => {
+  //     router.push(result.orderPayLink)
+  //   },
+  // })
+
+  // const payHandler = () => {
+  //   if (!me?.info) {
+  //     router.push('/login')
+  //   } else {
+  //     getPayLink({
+  //       variables: {
+  //         orderId: order.id,
+  //       },
+  //     })
+  //   }
+  // }
 
   return (
     <OrderWrapper>
@@ -103,19 +116,21 @@ const Order = ({ order, me }) => {
             timeStyle: 'short',
           })}
         </TopDate>
-        <TopOrderNum>№ {order?.number}</TopOrderNum>
+        <TopOrderNum>№ {order?.id}</TopOrderNum>
       </OrderTop>
-      <OrderDetail>
-        <DetailName>Статус заказа</DetailName>
-        <DetailValue>{orderStatus[order?.status?.toLowerCase()]}</DetailValue>
-      </OrderDetail>
+      {order.order_status?.title && (
+        <OrderDetail>
+          <DetailName>Статус заказа</DetailName>
+          <DetailValue>{order.order_status.title}</DetailValue>
+        </OrderDetail>
+      )}
       {order?.address ? (
         <OrderDetail>
           <DetailName>Адрес</DetailName>
-          <DetailValue>{order?.address}</DetailValue>
+          <DetailValue>{order?.address?.address}</DetailValue>
         </OrderDetail>
       ) : null}
-      {!order?.address ? (
+      {/* {!order?.address ? (
         <OrderDetail>
           <DetailName>Адрес</DetailName>
           <DetailsWrapper>
@@ -124,20 +139,20 @@ const Order = ({ order, me }) => {
             ))}
           </DetailsWrapper>
         </OrderDetail>
-      ) : null}
-      <HiddenMobileOrderDetail>
+      ) : null} */}
+      {/* <HiddenMobileOrderDetail>
         <DetailName>Тип доставки</DetailName>
         <DetailValue>{deliveryType[order?.delivery]}</DetailValue>
-      </HiddenMobileOrderDetail>
+      </HiddenMobileOrderDetail> */}
       <OrderDetail>
         <DetailName>Сумма заказа</DetailName>
-        <DetailValue>{amount.toFixed(2)} ₽</DetailValue>
+        <DetailValue>{totalAmount} ₽</DetailValue>
       </OrderDetail>
       <HiddenMobileOrderDetail>
         <DetailName>Способ оплаты</DetailName>
-        <DetailValue>{paymentType[order?.payment]}</DetailValue>
+        <DetailValue>{order.payment_method.title}</DetailValue>
       </HiddenMobileOrderDetail>
-      <HiddenMobileOrderDetail>
+      {/* <HiddenMobileOrderDetail>
         <DetailName>Связаться с менеджером</DetailName>
         <DetailsWrapper>
           {order?.brandsIds?.map(brandId => (
@@ -149,15 +164,15 @@ const Order = ({ order, me }) => {
             />
           ))}
         </DetailsWrapper>
-      </HiddenMobileOrderDetail>
-      <OrderDetailMobile
+      </HiddenMobileOrderDetail> */}
+      {/* <OrderDetailMobile
         onClick={() => setMobileOrderProducts(!mobileOrderProducts)}
       >
         <DetailName>Состав заказа:</DetailName>
         <OrderIcon opened={mobileOrderProducts} />
-      </OrderDetailMobile>
+      </OrderDetailMobile> */}
       <OrderBottom>
-        {order?.status?.toLowerCase() === 'new' ? (
+        {/* {order?.status?.toLowerCase() === 'new' ? (
           <BottomButton>
             <ButtonStyled
               variant="withRoundBorder"
@@ -179,15 +194,14 @@ const Order = ({ order, me }) => {
               Повторить заказ
             </ButtonStyled>
           </BottomButton>
-        )}
-
+        )} */}
         <BottomProducts>
-          {order?.product.map(item => (
-            <Product item={item} key={item.id} />
+          {order?.cartContent.map(item => (
+            <Product item={item} key={item.product.id} />
           ))}
         </BottomProducts>
 
-        {mobileOrderProducts ? (
+        {/* {mobileOrderProducts ? (
           <>
             <OrderDetailMobileWrap>
               <DetailName>Тип доставки</DetailName>
@@ -217,8 +231,8 @@ const Order = ({ order, me }) => {
               ))}
             </BottomProductsMobile>
           </>
-        ) : null}
-        <BottomButtonMobile>
+        ) : null} */}
+        {/* <BottomButtonMobile>
           {order?.status?.toLowerCase() === 'new' ? (
             <ButtonStyled
               variant="withRoundBorder"
@@ -238,7 +252,7 @@ const Order = ({ order, me }) => {
               Повторить заказ
             </ButtonStyled>
           )}
-        </BottomButtonMobile>
+        </BottomButtonMobile> */}
       </OrderBottom>
     </OrderWrapper>
   )

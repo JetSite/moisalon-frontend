@@ -5,6 +5,7 @@ import { masterFragment } from '../fragments/master'
 import { brandsFragment } from '../fragments/brands'
 import { vacanciesFragment } from '../fragments/vacancies'
 import { cityFragment } from '../../fragments/city'
+import { ordersFragment } from '../fragments/orders'
 
 export const USER = gql`
   query usersPermissionsUser($id: ID) {
@@ -53,12 +54,13 @@ export const USER = gql`
           vacancies {
             ${vacanciesFragment}
           }
-          carts {
+          cart {
             data {
               id
               attributes {
                 total
                 cartContent {
+                  id
                   product {
                     data {
                       id
@@ -82,6 +84,9 @@ export const USER = gql`
                 }
               }
             }
+          }
+          orders {
+            ${ordersFragment}
           }
           reviews {
             data {

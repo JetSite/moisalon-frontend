@@ -63,6 +63,9 @@ const AddressNoSalonField: FC<IAddressNoSalonFieldProps> = ({
 
   useEffect(() => {
     rest.setClickCity(coordinates?.city)
+    if (rest.setClickAddress) {
+      rest.setClickAddress(coordinates)
+    }
   }, [coordinates])
 
   return (

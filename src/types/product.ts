@@ -35,7 +35,7 @@ export interface IProduct {
   salePrice: number
   fullDescription: string
   shortDescription: string
-  availableInStock: boolean
+  availableInStock: number
   product_categories: IProductCategories
   attributes: IAttributesAttrValue
   cover: IPhoto

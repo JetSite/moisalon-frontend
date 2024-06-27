@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, FC } from 'react'
 import { useQuery } from '@apollo/client'
 import { useMutation } from '@apollo/react-hooks'
 import { useRouter } from 'next/router'
@@ -48,16 +48,29 @@ import FastBuyPopup from '../../ui/FastBuyPopup'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
 import useBaseStore from 'src/store/baseStore'
+import { IProduct } from 'src/types/product'
+import { IReview } from 'src/types/reviews'
+import { UPDATE_CART } from 'src/api/graphql/cart/mutations/updateCart'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { CREATE_CART } from 'src/api/graphql/cart/mutations/createCart'
 
-const ProductPage = ({ brand, product, dataReviews }) => {
-  const { setProducts: setProductsState } = useBaseStore(getStoreEvent)
-  const [reviews, setReviews] = useState(dataReviews)
+interface IProductPageProps {
+  product: IProduct
+  reviews: IReview[]
+}
+
+const ProductPage: FC<IProductPageProps> = ({ product, reviews }) => {
+  const { user } = useAuthStore(getStoreData)
+  const { cart } = useBaseStore(getStoreData)
+  const { setProducts: setProductsState, setCart } = useBaseStore(getStoreEvent)
+  const [reviewsData, setReviewsData] = useState(reviews)
   const { city, me } = useAuthStore(getStoreData)
   const [toggleCharacter, setToggleCharacter] = useState(false)
   const [openPopup, setOpenPopup] = useState(false)
   const [openBuyPopup, setOpenBuyPopup] = useState(false)
 
-  const b2bClient = !!me?.master?.id || !!me?.salons?.length
+  console.log('product', product)
+  console.log('reviews', reviews)
 
   const router = useRouter()
 
@@ -65,17 +78,17 @@ const ProductPage = ({ brand, product, dataReviews }) => {
     setOpenPopup(false)
   }
 
-  const setChosenItemId = () => {}
+  // const setChosenItemId = () => {}
 
-  useEffect(() => {
-    setChosenItemId(product.id)
-  }, [])
+  // useEffect(() => {
+  //   setChosenItemId(product.id)
+  // }, [])
 
   const { refetch: refetchReviews } = useQuery(reviewsforProductB2c, {
     variables: { originId: product?.id },
     skip: true,
     onCompleted: res => {
-      setReviews(res)
+      setReviewsData(res)
     },
   })
 
@@ -85,123 +98,194 @@ const ProductPage = ({ brand, product, dataReviews }) => {
     },
   })
 
-  const { data: dataCart, refetch: refetchCart } = useQuery(getCart, {
-    onCompleted: res => {
-      setProductsState(res?.getCartB2b?.contents || [])
-    },
-  })
-  const cart = dataCart?.getCartB2b?.contents || []
-
-  const [addToCart, { loading: addLoading }] = useMutation(
-    addToCartB2cMutation,
+  const [createCart, { loading: createCartLoading }] = useMutation(
+    CREATE_CART,
     {
-      onCompleted: () => {
-        refetchCart()
+      onCompleted: res => {
+        if (res?.createCart?.data) {
+          setCart(flattenStrapiResponse(res.createCart.data))
+        }
       },
     },
   )
 
-  const [removeItem, { loading: deleteLoading }] = useMutation(
-    removeItemB2cMutation,
+  const [updateCart, { loading: updateCartLoading }] = useMutation(
+    UPDATE_CART,
     {
-      onCompleted: () => {
-        refetchCart()
+      onCompleted: res => {
+        if (res?.updateCart?.data) {
+          setCart(flattenStrapiResponse(res.updateCart.data))
+        }
       },
     },
   )
 
-  const add = (item, quantity) => {
-    // if (!b2bClient) {
-    //   setOpenPopup(true);
-    //   return;
-    // }
-    addToCart({
-      variables: {
-        input: {
-          productId: item.id,
-          quantity,
-          isB2b: true,
+  const addToCart = (item, quantity) => {
+    if (!cart) {
+      createCart({
+        variables: {
+          data: {
+            user: user?.info?.id,
+            cartContent: [{ product: item.id, quantity }],
+          },
         },
-      },
-    })
+      })
+    } else {
+      const itemInCart = cart?.cartContent?.find(
+        el => el?.product?.id === item.id,
+      )
+      if (!itemInCart) {
+        updateCart({
+          variables: {
+            data: {
+              cartContent: [
+                ...cart?.cartContent.map(el => ({
+                  product: el?.product?.id,
+                  quantity: el?.quantity,
+                })),
+                { product: item.id, quantity },
+              ],
+            },
+            id: cart?.id,
+          },
+        })
+      } else {
+        updateCart({
+          variables: {
+            data: {
+              cartContent: cart?.cartContent?.map(el => {
+                if (el?.product?.id === item.id) {
+                  return {
+                    product: el?.product?.id,
+                    quantity: el?.quantity + quantity,
+                  }
+                }
+                return {
+                  product: el?.product?.id,
+                  quantity: el?.quantity,
+                }
+              }),
+            },
+            id: cart?.id,
+          },
+        })
+      }
+    }
   }
 
-  const deleteItem = item => {
-    removeItem({
-      variables: {
-        input: {
-          items: [{ key: item.key, quantity: item.quantity - 1 }],
-          isB2b: true,
+  const deleteFromCart = item => {
+    const itemInCart = cart?.cartContent?.find(
+      el => el?.product?.id === item.product.id,
+    )
+    console.log('itemInCart', itemInCart)
+    console.log('item', item)
+    if (itemInCart?.quantity === 1) {
+      updateCart({
+        variables: {
+          data: {
+            cartContent: cart?.cartContent
+              ?.filter(el => el?.product?.id !== item.product.id)
+              .map(el => ({
+                product: el?.product?.id,
+                quantity: el?.quantity,
+              })),
+          },
+          id: cart?.id,
         },
-      },
-    })
+      })
+    } else {
+      updateCart({
+        variables: {
+          data: {
+            cartContent: cart?.cartContent?.map(el => {
+              if (el?.product?.id === item.product.id) {
+                return {
+                  product: el?.product?.id,
+                  quantity: el?.quantity - 1,
+                }
+              }
+              return {
+                product: el?.product?.id,
+                quantity: el?.quantity,
+              }
+            }),
+          },
+          id: cart?.id,
+        },
+      })
+    }
   }
 
-  const newItem = cart?.find(el => el?.product?.id === product.id)
-    ? cart?.find(el => el?.product?.id === product.id)
+  const newItem = cart?.cartContent?.find(el => el?.product?.id === product.id)
+    ? cart?.cartContent?.find(el => el?.product?.id === product.id)
     : { product: { ...product }, quantity: 0 }
+  const productImage = newItem?.product?.cover?.url
+    ? `${PHOTO_URL}${newItem.product.cover.url}`
+    : ''
+
   return (
     <MainContainer>
       <FastBuyPopup
         openBuyPopup={openBuyPopup}
         setOpenBuyPopup={setOpenBuyPopup}
         item={product}
-        brand={brand}
+        // brand={brand}
         me={me}
       />
       <Wrapper>
-        <BackButton
+        {/* <BackButton
           type={router?.query?.catalog ? 'Магазин' : 'Бренд'}
           name={product?.brand?.name}
           link={`/${
             cyrToTranslit(product?.brand?.addressFull?.city) || city.slug
           }/brand/${product?.brand?.seo?.slug || product?.brand?.id}/products`}
-        />
+        /> */}
         <Wrap>
           <Left>
             <ImageBrand>
               <Image
                 alt="product"
                 src={
-                  newItem?.product?.photoIds[0]
-                    ? ` ${PHOTO_URL}${newItem?.product?.photoIds[0]}/original`
-                    : '/cosmetic_placeholder.jpg'
+                  !!productImage ? productImage : '/cosmetic_placeholder.jpg'
                 }
               />
             </ImageBrand>
-            <Rating>
+            {/* <Rating>
               <Stars count={Math.round(product?.brand?.averageScore)} />
               <Count>{product?.brand?.numberScore || 0}</Count>
-            </Rating>
+            </Rating> */}
           </Left>
           <Right>
-            <Title>{newItem?.product?.title}</Title>
-            {product?.brand?.dontShowPrice && !me?.info ? null : (
+            <Title>{newItem?.product?.name}</Title>
+            {product?.brand?.dontShowPrice ? null : (
               <Price>{`${
-                (newItem?.product?.currentAmount &&
-                  newItem?.product?.currentAmount?.toLocaleString()) ||
-                newItem?.product?.currentAmount?.toLocaleString()
+                (newItem?.product?.salePrice &&
+                  newItem?.product?.salePrice?.toLocaleString()) ||
+                newItem?.product?.regularPrice?.toLocaleString()
               } ₽`}</Price>
             )}
             <AvailableQuantity
-              isWrongQuantity={newItem?.quantity > product?.countAvailable}
+              isWrongQuantity={
+                newItem?.quantity &&
+                newItem.quantity > product?.availableInStock
+              }
             >
-              {`${product?.countAvailable} ${pluralize(
-                product?.countAvailable || 0,
+              {`${product?.availableInStock} ${pluralize(
+                product?.availableInStock || 0,
                 'упаковка',
                 'упаковки',
                 'упаковок',
               )} в наличии`}
             </AvailableQuantity>
             {product?.sku ? <Detail>Артикул: {product?.sku}</Detail> : null}
-            {product?.material ? (
+            {/* {product?.material ? (
               <Detail>Материал: {product?.material}</Detail>
             ) : null}
             {product?.color ? <Detail>Цвет: {product?.color}</Detail> : null}
             {product?.size ? <Detail>Размер: {product?.size}</Detail> : null}
             {product?.quantityInPac ? (
               <Detail>Количество: {product?.quantityInPac}</Detail>
-            ) : null}
+            ) : null} */}
             {newItem?.quantity === 0 ? (
               <>
                 <MobileHidden>
@@ -236,10 +320,10 @@ const ProductPage = ({ brand, product, dataReviews }) => {
                             '/login',
                           )
                         } else {
-                          add(newItem?.product, 1)
+                          addToCart(newItem?.product, 1)
                         }
                       }}
-                      disabled={product?.countAvailable === 0}
+                      disabled={product?.availableInStock === 0}
                     >
                       Добавить в корзину
                     </Button>
@@ -277,10 +361,10 @@ const ProductPage = ({ brand, product, dataReviews }) => {
                             '/login',
                           )
                         } else {
-                          add(newItem?.product, 1)
+                          addToCart(newItem?.product, 1)
                         }
                       }}
-                      disabled={product?.countAvailable === 0}
+                      disabled={product?.availableInStock === 0}
                     >
                       Добавить в корзину
                     </Button>
@@ -290,63 +374,45 @@ const ProductPage = ({ brand, product, dataReviews }) => {
             ) : (
               <WrapButton>
                 <CustomButton
-                  disabled={newItem?.quantity > product?.countAvailable}
-                  onClick={() => router.push(`/cartB2b`)}
+                  disabled={
+                    newItem?.quantity &&
+                    newItem.quantity > product?.availableInStock
+                  }
+                  onClick={() => router.push(`/cart`)}
                 >
                   <TopCustomButton>В корзине</TopCustomButton>
                   <BottomCustomButton>Перейти</BottomCustomButton>
                 </CustomButton>
                 <QuantityWrap>
-                  <Minus onClick={() => deleteItem(newItem)} />
+                  <Minus onClick={() => deleteFromCart(newItem)} />
                   <Quantity
                     isWrongQuantity={
-                      newItem?.quantity > product?.countAvailable
+                      newItem?.quantity &&
+                      newItem.quantity > product?.availableInStock
                     }
                   >{`${newItem?.quantity} шт.`}</Quantity>
                   <Plus
-                    disabled={newItem?.quantity >= product?.countAvailable}
-                    onClick={() => add(newItem?.product, 1)}
+                    disabled={
+                      newItem?.quantity &&
+                      newItem.quantity > product?.availableInStock
+                    }
+                    onClick={() => addToCart(newItem?.product, 1)}
                   />
                 </QuantityWrap>
               </WrapButton>
             )}
             <Description
               dangerouslySetInnerHTML={{
-                __html: newItem?.product?.description || '',
+                __html: newItem?.product?.fullDescription || '',
               }}
             />
-            {/* {newItem?.product?.node?.attributes?.nodes?.length ? (
-              !toggleCharacter ? (
-                <WrapCharacter>
-                  <Character onClick={() => setToggleCharacter(true)}>
-                    Характеристики
-                  </Character>
-                </WrapCharacter>
-              ) : (
-                <WrapCharacter>
-                  <OpenCharacter onClick={() => setToggleCharacter(false)}>
-                    Характеристики
-                  </OpenCharacter>
-                  {newItem?.product?.node?.attributes?.nodes?.length
-                    ? newItem?.product?.node?.attributes?.nodes.map(
-                        (item, key) => (
-                          <Attributes key={key}>
-                            <Name>{item?.name}</Name>
-                            <Value>{item?.options[0] || ""}</Value>
-                          </Attributes>
-                        )
-                      )
-                    : null}
-                </WrapCharacter>
-              )
-            ) : null} */}
           </Right>
         </Wrap>
         <Reviews
           type="PRODUCT"
-          id={newItem?.product?.id}
+          id={newItem?.product?.id || ''}
           reviewMutation={reviewMutation}
-          reviews={reviews?.reviewsForProduct || []}
+          reviews={reviews || []}
           me={me}
         />
       </Wrapper>

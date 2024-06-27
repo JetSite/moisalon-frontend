@@ -14,7 +14,7 @@ export interface IInitialBaseData {
   products: LazyType[]
   cities: LazyType[]
   city: string
-  cart: ICart
+  cart: ICart | null
 }
 
 interface IUseBaseStore {
@@ -28,7 +28,7 @@ interface IUseBaseStore {
   setProducts: (products: LazyType[]) => void
   setSities: (cities: LazyType[]) => void
   setCity: (city: string) => void
-  setCart: (cart: ICart) => void
+  setCart: (cart: ICart | null) => void
 }
 
 const initialData = {

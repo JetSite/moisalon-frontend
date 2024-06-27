@@ -29,6 +29,7 @@ export const getDadataAddress: IGetDadataAddress = async query => {
         geoLon: e.data.geo_lon ? Number(e.data.geo_lon) : null,
         value: e.value,
         city: e.data.city || null,
+        zipcode: e.data.postal_code || null,
       }))
     }
   } catch (error) {

@@ -260,7 +260,7 @@ export const BottomProductsMobile = styled(BottomProducts)`
   }
 `
 
-export const ProductWrapper = styled.div`
+export const ProductWrapper = styled.div<{ link: string }>`
   width: 88px;
   height: 90px;
   margin-top: 12px;
@@ -312,7 +312,7 @@ export const HiddenMobileOrderDetail = styled.div`
   }
 `
 
-export const OrderIcon = styled.div`
+export const OrderIcon = styled.div<{ opened: boolean }>`
   width: 12px;
   height: 12px;
   margin-left: auto;
