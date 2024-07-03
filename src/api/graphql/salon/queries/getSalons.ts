@@ -93,7 +93,9 @@ export const getSalons = gql`
             }
           }
         }
-      ${metaInfo}
+      meta {
+        ${metaInfo}
+      }
     }
   }
 `

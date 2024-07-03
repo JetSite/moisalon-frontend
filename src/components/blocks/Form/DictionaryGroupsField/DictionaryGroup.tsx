@@ -23,7 +23,8 @@ const DictionaryGroup: FC<Props> = ({
 }) => {
   const { description, items = [] } = group
   const dictionary = items.map(item => {
-    const checked = value.map(t => t.id).indexOf(item.id) > -1
+    const checked = value?.map(t => t.id).indexOf(item.id) > -1
+
     const itemProps = {
       ...item,
       ...rest,

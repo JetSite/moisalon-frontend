@@ -4,12 +4,14 @@ import Header from '../../MainPage/components/Header'
 import Controls from '../../../blocks/Form/Controls'
 import { Wrapper } from './styles'
 import CabinetHeaderMobile from '../../../blocks/Cabinet/components/CabinetHeaderMobile'
-import RentSeatForm from './components/RentSeatForm'
+import RentWorkplaceForm from './components/RentWorkplaceForm'
 import { PHOTO_URL } from 'src/api/variables'
 import { ISalonPage } from 'src/types/salon'
 import { useLazyQuery, useQuery } from '@apollo/client'
 import { getSalonPage } from 'src/api/graphql/salon/queries/getSalon'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { IPhoto, IRentalPeriod } from 'src/types'
+import { IEquipment } from 'src/types/equipment'
 
 interface ITab {
   id: string
@@ -22,9 +24,11 @@ interface ITab {
 
 interface Props {
   salonData: ISalonPage
+  retnalPeriods: IRentalPeriod[]
+  equipments: IEquipment[]
 }
 
-const RentSeat: FC<Props> = ({ salonData, seatActivities, seatEquipment }) => {
+const RentSeat: FC<Props> = ({ salonData, retnalPeriods, equipments }) => {
   const [salon, setSalon] = useState<ISalonPage>(salonData)
   const [refetchSalon, { loading }] = useLazyQuery(getSalonPage, {
     variables: { id: salonData.id },
@@ -40,7 +44,7 @@ const RentSeat: FC<Props> = ({ salonData, seatActivities, seatEquipment }) => {
       id: '1',
       value: 'Данные салона',
       anchor: 'cabinet',
-      href: '/createSalon',
+      href: '/rentSalonSeat',
       link: salonData.id,
       back: true,
     },
@@ -59,18 +63,21 @@ const RentSeat: FC<Props> = ({ salonData, seatActivities, seatEquipment }) => {
               noSetPhoto={true}
               photo={
                 salonData.logo
-                  ? { ...salon.logo, url: `${PHOTO_URL}${salonData.logo.url}` }
+                  ? {
+                      ...(salon.logo as IPhoto),
+                      url: `${PHOTO_URL}${salonData.logo.url}`,
+                    }
                   : { url: '/empty-photo.svg', id: 'default', name: 'default' }
               }
             />
           </MobileHidden>
           {salonData?.rent ? (
-            <RentSeatForm
+            <RentWorkplaceForm
               refetchSalonLoad={loading}
               refetchSalon={refetchSalon}
+              retnalPeriods={retnalPeriods}
+              equipments={equipments}
               salon={salon}
-              seatActivities={seatActivities}
-              seatEquipment={seatEquipment}
             />
           ) : null}
         </Wrapper>

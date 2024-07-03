@@ -27,7 +27,9 @@ export const getFeeds = gql`
           publishedAt
         }
       }
-      ${metaInfo}
+      meta {
+        ${metaInfo}
+      }
     }
   }
 `

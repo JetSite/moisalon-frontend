@@ -6,14 +6,14 @@ import {
   IWorkingHours,
   IPhoto,
   IRating,
-  ISalonWorkplaces,
 } from '.'
 import { IBrand } from './brands'
 import { IID } from './common'
 import { IMaster } from './masters'
 import { IReview } from './reviews'
-import { IServices } from './services'
+import { IServiceCategories, IServices } from './services'
 import { IVacancy } from './vacancies'
+import { ISalonWorkplace } from './workplace'
 
 export interface ISalonActivity {
   id: IID
@@ -49,7 +49,7 @@ export interface ISalon {
   photos: IPhoto[]
   salonPhones: ISalonPhones[]
   city: ICity
-  services: IServices[]
+  services: IServiceCategories[]
   ratingCount: number
   ratings: IRating[]
   reviews: IReview[]
@@ -58,7 +58,7 @@ export interface ISalon {
 
 export interface ISalonPage extends ISalon {
   metro_stations?: IMetroStations[]
-  servicesM: IServices[]
+  servicesM: IServiceCategories[]
   brands: IBrand[]
   masters: IMaster[]
   user: { id: IID }
@@ -66,5 +66,5 @@ export interface ISalonPage extends ISalon {
   socialNetworks: ISocialNetworks[]
   vacancies: IVacancy[]
   rental_requests: any[]
-  workplaces: ISalonWorkplaces[]
+  workplaces: ISalonWorkplace[]
 }

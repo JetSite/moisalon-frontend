@@ -15,15 +15,21 @@ import { RENTAL_PERIODS } from 'src/api/graphql/salon/queries/getRentalPeriods'
 import { GetServerSideProps, NextPage } from 'next'
 import { ISalonPage } from 'src/types/salon'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { IRentalPeriod } from 'src/types'
+import { EQUIPMENT } from 'src/api/graphql/equipment/quries/getEquipment'
+import { IEquipment } from 'src/types/equipment'
 
 interface Props {
   salonData: ISalonPage
+  retnalPeriods: IRentalPeriod[]
+  equipments: IEquipment[]
 }
 
 const RentSalonSeat: NextPage<Props> = ({
   salonData,
-  seatActivities,
-  seatEquipment,
+  paymentMethods,
+  retnalPeriods,
+  equipments,
 }) => {
   const router = useRouter()
   const { me } = useAuthStore(getStoreData)
@@ -38,8 +44,8 @@ const RentSalonSeat: NextPage<Props> = ({
     return (
       <RentSeat
         salonData={salonData}
-        seatActivities={seatActivities}
-        seatEquipment={seatEquipment}
+        retnalPeriods={retnalPeriods}
+        equipments={equipments}
       />
     )
   }
@@ -72,19 +78,22 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     apolloClient.query({
       query: RENTAL_PERIODS,
     }),
+    apolloClient.query({
+      query: EQUIPMENT,
+    }),
   ])
 
   const salonData = flattenStrapiResponse(data[0].data.salon)
   const paymentMethods = flattenStrapiResponse(data[1].data.paymentMethods)
   const retnalPeriods = flattenStrapiResponse(data[2].data.rentalPeriods)
+  const equipments = flattenStrapiResponse(data[3].data.equipments)
 
   return addApolloState(apolloClient, {
     props: {
       salonData,
       paymentMethods,
       retnalPeriods,
-      seatActivities: data[0].data.salon,
-      seatEquipment: data[2]?.data?.equipmentSeatServicesCatalog || null,
+      equipments,
     },
   })
 }

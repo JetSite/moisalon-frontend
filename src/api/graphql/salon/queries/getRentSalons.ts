@@ -93,7 +93,9 @@ export const GET_RENT_SALONS = gql`
             }
           }
         }
-      ${metaInfo}
+      meta {
+        ${metaInfo}
+      }
     }
   }
 `

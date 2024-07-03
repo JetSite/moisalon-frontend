@@ -41,7 +41,7 @@ const Empty = styled.div`
   }
 `
 
-const LogoText = styled.div<{ noPhotoError: boolean }>`
+const LogoText = styled.div<{ noPhotoError?: boolean }>`
   width: 120px;
   height: 120px;
   display: flex;
@@ -124,19 +124,18 @@ const PhotoBack = styled.div`
 `
 
 interface Props {
-  onAdd: (id: string) => void
-  setPhoto: ISetState<IPhoto | null>
+  onAdd?: (id: string) => void
+  setPhoto?: ISetState<IPhoto | null>
   photoType: string
   photo: { url: string } | null
   noSetPhoto?: boolean
-  noPhotoError: boolean
-  setNoPhotoError: ISetState<boolean>
+  noPhotoError?: boolean
+  setNoPhotoError?: ISetState<boolean>
   title?: string
   red?: boolean
 }
 
 const Avatar: FC<Props> = ({
-  id,
   photoType,
   onAdd,
   photo,
@@ -161,9 +160,9 @@ const Avatar: FC<Props> = ({
           const res = await uploadImage({ variables: { file } })
           if (res?.data?.upload?.data?.id) {
             const normalisedPhoto = flattenStrapiResponse(res.data.upload.data)
-            setPhoto(normalisedPhoto)
+            setPhoto && setPhoto(normalisedPhoto)
             if (normalisedPhoto.id) {
-              onAdd(normalisedPhoto.id)
+              onAdd && onAdd(normalisedPhoto.id)
             }
           }
         } catch (e) {

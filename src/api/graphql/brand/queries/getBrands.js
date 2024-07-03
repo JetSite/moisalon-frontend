@@ -24,7 +24,9 @@ export const getBrands = gql`
             
         }
       }
-      ${metaInfo}
+      meta {
+        ${metaInfo}
+      }
     }
   }
 `

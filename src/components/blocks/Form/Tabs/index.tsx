@@ -13,7 +13,7 @@ import { ITab } from 'src/components/pages/Salon/CreateSalon/config'
 
 interface Props {
   tabs: ITab[]
-  refActive: string | boolean
+  refActive?: string | boolean
 }
 
 const Tabs: FC<Props> = ({ tabs, refActive }) => {
@@ -43,13 +43,10 @@ const Tabs: FC<Props> = ({ tabs, refActive }) => {
               onClick={() => {
                 handleClick(item)
                 if (item.href && item.link) {
-                  router.push(
-                    {
-                      pathname: item.href,
-                      query: { id: item.link },
-                    },
-                    item.href,
-                  )
+                  router.push({
+                    pathname: item.href,
+                    query: { id: item.link },
+                  })
                 }
               }}
               active={item.id === refActive}

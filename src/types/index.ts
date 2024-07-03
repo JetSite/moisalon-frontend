@@ -100,25 +100,10 @@ export interface IWorkplacesType {
 
 export interface IRentalPeriod {
   id: IID
-  rentalCost: number
-  rental_period: {
-    id: IID
-    title: string
-  }
+  title: string
 }
 
 export interface IPaymentMethods {
   id: IID
   title: string
-}
-
-export interface ISalonWorkplaces {
-  id: IID
-  shareRent: boolean
-  subRent: boolean
-  title: string
-  workspaces_types: IWorkplacesType[]
-  rentalPeriod: IRentalPeriod[]
-  payment_methods: IPaymentMethods[]
-  gallery: IPhoto[]
 }
