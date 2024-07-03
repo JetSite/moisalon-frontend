@@ -55,7 +55,9 @@ export const getProductCategories = gql`
             }
         }
       }
-      ${metaInfo}
+      meta {
+        ${metaInfo}
+      }
     }
   }
 `

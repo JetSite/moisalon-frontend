@@ -2,9 +2,6 @@ import { gql } from '@apollo/client'
 import { imageInfo } from '../../common/imageInfo'
 import {
   salonAdministratorsFragment,
-  salonBrandsFragment,
-  salonMastersFragment,
-  salonReviewsFragment,
   salonServicesFragment,
 } from '../fragments'
 import salonServicesMFragment from '../fragments/salonServicesMFragment'
@@ -16,6 +13,9 @@ import { masterFragment } from '../../me/fragments/master'
 import { brandsFragment } from '../../fragments/brands'
 import { phonesFragment } from '../../fragments/phones'
 import { vacanciesFragment } from '../../me/fragments/vacancies'
+import { paymentMethodsFragment } from '../../fragments/paymentMethods'
+import { rentalPeriodFragment } from '../../fragments/rentalPeriod'
+import { salonWorkplacesFragment } from '../fragments/salonWorkplaces'
 
 export const getSalonPage = gql`
   query salon($id: ID) {
@@ -120,6 +120,37 @@ export const getSalonPage = gql`
             vacancies {
               ${vacanciesFragment}
             }
+            workplaces{
+            ${salonWorkplacesFragment}
+          }
+          rental_requests{
+            data{
+              id
+              attributes{
+                dateAt
+                dateTo
+                title
+                slug
+                status{
+                  data{
+                    id
+                    attributes{
+                      title
+                    }
+                  }
+                }
+                contacts
+                type{
+                  data{
+                    id
+                    attributes{
+                      title
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }

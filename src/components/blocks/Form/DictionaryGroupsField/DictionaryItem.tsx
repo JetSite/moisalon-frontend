@@ -68,10 +68,10 @@ const DictionaryItem: FC<Props> = ({
   title,
 }) => {
   const [check, setCheck] = useState<boolean>(checked)
-
   useEffect(() => {
     if (!check) {
       const index = value.map(t => t.id).indexOf(id)
+
       if (index > -1) {
         remove(index)
       }

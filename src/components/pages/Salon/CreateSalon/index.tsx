@@ -191,7 +191,6 @@ const CreateSalon: FC<Props> = ({ salon, cities, lessor = false }) => {
             refActive={refActive}
             setPhoto={setLogo}
             photo={logo ? { ...logo, url: `${PHOTO_URL}${logo?.url}` } : null}
-            id={null}
             onAdd={onAdd}
             noPhotoError={noPhotoError}
             setNoPhotoError={setNoPhotoError}

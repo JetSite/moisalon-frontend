@@ -19,13 +19,12 @@ import { changeMe } from './graphql/me/mutations/changeMe'
 import { Nullable } from '../types/common'
 import { GetServerSidePropsContext, PreviewData } from 'next'
 import { ParsedUrlQuery } from 'querystring'
-import { IServerProps } from './server/types'
 
-const AuthProvider: FC<{ children: IChildren; serverData?: IServerProps }> = ({
+const AuthProvider: FC<{ children: IChildren; pageProps }> = ({
   children,
-  serverData,
+  pageProps,
 }) => {
-  // console.log(cityData)
+  console.log('pageProps', pageProps)
 
   const router = useRouter()
   const { me, loading, user } = useAuthStore(getStoreData)
@@ -56,13 +55,12 @@ const AuthProvider: FC<{ children: IChildren; serverData?: IServerProps }> = ({
   const [getUser, { loading: userLoading }] = useLazyQuery(USER, {
     onCompleted: data => {
       const prepareData = flattenStrapiResponse(data.usersPermissionsUser)
-      console.log('prepareData', prepareData)
 
       if (!prepareData.selected_city) {
         changeCityFunc({
           variables: {
             id: prepareData.id,
-            data: { selected_city: serverData?.props.city?.id || 1 },
+            data: { selected_city: pageProps?.props.city?.id || 1 },
           },
         })
       }
@@ -117,7 +115,6 @@ const AuthProvider: FC<{ children: IChildren; serverData?: IServerProps }> = ({
     // }
     // initializeCity()
   }, [cityCookie])
-
   useEffect(() => {
     setLoading(meLoading || userLoading)
     if (router.asPath !== authConfig.notAuthLink) {

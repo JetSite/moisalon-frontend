@@ -6,6 +6,7 @@ import { laptopBreakpoint } from '../../../../../../../../styles/variables'
 import { FC, RefObject } from 'react'
 import { IServiceInForm } from 'src/types/services'
 import { IHandleClickNextTabInForm } from '../../../..'
+import { IID } from 'src/types/common'
 
 const Wrapper = styled.div`
   margin-top: 91px;

@@ -116,7 +116,7 @@ const RegistrationForm: FC<Props> = ({
             haveWhatsApp: e.haveWhatsApp,
           })),
           activities: salon.activities.map(e => e.id),
-          services: getServicesForCatalog([]),
+          services: salon.services.map(e => ({ id: e.service.id })),
         }
       : {
           name: '',
@@ -132,7 +132,6 @@ const RegistrationForm: FC<Props> = ({
     return {
       ...initialInput,
       socialNetworks: [],
-      services: [],
       workingHours: [
         {
           startDayOfWeek: 'MONDAY',
@@ -159,19 +158,6 @@ const RegistrationForm: FC<Props> = ({
 
   const [addCity, { loading: addCityLoad }] = useMutation(CREATE_CITY)
 
-  // const { refetch } = useQuery(currentUserSalonsAndMasterQuery, {
-  //   skip: true,
-  //   onCompleted: res => {
-  //     setMe({
-  //       info: res?.me?.info,
-  //       master: res?.me?.master,
-  //       locationByIp: res?.locationByIp,
-  //       salons: res?.me?.salons,
-  //       rentalRequests: res?.me?.rentalRequests,
-  //     })
-  //   },
-  // })
-
   const [mutate, { loading }] = useMutation(UPDATE_SALON, {
     // onError: error => {
     //   const errorMessages = error.graphQLErrors.map(e => e.message)
@@ -192,22 +178,6 @@ const RegistrationForm: FC<Props> = ({
     },
   })
 
-  // const [mutateNameAndAddress] = useMutation(updateSalonIdentityMutation, {
-  //   onError: error => {
-  //     const errorMessages = error.graphQLErrors.map(e => e.message)
-  //     setErrors(errorMessages)
-  //     setErrorPopupOpen(true)
-  //   },
-  // })
-
-  // const [mutateLogo] = useMutation(updateSalonLogoMutation, {
-  //   onError: error => {
-  //     const errorMessages = error.graphQLErrors.map(e => e.message)
-  //     setErrors(errorMessages)
-  //     setErrorPopupOpen(true)
-  //   },
-  // })
-
   const [createSalon, { loading: loadingCreate }] = useMutation(CREATE_SALON, {
     // onCompleted: async ({ createSalon }) => {
     //   await refetch()
@@ -216,18 +186,10 @@ const RegistrationForm: FC<Props> = ({
     //       pathname: lessor ? '/rentSalonSeat' : '/masterCabinet',
     //       query: { id: createSalon.id },
     //     },
-    //     lessor ? '/rentSalonSeat' : '/masterCabinet',
     //   )
   })
 
-  //   onError: error => {
-  //     const errorMessages = error.graphQLErrors.map(e => e.message)
-  //     setErrors(errorMessages)
-  //     setErrorPopupOpen(true)
-  //   },
-  // })
-
-  const onSubmit = values => {
+  const onSubmit = (values: { [K: string]: any }) => {
     const findCity =
       citiesArray?.find(e => e.slug === cyrToTranslit(clickCity)) || null
     if (!findCity) {
@@ -264,90 +226,6 @@ const RegistrationForm: FC<Props> = ({
         createSalon({ variables: { input: { user: me?.info.id, ...input } } })
       }
     }
-
-    //   if (!clickAddress || !values.address) {
-    //     setErrors(['Выберите адрес салона из выпадающего списка'])
-    //     setErrorPopupOpen(true)
-    //     return
-    //   }
-    //   if (!salon && !photoSalonId) {
-    //     setNoPhotoError(true)
-    //     setErrors(['Необходимо добавить логотип салона'])
-    //     setErrorPopupOpen(true)
-    //     return
-    //   }
-    //   if (!salon && !values.photos) {
-    //     setErrors(['Необходимо добавить фото салона'])
-    //     setErrorPopupOpen(true)
-    //     return
-    //   }
-
-    //   if (!salon) {
-    //     const { photos = [], contactPersonPhone = {} } = values
-    //     const personPhone = {
-    //       haveTelegram: false,
-    //       haveViber: false,
-    //       haveWhatsApp: false,
-    //       phoneNumber: '',
-    //     }
-
-    //     createSalon({
-    //       variables: {
-    //         input: {
-    //           ...values,
-    //           contactPersonPhone: { ...personPhone, ...contactPersonPhone },
-    //           isNotRent: false,
-    //           photoIds: photos.map(photo => photo.id),
-    //           logoId: photoSalonId,
-    //           lessor: lessor ? true : false,
-    //         },
-    //       },
-    //     })
-    //   }
-
-    //   if (salon) {
-    //     const { photos = [], contactPersonPhone = {} } = values
-    //     const personPhone = {
-    //       haveTelegram: false,
-    //       haveViber: false,
-    //       haveWhatsApp: false,
-    //       phoneNumber: '',
-    //     }
-
-    //     if (
-    //       salon?.name !== values.name ||
-    //       salon?.address?.full !== values.address
-    //     ) {
-    //       mutateNameAndAddress({
-    //         variables: {
-    //           input: {
-    //             name: values.name,
-    //             address: values.address,
-    //             salonId: salon.id,
-    //           },
-    //         },
-    //       })
-    //     }
-
-    //     if (photoSalonId) {
-    //       mutateLogo({
-    //         variables: { input: { salonId: salon.id, logoId: photoSalonId } },
-    //       })
-    //     }
-
-    //     mutate({
-    //       variables: {
-    //         input: {
-    //           ...values,
-    //           isNotRent: false,
-    //           contactPersonPhone: { ...personPhone, ...contactPersonPhone },
-    //           salonId: salon.id,
-    //           photoIds: photos.map(t => t.id),
-    //           lessor: salon?.lessor ? true : false,
-    //         },
-    //       },
-    //     })
-    //   }
   }
 
   return (

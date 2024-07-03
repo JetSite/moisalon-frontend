@@ -49,7 +49,9 @@ export const getMastersTroughCity = gql`
             }
         }
       }
-      ${metaInfo}
+      meta {
+        ${metaInfo}
+      }
     }
   }
 `

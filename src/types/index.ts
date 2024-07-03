@@ -92,3 +92,18 @@ export interface IGender {
   id: IID
   title: string
 }
+
+export interface IWorkplacesType {
+  id: IID
+  workplaceType: string
+}
+
+export interface IRentalPeriod {
+  id: IID
+  title: string
+}
+
+export interface IPaymentMethods {
+  id: IID
+  title: string
+}

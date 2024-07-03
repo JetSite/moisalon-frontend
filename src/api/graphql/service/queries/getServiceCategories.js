@@ -18,7 +18,9 @@ export const getServiceCategories = gql`
             }
         }
       }
-      ${metaInfo}
+      meta {
+        ${metaInfo}
+      }
     }
   }
 `

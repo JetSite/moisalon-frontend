@@ -85,7 +85,9 @@ export const getSalonsThroughCity = gql`
           }
         }
       }
-      ${metaInfo}
+      meta {
+        ${metaInfo}
+      }
     }
   }
 `

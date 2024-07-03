@@ -22,10 +22,7 @@ export const fetchCity: IFetchCity = async (citySlug = null, ctx) => {
 
   let slug = cityCookie || defaultValues.citySlug
 
-  if (
-    citySlug
-    // &&  citySlug !== 'null'
-  ) {
+  if (citySlug && citySlug !== 'null') {
     slug = citySlug
   }
 
@@ -42,5 +39,5 @@ export const fetchCity: IFetchCity = async (citySlug = null, ctx) => {
     return response[0]
   }
 
-  return { slug: defaultValues.citySlug, id: 1 }
+  return { slug: defaultValues.citySlug, id: '1' }
 }

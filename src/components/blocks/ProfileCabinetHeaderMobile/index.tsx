@@ -43,7 +43,7 @@ const CabinetHeaderMobile: FC<Props> = ({
   setToggle,
 }) => {
   const salons = user?.owner?.salons
-  const master = user?.owner?.masters[0]
+  const master = user?.owner?.masters?.length ? user?.owner?.masters[0] : null
   const brands = user?.owner?.brand
   const { city } = useAuthStore(getStoreData)
 
@@ -93,10 +93,8 @@ const CabinetHeaderMobile: FC<Props> = ({
                   <Link
                     href={
                       item.workplacesCount
-                        ? `/${item.cities?.slug || city?.slug}/rent/${item?.id}`
-                        : `/${item.cities?.slug || city?.slug}/salon/${
-                            item?.id
-                          }`
+                        ? `/${item.city?.slug || city?.slug}/rent/${item?.id}`
+                        : `/${item.city?.slug || city?.slug}/salon/${item?.id}`
                     }
                   >
                     <Item>

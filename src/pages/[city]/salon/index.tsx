@@ -22,7 +22,6 @@ import { checkErr } from 'src/api/utils/checkErr'
 import { getRating } from 'src/utils/newUtils/getRating'
 import { INextContext, Nullable } from 'src/types/common'
 import { ApolloQueryResult } from '@apollo/client'
-import { serverProvider } from 'src/api/server'
 import Cookies from 'cookies'
 
 export interface ITotalCount {
@@ -37,20 +36,8 @@ interface Props extends ISalonsPageProps {
   salons: ISalon[] | null
 }
 
-const AllSalons: FC<Props> = ({
-  serverProviderData,
-  brands,
-  masters,
-  salons,
-  ...props
-}) => {
+const AllSalons: FC<Props> = ({ brands, masters, salons, ...props }) => {
   const layout = { brands, masters, salons }
-  console.log(
-    'serverCookieMe: ',
-    JSON.stringify(serverProviderData.props.user.me),
-    'server: ',
-    serverProviderData,
-  )
 
   return (
     <CategoryPageLayout {...layout}>
@@ -103,16 +90,6 @@ export const getServerSideProps: GetServerSideProps<
     }),
   ])
 
-  const serverProviderData = await serverProvider<ISalonsPageProps>({
-    data: {
-      pageData: data[0],
-      otherData: [data[1], data[2], data[3]],
-      totalCount: [data[1], data[2], data[3]],
-      pagination: [data[0]],
-    },
-    ctx,
-  })
-
   const cityData = (await fetchCity(ctx.query.city as string, ctx)) || {
     slug: defaultValues.citySlug,
   }
@@ -122,13 +99,11 @@ export const getServerSideProps: GetServerSideProps<
     data[0].data.salons.meta.pagination || null
   const brands: IBrand[] = flattenStrapiResponse(data[1].data.brands)
   const masters: IMaster[] = flattenStrapiResponse(data[2].data.masters)
-  const salons: ISalon[] = flattenStrapiResponse(data[3]?.data.salons) // TODO: отделить главный контент от допа
+  const salons: ISalon[] = flattenStrapiResponse(data[3]?.data.salons)
 
-  // return dataaaaa
   return {
     notFound: !cityData?.name,
     props: {
-      serverProviderData,
       salonData: salonData.map(e => {
         const reviewsCount = e.reviews.length
         const { rating, ratingCount } = getRating(e.ratings)
