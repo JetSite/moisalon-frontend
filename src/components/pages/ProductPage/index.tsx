@@ -53,6 +53,8 @@ import { IReview } from 'src/types/reviews'
 import { UPDATE_CART } from 'src/api/graphql/cart/mutations/updateCart'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { CREATE_CART } from 'src/api/graphql/cart/mutations/createCart'
+import { ADD_REVIEW_PRODUCT } from 'src/api/graphql/product/mutations/addReviewProduct'
+import { GET_PRODUCT_REVIEWS } from 'src/api/graphql/product/queries/getProductReviews'
 
 interface IProductPageProps {
   product: IProduct
@@ -68,9 +70,7 @@ const ProductPage: FC<IProductPageProps> = ({ product, reviews }) => {
   const [toggleCharacter, setToggleCharacter] = useState(false)
   const [openPopup, setOpenPopup] = useState(false)
   const [openBuyPopup, setOpenBuyPopup] = useState(false)
-
-  console.log('product', product)
-  console.log('reviews', reviews)
+  const [loading, setLoading] = useState<boolean>(false)
 
   const router = useRouter()
 
@@ -78,23 +78,27 @@ const ProductPage: FC<IProductPageProps> = ({ product, reviews }) => {
     setOpenPopup(false)
   }
 
-  // const setChosenItemId = () => {}
-
-  // useEffect(() => {
-  //   setChosenItemId(product.id)
-  // }, [])
-
-  const { refetch: refetchReviews } = useQuery(reviewsforProductB2c, {
-    variables: { originId: product?.id },
-    skip: true,
-    onCompleted: res => {
-      setReviewsData(res)
+  const { refetch: refetchReviews } = useQuery(GET_PRODUCT_REVIEWS, {
+    variables: {
+      filters: {
+        product: {
+          id: {
+            eq: product.id,
+          },
+        },
+      },
     },
   })
 
-  const [reviewMutation] = useMutation(createReviewMutation, {
-    onCompleted: () => {
-      refetchReviews()
+  const [reviewMutation] = useMutation(ADD_REVIEW_PRODUCT, {
+    onCompleted: async () => {
+      const res = await refetchReviews({
+        filters: { product: { id: { eq: product.id } } },
+      })
+      if (res?.data?.reviews?.data) {
+        setReviewsData(flattenStrapiResponse(res.data.reviews.data))
+        setLoading(false)
+      }
     },
   })
 
@@ -177,8 +181,6 @@ const ProductPage: FC<IProductPageProps> = ({ product, reviews }) => {
     const itemInCart = cart?.cartContent?.find(
       el => el?.product?.id === item.product.id,
     )
-    console.log('itemInCart', itemInCart)
-    console.log('item', item)
     if (itemInCart?.quantity === 1) {
       updateCart({
         variables: {
@@ -412,8 +414,10 @@ const ProductPage: FC<IProductPageProps> = ({ product, reviews }) => {
           type="PRODUCT"
           id={newItem?.product?.id || ''}
           reviewMutation={reviewMutation}
-          reviews={reviews || []}
+          reviews={reviewsData || []}
           me={me}
+          loading={loading}
+          setLoading={setLoading}
         />
       </Wrapper>
 

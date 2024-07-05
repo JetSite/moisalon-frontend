@@ -60,8 +60,6 @@ const Order: FC<IProps> = ({ order }) => {
     deleted: 'Удален',
   }
 
-  console.log('order', order)
-
   const orderDate = new Date(order?.createdAt)
   const totalAmount = order?.cartContent?.reduce(
     (acc, item) =>

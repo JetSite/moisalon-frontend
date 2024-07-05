@@ -28,32 +28,12 @@ const BeautyFreeShopPage: FC<IBeautyFreeShopPageProps> = ({
   dataProductCategories,
 }) => {
   const { user } = useAuthStore(getStoreData)
-  const { setCart } = useBaseStore(getStoreEvent)
   const [filter, setFilter] = useState(null)
   const [productsData, setProductsData] = useState(dataProducts)
   // const [refetchLoading, setRefetchLoading] = useState(false)
   const [selectedProduct, setSelectedProduct] = useState('Все категории')
 
   const isMobile = useCheckMobileDevice()
-
-  const cartId = useMemo(() => user?.owner?.carts?.[0]?.id, [user])
-
-  const {
-    data: dataCart,
-    refetch: refetchCart,
-    loading: loadingCart,
-  } = useQuery(GET_CART, {
-    skip: !cartId,
-    notifyOnNetworkStatusChange: true,
-    variables: {
-      id: cartId,
-    },
-    onCompleted: res => {
-      if (res?.cart?.data) {
-        setCart(flattenStrapiResponse(res.cart.data))
-      }
-    },
-  })
 
   const { refetch: refectchProducts, loading: refetchLoading } = useQuery(
     getProducts,
@@ -63,7 +43,6 @@ const BeautyFreeShopPage: FC<IBeautyFreeShopPageProps> = ({
       onCompleted: res => {
         if (res?.products?.data) {
           const normalisedProducts = flattenStrapiResponse(res.products.data)
-          setRefetchLoading(false)
           setProductsData(normalisedProducts)
         }
       },
@@ -74,7 +53,6 @@ const BeautyFreeShopPage: FC<IBeautyFreeShopPageProps> = ({
     if (!filter?.value || filter?.value === 'Все категории') {
       setProductsData(dataProducts)
     } else {
-      setRefetchLoading(true)
       refectchProducts({
         filtersInput: {
           product_categories: {
@@ -98,7 +76,7 @@ const BeautyFreeShopPage: FC<IBeautyFreeShopPageProps> = ({
           <meta property="og:image" content={brand?.photo?.url} />
         ) : null}
       </Head>
-      <Header me={me} brand={brand} />
+      {/* <Header me={me} brand={brand} /> */}
       <Wrapper>
         <FilterCatalog
           productCategories={dataProductCategories}
@@ -111,7 +89,6 @@ const BeautyFreeShopPage: FC<IBeautyFreeShopPageProps> = ({
       {productsData && !!productsData?.length ? (
         <Catalog
           user={user}
-          refetchCart={refetchCart}
           products={productsData}
           // hasNextPage={goodsData?.connection?.pageInfo?.hasNextPage}
           // fetchMore={loadMore}

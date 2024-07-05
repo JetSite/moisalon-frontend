@@ -79,8 +79,6 @@ const SuccessForm: FC<IProps> = ({
       return acc + price * item.quantity
     }, 0) || 0
 
-  console.log('cart', cart)
-
   return (
     <>
       <Content>

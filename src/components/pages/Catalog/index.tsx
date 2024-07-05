@@ -30,7 +30,6 @@ const Catalog: FC<ICatalogProps> = ({
   me,
   noTitle,
   catalog = false,
-  refetchCart,
   brand,
 }) => {
   const { cart } = useBaseStore(getStoreData)
@@ -116,8 +115,6 @@ const Catalog: FC<ICatalogProps> = ({
     const itemInCart = cart?.cartContent?.find(
       el => el?.product?.id === item.product.id,
     )
-    console.log('itemInCart', itemInCart)
-    console.log('item', item)
     if (itemInCart?.quantity === 1) {
       updateCart({
         variables: {

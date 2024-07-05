@@ -124,7 +124,7 @@ const checkedProductBrands = (checkedArr, productArr) => {
   return newArr
 }
 
-const Cart = ({ me, refetchCart }) => {
+const Cart = ({ me }) => {
   const { cart } = useBaseStore(getStoreData)
   const [open, setOpen] = useState(false)
   const { city } = useAuthStore(getStoreData)
@@ -161,7 +161,7 @@ const Cart = ({ me, refetchCart }) => {
 
   const [removeItem] = useMutation(removeItemB2cMutation, {
     onCompleted: () => {
-      refetchCart()
+      // refetchCart()
     },
   })
 

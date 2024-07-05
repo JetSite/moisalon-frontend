@@ -9,33 +9,11 @@ import useAuthStore from 'src/store/authStore'
 import useBaseStore from 'src/store/baseStore'
 
 const CartPage = () => {
-  const { setCart } = useBaseStore(getStoreEvent)
-  const { me, user } = useAuthStore(getStoreData)
-  console.log('user', user)
-  const {
-    data: dataCart,
-    loading: loadingCart,
-    refetch: refetchCart,
-  } = useQuery(getCart, {
-    skip: true,
-    onCompleted: res => {
-      setProductsState(res?.getCartB2b?.contents || [])
-    },
-  })
-
-  useEffect(() => {
-    if (!!user?.owner?.cart) {
-      setCart(user.owner.cart)
-    }
-  }, [user])
-
-  if (loadingCart) {
-    return <ContentFormSkeleton me={me} loading={false} />
-  }
+  const { me } = useAuthStore(getStoreData)
 
   return (
     <MainLayout me={me}>
-      <Cart me={me} refetchCart={refetchCart} />
+      <Cart me={me} />
     </MainLayout>
   )
 }
