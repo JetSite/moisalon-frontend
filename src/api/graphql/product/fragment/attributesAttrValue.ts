@@ -6,7 +6,7 @@ attr_value {
     id
     attributes {
       title
-      attr_groups {
+      attr_group {
         data {
           id
           attributes {

@@ -1,6 +1,7 @@
 import { IPhoto } from '.'
 import { IBrand } from './brands'
 import { IID } from './common'
+import { IUser } from './me'
 
 export interface IProductCategories {
   title: string
@@ -34,10 +35,24 @@ export interface IProduct {
   salePrice: number
   fullDescription: string
   shortDescription: string
-  availableInStock: boolean
+  availableInStock: number
   product_categories: IProductCategories
   attributes: IAttributesAttrValue
   cover: IPhoto
   gallery: IPhoto[]
   brand: IBrand
+}
+
+export interface IProductCart {
+  product: IProduct
+  quantity: number
+}
+
+export interface ICart {
+  id: IID
+  title: string
+  shippingTotal: number
+  total: number
+  cartContent: IProductCart[]
+  user: IUser
 }

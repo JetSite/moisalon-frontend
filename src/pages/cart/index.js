@@ -1,38 +1,19 @@
-import styled from 'styled-components'
-import Link from 'next/link'
-import React from 'react'
+import React, { useEffect } from 'react'
 import MainLayout from '../../layouts/MainLayout'
-import Button from '../../components/ui/Button'
-import { cyrToTranslit } from '../../utils/translit'
+import { useQuery } from '@apollo/client'
+import ContentFormSkeleton from '../../components/ui/ContentSkeleton/ContentFormSkeleton'
+import { getCart } from '../../_graphql-legacy/cart/getCart'
+import Cart from '../../components/pages/Cart'
+import { getStoreData, getStoreEvent } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
-import { getStoreData } from 'src/store/utils'
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 100px;
-`
-
-const Wrap = styled.div`
-  margin-bottom: 50px;
-`
+import useBaseStore from 'src/store/baseStore'
 
 const CartPage = () => {
   const { me } = useAuthStore(getStoreData)
 
   return (
     <MainLayout me={me}>
-      <Wrapper>
-        <Wrap>
-          <Link href={`/cartB2b`}>
-            <Button variant="red">B2B корзина</Button>
-          </Link>
-        </Wrap>
-        <Link href="/cartB2c">
-          <Button variant="red">B2C корзина</Button>
-        </Link>
-      </Wrapper>
+      <Cart me={me} />
     </MainLayout>
   )
 }

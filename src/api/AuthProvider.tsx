@@ -19,6 +19,8 @@ import { changeMe } from './graphql/me/mutations/changeMe'
 import { Nullable } from '../types/common'
 import { GetServerSidePropsContext, PreviewData } from 'next'
 import { ParsedUrlQuery } from 'querystring'
+import { IServerProps } from './server/types'
+import useBaseStore from 'src/store/baseStore'
 
 const AuthProvider: FC<{ children: IChildren; pageProps }> = ({
   children,
@@ -29,6 +31,7 @@ const AuthProvider: FC<{ children: IChildren; pageProps }> = ({
   const router = useRouter()
   const { me, loading, user } = useAuthStore(getStoreData)
   const { setMe, setLoading, setCity, setUser } = useAuthStore(getStoreEvent)
+  const { setCart } = useBaseStore(getStoreEvent)
   const accessToken = getCookie(authConfig.tokenKeyName)
   const cityCookie = getCookie(authConfig.cityKeyName)
 
@@ -54,6 +57,7 @@ const AuthProvider: FC<{ children: IChildren; pageProps }> = ({
   const [getMe, { loading: meLoading }] = useLazyQuery(ME, getMeCB)
   const [getUser, { loading: userLoading }] = useLazyQuery(USER, {
     onCompleted: data => {
+      console.log('data', data)
       const prepareData = flattenStrapiResponse(data.usersPermissionsUser)
 
       if (!prepareData.selected_city) {
@@ -76,6 +80,7 @@ const AuthProvider: FC<{ children: IChildren; pageProps }> = ({
         salons: prepareData.salons,
         masters: prepareData.masters,
         brand: prepareData.brands,
+        cart: prepareData.cart,
       }
 
       const favorite: IUserThings = {
@@ -90,6 +95,7 @@ const AuthProvider: FC<{ children: IChildren; pageProps }> = ({
         favorite,
         vacancies: prepareData.vacancies as IVacancy[],
         reviews: prepareData.reviews as IReview[],
+        orders: prepareData.orders as any,
       })
       setMe({
         info,
@@ -99,6 +105,9 @@ const AuthProvider: FC<{ children: IChildren; pageProps }> = ({
         authConfig.cityKeyName,
         prepareData.selected_city?.slug || defaultValues.citySlug,
       )
+      if (prepareData.cart) {
+        setCart(prepareData.cart)
+      }
     },
     onError: err => console.log(err),
     notifyOnNetworkStatusChange: true,

@@ -2,7 +2,8 @@ import { ICity, IPhoto } from '.'
 import { IBrand } from './brands'
 import { IID, LazyType } from './common'
 import { IMaster } from './masters'
-import { IProduct } from './product'
+import { IOrder } from './orders'
+import { ICart, IProduct } from './product'
 import { IReview } from './reviews'
 import { ISalon } from './salon'
 import { IVacancy } from './vacancies'
@@ -22,6 +23,7 @@ export interface IUserThings {
   brand?: IBrand[]
   products?: IProduct[]
   educations?: any
+  cart: ICart
 }
 
 export interface IUserReviews extends IReview {
@@ -49,5 +51,5 @@ export interface IUser extends Omit<IMe, 'owner'> {
   favorite?: IUserThings
   vacancies?: IVacancy[]
   reviews?: IUserReviews[]
-  orders?: LazyType[]
+  orders?: IOrder[]
 }

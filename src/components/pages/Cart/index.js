@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, use } from 'react'
 import { useRouter } from 'next/router'
 import { useMutation } from '@apollo/react-hooks'
 import {
@@ -33,6 +33,7 @@ import BackButton from '../../ui/BackButton'
 import { cyrToTranslit } from '../../../utils/translit'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
+import useBaseStore from 'src/store/baseStore'
 
 const CountProduct = items => {
   if (items?.length) {
@@ -49,7 +50,7 @@ export const BpIcon = styled('span')(() => ({
   borderRadius: 3,
   width: 23,
   height: 23,
-  backgroundColor: '#fff',
+  backgroundColor: '#E3E3E3',
   border: '1px solid #E3E3E3',
   '&:hover': { bgcolor: 'transparent' },
   'input:hover ~ &': {
@@ -83,20 +84,28 @@ const totalSumm = items => {
   } else {
     let count = 0
     for (let i = 0; i < items.length; i++) {
-      count += items[i].product.currentAmount * items[i].quantity
+      count +=
+        (items[i].product.salePrice || items[i].product.regularPrice) *
+        items[i].quantity
     }
     return count
   }
 }
 
 const checkSumm = (brand, checkedProducts) => {
-  if (checkedProducts.find(el => el?.product?.brand?.name === brand?.name)) {
-    const summArr = checkedProducts.filter(
-      item => item?.product?.brand?.name === brand?.name,
+  if (
+    checkedProducts?.find(
+      el => el?.product?.brand?.name === brand?.attributes?.name,
+    )
+  ) {
+    const summArr = checkedProducts?.filter(
+      item => item?.product?.brand?.name === brand?.attributes?.name,
     )
     let summAll = 0
     summArr.forEach(el => (summAll += totalSumm([el])))
-    return summAll < +brand?.minimalOrderPrice ? brand.name : true
+    return summAll < +brand?.attributes?.minimalOrderPrice
+      ? brand.attributes.name
+      : true
   }
   return true
 }
@@ -104,27 +113,31 @@ const checkSumm = (brand, checkedProducts) => {
 const checkedProductBrands = (checkedArr, productArr) => {
   let newArr = []
   productArr.forEach(item => {
-    if (checkedArr.find(el => el?.product?.brand?.name.trim() === item.name)) {
+    if (
+      checkedArr.find(
+        el => el?.product?.brand?.name.trim() === item.attributes.name,
+      )
+    ) {
       newArr.push(item)
     }
   })
   return newArr
 }
 
-const Cart = ({ cart, total, me, refetchCart }) => {
+const Cart = ({ me }) => {
+  const { cart } = useBaseStore(getStoreData)
   const [open, setOpen] = useState(false)
   const { city } = useAuthStore(getStoreData)
   const [checkMinimalSumm, setCheckMinimalSumm] = useState(false)
   const [productBrands, setProductBrands] = useState([])
   const [checkAll, setCheckAll] = useState(true)
   const [openOrder, setOpenOrder] = useState(false)
-  const [checkedProducts, setCheckedProducts] = useState(cart)
+  const [checkedProducts, setCheckedProducts] = useState(cart?.cartContent)
   const [clickAddress, setClickAddress] = useState(false)
   const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
   const [errors, setErrors] = useState(null)
   const [isWrongQuantity, setIsWrongQuantity] = useState(false)
   const router = useRouter()
-  const b2bClient = !!me?.master?.id || !!me?.salons?.length
 
   const handleCloseOrder = useCallback(() => {
     setOpenOrder(false)
@@ -138,8 +151,8 @@ const Cart = ({ cart, total, me, refetchCart }) => {
     setCheckMinimalSumm(
       checkedProductBrands(checkedProducts, productBrands)
         .map(item =>
-          item?.minimalOrderPrice
-            ? checkSumm(item, checkedProducts, total)
+          item?.attributes?.minimalOrderPrice
+            ? checkSumm(item, checkedProducts, cart?.total)
             : true,
         )
         .filter(el => el !== true),
@@ -148,7 +161,7 @@ const Cart = ({ cart, total, me, refetchCart }) => {
 
   const [removeItem] = useMutation(removeItemB2cMutation, {
     onCompleted: () => {
-      refetchCart()
+      // refetchCart()
     },
   })
 
@@ -167,17 +180,15 @@ const Cart = ({ cart, total, me, refetchCart }) => {
   }
 
   useEffect(() => {
-    setCheckedProducts(
-      cart.filter(item => {
-        return checkedProducts.find(el => el.key === item.key)
-      }),
-    )
-  }, [cart])
+    if (cart?.cartContent?.length) {
+      setCheckedProducts(cart?.cartContent)
+    }
+  }, [cart?.cartContent])
 
   useEffect(() => {
     const isWrongQuantities = []
-    cart.map(product => {
-      if (product.quantity > product.product.countAvailable) {
+    cart?.cartContent?.map(product => {
+      if (product.quantity > product.product.availableInStock) {
         isWrongQuantities.push(true)
       } else {
         isWrongQuantities.push(false)
@@ -187,39 +198,19 @@ const Cart = ({ cart, total, me, refetchCart }) => {
   }, [cart])
 
   useEffect(() => {
-    if (checkedProducts.length === cart.length) {
+    if (checkedProducts?.length === cart?.cartContent?.length) {
       setCheckAll(true)
     } else {
       setCheckAll(false)
     }
-  }, [checkedProducts])
+  }, [checkedProducts, cart])
 
   const handleCheckAll = () => {
     if (checkAll) {
       setCheckedProducts([])
     } else {
-      setCheckedProducts(cart)
+      setCheckedProducts(cart?.cartContent)
     }
-  }
-
-  const handleDelete = () => {
-    const itemsDelete = checkedProducts.map(item => {
-      return {
-        key: item.key,
-        quantity: 0,
-      }
-    })
-    removeItem({
-      variables: {
-        input: {
-          items: itemsDelete,
-          clientMutationId: '',
-          isB2b: true,
-        },
-      },
-    })
-    setCheckedProducts([])
-    setProductBrands([])
   }
 
   const onSubmit = values => {
@@ -229,7 +220,7 @@ const Cart = ({ cart, total, me, refetchCart }) => {
       return
     }
     let newArray = []
-    for (let i = 0; i < checkedProducts.length; i++) {
+    for (let i = 0; i < checkedProducts?.length; i++) {
       newArray.push({
         // brand: checkedProducts[i].brandId,
         id: checkedProducts[i].product.id,
@@ -260,7 +251,7 @@ const Cart = ({ cart, total, me, refetchCart }) => {
         onlyType
         link={`/${city.slug}/beautyFreeShop`}
       />
-      {!cart?.length ? (
+      {!cart?.cartContent?.length ? (
         <>
           {' '}
           <NoItemsText>Ваша корзина пуста, наполните её товарами.</NoItemsText>
@@ -273,7 +264,7 @@ const Cart = ({ cart, total, me, refetchCart }) => {
       ) : (
         <>
           {' '}
-          <Title>Корзина ({CountProduct(cart)})</Title>
+          <Title>Корзина ({CountProduct(cart?.cartContent)})</Title>
           <Wrap>
             <ProductsWrap>
               <CheckAndDelete>
@@ -293,12 +284,11 @@ const Cart = ({ cart, total, me, refetchCart }) => {
                 ) : null}
               </CheckAndDelete>
               <Content>
-                {cart?.map(item => (
+                {cart?.cartContent?.map(item => (
                   <Product
                     checkedProducts={checkedProducts}
                     key={item.key}
                     item={item}
-                    refetchCart={refetchCart}
                     setCheckedProducts={setCheckedProducts}
                     removeItem={removeItem}
                     productBrands={productBrands}
@@ -340,7 +330,7 @@ const Cart = ({ cart, total, me, refetchCart }) => {
                 size="fullWidth"
                 variant="red"
                 disabled={
-                  !checkedProducts.length ||
+                  !checkedProducts?.length ||
                   checkMinimalSumm?.length ||
                   isWrongQuantity
                 }

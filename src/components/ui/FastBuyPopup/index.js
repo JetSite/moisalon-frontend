@@ -132,9 +132,7 @@ const FastBuyPopup = ({ item, openBuyPopup, setOpenBuyPopup, me, brand }) => {
     setName(e.target.value)
   }
 
-  const minimalPrice =
-    brand?.minimalOrderPrice || item?.brand?.minimalOrderPrice
-  const brandName = brand?.name || item?.brand?.name
+  const productImage = item?.cover?.url ? `${PHOTO_URL}${item.cover.url}` : ''
 
   return (
     <CSSTransition
@@ -151,9 +149,7 @@ const FastBuyPopup = ({ item, openBuyPopup, setOpenBuyPopup, me, brand }) => {
               <Left>
                 <Image
                   src={
-                    item?.photoIds[0]
-                      ? ` ${PHOTO_URL}${item?.photoIds[0]}/original`
-                      : '/cosmetic_placeholder.jpg'
+                    !!productImage ? productImage : '/cosmetic_placeholder.jpg'
                   }
                 />
               </Left>
@@ -168,14 +164,11 @@ const FastBuyPopup = ({ item, openBuyPopup, setOpenBuyPopup, me, brand }) => {
                       }, чтобы наш менеджер связался с Вами по
                       поводу заказа`}
                     </Title>
-                    {minimalPrice ? (
-                      <MinimalOrder>{`*Минимальная сумма заказа бренда - ${name}: ${minimalPrice}`}</MinimalOrder>
-                    ) : null}
                     <PopupInput
                       type="text"
                       required
                       placeholder="Имя"
-                      value={name}
+                      value={name || me?.info?.username || ''}
                       onChange={nameChangeHandler}
                     />
                     <PhoneInputWrap>
@@ -194,25 +187,14 @@ const FastBuyPopup = ({ item, openBuyPopup, setOpenBuyPopup, me, brand }) => {
                         {item?.shortDescription}
                       </ProductDescription>
                     </TitleWrap>
-                    {item?.brand?.dontShowPrice && !me?.info ? null : (
-                      <PriceWrap>
-                        <Description>Сумма заказа: </Description>
-                        <Price
-                          lessMinPrice={
-                            minimalPrice &&
-                            item?.currentAmount?.toLocaleString() *
-                              productQuantity <
-                              minimalPrice
-                          }
-                        >{`${
-                          (item?.currentAmount &&
-                            item?.currentAmount?.toLocaleString() *
-                              productQuantity) ||
-                          item?.currentAmount?.toLocaleString() *
-                            productQuantity
-                        } ₽`}</Price>
-                      </PriceWrap>
-                    )}
+                    <PriceWrap>
+                      <Description>Сумма заказа: </Description>
+                      <Price>{`${
+                        (item?.salePrice &&
+                          item?.salePrice.toLocaleString() * productQuantity) ||
+                        item?.regularPrice?.toLocaleString() * productQuantity
+                      } ₽`}</Price>
+                    </PriceWrap>
                     <QuantityWrap>
                       <Description>Количество: </Description>
                       <QuantityButtons>
@@ -222,16 +204,7 @@ const FastBuyPopup = ({ item, openBuyPopup, setOpenBuyPopup, me, brand }) => {
                       </QuantityButtons>
                     </QuantityWrap>
                     <Error>{error ? error : ''}</Error>
-                    <ButtonPopup
-                      onClick={buyProduct}
-                      variant="red"
-                      disabled={
-                        minimalPrice &&
-                        item?.currentAmount?.toLocaleString() *
-                          productQuantity <
-                          minimalPrice
-                      }
-                    >
+                    <ButtonPopup onClick={buyProduct} variant="red" disabled>
                       Отправить заказ
                     </ButtonPopup>
                   </>

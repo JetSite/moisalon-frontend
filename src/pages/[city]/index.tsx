@@ -19,6 +19,8 @@ import { getSearchCity } from 'src/api/graphql/city/getSearchCity'
 import { fetchCity } from 'src/api/utils/fetchCity'
 import { getTotalCount } from 'src/utils/getTotalCount'
 import { ITotalCount } from './salon'
+import { getProductCategories } from 'src/api/graphql/product/queries/getProductCategories'
+import { useQuery } from '@apollo/client'
 
 interface Props {
   beautyCategories: any
@@ -38,19 +40,6 @@ export default function Main({
   // const [city, setCity] = useContext(CityContext);
   // const [query, setQuery] = useContext(SearchMainQueryContext);
   // const router = useRouter();
-
-  // const { refetch } = useQuery(currentUserSalonsAndMasterQuery, {
-  //   skip: true,
-  //   onCompleted: (res) => {
-  //     setMe({
-  //       info: res?.me?.info,
-  //       master: res?.me?.master,
-  //       locationByIp: res?.locationByIp,
-  //       salons: res?.me?.salons,
-  //       rentalRequests: res?.me?.rentalRequests,
-  //     });
-  //   },
-  // });
 
   // const [changeCityFunc] = useMutation(changeCityMutation, {
   //   onCompleted: () => {
