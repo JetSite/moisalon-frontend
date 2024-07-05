@@ -9,7 +9,7 @@ import { IID, ISetState } from 'src/types/common'
 
 interface Props {
   photos: IPhoto[]
-  setPhotosArray: ISetState<string[]>
+  setPhotosArray?: ISetState<string[]>
 }
 
 const usePhotos = ({
@@ -28,7 +28,7 @@ const usePhotos = ({
   const [uploadImage] = useMutation(UPLOAD, {
     onCompleted: data => {
       const photo = flattenStrapiResponse(data.upload.data)
-      setPhotosArray(prev => prev.concat(photo.id))
+      setPhotosArray && setPhotosArray(prev => prev.concat(photo.id))
       addPhoto(0, photo)
       if (defaultPhotoId === '' || photos.length === 0) {
         onSetDefault(photo.id)

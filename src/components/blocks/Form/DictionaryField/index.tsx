@@ -48,7 +48,7 @@ const ShowMore = styled.div`
 
 interface Props {
   title?: string
-  description: string
+  description?: string
   name: string
   // groups: IActivitiesInForm[]
   groups: any[]
@@ -133,30 +133,28 @@ const DictionaryField: FC<Props> = props => {
           const dictionaryItems =
             isMobile && !isOpenMore ? collapsedItems : items
 
-          const dictionary = dictionaryItems.map(
-            ({ index, title, ...group }) => {
-              const checked = value.indexOf(group.id) > -1
+          const dictionary = dictionaryItems.map(({ index, ...group }) => {
+            const checked = value.indexOf(group.id) > -1
 
-              const itemProps = {
-                item: {
-                  ...group,
-                  label: title,
-                  checked,
-                },
-                fields,
-                index,
-                name: index === 0 ? name : undefined,
-              }
+            const itemProps = {
+              item: {
+                ...group,
+                label: group?.title,
+                checked,
+              },
+              fields,
+              index,
+              name: index === 0 ? name : undefined,
+            }
 
-              return (
-                <DictionaryItem
-                  {...itemProps}
-                  key={group.id}
-                  onlyOneChoose={onlyOneChoose}
-                />
-              )
-            },
-          )
+            return (
+              <DictionaryItem
+                {...itemProps}
+                key={group.id}
+                onlyOneChoose={onlyOneChoose}
+              />
+            )
+          })
 
           const moreItems = isMobile ? (
             <ShowMore

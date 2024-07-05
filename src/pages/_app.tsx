@@ -17,7 +17,6 @@ import { red } from '../styles/variables'
 import { AppProps } from 'next/app'
 import { MainHead } from './MainHead'
 import AuthProvider from 'src/api/AuthProvider'
-import { IServerProps } from 'src/api/server/types'
 
 const progress = new ProgressBar({
   size: 2,
@@ -26,9 +25,9 @@ const progress = new ProgressBar({
   delay: 100,
 })
 
-function MyApp({ Component, pageProps }: AppProps<IServerProps>) {
+function MyApp({ Component, pageProps }: AppProps) {
   const mobileMedia = useMedia({ maxWidth: 768 })
-  const apolloClient = useApollo<IServerProps>(pageProps)
+  const apolloClient = useApollo(pageProps)
 
   const router = useRouter()
 
@@ -70,7 +69,7 @@ function MyApp({ Component, pageProps }: AppProps<IServerProps>) {
       <ApolloProvider client={apolloClient}>
         <ThemeProvider theme={theme}>
           <StylesProvider injectFirst>
-            <AuthProvider serverData={pageProps}>
+            <AuthProvider pageProps={pageProps}>
               <YMInitializer
                 accounts={[56585698]}
                 options={{ webvisor: true }}

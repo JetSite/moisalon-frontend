@@ -33,7 +33,9 @@ export const getFeedCategories = gql`
             }
         }
       }
-      ${metaInfo}
+      meta {
+        ${metaInfo}
+      }
     }
   }
 `

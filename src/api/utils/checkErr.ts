@@ -4,13 +4,13 @@ import { authConfig } from '../authConfig'
 
 export const checkErr = (
   data: ApolloQueryResult<any>[] | ApolloQueryResult<any> | null,
+  router: ServerResponse,
 ) => {
   let authErr = false
   let returnNotErr = false
-  let redirect: string | null = null
   if (!data) {
     console.log('alert err in checkErr')
-    return { redirect }
+    return
   }
 
   if (Array.isArray(data) && data.length) {
@@ -31,6 +31,7 @@ export const checkErr = (
       ;(data as ApolloQueryResult<any>)?.errors?.forEach(err => {
         if (err.message === 'Forbidden access') {
           authErr = true
+          return
         }
       })
     } else {
@@ -38,20 +39,18 @@ export const checkErr = (
     }
   }
 
-  if (returnNotErr) return { redirect }
+  if (returnNotErr) return
 
   if (authErr) {
-    redirect = authConfig.notAuthLink
-    // router.setHeader('Set-Cookie', [
-    //   `${authConfig.tokenKeyName}=delete; Max-Age=0; Path=/;`,
-    // ])
-    // router.writeHead(302, { Location: authConfig.notAuthLink })
-    // router.end()
-    return { redirect }
+    router.setHeader('Set-Cookie', [
+      `${authConfig.tokenKeyName}=delete; Max-Age=0; Path=/;`,
+    ])
+    router.writeHead(302, { Location: authConfig.notAuthLink })
+    router.end()
+    return
   } else {
-    redirect = '/404'
-    // router.writeHead(302, { Location: '/404' })
-    // router.end()
-    return { redirect }
+    router.writeHead(302, { Location: '/404' })
+    router.end()
+    return
   }
 }

@@ -13,7 +13,7 @@ const DictionaryGroupsField: FC<Props> = ({ name, groups = [] }) => {
     <FieldArray name={name}>
       {arrayField => {
         const {
-          fields: { value = [], push, remove },
+          fields: { value, push, remove },
         } = arrayField
         const groupControls = groups.map(group => {
           const groupProps = {
@@ -23,6 +23,7 @@ const DictionaryGroupsField: FC<Props> = ({ name, groups = [] }) => {
             remove,
             name,
           }
+
           return <DictionaryGroup {...groupProps} key={group.id} />
         })
         return groupControls

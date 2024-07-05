@@ -23,18 +23,16 @@ const Wrapper = styled.div`
 interface Props {
   tabs: ITab[]
   photoType: string
-  refActive: string | boolean
+  refActive?: string | boolean
   photo: IPhoto | null
-  id: IID | null
-  onAdd: (photo: string) => void
-  noPhotoError: boolean
-  setNoPhotoError: ISetState<boolean>
+  onAdd?: (photo: string) => void
+  noPhotoError?: boolean
+  setNoPhotoError?: ISetState<boolean>
   noSetPhoto?: boolean
-  setPhoto: ISetState<IPhoto | null>
+  setPhoto?: ISetState<IPhoto | null>
 }
 
 const Controls: FC<Props> = ({
-  id,
   onAdd,
   refActive,
   tabs,
@@ -49,7 +47,6 @@ const Controls: FC<Props> = ({
     <Wrapper>
       <Avatar
         setPhoto={setPhoto}
-        id={id}
         photo={photo}
         onAdd={onAdd}
         photoType={photoType}

@@ -22,8 +22,7 @@ import CabinetOrders from '../../../blocks/Cabinet/components/CabinetOrders'
 import { PHOTO_URL } from '../../../../api/variables'
 import { useChat } from '../../../../chatContext'
 import { IRefetch } from 'src/api/types'
-import { IUser } from 'src/types/me'
-import { IID } from 'src/types/common'
+import { IMe } from 'src/types/me'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 import { IPhoto } from 'src/types'
@@ -38,13 +37,13 @@ export interface IMasterCabinetTab {
 
 interface Props {
   refetch: IRefetch
-  user: IUser
+  user: IMe
 }
 
 const MasterCabinet: FC = () => {
   const { user } = useAuthStore(getStoreData)
-  const [photo, setPhoto] = useState<IPhoto | undefined>(
-    !!user?.owner?.masters?.length ? user.owner.masters[0].photo : undefined,
+  const [photo, setPhoto] = useState<IPhoto | null>(
+    !!user?.owner?.masters?.length ? user.owner.masters[0].photo : null,
   )
   const [noPhotoError, setNoPhotoError] = useState<boolean>(false)
   const [, setErrors] = useState<string[] | null>(null)

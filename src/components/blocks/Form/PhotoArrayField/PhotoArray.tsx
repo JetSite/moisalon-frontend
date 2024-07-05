@@ -8,6 +8,7 @@ import { laptopBreakpoint } from '../../../../styles/variables'
 import { useMutation } from '@apollo/client'
 import { IPhoto } from 'src/types'
 import { PhotoArrayFieldProps } from './PhotoArrayField'
+import { IID } from 'src/types/common'
 
 const Description = styled.p`
   font-size: 14px;
@@ -31,6 +32,8 @@ const Wrap = styled.div`
 interface Props extends PhotoArrayFieldProps {
   description?: string
   photos: IPhoto[]
+  defaultPhotoId?: IID
+  onSetDefault: (event: any) => void
 }
 
 const PhotoArray: FC<Props> = props => {

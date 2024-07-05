@@ -52,10 +52,12 @@ const Salon: FC<Props> = ({ salonData, othersSalons, cityData }) => {
   const [salon, setSalon] = useState<ISalonPage>(salonData)
   const [brands, setBrands] = useState<IBrand[]>(salonData?.brands)
   const { user } = useAuthStore(getStoreData)
-  const groupedServices = useMemo(
-    () => getGroupedServices(salon.services),
-    [salon],
-  )
+  const groupedServices =
+    // useMemo(
+    // () =>
+    getGroupedServices(salon.services)
+  //   [salon],
+  // )
   const groupedServicesM = useMemo(
     () => getGroupedServices(salon.servicesM),
     [salon],
@@ -155,7 +157,7 @@ const Salon: FC<Props> = ({ salonData, othersSalons, cityData }) => {
           count={salon.services?.length}
         />
       ) : null}
-      {salon?.masters.length || isOwner ? (
+      {salon?.services.length || isOwner ? (
         <ServicesForClient
           groupedServices={groupedServices}
           isOwner={isOwner}

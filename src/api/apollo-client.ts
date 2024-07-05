@@ -68,8 +68,6 @@ export const getAuthLink = (accessToken?: string) => {
     return forward(operation)
   })
   const errorLink = onError(error => {
-    console.log(error.graphQLErrors)
-
     if (error.networkError?.message.includes('headers')) {
       if (typeof window !== 'undefined') {
         deleteCookie(authConfig.tokenKeyName)
@@ -91,6 +89,8 @@ export const getAuthLink = (accessToken?: string) => {
 
     if (error.graphQLErrors) {
       for (const err of error.graphQLErrors) {
+        console.log(err.extensions)
+
         if (
           err?.message === 'Unauthorized' ||
           err?.message === 'Forbidden access'

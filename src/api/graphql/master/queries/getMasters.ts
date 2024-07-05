@@ -47,7 +47,9 @@ export const getMasters = gql`
             }
         }
       }
-      ${metaInfo}
+      meta {
+        ${metaInfo}
+      }
     }
   }
 `

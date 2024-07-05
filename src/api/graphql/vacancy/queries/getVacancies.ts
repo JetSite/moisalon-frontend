@@ -47,7 +47,9 @@ export const getVacancies = gql`
             createdAt
         }
       }
-      ${metaInfo}
+      meta {
+        ${metaInfo}
+      }
     }
   }
 `
