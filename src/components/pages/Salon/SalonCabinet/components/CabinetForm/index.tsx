@@ -13,7 +13,7 @@ import catalogOrDefault from '../../../../../../utils/catalogOrDefault'
 import useBaseStore from 'src/store/baseStore'
 import { getStoreData } from 'src/store/utils'
 
-const CabinetForm = ({ allTabs, ref1, ref2, ref3, salon, salonId }) => {
+const CabinetForm = ({ allTabs, ref1, ref2, ref3, salonData, salonId }) => {
   const { catalogs } = useBaseStore(getStoreData)
   const [errors, setErrors] = useState(null)
   const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
@@ -23,7 +23,7 @@ const CabinetForm = ({ allTabs, ref1, ref2, ref3, salon, salonId }) => {
   )
   const { groups: specializations = [] } = salonActivitiesCatalog
   const salonSpecializations = specializations.filter(t =>
-    salon?.activities.find(id => id === t.id),
+    salonData?.activities.find(id => id === t.id),
   )
 
   const onSubmit = () => {
@@ -38,7 +38,7 @@ const CabinetForm = ({ allTabs, ref1, ref2, ref3, salon, salonId }) => {
 
   return (
     <Wrapper>
-      <TitleCabinet>{salon?.name}</TitleCabinet>
+      <TitleCabinet>{salonData?.name}</TitleCabinet>
       <TextCabinet>Кабинет салона</TextCabinet>
       <AutoFocusedForm
         // initialValues={initialValues}

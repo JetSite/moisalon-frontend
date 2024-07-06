@@ -23,27 +23,32 @@ interface Props {
 const MenuCards: FC<Props> = ({ tabs, setActiveTab, setToggle }) => {
   const router = useRouter()
   const { logout } = useAuthStore(getStoreEvent)
+  console.log(tabs)
 
   return (
     <CardsWrapper>
-      {tabs?.map(tab => (
-        <Card
-          disable={tab.disable}
-          key={tab.value}
-          onClick={() => {
-            if (!tab.disable) {
-              setActiveTab(tab.value)
-              setToggle(false)
-            }
-          }}
-        >
-          <CardTitle>{tab.title}</CardTitle>
-          <CardBottom quantity={!!tab.quantity}>
-            <Icon src={tab.icon} />
-            {tab.quantity ? <CardQuantity>{tab.quantity}</CardQuantity> : null}
-          </CardBottom>
-        </Card>
-      ))}
+      {tabs?.map(tab =>
+        tab.visible !== false ? (
+          <Card
+            disable={tab.disable}
+            key={tab.value}
+            onClick={() => {
+              if (!tab.disable) {
+                setActiveTab(tab.value)
+                setToggle(false)
+              }
+            }}
+          >
+            <CardTitle>{tab.title}</CardTitle>
+            <CardBottom quantity={!!tab.quantity}>
+              <Icon src={tab.icon} />
+              {tab.quantity ? (
+                <CardQuantity>{tab.quantity}</CardQuantity>
+              ) : null}
+            </CardBottom>
+          </Card>
+        ) : null,
+      )}
       <Card
         onClick={() => {
           logout(router)

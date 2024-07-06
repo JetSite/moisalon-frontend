@@ -48,7 +48,6 @@ import {
 } from '../../../../Master/ViewMaster/components/Contacts/styled'
 import { createScopesSalon } from '../../../../../../_graphql-legacy/salon/createScopesSalon'
 import RatingEdit from '../../../../../ui/RatingEdit'
-import { numberForSocials } from '../../../../../../utils/formatNumber'
 import { FC, useState } from 'react'
 import { ISalonPage } from 'src/types/salon'
 import { getRating } from 'src/utils/newUtils/getRating'
@@ -58,6 +57,7 @@ import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 import { Schedule } from 'src/components/ui/Shedule'
 import { PHOTO_URL } from 'src/api/variables'
+import { numberForSocials } from 'src/utils/formatNumber'
 
 interface Props {
   salon: ISalonPage

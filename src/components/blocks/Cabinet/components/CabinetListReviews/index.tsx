@@ -128,7 +128,7 @@ const CabinetListReviews = () => {
               <Container>
                 <Avatar
                   alt="avatar"
-                  src={PHOTO_URL + master.photo.url || 'empty-photo.svg'}
+                  src={PHOTO_URL + master.photo?.url || 'empty-photo.svg'}
                 />
                 <Content>
                   <Name>{master.name}</Name>

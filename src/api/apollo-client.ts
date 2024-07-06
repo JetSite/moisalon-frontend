@@ -16,6 +16,7 @@ import { authConfig, baseUrl } from './authConfig'
 import Router from 'next/router'
 import { onError } from '@apollo/client/link/error'
 import createUploadLink from 'apollo-upload-client/createUploadLink.mjs'
+import { Nullable } from 'src/types/common'
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__'
 
@@ -154,7 +155,7 @@ export function initializeApollo(data?: IApolloClientProps) {
 }
 
 interface PageProps<T> {
-  props: Partial<T> & {
+  props: Nullable<T> & {
     __APOLLO_STATE__?: NormalizedCacheObject
   }
 }

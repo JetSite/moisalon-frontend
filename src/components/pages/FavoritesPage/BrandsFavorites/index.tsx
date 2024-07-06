@@ -29,7 +29,7 @@ SwiperCore.use([Navigation])
 
 const BrandsFavorites: FC<ThingsProps> = ({
   title,
-  setActiveTab,
+  setActiveTab = () => {},
   cabinet = false,
   mobile = false,
   handleDeleted,

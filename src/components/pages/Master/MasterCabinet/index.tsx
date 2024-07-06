@@ -7,7 +7,6 @@ import ControlsTabs from '../../../blocks/Form/ControlsTabs'
 import { useMutation } from '@apollo/client'
 import CabinetForm from '../../../blocks/Cabinet/components/CabinetForm'
 import { changeDataMutation } from '../../../../_graphql-legacy/changeDataMutation'
-import CabinetOrders from '../../../blocks/Cabinet/components/CabinetOrders'
 import CabinetProfiles from '../../../blocks/Cabinet/components/CabinetProfiles'
 import CabinetListReviews from '../../../blocks/Cabinet/components/CabinetListReviews'
 import ProfileCabinetHeaderMobile from '../../../blocks/ProfileCabinetHeaderMobile'
@@ -22,10 +21,13 @@ import CabinetBanner from '../../../blocks/Cabinet/components/CabinetBanner'
 import { PHOTO_URL } from '../../../../api/variables'
 import { useChat } from '../../../../chatContext'
 import { IRefetch } from 'src/api/types'
-import { IMe } from 'src/types/me'
+import { IMe, IUser } from 'src/types/me'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 import { IPhoto } from 'src/types'
+import { IRentalRequest } from 'src/types/rentalRequest'
+import CabinetOrders from '../../../blocks/Cabinet/components/CabinetOrders'
+import CabinetRequests from 'src/components/blocks/Cabinet/components/CabinetRequests'
 
 export interface IMasterCabinetTab {
   title: string
@@ -33,18 +35,22 @@ export interface IMasterCabinetTab {
   icon?: string
   quantity?: number
   disable?: boolean
+  visible?: boolean
 }
 
 interface Props {
-  refetch: IRefetch
-  user: IMe
+  // refetch: IRefetch
+  user: IUser
+  rentalRequests: IRentalRequest[]
+  deletedRentalRequests: IRentalRequest[]
 }
 
-const MasterCabinet: FC = () => {
-  const { user } = useAuthStore(getStoreData)
-  const [photo, setPhoto] = useState<IPhoto | null>(
-    !!user?.owner?.masters?.length ? user.owner.masters[0].photo : null,
-  )
+const MasterCabinet: FC<Props> = ({
+  rentalRequests,
+  user,
+  deletedRentalRequests,
+}) => {
+  const [photo, setPhoto] = useState<IPhoto | null>(user.info.avatar || null)
   const [noPhotoError, setNoPhotoError] = useState<boolean>(false)
   const [, setErrors] = useState<string[] | null>(null)
   const [, setErrorPopupOpen] = useState<boolean | null>(null)
@@ -88,6 +94,13 @@ const MasterCabinet: FC = () => {
     }
   }, [router?.query?.tab])
 
+  console.log(
+    'rentalRequests',
+    rentalRequests,
+    'deletedRentalRequests',
+    deletedRentalRequests,
+  )
+
   return (
     <>
       <Header />
@@ -100,8 +113,18 @@ const MasterCabinet: FC = () => {
               title: 'Мои заказы',
               value: 'orders',
               icon: '/icon-orders.svg',
-              quantity: user?.orders?.length,
-              disable: true,
+              quantity: rentalRequests.filter(req => req.status.id === '2')
+                .length,
+              disable: false,
+            },
+            {
+              title: 'Мои заявки',
+              value: 'requests',
+              icon: '/icon-orders.svg',
+              quantity: rentalRequests.filter(req => req.status.id === '2')
+                .length,
+              disable: false,
+              visible: true,
             },
             {
               title: 'Моё избранное',
@@ -156,6 +179,14 @@ const MasterCabinet: FC = () => {
                 disable: true,
               },
               { title: 'Мои заказы', value: 'orders', disable: true },
+              {
+                title: 'Мои заявки',
+                value: 'requests',
+                icon: '/icon-orders.svg',
+                quantity: rentalRequests.filter(req => req.status.id === '2')
+                  .length,
+                visible: !!rentalRequests.length,
+              },
               { title: 'Моё избранное', value: 'favorits' },
               { title: 'Отзывы клиентов', value: 'reviews' },
               { title: 'Мои акции', value: 'sales', disable: true },
@@ -180,7 +211,13 @@ const MasterCabinet: FC = () => {
           {activeTab === 'about' ? (
             <CabinetForm setNoPhotoError={setNoPhotoError} photo={photo} auth />
           ) : activeTab === 'orders' ? (
-            <CabinetOrders me={user} />
+            <CabinetOrders user={user} />
+          ) : activeTab === 'requests' ? (
+            <CabinetRequests
+              meID={user.info.id}
+              rentalRequests={rentalRequests}
+              deletedRentalRequests={deletedRentalRequests}
+            />
           ) : activeTab === 'profiles' ? (
             <CabinetProfiles />
           ) : activeTab === 'chat' ? (

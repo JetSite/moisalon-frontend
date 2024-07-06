@@ -66,8 +66,8 @@ const CabinetProfiles = () => {
                 <Link
                   href={
                     item.workplacesCount
-                      ? `/${item.cities?.slug || city?.slug}/rent/${item.id}`
-                      : `/${item.cities?.slug || city?.slug}/salon/${item.id}`
+                      ? `/${item.city?.slug || city?.slug}/rent/${item.id}`
+                      : `/${item.city?.slug || city?.slug}/salon/${item.id}`
                   }
                 >
                   <Item>

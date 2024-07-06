@@ -1,15 +1,15 @@
 import { useMutation } from '@apollo/client'
-import { useState, useCallback } from 'react'
+import { useState, useCallback, FC } from 'react'
 import { createRequestToSalon } from '../../../../_graphql-legacy/salon/createRequestToSalon'
 import { MainContainer } from '../../../../styles/common'
 import catalogOrDefault from '../../../../utils/catalogOrDefault'
-import { formatNumber } from '../../../../utils/formatNumber'
+import { localeNumber } from '../../../../utils/newUtils/common'
 import { selectedGroupNames } from '../../../../utils/serviceCatalog'
 import { cyrToTranslit } from '../../../../utils/translit'
 import BackButton from '../../../ui/BackButton'
 import Button from '../../../ui/Button'
 import Popup from '../../../ui/Popup'
-import WritePopup from '../../../pages/Salon/ViewSalon/components/WritePopup.js'
+import WritePopup from '../../Salon/ViewSalon/components/WritePopup.js/index.js'
 import PhotoSlider from '../../../blocks/PhotoSlider'
 import { MobileVisible, MobileHidden } from '../../../../styles/common'
 import {
@@ -47,9 +47,19 @@ import { urlPatternHttp, urlPatternHttps } from '../../../../utils/checkUrls'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 import useBaseStore from 'src/store/baseStore'
+import { ICity } from 'src/types'
+import { ISalonPage } from 'src/types/salon'
+import { ISalonWorkplace } from 'src/types/workplace'
+import { PHOTO_URL } from 'src/api/variables'
 
-const RentHeader = ({ city, salonData, roomData }) => {
-  const { catalogs } = useBaseStore(getStoreData)
+interface Props {
+  city: ICity
+  salonData: ISalonPage
+  workplaceData: ISalonWorkplace
+}
+
+const RentHeader: FC<Props> = ({ city, salonData, workplaceData }) => {
+  const [workplace] = useState<ISalonWorkplace>(workplaceData)
   const { me } = useAuthStore(getStoreData)
   const [openWritePopup, setOpenWritePopup] = useState(false)
   const [openSuccessPopup, setOpenSuccessPopup] = useState(false)
@@ -80,46 +90,46 @@ const RentHeader = ({ city, salonData, roomData }) => {
     })
   }
 
-  const roomServicesCatalog = catalogOrDefault(
-    catalogs?.salonRoomServicesCatalog,
-  )
+  // const roomServicesCatalog = catalogOrDefault(
+  //   catalogs?.salonRoomServicesCatalog,
+  // )
 
-  const foundServices = []
-  roomData.services.forEach(service => {
-    roomServicesCatalog?.groups[0]?.subGroups?.forEach(serviceCatalog => {
-      serviceCatalog.items.forEach(serviceItem => {
-        if (service.id === serviceItem.id) {
-          foundServices.push({
-            groupTitle: serviceCatalog.title,
-            serviceDetail: serviceItem.title,
-            quantity: service.value,
-          })
-        }
-      })
-    })
-  })
-  const foundServicesGroups = []
-  foundServices.forEach(foundService => {
-    const foundGroup = foundServicesGroups.find(
-      item => item === foundService.groupTitle,
-    )
-    if (!foundGroup) {
-      foundServicesGroups.push(foundService.groupTitle)
-    }
-  })
+  // const foundServices = []
+  // roomData?.services?.forEach(service => {
+  //   roomServicesCatalog?.groups[0]?.subGroups?.forEach(serviceCatalog => {
+  //     serviceCatalog.items.forEach(serviceItem => {
+  //       if (service.id === serviceItem.id) {
+  //         foundServices.push({
+  //           groupTitle: serviceCatalog.title,
+  //           serviceDetail: serviceItem.title,
+  //           quantity: service.value,
+  //         })
+  //       }
+  //     })
+  //   })
+  // })
+  // const foundServicesGroups = []
+  // foundServices.forEach(foundService => {
+  //   const foundGroup = foundServicesGroups.find(
+  //     item => item === foundService.groupTitle,
+  //   )
+  //   if (!foundGroup) {
+  //     foundServicesGroups.push(foundService.groupTitle)
+  //   }
+  // })
 
-  const hasRentalPrice =
-    roomData?.seat?.rentalPricing?.hour ||
-    roomData?.seat?.rentalPricing?.day ||
-    roomData?.seat?.rentalPricing?.week ||
-    roomData?.seat?.rentalPricing?.month ||
-    roomData?.seat?.rentalPricing?.year
+  // const hasRentalPrice =
+  //   roomData?.seat?.rentalPricing?.hour ||
+  //   roomData?.seat?.rentalPricing?.day ||
+  //   roomData?.seat?.rentalPricing?.week ||
+  //   roomData?.seat?.rentalPricing?.month ||
+  //   roomData?.seat?.rentalPricing?.year
 
-  const hasPaymentVariants =
-    roomData?.seat?.rentalPaymentMethods?.appleOrGooglePay ||
-    roomData?.seat?.rentalPaymentMethods?.bankingCard ||
-    roomData?.seat?.rentalPaymentMethods?.cash ||
-    roomData?.seat?.rentalPaymentMethods?.wireTransfer
+  // const hasPaymentVariants =
+  //   roomData?.seat?.rentalPaymentMethods?.appleOrGooglePay ||
+  //   roomData?.seat?.rentalPaymentMethods?.bankingCard ||
+  //   roomData?.seat?.rentalPaymentMethods?.cash ||
+  //   roomData?.seat?.rentalPaymentMethods?.wireTransfer
 
   return (
     <>
@@ -127,12 +137,12 @@ const RentHeader = ({ city, salonData, roomData }) => {
         <Content>
           <BackButton
             type="Аренда – Салон"
-            link={`/${city}/rent/${salonData?.id}`}
-            name={roomData?.seat?.seatNumber}
+            link={`/${city.slug}/rent/${salonData?.id}`}
+            name={workplace.title}
           />
         </Content>
       </Wrapper>
-      <TopImage photoUrl={roomData?.seat?.photo?.url}>
+      <TopImage photoUrl={PHOTO_URL + workplace.cover?.url}>
         {salonData?.onlineBookingUrl ? (
           <noindex>
             <OnlineBooking
@@ -145,7 +155,7 @@ const RentHeader = ({ city, salonData, roomData }) => {
             </OnlineBooking>
           </noindex>
         ) : (
-          <OnlineBooking href={`tel:${salonData?.phones[0]?.phoneNumber}`}>
+          <OnlineBooking href={`tel:${salonData.salonPhones[0]?.phoneNumber}`}>
             <Icon src="/booking-blank.svg" />
             Онлайн бронирование
           </OnlineBooking>
@@ -171,16 +181,21 @@ const RentHeader = ({ city, salonData, roomData }) => {
                 </ButtonRequest>
               </noindex>
             ) : (
-              <ButtonRequest href={`tel:${salonData?.phones[0]?.phoneNumber}`}>
+              <ButtonRequest
+                href={`tel:${salonData.salonPhones[0]?.phoneNumber}`}
+              >
                 Отправить заявку
               </ButtonRequest>
             )}
           </Top>
           <MobileHidden>
-            {roomData?.photos?.length ? (
+            {workplace.gallery.length ? (
               <PhotoSlider
                 wrapperWidth={1164}
-                items={roomData.photos}
+                items={workplace.gallery.map(e => ({
+                  ...e,
+                  url: PHOTO_URL + e.url,
+                }))}
                 itemWidth={360}
                 itemHeight={370}
                 itemMarginRight={27}
@@ -189,14 +204,14 @@ const RentHeader = ({ city, salonData, roomData }) => {
           </MobileHidden>
           <MobileVisible>
             <MobilePhotosBlock>
-              {roomData?.photos?.map(photo => (
+              {workplace?.gallery?.map(photo => (
                 <PhotoWrapper key={photo.id}>
-                  <Photo src={photo.url} />
+                  <Photo src={PHOTO_URL + photo.url} />
                 </PhotoWrapper>
               ))}
             </MobilePhotosBlock>
           </MobileVisible>
-          {hasRentalPrice || hasPaymentVariants ? (
+          {/* {hasRentalPrice || hasPaymentVariants ? (
             <InfoBlock>
               <Title>Оплата</Title>
               <InfoBlockContent>
@@ -208,7 +223,7 @@ const RentHeader = ({ city, salonData, roomData }) => {
                         <Time>Час</Time>
                         <Dotted />
                         <Price>
-                          от {formatNumber(roomData?.seat?.rentalPricing?.hour)}{' '}
+                          от {localeNumber(roomData?.seat?.rentalPricing?.hour)}{' '}
                           ₽
                         </Price>
                       </PriceLine>
@@ -218,7 +233,7 @@ const RentHeader = ({ city, salonData, roomData }) => {
                         <Time>День</Time>
                         <Dotted />
                         <Price>
-                          от {formatNumber(roomData?.seat?.rentalPricing?.day)}{' '}
+                          от {localeNumber(roomData?.seat?.rentalPricing?.day)}{' '}
                           ₽
                         </Price>
                       </PriceLine>
@@ -228,7 +243,7 @@ const RentHeader = ({ city, salonData, roomData }) => {
                         <Time>Неделя</Time>
                         <Dotted />
                         <Price>
-                          от {formatNumber(roomData?.seat?.rentalPricing?.week)}{' '}
+                          от {localeNumber(roomData?.seat?.rentalPricing?.week)}{' '}
                           ₽
                         </Price>
                       </PriceLine>
@@ -239,7 +254,7 @@ const RentHeader = ({ city, salonData, roomData }) => {
                         <Dotted />
                         <Price>
                           от{' '}
-                          {formatNumber(roomData?.seat?.rentalPricing?.month)} ₽
+                          {localeNumber(roomData?.seat?.rentalPricing?.month)} ₽
                         </Price>
                       </PriceLine>
                     ) : null}
@@ -248,7 +263,7 @@ const RentHeader = ({ city, salonData, roomData }) => {
                         <Time>Год</Time>
                         <Dotted />
                         <Price>
-                          от {formatNumber(roomData?.seat?.rentalPricing?.year)}{' '}
+                          от {localeNumber(roomData?.seat?.rentalPricing?.year)}{' '}
                           ₽
                         </Price>
                       </PriceLine>
@@ -286,8 +301,8 @@ const RentHeader = ({ city, salonData, roomData }) => {
                 ) : null}
               </InfoBlockContent>
             </InfoBlock>
-          ) : null}
-          {roomData?.seat?.allowJointRental || roomData?.seat?.allowSublease ? (
+          ) : null} */}
+          {/* {roomData?.seat?.allowJointRental || roomData?.seat?.allowSublease ? (
             <InfoBlock>
               <Title>Общая информация</Title>
               <InfoItemHorisontal>
@@ -308,41 +323,41 @@ const RentHeader = ({ city, salonData, roomData }) => {
                 </InfoItemContent>
               </InfoItemHorisontal>
             </InfoBlock>
-          ) : null}
+          ) : null} */}
           <InfoBlock>
             <Title>Технические параметры</Title>
-            {roomData?.space ? (
+            {workplace.space ? (
               <InfoItemHorisontal>
                 <DesktopBlock>
                   <InfoItemTitleWide>Площадь</InfoItemTitleWide>
                   <InfoItemContent>
                     <ItemWide>
-                      <Text>{roomData.space} м2</Text>
+                      <Text>{workplace.space} м2</Text>
                     </ItemWide>
                   </InfoItemContent>
                 </DesktopBlock>
                 <MobileVisible>
                   <InfoItemTitle>Площадь</InfoItemTitle>
                   <ItemWide>
-                    <Text>{roomData.space} м2</Text>
+                    <Text>{workplace.space} м2</Text>
                   </ItemWide>
                 </MobileVisible>
               </InfoItemHorisontal>
             ) : null}
-            {roomData?.floor ? (
+            {workplace.floor ? (
               <InfoItemHorisontal>
                 <DesktopBlock>
                   <InfoItemTitleWide>Этаж</InfoItemTitleWide>
                   <InfoItemContent>
                     <ItemWide>
-                      <Text>{roomData.floor}</Text>
+                      <Text>{workplace.floor}</Text>
                     </ItemWide>
                   </InfoItemContent>
                 </DesktopBlock>
                 <MobileVisible>
                   <InfoItemTitle>Этаж</InfoItemTitle>
                   <ItemWide>
-                    <Text>{roomData.floor}</Text>
+                    <Text>{workplace.floor}</Text>
                   </ItemWide>
                 </MobileVisible>
               </InfoItemHorisontal>
@@ -351,11 +366,11 @@ const RentHeader = ({ city, salonData, roomData }) => {
               <InfoItemTitleWide>Окна</InfoItemTitleWide>
               <InfoItemContent>
                 <ItemWide>
-                  <Text>{roomData?.hasWindows ? 'да' : 'нет'}</Text>
+                  <Text>{workplace.hasWindows ? 'да' : 'нет'}</Text>
                 </ItemWide>
               </InfoItemContent>
             </InfoItemHorisontal>
-            {foundServicesGroups.map(group => (
+            {/* {foundServicesGroups.map(group => (
               <InfoItemHorisontal key={group}>
                 <InfoItemTitleWide>{group}</InfoItemTitleWide>
                 <InfoItemContent>
@@ -375,14 +390,14 @@ const RentHeader = ({ city, salonData, roomData }) => {
                   })}
                 </InfoItemContent>
               </InfoItemHorisontal>
-            ))}
-            {roomData?.wetPointsHands ||
-            roomData?.wetPointsHead ||
-            roomData?.wetPointsShower ? (
+            ))} */}
+            {workplace?.wetPointsHands ||
+            workplace?.wetPointsHead ||
+            workplace?.wetPointsShower ? (
               <InfoItemHorisontal>
                 <InfoItemTitleWide>Мокрые точки</InfoItemTitleWide>
                 <InfoItemContent>
-                  {roomData?.wetPointsHands ? (
+                  {workplace?.wetPointsHands ? (
                     <>
                       <DesktopBlock>
                         <ItemWide>
@@ -390,19 +405,19 @@ const RentHeader = ({ city, salonData, roomData }) => {
                           <Text>Для мытья рук</Text>
                         </ItemWide>
                         <ItemWide>
-                          <Text>{roomData?.wetPointsHands} шт</Text>
+                          <Text>{workplace?.wetPointsHands} шт</Text>
                         </ItemWide>
                       </DesktopBlock>
                       <MobileVisible>
                         <ItemWide>
                           <IconCircle src="/service-rent-icon.svg" />
                           <Text>Для мытья рук</Text>
-                          <Text>- {roomData?.wetPointsHands} шт</Text>
+                          <Text>- {workplace?.wetPointsHands} шт</Text>
                         </ItemWide>
                       </MobileVisible>
                     </>
                   ) : null}
-                  {roomData?.wetPointsHead ? (
+                  {workplace?.wetPointsHead ? (
                     <>
                       <DesktopBlock>
                         <ItemWide>
@@ -410,19 +425,19 @@ const RentHeader = ({ city, salonData, roomData }) => {
                           <Text>Для мытья головы</Text>
                         </ItemWide>
                         <ItemWide>
-                          <Text>{roomData?.wetPointsHead} шт</Text>
+                          <Text>{workplace?.wetPointsHead} шт</Text>
                         </ItemWide>
                       </DesktopBlock>
                       <MobileVisible>
                         <ItemWide>
                           <IconCircle src="/service-rent-icon.svg" />
                           <Text>Для мытья головы</Text>
-                          <Text>- {roomData?.wetPointsHead} шт</Text>
+                          <Text>- {workplace?.wetPointsHead} шт</Text>
                         </ItemWide>
                       </MobileVisible>
                     </>
                   ) : null}
-                  {roomData?.wetPointsShower ? (
+                  {workplace?.wetPointsShower ? (
                     <>
                       <DesktopBlock>
                         <ItemWide>
@@ -430,14 +445,14 @@ const RentHeader = ({ city, salonData, roomData }) => {
                           <Text>Душ</Text>
                         </ItemWide>
                         <ItemWide>
-                          <Text>{roomData?.wetPointsShower} шт</Text>
+                          <Text>{workplace?.wetPointsShower} шт</Text>
                         </ItemWide>
                       </DesktopBlock>
                       <MobileVisible>
                         <ItemWide>
                           <IconCircle src="/service-rent-icon.svg" />
                           <Text>Душ</Text>
-                          <Text>- {roomData?.wetPointsShower} шт</Text>
+                          <Text>- {workplace?.wetPointsShower} шт</Text>
                         </ItemWide>
                       </MobileVisible>
                     </>
@@ -447,7 +462,7 @@ const RentHeader = ({ city, salonData, roomData }) => {
             ) : null}
           </InfoBlock>
           <BottomButtons>
-            {salonData?.onlineBookingUrl ? (
+            {!salonData?.onlineBookingUrl ? (
               <noindex>
                 <ButtonRequest
                   target="_blank"
@@ -458,7 +473,12 @@ const RentHeader = ({ city, salonData, roomData }) => {
                 </ButtonRequest>
               </noindex>
             ) : (
-              <ButtonRequest href={`tel:${salonData?.phones[0]?.phoneNumber}`}>
+              <ButtonRequest
+                // href={`tel:${salonData.salonPhones[0]?.phoneNumber}`}
+                onClick={() => {
+                  setOpenWritePopup(true)
+                }}
+              >
                 Отправить заявку
               </ButtonRequest>
             )}

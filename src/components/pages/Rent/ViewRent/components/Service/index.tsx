@@ -3,7 +3,7 @@ import { laptopBreakpoint } from '../../../../../../styles/variables'
 import { MainContainer } from '../../../../../../styles/common'
 import { FC } from 'react'
 import { IGroupedCategories } from 'src/utils/getGrupedServices'
-import { IService } from 'src/types/services'
+import { IService, IServiceCategories } from 'src/types/services'
 
 const Wrapper = styled.div`
   padding: 0 140px;
@@ -64,10 +64,12 @@ const Text = styled.p`
 const Icon = styled.img``
 
 interface Props {
-  services: IService[]
+  services: IServiceCategories[]
 }
 
 const Service: FC<Props> = ({ services }) => {
+  console.log(services)
+
   return (
     <MainContainer id="service">
       <Wrapper>
@@ -76,7 +78,7 @@ const Service: FC<Props> = ({ services }) => {
           {services?.map(item => (
             <Item key={item.id}>
               <Icon src="/service-rent-icon.svg" />
-              <Text>{item?.title}</Text>
+              <Text>{item?.service.title}</Text>
             </Item>
           ))}
         </Content>

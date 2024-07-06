@@ -1,4 +1,4 @@
-export function parseToNumber(
+export default function parseToNumber(
   value: unknown | null | undefined,
 ): number | null {
   // Пробуем преобразовать значение в число

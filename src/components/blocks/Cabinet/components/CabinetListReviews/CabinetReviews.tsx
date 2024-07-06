@@ -22,6 +22,8 @@ interface Props {
 export const CabinetReviews: FC<Props> = ({ reviews, loading }) => {
   const [offset, setOffset] = useState(4)
 
+  console.log(reviews)
+
   if (loading) {
     return <SkeletonWrap variant="rect" />
   }

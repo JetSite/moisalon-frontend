@@ -32,7 +32,7 @@ interface Props {
   tabs: IMasterCabinetTab[]
   toggle: boolean
   setToggle: ISetState<boolean>
-  user: IUser | null
+  user: IUser
 }
 
 const CabinetHeaderMobile: FC<Props> = ({
@@ -42,9 +42,9 @@ const CabinetHeaderMobile: FC<Props> = ({
   toggle,
   setToggle,
 }) => {
-  const salons = user?.owner?.salons
-  const master = user?.owner?.masters?.length ? user?.owner?.masters[0] : null
-  const brands = user?.owner?.brand
+  const salons = user.owner.salons
+  const master = user.owner.masters?.length ? user.owner.masters[0] : null
+  const brands = user.owner.brand
   const { city } = useAuthStore(getStoreData)
 
   return (
@@ -52,13 +52,13 @@ const CabinetHeaderMobile: FC<Props> = ({
       <Info>
         <Logo
           url={
-            user?.info?.avatar
-              ? `${PHOTO_URL}${user?.info?.avatar.url}`
+            user.info.avatar
+              ? `${PHOTO_URL}${user.info.avatar.url}`
               : '/empty-photo.svg'
           }
         />
         <Text>
-          <Title>{user?.info?.username}</Title>
+          <Title>{user.info.username}</Title>
           <Subtitle>Кабинет пользователя</Subtitle>
           {salons?.length || master?.id || brands?.length ? (
             <ProfilesButton toggle={toggle} onClick={() => setToggle(!toggle)}>
@@ -77,7 +77,7 @@ const CabinetHeaderMobile: FC<Props> = ({
                 <Container>
                   <Avatar
                     alt="avatar"
-                    src={PHOTO_URL + master?.photo.url || 'empty-photo.svg'}
+                    src={PHOTO_URL + master.photo?.url || 'empty-photo.svg'}
                   />
                   <Content>
                     <Name>{master?.name}</Name>

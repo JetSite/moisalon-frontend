@@ -1,39 +1,39 @@
-import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
 import {
   Wrapper,
   Title,
   OrdersList,
   NoOrders,
   ButtonMobileWrap,
-} from "./styles";
-import Order from "./components/Order";
-import Button from "../../../../ui/Button";
-import { MobileHidden, MobileVisible } from "../../../../../styles/common";
+} from './styles'
+import Order from './components/Order'
+import Button from '../../../../ui/Button'
+import { MobileHidden, MobileVisible } from '../../../../../styles/common'
 
-const CabinetOrders = ({ me }) => {
-  const router = useRouter();
-  const [sliceNumber, setSliceNumber] = useState(3);
+const CabinetOrders = ({ user }) => {
+  const router = useRouter()
+  const [sliceNumber, setSliceNumber] = useState(3)
 
   useEffect(() => {
-    if (router.query?.section === "orders") {
-      const orderBlock = document.getElementById("orders");
-      orderBlock?.scrollIntoView({ block: "center", behavior: "smooth" });
+    if (router.query?.section === 'orders') {
+      const orderBlock = document.getElementById('orders')
+      orderBlock?.scrollIntoView({ block: 'center', behavior: 'smooth' })
     }
-  }, []);
+  }, [])
 
-  const sortedOrders = me?.orders?.sort((a, b) => {
-    return new Date(b.createAt) - new Date(a.createAt);
-  });
+  const sortedOrders = user?.orders?.sort((a, b) => {
+    return new Date(b.createAt) - new Date(a.createAt)
+  })
 
-  const ordersSliced = sortedOrders?.slice(0, sliceNumber);
+  const ordersSliced = sortedOrders?.slice(0, sliceNumber)
 
   const onFetchMore = () => {
-    setSliceNumber(sliceNumber + 3);
-  };
+    setSliceNumber(sliceNumber + 3)
+  }
 
   const fetchMoreButton =
-    sliceNumber <= me?.orders?.length ? (
+    sliceNumber <= user?.orders?.length ? (
       <>
         <MobileHidden>
           <Button
@@ -61,15 +61,15 @@ const CabinetOrders = ({ me }) => {
           </ButtonMobileWrap>
         </MobileVisible>
       </>
-    ) : null;
+    ) : null
   return (
     <Wrapper>
       <Title>Мои заказы</Title>
-      {me?.orders?.length ? (
+      {user?.orders?.length ? (
         <>
           <OrdersList>
-            {ordersSliced?.map((order) => (
-              <Order order={order} me={me} />
+            {ordersSliced?.map(order => (
+              <Order order={order} user={user} />
             ))}
           </OrdersList>
           {fetchMoreButton}
@@ -78,7 +78,7 @@ const CabinetOrders = ({ me }) => {
         <NoOrders>Нет заказов</NoOrders>
       )}
     </Wrapper>
-  );
-};
+  )
+}
 
-export default CabinetOrders;
+export default CabinetOrders

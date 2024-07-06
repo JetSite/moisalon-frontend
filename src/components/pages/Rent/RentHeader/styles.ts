@@ -31,7 +31,7 @@ export const Top = styled.div`
   }
 `
 
-export const TopImage = styled.div`
+export const TopImage = styled.div<{ photoUrl?: string }>`
   max-width: 1440px;
   height: 610px;
   position: relative;

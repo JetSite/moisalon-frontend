@@ -43,7 +43,7 @@ export interface ThingsProps {
   cabinet?: boolean
   noScroll?: boolean
   title?: string
-  setActiveTab: ISetState<string>
+  setActiveTab?: ISetState<string>
   mobile?: boolean
   handleDeleted?: () => void
 }
@@ -134,10 +134,10 @@ const SalonsFavorites: FC<ThingsProps> = ({
                         <Link
                           href={
                             salon.workplacesCount
-                              ? `/${salon.cities.slug || city.slug}/rent/${
+                              ? `/${salon.city.slug || city.slug}/rent/${
                                   salon.id
                                 }`
-                              : `/${salon.cities.slug || city.slug}/salon/${
+                              : `/${salon.city.slug || city.slug}/salon/${
                                   salon.id
                                 }`
                           }
