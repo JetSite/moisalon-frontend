@@ -48,7 +48,6 @@ import {
 } from '../../../../Master/ViewMaster/components/Contacts/styled'
 import { createScopesSalon } from '../../../../../../_graphql-legacy/salon/createScopesSalon'
 import RatingEdit from '../../../../../ui/RatingEdit'
-import { numberForSocials } from '../../../../../../utils/formatNumber'
 import { FC, useState } from 'react'
 import { ISalonPage } from 'src/types/salon'
 import { getRating } from 'src/utils/newUtils/getRating'
@@ -58,6 +57,8 @@ import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 import { Schedule } from 'src/components/ui/Shedule'
 import { PHOTO_URL } from 'src/api/variables'
+import { numberForSocials } from 'src/utils/formatNumber'
+import { OnlineBookingButton } from 'src/components/blocks/OnlineBookingButton'
 
 interface Props {
   salon: ISalonPage
@@ -79,7 +80,7 @@ const Header: FC<Props> = ({ isOwner, salon, setActiveTab }) => {
 
   const handleAnchorClick = () => {
     setActiveTab(4)
-    const element = document.getElementById('reviews')
+    const element = document.getElementById('rent')
     if (element) {
       scrollIntoView(element, {
         time: 500,
@@ -251,7 +252,13 @@ const Header: FC<Props> = ({ isOwner, salon, setActiveTab }) => {
               </Working>
             ) : null}
             <noindex>
-              {salon?.onlineBookingUrl ? (
+              <ButtonOnline>
+                <OnlineBookingButton salon={salon}>
+                  Онлайн бронирование
+                </OnlineBookingButton>
+              </ButtonOnline>
+
+              {/* {salon?.onlineBookingUrl ? (
                 <ButtonOnline
                   target="_blank"
                   rel="nofollow"
@@ -270,13 +277,16 @@ const Header: FC<Props> = ({ isOwner, salon, setActiveTab }) => {
                 >
                   Онлайн бронирование
                 </ButtonOnline>
-              )}
+              )} */}
             </noindex>
           </Info>
           <ImageContent>
             <Image src={PHOTO_URL + salon?.photos[0]?.url} />
             <noindex>
-              {salon?.onlineBookingUrl ? (
+              <OnlineBookingButton salon={salon}>
+                <OnlineBooking>Онлайн бронировани</OnlineBooking>
+              </OnlineBookingButton>
+              {/* {salon?.onlineBookingUrl ? (
                 <OnlineBooking
                   target="_blank"
                   rel="nofollow"
@@ -296,7 +306,7 @@ const Header: FC<Props> = ({ isOwner, salon, setActiveTab }) => {
                 >
                   Онлайн бронирование
                 </OnlineBooking>
-              )}
+              )} */}
             </noindex>
           </ImageContent>
         </Content>

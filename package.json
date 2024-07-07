@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "next start",
     "dev": "set HOST=dev.moi.salon& next",
     "build": "next build",
+    "start": "next start",
     "test": "next test",
     "postbuild": "next-sitemap",
     "eject": "next eject",

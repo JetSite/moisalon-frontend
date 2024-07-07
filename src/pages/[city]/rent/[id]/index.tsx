@@ -60,7 +60,7 @@ const Rent: FC<Props> = ({
   const { me } = useAuthStore(getStoreData)
   const { catalogs } = useBaseStore(getStoreData)
 
-  const [seats, setSeats] = useState([])
+  const [workplaces, setWorkplaces] = useState(salon.workplaces)
 
   const { refetch: refetchRentSalon } = useQuery(getSalonPage, {
     variables: { id: salon.id },
@@ -97,8 +97,8 @@ const Rent: FC<Props> = ({
               id: 2,
               text: 'Аренда',
               link: '#rent',
-              count: seats?.length,
-              show: !!seats?.length,
+              count: workplaces?.length,
+              show: !!workplaces?.length,
             },
             {
               id: 3,
@@ -118,7 +118,7 @@ const Rent: FC<Props> = ({
           ]}
         />
         <About salon={salon} />
-        {seats?.length ? (
+        {workplaces?.length ? (
           <RentSlider title="Аренда рабочих мест" salon={salon} />
         ) : null}
         {salon.services?.length ? <Service services={salon.services} /> : null}

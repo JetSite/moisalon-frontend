@@ -18,33 +18,39 @@ import CabinetEvents from '../../../blocks/Cabinet/components/CabinetEvents'
 import CabinetVacancies from '../../../blocks/Cabinet/components/CabinetVacancies'
 import CabinetPriority from '../../../blocks/Cabinet/components/CabinetPriority'
 import CabinetBanner from '../../../blocks/Cabinet/components/CabinetBanner'
-import CabinetOrders from '../../../blocks/Cabinet/components/CabinetOrders'
 import { PHOTO_URL } from '../../../../api/variables'
 import { useChat } from '../../../../chatContext'
 import { IRefetch } from 'src/api/types'
-import { IMe } from 'src/types/me'
-import useAuthStore from 'src/store/authStore'
+import { IMe, IUser } from 'src/types/me'
+import useAuthStore, { IMasterCabinetTabs } from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 import { IPhoto } from 'src/types'
+import { IRentalRequest } from 'src/types/rentalRequest'
+import CabinetOrders from '../../../blocks/Cabinet/components/CabinetOrders'
+import CabinetRequests from 'src/components/blocks/Cabinet/components/CabinetRequests'
 
 export interface IMasterCabinetTab {
   title: string
   value: string
   icon?: string
-  quantity?: number
+  quantity?: number | null
   disable?: boolean
+  visible?: boolean
 }
 
 interface Props {
-  refetch: IRefetch
-  user: IMe
+  // refetch: IRefetch
+  user: IUser
+  rentalRequests: IRentalRequest[]
+  deletedRentalRequests: IRentalRequest[]
 }
 
-const MasterCabinet: FC = () => {
-  const { user } = useAuthStore(getStoreData)
-  const [photo, setPhoto] = useState<IPhoto | null>(
-    !!user?.owner?.masters?.length ? user.owner.masters[0].photo : null,
-  )
+const MasterCabinet: FC<Props> = ({
+  rentalRequests,
+  user,
+  deletedRentalRequests,
+}) => {
+  const [photo, setPhoto] = useState<IPhoto | null>(user.info.avatar || null)
   const [noPhotoError, setNoPhotoError] = useState<boolean>(false)
   const [, setErrors] = useState<string[] | null>(null)
   const [, setErrorPopupOpen] = useState<boolean | null>(null)
@@ -62,25 +68,6 @@ const MasterCabinet: FC = () => {
     },
   })
 
-  console.log('user', user)
-
-  // const handlePhoto = (id: IID) => {
-  //   setPhotoId(id)
-  //   if (id) {
-  //     mutate({
-  //       variables: {
-  //         input: {
-  //           defaultCity: me?.info?.city.name,
-  //           displayName: me?.info?.username,
-  //           email: me?.info?.email,
-  //           phoneNumber: me?.info?.phone,
-  //           avatar: id,
-  //         },
-  //       },
-  //     })
-  //   }
-  // }
-
   const [activeTab, setActiveTab] = useState<string>('about')
   const router = useRouter()
 
@@ -90,7 +77,17 @@ const MasterCabinet: FC = () => {
     }
   }, [router?.query?.tab])
 
-  console.log('activeTab', activeTab)
+  console.log(
+    'rentalRequests',
+    rentalRequests,
+    'deletedRentalRequests',
+    deletedRentalRequests,
+  )
+
+  console.log(
+    rentalRequests.filter(req => req.status.id === '2').length,
+    'ffff',
+  )
 
   return (
     <>
@@ -104,6 +101,19 @@ const MasterCabinet: FC = () => {
               title: 'Мои заказы',
               value: 'orders',
               icon: '/icon-orders.svg',
+              quantity: rentalRequests.filter(req => req.status.id === '2')
+                .length,
+              disable: false,
+            },
+            {
+              title: 'Мои заявки',
+              value: 'requests',
+              icon: '/icon-orders.svg',
+              quantity:
+                rentalRequests.filter(req => req.status.id === '1').length ||
+                null,
+              disable: false,
+              visible: true,
             },
             {
               title: 'Моё избранное',
@@ -157,9 +167,14 @@ const MasterCabinet: FC = () => {
                 quantity: unreadMessagesCount,
                 disable: true,
               },
+              { title: 'Мои заказы', value: 'orders', disable: true },
               {
-                title: 'Мои заказы',
-                value: 'orders',
+                title: 'Мои заявки',
+                value: 'requests',
+                icon: '/icon-orders.svg',
+                quantity: rentalRequests.filter(req => req.status.id === '1')
+                  .length,
+                visible: !!rentalRequests.length,
               },
               { title: 'Моё избранное', value: 'favorits' },
               { title: 'Отзывы клиентов', value: 'reviews' },
@@ -185,7 +200,13 @@ const MasterCabinet: FC = () => {
           {activeTab === 'about' ? (
             <CabinetForm setNoPhotoError={setNoPhotoError} photo={photo} auth />
           ) : activeTab === 'orders' ? (
-            <CabinetOrders />
+            <CabinetOrders user={user} />
+          ) : activeTab === 'requests' ? (
+            <CabinetRequests
+              meID={user.info.id}
+              rentalRequests={rentalRequests}
+              deletedRentalRequests={deletedRentalRequests}
+            />
           ) : activeTab === 'profiles' ? (
             <CabinetProfiles />
           ) : activeTab === 'chat' ? (

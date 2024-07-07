@@ -49,7 +49,7 @@ interface ICabinetFormIvitialValues extends InitialValuesForm {
 }
 
 interface Props {
-  photo?: IPhoto
+  photo: IPhoto | null
   setNoPhotoError: Dispatch<SetStateAction<boolean>>
   auth?: boolean
 }

@@ -35,7 +35,7 @@ const MastersFavorites: FC<ThingsProps> = ({
   noScroll = false,
   cabinet = false,
   mobile = false,
-  setActiveTab,
+  setActiveTab = () => {},
 }) => {
   const navigationPrevRef = useRef(null)
   const navigationNextRef = useRef(null)

@@ -31,7 +31,7 @@ export const Top = styled.div`
   }
 `
 
-export const TopImage = styled.div`
+export const TopImage = styled.div<{ photoUrl?: string }>`
   max-width: 1440px;
   height: 610px;
   position: relative;
@@ -48,7 +48,7 @@ export const Icon = styled.img`
   margin-right: 13px;
 `
 
-export const OnlineBooking = styled.a`
+export const OnlineBooking = styled.span`
   cursor: pointer;
   width: 295px;
   height: 55px;

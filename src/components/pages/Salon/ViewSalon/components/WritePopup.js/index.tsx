@@ -1,19 +1,27 @@
-import React from "react";
-import { Dialog, DialogActions, DialogContent } from "@material-ui/core";
-import { Field } from "react-final-form";
-import AutoFocusedForm from "../../../../../blocks/Form/AutoFocusedForm";
-import TextField from "../../../../../blocks/Form/TextField";
-import { FormField } from "../../../../../../styles/common";
-import Button from "../../../../../ui/Button";
+import React, { FC } from 'react'
+import { Dialog, DialogActions, DialogContent } from '@material-ui/core'
+import { Field } from 'react-final-form'
+import AutoFocusedForm from '../../../../../blocks/Form/AutoFocusedForm'
+import TextField from '../../../../../blocks/Form/TextField'
+import { FormField } from '../../../../../../styles/common'
+import Button from '../../../../../ui/Button'
 import {
   required,
   email,
   composeValidators,
   phone,
-} from "../../../../../../utils/validations";
-import { FieldStyled } from "../../../CreateSalon/components/RegistrationForm/styled";
+} from '../../../../../../utils/validations'
+import { FieldStyled } from '../../../CreateSalon/components/RegistrationForm/styled'
+import { IUser } from 'src/types/me'
 
-const WritePopup = ({ open, handleClose, onSubmit, user }) => {
+interface Props {
+  open: boolean
+  handleClose: () => void
+  onSubmit: (values: { [K: string]: any }) => void
+  user: IUser | null
+}
+
+const WritePopup: FC<Props> = ({ open, handleClose, onSubmit, user }) => {
   return (
     <div>
       <Dialog
@@ -25,9 +33,9 @@ const WritePopup = ({ open, handleClose, onSubmit, user }) => {
         <DialogContent>
           <AutoFocusedForm
             initialValues={{
-              name: "",
-              phone: user?.phoneNumber,
-              email: user?.email,
+              name: user?.info?.username,
+              phone: user?.info?.phone,
+              email: user?.info?.email,
             }}
             onSubmit={onSubmit}
             render={({ handleSubmit, form }) => {
@@ -74,29 +82,33 @@ const WritePopup = ({ open, handleClose, onSubmit, user }) => {
                       />
                     </FormField>
                     <DialogActions>
-                      <div style={{ display: "flex", flexDirection: "column" }}>
+                      <div style={{ display: 'flex', flexDirection: 'column' }}>
                         <Button
                           variant="red"
-                          style={{ marginBottom: "10px" }}
+                          style={{ marginBottom: '10px' }}
                           autoFocus
                           type="submit"
                         >
                           Написать
                         </Button>
-                        <Button onClick={handleClose} variant="darkTransparent">
+                        <Button
+                          type="button"
+                          onClick={handleClose}
+                          variant="darkTransparent"
+                        >
                           Отменить
                         </Button>
                       </div>
                     </DialogActions>
                   </form>
                 </>
-              );
+              )
             }}
           />
         </DialogContent>
       </Dialog>
     </div>
-  );
-};
+  )
+}
 
-export default WritePopup;
+export default WritePopup

@@ -47,8 +47,8 @@ export interface IMe {
 }
 
 export interface IUser extends Omit<IMe, 'owner'> {
-  owner?: IUserThings
-  favorite?: IUserThings
+  owner: IUserThings
+  favorite: IUserThings
   vacancies?: IVacancy[]
   reviews?: IUserReviews[]
   orders?: IOrder[]

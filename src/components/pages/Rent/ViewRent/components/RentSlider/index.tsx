@@ -1,6 +1,8 @@
-import { useRef } from 'react'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import SwiperCore, { Navigation } from 'swiper/core'
+import { FC, useRef } from 'react'
+import { Swiper, SwiperSlide, SwiperClass } from 'swiper/react'
+import SwiperCore from 'swiper'
+import { Navigation } from 'swiper/modules'
+
 import { MainContainer } from '../../../../../../styles/common'
 import Link from 'next/link'
 import { Content, Wrapper, Top, Title, SwiperWrap } from './styles'
@@ -14,16 +16,24 @@ import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 import { cyrToTranslit } from '../../../../../../utils/translit'
 import RentCard from '../../../../../blocks/RentCard'
+import { ISalonPage } from 'src/types/salon'
+import { NavigationOptions } from 'swiper/types'
+
 SwiperCore.use([Navigation])
 
-const RentSlider = ({ salon, title }) => {
+interface Props {
+  salon: ISalonPage
+  title?: string
+}
+
+const RentSlider: FC<Props> = ({ salon, title }) => {
   const navigationPrevRef = useRef(null)
   const navigationNextRef = useRef(null)
   const { city } = useAuthStore(getStoreData)
 
-  const onBeforeInit = Swiper => {
+  const onBeforeInit = (Swiper: SwiperClass) => {
     if (typeof Swiper.params.navigation !== 'boolean') {
-      const navigation = Swiper.params.navigation
+      const navigation = Swiper.params.navigation as NavigationOptions
       navigation.prevEl = navigationPrevRef.current
       navigation.nextEl = navigationNextRef.current
     }
@@ -58,28 +68,26 @@ const RentSlider = ({ salon, title }) => {
                 }}
                 onBeforeInit={onBeforeInit}
               >
-                {salon?.rooms.map(item =>
-                  item?.seats.map((el, i) => (
-                    <SwiperSlide
-                      style={{
-                        width: 'auto',
-                        minHeight: '100%',
-                        height: 'auto',
-                      }}
-                      key={i}
-                    >
-                      <Link
-                        href={`/${
-                          cyrToTranslit(salon?.address?.city) || city.slug
-                        }/rent/${salon?.id}/room/${item.id}/seat/${
-                          el?.seo?.slug || el?.id
-                        }`}
+                {salon?.workplaces.length
+                  ? salon?.workplaces.map((item, i) => (
+                      <SwiperSlide
+                        style={{
+                          width: 'auto',
+                          minHeight: '100%',
+                          height: 'auto',
+                        }}
+                        key={i}
                       >
-                        <RentCard item={el} salon={salon} />
-                      </Link>
-                    </SwiperSlide>
-                  )),
-                )}
+                        <Link
+                          href={`/${salon.city?.slug || city.slug}/rent/${
+                            salon?.id
+                          }/workplace/${item.id}`}
+                        >
+                          <RentCard item={item} salon={salon} />
+                        </Link>
+                      </SwiperSlide>
+                    ))
+                  : null}
               </Swiper>
             </SwiperWrap>
           </SliderWpapper>

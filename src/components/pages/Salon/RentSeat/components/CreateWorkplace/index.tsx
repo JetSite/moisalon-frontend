@@ -12,7 +12,7 @@ import { IChangeWorkplaceFormValues, IPeriod } from './type'
 import { IEquipment } from 'src/types/equipment'
 import { UPDATE_WORKPLACE } from 'src/api/graphql/salon/mutations/updateSalonWorkplace'
 import { CREATE_WORKPLACE } from 'src/api/graphql/salon/mutations/createSalonWorkplace'
-import { parseToNumber } from 'src/utils/newUtils/parseToNumber'
+import { parseToNumber } from 'src/utils/newUtils/common'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 
 interface Props {
@@ -140,6 +140,7 @@ export const CreateWorkplace: FC<Props> = ({
 
     const input = {
       cover: parseToNumber(cover?.id),
+      title: values.title,
       description: values.description || null,
       floor: parseToNumber(values.floor),
       space: parseToNumber(values.space),

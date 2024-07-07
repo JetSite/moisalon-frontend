@@ -1,6 +1,10 @@
 import styled from 'styled-components'
-import { formatRentalPricing } from '../../../utils/rentalPricing'
+import { formatRentalPricing } from '../../../utils/newUtils/rentalPricing'
 import { laptopBreakpoint } from '../../../styles/variables'
+import { FC } from 'react'
+import { ISalonPage } from 'src/types/salon'
+import { ISalonWorkplace } from 'src/types/workplace'
+import { PHOTO_URL } from 'src/api/variables'
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -77,20 +81,25 @@ const Price = styled.p`
   margin-top: 8px;
 `
 
-const RentCard = ({ item, salon }) => {
+interface Props {
+  item: ISalonWorkplace
+  salon: ISalonPage
+}
+
+const RentCard: FC<Props> = ({ item, salon }) => {
   return (
     <Wrapper>
       <Top>
-        <Image src={item?.photo?.url} />
+        <Image src={PHOTO_URL + item.cover?.url} />
         <Status>{item?.isAvailableForRent ? 'Свободно' : 'Занято'}</Status>
       </Top>
       <Bottom>
         <Info>
-          <Avatar src={salon?.logo?.url} />
+          <Avatar src={PHOTO_URL + salon?.logo?.url} />
           <Name>{salon?.name}</Name>
         </Info>
-        <Address>{salon?.address?.full}</Address>
-        <Price>{formatRentalPricing(item?.rentalPricing)}</Price>
+        <Address>{salon?.address}</Address>
+        <Price>{formatRentalPricing(item?.rentalPeriod)}</Price>
       </Bottom>
     </Wrapper>
   )

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../../../styles/variables'
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.section`
   background: rgba(242, 240, 240, 1) url('/rent-salon-bg.png') center;
   margin-top: 60px;
 `

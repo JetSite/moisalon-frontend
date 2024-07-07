@@ -11,7 +11,6 @@ import { ILengthValidate } from 'src/utils/validations'
 import { IActivitiesInForm } from 'src/components/pages/Salon/CreateSalon/components/RegistrationForm/components/SalonActivities'
 
 const AllChecked = styled.input<{ check?: boolean }>`
-  margin: 5px;
   background: ${props => (!props.check ? '#fff' : '#f03')};
   border: ${props => (!props.check ? '1px solid #000000' : '1px solid #f03')};
   border-radius: 50px;
@@ -199,16 +198,21 @@ const DictionaryField: FC<Props> = props => {
                   <FormHelperText error>{meta.error}</FormHelperText>
                 </Box>
               ) : null}
-              {!onlyOneChoose ? (
-                <AllChecked
-                  onClick={checkAllHandler}
-                  type="button"
-                  check={isAllChecked}
-                  value={allCheckedValue}
-                  name={name}
-                />
-              ) : null}
               {dictionary}
+
+              {!onlyOneChoose ? (
+                <>
+                  <AllChecked
+                    onClick={checkAllHandler}
+                    type="button"
+                    check={isAllChecked}
+                    value={allCheckedValue}
+                    name={name}
+                  />
+                  {/* <br />
+                  <br /> */}
+                </>
+              ) : null}
               <br />
               {moreItems}
               {/* {value?.length > 1 && defaultSpecialization ? (

@@ -56,9 +56,16 @@ interface Props {
   onClick: (e: MouseEvent<HTMLDivElement>) => void
   salon: ISalonPage
   refetchSalon: IApolloRefetch
+  index: number
 }
 
-const Workplace: FC<Props> = ({ workplace, onClick, salon, refetchSalon }) => {
+const Workplace: FC<Props> = ({
+  workplace,
+  onClick,
+  salon,
+  refetchSalon,
+  index,
+}) => {
   const [deleteWorkplace] = useMutation(DELETE_WORKPLACE, {
     onCompleted: () => {
       refetchSalon()
@@ -76,7 +83,7 @@ const Workplace: FC<Props> = ({ workplace, onClick, salon, refetchSalon }) => {
     <Wrap>
       {
         <Wrapper onClick={onClick} url={PHOTO_URL + workplace?.cover?.url}>
-          {workplace.title ? <Name>{workplace.title}</Name> : null}
+          <Name>{workplace.title ? workplace.title : '№ ' + (index + 1)}</Name>
         </Wrapper>
       }
       <Button onClick={() => handleDelete()} size="fullWidth" variant="red">

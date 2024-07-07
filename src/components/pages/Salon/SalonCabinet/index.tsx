@@ -1,12 +1,13 @@
 import { useRef, useState, useEffect, useCallback } from 'react'
 import { MainContainer, MobileHidden } from '../../../../styles/common'
-import Header from '../../../pages/MainPage/components/Header'
+import Header from '../../MainPage/components/Header'
 import Controls from '../../../blocks/Form/Controls'
 import CabinetForm from './components/CabinetForm'
 import { Wrapper } from './styles'
-import CabinetHeaderMobile from '../../../blocks/Cabinet/components/CabinetHeaderMobile/index.tsx'
+import CabinetHeaderMobile from '../../../blocks/Cabinet/components/CabinetHeaderMobile'
+import { PHOTO_URL } from 'src/api/variables'
 
-const SalonCabinet = ({ salon }) => {
+const SalonCabinet = ({ salonData }) => {
   const allTabs = useRef()
   const ref1 = useRef()
   const ref2 = useRef()
@@ -21,7 +22,7 @@ const SalonCabinet = ({ salon }) => {
       value: 'Данные салона',
       anchor: 'cabinet',
       href: '/createSalon',
-      link: salon?.id,
+      link: salonData?.id,
       back: true,
     },
   ])
@@ -84,15 +85,19 @@ const SalonCabinet = ({ salon }) => {
     <>
       <Header />
       <MainContainer>
-        <CabinetHeaderMobile category={salon} />
+        <CabinetHeaderMobile category={salonData} />
         <Wrapper>
           <MobileHidden>
             <Controls
               tabs={tabs}
-              photoType={'salon'}
+              photoType={'salonData'}
               refActive={refActive}
               noSetPhoto={true}
-              photo={salon?.logo ? salon?.logo : null}
+              photo={
+                salonData.logo
+                  ? { ...salonData.logo, url: PHOTO_URL + salonData.logo.url }
+                  : null
+              }
             />
           </MobileHidden>
           <CabinetForm
@@ -100,8 +105,8 @@ const SalonCabinet = ({ salon }) => {
             ref1={ref1}
             ref2={ref2}
             ref3={ref3}
-            salon={salon}
-            salonId={salon?.id}
+            salonData={salonData}
+            salonId={salonData?.id}
           />
         </Wrapper>
       </MainContainer>

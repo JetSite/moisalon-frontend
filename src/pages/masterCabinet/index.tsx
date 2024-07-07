@@ -8,11 +8,25 @@ import { FC, useEffect } from 'react'
 import CreatePageSkeleton from 'src/components/ui/ContentSkeleton/CreatePageSkeleton'
 import Cabinet from 'src/components/blocks/Cabinet'
 import MasterCabinet from 'src/components/pages/Master/MasterCabinet'
+import { GetServerSideProps, NextPage } from 'next'
+import { initializeApollo } from 'src/api/apollo-client'
+import { RENTAL_REQUESTS_FOR_USER } from 'src/api/graphql/rentalRequest/queries/getRequestsForUser'
+import { ME } from 'src/api/graphql/me/queries/getMe'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { Nullable } from 'src/types/common'
+import { IRentalRequest } from 'src/types/rentalRequest'
+import { DELETED_RENTAL_REQUESTS_FOR_USER } from 'src/api/graphql/rentalRequest/queries/getDeletedRequestsForUser'
+
 interface Props {
   accessToken?: string
+  rentalRequests: IRentalRequest[]
+  deletedRentalRequests: IRentalRequest[]
 }
 
-const CabinetPage: FC<Props> = ({ accessToken }) => {
+const CabinetPage: NextPage<Props> = ({
+  rentalRequests,
+  deletedRentalRequests,
+}) => {
   const { user, loading } = useAuthStore(getStoreData)
 
   if (loading || !user) return <CreatePageSkeleton />
@@ -23,14 +37,26 @@ const CabinetPage: FC<Props> = ({ accessToken }) => {
     !user.info?.email ? (
     <Cabinet />
   ) : (
-    <MasterCabinet />
+    <MasterCabinet
+      user={user}
+      rentalRequests={rentalRequests}
+      deletedRentalRequests={deletedRentalRequests}
+    />
   )
 }
 
-export async function getServerSideProps(context: OptionsType) {
+export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async (
+  context: OptionsType,
+) => {
   const accessToken = getCookie(authConfig.tokenKeyName, context)
+  const apolloClient = initializeApollo({ accessToken })
 
-  if (!accessToken) {
+  const meData = await apolloClient.query({
+    query: ME,
+  })
+  const id = meData.data?.me.id || null
+
+  if (!accessToken || !id) {
     return {
       redirect: {
         destination: '/login',
@@ -38,7 +64,23 @@ export async function getServerSideProps(context: OptionsType) {
       },
     }
   } else {
-    return { props: { accessToken } }
+    const data = await Promise.all([
+      apolloClient.query({
+        query: RENTAL_REQUESTS_FOR_USER,
+        variables: { id },
+      }),
+      apolloClient.query({
+        query: DELETED_RENTAL_REQUESTS_FOR_USER,
+        variables: { id },
+      }),
+    ])
+
+    const rentalRequests = flattenStrapiResponse(data[0].data?.rentalRequests)
+    const deletedRentalRequests = flattenStrapiResponse(
+      data[1].data?.rentalRequests,
+    )
+
+    return { props: { accessToken, rentalRequests, deletedRentalRequests } }
   }
 }
 

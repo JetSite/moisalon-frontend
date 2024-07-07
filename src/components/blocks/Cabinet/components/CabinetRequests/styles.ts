@@ -2,16 +2,26 @@ import styled from 'styled-components'
 import Button from '../../../../ui/Button'
 import { laptopBreakpoint } from '../../../../../styles/variables'
 
-export const Wrapper = styled.div`
-  width: 100%;
-  margin-bottom: 79px;
+export const Text = styled.p`
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 16px;
+`
 
+export const Wrapper = styled.div`
+  position: relative;
+  max-width: 710px;
+  width: 100%;
+  padding-top: 35px;
+  margin-bottom: 200px;
   @media (max-width: ${laptopBreakpoint}) {
-    display: none;
+    padding-top: 0;
+    margin-bottom: 40px;
   }
 `
 
 export const ListWrapper = styled.div`
+  margin-top: 40px;
   display: flex;
   flex-wrap: wrap;
   margin-left: -15px;
@@ -19,7 +29,29 @@ export const ListWrapper = styled.div`
   margin-bottom: 23px;
 `
 
-export const ItemWrapper = styled.div`
+export const Comment = styled(Text)`
+  position: relative;
+  display: flex;
+  box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
+  padding: 4px 8px;
+  border-radius: 5px;
+  font-size: 12px;
+  margin: 32px 0 14px 0;
+  &:before {
+    content: '';
+    top: -10px;
+    left: -10px;
+    display: block;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: url('/email-active.svg') no-repeat center;
+    background-size: contain;
+    opacity: 0.6;
+  }
+`
+
+export const ItemWrapper = styled.div<{ noView?: boolean }>`
   position: relative;
   width: 330px;
   min-height: 433px;
@@ -31,25 +63,72 @@ export const ItemWrapper = styled.div`
   margin-bottom: 31px;
   border-radius: 5px;
   box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
-  &:before {
+
+  &:after {
     content: '';
     position: absolute;
     top: 15px;
-    right: 17px;
-    width: 13px;
-    height: 13px;
-    background: url('/close-cross-gray.svg') no-repeat center;
+    left: 17px;
+    width: 6px;
+    height: 6px;
+    border-radius: 100%;
+    background: #f03;
+    ${({ noView }) => (!noView ? 'display: none;' : 'display: block;')}
+  }
+`
+
+export const ShowDeletedButton = styled.button<{ active?: boolean }>`
+  cursor: pointer;
+  border: none;
+  padding: 0;
+  position: absolute;
+  top: 48px;
+  right: 17px;
+  display: flex;
+  opacity: ${({ active }) => (active ? 1 : 0.6)};
+  &:hover {
+    opacity: 1;
+  }
+  &:focus {
+    opacity: 1;
+  }
+  &::before {
+    display: inline-block;
+    padding-right: 4px;
+    content: '';
+    width: 16px;
+    height: 16px;
+    background: ${({ active }) =>
+      active
+        ? "url('/icon-back.svg') no-repeat center"
+        : "url('/trash.svg') no-repeat center"};
+    filter: invert(50%);
+  }
+`
+
+export const CloseButton = styled.button`
+  cursor: pointer;
+  border: none;
+  padding: 0;
+  position: absolute;
+  top: 15px;
+  right: 17px;
+  width: 13px;
+  height: 13px;
+  background: url('/close-cross-gray.svg') no-repeat center;
+  &:hover {
+    filter: brightness(30%);
+  }
+  &:focus {
+    filter: brightness(30%);
   }
 `
 
 export const MasterContent = styled.div`
   display: flex;
+  margin-bottom: 16px;
 `
-export const Text = styled.p`
-  font-size: 10px;
-  font-weight: 400;
-  line-height: 16px;
-`
+
 export const MasterPhoto = styled.div`
   width: 88px;
   height: 88px;
@@ -60,6 +139,7 @@ export const MasterPhoto = styled.div`
 `
 export const Photo = styled.img`
   width: 100%;
+  border-radius: 50%;
 `
 export const Info = styled.div``
 export const Name = styled.h5`
@@ -94,7 +174,7 @@ export const Position = styled.p`
   font-weight: 500;
   line-height: 20px;
 `
-export const SalonPhoto = styled.div`
+export const SalonPhoto = styled.div<{ photo?: string | null }>`
   width: 88px;
   height: 90px;
   margin-right: 16px;

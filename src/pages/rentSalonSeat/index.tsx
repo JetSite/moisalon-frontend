@@ -27,7 +27,6 @@ interface Props {
 
 const RentSalonSeat: NextPage<Props> = ({
   salonData,
-  paymentMethods,
   retnalPeriods,
   equipments,
 }) => {

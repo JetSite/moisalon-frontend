@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../styles/variables'
 
-export const Wrapper = styled.div<{ cabinet: boolean }>`
+export const Wrapper = styled.section<{ cabinet: boolean }>`
   max-width: ${props => (props.cabinet ? '573px' : '100%')};
   @media (max-width: ${laptopBreakpoint}) {
     max-width: 100%;

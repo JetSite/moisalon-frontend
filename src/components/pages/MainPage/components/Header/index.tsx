@@ -58,7 +58,9 @@ const activeLink = (path: string, link?: string[]) => {
 const Header = ({ loading = false }) => {
   const cityCookie = getCookie(authConfig.cityKeyName)
   const { user, city } = useAuthStore(getStoreData)
-  const { cart } = useBaseStore(getStoreData)
+  // const { cartItemTotal: quantity } = useAuthStore(getStoreData)
+  const b2bClient =
+    !!user?.owner.masters?.length || !!user?.owner.salons?.length
   const router = useRouter()
   const isAboutPage = router.pathname === '/about'
   const [openPopup, setPopupOpen] = useState<boolean>(!cityCookie)
@@ -75,8 +77,7 @@ const Header = ({ loading = false }) => {
   const [showCatalogMenu, setShowCatalogMenu] = useState(false)
   const [showSearchPopup, setShowSearchPopup] = useState(false)
   // const { unreadMessagesCount } = useChat();
-  const quantity =
-    cart?.cartContent?.reduce((acc, item) => acc + item.quantity, 0) || 0
+  const quantity = 0
 
   const logoClickHandler = () => {
     router.push(`/${city.slug}`)

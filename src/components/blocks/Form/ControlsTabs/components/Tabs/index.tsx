@@ -85,18 +85,8 @@ interface Props {
 const Tabs: FC<Props> = ({ tabs, setActiveTab, activeTab }) => {
   const router = useRouter()
   const { setMe, logout } = useAuthStore(getStoreEvent)
-  const { refetch } = useQuery(currentUserSalonsAndMasterQuery, {
-    skip: true,
-    onCompleted: res => {
-      setMe({
-        info: res?.me?.info,
-        master: res?.me?.master,
-        locationByIp: res?.locationByIp,
-        salons: res?.me?.salons,
-        rentalRequests: res?.me?.rentalRequests,
-      })
-    },
-  })
+  const { masterCabinetTabs } = useAuthStore(getStoreData)
+
   const dev = process.env.NEXT_PUBLIC_ENV !== 'production'
   const handleClick = (item: any) => {
     const element = document.getElementById(item.anchor.replace('#', ''))
@@ -113,20 +103,26 @@ const Tabs: FC<Props> = ({ tabs, setActiveTab, activeTab }) => {
 
   return (
     <Wrapper>
-      {tabs.map(item => (
-        <Tab key={item.value}>
-          {item.title ? (
-            <Text
-              disable={item.disable}
-              onClick={() => !item.disable && setActiveTab(item.value)}
-              active={item.value === activeTab}
-            >
-              {item.title}
-            </Text>
-          ) : null}
-          {item.quantity ? <Quantity>{item.quantity}</Quantity> : null}
-        </Tab>
-      ))}
+      {tabs.map(item => {
+        const quantity = masterCabinetTabs
+          ? masterCabinetTabs[item.value]
+          : item.quantity
+
+        return (
+          <Tab key={item.value}>
+            {item.title ? (
+              <Text
+                disable={item.disable}
+                onClick={() => !item.disable && setActiveTab(item.value)}
+                active={item.value === activeTab}
+              >
+                {item.title}
+              </Text>
+            ) : null}
+            {quantity && quantity > 0 ? <Quantity>{quantity}</Quantity> : null}
+          </Tab>
+        )
+      })}
       {router?.asPath !== '/masterCabinet' ? (
         <Tab>
           <Text onClick={() => router.push('/masterCabinet')}>

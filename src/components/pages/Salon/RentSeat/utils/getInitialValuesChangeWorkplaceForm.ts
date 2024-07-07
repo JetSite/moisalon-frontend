@@ -31,6 +31,7 @@ export const getInitialValuesChangeWorkplaceForm: IGetInitialValuesChangeWorkpla
 
     return {
       isAvailableForRent: !!workplace?.isAvailableForRent,
+      title: workplace.title,
       activities: workplace?.services.map(e => e.id),
       rentalPricing: workplace?.rentalPricing,
       seatNumber: workplace?.seatNumber,

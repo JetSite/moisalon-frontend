@@ -4,7 +4,6 @@ import { laptopBreakpoint } from '../../../../styles/variables'
 import { FieldArrayRenderProps } from 'react-final-form-arrays'
 
 const Input = styled.input<{ check?: boolean }>`
-  margin: 5px;
   background: ${props => (!props.check ? '#fff' : '#f03')};
   border: ${props => (!props.check ? '1px solid #000000' : '1px solid #f03')};
   border-radius: 50px;

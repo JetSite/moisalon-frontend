@@ -6,9 +6,15 @@ interface Props {
   catalog: IService[]
   mbDesc: number
   onlyOneChoose?: boolean
+  title?: string
 }
 
-const ActivitiesList: FC<Props> = ({ catalog, mbDesc, onlyOneChoose }) => {
+const ActivitiesList: FC<Props> = ({
+  catalog,
+  mbDesc,
+  onlyOneChoose,
+  title,
+}) => {
   return (
     <DictionaryField
       name="activities"
@@ -16,6 +22,7 @@ const ActivitiesList: FC<Props> = ({ catalog, mbDesc, onlyOneChoose }) => {
       withButton={true}
       mbDesc={mbDesc}
       onlyOneChoose={onlyOneChoose}
+      title={title}
     />
   )
 }
