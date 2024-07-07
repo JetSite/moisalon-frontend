@@ -10,7 +10,7 @@ export const FieldWrap = styled.div`
 
 export const Title = styled.h2`
   font-size: 18px;
-  margin-bottom: 14px;
+  margin-bottom: 20px;
 `
 
 export const Desc = styled.p`

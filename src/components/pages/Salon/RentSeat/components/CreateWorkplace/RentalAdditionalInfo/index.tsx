@@ -58,12 +58,7 @@ const RentalAdditionalInfo: FC<Props> = ({
       return <TechnicalBlock key={prepareItem.id} item={prepareItem} />
     })
 
-    return (
-      <>
-        <Desc>Параметры рабочего места/кабинета</Desc>
-        {prepareCategoryArr}
-      </>
-    )
+    return <>{prepareCategoryArr}</>
   }
 
   useEffect(() => {

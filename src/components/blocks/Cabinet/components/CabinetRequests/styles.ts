@@ -2,6 +2,12 @@ import styled from 'styled-components'
 import Button from '../../../../ui/Button'
 import { laptopBreakpoint } from '../../../../../styles/variables'
 
+export const Text = styled.p`
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 16px;
+`
+
 export const Wrapper = styled.div`
   position: relative;
   max-width: 710px;
@@ -21,6 +27,28 @@ export const ListWrapper = styled.div`
   margin-left: -15px;
   margin-right: -15px;
   margin-bottom: 23px;
+`
+
+export const Comment = styled(Text)`
+  position: relative;
+  display: flex;
+  box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
+  padding: 4px 8px;
+  border-radius: 5px;
+  font-size: 12px;
+  margin: 32px 0 14px 0;
+  &:before {
+    content: '';
+    top: -10px;
+    left: -10px;
+    display: block;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: url('/email-active.svg') no-repeat center;
+    background-size: contain;
+    opacity: 0.6;
+  }
 `
 
 export const ItemWrapper = styled.div<{ noView?: boolean }>`
@@ -98,12 +126,9 @@ export const CloseButton = styled.button`
 
 export const MasterContent = styled.div`
   display: flex;
+  margin-bottom: 16px;
 `
-export const Text = styled.p`
-  font-size: 10px;
-  font-weight: 400;
-  line-height: 16px;
-`
+
 export const MasterPhoto = styled.div`
   width: 88px;
   height: 88px;

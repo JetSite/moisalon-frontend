@@ -2,7 +2,8 @@ import { Wrapper, Item, Count, Text, Content, OnlineButton } from './styles'
 import scrollIntoView from 'scroll-into-view'
 import { urlPatternHttp, urlPatternHttps } from '../../../utils/checkUrls'
 import { FC } from 'react'
-import { ISalonPage } from 'src/types/salon'
+import { ISalon, ISalonPage } from 'src/types/salon'
+import { OnlineBookingButton } from 'src/components/blocks/OnlineBookingButton'
 
 export interface ITab {
   id: number
@@ -59,26 +60,9 @@ const TabsSlider: FC<Props> = ({
           ) : null,
         )}
         {rent ? (
-          salon?.onlineBookingUrl ? (
-            <noindex style={{ width: '100%' }}>
-              <OnlineButton
-                target="_blank"
-                rel="nofollow"
-                href={
-                  urlPatternHttp.test(salon?.onlineBookingUrl) ||
-                  urlPatternHttps.test(salon?.onlineBookingUrl)
-                    ? salon?.onlineBookingUrl
-                    : `https://${salon?.onlineBookingUrl}`
-                }
-              >
-                Онлайн бронирование
-              </OnlineButton>
-            </noindex>
-          ) : (
-            <OnlineButton href={`tel:${salon?.salonPhones[0]?.phoneNumber}`}>
-              Онлайн бронирование
-            </OnlineButton>
-          )
+          <OnlineBookingButton salon={salon as ISalon}>
+            <OnlineButton> Онлайн бронирование</OnlineButton>
+          </OnlineBookingButton>
         ) : null}
       </Content>
     </Wrapper>

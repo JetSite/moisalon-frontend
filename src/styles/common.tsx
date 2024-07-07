@@ -15,7 +15,7 @@ export const Container = styled.div`
   box-sizing: border-box;
 `
 
-export const MainContainer = styled.div`
+export const MainContainer = styled.section`
   box-sizing: border-box;
   max-width: 1440px;
   margin-left: auto;

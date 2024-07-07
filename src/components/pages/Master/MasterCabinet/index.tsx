@@ -22,7 +22,7 @@ import { PHOTO_URL } from '../../../../api/variables'
 import { useChat } from '../../../../chatContext'
 import { IRefetch } from 'src/api/types'
 import { IMe, IUser } from 'src/types/me'
-import useAuthStore from 'src/store/authStore'
+import useAuthStore, { IMasterCabinetTabs } from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 import { IPhoto } from 'src/types'
 import { IRentalRequest } from 'src/types/rentalRequest'
@@ -33,7 +33,7 @@ export interface IMasterCabinetTab {
   title: string
   value: string
   icon?: string
-  quantity?: number
+  quantity?: number | null
   disable?: boolean
   visible?: boolean
 }
@@ -68,23 +68,6 @@ const MasterCabinet: FC<Props> = ({
     },
   })
 
-  // const handlePhoto = (id: IID) => {
-  //   setPhotoId(id)
-  //   if (id) {
-  //     mutate({
-  //       variables: {
-  //         input: {
-  //           defaultCity: me?.info?.city.name,
-  //           displayName: me?.info?.username,
-  //           email: me?.info?.email,
-  //           phoneNumber: me?.info?.phone,
-  //           avatar: id,
-  //         },
-  //       },
-  //     })
-  //   }
-  // }
-
   const [activeTab, setActiveTab] = useState<string>('about')
   const router = useRouter()
 
@@ -99,6 +82,11 @@ const MasterCabinet: FC<Props> = ({
     rentalRequests,
     'deletedRentalRequests',
     deletedRentalRequests,
+  )
+
+  console.log(
+    rentalRequests.filter(req => req.status.id === '2').length,
+    'ffff',
   )
 
   return (
@@ -121,8 +109,9 @@ const MasterCabinet: FC<Props> = ({
               title: 'Мои заявки',
               value: 'requests',
               icon: '/icon-orders.svg',
-              quantity: rentalRequests.filter(req => req.status.id === '2')
-                .length,
+              quantity:
+                rentalRequests.filter(req => req.status.id === '1').length ||
+                null,
               disable: false,
               visible: true,
             },
@@ -183,7 +172,7 @@ const MasterCabinet: FC<Props> = ({
                 title: 'Мои заявки',
                 value: 'requests',
                 icon: '/icon-orders.svg',
-                quantity: rentalRequests.filter(req => req.status.id === '2')
+                quantity: rentalRequests.filter(req => req.status.id === '1')
                   .length,
                 visible: !!rentalRequests.length,
               },

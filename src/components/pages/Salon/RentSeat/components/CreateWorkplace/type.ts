@@ -31,6 +31,7 @@ export interface IChangeWorkplaceFormValues {
   withLicense: boolean
   subRent: boolean
   shareRent: boolean
+  title: string
 }
 
 export interface IPeriod {

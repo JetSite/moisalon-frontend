@@ -9,7 +9,7 @@ import { cyrToTranslit } from '../../../../utils/translit'
 import BackButton from '../../../ui/BackButton'
 import Button from '../../../ui/Button'
 import Popup from '../../../ui/Popup'
-import WritePopup from '../../Salon/ViewSalon/components/WritePopup.js/index.js'
+import WritePopup from '../../Salon/ViewSalon/components/WritePopup.js'
 import PhotoSlider from '../../../blocks/PhotoSlider'
 import { MobileVisible, MobileHidden } from '../../../../styles/common'
 import {
@@ -51,6 +51,7 @@ import { ICity } from 'src/types'
 import { ISalonPage } from 'src/types/salon'
 import { ISalonWorkplace } from 'src/types/workplace'
 import { PHOTO_URL } from 'src/api/variables'
+import { OnlineBookingButton } from 'src/components/blocks/OnlineBookingButton'
 
 interface Props {
   city: ICity
@@ -143,7 +144,13 @@ const RentHeader: FC<Props> = ({ city, salonData, workplaceData }) => {
         </Content>
       </Wrapper>
       <TopImage photoUrl={PHOTO_URL + workplace.cover?.url}>
-        {salonData?.onlineBookingUrl ? (
+        <OnlineBookingButton salon={salonData} workplace={workplace}>
+          <OnlineBooking>
+            <Icon src="/booking-blank.svg" />
+            Онлайн бронирование
+          </OnlineBooking>
+        </OnlineBookingButton>
+        {/* {salonData?.onlineBookingUrl ? (
           <noindex>
             <OnlineBooking
               target="_blank"
@@ -159,13 +166,16 @@ const RentHeader: FC<Props> = ({ city, salonData, workplaceData }) => {
             <Icon src="/booking-blank.svg" />
             Онлайн бронирование
           </OnlineBooking>
-        )}
+        )} */}
       </TopImage>
       <Wrapper>
         <Content>
           <Top>
             <SalonDescription>{salonData?.description}</SalonDescription>
-            {salonData?.onlineBookingUrl ? (
+            <OnlineBookingButton salon={salonData} workplace={workplace}>
+              <ButtonRequest> Отправить заявку</ButtonRequest>
+            </OnlineBookingButton>
+            {/* {salonData?.onlineBookingUrl ? (
               <noindex>
                 <ButtonRequest
                   target="_blank"
@@ -186,7 +196,7 @@ const RentHeader: FC<Props> = ({ city, salonData, workplaceData }) => {
               >
                 Отправить заявку
               </ButtonRequest>
-            )}
+            )} */}
           </Top>
           <MobileHidden>
             {workplace.gallery.length ? (
@@ -462,7 +472,10 @@ const RentHeader: FC<Props> = ({ city, salonData, workplaceData }) => {
             ) : null}
           </InfoBlock>
           <BottomButtons>
-            {!salonData?.onlineBookingUrl ? (
+            <OnlineBookingButton salon={salonData} workplace={workplace}>
+              <ButtonRequest> Отправить заявку</ButtonRequest>
+            </OnlineBookingButton>
+            {/* {!salonData?.onlineBookingUrl ? (
               <noindex>
                 <ButtonRequest
                   target="_blank"
@@ -481,32 +494,10 @@ const RentHeader: FC<Props> = ({ city, salonData, workplaceData }) => {
               >
                 Отправить заявку
               </ButtonRequest>
-            )}
+            )} */}
           </BottomButtons>
         </Content>
       </Wrapper>
-      <>
-        <WritePopup
-          user={me?.info}
-          open={openWritePopup}
-          handleClose={handleCloseWritePopup}
-          onSubmit={onSubmit}
-        />
-        <Popup
-          isOpen={openSuccessPopup}
-          onClose={closeSuccessPopup}
-          title="Ваше сообщение отправлено"
-          description={`Администратор салона свяжется с вами в ближайшее время!`}
-        >
-          <Button
-            style={{ marginTop: 20 }}
-            onClick={closeSuccessPopup}
-            variant="red"
-          >
-            Закрыть
-          </Button>
-        </Popup>
-      </>
     </>
   )
 }

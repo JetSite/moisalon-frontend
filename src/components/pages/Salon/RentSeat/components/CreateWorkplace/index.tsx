@@ -140,6 +140,7 @@ export const CreateWorkplace: FC<Props> = ({
 
     const input = {
       cover: parseToNumber(cover?.id),
+      title: values.title,
       description: values.description || null,
       floor: parseToNumber(values.floor),
       space: parseToNumber(values.space),

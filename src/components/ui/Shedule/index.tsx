@@ -38,10 +38,9 @@ const ScheduleItems: FC<{ workingHours: IWorkingHours[] }> = ({
     <>
       {workingHours.map((e, i) => {
         return (
-          <span key={i}>
-            {e.dayOfWeek},{' '}
-            {moment(e.startTime, 'HH:mm:ss.SSS').format('h:mm A')} -{' '}
-            {moment(e.endTime, 'HH:mm:ss.SSS').format('h:mm A')}
+          <span style={{ display: 'block', fontSize: '18px' }} key={i}>
+            {e.dayOfWeek}, {moment(e.startTime, 'HH:mm:ss.SSS').format('h:mm ')}{' '}
+            - {moment(e.endTime, 'HH:mm:ss.SSS').format('HH:mm') + '. '}
           </span>
         )
       })}

@@ -79,7 +79,7 @@ const RentSlider: FC<Props> = ({ salon, title }) => {
                         key={i}
                       >
                         <Link
-                          href={`/${salon.city.slug || city.slug}/rent/${
+                          href={`/${salon.city?.slug || city.slug}/rent/${
                             salon?.id
                           }/workplace/${item.id}`}
                         >

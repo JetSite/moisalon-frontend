@@ -48,7 +48,7 @@ export const Icon = styled.img`
   margin-right: 13px;
 `
 
-export const OnlineBooking = styled.a`
+export const OnlineBooking = styled.span`
   cursor: pointer;
   width: 295px;
   height: 55px;

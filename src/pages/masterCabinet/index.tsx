@@ -24,7 +24,6 @@ interface Props {
 }
 
 const CabinetPage: NextPage<Props> = ({
-  accessToken,
   rentalRequests,
   deletedRentalRequests,
 }) => {
@@ -75,8 +74,6 @@ export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async (
         variables: { id },
       }),
     ])
-
-    console.log(data)
 
     const rentalRequests = flattenStrapiResponse(data[0].data?.rentalRequests)
     const deletedRentalRequests = flattenStrapiResponse(

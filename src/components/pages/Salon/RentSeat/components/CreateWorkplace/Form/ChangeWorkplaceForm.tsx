@@ -13,6 +13,7 @@ import {
   SupportLink,
   ButtonsBlockText,
   SupportTextBottom,
+  FieldWrap,
 } from '../styles'
 import RentalAdditionalInfo from '../RentalAdditionalInfo'
 import { useEffect } from 'react'
@@ -29,6 +30,8 @@ import { IEquipment } from 'src/types/equipment'
 import { getServicesForCatalog } from 'src/utils/newUtils/getServicesForCatalog'
 import { getGroupedServices } from 'src/utils/getGrupedServices'
 import { cyrToTranslit } from 'src/utils/translit'
+import { TextField } from '../../../../../../blocks/Form'
+import { Field } from 'react-final-form'
 
 function convertNumber(text) {
   if (text === undefined) {
@@ -174,6 +177,16 @@ const ChangeWorkplaceForm: FC<Props> = ({
       <DefaultPhoto defaultPhoto={cover} setDefaultPhoto={setCover} />
       <Desc>Загрузите фотографии в фотогалерею*</Desc>
       <PhotoGallery photos={workplace?.gallery || []} />
+      <FieldWrap>
+        <Desc>Назовите рабочее место</Desc>
+        <Field
+          name="title"
+          component={TextField}
+          multiline={true}
+          maxLength={1200}
+          label="Название"
+        />
+      </FieldWrap>
       <Desc>Выберите назначение рабочего места/кабинета*</Desc>
       {/* <Subdesc>
                   Выберите один или несколько видов деятельности, которые

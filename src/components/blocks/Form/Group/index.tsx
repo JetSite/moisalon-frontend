@@ -16,6 +16,9 @@ const TitleWrapper = styled.div``
 const Title = styled.div``
 
 const ContentWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
   flex: 1 1 auto;
 `
 
@@ -49,10 +52,12 @@ const Group: FC<Props> = ({
 }) => {
   return (
     <Wrapper mbWrapper={mbWrapper}>
-      <TitleWrapper>
-        <Title>{title}</Title>
-        <Description mbDesc={mbDesc}>{description}</Description>
-      </TitleWrapper>
+      {title ? (
+        <TitleWrapper>
+          <Title>{title}</Title>
+          <Description mbDesc={mbDesc}>{description}</Description>
+        </TitleWrapper>
+      ) : null}
       <ContentWrapper>{children}</ContentWrapper>
     </Wrapper>
   )

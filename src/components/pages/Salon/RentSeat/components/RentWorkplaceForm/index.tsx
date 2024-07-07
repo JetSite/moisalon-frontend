@@ -43,9 +43,10 @@ const RentWorkplaceForm: FC<Props> = ({
           {salon?.workplaces?.length ? (
             <WrapperWorkplace>
               {!refetchSalonLoad &&
-                salon?.workplaces.map(item => (
+                salon?.workplaces.map((item, i) => (
                   <Workplace
                     salon={salon}
+                    index={i}
                     workplace={item}
                     refetchSalon={refetchSalon}
                     key={item.id}

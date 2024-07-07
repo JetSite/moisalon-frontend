@@ -46,7 +46,7 @@ export const Image = styled.img`
   }
 `
 
-export const OnlineBooking = styled.a`
+export const OnlineBooking = styled.span`
   position: absolute;
   cursor: pointer;
   width: 295px;
@@ -222,7 +222,7 @@ export const Phone = styled.a`
   }
 `
 
-export const ButtonOnline = styled.a`
+export const ButtonOnline = styled.span`
   width: 100%;
   height: 55px;
   font-weight: 600;

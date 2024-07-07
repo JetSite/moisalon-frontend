@@ -21,9 +21,10 @@ import {
   ButtonWrapper,
   ButtonStyled,
   CloseButton,
+  Comment,
 } from '../styles'
 import useAuthStore from 'src/store/authStore'
-import { getStoreData } from 'src/store/utils'
+import { getStoreData, getStoreEvent } from 'src/store/utils'
 import { PHOTO_URL } from 'src/api/variables'
 import { IRentalRequest } from 'src/types/rentalRequest'
 import { useMutation } from '@apollo/client'
@@ -45,7 +46,9 @@ const RequestItem: FC<Props> = ({
   refetchDeleted,
 }) => {
   const [request, setRequest] = useState(rentalRequest)
-  const { user } = useAuthStore(getStoreData)
+  const { user, masterCabinetTabs } = useAuthStore(getStoreData)
+  const { updateMasterCabinetTabs } = useAuthStore(getStoreEvent)
+  const [isNew, setIsNew] = useState<boolean>(request.status.id === '1')
   const [needRefetch, setNeedRefetch] = useState<boolean>(false)
   const userName = user?.info.username || null
   const phone = user?.info.phone || null
@@ -75,8 +78,18 @@ const RequestItem: FC<Props> = ({
   const [updateRentalRequest] = useMutation(UPDATE_RENTAL_REQUEST, {
     fetchPolicy: 'no-cache',
     onCompleted: data => {
-      const prepareData = flattenStrapiResponse(data.updateRentalRequest)
+      const prepareData: IRentalRequest = flattenStrapiResponse(
+        data.updateRentalRequest,
+      )
+      const newCount =
+        masterCabinetTabs &&
+        masterCabinetTabs.rentalRequests &&
+        masterCabinetTabs.rentalRequests > 0
+          ? (masterCabinetTabs.rentalRequests -= 1)
+          : 0
+
       setRequest(prepareData)
+      updateMasterCabinetTabs('requests', newCount)
 
       if (needRefetch) {
         refetch({ variables: { id: 4 } })
@@ -86,7 +99,7 @@ const RequestItem: FC<Props> = ({
     },
   })
 
-  useEffect(() => {
+  const updateViewStatus = () => {
     if (request.status.id === '1') {
       updateRentalRequest({
         variables: {
@@ -94,11 +107,19 @@ const RequestItem: FC<Props> = ({
           input: { status: '2' },
         },
       })
+      setIsNew(false)
+    }
+  }
+
+  useEffect(() => {
+    const updateId = setTimeout(updateViewStatus, 3000)
+    return () => {
+      clearTimeout(updateId)
     }
   }, [])
 
   return (
-    <ItemWrapper noView={request.status.id === '1'}>
+    <ItemWrapper noView={isNew}>
       {!showDeleted && (
         <CloseButton
           onClick={() => {
@@ -112,7 +133,13 @@ const RequestItem: FC<Props> = ({
           }}
         />
       )}
-      {/* {request.status.id + ' - ' + request.status.title} */}
+      {/* <Button
+        size="roundMedium"
+        variant={showDeleted ? 'redWithRoundBorder' : 'withRoundBorder'}
+        font="roundMedium"
+      >
+        {request.status.id + ' - ' + request.status.title}
+      </Button> */}
       <MasterContent>
         {user?.info.avatar ? (
           <MasterPhoto>
@@ -149,6 +176,7 @@ const RequestItem: FC<Props> = ({
           <SalonName>{salonName}</SalonName>
         </RequestInfo>
       </Request>
+      {request.comment ? <Comment>{request.comment}</Comment> : null}
       <ButtonWrapper>
         <ButtonStyled
           size="roundMedium"

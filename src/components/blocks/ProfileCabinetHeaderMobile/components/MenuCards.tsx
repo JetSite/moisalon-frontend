@@ -23,7 +23,6 @@ interface Props {
 const MenuCards: FC<Props> = ({ tabs, setActiveTab, setToggle }) => {
   const router = useRouter()
   const { logout } = useAuthStore(getStoreEvent)
-  console.log(tabs)
 
   return (
     <CardsWrapper>

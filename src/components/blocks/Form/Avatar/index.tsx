@@ -133,6 +133,7 @@ interface Props {
   setNoPhotoError?: ISetState<boolean>
   title?: string
   red?: boolean
+  id: string | null
 }
 
 const Avatar: FC<Props> = ({

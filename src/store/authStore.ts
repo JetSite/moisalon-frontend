@@ -7,12 +7,18 @@ import { IMe, IUser } from 'src/types/me'
 import { cyrToTranslit } from 'src/utils/translit'
 import { create } from 'zustand'
 
+export interface IMasterCabinetTabs {
+  requests?: number | null
+  [K: string]: number | null | undefined
+}
+
 export interface IInitialAuthData {
   me: IMe | null
   user: IUser | null
   city: ICity
   cartItemTotal: number
   loading: boolean
+  masterCabinetTabs: IMasterCabinetTabs | null
 }
 
 interface IUseAuthStore {
@@ -22,6 +28,10 @@ interface IUseAuthStore {
   setCity: (city: ICity | null) => void
   setLoading: (bool: boolean) => void
   logout: (router: NextRouter) => void
+  updateMasterCabinetTabs: (
+    key: keyof IMasterCabinetTabs,
+    value: number | null,
+  ) => void
 }
 
 const initialData = {
@@ -30,6 +40,7 @@ const initialData = {
   city: { slug: defaultValues.citySlug },
   cartItemTotal: 1,
   loading: false,
+  masterCabinetTabs: null,
 }
 
 const useAuthStore = create<IUseAuthStore>((set, get) => ({
@@ -45,6 +56,15 @@ const useAuthStore = create<IUseAuthStore>((set, get) => ({
     })),
   setLoading: bool =>
     set(state => ({ data: { ...state.data, loading: bool } })),
+  updateMasterCabinetTabs: (key, value) =>
+    set(state => ({
+      data: {
+        ...state.data,
+        masterCabinetTabs: state.data.masterCabinetTabs
+          ? { ...state.data.masterCabinetTabs, [key]: value }
+          : { [key]: value },
+      },
+    })),
   logout: router =>
     set(state => {
       deleteCookie(authConfig.tokenKeyName)
