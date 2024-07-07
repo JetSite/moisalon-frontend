@@ -16,7 +16,6 @@ export interface IInitialAuthData {
   me: IMe | null
   user: IUser | null
   city: ICity
-  cartItemTotal: number
   loading: boolean
   masterCabinetTabs: IMasterCabinetTabs | null
 }
@@ -38,7 +37,6 @@ const initialData = {
   me: null,
   user: null,
   city: { slug: defaultValues.citySlug },
-  cartItemTotal: 1,
   loading: false,
   masterCabinetTabs: null,
 }

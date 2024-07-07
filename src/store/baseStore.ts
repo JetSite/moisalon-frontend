@@ -1,4 +1,5 @@
 import { LazyType, Nullable } from 'src/types/common'
+import { ICart } from 'src/types/product'
 import { ISalonActivity } from 'src/types/salon'
 import { IServiceCategories } from 'src/types/services'
 import { create } from 'zustand'
@@ -13,6 +14,7 @@ export interface IInitialBaseData {
   products: LazyType[]
   cities: LazyType[]
   city: string
+  cart: ICart | null
 }
 
 interface IUseBaseStore {
@@ -26,6 +28,7 @@ interface IUseBaseStore {
   setProducts: (products: LazyType[]) => void
   setSities: (cities: LazyType[]) => void
   setCity: (city: string) => void
+  setCart: (cart: ICart | null) => void
 }
 
 const initialData = {
@@ -38,6 +41,7 @@ const initialData = {
   products: null,
   cities: null,
   city: null,
+  cart: null,
 }
 
 const useBaseStore = create<IUseBaseStore>((set, get) => ({
@@ -55,5 +59,6 @@ const useBaseStore = create<IUseBaseStore>((set, get) => ({
     set(state => ({ data: { ...state.data, products } })),
   setSities: cities => set(state => ({ data: { ...state.data, cities } })),
   setCity: city => set(state => ({ data: { ...state.data, city } })),
+  setCart: cart => set(state => ({ data: { ...state.data, cart } })),
 }))
 export default useBaseStore

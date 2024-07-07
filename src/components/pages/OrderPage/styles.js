@@ -249,3 +249,16 @@ export const BrandsAddressWrap = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
   }
 `
+
+export const SuccessOrderWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 50px 0 300px 0;
+`
+
+export const SuccessOrderText = styled.p`
+  font-weight: 600;
+  font-size: 24px;
+`

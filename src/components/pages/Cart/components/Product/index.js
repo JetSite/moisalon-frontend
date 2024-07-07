@@ -18,12 +18,18 @@ import { addToCartB2cMutation } from '../../../../../_graphql-legacy/cart/addToB
 import { PHOTO_URL } from '../../../../../api/variables'
 import { cyrToTranslit } from '../../../../../utils/translit'
 import useAuthStore from 'src/store/authStore'
-import { getStoreData } from 'src/store/utils'
+import { getStoreData, getStoreEvent } from 'src/store/utils'
 import { pluralize } from '../../../../../utils/pluralize'
+import { getBrand } from 'src/api/graphql/brand/queries/getBrand'
+import { UPDATE_CART } from 'src/api/graphql/cart/mutations/updateCart'
+import useBaseStore from 'src/store/baseStore'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 
 const useStyles = makeStyles({
   root: {
-    marginLeft: '-9px',
+    width: '20px',
+    height: '20px',
+    padding: 0,
     '&:hover': {
       backgroundColor: 'transparent !important',
     },
@@ -162,17 +168,16 @@ const Product = ({
   item,
   checkedProducts,
   setCheckedProducts,
-  removeItem,
   setProductBrands,
   productBrands,
-  refetchCart,
   cart,
 }) => {
   const classes = useStyles()
+  const { setCart } = useBaseStore(getStoreEvent)
 
-  const { data: dataBrand } = useQuery(brandSearchQuery, {
+  const { data: dataBrand } = useQuery(getBrand, {
     variables: {
-      query: item?.product?.brand?.name,
+      id: item?.product?.brand?.id,
     },
   })
 
@@ -182,60 +187,100 @@ const Product = ({
   useEffect(() => {
     if (dataBrand && checked) {
       if (
-        !productBrands.find(
-          item =>
-            item?.id === dataBrand?.brandsSearch?.connection?.nodes[0]?.id,
-        )
+        !productBrands.find(item => item?.id === dataBrand?.brand?.data?.id)
       ) {
-        setProductBrands([
-          ...productBrands,
-          dataBrand?.brandsSearch?.connection?.nodes[0],
-        ])
+        setProductBrands([...productBrands, dataBrand?.brand?.data])
       }
     }
   }, [dataBrand, cart, checked])
 
   useEffect(() => {
-    if (checkedProducts.find(el => el.key === item.key)) {
+    if (checkedProducts?.find(el => el.product.id === item.product.id)) {
       setChecked(true)
     } else {
       setChecked(false)
     }
   }, [checkedProducts])
 
-  const [addToCart] = useMutation(addToCartB2cMutation, {
-    onCompleted: () => {
-      refetchCart()
+  const [updateCart, { loading: updateCartLoading }] = useMutation(
+    UPDATE_CART,
+    {
+      onCompleted: res => {
+        if (res?.updateCart?.data) {
+          setCart(flattenStrapiResponse(res.updateCart.data))
+        }
+      },
     },
-  })
+  )
 
-  const add = (item, quantity) => {
-    addToCart({
+  const addToCart = (item, quantity) => {
+    updateCart({
       variables: {
-        input: {
-          productId: item.product.id,
-          quantity,
-          isB2b: true,
+        data: {
+          cartContent: cart?.cartContent?.map(el => {
+            if (el?.product?.id === item.product.id) {
+              return {
+                product: el?.product?.id,
+                quantity: el?.quantity + quantity,
+              }
+            }
+            return {
+              product: el?.product?.id,
+              quantity: el?.quantity,
+            }
+          }),
         },
+        id: cart?.id,
       },
     })
   }
 
-  const deleteItem = item => {
-    removeItem({
-      variables: {
-        input: {
-          items: [{ key: item.key, quantity: item.quantity - 1 }],
-          clientMutationId: '',
-          isB2b: true,
+  const deleteFromCart = item => {
+    const itemInCart = cart?.cartContent?.find(
+      el => el?.product?.id === item.product.id,
+    )
+    if (itemInCart?.quantity === 1) {
+      updateCart({
+        variables: {
+          data: {
+            cartContent: cart?.cartContent
+              ?.filter(el => el?.product?.id !== item.product.id)
+              .map(el => ({
+                product: el?.product?.id,
+                quantity: el?.quantity,
+              })),
+          },
+          id: cart?.id,
         },
-      },
-    })
+      })
+    } else {
+      updateCart({
+        variables: {
+          data: {
+            cartContent: cart?.cartContent?.map(el => {
+              if (el?.product?.id === item.product.id) {
+                return {
+                  product: el?.product?.id,
+                  quantity: el?.quantity - 1,
+                }
+              }
+              return {
+                product: el?.product?.id,
+                quantity: el?.quantity,
+              }
+            }),
+          },
+          id: cart?.id,
+        },
+      })
+    }
   }
 
   const handleChecked = () => {
-    if (checkedProducts.find(el => el.key === item.key)) {
-      setCheckedProducts(checkedProducts.filter(el => el.key !== item.key))
+    if (checkedProducts?.find(el => el.product.id === item.product.id)) {
+      setCheckedProducts(
+        checkedProducts.filter(el => el.product.id !== item.product.id),
+      )
     } else {
       setCheckedProducts([...checkedProducts, item])
     }
@@ -248,8 +293,8 @@ const Product = ({
           <Image>
             <img
               src={
-                item?.product?.photoIds[0]
-                  ? ` ${PHOTO_URL}${item?.product?.photoIds[0]}/original`
+                item?.product?.cover?.url
+                  ? ` ${PHOTO_URL}${item.product.cover.url}`
                   : '/cosmetic_placeholder.jpg'
               }
               alt="logo"
@@ -257,24 +302,24 @@ const Product = ({
           </Image>
         </Link>
         <Info>
-          <Name>{item?.product?.title}</Name>
+          <Name>{item?.product?.name}</Name>
           <Description
             dangerouslySetInnerHTML={{
-              __html: item?.product?.description || '',
+              __html: item?.product?.shortDescription || '',
             }}
           />
           <PriceQuantityWrapper>
             <Price>
-              {(item?.product?.currentAmount &&
-                item?.product?.currentAmount.toLocaleString()) ||
-                item?.product?.currentAmount.toLocaleString()}{' '}
+              {(item?.product?.salePrice &&
+                item?.product?.salePrice.toLocaleString()) ||
+                item?.product?.regularPrice.toLocaleString()}{' '}
               ₽
             </Price>
             <AvailableQuantity
-              isWrongQuantity={item?.quantity > item?.product?.countAvailable}
+              isWrongQuantity={item?.quantity > item?.product?.availableInStock}
             >
-              {`${item?.product?.countAvailable} ${pluralize(
-                item?.product?.countAvailable || 0,
+              {`${item?.product?.availableInStock} ${pluralize(
+                item?.product?.availableInStock || 0,
                 'упаковка',
                 'упаковки',
                 'упаковок',
@@ -292,13 +337,13 @@ const Product = ({
           onClick={() => handleChecked()}
         />
         <QuantityWrap>
-          <Minus onClick={() => deleteItem(item)} />
+          <Minus onClick={() => deleteFromCart(item)} />
           <Quantity
-            isWrongQuantity={item?.quantity > item?.product?.countAvailable}
+            isWrongQuantity={item?.quantity > item?.product?.availableInStock}
           >{`${item?.quantity} шт.`}</Quantity>
           <Plus
-            disabled={item?.quantity >= item?.product?.countAvailable}
-            onClick={() => add(item, 1)}
+            disabled={item?.quantity >= item?.product?.availableInStock}
+            onClick={() => addToCart(item, 1)}
           />
         </QuantityWrap>
       </Controls>

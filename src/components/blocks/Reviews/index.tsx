@@ -73,6 +73,20 @@ const Reviews: FC<Props> = ({
       setReviewText('')
       return
     }
+    if (type === 'PRODUCT') {
+      console.log('product')
+      reviewMutation({
+        variables: {
+          user: me?.info.id,
+          id,
+          content: reviewText,
+          publishedAt: new Date().toISOString(),
+        },
+      })
+      setReviewOpen(false)
+      setReviewText('')
+      return
+    }
     if (reviewText) {
       reviewMutation({
         variables: {
