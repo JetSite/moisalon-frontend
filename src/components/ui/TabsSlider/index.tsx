@@ -1,6 +1,9 @@
 import { Wrapper, Item, Count, Text, Content, OnlineButton } from './styles'
 import scrollIntoView from 'scroll-into-view'
-import { urlPatternHttp, urlPatternHttps } from '../../../utils/checkUrls'
+import {
+  urlPatternHttp,
+  urlPatternHttps,
+} from '../../../utils/newUtils/common/checkUrls'
 import { FC } from 'react'
 import { ISalon, ISalonPage } from 'src/types/salon'
 import { OnlineBookingButton } from 'src/components/blocks/OnlineBookingButton'

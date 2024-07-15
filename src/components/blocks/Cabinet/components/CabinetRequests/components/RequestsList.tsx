@@ -5,12 +5,14 @@ import { ListWrapper } from '../styles'
 import { IRentalRequest } from 'src/types/rentalRequest'
 import { NoOrders } from '../../CabinetOrders/styles'
 import { IApolloRefetch } from 'src/types/common'
+import MyRequestItem from './MyRequestItem'
 
 interface Props {
   rentalRequests: IRentalRequest[]
   showDeleted: boolean
   refetch: IApolloRefetch
   refetchDeleted: IApolloRefetch
+  myRequest?: boolean
 }
 
 const RequestsList: FC<Props> = ({
@@ -18,6 +20,7 @@ const RequestsList: FC<Props> = ({
   showDeleted,
   refetch,
   refetchDeleted,
+  myRequest,
 }) => {
   const [sliceNumber, setSliceNumber] = useState(4)
   const slicedList = rentalRequests?.slice(0, sliceNumber)
@@ -44,15 +47,25 @@ const RequestsList: FC<Props> = ({
       {rentalRequests?.length > 0 ? (
         <>
           <ListWrapper>
-            {slicedList?.map(req => (
-              <RequestItem
-                refetch={refetch}
-                key={req.id}
-                rentalRequest={req}
-                showDeleted={showDeleted}
-                refetchDeleted={refetchDeleted}
-              />
-            ))}
+            {slicedList?.map(req =>
+              myRequest ? (
+                <MyRequestItem
+                  refetch={refetch}
+                  key={req.id}
+                  rentalRequest={req}
+                  showDeleted={showDeleted}
+                  refetchDeleted={refetchDeleted}
+                />
+              ) : (
+                <RequestItem
+                  refetch={refetch}
+                  key={req.id}
+                  rentalRequest={req}
+                  showDeleted={showDeleted}
+                  refetchDeleted={refetchDeleted}
+                />
+              ),
+            )}
           </ListWrapper>
           {fetchMoreButton}
         </>

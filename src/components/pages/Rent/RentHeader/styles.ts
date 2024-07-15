@@ -177,7 +177,7 @@ export const IconCircle = styled.img`
   }
 `
 
-export const ButtonRequest = styled.a`
+export const ButtonRequest = styled.span`
   background: #ff0033;
   cursor: pointer;
   color: #fff;

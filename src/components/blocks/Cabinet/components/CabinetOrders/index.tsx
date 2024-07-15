@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, FC } from 'react'
 import { useRouter } from 'next/router'
 import Button from '../../../../ui/Button'
 import { MobileHidden, MobileVisible } from '../../../../../styles/common'
@@ -11,10 +11,14 @@ import { ORDERS_BY_USER } from 'src/api/graphql/order/queries/ordersByUser'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { IOrder } from 'src/types/orders'
 import RotatingLoader from 'src/components/ui/RotatingLoader'
+import { IUser } from 'src/types/me'
 
-const CabinetOrders = () => {
+interface Props {
+  user: IUser
+}
+
+const CabinetOrders: FC<Props> = ({ user }) => {
   const router = useRouter()
-  const { user } = useAuthStore(getStoreData)
   const [orders, setOrders] = useState<IOrder[]>([])
 
   const { loading } = useQuery(ORDERS_BY_USER, {
@@ -29,8 +33,8 @@ const CabinetOrders = () => {
     },
     onCompleted: data => {
       if (data?.orders?.data?.length) {
-        const ordersData = flattenStrapiResponse(data?.orders)
-        const sortedOrders = ordersData.sort((a, b) => {
+        const ordersData: IOrder[] = flattenStrapiResponse(data?.orders) || []
+        const sortedOrders = ordersData?.sort((a, b) => {
           return Number(new Date(b.createdAt)) - Number(new Date(a.createdAt))
         })
         setOrders(sortedOrders)

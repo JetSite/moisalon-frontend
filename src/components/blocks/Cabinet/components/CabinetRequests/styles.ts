@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import Button from '../../../../ui/Button'
-import { laptopBreakpoint } from '../../../../../styles/variables'
+import { laptopBreakpoint, red } from '../../../../../styles/variables'
 
 export const Text = styled.p`
   font-size: 10px;
@@ -17,6 +17,38 @@ export const Wrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     padding-top: 0;
     margin-bottom: 40px;
+  }
+`
+
+export const TabWrapper = styled.ul`
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  @media (max-width: ${laptopBreakpoint}) {
+  }
+`
+
+export const Tab = styled.li`
+  position: relative;
+  display: block;
+  list-style: none;
+`
+
+export const TabButton = styled.button<{ active?: boolean; disable?: boolean }>`
+  border: none;
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+  cursor: ${props => (props.disable ? 'default' : 'pointer')};
+  opacity: ${props => (props.disable ? '0.3' : '')};
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 45px;
+  text-decoration: ${props => (props.active ? 'underline' : '')};
+  color: ${props => (props.active ? red : 'inherit')};
+  transition: 0.5s;
+  &:hover {
+    color: ${props => (props.disable ? 'inherit' : red)};
   }
 `
 
@@ -51,10 +83,13 @@ export const Comment = styled(Text)`
   }
 `
 
-export const ItemWrapper = styled.div<{ noView?: boolean }>`
+export const ItemWrapper = styled.div<{
+  noView?: boolean
+  myRequests?: boolean
+}>`
   position: relative;
   width: 330px;
-  min-height: 433px;
+  min-height: ${({ myRequests }) => (myRequests ? '333px' : '433px')};
   padding: 43px 31px 43px 29px;
   display: flex;
   flex-direction: column;
@@ -103,6 +138,9 @@ export const ShowDeletedButton = styled.button<{ active?: boolean }>`
         ? "url('/icon-back.svg') no-repeat center"
         : "url('/trash.svg') no-repeat center"};
     filter: invert(50%);
+  }
+  @media (max-width: ${laptopBreakpoint}) {
+    top: 0;
   }
 `
 

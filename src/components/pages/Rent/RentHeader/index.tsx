@@ -43,7 +43,10 @@ import {
   BottomButtons,
   DesktopBlock,
 } from './styles'
-import { urlPatternHttp, urlPatternHttps } from '../../../../utils/checkUrls'
+import {
+  urlPatternHttp,
+  urlPatternHttps,
+} from '../../../../utils/newUtils/common/checkUrls'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 import useBaseStore from 'src/store/baseStore'
@@ -173,7 +176,7 @@ const RentHeader: FC<Props> = ({ city, salonData, workplaceData }) => {
           <Top>
             <SalonDescription>{salonData?.description}</SalonDescription>
             <OnlineBookingButton salon={salonData} workplace={workplace}>
-              <ButtonRequest> Отправить заявку</ButtonRequest>
+              <ButtonRequest>Отправить заявку</ButtonRequest>
             </OnlineBookingButton>
             {/* {salonData?.onlineBookingUrl ? (
               <noindex>

@@ -23,7 +23,7 @@ export interface IUserThings {
   brand?: IBrand[]
   products?: IProduct[]
   educations?: any
-  cart: ICart
+  cart?: ICart
 }
 
 export interface IUserReviews extends IReview {

@@ -73,7 +73,10 @@ export const OnlineBookingButton: FC<Props> = ({
   }
 
   const onOpen = () => {
-    if (router.asPath.includes('/rent/')) {
+    if (
+      router.asPath.includes('/rent/') &&
+      !router.asPath.includes('/workplace/')
+    ) {
       const element = document.getElementById('rent')
       element &&
         scrollIntoView(element, {
