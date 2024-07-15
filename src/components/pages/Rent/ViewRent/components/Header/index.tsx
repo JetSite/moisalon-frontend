@@ -37,7 +37,7 @@ import { pluralize } from '../../../../../../utils/pluralize'
 import {
   urlPatternHttps,
   urlPatternHttp,
-} from '../../../../../../utils/checkUrls'
+} from '../../../../../../utils/newUtils/common/checkUrls'
 import StarIcon from '../../../../MainPage/components/Header/icons/StarIcon'
 import scrollIntoView from 'scroll-into-view'
 import { useRouter } from 'next/router'

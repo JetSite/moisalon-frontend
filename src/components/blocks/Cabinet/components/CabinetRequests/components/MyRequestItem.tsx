@@ -1,5 +1,6 @@
 import { FC, useEffect, useState } from 'react'
 import Button from '../../../../../ui/Button'
+import { selectedGroupNamesMax } from '../../../../../../utils/serviceCatalog'
 import {
   ItemWrapper,
   MasterContent,
@@ -38,7 +39,7 @@ interface Props {
   refetchDeleted: IApolloRefetch
 }
 
-const RequestItem: FC<Props> = ({
+const MyRequestItem: FC<Props> = ({
   rentalRequest,
   showDeleted,
   refetch,
@@ -49,30 +50,36 @@ const RequestItem: FC<Props> = ({
   const { updateMasterCabinetTabs } = useAuthStore(getStoreEvent)
   const [isNew, setIsNew] = useState<boolean>(request.status.id === '1')
   const [needRefetch, setNeedRefetch] = useState<boolean>(false)
-  const userName = user?.info.username || null
-  const phone = user?.info.phone || null
-  const email = user?.info.email || null
+  // const userName = user?.info.username || null
+  // const phone = user?.info.phone || null
+  // const email = user?.info.email || null
   const workPlaceTitle = request?.workplace?.title || null
   const salonName = request.salon.name || null
   const salonPhoto = PHOTO_URL + request?.workplace?.cover?.url || null
-  const specializationsMaster =
-    user?.owner.masters && user?.owner.masters?.length
-      ? user?.owner.masters[0].services.map(service => service.service?.title)
-      : []
+  // const specializationsMaster =
+  //   user?.owner.masters && user?.owner.masters?.length
+  //     ? user?.owner.masters[0].services.map(service => service.service?.title)
+  //     : []
   const specializationsWorkplace = request.workplace.services.map(
     service => service.title,
   )
 
   const firstButtonText = showDeleted
-    ? 'Удалено'
+    ? 'Удалена'
+    : request.status.id === '1'
+    ? 'Не просмотрена'
+    : request.status.id === '2'
+    ? 'Просмотрено'
     : request.status.id === '3'
-    ? 'Подтверждено'
-    : 'Подтвердить'
+    ? 'Подтверждена'
+    : request.status.id === '4'
+    ? 'Отклонена'
+    : ''
   const secondButtonText = showDeleted
     ? 'Восстановить'
     : request.status.id === '4'
     ? 'Удалить заявку'
-    : 'Отклонить'
+    : 'Отменить'
 
   const [updateRentalRequest] = useMutation(UPDATE_RENTAL_REQUEST, {
     fetchPolicy: 'no-cache',
@@ -118,7 +125,7 @@ const RequestItem: FC<Props> = ({
   }, [])
 
   return (
-    <ItemWrapper noView={isNew}>
+    <ItemWrapper myRequests noView={isNew}>
       {!showDeleted && (
         <CloseButton
           onClick={() => {
@@ -132,14 +139,7 @@ const RequestItem: FC<Props> = ({
           }}
         />
       )}
-      {/* <Button
-        size="roundMedium"
-        variant={showDeleted ? 'redWithRoundBorder' : 'withRoundBorder'}
-        font="roundMedium"
-      >
-        {request.status.id + ' - ' + request.status.title}
-      </Button> */}
-      <MasterContent>
+      {/* <MasterContent>
         {user?.info.avatar ? (
           <MasterPhoto>
             <Photo src={PHOTO_URL + user?.info.avatar.url} />
@@ -157,12 +157,12 @@ const RequestItem: FC<Props> = ({
           <Phone>{phone}</Phone>
           <Email>{email}</Email>
         </Info>
-      </MasterContent>
+      </MasterContent> */}
       <Request>
         <SalonPhoto photo={salonPhoto} />
         <RequestInfo>
           <PositionWrap>
-            <Text>Хочет арендовать</Text>
+            <Text>Хочу арендовать</Text>
             <Position>{workPlaceTitle}</Position>
           </PositionWrap>
           <Spec>
@@ -181,7 +181,7 @@ const RequestItem: FC<Props> = ({
           size="roundMedium"
           variant="redWithRoundBorder"
           font="roundMedium"
-          disabled={request.status.id === '3' || showDeleted}
+          disabled
           onClick={() => {
             updateRentalRequest({
               variables: {
@@ -235,4 +235,4 @@ const RequestItem: FC<Props> = ({
   )
 }
 
-export default RequestItem
+export default MyRequestItem

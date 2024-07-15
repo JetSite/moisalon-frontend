@@ -60,7 +60,7 @@ const Header = ({ loading = false }) => {
   const { user, city } = useAuthStore(getStoreData)
   // const { cartItemTotal: quantity } = useAuthStore(getStoreData)
   const b2bClient =
-    !!user?.owner.masters?.length || !!user?.owner.salons?.length
+    !!user?.owner?.masters?.length || !!user?.owner?.salons?.length
   const router = useRouter()
   const isAboutPage = router.pathname === '/about'
   const [openPopup, setPopupOpen] = useState<boolean>(!cityCookie)

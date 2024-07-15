@@ -1,6 +1,12 @@
 import { FC, useEffect, useState } from 'react'
 import RequestsList from './components/RequestsList'
-import { ShowDeletedButton, Wrapper } from './styles'
+import {
+  ShowDeletedButton,
+  Wrapper,
+  TabWrapper,
+  TabButton,
+  Tab,
+} from './styles'
 import { IUser } from 'src/types/me'
 import { IRentalRequest } from 'src/types/rentalRequest'
 import { Title } from '../CabinetOrders/styles'
@@ -13,35 +19,28 @@ import ContentSkeleton from 'src/components/ui/ContentSkeleton/ContentSkeleton'
 import MainSkeleton from 'src/components/ui/ContentSkeleton/MainSkeleton'
 import { RequestsListSkeleton } from 'src/components/ui/Skeletons/RequestsListSkeleton'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { ICabinetRequestsData } from 'src/pages/masterCabinet'
+import styled from 'styled-components'
+import { red } from 'src/styles/variables'
+import { MyRequests } from './components/MyRequests'
+import { SalonRequests } from './components/SalonsRequests'
+
+export type ITabsVariant = 'in' | 'out'
 
 interface Props {
-  rentalRequests: IRentalRequest[]
-  deletedRentalRequests: IRentalRequest[]
+  requestsData: ICabinetRequestsData
   meID: IID
 }
 
-const CabinetRequests: FC<Props> = ({
-  rentalRequests,
-  deletedRentalRequests,
-  meID,
-}) => {
-  const [showDeleted, setShowDeleted] = useState<boolean>(false)
-  const [requests, setRequests] = useState<IRentalRequest[]>(rentalRequests)
-  const [requestsDeleted, setRequestsDeleted] = useState<IRentalRequest[]>(
+const CabinetRequests: FC<Props> = ({ requestsData, meID }) => {
+  const [activeTab, setActiveTab] = useState<ITabsVariant>('in')
+  const {
+    rentalRequests,
     deletedRentalRequests,
-  )
-  const [refetch, { loading, data }] = useLazyQuery(RENTAL_REQUESTS_FOR_USER)
-  const [refetchDeleted, { loading: loadingDelete, data: dataDeleted }] =
-    useLazyQuery(DELETED_RENTAL_REQUESTS_FOR_USER)
-
-  useEffect(() => {
-    if (data) {
-      setRequests(flattenStrapiResponse(data.rentalRequests))
-    }
-    if (dataDeleted) {
-      setRequestsDeleted(flattenStrapiResponse(dataDeleted.rentalRequests))
-    }
-  }, [data, dataDeleted])
+    rentslRequestsSalons,
+    deletedRentalRequestsSalons,
+  } = requestsData
+  const [showDeleted, setShowDeleted] = useState<boolean>(false)
 
   return (
     <Wrapper>
@@ -50,26 +49,43 @@ const CabinetRequests: FC<Props> = ({
         active={showDeleted}
         onClick={() => {
           setShowDeleted(!showDeleted)
-          setRequests(showDeleted ? rentalRequests : deletedRentalRequests)
         }}
       >
         {showDeleted ? 'Назад' : 'Удалённые заявки'}
       </ShowDeletedButton>
-      {loading || loadingDelete ? (
-        <RequestsListSkeleton />
-      ) : showDeleted ? (
-        <RequestsList
-          refetch={refetch}
-          refetchDeleted={refetchDeleted}
+      <TabWrapper>
+        <Tab>
+          <TabButton
+            onClick={() => setActiveTab('in')}
+            active={activeTab === 'in'}
+          >
+            Входящие
+          </TabButton>
+        </Tab>
+        <Tab>
+          <TabButton
+            onClick={() => setActiveTab('out')}
+            active={activeTab === 'out'}
+          >
+            Исходящие
+          </TabButton>
+        </Tab>
+      </TabWrapper>
+      {activeTab === 'in' ? (
+        <SalonRequests
+          setShowDeleted={setShowDeleted}
+          salonDeletedRequests={deletedRentalRequestsSalons}
+          salonRequests={rentslRequestsSalons}
           showDeleted={showDeleted}
-          rentalRequests={requestsDeleted}
+          activeTab={activeTab}
         />
       ) : (
-        <RequestsList
-          refetch={refetch}
-          refetchDeleted={refetchDeleted}
+        <MyRequests
+          setShowDeleted={setShowDeleted}
+          myDeletedRequests={deletedRentalRequests}
+          myRequests={rentslRequestsSalons}
           showDeleted={showDeleted}
-          rentalRequests={requests}
+          activeTab={activeTab}
         />
       )}
     </Wrapper>

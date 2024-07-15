@@ -7,7 +7,5 @@ const MasterCabinetOrders = ({ me, ref5 }) => {
     </div>
   )
 }
-  )
-}
 
 export default MasterCabinetOrders

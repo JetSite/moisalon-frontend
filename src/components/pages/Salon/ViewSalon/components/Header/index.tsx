@@ -44,7 +44,7 @@ import ChatMessagePopup from '../../../../../ui/ChatMessagePopup'
 import {
   urlPatternHttps,
   urlPatternHttp,
-} from '../../../../../../utils/checkUrls'
+} from '../../../../../../utils/newUtils/common/checkUrls'
 import { numberForSocials } from '../../../../../../utils/formatNumber'
 import { ISalonPage } from 'src/types/salon'
 import { IApolloRefetch } from 'src/types/common'

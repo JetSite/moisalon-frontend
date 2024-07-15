@@ -19,17 +19,18 @@ import { changeMe } from './graphql/me/mutations/changeMe'
 import { Nullable } from '../types/common'
 import { GetServerSidePropsContext, PreviewData } from 'next'
 import { ParsedUrlQuery } from 'querystring'
-import { IServerProps } from './server/types'
 import useBaseStore from 'src/store/baseStore'
+import { getPrepareUser } from './utils/getPrepareUser'
+import { useShallow } from 'zustand/react/shallow'
 
-const AuthProvider: FC<{ children: IChildren; pageProps }> = ({
+const AuthProvider: FC<{ children: IChildren; pageProps: any }> = ({
   children,
   pageProps,
 }) => {
-  console.log('pageProps', pageProps)
+  // console.log('pageProps', pageProps)
 
   const router = useRouter()
-  const { me, loading, user } = useAuthStore(getStoreData)
+  const { me, loading, user } = useAuthStore(useShallow(getStoreData))
   const { setMe, setLoading, setCity, setUser } = useAuthStore(getStoreEvent)
   const { setCart } = useBaseStore(getStoreEvent)
   const accessToken = getCookie(authConfig.tokenKeyName)
@@ -126,16 +127,22 @@ const AuthProvider: FC<{ children: IChildren; pageProps }> = ({
   }, [cityCookie])
   useEffect(() => {
     setLoading(meLoading || userLoading)
-    if (router.asPath !== authConfig.notAuthLink) {
-      if (!me && accessToken) {
-        getMe()
+    if (pageProps.user) {
+      setUser(getPrepareUser(pageProps.user))
+      console.log('user', user)
+      return
+    } else {
+      if (router.asPath !== authConfig.notAuthLink) {
+        if (!me && accessToken) {
+          getMe()
+        }
+        if (me && !user) {
+          getUser({ variables: { id: me.info.id } })
+        }
       }
-      if (me && !user) {
-        getUser({ variables: { id: me.info.id } })
-      }
+      console.log('AuthProvider', me)
     }
-    console.log('AuthProvider', me)
-  }, [me, router])
+  }, [me, router, pageProps])
 
   return <>{!loading && children}</>
 }
