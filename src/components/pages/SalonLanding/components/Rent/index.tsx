@@ -1,10 +1,10 @@
-import { useRouter } from "next/router";
+import { useRouter } from 'next/router'
 import {
   MainContainer,
   MobileHidden,
   MobileVisible,
-} from "../../../../../styles/common";
-import { Wrapper, Content } from "./styles";
+} from '../../../../../styles/common'
+import { Wrapper, Content } from './styles'
 import {
   LeftBlock,
   RightBlock,
@@ -12,11 +12,16 @@ import {
   Text,
   ImageWrap,
   Image,
-} from "../RegInvite/styles";
-import Button from "../../../../ui/Button";
+} from '../RegInvite/styles'
+import Button from '../../../../ui/Button'
+import { FC } from 'react'
 
-const Rent = () => {
-  const { push } = useRouter();
+interface RentProps {
+  redirectLink: string
+}
+
+const Rent: FC<RentProps> = ({ redirectLink }) => {
+  const { push } = useRouter()
   return (
     <MainContainer>
       <Wrapper>
@@ -52,7 +57,7 @@ const Rent = () => {
             </Text>
             <MobileHidden>
               <Button
-                onClick={() => push("/createLessorSalon")}
+                onClick={() => push(redirectLink)}
                 size="mediumNoPadding"
                 variant="red"
                 font="medium"
@@ -70,7 +75,7 @@ const Rent = () => {
         </Content>
         <MobileVisible>
           <Button
-            onClick={() => push("/createLessorSalon")}
+            onClick={() => push(redirectLink)}
             size="fullWidth"
             variant="red"
             font="medium"
@@ -81,7 +86,7 @@ const Rent = () => {
         </MobileVisible>
       </Wrapper>
     </MainContainer>
-  );
-};
+  )
+}
 
-export default Rent;
+export default Rent

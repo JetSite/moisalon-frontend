@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { PHOTO_URL } from '../../../../../api/variables'
-
 import {
   SliderItem,
   SliderContent,
@@ -9,7 +8,7 @@ import {
   SliderText,
 } from './styles'
 
-const RibbonSlide = ({ item }) => {
+const RibbonSlide = ({ item }: { item: any }) => {
   const imageUrl = item?.attributes?.cover?.data?.attributes?.url
     ? `${PHOTO_URL}${item?.attributes.cover.data.attributes.url}`
     : ''

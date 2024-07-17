@@ -1,9 +1,9 @@
-import { useRouter } from "next/router";
+import { useRouter } from 'next/router'
 import {
   MainContainer,
   MobileHidden,
   MobileVisible,
-} from "../../../../../styles/common";
+} from '../../../../../styles/common'
 import {
   Wrapper,
   Content,
@@ -15,23 +15,29 @@ import {
   Overlay,
   Arrow,
   Romb,
-} from "./styles";
-import Button from "../../../../ui/Button";
+} from './styles'
+import Button from '../../../../ui/Button'
+import { FC } from 'react'
 
-const Advantages = () => {
-  const { push } = useRouter();
+interface AdvantagesProps {
+  redirectLink: string
+}
+
+const Advantages: FC<AdvantagesProps> = ({ redirectLink }) => {
+  const { push } = useRouter()
+
   return (
     <Wrapper>
       <MainContainer>
         <Content>
           <Text>
             Бьюти-платформа МОЙ сделает бизнес эффективнее и принесет отличные
-            результаты сразу в нескольких направлениях:{" "}
+            результаты сразу в нескольких направлениях:{' '}
           </Text>
           <List>
             <ListItem>Добьетесь высокой загрузки 7 дней в неделю.</ListItem>
             <ListItem>
-              Увеличите прибыль за счет арендных платежей и доп.продаж.{" "}
+              Увеличите прибыль за счет арендных платежей и доп.продаж.{' '}
             </ListItem>
             <ListItem>
               Привлечете больше клиентов и выйдете на новую аудиторию.
@@ -43,7 +49,7 @@ const Advantages = () => {
           <MobileHidden>
             <ButtonWrap>
               <Button
-                onClick={() => push("/createLessorSalon")}
+                onClick={() => push(redirectLink)}
                 size="mediumNoPadding"
                 variant="red"
                 font="medium"
@@ -56,7 +62,7 @@ const Advantages = () => {
           <MobileVisible>
             <ButtonWrap>
               <Button
-                onClick={() => push("/createLessorSalon")}
+                onClick={() => push(redirectLink)}
                 size="fullWidth"
                 variant="red"
                 font="small"
@@ -74,7 +80,7 @@ const Advantages = () => {
       <Arrow />
       <Romb />
     </Wrapper>
-  );
-};
+  )
+}
 
-export default Advantages;
+export default Advantages
