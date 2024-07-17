@@ -135,12 +135,17 @@ const Header = ({ loading = false }) => {
                     <NavItem
                       key={i}
                       active={!!activeLink(router.pathname, link.pathArr)}
+                      disable={link.disabled}
                       isAboutPage={isAboutPage}
                       // visible={!!link?.visible}
                     >
-                      <Link href={link.link} target={link.target}>
-                        {link.title}
-                      </Link>
+                      {link.disabled ? (
+                        <p>{link.title}</p>
+                      ) : (
+                        <Link href={link.link} target={link.target}>
+                          {link.title}
+                        </Link>
+                      )}
                     </NavItem>
                   ),
                 )}

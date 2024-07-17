@@ -147,7 +147,7 @@ const Brand: FC<Props> = ({ brandData, othersBrands }) => {
             noBottom
             noAll
             noAllButton
-            city={salons[0].cities}
+            city={salons[0].city}
           />
         ) : null}
         <Contacts

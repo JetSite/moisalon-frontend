@@ -93,24 +93,30 @@ export const NavItem = styled.li<{
   visible?: boolean
   active?: boolean
   isAboutPage?: boolean
+  disable?: boolean
 }>`
   display: ${({ visible = true }) => (visible ? 'block' : 'none')};
   font-weight: 600;
+  opacity: ${({ disable }) => (disable ? '0.4' : '1')};
   margin-right: 30px;
   a {
     color: ${props =>
       props.active ? red : props.isAboutPage ? '#fff' : '#000'};
     transition: 0.3s;
+    cursor: ${({ disable }) => (disable ? 'default' : 'pointer')};
+
     :hover {
-      color: ${red};
+      color: ${({ disable }) => (disable ? 'inhetit' : red)};
     }
   }
   p {
     color: ${props =>
       props.active ? red : props.isAboutPage ? '#fff' : '#000'};
+    cursor: ${({ disable }) => (disable ? 'default' : 'pointer')};
+
     transition: 0.3s;
     :hover {
-      color: ${red};
+      color: ${({ disable }) => (disable ? 'inhetit' : red)};
     }
   }
 `
@@ -387,6 +393,8 @@ export const AdditionalNavContent = styled.div<{
   padding: 32px 62px 0 42px;
   background: #fff;
   box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
+  cursor: default;
+
   /* opacity: ${({ showAdditionalNav }) => (showAdditionalNav ? 1 : 0)}; */
   li {
     list-style: none;
