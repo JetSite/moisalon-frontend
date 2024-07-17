@@ -1,9 +1,9 @@
-import { useRouter } from "next/router";
+import { useRouter } from 'next/router'
 import {
   MainContainer,
   MobileHidden,
   MobileVisible,
-} from "../../../../../styles/common";
+} from '../../../../../styles/common'
 import {
   Wrapper,
   LeftBlock,
@@ -14,17 +14,22 @@ import {
   RightBlock,
   ImageWrap,
   Image,
-} from "./styles";
-import Button from "../../../../ui/Button";
+} from './styles'
+import Button from '../../../../ui/Button'
+import { FC } from 'react'
 
-const RegInvite = () => {
-  const { push } = useRouter();
+interface RegInviteProps {
+  redirectLink: string
+}
+
+const RegInvite: FC<RegInviteProps> = ({ redirectLink }) => {
+  const { push } = useRouter()
   return (
     <MainContainer>
       <Wrapper>
         <LeftBlock>
           <Title>
-            Ваш салон будет зарабатывать <br /> каждую минуту рабочего времени{" "}
+            Ваш салон будет зарабатывать <br /> каждую минуту рабочего времени{' '}
           </Title>
           <Text>
             В каждом салоне красоты кабинеты простаивают 10–40% времени, а их
@@ -38,13 +43,13 @@ const RegInvite = () => {
               кабинеты в каталог.
             </ListItem>
             <ListItem>
-              Привлекайте мастеров с собственными клиентами в свободные часы.{" "}
+              Привлекайте мастеров с собственными клиентами в свободные часы.{' '}
             </ListItem>
             <ListItem>Увеличьте прибыль. </ListItem>
           </List>
           <MobileHidden>
             <Button
-              onClick={() => push("/createLessorSalon")}
+              onClick={() => push(redirectLink)}
               size="mediumNoPadding"
               variant="red"
               font="medium"
@@ -55,7 +60,7 @@ const RegInvite = () => {
           </MobileHidden>
           <MobileVisible>
             <Button
-              onClick={() => push("/createLessorSalon")}
+              onClick={() => push(redirectLink)}
               size="fullWidth"
               variant="red"
               font="medium"
@@ -75,7 +80,7 @@ const RegInvite = () => {
         </RightBlock>
       </Wrapper>
     </MainContainer>
-  );
-};
+  )
+}
 
-export default RegInvite;
+export default RegInvite

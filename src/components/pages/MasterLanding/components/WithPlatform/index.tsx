@@ -5,11 +5,9 @@ import {
   laptopBreakpoint,
   tabletBreakpoint,
 } from '../../../../../styles/variables'
-
-import Line from '../../../SalonLanding/components/Line'
-import { cyrToTranslit } from '../../../../../utils/translit'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
+import Line from 'src/components/pages/SalonLanding/components/Line'
 
 const Wrapper = styled.div`
   background: #e5e5e5;

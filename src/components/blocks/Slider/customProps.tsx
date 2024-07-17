@@ -16,12 +16,12 @@ import {
   SalonSlide,
   BrandSlide,
   GoodSlide,
-  RibbonSlide,
   PortfolioSlide,
   VacancySlide,
   AdSlide,
   RentSalonSlide,
   WorkplaceSlide,
+  RibbonSlide,
 } from './components/SliderItems'
 import {
   AllMastersSlide,
@@ -148,7 +148,7 @@ export const customProps: ICustomProps = ({
             deleteFunction={deleteFunction}
           />
         ),
-        isAllPage: router.pathname === '/[city]/brand',
+        isAllPage: router.pathname === `/${city.slug}/brand`,
         slidesCountWhenAllShow: 6,
         showAllSlide: <AllBrandsSlide />,
         showAllLink: (

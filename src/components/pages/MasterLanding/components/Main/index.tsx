@@ -156,7 +156,7 @@ const Main = () => {
       </Title>
       <ButtonWrap>
         <Button
-          onClick={() => router.push(`/${cyrToTranslit(city)}/rent`)}
+          onClick={() => router.push(`/${city.slug}/rent`)}
           size="medium"
           variant="red"
           font="medium"

@@ -27,6 +27,8 @@ export const LogoBlock = styled.div`
 `
 export const Photo = styled.div`
   width: 450px;
+  display: flex;
+  justify-content: center;
   margin: 0 auto;
   & > img {
     width: 100%;

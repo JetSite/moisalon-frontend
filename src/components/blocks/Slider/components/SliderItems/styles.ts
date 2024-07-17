@@ -9,7 +9,7 @@ export const SliderItem = styled.div`
   border: 1px solid #ffffff;
   border-radius: 5px;
   width: 216px;
-  min-height: 100%;
+  height: 400px;
   display: flex;
   color: #fff;
   cursor: pointer;
@@ -36,7 +36,11 @@ export const SliderImage = styled.img`
   object-position: right top;
 `
 
-export const SliderImageWrap = styled.div`
+interface SliderImageWrapProps {
+  imageUrl: string
+}
+
+export const SliderImageWrap = styled.div<SliderImageWrapProps>`
   text-align: center;
   margin-bottom: 40px;
   width: 187px;

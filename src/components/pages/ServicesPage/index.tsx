@@ -9,20 +9,20 @@ import { servicesWithMasterCount } from '../../../_graphql-legacy/services/servi
 import { getStoreData } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
 
-const ServicesPage = ({
-  masterServices,
-  salonServices,
-  salons,
-  masters,
-  clickedServiceId,
-  viewData,
-}) => {
-  const [view, setView] = useState(viewData || 'all')
-  const [servicesList, setServicesList] = useState(masterServices)
-  const [mastersData, setMastersData] = useState(masters)
-  const [salonsData, setSalonsData] = useState(salons)
+const ServicesPage = () => {
+  // const [view, setView] = useState(viewData || 'all')
+  // const [servicesList, setServicesList] = useState(masterServices)
+  // const [mastersData, setMastersData] = useState(masters)
+  // const [salonsData, setSalonsData] = useState(salons)
+  // const [clickedService, setClickedService] = useState({
+  //   id: clickedServiceId,
+  // })
+  const [view, setView] = useState('all')
+  const [servicesList, setServicesList] = useState([])
+  const [mastersData, setMastersData] = useState([])
+  const [salonsData, setSalonsData] = useState([])
   const [clickedService, setClickedService] = useState({
-    id: clickedServiceId,
+    id: 1,
   })
   const router = useRouter()
   const { city } = useAuthStore(getStoreData)
@@ -41,53 +41,53 @@ const ServicesPage = ({
     refetchServices()
   }, [city])
 
-  useEffect(() => {
-    if (router?.query?.id) {
-      setClickedService({ id: router?.query?.id })
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (router?.query?.id) {
+  //     setClickedService({ id: router?.query?.id })
+  //   }
+  // }, [])
 
-  useEffect(() => {
-    setMastersData(masters)
-  }, [masters])
+  // useEffect(() => {
+  //   setMastersData(masters)
+  // }, [masters])
 
-  useEffect(() => {
-    setSalonsData(salons)
-  }, [salons])
+  // useEffect(() => {
+  //   setSalonsData(salons)
+  // }, [salons])
 
-  useEffect(() => {
-    if (clickedService) {
-      router.replace({
-        query: {
-          ...router.query,
-          category:
-            view !== 'all' ? [view, clickedService?.id] : clickedService?.id,
-        },
-      })
-    } else {
-      router.replace({
-        query: { ...router.query, category: undefined },
-      })
-    }
-  }, [clickedService])
+  // useEffect(() => {
+  //   if (clickedService) {
+  //     router.replace({
+  //       query: {
+  //         ...router.query,
+  //         category:
+  //           view !== 'all' ? [view, clickedService?.id] : clickedService?.id,
+  //       },
+  //     })
+  //   } else {
+  //     router.replace({
+  //       query: { ...router.query, category: undefined },
+  //     })
+  //   }
+  // }, [clickedService])
 
-  useEffect(() => {
-    if (view === 'master') {
-      router.replace({
-        query: { ...router.query, category: ['master', clickedService?.id] },
-      })
-    }
-    if (view === 'salon') {
-      router.replace({
-        query: { ...router.query, category: ['salon', clickedService?.id] },
-      })
-    }
-    if (view === 'all') {
-      router.replace({
-        query: { ...router.query, category: clickedService?.id },
-      })
-    }
-  }, [view])
+  // useEffect(() => {
+  //   if (view === 'master') {
+  //     router.replace({
+  //       query: { ...router.query, category: ['master', clickedService?.id] },
+  //     })
+  //   }
+  //   if (view === 'salon') {
+  //     router.replace({
+  //       query: { ...router.query, category: ['salon', clickedService?.id] },
+  //     })
+  //   }
+  //   if (view === 'all') {
+  //     router.replace({
+  //       query: { ...router.query, category: clickedService?.id },
+  //     })
+  //   }
+  // }, [view])
 
   const popularServiceHandler = service => {
     setClickedService(service)
