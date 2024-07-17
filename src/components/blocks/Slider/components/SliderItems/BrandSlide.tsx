@@ -20,7 +20,7 @@ const BrandSlide: FC<Props> = ({ item, isEditing, deleteFunction }) => {
   const { city } = useAuthStore(getStoreData)
 
   return (
-    <Link href={`/${item.city?.name || city.slug}/brand/${item?.id}`}>
+    <Link href={`/${city.slug}/brand/${item?.id}`}>
       <BrandItem
         brand={item}
         shareLink={`https://moi.salon/${item.city?.name || city.slug}/brand/${

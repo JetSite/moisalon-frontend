@@ -18,8 +18,13 @@ import Button from '../../../../ui/Button'
 import { cyrToTranslit } from '../../../../../utils/translit'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
+import { FC } from 'react'
 
-const Header = () => {
+interface HeaderProps {
+  redirectLink: string
+}
+
+const Header: FC<HeaderProps> = ({ redirectLink }) => {
   const { push } = useRouter()
   const { city } = useAuthStore(getStoreData)
   return (
@@ -44,7 +49,7 @@ const Header = () => {
         <MobileHidden>
           <ButtonWrap>
             <Button
-              onClick={() => push('/createLessorSalon')}
+              onClick={() => push(redirectLink)}
               size="medium"
               variant="red"
               font="medium"
@@ -56,7 +61,7 @@ const Header = () => {
         <MobileVisible>
           <ButtonWrap>
             <Button
-              onClick={() => push('/createLessorSalon')}
+              onClick={() => push(redirectLink)}
               size="fullWidth"
               variant="red"
               font="medium"

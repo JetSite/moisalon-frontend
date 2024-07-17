@@ -175,7 +175,7 @@ const About: FC = () => {
               </BottomContentText>
             </BottomContentRight>
             <ButtonWrapper>
-              <Link href={me?.info ? '/createSalon' : '/login'}>
+              <Link href={me?.info ? '/createLessorSalon' : '/login'}>
                 <Button
                   size="fullWidth"
                   variant="red"

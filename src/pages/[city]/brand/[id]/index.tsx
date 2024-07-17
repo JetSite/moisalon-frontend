@@ -37,7 +37,7 @@ interface Props {
 
 const Brand: FC<Props> = ({ brandData, othersBrands }) => {
   const [brand, setBrand] = useState(brandData)
-  const { me } = useAuthStore(getStoreData)
+  const { me, city } = useAuthStore(getStoreData)
   const [activeTab, setActiveTab] = useState<number>(0)
   const isOwner = !!me?.owner?.brand.find(e => e.id === brand.id)
 
@@ -147,7 +147,7 @@ const Brand: FC<Props> = ({ brandData, othersBrands }) => {
             noBottom
             noAll
             noAllButton
-            city={salons[0].cities}
+            city={city}
           />
         ) : null}
         <Contacts
