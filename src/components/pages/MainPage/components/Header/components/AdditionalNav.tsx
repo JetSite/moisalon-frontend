@@ -45,14 +45,19 @@ const AdditionalNav: FC<Props> = ({
         >
           {links.map((link, i) => (
             <NavItem
+              disable={link.disabled}
               key={i}
               active={router.pathname == link.link}
               isAboutPage={isAboutPage}
               // visible={link?.visible}
             >
-              <Link href={link.link} target={link.target}>
-                {link.title}
-              </Link>
+              {link.disabled ? (
+                <p> {link.title}</p>
+              ) : (
+                <Link href={link.link} target={link.target}>
+                  {link.title}
+                </Link>
+              )}
             </NavItem>
           ))}
         </AdditionalNavContent>
