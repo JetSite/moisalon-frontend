@@ -27,11 +27,11 @@ import {
   NavFooterItem,
   LawText,
 } from './styled'
-import NewsletterSubscribe from '../NewsletterSubscribe'
 import { cyrToTranslit } from '../../../utils/translit'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 import { FC } from 'react'
+import NewsletterSubscribe from '../NewsletterSubscribe'
 
 interface Props {
   loading?: boolean
