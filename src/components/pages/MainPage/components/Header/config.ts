@@ -4,6 +4,7 @@ export interface IMainPageHeaderLinks {
   target: string
   pathArr?: string[]
   disabled?: boolean
+  visible?: boolean
 }
 
 export default function getMainPageHeaderLinks(

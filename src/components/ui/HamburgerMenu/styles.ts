@@ -75,14 +75,32 @@ export const Navigation = styled.nav`
 
 export const LinksWrap = styled.ul``
 
-export const LinkWrap = styled.li<{ visible?: boolean; active?: boolean }>`
+export const LinkWrap = styled.li<{
+  visible?: boolean
+  active?: boolean
+  disable?: boolean
+}>`
   display: ${({ visible = true }) => (visible ? 'block' : 'none')};
   font-size: 16px;
   font-weight: 600;
   line-height: 35px;
+  opacity: ${({ disable }) => (disable ? '0.4' : '1')};
 
   a {
     color: ${({ active }) => (active ? red : '#000')};
+    cursor: ${({ disable }) => (disable ? 'default' : 'pointer')};
+
+    :hover {
+      color: ${({ disable }) => (disable ? 'inhetit' : red)};
+    }
+  }
+  p {
+    color: ${({ active, de }) => (active ? red : '#000')};
+    cursor: ${({ disable }) => (disable ? 'default' : 'pointer')};
+
+    :hover {
+      color: ${({ disable }) => (disable ? 'inhetit' : red)};
+    }
   }
 `
 
