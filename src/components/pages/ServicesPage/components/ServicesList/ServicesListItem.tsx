@@ -7,7 +7,7 @@ import {
   Title,
   Price,
   Quantity,
-} from "./styles.js";
+} from './styles'
 
 const ServicesListItem = ({ popularService, popularServiceHandler }) => {
   return (
@@ -23,7 +23,7 @@ const ServicesListItem = ({ popularService, popularServiceHandler }) => {
         <Quantity>{popularService.offer}</Quantity>
       </TextBlock>
     </ListItemWrapper>
-  );
-};
+  )
+}
 
-export default ServicesListItem;
+export default ServicesListItem

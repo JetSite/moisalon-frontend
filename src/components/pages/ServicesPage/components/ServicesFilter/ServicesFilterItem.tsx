@@ -1,4 +1,4 @@
-import { FilterItemWrapper, Text, Count, Icon } from "./styles";
+import { FilterItemWrapper, Text, Count, Icon } from './styles'
 
 const ServiceFilterItem = ({
   item,
@@ -20,7 +20,7 @@ const ServiceFilterItem = ({
       ) : null}
       {!isEndElement ? <Icon /> : null}
     </FilterItemWrapper>
-  );
-};
+  )
+}
 
-export default ServiceFilterItem;
+export default ServiceFilterItem

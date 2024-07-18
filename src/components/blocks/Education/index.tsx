@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, FC } from 'react'
 import styled from 'styled-components'
 import PhotoAdd from '../CreateEducation/PhotoAdd'
 import moment from 'moment'
@@ -11,6 +11,7 @@ import {
 } from '../../../utils/favoritesInStorage.js'
 import { PHOTO_URL } from '../../../api/variables'
 import HeartFullFill from '../../pages/MainPage/components/Header/icons/HeartFullFill'
+import { IPhoto } from 'src/types'
 
 const EducationWrap = styled.div`
   width: 375px;
@@ -133,16 +134,32 @@ const Favorite = styled.div`
   }
 `
 
-const Education = ({
+interface IEducationProps {
+  averageScore?: number
+  numberScore?: number
+  title: string
+  amount?: number
+  create?: boolean
+  onAdd?: (photoId: number) => void
+  photo?: IPhoto
+  dateStart?: Date
+  dateEnd?: Date
+  timeStart?: string
+  timeEnd?: string
+  id: string
+  setDeleteItem?: (deleteItem: boolean) => void
+  deleteItem?: boolean
+  handleDeleted?: () => void
+}
+
+const Education: FC<IEducationProps> = ({
   averageScore = 0,
   numberScore = 0,
-  name,
   title,
   amount,
   create = false,
   onAdd,
-  photoId = null,
-  type,
+  photo = null,
   dateStart,
   dateEnd,
   timeStart,
@@ -155,13 +172,15 @@ const Education = ({
   const [hover, setHover] = useState(false)
   const [isFavorite, setIsFavorit] = useState(false)
 
+  const photoUrl = photo?.url || null
+
   useEffect(() => {
     if (!create) {
       const isInStorage = inStorage('educations', {
         id,
         title,
         amount,
-        photoId,
+        photo,
         dateStart,
         dateEnd,
       })
@@ -169,14 +188,14 @@ const Education = ({
     }
   }, [])
 
-  const addFavorite = e => {
+  const addFavorite = (e: any) => {
     e.preventDefault()
     e.stopPropagation()
     favoritesInStorage('educations', {
       id,
       title,
       amount,
-      photoId,
+      photo,
       dateStart,
       dateEnd,
     })
@@ -189,27 +208,27 @@ const Education = ({
     <EducationWrap>
       {!create ? (
         <EducationTop>
-          <Favorite isFavorite={isFavorite} onClick={e => addFavorite(e)}>
+          <Favorite onClick={e => addFavorite(e)}>
             <HeartFullFill fill={isFavorite} />
           </Favorite>
-          <Image alt="photo" src={`${PHOTO_URL}${photoId}/original`} />
+          {photoUrl && <Image alt="photo" src={`${PHOTO_URL}${photoUrl}`} />}
         </EducationTop>
       ) : (
         <EducationTop
           onMouseOver={() => setHover(true)}
           onMouseLeave={() => setHover(false)}
         >
-          <PhotoAdd
+          {/* <PhotoAdd
             photoId={photoId}
             hover={hover && photoId}
             onAdd={onAdd}
             type={type}
-          />
+          /> */}
         </EducationTop>
       )}
       <EducationContent>
         <div>
-          <EducationName>{name}</EducationName>
+          {/* <EducationName>{name}</EducationName> */}
           <EducationTitle>{title}</EducationTitle>
         </div>
         <EducationBottom>
@@ -240,11 +259,7 @@ const Education = ({
             </Promo>
           ) : null}
         </EducationBottom>
-        <Rating
-          position="start"
-          rating={averageScore}
-          numberScore={numberScore || 0}
-        />
+        <Rating position="start" rating={averageScore} />
       </EducationContent>
     </EducationWrap>
   )

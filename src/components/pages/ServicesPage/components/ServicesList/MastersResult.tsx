@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FC } from 'react'
 import Link from 'next/link'
 import { pluralize } from '../../../../../utils/pluralize'
 import { WrapperItemsMasters, TitleResults, LinkStyled } from './styles'
@@ -8,47 +8,44 @@ import { cyrToTranslit } from '../../../../../utils/translit'
 import { getStoreData } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
 import useBaseStore from 'src/store/baseStore'
+import { IMaster } from 'src/types/masters'
 
-const MastersResult = ({ mastersData }) => {
+interface IMastersResultProps {
+  masters: IMaster[]
+}
+
+const MastersResult: FC<IMastersResultProps> = ({ masters }) => {
   const { catalogs } = useBaseStore(getStoreData)
   const { city } = useAuthStore(getStoreData)
 
-  const masterSpecializationsCatalog = catalogOrDefault(
-    catalogs?.masterSpecializationsCatalog,
-  )
+  // const masterSpecializationsCatalog = catalogOrDefault(
+  //   catalogs?.masterSpecializationsCatalog,
+  // )
 
   return (
     <>
-      {mastersData?.length ? (
+      {masters?.length ? (
         <>
           <TitleResults>
             {`${pluralize(
-              mastersData.length || 0,
+              masters.length || 0,
               'Найден',
               'Найдено',
               'Найдено',
-            )} ${mastersData.length || 0} ${pluralize(
-              mastersData.length || 0,
+            )} ${masters.length || 0} ${pluralize(
+              masters.length || 0,
               'мастер',
               'мастера',
               'мастеров',
             )}`}
           </TitleResults>
           <WrapperItemsMasters>
-            {mastersData?.map(master => (
-              <Link
-                href={`/${
-                  cyrToTranslit(master?.addressFull?.city) || city.slug
-                }/master/${master?.seo?.slug || master?.id}`}
-                key={master.id}
-              >
+            {masters?.map(master => (
+              <Link href={`/${city.slug}/master/${master?.id}`} key={master.id}>
                 <LinkStyled>
                   <MasterItem
                     master={master}
-                    catalog={masterSpecializationsCatalog}
-                    shareLink={`https://moi.salon/${
-                      cyrToTranslit(master?.addressFull?.city) || city.slug
-                    }/master/${master?.seo?.slug || master?.id}`}
+                    shareLink={`https://moisalon-frontend.jetsite.ru/${city.slug}/master/${master?.id}`}
                   />
                 </LinkStyled>
               </Link>

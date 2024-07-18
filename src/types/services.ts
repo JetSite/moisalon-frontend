@@ -34,3 +34,16 @@ export interface IServices {
   priceTo: string
   unitOfMeasurement: string
 }
+
+export interface IServiceInCategory {
+  id: IID
+  servicName: string
+  title: string
+}
+
+export interface IServiceCategory {
+  id: IID
+  serviceCategoryName: string
+  services: IServiceInCategory[]
+  title: string
+}

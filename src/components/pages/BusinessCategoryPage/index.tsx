@@ -11,7 +11,6 @@ import SearchBlock from '../../blocks/SearchBlock'
 import BackButton from '../../ui/BackButton'
 import Button from '../../ui/Button'
 import Sale from '../../blocks/Sale'
-import Education from '../../blocks/Education'
 import Vacancy from '../../blocks/Vacancy'
 import Event from '../../blocks/Event'
 import { salesSearch } from '../../../_graphql-legacy/sales/salesSearch'
@@ -23,6 +22,8 @@ import SalesSearchResults from '../MainPage/components/SearchMain/SalesSearchRes
 import EducationsSearchResults from '../MainPage/components/SearchMain/EducationsSearchResults'
 import EventsSearchResults from '../MainPage/components/SearchMain/EventsSearchResults'
 import VacanciesSearchResults from '../MainPage/components/SearchMain/VacanciesSearchResults'
+import { IEducation } from 'src/types/education'
+import Education from 'src/components/blocks/Education'
 
 const customProps = {
   sales: {
@@ -51,8 +52,8 @@ const customProps = {
   },
 }
 
-const ListItem = ({ type, item }) => {
-  const renderSwitch = type => {
+const ListItem = ({ type, item }: { type: string; item: any }) => {
+  const renderSwitch = (type: string) => {
     switch (type) {
       case 'sales':
         return (
@@ -61,17 +62,19 @@ const ListItem = ({ type, item }) => {
           </Link>
         )
       case 'educations':
+        const itemData = item as IEducation
+
         return (
           <Link href={`/educations/${item.id}`} passHref>
             <Education
-              id={item.id}
-              title={item.title}
-              averageScore={item.averageScore}
-              numberScore={item.numberScore}
-              amount={item.amount}
-              photoId={item.photoId}
-              dateStart={item.dateStart}
-              dateEnd={item.dateEnd}
+              id={itemData.id}
+              title={itemData.title}
+              averageScore={itemData.averageScore}
+              numberScore={itemData.numberScore}
+              amount={+itemData.amount}
+              photo={itemData.cover}
+              dateStart={itemData.dateStart}
+              dateEnd={itemData.dateEnd}
             />
           </Link>
         )

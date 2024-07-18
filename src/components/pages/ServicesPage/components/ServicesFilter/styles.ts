@@ -8,8 +8,8 @@ export const Wrapper = styled.div`
   }
 `
 
-export const FilterItemWrapper = styled.div`
-  width: 230px;
+export const FilterItemWrapper = styled.div<{ isEmpty: boolean }>`
+  width: 245px;
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -30,7 +30,7 @@ export const FilterColumn = styled.div`
   }
 `
 
-export const Text = styled.p`
+export const Text = styled.p<{ active: boolean }>`
   color: ${({ active }) => (active ? '#000' : '#a1a1a1')};
   font-size: 14px;
   font-weight: 600;
@@ -47,7 +47,7 @@ export const Text = styled.p`
   }
 `
 
-export const Count = styled.span`
+export const Count = styled.span<{ isEndElement: boolean }>`
   /* margin-right: ${({ isEndElement }) => (isEndElement ? '16px' : '5px')};
   color: #a1a1a1;
   font-size: 14px;

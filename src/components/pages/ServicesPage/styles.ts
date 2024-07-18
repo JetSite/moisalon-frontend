@@ -31,7 +31,7 @@ export const ScrollRef = styled.div`
   top: -100px;
 `
 
-export const FilterWrap = styled.div`
+export const FilterWrap = styled.div<{ active: string }>`
   width: 516px;
   background: #ffffff;
   border: 1px solid #000000;
@@ -49,12 +49,8 @@ export const FilterWrap = styled.div`
     border-radius: 100px;
     top: 0px;
     transition: 0.3s;
-    left: ${props =>
-      props.active === 'all'
-        ? '0px'
-        : props.active === 'master'
-        ? '172px'
-        : '344px'};
+    left: ${({ active }) =>
+      active === 'all' ? '0px' : active === 'master' ? '172px' : '344px'};
     z-index: 1;
   }
   @media (max-width: ${laptopBreakpoint}) {
@@ -73,7 +69,7 @@ export const FilterWrap = styled.div`
   }
 `
 
-export const TextFilter = styled.div`
+export const TextFilter = styled.div<{ active: boolean }>`
   font-weight: 600;
   font-size: 14px;
   line-height: 18px;
@@ -85,7 +81,7 @@ export const TextFilter = styled.div`
   position: relative;
   transition: 0.3s;
   z-index: 2;
-  color: ${props => (props.active ? '#fff' : '#000')};
+  color: ${({ active }) => (active ? '#fff' : '#000')};
   @media (max-width: ${laptopBreakpoint}) {
     width: calc(256px / 3);
     font-size: 10px;
