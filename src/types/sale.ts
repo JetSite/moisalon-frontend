@@ -2,28 +2,24 @@ import { IPhoto } from '.'
 import { IBrand } from './brands'
 import { IID } from './common'
 import { IMaster } from './masters'
-import { IReview } from './reviews'
 import { ISalon } from './salon'
 import { IUserConnection } from './user'
 
-export interface IEducation {
+export interface ISale {
   id: IID
   title: string
   slug: string
-  averageScore: number
-  dateStart: Date
-  dateEnd: Date
-  deleted: boolean
-  shortDescription: string
+  cover: IPhoto
   fullDescription: string
-  isPublished: boolean
-  numberScore: number
-  reviews: IReview[]
+  shortDescription: string
   salon: ISalon
   master: IMaster
   brand: IBrand
+  seoTitle: string
+  seoDescription: string
+  dateStart: Date
+  dateEnd: Date
+  deleted: boolean
   user: IUserConnection
-  cover: IPhoto
-  sumScore: number
-  amount: string
+  value: string
 }

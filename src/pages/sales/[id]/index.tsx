@@ -1,26 +1,26 @@
 import { addApolloState, initializeApollo } from '../../../api/apollo-client'
 import { getFeedCategories } from 'src/api/graphql/feed/queries/getFeedCategories'
 import { getFeeds } from 'src/api/graphql/feed/queries/getFeeds'
-import { getEducationById } from 'src/api/graphql/education/queries/getEducationById'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
-import { IEducation } from 'src/types/education'
+import { getSaleById } from 'src/api/graphql/sale/event/queries/getSaleById'
+import { ISale } from 'src/types/sale'
 import { FC } from 'react'
-import EducationPage from 'src/components/pages/EducationPage'
+import SalePage from 'src/components/pages/SalePage'
 
-interface EducationDetailedProps {
-  education: IEducation
+interface SaleDetailedProps {
+  sale: ISale
   beautyCategories: any
   beautyAllContent: any
 }
 
-const EducationDetailed: FC<EducationDetailedProps> = ({
-  education,
+const SaleDetailed: FC<SaleDetailedProps> = ({
+  sale,
   beautyCategories,
   beautyAllContent,
 }) => {
   return (
-    <EducationPage
-      educationData={education}
+    <SalePage
+      sale={sale}
       beautyCategories={beautyCategories}
       beautyAllContent={beautyAllContent}
     />
@@ -30,8 +30,8 @@ const EducationDetailed: FC<EducationDetailedProps> = ({
 export async function getServerSideProps({ params }: any) {
   const apolloClient = initializeApollo()
 
-  const eduRes = await apolloClient.query({
-    query: getEducationById,
+  const saleRes = await apolloClient.query({
+    query: getSaleById,
     variables: { id: params.id },
   })
   const categories = await apolloClient.query({
@@ -41,15 +41,15 @@ export async function getServerSideProps({ params }: any) {
     query: getFeeds,
   })
 
-  const education = flattenStrapiResponse(eduRes?.data?.education)
+  const normalisedSale = flattenStrapiResponse(saleRes?.data?.promotion)
 
   return addApolloState(apolloClient, {
     props: {
-      education,
+      sale: normalisedSale,
       beautyCategories: categories?.data?.feedCategories,
       beautyAllContent: all?.data?.feeds,
     },
   })
 }
 
-export default EducationDetailed
+export default SaleDetailed

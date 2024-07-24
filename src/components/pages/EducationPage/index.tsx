@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, FC } from 'react'
 import Link from 'next/link'
 import MainLayout from '../../../layouts/MainLayout'
 import SearchBlock from '../../blocks/SearchBlock'
 import BackButton from '../../ui/BackButton'
-import Ribbon from '../../pages/MainPage/components/Ribbon'
-import RatingEdit from '../../ui/RatingEdit/index.tsx'
+import Ribbon from '../MainPage/components/Ribbon'
+import RatingEdit from '../../ui/RatingEdit'
 import Button from '../../ui/Button'
 import {
   MainContainer,
@@ -42,7 +42,6 @@ import {
 } from '../../../utils/favoritesInStorage'
 import ChatMessagePopup from '../../ui/ChatMessagePopup'
 import { educationReviews } from '../../../_graphql-legacy/education/educationReviews'
-import EducationReviews from './components/EducationReviews'
 import { useMutation, useQuery } from '@apollo/client'
 import { scoreEducation } from '../../../_graphql-legacy/education/scoreEducation'
 import { createScopesEducation } from '../../../_graphql-legacy/education/createScoreEducation'
@@ -50,27 +49,35 @@ import { educationSearchById } from '../../../_graphql-legacy/education/educatio
 import { PHOTO_URL } from '../../../api/variables'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
+import { IEducation } from 'src/types/education'
+import { getEducationById } from 'src/api/graphql/education/queries/getEducationById'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import EducationReviews from './components/EducationReviews'
 
-const EducationPage = ({
+interface EducationPageProps {
+  educationData: IEducation
+  beautyCategories: any
+  beautyAllContent: any
+}
+
+const EducationPage: FC<EducationPageProps> = ({
   educationData,
   beautyCategories,
   beautyAllContent,
-  dataReviews,
-  dataScoreRes,
 }) => {
   const [isFavorite, setIsFavorit] = useState(false)
   const { city, me } = useAuthStore(getStoreData)
   const [chatMessagePopup, setChatMessagePopup] = useState(false)
-  const [reviews, setReviews] = useState(dataReviews)
-  const [education, setEducation] = useState(educationData)
-  const [dataScore, setDataScore] = useState(dataScoreRes)
+  const [reviews, setReviews] = useState(educationData.reviews)
+  const [education, setEducation] = useState<IEducation>(educationData)
+  const [loadingReview, setLoadingReview] = useState<boolean>(false)
 
   useEffect(() => {
     const isInStorage = inStorage('educations', {
       id: education.id,
       title: education.title,
       amount: education.amount,
-      photoId: education.photoId,
+      photo: education.cover,
       dateStart: education.dateStart,
       dateEnd: education.dateEnd,
     })
@@ -78,94 +85,81 @@ const EducationPage = ({
   }, [])
 
   useEffect(() => {
-    setReviews(dataReviews)
-    setDataScore(dataScoreRes)
     setEducation(educationData)
-  }, [educationData, dataReviews, dataScoreRes])
+  }, [educationData])
 
-  const addFavorite = e => {
+  const addFavorite = (e: any) => {
     e.preventDefault()
     e.stopPropagation()
     favoritesInStorage('educations', {
       id: education.id,
       title: education.title,
       amount: education.amount,
-      photoId: education.photoId,
+      photo: education.cover,
       dateStart: education.dateStart,
       dateEnd: education.dateEnd,
     })
     setIsFavorit(!isFavorite)
   }
-  const { refetch: refetchReviews } = useQuery(educationReviews, {
+
+  const { refetch: refetchReviews } = useQuery(getEducationById, {
     variables: { id: education?.id },
     skip: true,
     onCompleted: res => {
-      setReviews(res.comments)
+      const normalisedData = flattenStrapiResponse(res?.data?.education)
+      setReviews(normalisedData.reviews)
     },
   })
 
-  const { refetch: refetchScore } = useQuery(scoreEducation, {
+  const { refetch: refetchEducation } = useQuery(getEducationById, {
     variables: { id: education?.id },
     skip: true,
     onCompleted: res => {
-      setDataScore(res.scoreEducation)
-    },
-  })
-
-  const { refetch: refetchEducation } = useQuery(educationSearchById, {
-    variables: { id: education?.id },
-    skip: true,
-    onCompleted: res => {
-      setEducation(res.edu)
+      const normalisedData = flattenStrapiResponse(res?.data?.education)
+      setEducation(normalisedData)
     },
   })
 
   const [createScore] = useMutation(createScopesEducation, {
     onCompleted: () => {
       refetchEducation()
-      refetchScore()
     },
   })
 
-  const originInfo = item => {
-    switch (item?.origin) {
-      case 'MASTER':
-        return {
-          originType: 'Мастер',
-          originName: item.masterOrigin?.name,
-          customTitle: `у мастера ${item.masterOrigin?.name}`,
-          buttonLink: 'master',
-          originLink: `/${
-            cyrToTranslit(item?.masterOrigin?.addressFull?.city) || city.slug
-          }/master/${item?.originId}`,
-          originUserId: item?.masterOrigin?.userId,
-        }
-      case 'SALON':
-        return {
-          originType: 'Салон',
-          originName: item.salonOrigin?.name,
-          customTitle: `в салоне ${item.salonOrigin?.name}`,
-          buttonLink: 'salon',
-          originLink: `/${
-            cyrToTranslit(item?.salonOrigin?.address?.city) || city.slug
-          }/salon/${item?.originId}`,
-          originUserId: item?.salonOrigin?.ownerId,
-        }
-      case 'BRAND':
-        return {
-          originType: 'Бренд',
-          originName: item.brandOrigin?.name,
-          customTitle: `у бренда ${item.brandOrigin?.name}`,
-          buttonLink: 'brand',
-          originLink: `/${cyrToTranslit(
-            item?.brandOrigin?.addressFull?.city || city,
-          )}/brand/${item?.originId}`,
-          originUserId: item?.brandOrigin?.ownerId,
-        }
+  const originInfo = (item: IEducation) => {
+    if (item.master) {
+      return {
+        originType: 'Мастер',
+        originName: item.master?.name,
+        customTitle: `у мастера ${item.master?.name}`,
+        buttonLink: 'master',
+        originLink: `/${city.slug}/master/${item?.master?.id}`,
+        originUserId: item?.user?.id,
+      }
+    }
+    if (item.salon) {
+      return {
+        originType: 'Салон',
+        originName: item.salon?.name,
+        customTitle: `в салоне ${item.salon?.name}`,
+        buttonLink: 'salon',
+        originLink: `/${city.slug}/salon/${item?.salon?.id}`,
+        originUserId: item?.user?.id,
+      }
+    }
+    if (item.brand) {
+      return {
+        originType: 'Бренд',
+        originName: item.brand?.name,
+        customTitle: `у бренда ${item.brand?.name}`,
+        buttonLink: 'brand',
+        originLink: `/${city.slug}/brand/${item?.brand?.id}`,
+        originUserId: item?.user?.id,
+      }
     }
   }
 
-  const handleChangeRating = num => {
+  const handleChangeRating = (num: any) => {
     createScore({
       variables: {
         value: num,
@@ -179,10 +173,11 @@ const EducationPage = ({
       <ChatMessagePopup
         open={chatMessagePopup}
         setChatMessagePopup={setChatMessagePopup}
-        me={me}
-        userId={originInfo(education)?.originUserId}
+        userId={originInfo(education)?.originUserId || null}
         buttonText="Записаться"
         successText="Заявка на запись отправлена"
+        originData={education.master || education.salon}
+        origin={education.master ? 'MASTER' : 'SALON'}
       />
       <SearchBlock />
       <MainContainer>
@@ -195,10 +190,7 @@ const EducationPage = ({
           <Content>
             <Left>
               <ImageWrap>
-                <Image
-                  alt="photo"
-                  src={`${PHOTO_URL}${education.photoId}/original`}
-                />
+                <Image alt="photo" src={`${PHOTO_URL}${education.cover.url}`} />
                 <Favorite
                   isFavorite={isFavorite}
                   onClick={e => addFavorite(e)}
@@ -217,9 +209,8 @@ const EducationPage = ({
               <Rating>
                 <RatingEdit
                   handleChangeRating={handleChangeRating}
-                  userValue={dataScore?.value || 0}
-                  count={Math.round(education?.averageScore)}
-                  me={me}
+                  rating={education.averageScore || 0}
+                  newRating={education.numberScore || 0}
                 />
                 <Count>{Math.round(education?.numberScore) || 0}</Count>
               </Rating>
@@ -228,21 +219,20 @@ const EducationPage = ({
               <MobileHidden>
                 <Title>
                   {education.title}&nbsp;
-                  {originInfo(education).customTitle}
+                  {originInfo(education)?.customTitle || ''}
                 </Title>
-
-                <Link href={originInfo(education).originLink} passHref>
+                <Link href={originInfo(education)?.originLink || ''} passHref>
                   <Subtitle>
-                    {originInfo(education).originType}{' '}
-                    {originInfo(education).originName}
+                    {originInfo(education)?.originType}{' '}
+                    {originInfo(education)?.originName}
                   </Subtitle>
                 </Link>
               </MobileHidden>
               <MobileVisible>
-                <Link href={originInfo(education).originLink} passHref>
+                <Link href={originInfo(education)?.originLink || ''} passHref>
                   <Subtitle>
-                    {originInfo(education).originType}{' '}
-                    {originInfo(education).originName}
+                    {originInfo(education)?.originType}{' '}
+                    {originInfo(education)?.originName}
                   </Subtitle>
                 </Link>
                 <Title>{education.title}</Title>
@@ -258,29 +248,27 @@ const EducationPage = ({
                     {moment(education.dateEnd).format('DD MMMM YYYY HH:MM')}
                   </Date>
                 </DateWrap>
-                {education?.promo ? (
+                {/* {education?.promo ? (
                   <Promo>
                     Промокод <br />
                     {education?.promo}
                   </Promo>
-                ) : null}
+                ) : null} */}
               </DatePromoWrap>
               <EducationInfo
                 dangerouslySetInnerHTML={{
-                  __html: education.desc,
+                  __html: education.fullDescription || '',
                 }}
               />
               <EducationPrice>
                 Стоимость:&nbsp;
-                {new Intl.NumberFormat('ru-RU').format(education.amount)}&nbsp;
-                руб.
+                {education.amount}
               </EducationPrice>
-              {education?.conditions ? (
+              {/* {education?.conditions ? (
                 <EducationConditions>
                   {education?.conditions}
                 </EducationConditions>
-              ) : null}
-
+              ) : null} */}
               <MobileHidden>
                 <Button
                   onClick={() => setChatMessagePopup(true)}
@@ -307,9 +295,11 @@ const EducationPage = ({
         </Wrapper>
         <EducationReviews
           data={reviews}
-          me={me}
           id={education?.id}
           refetchReviews={refetchReviews}
+          loadingReview={loadingReview}
+          setLoadingReview={setLoadingReview}
+          setReviews={setReviews}
         />
       </MainContainer>
       <Ribbon

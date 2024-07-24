@@ -1,12 +1,13 @@
-import { useState } from 'react'
+import { FC, useState } from 'react'
 import styled from 'styled-components'
 import PhotoAdd from '../CreateSale/PhotoAdd'
 import moment from 'moment'
 import 'moment/locale/ru'
 import { laptopBreakpoint } from '../../../styles/variables'
 import { PHOTO_URL } from '../../../api/variables'
+import { ISale } from 'src/types/sale'
 
-const SaleWrap = styled.div`
+const SaleWrap = styled.div<{ type: string | undefined }>`
   width: 375px;
   height: 340px;
   border: ${({ type }) => (type === 'slider' ? 'none' : '1px solid #f0f0f0')};
@@ -109,31 +110,38 @@ const PromoText = styled.p`
   }
 `
 
-const Sale = ({ create = false, onAdd, type, item }) => {
+interface SaleProps {
+  create?: boolean
+  onAdd?: (photoId: string) => void
+  type?: string
+  item: ISale
+}
+
+const Sale: FC<SaleProps> = ({ create = false, onAdd, type, item }) => {
   const [hover, setHover] = useState(false)
 
   return (
     <SaleWrap type={type}>
       {!create ? (
         <SaleTop>
-          <Image alt="photo" src={`${PHOTO_URL}${item?.photoId}/original`} />
+          <Image alt="photo" src={`${PHOTO_URL}${item?.cover.url}`} />
         </SaleTop>
       ) : (
         <SaleTop
           onMouseOver={() => setHover(true)}
           onMouseLeave={() => setHover(false)}
         >
-          <PhotoAdd
+          {/* <PhotoAdd
             photoId={item?.photoId}
             hover={hover && item?.photoId}
             onAdd={onAdd}
             type={type}
-          />
+          /> */}
         </SaleTop>
       )}
-      <SaleContent type={type}>
+      <SaleContent>
         <div>
-          <SaleName>{item?.name}</SaleName>
+          {/* <SaleName>{item?.title}</SaleName> */}
           <SaleTitle>{item?.title}</SaleTitle>
         </div>
         <SaleBottom>
@@ -147,12 +155,12 @@ const Sale = ({ create = false, onAdd, type, item }) => {
               </Date>
             </SaleData>
           ) : null}
-          {item?.promo ? (
+          {/* {item?.promo ? (
             <Promo>
               <PromoText>Промокод</PromoText>
               <PromoText>{item?.promo}</PromoText>
             </Promo>
-          ) : null}
+          ) : null} */}
         </SaleBottom>
       </SaleContent>
     </SaleWrap>

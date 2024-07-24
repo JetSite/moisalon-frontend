@@ -1,9 +1,9 @@
-import { useState } from 'react'
+import { FC, useState } from 'react'
 import { useRouter } from 'next/router'
 import MainLayout from '../../../layouts/MainLayout'
 import SearchBlock from '../../blocks/SearchBlock'
 import BackButton from '../../ui/BackButton'
-import Ribbon from '../../pages/MainPage/components/Ribbon'
+import Ribbon from '../MainPage/components/Ribbon'
 import Button from '../../ui/Button'
 import {
   MainContainer,
@@ -35,53 +35,65 @@ import ChatMessagePopup from '../../ui/ChatMessagePopup'
 import { PHOTO_URL } from '../../../api/variables'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
+import { IEvent } from 'src/types/event'
 
-const EventPage = ({ event, beautyCategories, beautyAllContent }) => {
+interface IEventPageProps {
+  event: IEvent
+  beautyCategories: any
+  beautyAllContent: any
+}
+
+const EventPage: FC<IEventPageProps> = ({
+  event,
+  beautyCategories,
+  beautyAllContent,
+}) => {
   const router = useRouter()
   const { city, me } = useAuthStore(getStoreData)
   const [chatMessagePopup, setChatMessagePopup] = useState(false)
 
-  const originInfo = item => {
-    switch (item?.origin) {
-      case 'MASTER':
-        return {
-          originType: 'Мастер',
-          originName: item.masterOrigin?.name,
-          customTitle: `у мастера ${item.masterOrigin?.name}`,
-          buttonLink: 'master',
-          originLink: `/${
-            cyrToTranslit(item?.masterOrigin?.addressFull?.city) || city.slug
-          }/master/${item?.originId}`,
-        }
-      case 'SALON':
-        return {
-          originType: 'Салон',
-          originName: item.salonOrigin?.name,
-          customTitle: `в салоне ${item.salonOrigin?.name}`,
-          buttonLink: 'salon',
-          originLink: `/${
-            cyrToTranslit(item?.salonOrigin?.address?.city) || city.slug
-          }/salon/${item?.originId}`,
-        }
-      case 'BRAND':
-        return {
-          originType: 'Бренд',
-          originName: item.brandOrigin?.name,
-          customTitle: `у бренда ${item.brandOrigin?.name}`,
-          buttonLink: 'brand',
-          originLink: `/${
-            cyrToTranslit(item?.brandOrigin?.addressFull?.city) || city.slug
-          }/brand/${item?.originId}`,
-        }
+  const originInfo = (item: IEvent) => {
+    if (item.master) {
+      return {
+        originType: 'Мастер',
+        originName: item.master?.name,
+        customTitle: `у мастера ${item.master?.name}`,
+        buttonLink: 'master',
+        originLink: `/${city.slug}/master/${item?.master?.id}`,
+        originUserId: item?.user?.id,
+      }
+    }
+    if (item.salon) {
+      return {
+        originType: 'Салон',
+        originName: item.salon?.name,
+        customTitle: `в салоне ${item.salon?.name}`,
+        buttonLink: 'salon',
+        originLink: `/${city.slug}/salon/${item?.salon?.id}`,
+        originUserId: item?.user?.id,
+      }
+    }
+    if (item.brand) {
+      return {
+        originType: 'Бренд',
+        originName: item.brand?.name,
+        customTitle: `у бренда ${item.brand?.name}`,
+        buttonLink: 'brand',
+        originLink: `/${city.slug}/brand/${item?.brand?.id}`,
+        originUserId: item?.user?.id,
+      }
     }
   }
 
+  console.log('event', event)
+
   const eventButtonHandler = () => {
-    if (event.originId) {
-      router.push(`${originInfo(event).originLink}`)
-    } else {
-      setChatMessagePopup(true)
-    }
+    // if (event.originId) {
+    //   router.push(`${originInfo(event).originLink}`)
+    // } else {
+    //   setChatMessagePopup(true)
+    // }
+    setChatMessagePopup(true)
   }
 
   return (
@@ -89,10 +101,11 @@ const EventPage = ({ event, beautyCategories, beautyAllContent }) => {
       <ChatMessagePopup
         open={chatMessagePopup}
         setChatMessagePopup={setChatMessagePopup}
-        me={me}
-        userId={event.ownerId}
+        userId={originInfo(event)?.originUserId || null}
         buttonText="Записаться"
         successText="Заявка отправлена"
+        originData={event.master || event.salon || event.brand}
+        origin={event.master ? 'MASTER' : event.salon ? 'SALON' : 'BRAND'}
       />
       <SearchBlock />
       <MainContainer>
@@ -106,10 +119,7 @@ const EventPage = ({ event, beautyCategories, beautyAllContent }) => {
           <Content>
             <Left>
               <ImageWrap>
-                <Image
-                  alt="photo"
-                  src={`${PHOTO_URL}${event?.photoId}/original`}
-                />
+                <Image alt="photo" src={`${PHOTO_URL}${event?.cover.url}`} />
               </ImageWrap>
               <CountdownWrap>
                 <Countdown
@@ -152,24 +162,24 @@ const EventPage = ({ event, beautyCategories, beautyAllContent }) => {
                     {moment(event?.dateEnd).format('DD MMMM YYYY HH:MM')}
                   </Date>
                 </DateWrap>
-                {event?.promo ? (
+                {/* {event?.promo ? (
                   <Promo>
                     Промокод <br />
                     {event?.promo}
                   </Promo>
-                ) : null}
+                ) : null} */}
               </DatePromoWrap>
               {event?.address ? (
                 <Address>Адрес:&nbsp;{event.address}</Address>
               ) : null}
               <EventInfo
                 dangerouslySetInnerHTML={{
-                  __html: event.desc,
+                  __html: event.fullDescription || event.shortDescription,
                 }}
               />
-              {event?.conditions ? (
+              {/* {event?.conditions ? (
                 <EventConditions>{event?.conditions}</EventConditions>
-              ) : null}
+              ) : null} */}
               <MobileHidden>
                 <Button
                   onClick={eventButtonHandler}

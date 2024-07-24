@@ -13,6 +13,7 @@ import { ISalonPage } from 'src/types/salon'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 import { IMaster } from 'src/types/masters'
+import { IBrand } from 'src/types/brands'
 
 interface Props {
   open: boolean
@@ -20,8 +21,8 @@ interface Props {
   userId: IID | null
   buttonText?: string
   successText?: string
-  origin: 'SALON' | 'MASTER'
-  originData: ISalonPage | IMaster | null
+  origin: 'SALON' | 'MASTER' | 'BRAND'
+  originData: ISalonPage | IMaster | IBrand | null
 }
 
 const ChatMessagePopup: FC<Props> = ({
@@ -79,7 +80,9 @@ const ChatMessagePopup: FC<Props> = ({
   const newMessageTitle =
     origin === 'MASTER'
       ? `Начать чат с мастером ${(originData as IMaster).name}`
-      : `Начать чат с салоном ${(originData as ISalonPage).name}`
+      : origin === 'SALON'
+      ? `Начать чат с салоном ${(originData as ISalonPage).name}`
+      : `Начать чат с брендом ${(originData as IBrand).name}`
 
   return (
     <>

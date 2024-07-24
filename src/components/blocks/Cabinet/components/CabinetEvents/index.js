@@ -1,22 +1,22 @@
-import { useState, useEffect } from "react";
-import { useQuery } from "@apollo/client";
-import { Wrapper, TitlePage, EventsWrapper, SkeletonWrap } from "./styles";
-import { currentUserEvents } from "../../../../../_graphql-legacy/events/currentUserEvents";
-import Button from "../../../../ui/Button";
-import CreateEvent from "../../../CreateEvent";
-import Event from "../../../Event";
-import { MobileHidden, MobileVisible } from "../../../../../styles/common";
+import { useState, useEffect } from 'react'
+import { useQuery } from '@apollo/client'
+import { Wrapper, TitlePage, EventsWrapper, SkeletonWrap } from './styles'
+import { currentUserEvents } from '../../../../../_graphql-legacy/events/currentUserEvents'
+import Button from '../../../../ui/Button'
+import CreateEvent from '../../../CreateEvent'
+import { MobileHidden, MobileVisible } from '../../../../../styles/common'
+import Event from 'src/components/blocks/Event'
 
 const CabinetEventsList = ({ events, loading }) => {
   if (loading) {
-    return <SkeletonWrap variant="rect" />;
+    return <SkeletonWrap variant="rect" />
   }
 
   return (
     <EventsWrapper>
       {events?.length > 0 ? (
         <>
-          {events?.map((item) => (
+          {events?.map(item => (
             <Event
               title={item.title}
               // name={`${
@@ -45,30 +45,30 @@ const CabinetEventsList = ({ events, loading }) => {
         </>
       ) : null}
     </EventsWrapper>
-  );
-};
+  )
+}
 
 const CabinetEvents = ({ me }) => {
-  const [id, setId] = useState(me?.info?.id);
-  const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [createEvent, setCreateEvent] = useState(false);
+  const [id, setId] = useState(me?.info?.id)
+  const [events, setEvents] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [createEvent, setCreateEvent] = useState(false)
 
   const { data, refetch: refetchEvents } = useQuery(currentUserEvents, {
     skip: true,
-    onCompleted: (res) => {
-      setEvents(res?.userEvents);
-      setLoading(false);
+    onCompleted: res => {
+      setEvents(res?.userEvents)
+      setLoading(false)
     },
-  });
+  })
 
   useEffect(() => {
     if (id) {
-      setLoading(true);
-      setEvents([]);
-      refetchEvents();
+      setLoading(true)
+      setEvents([])
+      refetchEvents()
     }
-  }, [id]);
+  }, [id])
 
   return (
     <Wrapper>
@@ -376,7 +376,7 @@ const CabinetEvents = ({ me }) => {
         </>
       ) : null} */}
     </Wrapper>
-  );
-};
+  )
+}
 
-export default CabinetEvents;
+export default CabinetEvents

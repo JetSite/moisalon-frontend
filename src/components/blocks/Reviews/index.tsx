@@ -63,10 +63,10 @@ const Reviews: FC<Props> = ({
     if (type === 'EDUCATION') {
       reviewMutation({
         variables: {
-          input: {
-            description: reviewText,
-            originId: id,
-          },
+          user: me?.info.id,
+          id,
+          content: reviewText,
+          publishedAt: new Date().toISOString(),
         },
       })
       setReviewOpen(false)

@@ -138,7 +138,7 @@ interface IEducationProps {
   averageScore?: number
   numberScore?: number
   title: string
-  amount?: number
+  amount?: string
   create?: boolean
   onAdd?: (photoId: number) => void
   photo?: IPhoto
@@ -253,9 +253,7 @@ const Education: FC<IEducationProps> = ({
           {amount ? (
             <Promo>
               <PromoText>Стоимость</PromoText>
-              <PromoText>
-                {new Intl.NumberFormat('ru-RU').format(amount)} руб.
-              </PromoText>
+              <PromoText>{amount}</PromoText>
             </Promo>
           ) : null}
         </EducationBottom>

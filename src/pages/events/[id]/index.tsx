@@ -1,26 +1,29 @@
 import { addApolloState, initializeApollo } from '../../../api/apollo-client'
+import { eventSearchById } from '../../../_graphql-legacy/events/eventSearchById'
+import { getAll } from '../../../_graphql-legacy/advices/getAll'
+import { getCategories } from '../../../_graphql-legacy/advices/getCategories'
 import { getFeedCategories } from 'src/api/graphql/feed/queries/getFeedCategories'
 import { getFeeds } from 'src/api/graphql/feed/queries/getFeeds'
-import { getEducationById } from 'src/api/graphql/education/queries/getEducationById'
+import { getEventById } from 'src/api/graphql/event/queries/getEventById'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
-import { IEducation } from 'src/types/education'
+import { IEvent } from 'src/types/event'
 import { FC } from 'react'
-import EducationPage from 'src/components/pages/EducationPage'
+import EventPage from 'src/components/pages/EventPage'
 
-interface EducationDetailedProps {
-  education: IEducation
+interface EventDetailedProps {
+  event: IEvent
   beautyCategories: any
   beautyAllContent: any
 }
 
-const EducationDetailed: FC<EducationDetailedProps> = ({
-  education,
+const EventDetailed: FC<EventDetailedProps> = ({
+  event,
   beautyCategories,
   beautyAllContent,
 }) => {
   return (
-    <EducationPage
-      educationData={education}
+    <EventPage
+      event={event}
       beautyCategories={beautyCategories}
       beautyAllContent={beautyAllContent}
     />
@@ -30,8 +33,8 @@ const EducationDetailed: FC<EducationDetailedProps> = ({
 export async function getServerSideProps({ params }: any) {
   const apolloClient = initializeApollo()
 
-  const eduRes = await apolloClient.query({
-    query: getEducationById,
+  const eventRes = await apolloClient.query({
+    query: getEventById,
     variables: { id: params.id },
   })
   const categories = await apolloClient.query({
@@ -41,15 +44,15 @@ export async function getServerSideProps({ params }: any) {
     query: getFeeds,
   })
 
-  const education = flattenStrapiResponse(eduRes?.data?.education)
+  const normalisedEvent = flattenStrapiResponse(eventRes?.data?.event)
 
   return addApolloState(apolloClient, {
     props: {
-      education,
+      event: normalisedEvent,
       beautyCategories: categories?.data?.feedCategories,
       beautyAllContent: all?.data?.feeds,
     },
   })
 }
 
-export default EducationDetailed
+export default EventDetailed

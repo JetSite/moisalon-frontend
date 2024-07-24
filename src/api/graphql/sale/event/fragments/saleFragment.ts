@@ -1,27 +1,19 @@
-import { imageInfo } from '../../common/imageInfo'
-import { reviewsFragment } from '../../fragments/reviews'
+import { imageInfo } from 'src/api/graphql/common/imageInfo'
 
-export const educationFragment = `
+export const saleFragment = `
       data {
         id
         attributes {
             title
             slug
-            averageScore
             dateStart
             dateEnd
             deleted
             shortDescription
             fullDescription
-            isPublished
-            numberScore
+            value
             cover {
                 ${imageInfo}
-            }
-            sumScore
-            amount
-            reviews {
-              ${reviewsFragment}
             }
             master {
               data {
@@ -52,6 +44,8 @@ export const educationFragment = `
                 id
               }
             }
+            seoTitle
+            seoDescription
         }
       }
 `

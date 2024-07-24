@@ -1,12 +1,13 @@
-import { useState } from 'react'
+import { FC, useState } from 'react'
 import styled from 'styled-components'
 import PhotoAdd from '../CreateSale/PhotoAdd'
 import moment from 'moment'
 import 'moment/locale/ru'
 import { laptopBreakpoint, red } from '../../../styles/variables'
 import { PHOTO_URL } from '../../../api/variables'
+import { IPhoto } from 'src/types'
 
-const EventWrap = styled.div`
+const EventWrap = styled.div<{ cabinetVariant: boolean }>`
   width: ${({ cabinetVariant }) => (cabinetVariant ? '345px' : '375px')};
   border: 1px solid #f0f0f0;
   border-radius: 5px;
@@ -79,6 +80,8 @@ const EventBottom = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-between;
+  align-items: baseline;
+
   @media (max-width: ${laptopBreakpoint}) {
     font-size: 12px;
     line-height: 14px;
@@ -106,7 +109,7 @@ const Date = styled.p`
 
 const EventAddress = styled.p`
   color: #727272;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
 
   @media (max-width: ${laptopBreakpoint}) {
@@ -129,12 +132,24 @@ const PromoText = styled.p`
   }
 `
 
-const Event = ({
+interface IEventProps {
+  title: string
+  photo?: IPhoto
+  dateStart?: Date
+  dateEnd?: Date
+  address: string
+  promo?: string
+  create?: boolean
+  onAdd?: (photo: File) => void
+  cabinetVariant?: boolean
+}
+
+const Event: FC<IEventProps> = ({
   title,
   promo,
   create = false,
   onAdd,
-  photoId = null,
+  photo,
   dateStart,
   dateEnd,
   address,
@@ -146,14 +161,14 @@ const Event = ({
     <EventWrap cabinetVariant={cabinetVariant}>
       {!create ? (
         <EventTop>
-          <Image alt="photo" src={`${PHOTO_URL}${photoId}/original`} />
+          <Image alt="photo" src={`${PHOTO_URL}${photo?.url}`} />
         </EventTop>
       ) : (
         <EventTop
           onMouseOver={() => setHover(true)}
           onMouseLeave={() => setHover(false)}
         >
-          <PhotoAdd photoId={photoId} hover={hover && photoId} onAdd={onAdd} />
+          {/* <PhotoAdd photoId={photoId} hover={hover && photoId} onAdd={onAdd} /> */}
         </EventTop>
       )}
       <EventContent>

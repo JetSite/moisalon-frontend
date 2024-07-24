@@ -43,7 +43,7 @@ const gridOptions = css`
   row-gap: 20px;
 `
 
-export const List = styled.div`
+export const List = styled.div<{ type: string }>`
   margin-top: 35px;
   display: flex;
   /* justify-content: space-between; */

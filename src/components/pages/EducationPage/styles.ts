@@ -193,7 +193,7 @@ export const Count = styled.p`
   font-size: 10px;
 `
 
-export const Favorite = styled.div`
+export const Favorite = styled.div<{ isFavorite: boolean }>`
   position: absolute;
   width: 16px;
   height: 16px;

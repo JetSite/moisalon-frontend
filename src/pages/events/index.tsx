@@ -2,8 +2,16 @@ import { addApolloState, initializeApollo } from '../../api/apollo-client'
 import BusinessCategoryPageLayout from '../../layouts/BusinessCategoryPageLayout'
 import BusinessCategoryPage from '../../components/pages/BusinessCategoryPage'
 import { eventsSearch } from '../../_graphql-legacy/events/eventsSearch'
+import { getEvents } from 'src/api/graphql/event/queries/getEvents'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { IEvent } from 'yandex-maps'
+import { FC } from 'react'
 
-const Events = ({ events }) => {
+interface EventsProps {
+  events: IEvent[]
+}
+
+const Events: FC<EventsProps> = ({ events }) => {
   return (
     <BusinessCategoryPageLayout loading={false}>
       <BusinessCategoryPage
@@ -20,13 +28,14 @@ export async function getServerSideProps() {
   const apolloClient = initializeApollo()
 
   const eventsRes = await apolloClient.query({
-    query: eventsSearch,
-    variables: { query: '' },
+    query: getEvents,
   })
+
+  const normalisedEvents = flattenStrapiResponse(eventsRes?.data?.events)
 
   return addApolloState(apolloClient, {
     props: {
-      events: eventsRes?.data?.eventsSearch,
+      events: normalisedEvents,
     },
   })
 }

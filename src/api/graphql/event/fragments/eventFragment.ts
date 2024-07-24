@@ -1,27 +1,20 @@
 import { imageInfo } from '../../common/imageInfo'
-import { reviewsFragment } from '../../fragments/reviews'
 
-export const educationFragment = `
+export const eventFragment = `
       data {
         id
         attributes {
             title
             slug
-            averageScore
+            address
             dateStart
             dateEnd
             deleted
             shortDescription
             fullDescription
             isPublished
-            numberScore
             cover {
                 ${imageInfo}
-            }
-            sumScore
-            amount
-            reviews {
-              ${reviewsFragment}
             }
             master {
               data {
@@ -52,6 +45,8 @@ export const educationFragment = `
                 id
               }
             }
+            seoTitle
+            seoDescription
         }
       }
 `
