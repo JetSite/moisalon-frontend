@@ -100,6 +100,7 @@ const Photo = styled.div<{ background: string }>`
   border-radius: 100%;
   background: ${props => `${props.background} no-repeat center`};
   background-size: cover;
+  background-position: center;
 
   @media (max-width: ${laptopBreakpoint}) {
     width: 92px;
@@ -133,7 +134,7 @@ interface Props {
   setNoPhotoError?: ISetState<boolean>
   title?: string
   red?: boolean
-  id: string | null
+  id?: string | null
 }
 
 const Avatar: FC<Props> = ({

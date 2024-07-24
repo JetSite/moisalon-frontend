@@ -31,8 +31,9 @@ interface Props {
   values: { [K: string]: any }
   findCity: ICity | null
   logo: IPhoto | null
-  selectCityId: IID | null
+  selectCity?: ICity | null
   photos: string[]
+  rent?: boolean
 }
 
 type IGetPrepareInputSalonForm = (props: Props) => IPrepareInputSalonForm
@@ -41,8 +42,9 @@ export const getPrepareInputSalonForm: IGetPrepareInputSalonForm = ({
   values,
   findCity,
   logo,
-  selectCityId,
+  selectCity,
   photos,
+  rent = false,
 }) => {
   const servicesForInput = values.services?.map((item: { id: IID }) => ({
     service: item.id,
@@ -72,9 +74,10 @@ export const getPrepareInputSalonForm: IGetPrepareInputSalonForm = ({
     ),
     services: servicesForInput,
     activities: values.activities,
-    city: findCity?.id || selectCityId,
+    city: findCity?.id || selectCity?.id || null,
     address: values.address,
     logo: logo?.id,
     photos,
+    rent,
   }
 }

@@ -5,9 +5,13 @@ import { IReview } from 'src/types/reviews'
 import { IVacancy } from 'src/types/vacancies'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 
-export type IGetPrepareUser = (data: ApolloQueryResult<any>) => IUser | null
+export type IGetPrepareUser = (
+  data: ApolloQueryResult<any>,
+) => IPrepareUser | null
 
-interface IGetPrepareUserProps {}
+interface IPrepareUser extends IUser {
+  selected_city: ICity
+}
 
 export const getPrepareUser: IGetPrepareUser = data => {
   if (!data) {
@@ -20,7 +24,7 @@ export const getPrepareUser: IGetPrepareUser = data => {
     return null
   }
 
-  let user = null
+  let user: IPrepareUser | null = null
 
   const info: IMeInfo = {
     city: prepareData.city,
@@ -48,6 +52,7 @@ export const getPrepareUser: IGetPrepareUser = data => {
     favorite,
     vacancies: prepareData.vacancies as IVacancy[],
     reviews: prepareData.reviews as IReview[],
+    selected_city: prepareData.selected_city,
   }
 
   return user

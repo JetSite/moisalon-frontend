@@ -19,7 +19,7 @@ import {
   Blur,
 } from './styles'
 import CityPingIcon from '../Header/icons/CityPingIcon'
-import { useQuery } from '@apollo/client'
+import { useLazyQuery, useQuery } from '@apollo/client'
 import { cyrToTranslit } from '../../../../../utils/translit'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
@@ -55,7 +55,7 @@ const CitySelect: FC<Props> = ({
   const { me } = useAuthStore(getStoreData)
   const [citiesList, setCitiesList] = useState<ICity[]>([])
   const router = useRouter()
-  const { refetch, loading } = useQuery(getCities, {
+  const [refetch, { loading }] = useLazyQuery(getCities, {
     variables: { itemsCount: 10 },
     onCompleted: data => {
       const prepareData = flattenStrapiResponse(data.cities) as ICity[]
@@ -65,7 +65,6 @@ const CitySelect: FC<Props> = ({
       console.log(err)
       setCitiesList(prepareCitiesList)
     },
-    skip: true,
     notifyOnNetworkStatusChange: true,
   })
 
@@ -139,7 +138,6 @@ const CitySelect: FC<Props> = ({
   if (cityInput.length >= 2) {
     component = (
       <UpdatedList
-        me={me}
         cityInput={cityInput}
         setCityInput={setCityInput}
         changeCityFunc={changeCityFunc}
