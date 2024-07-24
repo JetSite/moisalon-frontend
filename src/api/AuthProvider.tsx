@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import React, { FC, useEffect } from 'react'
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client'
-import { IChildren } from 'src/types/common'
+import { IChildren, IID } from 'src/types/common'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
 import { ME } from './graphql/me/queries/getMe'
@@ -9,16 +9,11 @@ import { authConfig, defaultValues } from './authConfig'
 import { getCookie, setCookie } from 'cookies-next'
 import { USER } from './graphql/me/queries/getUser'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
-import { IMeInfo, IUserThings } from 'src/types/me'
-import { getCities } from './graphql/city/getCities'
+import { IMeInfo, IOwnersIds, IUserThings } from 'src/types/me'
 import { IVacancy } from 'src/types/vacancies'
 import { IReview } from 'src/types/reviews'
 import { ICity } from 'src/types'
-import { fetchCity } from './utils/fetchCity'
 import { changeMe } from './graphql/me/mutations/changeMe'
-import { Nullable } from '../types/common'
-import { GetServerSidePropsContext, PreviewData } from 'next'
-import { ParsedUrlQuery } from 'querystring'
 import useBaseStore from 'src/store/baseStore'
 import { getPrepareUser } from './utils/getPrepareUser'
 import { useShallow } from 'zustand/react/shallow'
@@ -27,11 +22,13 @@ const AuthProvider: FC<{ children: IChildren; pageProps: any }> = ({
   children,
   pageProps,
 }) => {
-  // console.log('pageProps', pageProps)
-
   const router = useRouter()
   const { me, loading, user } = useAuthStore(useShallow(getStoreData))
-  const { setMe, setLoading, setCity, setUser } = useAuthStore(getStoreEvent)
+  const data = useAuthStore(getStoreData)
+
+  const { setMe, setLoading, setCity, setUser } = useAuthStore(
+    useShallow(getStoreEvent),
+  )
   const { setCart } = useBaseStore(getStoreEvent)
   const accessToken = getCookie(authConfig.tokenKeyName)
   const cityCookie = getCookie(authConfig.cityKeyName)
@@ -127,9 +124,29 @@ const AuthProvider: FC<{ children: IChildren; pageProps: any }> = ({
   }, [cityCookie])
   useEffect(() => {
     setLoading(meLoading || userLoading)
-    if (pageProps.user) {
-      setUser(getPrepareUser(pageProps.user))
-      console.log('user', user)
+    if (pageProps.user && !user) {
+      const prepareUser = getPrepareUser(pageProps.user)
+      if (prepareUser) {
+        const ownerKeys = Object.keys(prepareUser.owner) as Array<
+          keyof IUserThings
+        >
+        const ownersID = {} as IOwnersIds
+        ownerKeys.forEach(key => {
+          ownersID[key] = prepareUser.owner[key].map((e: { id: IID }) => ({
+            id: e.id,
+          }))
+        })
+        setUser(prepareUser)
+        setMe({ info: prepareUser.info, owner: ownersID })
+        setCity(prepareUser.selected_city)
+        if (!cityCookie) {
+          setCookie(
+            authConfig.cityKeyName,
+            prepareUser.selected_city?.slug || defaultValues.citySlug,
+          )
+        }
+      }
+
       return
     } else {
       if (router.asPath !== authConfig.notAuthLink) {

@@ -3,24 +3,22 @@ import { addApolloState, initializeApollo } from '../../api/apollo-client'
 import CreateSalon from '../../components/pages/Salon/CreateSalon'
 import { salonQuery } from '../../_graphql-legacy/salon/salonQuery'
 import { salonSlugQuery } from '../../_graphql-legacy/salon/salonSlugQuery'
+
 import CreatePageSkeleton from '../../components/ui/ContentSkeleton/CreatePageSkeleton'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
-import { GetServerSideProps } from 'next'
-import { Nullable } from 'src/types/common'
-import { authConfig } from 'src/api/authConfig'
-import { ME } from 'src/api/graphql/me/queries/getMe'
-import { SALON_USER_ID } from 'src/api/graphql/salon/queries/getSalonUserId'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
-import { ISalonActivity, ISalonPage } from 'src/types/salon'
-import { getSalonPage } from 'src/api/graphql/salon/queries/getSalon'
 import { getServiceCategories } from 'src/api/graphql/service/queries/getServiceCategories'
-import { FC, useEffect } from 'react'
-import useBaseStore from 'src/store/baseStore'
-import { IServiceCategories } from 'src/types/services'
 import { GET_SALON_ACTIVITIES } from 'src/api/graphql/salon/queries/getSalonActivities'
 import { getCities } from 'src/api/graphql/city/getCities'
+import { GetServerSideProps, NextPage } from 'next'
+import { Nullable } from 'src/types/common'
+import { getSalonPage } from 'src/api/graphql/salon/queries/getSalon'
+import { ISalonActivity, ISalonPage } from 'src/types/salon'
+import { IServiceCategories } from 'src/types/services'
 import { ICity } from 'src/types'
+import { useEffect } from 'react'
+import useBaseStore from 'src/store/baseStore'
 
 interface Props {
   salon: ISalonPage
@@ -29,7 +27,7 @@ interface Props {
   cities: ICity[]
 }
 
-const CreateOrEditLessorSalon: FC<Props> = ({
+const CreateOrEditSalon: NextPage<Props> = ({
   salon,
   services,
   activities,
@@ -51,7 +49,7 @@ const CreateOrEditLessorSalon: FC<Props> = ({
     router.push('/login')
     return <CreatePageSkeleton />
   } else {
-    return <CreateSalon cities={cities} rent salon={salon} />
+    return <CreateSalon cities={cities} salon={salon} />
   }
 }
 
@@ -86,4 +84,4 @@ export const getServerSideProps: GetServerSideProps<
   }
 }
 
-export default CreateOrEditLessorSalon
+export default CreateOrEditSalon

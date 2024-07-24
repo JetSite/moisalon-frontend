@@ -3,6 +3,8 @@ export interface IMainPageHeaderLinks {
   link: string
   target: string
   pathArr?: string[]
+  disabled?: boolean
+  visible?: boolean
 }
 
 export default function getMainPageHeaderLinks(
@@ -31,6 +33,7 @@ export default function getMainPageHeaderLinks(
     {
       title: 'Салон',
       link: `/${city}/salon`,
+      disabled: false,
       target: '_self',
       pathArr: ['/[city]/salon', '/[city]/salon/[id]'],
     },
@@ -41,6 +44,7 @@ export default function getMainPageHeaderLinks(
       title: 'Бренд',
       link: `/${city}/brand`,
       target: '_self',
+      disabled: false,
       pathArr: [
         '/[city]/brand',
         '/[city]/brand/[id]',
@@ -50,13 +54,19 @@ export default function getMainPageHeaderLinks(
     {
       title: 'Услуги',
       link: `/${city}/services`,
+      disabled: true,
       target: '_self',
     },
-    { title: 'Акции', link: '/sales', target: '_self' },
-    { title: 'Обучение', link: '/educations', target: '_self' },
-    { title: 'Мероприятия', link: '/events', target: '_self' },
-    { title: 'Вакансии', link: '/vacancies', target: '_self' },
-    { title: 'Новости', link: '/advices', target: '_self' },
+    { title: 'Акции', link: '/sales', target: '_self', disabled: true },
+    {
+      title: 'Обучение',
+      link: '/educations',
+      target: '_self',
+      disabled: true,
+    },
+    { title: 'Мероприятия', link: '/events', target: '_self', disabled: true },
+    { title: 'Вакансии', link: '/vacancies', target: '_self', disabled: true },
+    { title: 'Новости', link: '/advices', target: '_self', disabled: true },
     // {
     //   title: 'Тренды',
     //   link: '/trends',

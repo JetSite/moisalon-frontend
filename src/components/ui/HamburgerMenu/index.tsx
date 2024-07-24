@@ -37,6 +37,7 @@ import useAuthStore from 'src/store/authStore'
 import { deleteCookie } from 'cookies-next'
 import { authConfig } from 'src/api/authConfig'
 import { ISetState } from 'src/types/common'
+import { IMainPageHeaderLinks } from 'src/components/pages/MainPage/components/Header/config'
 
 export interface INavLinks {
   title: string
@@ -90,8 +91,8 @@ const HamburgerMenu: FC<Props> = ({
     },
   })
 
-  const navLinksTop: INavLinks[] = [
-    { title: 'Объявления', link: '/sales', target: '_self' },
+  const navLinksTop: IMainPageHeaderLinks[] = [
+    { title: 'Объявления', link: '/sales', target: '_self', disabled: true },
     {
       title: 'Магазин',
       link: `/${city.slug}/beautyFreeShop`,
@@ -105,7 +106,7 @@ const HamburgerMenu: FC<Props> = ({
     { title: 'Снять', link: `/${city.slug}/rent`, target: '_self' },
   ]
 
-  const navLinksBottom: INavLinks[] = [
+  const navLinksBottom: IMainPageHeaderLinks[] = [
     {
       title: 'Мастера',
       link: `/${city.slug}/master`,
@@ -199,15 +200,24 @@ const HamburgerMenu: FC<Props> = ({
           <LinksWrap>
             {navLinksTop.map((link, i) => (
               <LinkWrap
+                disable={link.disabled}
                 key={i}
                 visible={link?.visible}
                 active={
                   router?.asPath === link.link && router?.asPath !== '/login'
                 }
               >
-                <Link href={link.link} target={link.target} onClick={closeMenu}>
-                  {link.title}
-                </Link>
+                {link.disabled ? (
+                  <p>{link.title}</p>
+                ) : (
+                  <Link
+                    href={link.link}
+                    target={link.target}
+                    onClick={closeMenu}
+                  >
+                    {link.title}
+                  </Link>
+                )}
               </LinkWrap>
             ))}
             <Divider>------------</Divider>
@@ -215,11 +225,20 @@ const HamburgerMenu: FC<Props> = ({
               <LinkWrap
                 key={i}
                 visible={link?.visible}
+                disable={link.disabled}
                 active={router?.asPath === link.link}
               >
-                <Link href={link.link} target={link.target} onClick={closeMenu}>
-                  {link.title}
-                </Link>
+                {link.disabled ? (
+                  <p>{link.title}</p>
+                ) : (
+                  <Link
+                    href={link.link}
+                    target={link.target}
+                    onClick={closeMenu}
+                  >
+                    {link.title}
+                  </Link>
+                )}
               </LinkWrap>
             ))}
             {isLoggedIn && (

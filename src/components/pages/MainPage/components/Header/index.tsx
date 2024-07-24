@@ -39,7 +39,6 @@ import MoreIcon from './icons/MoreIcon'
 import AdditionalNav from './components/AdditionalNav'
 import { cyrToTranslit } from '../../../../../utils/translit'
 import { PHOTO_URL } from '../../../../../api/variables'
-import { getCities } from 'src/api/graphql/city/getCities'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
@@ -135,12 +134,17 @@ const Header = ({ loading = false }) => {
                     <NavItem
                       key={i}
                       active={!!activeLink(router.pathname, link.pathArr)}
+                      disable={link.disabled}
                       isAboutPage={isAboutPage}
                       // visible={!!link?.visible}
                     >
-                      <Link href={link.link} target={link.target}>
-                        {link.title}
-                      </Link>
+                      {link.disabled ? (
+                        <p>{link.title}</p>
+                      ) : (
+                        <Link href={link.link} target={link.target}>
+                          {link.title}
+                        </Link>
+                      )}
                     </NavItem>
                   ),
                 )}

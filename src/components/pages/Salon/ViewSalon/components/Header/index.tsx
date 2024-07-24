@@ -219,7 +219,7 @@ const Header: FC<Props> = ({ salon, isOwner }) => {
                   router.push(
                     // TODO: вернуть путь на createSalon
                     {
-                      pathname: '/createLessorSalon',
+                      pathname: '/createSalon',
                       query: { id: salon?.id },
                     },
                   )
