@@ -35,12 +35,12 @@ export type IHandleElementPosition = (
 ) => void
 
 interface Props {
-  lessor?: boolean
+  rent?: boolean
   salon: ISalonPage
   cities: ICity[]
 }
 
-const CreateSalon: FC<Props> = ({ salon, cities, lessor = false }) => {
+const CreateSalon: FC<Props> = ({ salon, cities, rent = false }) => {
   const allTabs = useRef<HTMLFormElement>(null)
   const ref1 = useRef<HTMLDivElement>(null)
   const ref2 = useRef<HTMLDivElement>(null)
@@ -182,7 +182,7 @@ const CreateSalon: FC<Props> = ({ salon, cities, lessor = false }) => {
       <Header />
       <MainContainer>
         <BackArrow
-          link={lessor ? `rentSalonSeat?id=${salon?.id}` : 'masterCabinet'}
+          link={rent ? `rentSalonSeat?id=${salon?.id}` : 'masterCabinet'}
         />
         <Wrapper>
           <Controls
@@ -198,7 +198,7 @@ const CreateSalon: FC<Props> = ({ salon, cities, lessor = false }) => {
           <RegistrationForm
             cities={cities}
             allTabs={allTabs}
-            lessor={lessor}
+            rent={rent}
             handleClickNextTab={handleClickNextTab}
             ref1={ref1}
             ref2={ref2}

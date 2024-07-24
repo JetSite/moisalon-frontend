@@ -40,11 +40,15 @@ import { UPDATE_SALON } from 'src/api/graphql/salon/mutations/updateSalon'
 import { getServicesForCatalog } from 'src/utils/newUtils/getServicesForCatalog'
 import { cyrToTranslit } from '../../../../../../utils/translit'
 import { CREATE_CITY } from 'src/api/graphql/city/mutations/createCity'
-import { getPrepareInputSalonForm } from './utils'
+import { getPrepareInputSalonForm } from './utils/getPrepareInputSalonForm'
 import { CREATE_SALON } from 'src/api/graphql/salon/mutations/createSalon'
 import useAuthStore from 'src/store/authStore'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { UPDATE_SALON_PHOTO } from 'src/api/graphql/salon/mutations/updateSalonPhoto'
+import {
+  IInitialValuesSalonForm,
+  getInitialValuesSalonForm,
+} from './utils/getInitialValuesSalonForm'
 
 interface Props {
   allTabs: RefObject<HTMLFormElement>
@@ -54,9 +58,9 @@ interface Props {
   ref4: RefObject<HTMLDivElement>
   ref5: RefObject<HTMLDivElement>
   ref6: RefObject<HTMLDivElement>
-  lessor: boolean
+  rent: boolean
   handleClickNextTab: IHandleClickNextTabInForm
-  salon: ISalonPage
+  salon: ISalonPage | null
   setNoPhotoError: ISetState<boolean>
   logo: IPhoto | null
   cities: ICity[]
@@ -73,17 +77,16 @@ const RegistrationForm: FC<Props> = ({
   handleClickNextTab,
   salon,
   setNoPhotoError,
-  lessor,
+  rent,
   logo,
   cities,
 }) => {
   const router = useRouter()
   const [citiesArray, setCitiesArray] = useState<ICity[]>(cities)
   const [clickCity, setClickCity] = useState<string | null>(null)
-  const [errors, setErrors] = useState(null)
+  const [errors, setErrors] = useState<string[] | null>(null)
   const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
   const { services, activities } = useBaseStore(getStoreData)
-  const [selectCityId, setSelectCityId] = useState<IID | null>(null)
   const { me } = useAuthStore(getStoreData)
   const salonServicesCatalog: IServiceInForm[] = getServicesForCatalog(services)
   const [photosArray, setPhotosArray] = useState<string[]>(
@@ -98,132 +101,104 @@ const RegistrationForm: FC<Props> = ({
       }))
     : []
 
-  const salonWithInitialArrays = useMemo(() => {
-    const initialInput = salon
-      ? {
-          name: salon.name,
-          email: salon.email,
-          description: salon.description,
-          locationDirections: salon.locationDirections,
-          contactPersonEmail: salon.contactPersonEmail,
-          contactPersonName: salon.contactPersonName,
-          onlineBookingUrl: salon.onlineBookingUrl,
-          webSiteUrl: salon.webSiteUrl,
-          salonPhones: salon.salonPhones.map(e => ({
-            phoneNumber: e.phoneNumber,
-            haveTelegram: e.haveTelegram,
-            haveViber: e.haveViber,
-            haveWhatsApp: e.haveWhatsApp,
-          })),
-          activities: salon.activities.map(e => e.id),
-          services: salon.services.map(e => ({ id: e.service.id })),
-        }
-      : {
-          name: '',
-          salonPhones: [
-            {
-              haveTelegram: false,
-              haveViber: false,
-              haveWhatsApp: false,
-              phoneNumber: '',
-            },
-          ],
-        }
-    return {
-      ...initialInput,
-      socialNetworks: [],
-      workingHours: [
-        {
-          startDayOfWeek: 'MONDAY',
-          startHour: 0,
-          startMinute: 0,
-          endDayOfWeek: 'FRIDAY',
-          endHour: 23,
-          endMinute: 59,
-        },
-      ],
-      contactPersonWorkingHours: [
-        {
-          startDayOfWeek: 'MONDAY',
-          startHour: 0,
-          startMinute: 0,
-          endDayOfWeek: 'FRIDAY',
-          endHour: 23,
-          endMinute: 59,
-        },
-      ],
-      address: salon?.address,
-    }
-  }, [])
+  const salonWithInitialArrays = useMemo<IInitialValuesSalonForm>(
+    () => getInitialValuesSalonForm(salon),
+    [],
+  )
 
   const [addCity, { loading: addCityLoad }] = useMutation(CREATE_CITY)
 
   const [mutate, { loading }] = useMutation(UPDATE_SALON, {
-    // onError: error => {
-    //   const errorMessages = error.graphQLErrors.map(e => e.message)
-    //   setErrors(errorMessages)
-    //   setErrorPopupOpen(true)
-    // },
-    onCompleted: async data => {
-      console.log(data)
-
-      // await refetch()
-      // router.push(
-      //   {
-      //     pathname: lessor ? '/rentSalonSeat' : '/masterCabinet',
-      //     query: { id: salon.id },
-      //   },
-      //   lessor ? '/rentSalonSeat' : '/masterCabinet',
-      // )
+    onError: error => {
+      const errorMessages = error.graphQLErrors.map(e => e.message)
+      setErrors(errorMessages)
+      setErrorPopupOpen(true)
     },
   })
 
   const [createSalon, { loading: loadingCreate }] = useMutation(CREATE_SALON, {
-    // onCompleted: async ({ createSalon }) => {
-    //   await refetch()
-    //   router.push(
-    //     {
-    //       pathname: lessor ? '/rentSalonSeat' : '/masterCabinet',
-    //       query: { id: createSalon.id },
-    //     },
-    //   )
+    onError: error => {
+      const errorMessages = error.graphQLErrors.map(e => e.message)
+      setErrors(errorMessages)
+      setErrorPopupOpen(true)
+    },
   })
 
-  const onSubmit = (values: { [K: string]: any }) => {
+  const onSubmit = (values: IInitialValuesSalonForm) => {
+    if (!clickCity) {
+      setErrors(['Нужно добавить адрес'])
+      setErrorPopupOpen(true)
+      handleClickNextTab(0)
+      return
+    }
+
+    if (!values.services?.length) {
+      setErrors(['Нужно добавить услугу'])
+      setErrorPopupOpen(true)
+      handleClickNextTab(2)
+      return
+    }
+    if (!logo) {
+      setErrors(['Нужно добавить логотип'])
+      setErrorPopupOpen(true)
+      return
+    }
     const findCity =
       citiesArray?.find(e => e.slug === cyrToTranslit(clickCity)) || null
     if (!findCity) {
       addCity({
         variables: { name: clickCity, slug: cyrToTranslit(clickCity) },
       }).then(data => {
-        setSelectCityId(data.data.createCity.data.id)
         const findCityData = flattenStrapiResponse(data.data.createCity.data)
         setCitiesArray(prev => prev.concat(findCityData))
         const input = getPrepareInputSalonForm({
           values,
-          selectCityId,
           logo,
-          findCity: findCityData,
+          findCity,
           photos: photosArray,
+          rent,
         })
         if (salon?.id) {
-          mutate({ variables: { salonId: salon.id, input } })
+          mutate({ variables: { salonId: salon.id, input } }).then(() => {
+            router.push(
+              `/${findCityData?.slug}/${rent ? 'rent' : 'salon'}/${salon.id}`,
+            )
+          })
         } else {
-          createSalon({ variables: { input: { user: me?.info.id, ...input } } })
+          createSalon({
+            variables: { input: { user: me?.info.id, ...input } },
+          }).then(data => {
+            router.push(
+              `/${findCityData?.slug}/${rent ? 'rent' : 'salon'}/${
+                data.data.createSalon.data.id
+              }`,
+            )
+          })
         }
       })
     } else {
       const input = getPrepareInputSalonForm({
         values,
-        selectCityId,
         logo,
         findCity,
         photos: photosArray,
       })
       if (salon?.id) {
-        mutate({ variables: { salonId: salon.id, input } })
+        mutate({ variables: { salonId: salon.id, input } }).then(() => {
+          router.push(
+            `/${findCity?.slug}/${rent ? 'rent' : 'salon'}/${salon.id}`,
+          )
+        })
       } else {
-        createSalon({ variables: { input: { user: me?.info.id, ...input } } })
+        createSalon({
+          variables: { input: { user: me?.info.id, ...input } },
+        }).then(data => {
+          router.push(
+            `/${findCity?.slug}/${rent ? 'rent' : 'salon'}/${
+              data.data.createSalon.data.id
+            }`,
+          )
+        })
       }
     }
   }
@@ -235,7 +210,7 @@ const RegistrationForm: FC<Props> = ({
         initialValues={salonWithInitialArrays}
         keepDirtyOnReinitialize
         initialValuesEqual={() => true}
-        onSubmit={onSubmit}
+        onSubmit={e => onSubmit(e as IInitialValuesSalonForm)}
         render={({ handleSubmit, form, pristine, ...rest }) => {
           return (
             <form onSubmit={handleSubmit} ref={allTabs}>
