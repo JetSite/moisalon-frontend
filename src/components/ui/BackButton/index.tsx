@@ -47,8 +47,13 @@ const BackButton: FC<Props> = ({
     <Wrapper
       onClick={() => {
         if (noLink) return
-        console.log('click back')
-        link ? router.push({ path: link, query: queryLink }) : router.back()
+        if (queryLink && link) {
+          router.push({ path: link, query: queryLink })
+        }
+        if (link && !queryLink) {
+          router.push(link)
+        }
+        router.back()
       }}
     >
       <Icon alt="back" src="/arrow-back.svg" />

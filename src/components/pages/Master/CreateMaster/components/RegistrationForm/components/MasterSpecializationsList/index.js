@@ -68,9 +68,9 @@ const MasterSpecializationsList = ({
         withButton={true}
         validate={lengthValidate}
       />
-      <Text>
+      {/* <Text>
         Не нашли свою профессию? <span>Напишите нам!</span>
-      </Text>
+      </Text> */}
       <MobileHidden>
         <Button
           onClick={e => {

@@ -1,109 +1,98 @@
-import { useState, useEffect } from 'react'
-import { useQuery } from '@apollo/client/react'
+import { useState, useEffect, FC } from 'react'
 import { MainContainer } from '../../../styles/common'
-import ServicesFilter from './components/ServicesFilter'
-import ServicesList from './components/ServicesList'
 import { Wrapper, Title, FilterWrap, TextFilter } from './styles'
 import { useRouter } from 'next/router'
-import { servicesWithMasterCount } from '../../../_graphql-legacy/services/servicesWithMasterCount'
 import { getStoreData } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
+import { IServiceCategory, IServiceInCategory } from 'src/types/services'
+import ServicesFilter from './components/ServicesFilter'
+import { IMaster } from 'src/types/masters'
+import { ISalon } from 'src/types/salon'
+import ServicesList from './components/ServicesList'
 
-const ServicesPage = () => {
-  // const [view, setView] = useState(viewData || 'all')
-  // const [servicesList, setServicesList] = useState(masterServices)
-  // const [mastersData, setMastersData] = useState(masters)
-  // const [salonsData, setSalonsData] = useState(salons)
-  // const [clickedService, setClickedService] = useState({
-  //   id: clickedServiceId,
-  // })
+interface IServicesPageProps {
+  servicesWithCategories: IServiceCategory[]
+  mastersData: IMaster[]
+  salonsData: ISalon[]
+}
+
+const ServicesPage: FC<IServicesPageProps> = ({
+  servicesWithCategories,
+  mastersData,
+  salonsData,
+}) => {
   const [view, setView] = useState('all')
-  const [servicesList, setServicesList] = useState([])
-  const [mastersData, setMastersData] = useState([])
-  const [salonsData, setSalonsData] = useState([])
-  const [clickedService, setClickedService] = useState({
-    id: 1,
-  })
+  const [masters, setMasters] = useState<IMaster[]>([])
+  const [salons, setSalons] = useState<ISalon[]>([])
+  const [clickedService, setClickedService] =
+    useState<IServiceInCategory | null>(null)
   const router = useRouter()
-  const { city } = useAuthStore(getStoreData)
-
-  const { data, refetch: refetchServices } = useQuery(servicesWithMasterCount, {
-    skip: true,
-    variables: {
-      city: city.slug,
-    },
-    onCompleted: res => {
-      setServicesList(res?.mastersServicesCount)
-    },
-  })
 
   useEffect(() => {
-    refetchServices()
-  }, [city])
+    setMasters(mastersData)
+  }, [mastersData])
 
-  // useEffect(() => {
-  //   if (router?.query?.id) {
-  //     setClickedService({ id: router?.query?.id })
-  //   }
-  // }, [])
+  useEffect(() => {
+    setSalons(salonsData)
+  }, [salonsData])
 
-  // useEffect(() => {
-  //   setMastersData(masters)
-  // }, [masters])
+  useEffect(() => {
+    if (clickedService) {
+      router.replace({
+        query: {
+          ...router.query,
+          category:
+            view !== 'all' ? [view, clickedService?.id] : clickedService?.id,
+        },
+      })
+    } else {
+      router.replace({
+        query: { ...router.query, category: undefined },
+      })
+    }
+  }, [clickedService])
 
-  // useEffect(() => {
-  //   setSalonsData(salons)
-  // }, [salons])
+  useEffect(() => {
+    if (view === 'master') {
+      router.replace({
+        query: {
+          ...router.query,
+          category: ['master', clickedService?.id] as any,
+        },
+      })
+    }
+    if (view === 'salon') {
+      router.replace({
+        query: {
+          ...router.query,
+          category: ['salon', clickedService?.id] as any,
+        },
+      })
+    }
+    if (view === 'all') {
+      router.replace({
+        query: { ...router.query, category: clickedService?.id },
+      })
+    }
+  }, [view])
 
-  // useEffect(() => {
-  //   if (clickedService) {
-  //     router.replace({
-  //       query: {
-  //         ...router.query,
-  //         category:
-  //           view !== 'all' ? [view, clickedService?.id] : clickedService?.id,
-  //       },
-  //     })
-  //   } else {
-  //     router.replace({
-  //       query: { ...router.query, category: undefined },
-  //     })
-  //   }
-  // }, [clickedService])
-
-  // useEffect(() => {
-  //   if (view === 'master') {
-  //     router.replace({
-  //       query: { ...router.query, category: ['master', clickedService?.id] },
-  //     })
-  //   }
-  //   if (view === 'salon') {
-  //     router.replace({
-  //       query: { ...router.query, category: ['salon', clickedService?.id] },
-  //     })
-  //   }
-  //   if (view === 'all') {
-  //     router.replace({
-  //       query: { ...router.query, category: clickedService?.id },
-  //     })
-  //   }
-  // }, [view])
-
-  const popularServiceHandler = service => {
+  const popularServiceHandler = (service: any) => {
     setClickedService(service)
   }
+
+  console.log('mastersData', mastersData)
 
   return (
     <MainContainer>
       <Wrapper>
         <ServicesFilter
-          servicesList={servicesList}
+          servicesCategoriesList={servicesWithCategories}
           clickedService={clickedService}
           setClickedService={setClickedService}
-          mastersData={mastersData}
-          setMastersData={setMastersData}
-          salonsData={salonsData}
-          setSalonsData={setSalonsData}
+          masters={masters}
+          setMasters={setMasters}
+          salons={salons}
+          setSalons={setSalons}
         />
         {clickedService?.id && (mastersData || salonsData) ? (
           <FilterWrap active={view}>
@@ -124,7 +113,7 @@ const ServicesPage = () => {
             </TextFilter>
           </FilterWrap>
         ) : null}
-        {!mastersData && !salonsData && !clickedService?.id ? (
+        {!masters && !salons && !clickedService?.id ? (
           <>
             <Title>Популярные услуги</Title>
             <ServicesList
@@ -133,11 +122,11 @@ const ServicesPage = () => {
             />
           </>
         ) : null}
-        {mastersData && (view === 'master' || view === 'all') ? (
-          <ServicesList mastersData={mastersData} />
+        {masters && (view === 'master' || view === 'all') ? (
+          <ServicesList masters={masters} />
         ) : null}
-        {salonsData && (view === 'salon' || view === 'all') ? (
-          <ServicesList salonsData={salonsData} />
+        {salons && (view === 'salon' || view === 'all') ? (
+          <ServicesList salons={salons} />
         ) : null}
       </Wrapper>
     </MainContainer>

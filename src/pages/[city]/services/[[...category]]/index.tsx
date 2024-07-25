@@ -2,69 +2,122 @@ import { addApolloState, initializeApollo } from '../../../../api/apollo-client'
 import CategoryPageLayout from '../../../../layouts/CategoryPageLayout'
 import SearchBlock from '../../../../components/blocks/SearchBlock'
 import ServicesPage from '../../../../components/pages/ServicesPage'
-import { servicesWithMasterCount } from '../../../../_graphql-legacy/services/servicesWithMasterCount'
-import { servicesWithSalonCount } from '../../../../_graphql-legacy/services/servicesWithSalonCount'
-import { mastersByService } from '../../../../_graphql-legacy/services/mastersByService'
-import { salonsByService } from '../../../../_graphql-legacy/services/salonsByService'
-import { citySuggestionsQuery } from '../../../../_graphql-legacy/city/citySuggestionsQuery'
+import { getServiceCategories } from 'src/api/graphql/service/queries/getServiceCategories'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { IServiceCategory } from 'src/types/services'
+import { FC } from 'react'
+import { getMastersByService } from 'src/api/graphql/master/queries/getMastersByService'
+import { getSalonsByService } from 'src/api/graphql/salon/queries/getSalonsByService'
+import { IMaster } from 'src/types/masters'
+import { ISalon } from 'src/types/salon'
+import { getMasters } from 'src/api/graphql/master/queries/getMasters'
+import { getBrands } from 'src/api/graphql/brand/queries/getBrands'
+import { getSalons } from 'src/api/graphql/salon/queries/getSalons'
+import { IBrand } from 'src/types/brands'
 
-const Services = () => {
+interface IServicesPageProps {
+  servicesWithCategories: IServiceCategory[]
+  mastersData: IMaster[]
+  salonsData: ISalon[]
+  brandsRandom: IBrand[]
+  mastersRandom: IMaster[]
+  salonsRandom: ISalon[]
+}
+
+const Services: FC<IServicesPageProps> = ({
+  servicesWithCategories,
+  mastersData,
+  salonsData,
+  brandsRandom,
+  mastersRandom,
+  salonsRandom,
+}) => {
   return (
-    <CategoryPageLayout>
+    <CategoryPageLayout
+      brands={brandsRandom}
+      masters={mastersRandom}
+      salons={salonsRandom}
+    >
       <SearchBlock />
-      <ServicesPage />
+      <ServicesPage
+        servicesWithCategories={servicesWithCategories}
+        mastersData={mastersData}
+        salonsData={salonsData}
+      />
     </CategoryPageLayout>
   )
 }
 
-export async function getServerSideProps({ params }) {
+export async function getServerSideProps({ params, query }: any) {
   const apolloClient = initializeApollo()
   let mastersData = null
   let salonsData = null
 
-  // const city = await apolloClient.query({
-  //   query: citySuggestionsQuery,
-  //   variables: {
-  //     city: params?.city || '',
-  //     count: 1,
-  //   },
-  // })
+  const view = params?.category?.length > 1 ? params?.category[0] : undefined
+  const serviceId =
+    params?.category?.length > 1
+      ? params?.category[1]
+      : params?.category?.length
+      ? params?.category[0]
+      : undefined
 
-  // const view = params?.category?.length > 1 ? params?.category[0] : undefined
-  // const serviceId =
-  //   params?.category?.length > 1
-  //     ? params?.category[1]
-  //     : params?.category?.length
-  //     ? params?.category[0]
-  //     : undefined
-
-  // if (params?.category?.length) {
-  //   const dataMasters = await apolloClient.query({
-  //     query: mastersByService,
-  //     variables: {
-  //       serviceId: serviceId || null,
-  //       city: city?.data?.citySuggestions[0]?.data?.city || '',
-  //     },
-  //   })
-  //   const dataSalons = await apolloClient.query({
-  //     query: salonsByService,
-  //     variables: {
-  //       serviceId: serviceId || null,
-  //       city: city?.data?.citySuggestions[0]?.data?.city || '',
-  //     },
-  //   })
-  //   mastersData = dataMasters?.data?.listMastersByService
-  //   salonsData = dataSalons?.data?.listSalonsByService
-  // }
+  if (params?.category?.length) {
+    const dataMasters = await apolloClient.query({
+      query: getMastersByService,
+      variables: {
+        serviceId: serviceId || null,
+      },
+    })
+    const dataSalons = await apolloClient.query({
+      query: getSalonsByService,
+      variables: {
+        serviceId: serviceId || null,
+      },
+    })
+    mastersData = flattenStrapiResponse(dataMasters?.data?.masters)
+    salonsData = flattenStrapiResponse(dataSalons?.data?.salons)
+  }
 
   const data = await Promise.all([
-    // apolloClient.query({
-    //   query: servicesWithSalonCount,
-    // }),
+    apolloClient.query({
+      query: getServiceCategories,
+    }),
+    apolloClient.query({
+      query: getBrands,
+      variables: {
+        itemsCount: 10,
+      },
+    }),
+    apolloClient.query({
+      query: getMasters,
+      variables: {
+        slug: query.city,
+        itemsCount: 10,
+      },
+    }),
+    apolloClient.query({
+      query: getSalons,
+      variables: {
+        slug: query.city,
+        itemsCount: 10,
+      },
+    }),
   ])
 
+  const normalisedData = flattenStrapiResponse(data[0]?.data?.serviceCategories)
+  const brands: IBrand[] = flattenStrapiResponse(data[1].data.brands)
+  const masters: IMaster[] = flattenStrapiResponse(data[2].data.masters)
+  const salons: ISalon[] = flattenStrapiResponse(data[3]?.data.salons)
+
   return addApolloState(apolloClient, {
-    props: {},
+    props: {
+      servicesWithCategories: normalisedData,
+      mastersData,
+      salonsData,
+      brandsRandom: brands,
+      mastersRandom: masters,
+      salonsRandom: salons,
+    },
   })
 }
 

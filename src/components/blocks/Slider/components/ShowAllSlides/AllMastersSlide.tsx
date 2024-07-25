@@ -4,9 +4,11 @@ import { cyrToTranslit } from '../../../../../utils/translit'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 
-const AllMastersSlide = ({ city }: { city: string }) => {
+const AllMastersSlide = () => {
+  const { city } = useAuthStore(getStoreData)
+
   return (
-    <Link href={`/${cyrToTranslit(city)}/master`}>
+    <Link href={`/${city.slug}/master`}>
       <AllMasters>
         <AllIcon />
         <AllText>Показать всех мастеров</AllText>

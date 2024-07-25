@@ -95,9 +95,7 @@ const OrderPage = () => {
       address = await createOrderAddress({
         variables: {
           data: {
-            title: `Заказ пользователя ${
-              user?.info.username || ''
-            } с корзиной №${cart?.id || ''}`,
+            title: clickAddress?.value || values.address,
             city: clickCity,
             address: clickAddress?.value || values.address,
             zipCode: clickAddress?.zipcode || '',

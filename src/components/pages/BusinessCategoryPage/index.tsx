@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, FC, ReactNode } from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import Link from 'next/link'
 import { Wrapper, Title, Content, List } from './styles'
@@ -10,10 +10,7 @@ import {
 import SearchBlock from '../../blocks/SearchBlock'
 import BackButton from '../../ui/BackButton'
 import Button from '../../ui/Button'
-import Sale from '../../blocks/Sale'
-import Education from '../../blocks/Education'
 import Vacancy from '../../blocks/Vacancy'
-import Event from '../../blocks/Event'
 import { salesSearch } from '../../../_graphql-legacy/sales/salesSearch'
 import { educationSearch } from '../../../_graphql-legacy/education/educationSearch'
 import { eventsSearch } from '../../../_graphql-legacy/events/eventsSearch'
@@ -23,8 +20,21 @@ import SalesSearchResults from '../MainPage/components/SearchMain/SalesSearchRes
 import EducationsSearchResults from '../MainPage/components/SearchMain/EducationsSearchResults'
 import EventsSearchResults from '../MainPage/components/SearchMain/EventsSearchResults'
 import VacanciesSearchResults from '../MainPage/components/SearchMain/VacanciesSearchResults'
+import { IEducation } from 'src/types/education'
+import Education from 'src/components/blocks/Education'
+import Event from 'src/components/blocks/Event'
+import { IEvent } from 'src/types/event'
+import { ISale } from 'src/types/sale'
+import Sale from 'src/components/blocks/Sale'
 
-const customProps = {
+const customProps: {
+  [key: string]: {
+    query: any
+    searchTitle?: string
+    searchResultsComponent?: ReactNode
+    variables?: { input: { query: string; searchWork: boolean } }
+  }
+} = {
   sales: {
     query: salesSearch,
     searchTitle: 'Найти акции',
@@ -51,39 +61,45 @@ const customProps = {
   },
 }
 
-const ListItem = ({ type, item }) => {
-  const renderSwitch = type => {
+const ListItem = ({ type, item }: { type: string; item: any }) => {
+  const renderSwitch = (type: string) => {
     switch (type) {
       case 'sales':
+        const itemSale = item as ISale
+
         return (
-          <Link href={`/sales/${item.id}`} passHref>
-            <Sale item={item} />
+          <Link href={`/sales/${itemSale.id}`} passHref>
+            <Sale item={itemSale} />
           </Link>
         )
       case 'educations':
+        const itemEducation = item as IEducation
+
         return (
           <Link href={`/educations/${item.id}`} passHref>
             <Education
-              id={item.id}
-              title={item.title}
-              averageScore={item.averageScore}
-              numberScore={item.numberScore}
-              amount={item.amount}
-              photoId={item.photoId}
-              dateStart={item.dateStart}
-              dateEnd={item.dateEnd}
+              id={itemEducation.id}
+              title={itemEducation.title}
+              averageScore={itemEducation.averageScore}
+              numberScore={itemEducation.numberScore}
+              amount={itemEducation.amount}
+              photo={itemEducation.cover}
+              dateStart={itemEducation.dateStart}
+              dateEnd={itemEducation.dateEnd}
             />
           </Link>
         )
       case 'events':
+        const itemEvent = item as IEvent
+
         return (
-          <Link href={`/events/${item.id}`} passHref>
+          <Link href={`/events/${itemEvent.id}`} passHref>
             <Event
-              title={item.title}
-              address={item.address}
-              photoId={item.photoId}
-              dateStart={item.dateStart}
-              dateEnd={item.dateEnd}
+              title={itemEvent.title}
+              address={itemEvent.address}
+              photo={itemEvent.cover}
+              dateStart={itemEvent.dateStart}
+              dateEnd={itemEvent.dateEnd}
             />
           </Link>
         )
@@ -106,7 +122,19 @@ const ListItem = ({ type, item }) => {
   return <>{renderSwitch(type)}</>
 }
 
-const BusinessCategoryPage = ({ type, title, data, link }) => {
+interface BusinessCategoryPageProps {
+  type: string
+  title: string
+  data: any
+  link: string
+}
+
+const BusinessCategoryPage: FC<BusinessCategoryPageProps> = ({
+  type,
+  title,
+  data,
+  link,
+}) => {
   const [listData, setListData] = useState(data)
   const [fetchMoreLoading, setFetchMoreLoading] = useState(false)
   const [, setLoading] = useState(false)
@@ -202,7 +230,7 @@ const BusinessCategoryPage = ({ type, title, data, link }) => {
         ) : (
           <Content>
             <List type={type}>
-              {slicedList?.map(item => (
+              {slicedList?.map((item: any) => (
                 <ListItem key={item.id} type={type} item={item} />
               ))}
             </List>

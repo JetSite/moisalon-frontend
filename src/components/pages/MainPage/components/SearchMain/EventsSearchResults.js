@@ -6,7 +6,7 @@ import { MobileVisible, MobileHidden } from '../../../../../styles/common'
 import { WrapperItems, Title, LinkStyled } from './styled'
 import Button from '../../../../ui/Button'
 import { pluralize } from '../../../../../utils/pluralize'
-import Event from '../../../../blocks/Event'
+import Event from 'src/components/blocks/Event'
 
 const EventsSearchResults = () => {
   const query = { query: '' } //TODO: query

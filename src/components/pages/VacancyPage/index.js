@@ -23,6 +23,7 @@ import {
   Date,
   Promo,
   VacancyInfo,
+  VacancyConditionsTitle,
   VacancyConditions,
   Salary,
 } from './styles'
@@ -33,6 +34,7 @@ import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 import MainLayout from '../../../layouts/MainLayout'
 import { PHOTO_URL } from '../../../api/variables'
+import ReactMarkdown from 'react-markdown'
 
 const VacancyPage = ({ vacancy, beautyCategories, beautyAllContent }) => {
   const router = useRouter()
@@ -132,11 +134,13 @@ const VacancyPage = ({ vacancy, beautyCategories, beautyAllContent }) => {
                   </Promo>
                 ) : null}
               </DatePromoWrap>
-              <VacancyInfo
-                dangerouslySetInnerHTML={{
-                  __html: vacancy.desc,
-                }}
-              />
+              {vacancy.fullDescription || vacancy.shortDescription ? (
+                <VacancyInfo>
+                  <ReactMarkdown>
+                    {vacancy.fullDescription || vacancy.shortDescription}
+                  </ReactMarkdown>
+                </VacancyInfo>
+              ) : null}
               {vacancy?.amountFrom || vacancy?.amountTo ? (
                 <Salary>
                   Зарплата:&nbsp;
@@ -148,7 +152,20 @@ const VacancyPage = ({ vacancy, beautyCategories, beautyAllContent }) => {
                 </Salary>
               ) : null}
               {vacancy?.conditions ? (
-                <VacancyConditions>{vacancy?.conditions}</VacancyConditions>
+                <>
+                  <VacancyConditionsTitle>Условия</VacancyConditionsTitle>
+                  <VacancyConditions>
+                    <ReactMarkdown>{vacancy.conditions}</ReactMarkdown>
+                  </VacancyConditions>
+                </>
+              ) : null}
+              {vacancy?.requirements ? (
+                <>
+                  <VacancyConditionsTitle>Требования</VacancyConditionsTitle>
+                  <VacancyConditions>
+                    <ReactMarkdown>{vacancy.requirements}</ReactMarkdown>
+                  </VacancyConditions>
+                </>
               ) : null}
               <MobileHidden>
                 <Button

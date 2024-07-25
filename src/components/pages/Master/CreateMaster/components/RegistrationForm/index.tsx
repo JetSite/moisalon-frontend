@@ -26,6 +26,9 @@ import { ICity } from 'src/types'
 import { cyrToTranslit } from 'src/utils/translit'
 import { CREATE_CITY } from 'src/api/graphql/city/mutations/createCity'
 import { getPrepareInputMasterForm } from './components/utils'
+import { useLazyQuery } from '@apollo/client'
+import { useShallow } from 'zustand/react/shallow'
+import { USER } from 'src/api/graphql/me/queries/getUser'
 
 const RegistrationForm = ({
   master,
@@ -40,7 +43,8 @@ const RegistrationForm = ({
   serviceCategories,
   cities,
 }) => {
-  const { me } = useAuthStore(getStoreData)
+  const { me, user } = useAuthStore(useShallow(getStoreData))
+  const { setUser } = useAuthStore(useShallow(getStoreEvent))
   const [clickCity, setClickCity] = useState<string | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
   const [selectCityId, setSelectCityId] = useState<IID | null>(null)
@@ -51,6 +55,25 @@ const RegistrationForm = ({
   const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
   const [resumeInput, setResumeInput] = useState<Object | null>(null)
 
+  const [getUser] = useLazyQuery(USER, {
+    onCompleted: data => {
+      console.log('data', data)
+      const prepareData = flattenStrapiResponse(data.usersPermissionsUser)
+
+      if (user) {
+        const newData = {
+          ...user,
+          owner: {
+            ...user.owner,
+            masters: prepareData.masters,
+          },
+        }
+        setUser({ ...newData })
+      }
+    },
+    onError: err => console.log(err),
+    notifyOnNetworkStatusChange: true,
+  })
   const [createResume] = useMutation(CREATE_RESUME)
   const [addCity] = useMutation(CREATE_CITY)
 
@@ -89,6 +112,7 @@ const RegistrationForm = ({
       })
     }
     setLoading(false)
+    getUser({ variables: { id: me?.info?.id } })
     router.push('/masterCabinet')
   }
 
@@ -109,12 +133,14 @@ const RegistrationForm = ({
       if (!values.address) {
         setErrors(['Введите адрес места работы из выпадающего списка'])
         setErrorPopupOpen(true)
+        setLoading(false)
         return
       }
       if (!master && !photo) {
         setNoPhotoError(true)
         setErrors(['Необходимо добавить фото мастера'])
         setErrorPopupOpen(true)
+        setLoading(false)
         return
       }
       if (values.searchWork) {

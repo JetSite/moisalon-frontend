@@ -13,7 +13,7 @@ import { IPhoto } from 'src/types'
 const Cabinet = () => {
   const { me, loading } = useAuthStore(getStoreData)
   const [photo, setPhoto] = useState<IPhoto | undefined>(
-    !!me?.owner.masters?.length ? me.owner.masters[0].photo : undefined,
+    !!me?.owner?.masters?.length ? me.owner.masters[0].photo : undefined,
   )
   const [noPhotoError, setNoPhotoError] = useState(false)
 

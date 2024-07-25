@@ -93,8 +93,8 @@ export const Subtitle = styled.p`
 `
 
 export const DatePromoWrap = styled.div`
-  margin-top: 45px;
-  margin-bottom: 65px;
+  margin-top: 25px;
+  margin-bottom: 25px;
   width: 314px;
   display: flex;
   justify-content: space-between;
@@ -147,8 +147,20 @@ export const VacancyInfoBold = styled.span`
   }
 `
 
+export const VacancyConditionsTitle = styled.h4`
+  margin-top: 47px;
+  color: #797979;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 27px;
+  @media (max-width: ${laptopBreakpoint}) {
+    font-size: 10px;
+    line-height: 16px;
+  }
+`
+
 export const VacancyConditions = styled.p`
-  margin-top: 77px;
+  margin-top: 5px;
   color: #797979;
   font-size: 14px;
   font-weight: 400;
