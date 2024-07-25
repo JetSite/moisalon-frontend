@@ -4,6 +4,9 @@ import { laptopBreakpoint } from '../../../styles/variables'
 
 export const Wrapper = styled.div`
   padding: 0 140px;
+  opacity: 0.5;
+  filter: grayscale(1);
+  pointer-events: none;
 
   @media (max-width: ${laptopBreakpoint}) {
     min-height: 100px;

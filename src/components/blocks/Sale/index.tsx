@@ -155,12 +155,12 @@ const Sale: FC<SaleProps> = ({ create = false, onAdd, type, item }) => {
               </Date>
             </SaleData>
           ) : null}
-          {/* {item?.promo ? (
+          {item?.value ? (
             <Promo>
               <PromoText>Промокод</PromoText>
-              <PromoText>{item?.promo}</PromoText>
+              <PromoText>{item.value}</PromoText>
             </Promo>
-          ) : null} */}
+          ) : null}
         </SaleBottom>
       </SaleContent>
     </SaleWrap>

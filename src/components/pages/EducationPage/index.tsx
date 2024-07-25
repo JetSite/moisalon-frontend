@@ -1,4 +1,4 @@
-import { useState, useEffect, FC } from 'react'
+import React, { useState, useEffect, FC } from 'react'
 import Link from 'next/link'
 import MainLayout from '../../../layouts/MainLayout'
 import SearchBlock from '../../blocks/SearchBlock'
@@ -53,6 +53,7 @@ import { IEducation } from 'src/types/education'
 import { getEducationById } from 'src/api/graphql/education/queries/getEducationById'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import EducationReviews from './components/EducationReviews'
+import ReactMarkdown from 'react-markdown'
 
 interface EducationPageProps {
   educationData: IEducation
@@ -255,11 +256,9 @@ const EducationPage: FC<EducationPageProps> = ({
                   </Promo>
                 ) : null} */}
               </DatePromoWrap>
-              <EducationInfo
-                dangerouslySetInnerHTML={{
-                  __html: education.fullDescription || '',
-                }}
-              />
+              <EducationInfo>
+                <ReactMarkdown>{education.fullDescription || ''}</ReactMarkdown>
+              </EducationInfo>
               <EducationPrice>
                 Стоимость:&nbsp;
                 {education.amount}

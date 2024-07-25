@@ -36,6 +36,7 @@ import { getStoreData } from 'src/store/utils'
 import { PHOTO_URL } from '../../../api/variables'
 import { ISale } from 'src/types/sale'
 import { FC } from 'react'
+import ReactMarkdown from 'react-markdown'
 
 interface SalePageProps {
   sale: ISale
@@ -143,18 +144,18 @@ const SalePage: FC<SalePageProps> = ({
                     {moment(sale.dateEnd).format('DD MMMM YYYY')}
                   </Date>
                 </DateWrap>
-                {/* {sale?.promo ? (
+                {sale?.value ? (
                   <Promo>
                     Промокод <br />
-                    {sale?.promo}
+                    {sale.value}
                   </Promo>
-                ) : null} */}
+                ) : null}
               </DatePromoWrap>
-              <SaleInfo
-                dangerouslySetInnerHTML={{
-                  __html: sale.fullDescription || sale.shortDescription,
-                }}
-              />
+              <SaleInfo>
+                <ReactMarkdown>
+                  {sale.fullDescription || sale.shortDescription}
+                </ReactMarkdown>
+              </SaleInfo>
               {/* {sale?.conditions ? (
                 <SaleConditions>{sale?.conditions}</SaleConditions>
               ) : null} */}

@@ -97,7 +97,7 @@ const ServicesList: FC<IServicesListProps> = ({
       {!masters && !salons
         ? popularServices.map(popularService => (
             <ServicesListItem
-              key={popularService.id}
+              key={popularService.title}
               popularService={popularService}
               popularServiceHandler={popularServiceHandler}
             />

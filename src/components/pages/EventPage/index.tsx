@@ -36,6 +36,7 @@ import { PHOTO_URL } from '../../../api/variables'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 import { IEvent } from 'src/types/event'
+import ReactMarkdown from 'react-markdown'
 
 interface IEventPageProps {
   event: IEvent
@@ -172,11 +173,11 @@ const EventPage: FC<IEventPageProps> = ({
               {event?.address ? (
                 <Address>Адрес:&nbsp;{event.address}</Address>
               ) : null}
-              <EventInfo
-                dangerouslySetInnerHTML={{
-                  __html: event.fullDescription || event.shortDescription,
-                }}
-              />
+              <EventInfo>
+                <ReactMarkdown>
+                  {event.fullDescription || event.shortDescription}
+                </ReactMarkdown>
+              </EventInfo>
               {/* {event?.conditions ? (
                 <EventConditions>{event?.conditions}</EventConditions>
               ) : null} */}

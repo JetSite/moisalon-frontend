@@ -86,7 +86,7 @@ const ServicesFilter: FC<IServicesFilterProps> = ({
         setClickedItem={setClickedItem}
       />
       <MobileHidden>
-        {masters || salons ? (
+        {!!masters?.length || !!salons?.length ? (
           <BackText onClick={resetFilters}>Сбросить фильтр</BackText>
         ) : null}
         <ScrollDiv ref={scrollFiltersTop} />
@@ -124,8 +124,27 @@ const ServicesFilter: FC<IServicesFilterProps> = ({
           ) : null}
         </Wrapper>
       </MobileHidden>
-      {/* <MobileVisible>
+      <MobileVisible>
+        {!!masters?.length || !!salons?.length ? (
+          <BackText onClick={resetFilters}>Сбросить фильтр</BackText>
+        ) : null}
         <Wrapper>
+          {servicesCategoriesList ? (
+            <FilterColumn>
+              {servicesCategoriesList?.map(serviceCategory => (
+                <ServiceFilterItem
+                  key={serviceCategory.id}
+                  item={serviceCategory}
+                  clickType="category"
+                  clickHandler={chooseHandler}
+                  active={
+                    clickedCategory &&
+                    serviceCategory.id === clickedCategory?.id
+                  }
+                />
+              ))}
+            </FilterColumn>
+          ) : null}
           {items ? (
             <FilterColumn>
               {items.map(item => (
@@ -134,45 +153,15 @@ const ServicesFilter: FC<IServicesFilterProps> = ({
                   item={item}
                   isEndElement
                   clickHandler={chooseHandler}
-                  clickType="lastElement"
-                  active={clickedItem && item.id === clickedItem[0]?.id}
-                  withCount
-                  isEmpty={item.count === 0}
-                />
-              ))}
-            </FilterColumn>
-          ) : subgroups ? (
-            <FilterColumn>
-              {subgroups?.map(subgroup => (
-                <ServiceFilterItem
-                  key={subgroup.id}
-                  item={subgroup}
                   clickType="item"
-                  clickHandler={chooseHandler}
-                  isEndElement={!subgroup.items || subgroup.items?.length === 0}
-                  active={
-                    clickedSubgroup && subgroup.id === clickedSubgroup[0]?.id
-                  }
+                  active={clickedItem && item.id === clickedItem?.id}
                   withCount
-                  isEmpty={subgroup.count === 0}
-                />
-              ))}
-            </FilterColumn>
-          ) : servicesList ? (
-            <FilterColumn>
-              {servicesList?.groups?.map(group => (
-                <ServiceFilterItem
-                  key={group.id}
-                  item={group}
-                  clickType="subgroup"
-                  clickHandler={chooseHandler}
-                  active={clickedGroup && group.id === clickedGroup[0]?.id}
                 />
               ))}
             </FilterColumn>
           ) : null}
         </Wrapper>
-      </MobileVisible> */}
+      </MobileVisible>
     </>
   )
 }

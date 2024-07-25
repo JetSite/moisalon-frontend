@@ -39,6 +39,9 @@ interface Props {
 
 const Footer: FC<Props> = ({ loading = false, noMobileFooter }) => {
   const { city } = useAuthStore(getStoreData)
+
+  const currentYear = new Date().getFullYear()
+
   return (
     <Wrapper loading={loading} noMobileFooter={noMobileFooter}>
       <MainContainer>
@@ -151,8 +154,9 @@ const Footer: FC<Props> = ({ loading = false, noMobileFooter }) => {
                 >
                   Политика конфиденциальности
                 </Link>
-                <br /> © 2022 <Link href={`/${city?.slug}`}>MOI SALON</Link> Все
-                права защищены
+                <br /> © {currentYear}{' '}
+                <Link href={`/${city?.slug}`}>MOI SALON</Link> Все права
+                защищены
               </LawText>
             </Right>
           </Bottom>
@@ -244,7 +248,8 @@ const Footer: FC<Props> = ({ loading = false, noMobileFooter }) => {
                     <a href="mailto:support@moi.salon">support@moi.salon</a>
                   </Text>
                   <Copyright>
-                    © 2022 <Link href={`/${city?.slug}`}>MOI SALON</Link>{' '}
+                    © {currentYear}{' '}
+                    <Link href={`/${city?.slug}`}>MOI SALON</Link>{' '}
                     <Link href="/legals">Пользовательское соглашение</Link>
                     <br />
                     <Link

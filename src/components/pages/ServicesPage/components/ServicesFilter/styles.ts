@@ -1,10 +1,15 @@
 import styled from 'styled-components'
-import { red, laptopBreakpoint } from '../../../../../styles/variables'
+import {
+  red,
+  laptopBreakpoint,
+  mobileBreakpoint,
+} from '../../../../../styles/variables'
 
 export const Wrapper = styled.div`
   margin-bottom: 62px;
   display: flex;
   @media (max-width: ${laptopBreakpoint}) {
+    column-gap: 20px;
   }
 `
 
@@ -18,6 +23,7 @@ export const FilterItemWrapper = styled.div<{ isEmpty: boolean }>`
 
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
+    max-width: 300px;
   }
 `
 
@@ -42,8 +48,8 @@ export const Text = styled.p<{ active: boolean }>`
     color: #000;
   }
 
-  @media (max-width: ${laptopBreakpoint}) {
-    color: #000;
+  @media (max-width: ${mobileBreakpoint}) {
+    font-size: 12px;
   }
 `
 
@@ -83,10 +89,6 @@ export const BackText = styled.p`
 
   &:hover {
     color: #000;
-  }
-
-  @media (max-width: ${laptopBreakpoint}) {
-    display: none;
   }
 `
 

@@ -22,21 +22,11 @@ const ServicesPage: FC<IServicesPageProps> = ({
   salonsData,
 }) => {
   const [view, setView] = useState('all')
-  const [servicesList, setServicesList] = useState([])
   const [masters, setMasters] = useState<IMaster[]>([])
   const [salons, setSalons] = useState<ISalon[]>([])
   const [clickedService, setClickedService] =
     useState<IServiceInCategory | null>(null)
   const router = useRouter()
-  const { city } = useAuthStore(getStoreData)
-
-  console.log('servicesWithCategories', servicesWithCategories)
-
-  // useEffect(() => {
-  //   if (router?.query?.id) {
-  //     setClickedService({ id: router?.query?.id })
-  //   }
-  // }, [])
 
   useEffect(() => {
     setMasters(mastersData)
@@ -90,6 +80,8 @@ const ServicesPage: FC<IServicesPageProps> = ({
     setClickedService(service)
   }
 
+  console.log('mastersData', mastersData)
+
   return (
     <MainContainer>
       <Wrapper>
@@ -130,10 +122,10 @@ const ServicesPage: FC<IServicesPageProps> = ({
             />
           </>
         ) : null}
-        {mastersData && (view === 'master' || view === 'all') ? (
+        {masters && (view === 'master' || view === 'all') ? (
           <ServicesList masters={masters} />
         ) : null}
-        {salonsData && (view === 'salon' || view === 'all') ? (
+        {salons && (view === 'salon' || view === 'all') ? (
           <ServicesList salons={salons} />
         ) : null}
       </Wrapper>

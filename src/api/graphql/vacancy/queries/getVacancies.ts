@@ -4,7 +4,7 @@ import { imageInfo } from '../../common/imageInfo'
 
 export const getVacancies = gql`
   query vacancies {
-    vacancies {
+    vacancies(pagination: { pageSize: 100 }) {
       data {
         id
         attributes {
