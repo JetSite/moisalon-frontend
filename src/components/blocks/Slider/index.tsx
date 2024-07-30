@@ -168,7 +168,9 @@ const Slider: FC<Props> = ({
                 mobileTitleWidth={mobileTitleWidth}
               >
                 <span>{title}</span>
-                {isOwner ? <EditIcons setIsEditing={setIsEditing} /> : null}
+                {isOwner ? (
+                  <EditIcons disable setIsEditing={setIsEditing} />
+                ) : null}
               </Title>
               {items?.length > 0 && (
                 <NavigationWrapper>

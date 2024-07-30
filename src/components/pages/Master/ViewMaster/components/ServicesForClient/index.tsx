@@ -70,6 +70,7 @@ const Services: FC<Props> = ({
             Услуги
             {isOwner && (
               <EditIcons
+                disable
                 handleEditConfirm={handleEditConfirm}
                 setIsEditing={() => {}}
               />

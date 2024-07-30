@@ -11,6 +11,8 @@ export const getCities = gql`
         attributes {
           name
           slug
+          latitude
+          longitude
         }
       }
     }

@@ -1,50 +1,62 @@
-import { useRef, useState, useEffect, useCallback } from 'react'
+import { useRef, useState, useEffect, useCallback, FC } from 'react'
 import styled from 'styled-components'
 import { Scrollbar } from 'react-scrollbars-custom'
-import { laptopBreakpoint } from '../../../../styles/variables'
+import {
+  laptopBreakpoint,
+  mobileBreakpoint,
+} from '../../../../styles/variables'
 import { useMedia } from 'use-media'
 import Link from 'next/link'
 import { useQuery } from '@apollo/client'
-import { searchAddressSalons } from '../../../../_graphql-legacy/search/searchAddressSalons'
-import { MobileHidden, MobileVisible } from '../../../../styles/common'
-import Button from '../../../ui/Button'
-
 import { pluralize } from '../../../../utils/pluralize'
 import FilterSearchResults from '../../../blocks/FilterSearchResults'
-import { salonIdsQuery } from '../../../../_graphql-legacy/brand/salonIdsQuery'
-// import SalonCardMap from "./SalonCardMap";
-import { cyrToTranslit } from '../../../../utils/translit'
 import SalonCard from '../../../blocks/SalonCard'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
-import { searchQuery } from 'src/_graphql-legacy/search/searchQuery'
-import { Map } from '@pbe/react-yandex-maps/typings/Map'
+import {
+  GeolocationControl,
+  Map,
+  ObjectManager,
+  Placemark,
+  YMaps,
+} from '@pbe/react-yandex-maps'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { ISalon } from 'src/types/salon'
+import { getRating } from 'src/utils/newUtils/getRating'
+import { getSalonsByIds } from 'src/api/graphql/salon/queries/getSalonsByIds'
+import { IView } from '../AllSalons'
+import { ISetState } from 'src/types/common'
+import { ICity } from 'src/types'
+import { MobileHidden, MobileVisible } from 'src/styles/common'
+import Button from 'src/components/ui/Button'
 
 const WrapperMapBlock = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 55px;
   position: relative;
+
+  @media (max-width: ${mobileBreakpoint}) {
+    flex-direction: column;
+  }
 `
 
 const MobileCards = styled.div`
-  height: 100vh;
   width: 100%;
-  z-index: 2000;
   background: #fff;
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
   padding: 0 20px;
-  overflow: auto;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `
 
 const WrapperBack = styled.div`
+  font-size: 16px;
+  font-weight: 600;
+  color: #f03;
   cursor: pointer;
   padding: 20px 0;
-  margin-bottom: 20px;
 `
 
 const Icon = styled.img``
@@ -60,6 +72,12 @@ const MapItems = styled.div`
     gap: 25px;
     flex-wrap: wrap;
     padding-bottom: 10px;
+  }
+
+  @media (max-width: ${mobileBreakpoint}) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 `
 
@@ -123,722 +141,444 @@ const Title = styled.h3`
   }
 `
 
-const SalonMap = ({ view, setView, rent }) => {
-  return <></>
-  // const query = { query: '' } //TODO: query
-  // const { city } = useAuthStore(getStoreData)
-  // const mobileMedia = useMedia({ maxWidth: 768 })
-  // const [ids, setIds] = useState<any>(null)
-  // const [openMobileList, setOpenMobileList] = useState<any>(false)
-  // const [allAddress, setAllAddress] = useState<any>(null)
-  // const [salonsList, setSalonsList] = useState<any>(null)
-  // const [firstLoading, setFirstLoading] = useState<any>(null)
-  // const [salonsListSlice, setSalonsListSlice] = useState<any>(12)
-  // const [coords, setCoords] = useState<any>(null)
-  // const [salonSearchData, setSalonSearchData] = useState<any>({})
-  // const [loading, setLoading] = useState<any>(null)
-  // const [activePlacemark, setActivePlacemark] = useState<any>(null)
-  // const [loadingSalonsList, setLoadingSalonsList] = useState<any>(null)
-  // const [fetchMoreLoading, setFetchMoreLoading] = useState<any>(null)
-  // const mapRef = useRef<any>(null)
-  // const scrollRef = useRef<any>(null)
-  // const objectManagerRef = useRef<any>(null)
-  // const [ymaps, setYmaps] = useState<any>(null)
+interface ISalonMapProps {
+  view: IView
+  setView?: ISetState<IView>
+  rent: boolean
+  salonData: ISalon[]
+  pagination: any
+  cityData: ICity
+}
 
-  // useEffect(() => {
-  //   if (openMobileList) {
-  //     document.body.style.overflow = 'hidden'
-  //     document.documentElement.style.overflow = 'hidden'
-  //   }
-  //   return () => {
-  //     document.body.style.overflow = 'unset'
-  //     document.documentElement.style.overflow = 'scroll'
-  //   }
-  // })
+const SalonMap: FC<ISalonMapProps> = ({
+  view,
+  setView,
+  rent,
+  salonData,
+  pagination,
+  cityData,
+}) => {
+  const { city } = useAuthStore(getStoreData)
+  const mobileMedia = useMedia({ maxWidth: 768 })
+  const [salonsList, setSalonsList] = useState<ISalon[]>(salonData)
+  const [filteredSalons, setFilteredSalons] = useState<ISalon[]>([])
+  const [totalCount, setTotalCount] = useState<number>(pagination?.total || 0)
+  const [page, setPage] = useState<number>(2)
+  const [hasNextPage, setHasNextPage] = useState<boolean>(
+    pagination && pagination.pageCount + 1 !== page,
+  )
+  const [ids, setIds] = useState<any>(null)
+  const [activePlacemark, setActivePlacemark] = useState<any>(null)
+  const mapRef = useRef<any>(null)
+  const scrollRef = useRef<any>(null)
+  const objectManagerRef = useRef<any>(null)
 
-  // const mapData = {
-  //   center: allAddress?.length
-  //     ? [
-  //         allAddress[0]?.salon?.address?.latitude,
-  //         allAddress[0]?.salon?.address?.longitude,
-  //       ]
-  //     : [55.751574, 37.573856],
-  //   zoom: 10,
-  //   behaviors: ['default', 'scrollZoom'],
-  // }
+  const { refetch, loading } = useQuery(getSalonsByIds, {
+    skip: true,
+    notifyOnNetworkStatusChange: true,
+  })
 
-  // const querySearch = {
-  //   ...EmptySearchQuery,
-  //   query: (query && query.query) || '',
-  //   city: null,
-  //   lessor: rent ? true : false,
-  // }
+  const normaliseSalons = useCallback(
+    (res: any) => {
+      if (res?.data?.salons?.data) {
+        const prepareData: ISalon[] = res.data.salons.data.map((salon: any) => {
+          const ratingRes = flattenStrapiResponse(salon.attributes.ratings)
+          const { rating, ratingCount } = getRating(ratingRes)
+          return {
+            id: salon.id,
+            name: salon.attributes.name,
+            address: salon.attributes.address,
+            salonPhones: salon.attributes.salonPhones,
+            email: salon.attributes.email,
+            services: salon.attributes.services.map((service: any) => {
+              return {
+                service: {
+                  title: service.service.data.attributes.title,
+                },
+              }
+            }),
+            reviewsCount: salon.attributes.reviews.data.length,
+            rating,
+            ratingCount,
+            latitude: salon.attributes?.latitude,
+            longitude: salon.attributes?.longitude,
+            cover: {
+              url: salon.attributes.cover?.data?.attributes?.url,
+            },
+          }
+        })
+        setHasNextPage(res?.data?.salons?.meta?.pagination?.pageCount > page)
+        return prepareData
+      }
+    },
+    [page],
+  )
 
-  // const { refetch: refetchAllSalons } = useQuery(searchAddressSalons, {
-  //   variables: {
-  //     input: {
-  //       ...querySearch,
-  //       city: null,
-  //       latitudeMin: coords?.length && coords[0][0],
-  //       latitudeMax: coords?.length && coords[1][0],
-  //       longitudeMin: coords?.length && coords[0][1],
-  //       longitudeMax: coords?.length && coords[1][1],
-  //     },
-  //   },
-  //   notifyOnNetworkStatusChange: true,
-  //   skip: true,
-  //   onCompleted: res => {
-  //     scrollRef && scrollRef?.current && scrollRef?.current.scrollToTop()
-  //     setLoading(false)
-  //     setAllAddress(res?.salonSearch?.salonsConnection?.nodes)
-  //   },
-  // })
+  const onFetchMore = async () => {
+    const res = await refetch({ page })
+    const newSalons = normaliseSalons(res)
+    if (newSalons) {
+      setSalonsList(prev => [...prev, ...newSalons])
+      setPage(page + 1)
+    }
+  }
 
-  // const { refetch: refetchSalonIds } = useQuery(salonIdsQuery, {
-  //   variables: {
-  //     ids,
-  //   },
-  //   notifyOnNetworkStatusChange: true,
-  //   skip: true,
-  //   onCompleted: res => {
-  //     scrollRef && scrollRef?.current && scrollRef?.current.scrollToTop()
-  //     setLoadingSalonsList(false)
-  //     setSalonsList([])
-  //     setSalonsList(res?.salonsList)
-  //     mobileMedia && setOpenMobileList(true)
-  //   },
-  // })
+  const mapData = {
+    center:
+      cityData?.latitude && cityData?.longitude
+        ? [+cityData.latitude, +cityData.longitude]
+        : [55.751574, 37.573856],
+    zoom: 10,
+    behaviors: ['default', 'scrollZoom'],
+  }
 
-  // const { fetchMore, refetch } = useQuery(searchQuery, {
-  //   variables: {
-  //     input: {
-  //       ...querySearch,
-  //       city: null,
-  //       latitudeMin: coords?.length && coords[0][0],
-  //       latitudeMax: coords?.length && coords[1][0],
-  //       longitudeMin: coords?.length && coords[0][1],
-  //       longitudeMax: coords?.length && coords[1][1],
-  //     },
-  //   },
-  //   notifyOnNetworkStatusChange: true,
-  //   skip: true,
-  //   onCompleted: res => {
-  //     scrollRef && scrollRef?.current && scrollRef?.current.scrollToTop()
-  //     setLoading(false)
-  //     setSalonSearchData(res?.salonSearch)
-  //     if (!coords) {
-  //       setAllAddress(res?.salonSearch?.salonsConnection?.nodes)
-  //     }
-  //   },
-  // })
+  const refecthSalons = useCallback(async () => {
+    setPage(2)
+    const res = await refetch({ salonIds: ids, page: 1 })
+    const newSalons = normaliseSalons(res)
+    if (newSalons) {
+      setFilteredSalons(newSalons)
+    }
+  }, [ids])
 
-  // const { refetch: firstFetch } = useQuery(searchQuery, {
-  //   variables: {
-  //     input: {
-  //       ...querySearch,
-  //       city: null,
-  //       latitudeMin: coords?.length && coords[0][0],
-  //       latitudeMax: coords?.length && coords[1][0],
-  //       longitudeMin: coords?.length && coords[0][1],
-  //       longitudeMax: coords?.length && coords[1][1],
-  //     },
-  //   },
-  //   notifyOnNetworkStatusChange: true,
-  //   skip: true,
-  //   onCompleted: res => {
-  //     scrollRef && scrollRef?.current && scrollRef?.current.scrollToTop()
-  //     setLoading(false)
-  //     setSalonSearchData(res?.salonSearch)
-  //     setAllAddress(res?.salonSearch?.salonsConnection?.nodes)
-  //     setFirstLoading(true)
-  //   },
-  // })
+  useEffect(() => {
+    if (ids?.length) {
+      refecthSalons()
+    }
+  }, [ids])
 
-  // const { refetch: refetchChange } = useQuery(searchQuery, {
-  //   variables: {
-  //     input: {
-  //       ...querySearch,
-  //       city: null,
-  //     },
-  //   },
-  //   notifyOnNetworkStatusChange: true,
-  //   skip: true,
-  //   onCompleted: res => {
-  //     setLoading(false)
-  //     setSalonSearchData(res?.salonSearch)
-  //     if (res?.salonSearch?.salonsConnection?.nodes?.length) {
-  //       setAllAddress(res?.salonSearch?.salonsConnection?.nodes)
-  //       if (ymaps && mapRef?.current?.geoObjects?.getBounds()) {
-  //         const map = mapRef?.current?.geoObjects?.getMap()
-  //         const result = ymaps?.util?.bounds?.getCenterAndZoom(
-  //           mapRef?.current?.geoObjects?.getBounds(),
-  //           map?.container?.getSize(),
-  //         )
-  //         map?.setCenter(result.center, 10)
-  //       } else {
-  //         const map = mapRef?.current?.geoObjects?.getMap()
-  //         map?.setCenter(
-  //           [
-  //             res?.salonSearch?.salonsConnection?.nodes[0].salon.address
-  //               .latitude,
-  //             res?.salonSearch?.salonsConnection?.nodes[0].salon.address
-  //               .longitude,
-  //           ],
-  //           10,
-  //         )
-  //       }
-  //     } else {
-  //       setAllAddress([])
-  //     }
-  //   },
-  // })
+  const fetchMoreButtonMap = hasNextPage ? (
+    <div style={{ position: 'relative', top: '-5px' }}>
+      <MobileHidden>
+        <Button
+          onClick={onFetchMore}
+          size="width100"
+          variant="darkTransparent"
+          disabled={loading}
+        >
+          Показать еще
+        </Button>
+      </MobileHidden>
+      <MobileVisible>
+        <Button
+          size="roundSmallFullWidth"
+          variant="withRoundBorder"
+          font="roundSmall"
+          onClick={onFetchMore}
+          disabled={loading}
+        >
+          Показать еще салоны
+        </Button>
+      </MobileVisible>
+    </div>
+  ) : null
 
-  // useEffect(() => {
-  //   setLoading(true)
-  //   if (querySearch?.query && coords?.length) {
-  //     refetchChange({
-  //       input: {
-  //         ...querySearch,
-  //         city: city.slug,
-  //       },
-  //     })
-  //     refetchAllSalons()
-  //   } else {
-  //     if (coords) {
-  //       refetchChange({
-  //         input: {
-  //           ...querySearch,
-  //           city: null,
-  //           latitudeMin: coords?.length && coords[0][0],
-  //           latitudeMax: coords?.length && coords[1][0],
-  //           longitudeMin: coords?.length && coords[0][1],
-  //           longitudeMax: coords?.length && coords[1][1],
-  //         },
-  //       })
-  //       refetchAllSalons()
-  //     }
-  //   }
-  // }, [querySearch?.query])
-
-  // useEffect(() => {
-  //   setLoading(true)
-  //   if (city && coords?.length) {
-  //     refetchChange({
-  //       input: {
-  //         ...querySearch,
-  //         city: city.slug,
-  //       },
-  //     })
-  //   }
-  // }, [city])
-
-  // useEffect(() => {
-  //   if (ids?.length) {
-  //     setLoadingSalonsList(true)
-  //     setSalonsListSlice(12)
-  //     refetchSalonIds()
-  //   }
-  // }, [ids])
-
-  // useEffect(() => {
-  //   setLoading(true)
-  //   firstFetch({
-  //     input: {
-  //       ...querySearch,
-  //       city: city.slug,
-  //     },
-  //   })
-  // }, [])
-
-  // useEffect(() => {
-  //   if (coords?.length) {
-  //     setLoading(true)
-  //     refetch()
-  //     refetchAllSalons()
-  //   }
-  // }, [coords])
-
-  // useEffect(() => {
-  //   if (mapRef?.current) {
-  //     const coord = mapRef?.current?.getBounds()
-  //     setCoords(coord)
-  //   }
-  // }, [mapRef?.current])
-
-  // const salonsSearchResult =
-  //   typeof window !== 'undefined' ? salonSearchData?.salonsConnection : []
-  // const slicedList = salonsSearchResult?.nodes
-  // const hasNextPage = salonSearchData?.salonsConnection?.pageInfo?.hasNextPage
-  // const totalCount =
-  //   typeof window !== 'undefined'
-  //     ? salonSearchData?.salonsConnection?.totalCount
-  //     : []
-
-  // const onFetchMore = useCallback(() => {
-  //   setFetchMoreLoading(true)
-  //   fetchMore({
-  //     variables: {
-  //       cursor: salonSearchData?.salonsConnection?.pageInfo?.endCursor,
-  //     },
-
-  //     updateQuery(previousResult, { fetchMoreResult }) {
-  //       const newNodes = fetchMoreResult.salonSearch.salonsConnection.nodes
-
-  //       setFetchMoreLoading(false)
-  //       setSalonSearchData({
-  //         salonsConnection: {
-  //           ...fetchMoreResult.salonSearch.salonsConnection,
-  //           nodes: [...salonSearchData.salonsConnection.nodes, ...newNodes],
-  //         },
-  //         filterDefinition: fetchMoreResult.salonSearch.filterDefinition,
-  //       })
-  //     },
-  //   })
-  // })
-
-  // const onLoad = ymaps => {
-  //   setYmaps(ymaps)
-  // }
-
-  // const handleBounds = () => {
-  //   const coord = mapRef?.current?.getBounds()
-  //   setCoords(coord)
-  // }
-
-  // const fetchMoreButtonMap = hasNextPage ? (
-  //   <>
-  //     <MobileHidden>
-  //       <Button
-  //         onClick={onFetchMore}
-  //         size="width100"
-  //         variant="darkTransparent"
-  //         disabled={fetchMoreLoading}
-  //       >
-  //         Показать еще
-  //       </Button>
-  //     </MobileHidden>
-  //     <MobileVisible>
-  //       <Button
-  //         size="roundSmallFullWidth"
-  //         variant="withRoundBorder"
-  //         font="roundSmall"
-  //         onClick={onFetchMore}
-  //         disabled={fetchMoreLoading}
-  //       >
-  //         Показать еще салоны
-  //       </Button>
-  //     </MobileVisible>
-  //   </>
-  // ) : null
-
-  // const fetchMoreButtonMapSalonsList =
-  //   salonsList?.length > salonsListSlice ? (
-  //     <>
-  //       <MobileHidden>
-  //         <Button
-  //           onClick={() => setSalonsListSlice(salonsListSlice + 12)}
-  //           size="width100"
-  //           variant="darkTransparent"
-  //           disabled={fetchMoreLoading}
-  //         >
-  //           Показать еще
-  //         </Button>
-  //       </MobileHidden>
-  //       <MobileVisible>
-  //         <Button
-  //           size="roundSmallFullWidth"
-  //           variant="withRoundBorder"
-  //           font="roundSmall"
-  //           onClick={() => setSalonsListSlice(salonsListSlice + 12)}
-  //           disabled={fetchMoreLoading}
-  //         >
-  //           Показать еще салоны
-  //         </Button>
-  //       </MobileVisible>
-  //     </>
-  //   ) : null
-
-  // return (
-  //   <>
-  //     <Title>
-  //       {`${pluralize(totalCount || 0, 'Найден', 'Найдено', 'Найдено')} ${
-  //         totalCount || 0
-  //       } ${pluralize(totalCount || 0, 'салон', 'салона', 'салонов')}`}
-  //     </Title>
-  //     <FilterSearchResults salon view={view} setView={setView} />
-  //     <WrapperMapBlock>
-  //       {firstLoading ? (
-  //         <YMaps
-  //           query={{
-  //             load: 'util.bounds',
-  //             apikey: '0b72730c-b2cf-466c-8b8e-35cc7510dc52',
-  //           }}
-  //         >
-  //           <Map
-  //             onLoad={onLoad}
-  //             instanceRef={mapRef}
-  //             defaultState={mapData}
-  //             width={mobileMedia ? '100%' : 'calc(100% - 410px)'}
-  //             height={mobileMedia ? 400 : 600}
-  //             onClick={() => {
-  //               setSalonsList([])
-  //               setSalonsListSlice(12)
-  //               objectManagerRef?.current?.objects?.setObjectOptions(
-  //                 activePlacemark,
-  //                 {
-  //                   iconImageHref: '/placemark.svg',
-  //                 },
-  //               )
-  //               setActivePlacemark([])
-  //             }}
-  //             onBoundsChange={() => handleBounds()}
-  //           >
-  //             <GeolocationControl options={{ float: 'left' }} />
-  //             {allAddress?.length ? (
-  //               <ObjectManager
-  //                 instanceRef={objectManagerRef}
-  //                 options={{
-  //                   clusterIconLayout: 'default#pieChart',
-  //                   clusterize: true,
-  //                   clusterDisableClickZoom: true,
-  //                   gridSize: 32,
-  //                 }}
-  //                 onClick={e => {
-  //                   const objectId = e.get('objectId')
-  //                   if (
-  //                     e.originalEvent.currentTarget.clusters.getById(objectId)
-  //                   ) {
-  //                     setIds(
-  //                       e.originalEvent.currentTarget.clusters
-  //                         .getById(objectId)
-  //                         ?.features?.map(item => item.options.id),
-  //                     )
-  //                   }
-  //                   if (
-  //                     e.originalEvent.currentTarget.objects.getById(objectId)
-  //                   ) {
-  //                     e.originalEvent.currentTarget.objects.setObjectOptions(
-  //                       objectId,
-  //                       {
-  //                         iconImageHref: '/placemark-active.svg',
-  //                       },
-  //                     )
-  //                     if (activePlacemark !== objectId) {
-  //                       e.originalEvent.currentTarget.objects.setObjectOptions(
-  //                         activePlacemark,
-  //                         {
-  //                           iconImageHref: '/placemark.svg',
-  //                         },
-  //                       )
-  //                     }
-  //                     setActivePlacemark(objectId)
-  //                     setIds([
-  //                       e.originalEvent.currentTarget.objects.getById(objectId)
-  //                         ?.options.id,
-  //                     ])
-  //                   }
-  //                 }}
-  //                 modules={['objectManager.addon.objectsHint']}
-  //                 clusters={{
-  //                   preset: 'islands#redClusterIcons',
-  //                 }}
-  //                 features={{
-  //                   type: 'FeatureCollection',
-  //                   features: allAddress?.map((coordinate, i) => {
-  //                     return {
-  //                       id: coordinate?.salon?.id,
-  //                       type: 'Feature',
-  //                       geometry: {
-  //                         type: 'Point',
-  //                         coordinates: [
-  //                           coordinate?.salon?.address?.latitude,
-  //                           coordinate?.salon?.address?.longitude,
-  //                         ],
-  //                       },
-  //                       options: {
-  //                         id: coordinate.salon.id,
-  //                         iconLayout: 'default#image',
-  //                         iconImageHref: '/placemark.svg',
-  //                         iconImageSize: [30, 42],
-  //                         iconImageOffset: [-3, -42],
-  //                       },
-  //                     }
-  //                   }),
-  //                 }}
-  //               />
-  //             ) : null}
-  //           </Map>
-  //           {mobileMedia && allAddress?.length && ymaps ? (
-  //             <ButtonListMobile>
-  //               <Button
-  //                 size="width100"
-  //                 variant="red"
-  //                 onClick={() => setOpenMobileList(true)}
-  //               >
-  //                 Показать все
-  //               </Button>
-  //             </ButtonListMobile>
-  //           ) : null}
-  //         </YMaps>
-  //       ) : null}
-  //       {ymaps &&
-  //       mapRef?.current &&
-  //       slicedList?.length &&
-  //       !salonsList?.length ? (
-  //         <ScrollWrap>
-  //           <Scrollbar
-  //             ref={scrollRef}
-  //             style={{ width: '100%', height: 600 }}
-  //             minimalThumbYSize={12}
-  //             maximalThumbYSize={12}
-  //             thumbYProps={{
-  //               renderer: props => {
-  //                 const { elementRef, ...restProps } = props
-  //                 return (
-  //                   <span
-  //                     {...restProps}
-  //                     ref={elementRef}
-  //                     className="chooseThumb"
-  //                   />
-  //                 )
-  //               },
-  //             }}
-  //             trackYProps={{
-  //               renderer: props => {
-  //                 const { elementRef, ...restProps } = props
-  //                 return (
-  //                   <span
-  //                     {...restProps}
-  //                     ref={elementRef}
-  //                     className="chooseScroll"
-  //                   />
-  //                 )
-  //               },
-  //             }}
-  //           >
-  //             <MapItems>
-  //               {slicedList?.map(salon => (
-  //                 <WrapCard key={salon?.salon?.id}>
-  //                   <Link
-  //                     href={
-  //                       rent
-  //                         ? `/${
-  //                             cyrToTranslit(salon?.salon?.address?.city) ||
-  //                             city.slug
-  //                           }/rent/${salon.salon?.seo?.slug || salon.salon.id}`
-  //                         : `/${
-  //                             cyrToTranslit(salon?.salon?.address?.city) ||
-  //                             city.slug
-  //                           }/salon/${salon.salon?.seo?.slug || salon.salon.id}`
-  //                     }
-  //                     key={salon.salon.id}
-  //                   >
-  //                     <SalonCardWrapper>
-  //                       <SalonCard
-  //                         seatCount={salon.seatCount}
-  //                         rent={rent}
-  //                         loading={loading}
-  //                         item={salon.salon}
-  //                         shareLink={`https://moi.salon/${
-  //                           cyrToTranslit(salon?.salon?.address?.city) ||
-  //                           city.slug
-  //                         }/salon/${salon.salon?.seo?.slug || salon.salon.id}`}
-  //                       />
-  //                     </SalonCardWrapper>
-  //                   </Link>
-  //                 </WrapCard>
-  //               ))}
-  //               <div style={{ height: 5, width: '100%' }} />
-  //               {fetchMoreButtonMap}
-  //             </MapItems>
-  //           </Scrollbar>
-  //         </ScrollWrap>
-  //       ) : null}
-  //       {ymaps && mapRef?.current && salonsList?.length ? (
-  //         <ScrollWrap>
-  //           <Scrollbar
-  //             style={{ width: '100%', height: 600 }}
-  //             minimalThumbYSize={12}
-  //             maximalThumbYSize={12}
-  //             thumbYProps={{
-  //               renderer: props => {
-  //                 const { elementRef, ...restProps } = props
-  //                 return (
-  //                   <span
-  //                     {...restProps}
-  //                     ref={elementRef}
-  //                     className="chooseThumb"
-  //                   />
-  //                 )
-  //               },
-  //             }}
-  //             trackYProps={{
-  //               renderer: props => {
-  //                 const { elementRef, ...restProps } = props
-  //                 return (
-  //                   <span
-  //                     {...restProps}
-  //                     ref={elementRef}
-  //                     className="chooseScroll"
-  //                   />
-  //                 )
-  //               },
-  //             }}
-  //           >
-  //             <Back
-  //               onClick={() => {
-  //                 setSalonsList([])
-  //                 setSalonsListSlice(12)
-  //                 objectManagerRef?.current?.objects?.setObjectOptions(
-  //                   activePlacemark,
-  //                   {
-  //                     iconImageHref: '/placemark.svg',
-  //                   },
-  //                 )
-  //                 setActivePlacemark([])
-  //               }}
-  //             >
-  //               Назад
-  //             </Back>
-  //             <MapItems>
-  //               {salonsList?.slice(0, salonsListSlice)?.map(salon => (
-  //                 <WrapCard>
-  //                   <Link
-  //                     href={
-  //                       rent
-  //                         ? `/${
-  //                             cyrToTranslit(salon?.address?.city) ||
-  //                             city.slug
-  //                           }/rent/${salon?.seo?.slug || salon.id}`
-  //                         : `/${
-  //                             cyrToTranslit(salon?.address?.city) ||
-  //                             city.slug
-  //                           }/salon/${salon?.seo?.slug || salon.id}`
-  //                     }
-  //                     key={salon.id}
-  //                   >
-  //                     <SalonCardWrapper>
-  //                       <SalonCard
-  //                         seatCount={salon.seatCount}
-  //                         rent={rent}
-  //                         loading={loading}
-  //                         item={salon}
-  //                         shareLink={`https://moi.salon/${
-  //                           cyrToTranslit(salon?.address?.city) || city.slug
-  //                         }/salon/${salon?.seo?.slug || salon.id}`}
-  //                       />
-  //                     </SalonCardWrapper>
-  //                   </Link>
-  //                 </WrapCard>
-  //               ))}
-  //               <div style={{ height: 5, width: '100%' }} />
-  //               {fetchMoreButtonMapSalonsList}
-  //             </MapItems>
-  //           </Scrollbar>
-  //         </ScrollWrap>
-  //       ) : null}
-  //       {openMobileList && mobileMedia ? (
-  //         <MobileCards>
-  //           <WrapperBack
-  //             onClick={() => {
-  //               setOpenMobileList(false)
-  //               setSalonsList([])
-  //               setSalonsListSlice(12)
-  //             }}
-  //           >
-  //             <Icon alt="back" src="/arrow-back.svg" />
-  //           </WrapperBack>
-  //           {ymaps &&
-  //           mapRef?.current &&
-  //           slicedList?.length &&
-  //           !salonsList?.length ? (
-  //             <>
-  //               <MapItems>
-  //                 {slicedList?.map(salon => (
-  //                   <WrapCard>
-  //                     <Link
-  //                       href={
-  //                         rent
-  //                           ? `/${
-  //                               cyrToTranslit(salon?.salon?.address?.city) ||
-  //                               city.slug
-  //                             }/rent/${
-  //                               salon.salon?.seo?.slug || salon.salon.id
-  //                             }`
-  //                           : `/${
-  //                               cyrToTranslit(salon?.salon?.address?.city) ||
-  //                               city.slug
-  //                             }/salon/${
-  //                               salon.salon?.seo?.slug || salon.salon.id
-  //                             }`
-  //                       }
-  //                       key={salon.salon.id}
-  //                     >
-  //                       <SalonCardWrapper>
-  //                         <SalonCard
-  //                           seatCount={salon.seatCount}
-  //                           rent={rent}
-  //                           loading={loading}
-  //                           item={salon.salon}
-  //                           shareLink={`https://moi.salon/${
-  //                             cyrToTranslit(salon?.salon?.address?.city) ||
-  //                             city.slug
-  //                           }/salon/${
-  //                             salon.salon?.seo?.slug || salon.salon.id
-  //                           }`}
-  //                         />
-  //                       </SalonCardWrapper>
-  //                     </Link>
-  //                   </WrapCard>
-  //                 ))}
-  //                 {fetchMoreButtonMap}
-  //               </MapItems>
-  //             </>
-  //           ) : null}
-  //           {ymaps && mapRef?.current && salonsList?.length ? (
-  //             <>
-  //               <MapItems>
-  //                 {salonsList?.slice(0, salonsListSlice)?.map(salon => (
-  //                   <WrapCard>
-  //                     <Link
-  //                       href={
-  //                         rent
-  //                           ? `/${
-  //                               cyrToTranslit(salon?.address?.city) ||
-  //                               city.slug
-  //                             }/rent/${salon?.seo?.slug || salon.id}`
-  //                           : `/${
-  //                               cyrToTranslit(salon?.address?.city) ||
-  //                               city.slug
-  //                             }/salon/${salon?.seo?.slug || salon.id}`
-  //                       }
-  //                       key={salon.id}
-  //                     >
-  //                       <SalonCardWrapper>
-  //                         <SalonCard
-  //                           seatCount={salon.seatCount}
-  //                           rent={rent}
-  //                           loading={loading}
-  //                           item={salon}
-  //                           shareLink={`https://moi.salon/${
-  //                             cyrToTranslit(salon?.address?.city) ||
-  //                             city.slug
-  //                           }/salon/${salon?.seo?.slug || salon.id}`}
-  //                         />
-  //                       </SalonCardWrapper>
-  //                     </Link>
-  //                   </WrapCard>
-  //                 ))}
-  //                 <div style={{ height: 5, width: '100%' }} />
-  //                 {fetchMoreButtonMapSalonsList}
-  //               </MapItems>
-  //             </>
-  //           ) : null}
-  //         </MobileCards>
-  //       ) : null}
-  //     </WrapperMapBlock>
-  //   </>
-  // )
+  return (
+    <>
+      <Title>
+        {`${pluralize(totalCount || 0, 'Найден', 'Найдено', 'Найдено')} ${
+          totalCount || 0
+        } ${pluralize(totalCount || 0, 'салон', 'салона', 'салонов')}`}
+      </Title>
+      <FilterSearchResults
+        salon
+        view={view}
+        setView={setView}
+        sortOrder=":asc"
+        sortProperty="по рейтингу"
+        handleFilter={() => {}}
+      />
+      <WrapperMapBlock>
+        <YMaps query={{ load: 'package.full' }}>
+          <Map
+            instanceRef={mapRef}
+            defaultState={{ ...mapData }}
+            width={mobileMedia ? '100%' : 'calc(100% - 410px)'}
+            height={mobileMedia ? 400 : 600}
+            onClick={() => {
+              objectManagerRef?.current?.objects?.setObjectOptions(
+                activePlacemark,
+                {
+                  iconImageHref: '/placemark.svg',
+                },
+              )
+              setActivePlacemark([])
+            }}
+          >
+            <GeolocationControl options={{ float: 'left' }} />
+            {salonsList?.length ? (
+              <ObjectManager
+                instanceRef={objectManagerRef}
+                options={{
+                  clusterIconLayout: 'default#pieChart',
+                  clusterize: true,
+                  clusterDisableClickZoom: true,
+                  gridSize: 32,
+                }}
+                onClick={(e: any) => {
+                  const objectId = e.get('objectId')
+                  if (
+                    e.originalEvent.currentTarget.clusters.getById(objectId)
+                  ) {
+                    setIds(
+                      e.originalEvent.currentTarget.clusters
+                        .getById(objectId)
+                        ?.features?.map((item: any) => item.options.id),
+                    )
+                  }
+                  if (e.originalEvent.currentTarget.objects.getById(objectId)) {
+                    e.originalEvent.currentTarget.objects.setObjectOptions(
+                      objectId,
+                      {
+                        iconImageHref: '/placemark-active.svg',
+                      },
+                    )
+                    if (activePlacemark !== objectId) {
+                      e.originalEvent.currentTarget.objects.setObjectOptions(
+                        activePlacemark,
+                        {
+                          iconImageHref: '/placemark.svg',
+                        },
+                      )
+                    }
+                    setActivePlacemark(objectId)
+                    setIds([
+                      e.originalEvent.currentTarget.objects.getById(objectId)
+                        ?.options.id,
+                    ])
+                  }
+                }}
+                modules={['objectManager.addon.objectsHint']}
+                clusters={{
+                  preset: 'islands#redClusterIcons',
+                }}
+                features={{
+                  type: 'FeatureCollection',
+                  features: salonsList?.map((salon, i) => {
+                    return {
+                      id: salon?.id,
+                      type: 'Feature',
+                      geometry: {
+                        type: 'Point',
+                        coordinates: [salon?.latitude, salon?.longitude],
+                      },
+                      options: {
+                        id: salon?.id,
+                        iconLayout: 'default#image',
+                        iconImageHref: '/placemark.svg',
+                        iconImageSize: [30, 42],
+                        iconImageOffset: [-3, -42],
+                      },
+                    }
+                  }),
+                }}
+              />
+            ) : null}
+          </Map>
+        </YMaps>
+        {!!filteredSalons.length ? (
+          <ScrollWrap>
+            <Scrollbar
+              ref={scrollRef}
+              style={{ width: '100%', height: 600 }}
+              minimalThumbYSize={12}
+              maximalThumbYSize={12}
+              thumbYProps={{
+                renderer: props => {
+                  const { elementRef, ...restProps } = props
+                  return (
+                    <span
+                      {...restProps}
+                      ref={elementRef}
+                      className="chooseThumb"
+                    />
+                  )
+                },
+              }}
+              trackYProps={{
+                renderer: props => {
+                  const { elementRef, ...restProps } = props
+                  return (
+                    <span
+                      {...restProps}
+                      ref={elementRef}
+                      className="chooseScroll"
+                    />
+                  )
+                },
+              }}
+            >
+              <Back
+                onClick={() => {
+                  setFilteredSalons([])
+                  setTotalCount(pagination?.total || 0)
+                }}
+              >
+                Назад
+              </Back>
+              <MapItems>
+                {filteredSalons?.map(salon => (
+                  <WrapCard key={salon?.id}>
+                    <Link
+                      href={
+                        rent
+                          ? `/${city.slug}/rent/${salon.id}`
+                          : `/${city.slug}/salon/${salon.id}`
+                      }
+                      key={salon.id}
+                    >
+                      <SalonCardWrapper>
+                        <SalonCard
+                          seatCount={1}
+                          rent={rent}
+                          loading={loading}
+                          item={salon}
+                          shareLink={`/${city.slug}/salon/${salon.id}`}
+                        />
+                      </SalonCardWrapper>
+                    </Link>
+                  </WrapCard>
+                ))}
+                {fetchMoreButtonMap}
+              </MapItems>
+            </Scrollbar>
+          </ScrollWrap>
+        ) : null}
+        {salonsList && !!salonsList.length && !filteredSalons.length ? (
+          <ScrollWrap>
+            <Scrollbar
+              ref={scrollRef}
+              style={{ width: '100%', height: 600 }}
+              minimalThumbYSize={12}
+              maximalThumbYSize={12}
+              thumbYProps={{
+                renderer: props => {
+                  const { elementRef, ...restProps } = props
+                  return (
+                    <span
+                      {...restProps}
+                      ref={elementRef}
+                      className="chooseThumb"
+                    />
+                  )
+                },
+              }}
+              trackYProps={{
+                renderer: props => {
+                  const { elementRef, ...restProps } = props
+                  return (
+                    <span
+                      {...restProps}
+                      ref={elementRef}
+                      className="chooseScroll"
+                    />
+                  )
+                },
+              }}
+            >
+              <MapItems>
+                {salonsList?.map(salon => (
+                  <WrapCard key={salon?.id}>
+                    <Link
+                      href={
+                        rent
+                          ? `/${city.slug}/rent/${salon.id}`
+                          : `/${city.slug}/salon/${salon.id}`
+                      }
+                      key={salon.id}
+                    >
+                      <SalonCardWrapper>
+                        <SalonCard
+                          seatCount={1}
+                          rent={rent}
+                          loading={loading}
+                          item={salon}
+                          shareLink={`/${city.slug}/salon/${salon.id}`}
+                        />
+                      </SalonCardWrapper>
+                    </Link>
+                  </WrapCard>
+                ))}
+                {fetchMoreButtonMap}
+              </MapItems>
+            </Scrollbar>
+          </ScrollWrap>
+        ) : null}
+        {mobileMedia ? (
+          <MobileCards>
+            {!!filteredSalons.length ? (
+              <WrapperBack
+                onClick={() => {
+                  setFilteredSalons([])
+                  setTotalCount(pagination?.total || 0)
+                }}
+              >
+                Назад
+              </WrapperBack>
+            ) : null}
+            {!!filteredSalons.length ? (
+              <>
+                <MapItems>
+                  {filteredSalons?.map(salon => (
+                    <WrapCard>
+                      <Link
+                        href={
+                          rent
+                            ? `/${city.slug}/rent/${salon.id}`
+                            : `/${city.slug}/salon/${salon.id}`
+                        }
+                        key={salon.id}
+                      >
+                        <SalonCardWrapper>
+                          <SalonCard
+                            seatCount={1}
+                            rent={rent}
+                            loading={loading}
+                            item={salon}
+                            shareLink={`/${city.slug}/salon/${salon.id}`}
+                          />
+                        </SalonCardWrapper>
+                      </Link>
+                    </WrapCard>
+                  ))}
+                  {fetchMoreButtonMap}
+                </MapItems>
+              </>
+            ) : null}
+            {salonsList && !!salonsList?.length && !filteredSalons.length ? (
+              <>
+                <MapItems>
+                  {salonsList?.map(salon => (
+                    <WrapCard>
+                      <Link
+                        href={
+                          rent
+                            ? `/${city.slug}/rent/${salon.id}`
+                            : `/${city.slug}/salon/${salon.id}`
+                        }
+                        key={salon.id}
+                      >
+                        <SalonCardWrapper>
+                          <SalonCard
+                            seatCount={1}
+                            rent={rent}
+                            loading={loading}
+                            item={salon}
+                            shareLink={`/${city.slug}/salon/${salon.id}`}
+                          />
+                        </SalonCardWrapper>
+                      </Link>
+                    </WrapCard>
+                  ))}
+                  {fetchMoreButtonMap}
+                </MapItems>
+              </>
+            ) : null}
+          </MobileCards>
+        ) : null}
+      </WrapperMapBlock>
+    </>
+  )
 }
 
 export default SalonMap

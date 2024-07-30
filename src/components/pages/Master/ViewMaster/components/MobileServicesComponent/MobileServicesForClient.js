@@ -51,6 +51,7 @@ const MobileServicesComponent = ({
             <Title masterPage={masterPage}>Услуги</Title>
             {isOwner && (
               <EditIcons
+                disable
                 handleEditConfirm={handleEditConfirm}
                 setIsEditing={() => {}}
               />

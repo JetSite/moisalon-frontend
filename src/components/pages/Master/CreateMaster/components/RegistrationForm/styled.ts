@@ -57,4 +57,8 @@ export const FieldStyled = styled(Field)`
       background: url('/required-icon.svg') no-repeat center;
     }
   }
+
+  .MuiInputBase-input {
+    line-height: 22px;
+  }
 `
