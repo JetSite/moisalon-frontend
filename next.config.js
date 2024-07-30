@@ -1,10 +1,10 @@
-const path = require("path");
-const webpack = require("webpack");
+const path = require('path')
+const webpack = require('webpack')
 
 module.exports = {
-  reactStrictMode: true,
-  webpack: (config) => {
-    config.resolve.alias["~"] = path.resolve(__dirname);
-    return config;
+  reactStrictMode: false,
+  webpack: config => {
+    config.resolve.alias['~'] = path.resolve(__dirname)
+    return config
   },
-};
+}

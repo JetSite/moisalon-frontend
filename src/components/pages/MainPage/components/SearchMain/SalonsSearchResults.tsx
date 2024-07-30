@@ -31,7 +31,7 @@ export interface ISearchResults {
 }
 
 interface Props extends ISearchResults {
-  view: string
+  view: IView
   setView: ISetState<IView>
   salonData: ISalon[]
   main?: boolean
@@ -217,7 +217,14 @@ const SalonsSearchResults: FC<Props> = ({
             ) : null}
           </>
         ) : (
-          <SalonMap rent={rent} view={view} setView={setView} />
+          <SalonMap
+            salonData={salonData}
+            pagination={pagination}
+            cityData={cityData}
+            rent={rent}
+            view={view}
+            setView={setView}
+          />
         )}
       </div>
     </>

@@ -7,11 +7,11 @@ import { reviewsFragment } from '../../fragments/reviews'
 import { phonesFragment } from '../../fragments/phones'
 import { cityFragment } from '../../fragments/city'
 
-export const getSalonsThroughCity = gql`
-  query getSalonsThroughCity($slug: [String], $pageSize: Int, $page: Int, $sort: [String]) {
+export const getSalonsByIds = gql`
+  query getSalonsByIds($salonIds: [ID], $page: Int) {
     salons(
-      filters: { city: { slug: { in: $slug } } }
-      pagination: { pageSize: $pageSize, page: $page }, sort: $sort
+      filters: { id: { in: $salonIds } },
+      pagination: { pageSize: 10, page: $page }
     ) {
       data {
         id

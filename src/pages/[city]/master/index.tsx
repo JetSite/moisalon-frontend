@@ -64,7 +64,7 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
     apolloClient.query({
       query: getMastersTroughCity,
       variables: {
-        itemsCount: 10,
+        pageSize: 10,
         slug: [cityData.slug],
       },
     }),

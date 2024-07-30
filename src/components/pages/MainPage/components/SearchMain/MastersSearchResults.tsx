@@ -99,6 +99,7 @@ const MastersSearchResults: FC<Props> = ({
           variables: {
             slug: cityData?.slug,
             page,
+            pageSize: 10,
             searchWork: resumeFilter,
           },
         })
@@ -106,6 +107,7 @@ const MastersSearchResults: FC<Props> = ({
           variables: {
             slug: cityData?.slug,
             page,
+            pageSize: 10,
           },
         })
     setPage(page + 1)
@@ -161,7 +163,7 @@ const MastersSearchResults: FC<Props> = ({
           sortOrder={sortOrder}
           master
         />
-        {me?.owner && me.owner.salons.length > 0 ? (
+        {me?.owner?.salons && me?.owner?.salons?.length > 0 ? (
           <>
             <Checkbox
               checked={!!resumeFilter}

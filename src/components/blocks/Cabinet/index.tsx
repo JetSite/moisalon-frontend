@@ -7,22 +7,46 @@ import CabinetForm from './components/CabinetForm'
 import { PHOTO_URL } from '../../../api/variables'
 import { UPDATE_MASTER_PHOTO } from 'src/_graphql-legacy/master/updateMasterPhotoMutation'
 import useAuthStore from 'src/store/authStore'
-import { getStoreData } from 'src/store/utils'
+import { getStoreData, getStoreEvent } from 'src/store/utils'
 import { IPhoto } from 'src/types'
+import { changeMe } from 'src/api/graphql/me/mutations/changeMe'
+import { useShallow } from 'zustand/react/shallow'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 
 const Cabinet = () => {
-  const { me, loading } = useAuthStore(getStoreData)
+  const { me, user, loading } = useAuthStore(getStoreData)
+  const { setUser } = useAuthStore(useShallow(getStoreEvent))
   const [photo, setPhoto] = useState<IPhoto | undefined>(
-    !!me?.owner?.masters?.length ? me.owner.masters[0].photo : undefined,
+    !!me?.info.avatar?.url ? me.info.avatar : undefined,
   )
   const [noPhotoError, setNoPhotoError] = useState(false)
 
-  const [updateMasterPhoto] = useMutation(UPDATE_MASTER_PHOTO)
-  const onAdd = useCallback(
-    (photo: string) => {
-      updateMasterPhoto({ variables: { input: { photo } } })
+  const [updateAvatar] = useMutation(changeMe, {
+    onCompleted: res => {
+      console.log('res', res)
+      if (res?.updateUsersPermissionsUser?.data?.id) {
+        const newAvatar = flattenStrapiResponse(
+          res.updateUsersPermissionsUser.data.attributes.avatar,
+        )
+        if (user) {
+          setUser({
+            ...user,
+            info: {
+              ...user.info,
+              avatar: newAvatar,
+            },
+          })
+        }
+      }
     },
-    [updateMasterPhoto],
+  })
+  const onAdd = useCallback(
+    (photoId: string) => {
+      updateAvatar({
+        variables: { id: me?.info.id, data: { avatar: photoId } },
+      })
+    },
+    [updateAvatar],
   )
 
   return (

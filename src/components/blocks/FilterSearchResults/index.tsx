@@ -77,9 +77,8 @@ const FilterSearchResults: FC<Props> = ({
               Список
             </TextFilter>
             <TextFilter
-              // onClick={() => setView && setView('map')}
-              // active={view === 'map'}
-              active
+              onClick={() => setView && setView('map')}
+              active={view === 'map'}
             >
               На карте
             </TextFilter>

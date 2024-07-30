@@ -11,6 +11,14 @@ export const changeMe = gql`
           username
           email
           phone
+          avatar {
+            data {
+              id
+              attributes {
+                url
+              }
+            }
+          }
           role {
             data {
               id
