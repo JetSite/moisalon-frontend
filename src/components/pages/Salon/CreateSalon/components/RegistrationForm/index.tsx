@@ -92,13 +92,14 @@ const RegistrationForm: FC<Props> = ({
   const [photosArray, setPhotosArray] = useState<string[]>(
     salon?.photos?.map(e => e.id) || [],
   )
+  const [loading, setLoading] = useState(false)
 
   const salonActivitiesCatalog = activities
     ? activities.map(({ title, id }) => ({
-        id,
-        name: id,
-        title: title,
-      }))
+      id,
+      name: id,
+      title: title,
+    }))
     : []
 
   const salonWithInitialArrays = useMemo<IInitialValuesSalonForm>(
@@ -108,7 +109,7 @@ const RegistrationForm: FC<Props> = ({
 
   const [addCity, { loading: addCityLoad }] = useMutation(CREATE_CITY)
 
-  const [mutate, { loading }] = useMutation(UPDATE_SALON, {
+  const [mutate, { loading: loadingUpdate }] = useMutation(UPDATE_SALON, {
     onError: error => {
       const errorMessages = error.graphQLErrors.map(e => e.message)
       setErrors(errorMessages)
@@ -131,7 +132,6 @@ const RegistrationForm: FC<Props> = ({
       handleClickNextTab(0)
       return
     }
-
     if (!values.services?.length) {
       setErrors(['Нужно добавить услугу'])
       setErrorPopupOpen(true)
@@ -143,6 +143,7 @@ const RegistrationForm: FC<Props> = ({
       setErrorPopupOpen(true)
       return
     }
+    setLoading(true)
     const findCity =
       citiesArray?.find(e => e.slug === cyrToTranslit(clickCity)) || null
     if (!findCity) {
@@ -169,8 +170,7 @@ const RegistrationForm: FC<Props> = ({
             variables: { input: { user: me?.info.id, ...input } },
           }).then(data => {
             router.push(
-              `/${findCityData?.slug}/${rent ? 'rent' : 'salon'}/${
-                data.data.createSalon.data.id
+              `/${findCityData?.slug}/${rent ? 'rent' : 'salon'}/${data.data.createSalon.data.id
               }`,
             )
           })
@@ -194,8 +194,7 @@ const RegistrationForm: FC<Props> = ({
           variables: { input: { user: me?.info.id, ...input } },
         }).then(data => {
           router.push(
-            `/${findCity?.slug}/${rent ? 'rent' : 'salon'}/${
-              data.data.createSalon.data.id
+            `/${findCity?.slug}/${rent ? 'rent' : 'salon'}/${data.data.createSalon.data.id
             }`,
           )
         })
@@ -255,9 +254,9 @@ const RegistrationForm: FC<Props> = ({
                   variant="red"
                   size="noWidth"
                   type="submit"
-                  disabled={pristine || loadingCreate || loading}
+                  disabled={pristine || loadingCreate || loadingUpdate || loading}
                 >
-                  {loadingCreate || loading
+                  {loadingCreate || loadingUpdate || loading
                     ? 'Подождите'
                     : 'Сохранить и продолжить'}
                 </Button>
@@ -268,9 +267,9 @@ const RegistrationForm: FC<Props> = ({
                   size="fullWidth"
                   font="popUp"
                   type="submit"
-                  disabled={pristine || loadingCreate || loading}
+                  disabled={pristine || loadingCreate || loadingUpdate || loading}
                 >
-                  {loadingCreate || loading
+                  {loadingCreate || loadingUpdate || loading
                     ? 'Подождите'
                     : 'Сохранить и продолжить'}
                 </Button>

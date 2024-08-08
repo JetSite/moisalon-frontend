@@ -36,8 +36,6 @@ interface Props {
 const CabinetPage: NextPage<Props> = ({ requests }) => {
   const { user, loading } = useAuthStore(getStoreData)
 
-  console.log('user in cabinetMaster', user)
-
   if (loading || !user) return <CreatePageSkeleton />
 
   return !user.info?.username ||

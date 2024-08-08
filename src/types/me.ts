@@ -18,17 +18,17 @@ export interface IMeInfo {
 }
 
 export interface IOwnersIds
-  extends Omit<IUserThings, 'salons' | 'masters' | 'brand' | 'products'> {
+  extends Omit<IUserThings, 'salons' | 'masters' | 'brands' | 'products'> {
   salons?: Pick<ISalon, 'id'>[]
   masters?: Pick<IMaster, 'id'>[]
-  brand?: Pick<IBrand, 'id'>[]
+  brands?: Pick<IBrand, 'id'>[]
   products?: Pick<IProduct, 'id'>[]
 }
 
 export interface IUserThings {
   salons?: ISalon[]
   masters?: IMaster[]
-  brand?: IBrand[]
+  brands?: IBrand[]
   products?: IProduct[]
   educations?: any
   cart?: ICart

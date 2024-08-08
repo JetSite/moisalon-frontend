@@ -94,20 +94,18 @@ const Contacts: FC<Props> = ({
                 <a href={`mailto:${email}`}>{email}</a>
               </InfoDescription>
             </Info>
-            <noindex>
+            {longitude && latitude && address ? <noindex>
               <Info>
                 <InfoTitle>Адрес:</InfoTitle>
-                {longitude && latitude && address ? (
-                  <Address
-                    href={`https://yandex.ru/maps/?pt=${longitude},${latitude}&z=18&l=map`}
-                    target="_blank"
-                    rel="nofollow"
-                  >
-                    {address}
-                  </Address>
-                ) : null}
+                <Address
+                  href={`https://yandex.ru/maps/?pt=${longitude},${latitude}&z=18&l=map`}
+                  target="_blank"
+                  rel="nofollow"
+                >
+                  {address}
+                </Address>
               </Info>
-            </noindex>
+            </noindex> : null}
           </InfoBlock>
           <ContentBottom>
             <ContentWrapperElement>

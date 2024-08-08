@@ -17,6 +17,8 @@ export interface IVacancy {
   fullDescription: string
   conditions: string
   requirements: string
+  amountFrom: number
+  amountTo: number
   cover: IPhoto[]
   deleted: boolean
   vacancy_type: IVacancyType

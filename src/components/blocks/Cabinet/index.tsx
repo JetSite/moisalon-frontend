@@ -23,7 +23,6 @@ const Cabinet = () => {
 
   const [updateAvatar] = useMutation(changeMe, {
     onCompleted: res => {
-      console.log('res', res)
       if (res?.updateUsersPermissionsUser?.data?.id) {
         const newAvatar = flattenStrapiResponse(
           res.updateUsersPermissionsUser.data.attributes.avatar,

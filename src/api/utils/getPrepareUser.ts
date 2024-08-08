@@ -37,13 +37,13 @@ export const getPrepareUser: IGetPrepareUser = data => {
   const owner: IUserThings = {
     salons: prepareData.salons,
     masters: prepareData.masters,
-    brand: prepareData.brands,
+    brands: prepareData.brands,
   }
 
   const favorite: IUserThings = {
     salons: prepareData.favorited_salons,
     masters: prepareData.favorited_masters,
-    brand: prepareData.favorited_brands,
+    brands: prepareData.favorited_brands,
   }
 
   user = {

@@ -11,6 +11,8 @@ data {
     fullDescription
     requirements
     conditions
+    amountFrom
+    amountTo
     vacancy_type {
       data {
         id

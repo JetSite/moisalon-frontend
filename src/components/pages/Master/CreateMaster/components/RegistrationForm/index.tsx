@@ -94,10 +94,7 @@ const RegistrationForm = ({
     //   },
     // });
 
-    console.log('masterData', data)
-
     if (resumeInput) {
-      console.log('resumeForInput', resumeInput)
       const masterId = data.createMaster.data.id
 
       console.log(masterId)
@@ -245,13 +242,13 @@ const RegistrationForm = ({
           master
             ? master
             : me?.info
-            ? {
+              ? {
                 email: me?.info?.email,
                 phone: { phoneNumber: me?.info?.phone },
                 name: me?.info?.username,
                 city: me?.info?.city,
               }
-            : null
+              : null
         }
         onSubmit={onSubmit}
         keepDirtyOnReinitialize

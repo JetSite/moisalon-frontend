@@ -1,14 +1,15 @@
 import { useRef, useState, useCallback, useEffect } from 'react'
 import scrollIntoView from 'scroll-into-view'
-import Header from '../../../pages/MainPage/components/Header'
+import Header from '../../MainPage/components/Header'
 import { MainContainer } from '../../../../styles/common'
 import Controls from '../../../blocks/Form/Controls'
-import RegistrationForm from './components/RegistrationForm'
 import BackArrow from '../../../ui/BackArrow'
 import { Wrapper } from './styled'
-import { PHOTO_URL } from '../../../../api/variables'
+import RegistrationForm from './components/RegistrationForm'
+import { IPhoto } from 'src/types'
+import { PHOTO_URL } from 'src/api/variables'
 
-const CreateBrand = ({ onAdd, loading, brand }) => {
+const CreateBrand = ({ brand }) => {
   const allTabs = useRef()
   const ref1 = useRef()
   const ref2 = useRef()
@@ -28,7 +29,7 @@ const CreateBrand = ({ onAdd, loading, brand }) => {
   const [refActive, setRefActive] = useState(false)
   const [ref1Visible, setRef1Visible] = useState(true)
   const [ref2Visible, setRef2Visible] = useState(false)
-  const [photoBrandId, setPhotoId] = useState(null)
+  const [photoBrand, setPhotoBrand] = useState<IPhoto | null>(null)
   const [noPhotoError, setNoPhotoError] = useState(false)
 
   const handleElementPosition = (element, func, top) => {
@@ -85,7 +86,7 @@ const CreateBrand = ({ onAdd, loading, brand }) => {
 
   return (
     <>
-      <Header loading={loading} />
+      <Header />
       <MainContainer>
         <BackArrow link={`brandCabinet?id=${brand?.id}`} />
         <Wrapper>
@@ -93,20 +94,8 @@ const CreateBrand = ({ onAdd, loading, brand }) => {
             tabs={tabs}
             photoType={'brandPhoto'}
             refActive={refActive}
-            photo={
-              photoBrandId
-                ? {
-                    url: `${PHOTO_URL}${photoBrandId}/original`,
-                  }
-                : brand?.logoId
-                ? {
-                    url: `${PHOTO_URL}${brand?.logoId}/original`,
-                  }
-                : null
-            }
-            id={null}
-            onAdd={onAdd}
-            setPhotoId={setPhotoId}
+            photo={photoBrand ? { url: `${PHOTO_URL}${photoBrand.url}` } : null}
+            setPhoto={setPhotoBrand}
             noPhotoError={noPhotoError}
             setNoPhotoError={setNoPhotoError}
           />
@@ -115,7 +104,7 @@ const CreateBrand = ({ onAdd, loading, brand }) => {
             handleClickNextTab={handleClickNextTab}
             ref1={ref1}
             ref2={ref2}
-            photoBrandId={photoBrandId}
+            photoBrand={photoBrand}
             brand={brand}
             setNoPhotoError={setNoPhotoError}
           />

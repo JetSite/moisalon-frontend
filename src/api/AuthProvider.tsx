@@ -55,14 +55,13 @@ const AuthProvider: FC<{ children: IChildren; pageProps: any }> = ({
   const [getMe, { loading: meLoading }] = useLazyQuery(ME, getMeCB)
   const [getUser, { loading: userLoading }] = useLazyQuery(USER, {
     onCompleted: data => {
-      console.log('data', data)
       const prepareData = flattenStrapiResponse(data.usersPermissionsUser)
 
       if (!prepareData.selected_city) {
         changeCityFunc({
           variables: {
             id: prepareData.id,
-            data: { selected_city: pageProps?.props.city?.id || 1 },
+            data: { selected_city: pageProps?.props?.city?.id || 1 },
           },
         })
       }
@@ -77,16 +76,15 @@ const AuthProvider: FC<{ children: IChildren; pageProps: any }> = ({
       const owner: IUserThings = {
         salons: prepareData.salons,
         masters: prepareData.masters,
-        brand: prepareData.brands,
+        brands: prepareData.brands,
         cart: prepareData.cart,
       }
 
       const favorite: IUserThings = {
         salons: prepareData.favorited_salons,
         masters: prepareData.favorited_masters,
-        brand: prepareData.favorited_brands,
+        brands: prepareData.favorited_brands,
       }
-
       setUser({
         info,
         owner,

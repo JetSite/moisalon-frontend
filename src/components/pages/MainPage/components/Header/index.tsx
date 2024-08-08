@@ -137,7 +137,7 @@ const Header = ({ loading = false }) => {
                       active={!!activeLink(router.pathname, link.pathArr)}
                       disable={link.disabled}
                       isAboutPage={isAboutPage}
-                      // visible={!!link?.visible}
+                    // visible={!!link?.visible}
                     >
                       {link.disabled ? (
                         <p>{link.title}</p>
@@ -227,13 +227,13 @@ const Header = ({ loading = false }) => {
                     return
                   }
                   ym('reachGoal', 'click_login_head')
-                  ;(window as any).dataLayer.push({
-                    event: 'event',
-                    eventProps: {
-                      category: 'click',
-                      action: 'login_head',
-                    },
-                  })
+                    ; (window as any).dataLayer.push({
+                      event: 'event',
+                      eventProps: {
+                        category: 'click',
+                        action: 'login_head',
+                      },
+                    })
                 }}
               >
                 <ProfileIcon fill={fillProfile} />
@@ -254,12 +254,12 @@ const Header = ({ loading = false }) => {
                 user?.info
                   ? router.push(`/cart`)
                   : router.push(
-                      {
-                        pathname: 'authConfig.notAuthLink',
-                        query: { error: 'notAuthorized' },
-                      },
-                      authConfig.notAuthLink,
-                    )
+                    {
+                      pathname: 'authConfig.notAuthLink',
+                      query: { error: 'notAuthorized' },
+                    },
+                    authConfig.notAuthLink,
+                  )
               }}
             >
               <CartIcon fill={fillCart} />

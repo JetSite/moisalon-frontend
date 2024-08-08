@@ -1,6 +1,5 @@
 import { FC, useState } from 'react'
 import { useRouter } from 'next/router'
-import PhotoAdd from '../CreateEducation/PhotoAdd'
 import 'moment/locale/ru'
 import { PHOTO_URL } from '../../../api/variables'
 import {
@@ -16,16 +15,17 @@ import {
 } from './style'
 import { IApolloRefetch, IID } from 'src/types/common'
 import { IPhoto } from 'src/types'
+import PhotoAdd from '../Cabinet/components/CabinetVacancies/components/CreateVacancy/PhotoAdd'
 
 interface Props {
   id?: IID
   name?: string
   title: string
   create?: boolean
-  photos: IPhoto[]
+  photos: IPhoto[] | null
   type?: string
-  removeVacancy?: () => void
-  onAdd?: () => void
+  removeVacancy?: (id: IID) => void
+  onAdd?: (photo: IPhoto) => void
   amountFrom?: number
   amountTo?: number
 }
@@ -48,7 +48,7 @@ const Vacancy: FC<Props> = ({
   const photoUrl = photos && photos[0].url ? photos[0].url : ''
 
   const removeVacancyHandler = (vacancyId: IID) => {
-    removeVacancy && removeVacancy()
+    removeVacancy && removeVacancy(vacancyId)
   }
 
   return (

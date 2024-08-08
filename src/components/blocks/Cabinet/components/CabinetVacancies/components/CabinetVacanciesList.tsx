@@ -2,12 +2,12 @@ import { Subtitle, VacanciesWrapper, SkeletonWrap } from '../styles'
 
 import Vacancy from '../../../../Vacancy'
 import { FC } from 'react'
-import { IApolloRefetch } from 'src/types/common'
+import { IApolloRefetch, IID } from 'src/types/common'
 import { IVacancy } from 'src/types/vacancies'
 
 interface Props {
   loading: boolean
-  removeVacancy: () => void
+  removeVacancy: (id: IID) => void
   vacancies: IVacancy[]
 }
 
@@ -29,19 +29,16 @@ export const CabinetVacanciesList: FC<Props> = ({
               key={item.id}
               id={item.id}
               title={item.title}
-              name={`${
-                item.vacancy_type.title.toLowerCase() === 'master'
-                  ? 'Мастер'
-                  : item.vacancy_type.title.toLowerCase() === 'salon'
-                  ? 'Салон'
-                  : item.vacancy_type.title.toLowerCase() === 'brand'
+              name={`${item.salon
+                ? 'Салон'
+                : item.brand
                   ? 'Бренд'
                   : ''
-              } ${item?.salon?.name || item?.brand?.name || ''}`}
+                } ${item?.salon?.name || item?.brand?.name || ''}`}
               type={'master'}
-              photo={item.cover[0].url}
-              // amountFrom={item.amountFrom}
-              // amountTo={item.amountTo}
+              photos={item.cover}
+              amountFrom={item.amountFrom}
+              amountTo={item.amountTo}
               removeVacancy={removeVacancy}
             />
           ))}

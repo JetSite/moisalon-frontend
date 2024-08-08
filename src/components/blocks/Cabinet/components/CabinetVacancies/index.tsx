@@ -13,23 +13,28 @@ import {
   Back,
 } from './styles'
 import Button from '../../../../ui/Button'
-import CreateVacancy from './components/CreateVacancy'
 import { MobileHidden, MobileVisible } from '../../../../../styles/common'
 import { currentVacancies } from '../../../../../_graphql-legacy/vacancies/currentVacancies'
 import { deleteVacancyMutation } from '../../../../../_graphql-legacy/vacancies/deleteVacancyMutation'
 import { PHOTO_URL } from '../../../../../api/variables'
 import useAuthStore from 'src/store/authStore'
-import { getStoreData } from 'src/store/utils'
+import { getStoreData, getStoreEvent } from 'src/store/utils'
 import { IID } from 'src/types/common'
 import { ISalon } from 'src/types/salon'
 import { IBrand } from 'src/types/brands'
 import { CabinetVacanciesList } from './components/CabinetVacanciesList'
+import CreateVacancy from './components/CreateVacancy'
+import { DELETE_VACANCY } from 'src/api/graphql/vacancy/mutations/deleteVacancy'
 
 const CabinetVacancies = () => {
   const { city, user, loading } = useAuthStore(getStoreData)
+  const { setUser } = useAuthStore(getStoreEvent)
+
   const salons = user?.owner?.salons
   const brands = user?.owner?.brand
   const vacancies = user?.vacancies
+
+  console.log('vacancies', vacancies)
 
   const [id, setId] = useState<IID>('')
   const [type, setType] = useState<string | null>(null)
@@ -38,8 +43,22 @@ const CabinetVacancies = () => {
   )
   const [createVacancy, setCreateVacancy] = useState(false)
 
-  const removeVacancy = () => {
-    console.log('delete vacancy')
+  const [deleteVacancy] = useMutation(DELETE_VACANCY)
+
+  const removeVacancy = async (vacancyToRemoveId: IID) => {
+    await deleteVacancy({
+      variables: {
+        id: vacancyToRemoveId,
+      },
+    })
+    const updatedVacancies = user?.vacancies?.filter(item => item.id !== vacancyToRemoveId)
+    if (user) {
+      setUser({
+        ...user,
+        vacancies: updatedVacancies,
+      })
+    }
+
   }
 
   const refetchVacancies = () => {
@@ -57,59 +76,59 @@ const CabinetVacancies = () => {
       ) : null}
       {salons?.length && !activeProfile
         ? salons.map(item => (
-            <div key={item.id}>
-              <Item
-                onClick={() => {
-                  setType('salon')
-                  setId(item?.id)
-                  setActiveProfile(item)
-                }}
-              >
-                <Container>
-                  <Avatar
-                    alt="avatar"
-                    src={PHOTO_URL + item?.logo?.url || 'empty-photo.svg'}
-                  />
-                  <Content>
-                    <Name>{item?.name}</Name>
-                    <Type>
-                      {item?.workplacesCount
-                        ? 'Профиль салона арендодателя'
-                        : 'Профиль салона'}
-                    </Type>
-                  </Content>
-                </Container>
-              </Item>
-            </div>
-          ))
+          <div key={item.id}>
+            <Item
+              onClick={() => {
+                setType('salon')
+                setId(item?.id)
+                setActiveProfile(item)
+              }}
+            >
+              <Container>
+                <Avatar
+                  alt="avatar"
+                  src={PHOTO_URL + item?.logo?.url || 'empty-photo.svg'}
+                />
+                <Content>
+                  <Name>{item?.name}</Name>
+                  <Type>
+                    {item?.workplacesCount
+                      ? 'Профиль салона арендодателя'
+                      : 'Профиль салона'}
+                  </Type>
+                </Content>
+              </Container>
+            </Item>
+          </div>
+        ))
         : null}
       {brands?.length && !activeProfile
         ? brands.map(item => (
-            <div key={item.id}>
-              <Item
-                onClick={() => {
-                  setType('brand')
-                  setId(item?.id)
-                  setActiveProfile(item)
-                }}
-              >
-                <Container>
-                  <Avatar
-                    alt="avatar"
-                    src={
-                      item?.logo
-                        ? `${PHOTO_URL}${item?.logo.url}`
-                        : 'empty-photo.svg'
-                    }
-                  />
-                  <Content>
-                    <Name>{item?.name}</Name>
-                    <Type>Профиль бренда</Type>
-                  </Content>
-                </Container>
-              </Item>
-            </div>
-          ))
+          <div key={item.id}>
+            <Item
+              onClick={() => {
+                setType('brand')
+                setId(item?.id)
+                setActiveProfile(item)
+              }}
+            >
+              <Container>
+                <Avatar
+                  alt="avatar"
+                  src={
+                    item?.logo
+                      ? `${PHOTO_URL}${item?.logo.url}`
+                      : 'empty-photo.svg'
+                  }
+                />
+                <Content>
+                  <Name>{item?.name}</Name>
+                  <Type>Профиль бренда</Type>
+                </Content>
+              </Container>
+            </Item>
+          </div>
+        ))
         : null}
       {type === 'salon' && activeProfile !== null ? (
         <>

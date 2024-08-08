@@ -57,7 +57,7 @@ const Header: FC<Props> = ({ brand, isOwner }) => {
           <BackButton
             type="Бренд"
             name={brand?.name}
-            link={isOwner ? '/brandCabinet' : `/${brand.city.slug}/brand`}
+            link={isOwner ? '/brandCabinet' : brand?.city?.slug ? `/${brand?.city?.slug}/brand` : `/moskva/brand`}
           />
         </Wrapper>
         <Wrapper>
@@ -82,10 +82,10 @@ const Header: FC<Props> = ({ brand, isOwner }) => {
           <IContainer>
             <Title isOwner={isOwner} brand={brand} />
           </IContainer>
-          <MinimalSumm>
+          {myPrice ? <MinimalSumm>
             <MinimalSummTitle>Минимальная сумма заказа</MinimalSummTitle>
             <MinimalSummText>от {myPrice} ₽</MinimalSummText>
-          </MinimalSumm>
+          </MinimalSumm> : null}
           {brand?.termsDeliveryPrice ? (
             !toggleTerms ? (
               <WrapCharacter>

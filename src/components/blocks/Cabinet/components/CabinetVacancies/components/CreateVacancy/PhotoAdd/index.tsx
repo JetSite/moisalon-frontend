@@ -4,6 +4,9 @@ import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../../../../../styles/variables'
 import uploadPhoto from '../../../../../../../../utils/uploadPhoto'
 import { PHOTO_URL } from '../../../../../../../../api/variables'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { useMutation } from '@apollo/client'
+import { UPLOAD } from 'src/api/graphql/common/upload'
 
 const Photo = styled.div`
   width: 100%;
@@ -57,21 +60,43 @@ const PhotoAdd = ({ onAdd, type, hover, photoId }) => {
     type === 'master'
       ? 'master'
       : type === 'salon'
-      ? 'salonPhoto'
-      : 'brandPhoto'
+        ? 'salonPhoto'
+        : 'brandPhoto'
+
+  const [uploadImage] = useMutation(UPLOAD)
 
   const onDrop = useCallback(
-    files => {
-      const file = files[0]
-      const uploadFile = async () => {
-        await uploadPhoto(file, photoType).then(photoId => {
-          onAdd(photoId)
-        })
+    async (acceptedFiles: File[]) => {
+      if (acceptedFiles.length > 0) {
+        const file = acceptedFiles[0]
+        try {
+          const res = await uploadImage({ variables: { file } })
+          if (res?.data?.upload?.data?.id) {
+            const normalisedPhoto = flattenStrapiResponse(res.data.upload.data)
+            if (normalisedPhoto.id) {
+              onAdd && onAdd(normalisedPhoto)
+            }
+          }
+        } catch (e) {
+          console.error('Error uploading file', e)
+        }
       }
-      uploadFile()
     },
-    [photoType, onAdd],
+    [uploadImage],
   )
+
+  // const onDrop = useCallback(
+  //   files => {
+  //     const file = files[0]
+  //     const uploadFile = async () => {
+  //       await uploadPhoto(file, photoType).then(photoId => {
+  //         onAdd(photoId)
+  //       })
+  //     }
+  //     uploadFile()
+  //   },
+  //   [photoType, onAdd],
+  // )
 
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*',
@@ -89,7 +114,7 @@ const PhotoAdd = ({ onAdd, type, hover, photoId }) => {
       <div {...getRootProps()}>
         <input {...getInputProps()} />
         {!photoId ? <Photo /> : null}
-        <Image alt="photo" src={`${PHOTO_URL}${photoId}/original`} />
+        <Image alt="photo" src={`${PHOTO_URL}${photoId}`} />
         {onHoverControls}
       </div>
     </>
