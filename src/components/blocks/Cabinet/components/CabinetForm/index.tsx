@@ -123,7 +123,8 @@ const CabinetForm: FC<Props> = ({
     onError: error => {
       setLoading(false)
       const errorMessages = error.graphQLErrors.map(e => e.message)
-      setErrors(errorMessages)
+      console.log(errorMessages)
+      setErrors(['Такие имя или почта уже существуют'])
       setErrorPopupOpen(true)
     },
   })
