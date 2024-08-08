@@ -24,7 +24,7 @@ interface Props {
   tabs: ITab[]
   photoType: string
   refActive?: string | boolean
-  photo: IPhoto | null
+  photo: { url: string } | null
   onAdd?: (photo: string) => void
   noPhotoError?: boolean
   setNoPhotoError?: ISetState<boolean>

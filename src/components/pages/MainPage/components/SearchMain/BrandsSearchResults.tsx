@@ -79,9 +79,8 @@ const BrandsSearchResults: FC<Props> = ({
                   <BrandItem
                     loading={loading}
                     brand={brand}
-                    shareLink={`https://moi.salon/${
-                      brand.city.slug || city.slug
-                    }/brand/${brand.id}`}
+                    shareLink={`https://moi.salon/${brand.city?.slug || city?.slug
+                      }/brand/${brand.id}`}
                     type="search-page"
                   />
                 </LinkStyled>

@@ -67,9 +67,9 @@ const SalonActivities: FC<Props> = ({
         validate={lengthValidate}
         onlyOneChoose
       />
-      <Text>
+      {/* <Text>
         Не нашли свое направление деятельности? <span>Напишите нам!</span>
-      </Text>
+      </Text> */}
       <MobileHidden>
         <Button
           onClick={e => {

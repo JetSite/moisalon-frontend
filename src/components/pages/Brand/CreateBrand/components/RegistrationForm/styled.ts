@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../../../styles/variables'
+import { Field } from 'react-final-form'
 
 export const Wrapper = styled.div`
   max-width: 690px;
@@ -40,4 +41,24 @@ export const WrapperForm = styled.div`
 
 export const FieldWrap = styled.div`
   margin-bottom: 14px;
+`
+
+export const FieldStyled = styled(Field)`
+  label {
+    width: fit-content;
+    &:after {
+      display: ${({ requiredField }) => (requiredField ? 'block' : 'none')};
+      content: '';
+      position: absolute;
+      top: -3px;
+      right: -11px;
+      width: 7px;
+      height: 7px;
+      background: url('/required-icon.svg') no-repeat center;
+    }
+  }
+
+  .MuiInputBase-input {
+    line-height: 22px;
+  }
 `

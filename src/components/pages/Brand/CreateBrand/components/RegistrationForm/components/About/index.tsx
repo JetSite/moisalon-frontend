@@ -1,5 +1,5 @@
 import { Field } from "react-final-form";
-import { PhoneField, TextField } from "../../../../../../../blocks/Form";
+import { CheckBox, PhoneField, TextField } from "../../../../../../../blocks/Form";
 import Button from "../../../../../../../ui/Button";
 import {
   required,
@@ -7,11 +7,23 @@ import {
   composeValidators,
 } from "../../../../../../../../utils/validations";
 import { MobileHidden } from "../../../../../../../../styles/common";
-import { WrapperForm, FieldWrap } from "../../styled";
+import { WrapperForm, FieldWrap, FieldStyled } from "../../styled";
 import AddressNoSalonField from "../../../../../../../blocks/Form/AddressField/AddressNoSalonField";
-import { CheckBoxCustom } from "../../../../../../../pages/Rent/RentFilter";
+import { FC, RefObject, useState } from "react";
+import { Checkbox, Label } from "src/components/pages/Rent/RentFilter/style";
+import { ISetState } from "src/types/common";
+import { IHandleClickNextTabInForm } from "src/components/pages/Salon/CreateSalon";
 
-const About = ({ setClickAddress, ref1, handleClickNextTab, number }) => {
+export interface IFormAboutProps {
+  setClickCity: ISetState<string | null>
+  number: number
+  handleClickNextTab: IHandleClickNextTabInForm
+  ref1: RefObject<HTMLDivElement>
+}
+
+const About: FC<IFormAboutProps> = ({ setClickCity, ref1, handleClickNextTab, number }) => {
+  const [view, setView] = useState<boolean>(false)
+
   return (
     <WrapperForm ref={ref1} id="about">
       <FieldWrap>
@@ -43,19 +55,30 @@ const About = ({ setClickAddress, ref1, handleClickNextTab, number }) => {
         />
       </FieldWrap>
       <FieldWrap>
-        <Field
+        <FieldStyled
           name="address"
-          setClickAddress={setClickAddress}
+          setClickCity={setClickCity}
           component={AddressNoSalonField}
-          label="Адрес *"
+          label="Адрес"
           validate={required}
+          requiredField
+          view={view}
         />
       </FieldWrap>
       <FieldWrap>
         <Field name="checkCart" type="checkbox">
-          {({ input }) => (
-            <CheckBoxCustom input={input} label="Показать на карте" />
-          )}
+          {({ input }) => {
+            return (
+              <>
+                <Checkbox
+                  onClick={() => setView(!view)}
+                  {...input}
+                  id={input?.name}
+                />
+                <Label htmlFor={'checkCart'}>{'Показать на карте'}</Label>
+              </>
+            )
+          }}
         </Field>
       </FieldWrap>
       <FieldWrap>

@@ -39,7 +39,7 @@ const Brand: FC<Props> = ({ brandData, othersBrands }) => {
   const [brand, setBrand] = useState(brandData)
   const { me, city } = useAuthStore(getStoreData)
   const [activeTab, setActiveTab] = useState<number>(0)
-  const isOwner = !!me?.owner?.brand.find(e => e.id === brand.id)
+  const isOwner = !!me?.owner?.brands?.find(e => e.id === brand.id)
 
   const salons = brand.salons.map(e => {
     const reviewsCount = e.reviews.length

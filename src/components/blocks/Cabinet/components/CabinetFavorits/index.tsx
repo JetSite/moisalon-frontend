@@ -21,7 +21,7 @@ const CabinetFavorits: FC = () => {
   }
   if (!user) return null
 
-  const { salons, brand, masters, products, educations } =
+  const { salons, brands, masters, products, educations } =
     user.favorite as IUserThings
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const CabinetFavorits: FC = () => {
       setActiveTab('salons')
       return
     }
-    if (brand?.length) {
+    if (brands?.length) {
       setActiveTab('brands')
       return
     }
@@ -41,7 +41,7 @@ const CabinetFavorits: FC = () => {
       setActiveTab('products')
       return
     }
-    if (educations.length) {
+    if (educations?.length) {
       setActiveTab('educations')
       return
     }
@@ -59,7 +59,7 @@ const CabinetFavorits: FC = () => {
       <Tabs
         salons={salons}
         masters={masters}
-        brands={brand}
+        brands={brands}
         products={products}
         educations={educations}
         activeTab={activeTab}

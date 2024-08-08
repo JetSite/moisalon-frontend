@@ -11,6 +11,10 @@ import Button from '../../../../../../ui/Button'
 import Vacancy from '../../../../../Vacancy'
 import { createVacancyMutation } from '../../../../../../../_graphql-legacy/vacancies/createVacancyMutation'
 import Popup from '../../../../../../ui/Popup'
+import { IPhoto } from 'src/types'
+import { CREATE_VACANCY } from 'src/api/graphql/vacancy/mutations/createVacancy'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 
 const FieldWrap = styled.div`
   margin-bottom: 14px;
@@ -26,14 +30,18 @@ const ButtonWrap = styled.div`
 `
 
 const CreateVacancy = ({ setCreateVacancy, type, activeProfile, refetch }) => {
+  const { user } = useAuthStore(getStoreData)
   const [errors, setErrors] = useState(null)
   const [loading, setLoading] = useState(false)
-  const [photoId, setPhotoId] = useState(null)
+  const [photo, setPhoto] = useState<IPhoto | null>(null)
   const [published, setPublished] = useState(false)
   const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
   const [openPopup, setOpenPopup] = useState(false)
 
-  const [createVacancy] = useMutation(createVacancyMutation, {
+  console.log('activeProfile', activeProfile)
+  console.log('type', type)
+
+  const [createVacancy] = useMutation(CREATE_VACANCY, {
     onError: error => {
       const errorMessages = error.graphQLErrors.map(e => e.message)
       setLoading(false)
@@ -53,34 +61,55 @@ const CreateVacancy = ({ setCreateVacancy, type, activeProfile, refetch }) => {
 
   const onSubmit = useCallback(
     async values => {
-      if (!photoId) {
+      if (!photo) {
         setErrors(['Необходимо добавить фото'])
         setErrorPopupOpen(true)
         return
       }
       setLoading(true)
+      let inputData: any = {
+        title: values.title,
+        cover: photo.id,
+        fullDescription: values.desc,
+        shortDescription: values.short_desc,
+        user: user?.info.id,
+        amountFrom: +values.amountFrom,
+        amountTo: +values.amountTo,
+      }
+      if (type === 'salon') {
+        inputData = {
+          ...inputData,
+          salon: activeProfile.id,
+        }
+      }
+      if (type === 'master') {
+        inputData = {
+          ...inputData,
+          master: activeProfile.id,
+        }
+      }
+      if (type === 'brand') {
+        inputData = {
+          ...inputData,
+          brand: activeProfile.id,
+        }
+      }
       createVacancy({
         variables: {
           input: {
-            title: values.title,
-            origin: type.toUpperCase(),
-            originId: activeProfile?.id,
-            photoId,
-            desc: values.desc,
-            short_desc: values.short_desc,
-            amountFrom: 0,
-            amountTo: 0,
-            isPublished: false,
+            ...inputData
           },
         },
       })
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [photoId, published],
+    [photo, published],
   )
 
-  const onAdd = photoId => {
-    setPhotoId(photoId)
+  console.log('photoId', photo)
+
+  const onAdd = (photo: IPhoto) => {
+    setPhoto(photo)
   }
 
   const closePopup = () => {
@@ -98,22 +127,21 @@ const CreateVacancy = ({ setCreateVacancy, type, activeProfile, refetch }) => {
             <form onSubmit={handleSubmit}>
               <div style={{ marginBottom: 20 }}>
                 <Vacancy
-                  photoId={photoId}
+                  photos={photo ? [photo] : null}
                   onAdd={onAdd}
                   amountFrom={values.amountFrom}
                   amountTo={values.amountTo}
                   type={type}
                   create
                   title={values.title}
-                  name={`${
-                    type === 'master'
-                      ? 'Мастер'
-                      : type === 'salon'
+                  name={`${type === 'master'
+                    ? 'Мастер'
+                    : type === 'salon'
                       ? 'Салон'
                       : type === 'brand'
-                      ? 'Бренд'
-                      : ''
-                  } ${activeProfile?.name}`}
+                        ? 'Бренд'
+                        : ''
+                    } ${activeProfile?.name}`}
                 />
               </div>
               <FieldWrap>
@@ -147,7 +175,7 @@ const CreateVacancy = ({ setCreateVacancy, type, activeProfile, refetch }) => {
                   requiredField
                 />
               </FieldWrap>
-              {/* <FieldWrap>
+              <FieldWrap>
                 <FieldStyled
                   name="amountFrom"
                   component={TextField}
@@ -168,7 +196,7 @@ const CreateVacancy = ({ setCreateVacancy, type, activeProfile, refetch }) => {
                   validate={required}
                   maxLength={15}
                 />
-              </FieldWrap> */}
+              </FieldWrap>
               {/* <FieldWrap>
                 <Checkbox
                   name="isPublished"

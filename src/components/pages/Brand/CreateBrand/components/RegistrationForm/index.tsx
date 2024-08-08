@@ -8,73 +8,75 @@ import { updateBrandNameMutation } from "../../../../../../_graphql-legacy/brand
 import Error from "../../../../../blocks/Form/Error";
 import Button from "../../../../../ui/Button";
 import { createBrandMutation } from "../../../../../../_graphql-legacy/brand/createBrandMutation";
+import { useRouter } from "next/router";
 import About from "./components/About";
 import Socials from "./components/Socials";
-import { useRouter } from "next/router";
+import { useShallow } from "zustand/react/shallow";
+import { getStoreData, getStoreEvent } from "src/store/utils";
+import useAuthStore from "src/store/authStore";
+import { useLazyQuery } from "@apollo/client";
+import { USER } from "src/api/graphql/me/queries/getUser";
+import { flattenStrapiResponse } from "src/utils/flattenStrapiResponse";
+import { CREATE_BRAND } from "src/api/graphql/brand/mutations/createBrand";
+import { set } from "lodash";
 
 const RegistrationForm = ({
   allTabs,
   ref1,
   ref2,
   handleClickNextTab,
-  photoBrandId,
+  photoBrand,
   brand,
   setNoPhotoError,
 }) => {
-  const [errors, setErrors] = useState(null);
+  const { me, user } = useAuthStore(useShallow(getStoreData))
+  const { setUser } = useAuthStore(useShallow(getStoreEvent))
+  const [loading, setLoading] = useState<boolean>(false)
+  const [errors, setErrors] = useState<string[] | null>(null);
   const [isErrorPopupOpen, setErrorPopupOpen] = useState(false);
   const [clickAddress, setClickAddress] = useState(true);
+  const [clickCity, setClickCity] = useState<string | null>(null)
   const router = useRouter();
 
-  const [createBrand, { loading }] = useMutation(createBrandMutation, {
-    onError: (error) => {
-      const errorMessages = error.graphQLErrors.map((e) => e.message);
-      setErrors(errorMessages);
-      setErrorPopupOpen(true);
-    },
-    onCompleted: (data) => {
-      router.push(
-        {
-          pathname: "/brandCabinet",
-          query: { id: data.createBrand.id },
-        },
-        "/brandCabinet"
-      );
-    },
-  });
+  console.log('photoBrand', photoBrand)
 
-  const [updateBrand] = useMutation(updateBrandPersonalInformationMutation, {
-    onError: (error) => {
-      const errorMessages = error.graphQLErrors.map((e) => e.message);
-      setErrors(errorMessages);
-      setErrorPopupOpen(true);
+  const [getUser] = useLazyQuery(USER, {
+    onCompleted: data => {
+
+      const prepareData = flattenStrapiResponse(data.usersPermissionsUser)
+
+      console.log('prepareData', prepareData)
+
+      if (user) {
+        const newData = {
+          ...user,
+          owner: {
+            ...user.owner,
+            brands: prepareData.brands,
+          },
+        }
+        setUser({ ...newData })
+      }
     },
+    onError: err => console.log(err),
+    notifyOnNetworkStatusChange: true,
+  })
+
+  const [createBrand] = useMutation(CREATE_BRAND, {
     onCompleted: () => {
-      router.push(
-        {
-          pathname: "/brandCabinet",
-          query: { id: brand.id },
-        },
-        "/brandCabinet"
-      );
+      getUser({ variables: { id: me?.info?.id } })
+      router.push('/masterCabinet')
     },
-  });
-  const [updateName] = useMutation(updateBrandNameMutation, {
-    onError: (error) => {
-      const errorMessages = error.graphQLErrors.map((e) => e.message);
-      setErrors(errorMessages);
-      setErrorPopupOpen(true);
-    },
-  });
+  })
 
   const onSubmit = useCallback(
-    (values) => {
+    (values: any) => {
       if (!clickAddress || !values.address) {
         setErrors(["Выберите адрес места работы из выпадающего списка"]);
         setErrorPopupOpen(true);
         return;
       }
-      if (!brand && !photoBrandId) {
+      if (!brand && !photoBrand) {
         setNoPhotoError(true);
         setErrors(["Необходимо добавить фото бренда"]);
         setErrorPopupOpen(true);
@@ -87,42 +89,66 @@ const RegistrationForm = ({
         haveWhatsApp: values?.phone?.haveWhatsApp || false,
       };
 
+      const socialNetworks = values.socialNetworkUrls
+        ? Object?.keys(values.socialNetworkUrls)?.map(e => ({
+          title: e,
+          link: values.socialNetworkUrls[e] as string,
+        }))
+        : []
+
+      const inputToSave = {
+        name: values.name,
+        logo: photoBrand.id,
+        // country: values.country,
+        phones: [phone],
+        email: values.email,
+        address: values.address,
+        description: values.description,
+        history: values.history,
+        manufacture: values.manufacture,
+        webSiteUrl: values.webSiteUrl,
+        socialNetworks,
+        user: user?.info.id,
+      };
+
       if (!brand) {
-        createBrand({
-          variables: {
-            input: {
-              ...values,
-              phone,
-              logoId: photoBrandId,
-              photoId: photoBrandId,
+        try {
+          setLoading(true);
+          createBrand({
+            variables: {
+              input: {
+                ...inputToSave,
+              },
             },
-          },
-        });
+          });
+        } catch (error) {
+          console.error(error);
+        }
       }
 
-      if (brand) {
-        updateName({
-          variables: {
-            input: {
-              id: brand.id,
-              name: values.name,
-            },
-          },
-        });
-        updateBrand({
-          variables: {
-            input: {
-              ...values,
-              phone,
-              logoId: photoBrandId,
-              photoId: photoBrandId,
-            },
-          },
-        });
-      }
+      // if (brand) {
+      //   updateName({
+      //     variables: {
+      //       input: {
+      //         id: brand.id,
+      //         name: values.name,
+      //       },
+      //     },
+      //   });
+      //   updateBrand({
+      //     variables: {
+      //       input: {
+      //         ...values,
+      //         phone,
+      //         logoId: photoBrandId,
+      //         photoId: photoBrandId,
+      //       },
+      //     },
+      //   });
+      // }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [clickAddress, photoBrandId]
+    [clickAddress, photoBrand]
   );
 
   return (
@@ -130,7 +156,7 @@ const RegistrationForm = ({
       <Title>Информация о бренде</Title>
       <AutoFocusedForm
         onSubmit={onSubmit}
-        initialValues={brand}
+        initialValues={{}}
         keepDirtyOnReinitialize
         initialValuesEqual={() => true}
         render={({ handleSubmit, form, pristine }) => {
@@ -138,8 +164,7 @@ const RegistrationForm = ({
             <form onSubmit={handleSubmit} ref={allTabs}>
               <About
                 ref1={ref1}
-                setClickAddress={setClickAddress}
-                form={form}
+                setClickCity={setClickCity}
                 handleClickNextTab={handleClickNextTab}
                 number={1}
               />
