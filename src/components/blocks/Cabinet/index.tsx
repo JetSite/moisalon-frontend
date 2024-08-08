@@ -14,14 +14,14 @@ import { useShallow } from 'zustand/react/shallow'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 
 const Cabinet = () => {
-  const { me, user, loading } = useAuthStore(getStoreData)
+  const { me, user } = useAuthStore(getStoreData)
   const { setUser } = useAuthStore(useShallow(getStoreEvent))
-  const [photo, setPhoto] = useState<IPhoto | undefined>(
-    !!me?.info.avatar?.url ? me.info.avatar : undefined,
+  const [photo, setPhoto] = useState<IPhoto | null>(
+    !!me?.info.avatar?.url ? me.info.avatar : null,
   )
   const [noPhotoError, setNoPhotoError] = useState(false)
 
-  const [updateAvatar] = useMutation(changeMe, {
+  const [updateAvatar, { loading }] = useMutation(changeMe, {
     onCompleted: res => {
       if (res?.updateUsersPermissionsUser?.data?.id) {
         const newAvatar = flattenStrapiResponse(
@@ -68,7 +68,11 @@ const Cabinet = () => {
             noPhotoError={noPhotoError}
             setNoPhotoError={setNoPhotoError}
           />
-          <CabinetForm setNoPhotoError={setNoPhotoError} photo={photo} />
+          <CabinetForm
+            avatarLoading={loading}
+            setNoPhotoError={setNoPhotoError}
+            photo={photo}
+          />
         </Wrapper>
       </MainContainer>
     </>

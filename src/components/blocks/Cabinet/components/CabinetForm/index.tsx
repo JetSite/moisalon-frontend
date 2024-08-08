@@ -38,6 +38,9 @@ import { CustomWindow, IID, InitialValuesForm } from 'src/types/common'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { IMeInfo } from 'src/types/me'
 import { IPhoto } from 'src/types'
+import { cyrToTranslit } from 'src/utils/translit'
+import { authConfig } from 'src/api/authConfig'
+import useBaseStore from 'src/store/baseStore'
 
 declare let window: CustomWindow
 
@@ -52,17 +55,23 @@ interface Props {
   photo: IPhoto | null
   setNoPhotoError: Dispatch<SetStateAction<boolean>>
   auth?: boolean
+  avatarLoading?: boolean
 }
 
-const CabinetForm: FC<Props> = ({ photo, setNoPhotoError, auth }) => {
+const CabinetForm: FC<Props> = ({
+  photo,
+  setNoPhotoError,
+  auth,
+  avatarLoading,
+}) => {
   const { user } = useAuthStore(getStoreData)
-  const { setMe } = useAuthStore(getStoreEvent)
-
+  const { cities } = useBaseStore(getStoreData)
+  const { setMe, setUser, setCity } = useAuthStore(getStoreEvent)
   const [errors, setErrors] = useState<string[]>([])
   const [loading, setLoading] = useState<boolean>(false)
   const [isErrorPopupOpen, setErrorPopupOpen] = useState<boolean>(false)
   const [cityInput, setCityInput] = useState<string>('')
-  const [cityId, setCityId] = useState<IID | null>(null)
+  const [cityName, setCityName] = useState<IID | null>(null)
   const [showCityInput, setShowCityInput] = useState<boolean>(false)
   const cityInputRef = useRef<HTMLDivElement>(null)
   const cityPopupRef = useRef<HTMLDivElement>(null)
@@ -99,27 +108,44 @@ const CabinetForm: FC<Props> = ({ photo, setNoPhotoError, auth }) => {
   const [mutate] = useMutation(changeMe, {
     onCompleted: async data => {
       const prepareData = flattenStrapiResponse(data.updateUsersPermissionsUser)
-      prepareData && setMe({ info: prepareData as IMeInfo })
+      if (prepareData) {
+        console.log(prepareData)
+        setMe({ info: prepareData as IMeInfo })
+        setUser({
+          info: { ...prepareData } as IMeInfo,
+          owner: { salons: [], masters: [] },
+          favorite: { salons: [], masters: [] },
+        })
+      }
+
       setLoading(false)
     },
     onError: error => {
       setLoading(false)
       const errorMessages = error.graphQLErrors.map(e => e.message)
-      setErrors(errorMessages)
+      console.log(errorMessages)
+      setErrors(['Такие имя или почта уже существуют'])
       setErrorPopupOpen(true)
     },
   })
 
   const onSubmit = useCallback(
     async (values: { [key: string]: string }) => {
-      // if (!photoId) {
-      //   setNoPhotoError(true)
-      //   setErrors(['Необходимо добавить фото'])
-      //   setErrorPopupOpen(true)
+      // if (true) {
+      //   console.log(cities)
+      //   console.log(cityId)
       //   return
       // }
+      if (!photo) {
+        setNoPhotoError(true)
+        setErrors(['Необходимо добавить фото'])
+        setErrorPopupOpen(true)
+        return
+      }
+      const city = cities.find(e => e.name === values.city)
+
       const input = {
-        city: '1',
+        city: city?.id,
         username: values.username,
         email: values.email,
         phone: values.phone,
@@ -133,6 +159,7 @@ const CabinetForm: FC<Props> = ({ photo, setNoPhotoError, auth }) => {
           data: input,
         },
       })
+      city && setCity(city)
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [photo],
@@ -155,7 +182,8 @@ const CabinetForm: FC<Props> = ({ photo, setNoPhotoError, auth }) => {
               cityInput={cityInput}
               setShowCityInput={setShowCityInput}
               cityPopupRef={cityPopupRef}
-              setCityId={setCityId}
+              setCityName={setCityName}
+              cityName={cityName}
             />
           )}
         </Flex>
@@ -220,12 +248,13 @@ const CabinetForm: FC<Props> = ({ photo, setNoPhotoError, auth }) => {
                 />
                 <ButtonWrap>
                   <Button
+                    loading={avatarLoading || loading}
                     variant="red"
                     size="width100"
                     type="submit"
                     disabled={pristine || loading}
                   >
-                    {loading ? 'Подождите' : 'Сохранить'}
+                    {loading || avatarLoading ? 'Подождите' : 'Сохранить'}
                   </Button>
                 </ButtonWrap>
               </form>

@@ -21,6 +21,7 @@ import { getTotalCount } from 'src/utils/getTotalCount'
 import { ITotalCount } from './salon'
 import { getProductCategories } from 'src/api/graphql/product/queries/getProductCategories'
 import { useQuery } from '@apollo/client'
+import { Nullable } from 'src/types/common'
 
 interface Props {
   beautyCategories: any
@@ -37,39 +38,8 @@ export default function Main({
   totalCount,
   cityData,
 }: Props) {
-  // const [city, setCity] = useContext(CityContext);
-  // const [query, setQuery] = useContext(SearchMainQueryContext);
-  // const router = useRouter();
-
-  // const [changeCityFunc] = useMutation(changeCityMutation, {
-  //   onCompleted: () => {
-  //     refetch();
-  //   },
-  // });
-
-  // useEffect(() => {
-  //   if (typeof window !== "undefined") {
-  //     if (
-  //       localStorage.getItem("citySalon") !== cityData ||
-  //       (localStorage.getItem("citySalon") === "Москва" &&
-  //         router?.query?.city !== "moskva")
-  //     ) {
-  //       localStorage.setItem("citySalon", cityData);
-  //       changeCityFunc({
-  //         variables: {
-  //           city: cityData,
-  //         },
-  //       });
-  //       setCity(cityData);
-  //       setQuery({ ...query, city: cityData });
-  //       if (router?.query?.city !== "moskva" && cityData === "Москва") {
-  //         router.replace({
-  //           query: { ...router.query, city: cyrToTranslit(cityData) },
-  //         });
-  //       }
-  //     }
-  //   }
-  // }, []);
+  const data = useAuthStore(getStoreData)
+  console.log(data)
 
   return (
     <>
@@ -98,7 +68,9 @@ export default function Main({
   )
 }
 
-export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
+export const getServerSideProps: GetServerSideProps<
+  Nullable<Props>
+> = async ctx => {
   const apolloClient = initializeApollo()
   const data = await Promise.all([
     apolloClient.query({
@@ -119,21 +91,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
     apolloClient.query({
       query: totalBrands,
     }),
-    // apolloClient.query({
-    //   query: salesSearch,
-    //   variables: { query: "" },
-    // }),
-    // apolloClient.query({
-    //   query: searchQuery,
-    //   variables: {
-    //     input: {
-    //       ...EmptySearchQuery,
-    //       city: city?.data?.citySuggestions[0]?.data?.city || "",
-    //       query: "",
-    //       lessor: false,
-    //     },
-    //   },
-    // }),
   ])
 
   const cityCookie = ctx.req.cookies['city']
@@ -162,8 +119,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
         masters: getTotalCount(data[2].data.masters),
         salons: getTotalCount(data[3].data.salons),
       },
-      // sales: data[8]?.data,
-      // salons: data[9]?.data,
       cityData,
     },
   })

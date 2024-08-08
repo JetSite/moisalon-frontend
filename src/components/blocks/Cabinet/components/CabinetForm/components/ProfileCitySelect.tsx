@@ -1,14 +1,23 @@
-import { Dispatch, FC, RefObject, SetStateAction } from 'react'
-import { useCitySuggestions } from '../../../../../pages/MainPage/components/CitySelect/useCitySuggestions'
+import { FC, RefObject, useEffect } from 'react'
 import { Wrapper, CityList, CityItem } from './styles'
 import { CustomWindow, IID, ISetState } from 'src/types/common'
+import { useAddressSuggestions } from 'src/components/blocks/Form/AddressField/useAddressSuggestions'
+import useBaseStore from 'src/store/baseStore'
+import { getStoreData, getStoreEvent } from 'src/store/utils'
+import { useLazyQuery, useMutation } from '@apollo/client'
+import { getCities as getCitiesQuery } from 'src/api/graphql/city/getCities'
 import { ICity } from 'src/types'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { CREATE_CITY } from 'src/api/graphql/city/mutations/createCity'
+import { cyrToTranslit } from 'src/utils/translit'
+import { useLocationSuggestions } from 'src/utils/newUtils/hooks/useLocationSuggestions'
 
 interface Props {
   cityInput: string
   setShowCityInput: (value: boolean) => void
   cityPopupRef: RefObject<HTMLDivElement>
-  setCityId: ISetState<IID | null>
+  setCityName: ISetState<string | null>
+  cityName: string | null
 }
 declare let window: CustomWindow
 
@@ -16,18 +25,16 @@ const ProfileCitySelect: FC<Props> = ({
   cityInput,
   setShowCityInput,
   cityPopupRef,
-  setCityId,
+  setCityName,
+  cityName,
 }) => {
-  const { suggestions } = useCitySuggestions(cityInput)
-  const unicSuggestion = []
-
-  const cityClickHandler = (city: ICity) => {
-    if (window && window.setFormValue) {
-      window.setFormValue('city', city.name)
-    }
-    setCityId(city.id)
-    setShowCityInput(false)
-  }
+  const { suggestions, locationClickHandler } = useLocationSuggestions({
+    input: cityInput,
+    setShowInput: setShowCityInput,
+    setLocationName: setCityName,
+    locationName: cityName,
+    onlyCity: true,
+  })
 
   return (
     <>
@@ -40,8 +47,8 @@ const ProfileCitySelect: FC<Props> = ({
           )} */}
           <CityList>
             {suggestions.map((city, i) => (
-              <CityItem key={i} onClick={() => cityClickHandler(city)}>
-                {city.name}
+              <CityItem key={i} onClick={() => locationClickHandler(city)}>
+                {city}
               </CityItem>
             ))}
           </CityList>
