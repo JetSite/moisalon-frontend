@@ -33,6 +33,7 @@ import { setCookie } from 'cookies-next'
 import { redirectCityRoutes } from 'src/utils/newUtils/redirectCityRoutes'
 import { useRouter } from 'next/router'
 import { ISetState } from 'src/types/common'
+import useBaseStore from 'src/store/baseStore'
 
 const prepareCitiesList: ICity[] = defaultcCitiesList.map((city, i) => ({
   name: city,
@@ -53,13 +54,16 @@ const CitySelect: FC<Props> = ({
 }) => {
   const { setCity } = useAuthStore(getStoreEvent)
   const { me } = useAuthStore(getStoreData)
+  const { cities } = useBaseStore(getStoreData)
+  const { setCities } = useBaseStore(getStoreEvent)
   const [citiesList, setCitiesList] = useState<ICity[]>([])
   const router = useRouter()
   const [refetch, { loading }] = useLazyQuery(getCities, {
-    variables: { itemsCount: 10 },
+    variables: { itemsCount: 100 },
     onCompleted: data => {
       const prepareData = flattenStrapiResponse(data.cities) as ICity[]
       setCitiesList(prepareData.length ? prepareData : prepareCitiesList)
+      setCities(prepareData)
     },
     onError: err => {
       console.log(err)
@@ -69,7 +73,9 @@ const CitySelect: FC<Props> = ({
   })
 
   useEffect(() => {
-    refetch()
+    if (!cities.length) {
+      refetch()
+    }
   }, [])
 
   // useEffect(() => {

@@ -14,6 +14,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   mt?: string
   z?: string
   as?: keyof JSX.IntrinsicElements
+  loading?: boolean
 }
 
 // interface Props extends ButtonProps {}

@@ -6,7 +6,7 @@ export const Wrapper = styled.div`
   position: absolute;
   bottom: -230px;
   left: 0;
-  padding: 20px 40px 20px 20px;
+  padding: 20px 0 20px 20px;
   background: #fff;
   border-radius: 5px;
   box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
@@ -17,7 +17,11 @@ export const Wrapper = styled.div`
   }
 `
 
-export const CityList = styled.ul``
+export const CityList = styled.ul`
+  max-height: 250px;
+  padding-right: 40px;
+  overflow-y: scroll;
+`
 
 export const CityItem = styled.li`
   list-style: none;

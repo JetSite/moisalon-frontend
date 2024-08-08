@@ -121,6 +121,7 @@ const AuthProvider: FC<{ children: IChildren; pageProps: any }> = ({
     // initializeCity()
   }, [cityCookie])
   useEffect(() => {
+    if (!accessToken) return
     setLoading(meLoading || userLoading)
     if (pageProps.user && !user) {
       const prepareUser = getPrepareUser(pageProps.user)
@@ -148,7 +149,7 @@ const AuthProvider: FC<{ children: IChildren; pageProps: any }> = ({
       return
     } else {
       if (router.asPath !== authConfig.notAuthLink) {
-        if (!me && accessToken) {
+        if (!me) {
           getMe()
         }
         if (me && !user) {

@@ -1,6 +1,15 @@
-import styled from 'styled-components'
+import styled, { css, keyframes } from 'styled-components'
 import { lighten } from 'polished'
 import { ButtonProps } from './'
+
+const pulse = keyframes`
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+`
 
 export const ButtonCustom = styled.button<ButtonProps>`
   font-size: 18px;
@@ -13,13 +22,20 @@ export const ButtonCustom = styled.button<ButtonProps>`
   cursor: pointer;
   display: inline-block;
   transition: all 0.2s ease-in-out;
-  margin-top: ${({ mt }) => mt && mt + 'px'}};
+  margin-top: ${({ mt }) => mt && mt + 'px'};
   margin-bottom: ${({ mb }) => mb && mb + 'px'};
   position: relative;
   z-index: ${props => props.z};
   ${props => styleVariants[props.variant]}
-  ${props => sizeVariants[props.size]}
+  ${props => sizeVariants[props.size || 'fullWidth']}
   ${props => props.font && fontVariants[props.font]}
+  ${props =>
+    props.loading &&
+    css`
+      cursor: default;
+      animation: ${pulse} 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    `}
+
   :disabled {
     border: 1px solid transparent;
     background-color: #d8d8d8;

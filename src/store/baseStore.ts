@@ -1,3 +1,4 @@
+import { ICity } from 'src/types'
 import { LazyType, Nullable } from 'src/types/common'
 import { ICart } from 'src/types/product'
 import { ISalonActivity } from 'src/types/salon'
@@ -5,20 +6,20 @@ import { IServiceCategories } from 'src/types/services'
 import { create } from 'zustand'
 
 export interface IInitialBaseData {
-  catalogs: LazyType[]
-  brands: LazyType[]
-  salons: LazyType[]
-  masters: LazyType[]
-  services: IServiceCategories[]
-  activities: ISalonActivity[]
-  products: LazyType[]
-  cities: LazyType[]
-  city: string
+  catalogs: LazyType[] | null
+  brands: LazyType[] | null
+  salons: LazyType[] | null
+  masters: LazyType[] | null
+  services: IServiceCategories[] | []
+  activities: ISalonActivity[] | []
+  products: LazyType[] | null
+  cities: ICity[]
+  city: string | null
   cart: ICart | null
 }
 
 interface IUseBaseStore {
-  data: Nullable<IInitialBaseData>
+  data: IInitialBaseData
   setCatalogs: (catalogs: LazyType[]) => void
   setBrands: (brands: LazyType[]) => void
   setSalons: (salons: LazyType[]) => void
@@ -26,7 +27,7 @@ interface IUseBaseStore {
   setServices: (services: IServiceCategories[]) => void
   setSalonActivities: (activities: ISalonActivity[]) => void
   setProducts: (products: LazyType[]) => void
-  setSities: (cities: LazyType[]) => void
+  setCities: (cities: ICity[]) => void
   setCity: (city: string) => void
   setCart: (cart: ICart | null) => void
 }
@@ -36,10 +37,10 @@ const initialData = {
   brands: null,
   salons: null,
   masters: null,
-  services: null,
-  activities: null,
+  services: [],
+  activities: [],
   products: null,
-  cities: null,
+  cities: [],
   city: null,
   cart: null,
 }
@@ -57,7 +58,7 @@ const useBaseStore = create<IUseBaseStore>((set, get) => ({
     set(state => ({ data: { ...state.data, activities } })),
   setProducts: products =>
     set(state => ({ data: { ...state.data, products } })),
-  setSities: cities => set(state => ({ data: { ...state.data, cities } })),
+  setCities: cities => set(state => ({ data: { ...state.data, cities } })),
   setCity: city => set(state => ({ data: { ...state.data, city } })),
   setCart: cart => set(state => ({ data: { ...state.data, cart } })),
 }))

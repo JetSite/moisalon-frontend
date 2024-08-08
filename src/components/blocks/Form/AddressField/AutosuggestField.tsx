@@ -1,16 +1,16 @@
-import { useState, useCallback, useEffect, FC } from 'react'
+import { FC, useState, useCallback, useEffect } from 'react'
 import Autosuggest from 'react-autosuggest'
-import { TextField, Paper, MenuItem, TextFieldProps } from '@material-ui/core'
+import { TextField, Paper, MenuItem } from '@material-ui/core'
 import { makeStyles, withStyles } from '@material-ui/core/styles'
 import { FieldInputProps, FieldMetaState } from 'react-final-form'
 
 const handleSuggestionsFetchRequested = () => {}
 
-interface Props extends Autosuggest.RenderInputComponentProps {
+interface RenderInputProps extends Autosuggest.RenderInputComponentProps {
   meta: FieldMetaState<any>
 }
 
-const InputComponent = (props: Props) => {
+const InputComponent = (props: RenderInputProps) => {
   const { inputRef = () => {}, ref, meta, ...rest } = props
   const showError =
     ((meta.submitError && !meta.dirtySinceLastSubmit) || meta.error) &&
@@ -24,7 +24,7 @@ const InputComponent = (props: Props) => {
       error={showError}
       helperText={showError ? meta.error || meta.submitError : undefined}
       InputProps={{
-        inputRef: node => {
+        inputRef: (node: HTMLInputElement) => {
           ref(node)
           inputRef(node)
         },
@@ -49,7 +49,7 @@ const renderSuggestion = (
   return <StyledMenuItem selected={isHighlighted}>{suggestion}</StyledMenuItem>
 }
 
-const getSuggestionValue = (suggestion: { label: string }) => suggestion.label
+const getSuggestionValue = (suggestion: string) => suggestion
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -82,7 +82,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-interface Props {
+interface AutosuggestFieldProps {
   label: string
   meta: FieldMetaState<any>
   input: FieldInputProps<string>
@@ -90,7 +90,11 @@ interface Props {
   fullWidth: boolean
 }
 
-const AutosuggestField: FC<Props> = ({ suggestions, label, ...rest }) => {
+const AutosuggestField: FC<AutosuggestFieldProps> = ({
+  suggestions,
+  label,
+  ...rest
+}) => {
   const classes = useStyles()
   const [isClearRequested, setIsClearRequested] = useState(false)
 
@@ -104,10 +108,10 @@ const AutosuggestField: FC<Props> = ({ suggestions, label, ...rest }) => {
   const {
     input: { onChange, name, value },
   } = rest
+
   const handleSuggestionsClearRequested = useCallback(() => {
     setIsClearRequested(true)
-    // eslint-disable-next-line
-  }, [setIsClearRequested])
+  }, [])
 
   const handleChange = useCallback(
     (event, data) => {
@@ -117,7 +121,6 @@ const AutosuggestField: FC<Props> = ({ suggestions, label, ...rest }) => {
       }
       setIsClearRequested(false)
     },
-    // eslint-disable-next-line
     [onChange],
   )
 
@@ -129,7 +132,6 @@ const AutosuggestField: FC<Props> = ({ suggestions, label, ...rest }) => {
       }
       setIsClearRequested(false)
     },
-    // eslint-disable-next-line
     [onChange],
   )
 

@@ -63,17 +63,19 @@ const useAuthStore = create<IUseAuthStore>((set, get) => ({
           : { [key]: value },
       },
     })),
-  logout: router =>
+  logout: router => {
     set(state => {
       deleteCookie(authConfig.tokenKeyName)
       localStorage.removeItem(authConfig.tokenKeyName)
-      router.push(`/${defaultValues.citySlug}`)
       return {
         data: {
           ...state.data,
           me: null,
+          user: null,
         },
       }
-    }),
+    })
+    router.push(`/${defaultValues.citySlug}`)
+  },
 }))
 export default useAuthStore

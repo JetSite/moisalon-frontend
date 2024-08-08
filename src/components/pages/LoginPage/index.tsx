@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { FC, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useMutation, useQuery } from '@apollo/client'
 import MainLayout from '../../../layouts/MainLayout'
@@ -27,9 +27,11 @@ import useAuthStore from 'src/store/authStore'
 import { setCookie } from 'cookies-next'
 import { authConfig } from 'src/api/authConfig'
 import { register } from 'src/api/graphql/me/mutations/register'
+import { ICity } from 'src/types'
 
-const LoginPage = () => {
+const LoginPage: FC = () => {
   const { setMe } = useAuthStore(getStoreEvent)
+  const [loading, setLoading] = useState<boolean>(false)
   const [isRegister, setIsRegister] = useState(false)
   const [checked, setChecked] = useState<boolean>(false)
   const [valueEmail, setValueEmail] = useState<string>('')
@@ -46,12 +48,13 @@ const LoginPage = () => {
     onCompleted: data => {
       setCookie(authConfig.tokenKeyName, data.login.jwt)
       setMe({ info: { ...data.login.user } })
-      console.log(data.login.jwt)
-
       router.push('/masterCabinet')
     },
     onError: error => {
-      setErrors([error.message])
+      console.log(error)
+
+      setLoading(false)
+      setErrors(['Проверьте ваши учетные данные'])
       setErrorPopupOpen(true)
     },
   })
@@ -61,11 +64,11 @@ const LoginPage = () => {
       if (data) {
         setCookie(authConfig.tokenKeyName, data.register.jwt)
         setMe({ info: { ...data.register.user } })
-
         router.push('/masterCabinet')
       }
     },
     onError: error => {
+      setLoading(false)
       setErrors([error.message])
       setErrorPopupOpen(true)
     },
@@ -92,6 +95,7 @@ const LoginPage = () => {
     email: string
     password: string
   }) => {
+    setLoading(true)
     if (isRegister) {
       registerMutation({ variables: { email, username: email, password } })
     } else {
@@ -162,10 +166,12 @@ const LoginPage = () => {
                   style={{ marginTop: 16 }}
                   mt="67"
                   mb="105"
+                  onClick={e => loading && e.preventDefault()}
                   disabled={valueEmail === '' || valuePassword === ''}
+                  loading={loading}
                   type="submit"
                 >
-                  Подтвердить
+                  {loading ? 'Подождите' : 'Подтвердить'}
                 </Button>
               </Form>
             </FormWrapper>

@@ -1,4 +1,4 @@
-import { useLazyQuery, useQuery } from '@apollo/client'
+import { ApolloQueryResult, useLazyQuery, useQuery } from '@apollo/client'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
 import { getCookie } from 'cookies-next'
@@ -31,10 +31,15 @@ export interface ICabinetRequestsData {
 interface Props {
   accessToken?: string
   requests: ICabinetRequestsData
+  user: ApolloQueryResult<any>
 }
 
-const CabinetPage: NextPage<Props> = ({ requests }) => {
-  const { user, loading } = useAuthStore(getStoreData)
+const CabinetPage: NextPage<Props> = ({ requests, user: datauser }) => {
+  const { user, loading, me } = useAuthStore(getStoreData)
+
+  console.log(user)
+
+  console.log('user', datauser)
 
   if (loading || !user) return <CreatePageSkeleton />
 

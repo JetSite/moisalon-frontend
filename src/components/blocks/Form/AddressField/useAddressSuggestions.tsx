@@ -1,9 +1,8 @@
-import { useQuery } from '@apollo/client'
 import { useDebounce } from 'use-debounce'
-import { addressSuggestionsQuery } from '../../../../_graphql-legacy/addressSuggestionsQuery'
 import { getDadataAddress } from 'src/api/dadata/getAddress'
 import { useEffect, useState } from 'react'
 import { ISetState } from 'src/types/common'
+import { getDadataCity } from 'src/api/dadata/getCity'
 
 const isEnoughLength = (address: string) =>
   address ? address.length > 2 : false
@@ -18,6 +17,7 @@ export interface IAddressSuggestion {
 
 type IuseAddressSuggestions = (
   addres: string,
+  onlyCity?: boolean,
   debounce?: number,
 ) => {
   suggestions: string[]
@@ -26,6 +26,7 @@ type IuseAddressSuggestions = (
 
 export const useAddressSuggestions: IuseAddressSuggestions = (
   address,
+  onlyCity,
   debounce = 500,
 ) => {
   const [data, setData] = useState<IAddressSuggestion[]>([])
@@ -37,7 +38,10 @@ export const useAddressSuggestions: IuseAddressSuggestions = (
       string: string,
       setData: ISetState<IAddressSuggestion[]>,
     ) => {
-      const res = await getDadataAddress(string)
+      const res = onlyCity
+        ? await getDadataCity(string)
+        : await getDadataAddress(string)
+
       setData(res)
     }
     if (validAddress) {
@@ -49,7 +53,7 @@ export const useAddressSuggestions: IuseAddressSuggestions = (
     return { suggestions: [], coordinates: null }
   }
 
-  const prepareSuggestions = data.length
+  let prepareSuggestions = data.length
     ? data.filter(a => a.value !== null && a.value !== undefined)
     : []
 
