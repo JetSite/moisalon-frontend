@@ -4,14 +4,12 @@ import { FieldArray } from 'react-final-form-arrays'
 import PhotoArray from './PhotoArray'
 import { IPhoto } from 'src/types'
 import { IID, ISetState } from 'src/types/common'
+import { IUsePhotoProps } from './usePhotos'
 
-export interface PhotoArrayFieldProps {
+export interface PhotoArrayFieldProps
+  extends Omit<IUsePhotoProps, 'onRemove' | 'onChange' | 'onAdd'> {
   variant?: 'normal' | string
-  photoType: 'salonPhoto' | string
-  kind: 'small' | string
   description?: string
-  photos: IPhoto[]
-  setPhotosArray: ISetState<string[]>
 }
 
 const PhotoArrayField: FC<PhotoArrayFieldProps> = ({

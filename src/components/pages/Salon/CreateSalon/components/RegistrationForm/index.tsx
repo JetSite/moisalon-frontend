@@ -1,12 +1,4 @@
-import {
-  useState,
-  useMemo,
-  FC,
-  RefObject,
-  RefAttributes,
-  LegacyRef,
-  MutableRefObject,
-} from 'react'
+import { useState, useMemo, FC, RefObject, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { Wrapper, Title } from './styled'
 import { MobileVisible, MobileHidden } from '../../../../../../styles/common'
@@ -19,23 +11,13 @@ import SalonActivities from './components/SalonActivities'
 import SalonServices from './components/SalonServices'
 import Schedule from './components/Schedule'
 import Administrator from './components/Administrator'
-import catalogOrDefault from '../../../../../../utils/catalogOrDefault'
 import { useMutation } from '@apollo/react-hooks'
-import { createSalonMutation } from '../../../../../../_graphql-legacy/salon/createSalonMutation'
-import { updateSalonMutation } from '../../../../../../_graphql-legacy/salon/updateSalonMutation'
-import { updateSalonIdentityMutation } from '../../../../../../_graphql-legacy/salon/updateSalonIdentityMutation'
-import { updateSalonLogoMutation } from '../../../../../../_graphql-legacy/salon/updateSalonLogoMutation'
-import { useQuery } from '@apollo/client'
-import { currentUserSalonsAndMasterQuery } from '../../../../../../_graphql-legacy/master/currentUserSalonsAndMasterQuery'
 import useBaseStore from 'src/store/baseStore'
 import { getStoreData } from 'src/store/utils'
-import { ISalon, ISalonPage } from 'src/types/salon'
-import { IID, ISetState } from 'src/types/common'
+import { ISalonPage } from 'src/types/salon'
 import { IServiceInForm } from 'src/types/services'
 import { IHandleClickNextTabInForm } from '../..'
 import { ICity, IPhoto } from 'src/types'
-import { workingHoursOptions } from 'src/components/blocks/Form/WorkingTimeField/WorkingTime'
-import { transformWorkingHours } from 'src/utils/newUtils/transformWorkingHoursInput'
 import { UPDATE_SALON } from 'src/api/graphql/salon/mutations/updateSalon'
 import { getServicesForCatalog } from 'src/utils/newUtils/getServicesForCatalog'
 import { cyrToTranslit } from '../../../../../../utils/translit'
@@ -44,7 +26,6 @@ import { getPrepareInputSalonForm } from './utils/getPrepareInputSalonForm'
 import { CREATE_SALON } from 'src/api/graphql/salon/mutations/createSalon'
 import useAuthStore from 'src/store/authStore'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
-import { UPDATE_SALON_PHOTO } from 'src/api/graphql/salon/mutations/updateSalonPhoto'
 import {
   IInitialValuesSalonForm,
   getInitialValuesSalonForm,
@@ -61,7 +42,7 @@ interface Props {
   rent: boolean
   handleClickNextTab: IHandleClickNextTabInForm
   salon: ISalonPage | null
-  setNoPhotoError: ISetState<boolean>
+  noPhotoError: boolean
   logo: IPhoto | null
   cities: ICity[]
 }
@@ -76,7 +57,7 @@ const RegistrationForm: FC<Props> = ({
   ref6,
   handleClickNextTab,
   salon,
-  setNoPhotoError,
+  noPhotoError,
   rent,
   logo,
   cities,
@@ -96,16 +77,23 @@ const RegistrationForm: FC<Props> = ({
 
   const salonActivitiesCatalog = activities
     ? activities.map(({ title, id }) => ({
-      id,
-      name: id,
-      title: title,
-    }))
+        id,
+        name: id,
+        title: title,
+      }))
     : []
 
   const salonWithInitialArrays = useMemo<IInitialValuesSalonForm>(
     () => getInitialValuesSalonForm(salon),
     [],
   )
+
+  useEffect(() => {
+    if (noPhotoError) {
+      setErrorPopupOpen(true)
+      setErrors(['Ошибка загрузки логотипа'])
+    }
+  }, [noPhotoError])
 
   const [addCity, { loading: addCityLoad }] = useMutation(CREATE_CITY)
 
@@ -170,7 +158,8 @@ const RegistrationForm: FC<Props> = ({
             variables: { input: { user: me?.info.id, ...input } },
           }).then(data => {
             router.push(
-              `/${findCityData?.slug}/${rent ? 'rent' : 'salon'}/${data.data.createSalon.data.id
+              `/${findCityData?.slug}/${rent ? 'rent' : 'salon'}/${
+                data.data.createSalon.data.id
               }`,
             )
           })
@@ -194,7 +183,8 @@ const RegistrationForm: FC<Props> = ({
           variables: { input: { user: me?.info.id, ...input } },
         }).then(data => {
           router.push(
-            `/${findCity?.slug}/${rent ? 'rent' : 'salon'}/${data.data.createSalon.data.id
+            `/${findCity?.slug}/${rent ? 'rent' : 'salon'}/${
+              data.data.createSalon.data.id
             }`,
           )
         })
@@ -254,7 +244,9 @@ const RegistrationForm: FC<Props> = ({
                   variant="red"
                   size="noWidth"
                   type="submit"
-                  disabled={pristine || loadingCreate || loadingUpdate || loading}
+                  disabled={
+                    pristine || loadingCreate || loadingUpdate || loading
+                  }
                 >
                   {loadingCreate || loadingUpdate || loading
                     ? 'Подождите'
@@ -267,7 +259,9 @@ const RegistrationForm: FC<Props> = ({
                   size="fullWidth"
                   font="popUp"
                   type="submit"
-                  disabled={pristine || loadingCreate || loadingUpdate || loading}
+                  disabled={
+                    pristine || loadingCreate || loadingUpdate || loading
+                  }
                 >
                   {loadingCreate || loadingUpdate || loading
                     ? 'Подождите'

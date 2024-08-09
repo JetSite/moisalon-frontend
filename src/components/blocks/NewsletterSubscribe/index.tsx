@@ -41,12 +41,7 @@ const NewsletterSubscribe = () => {
         />
         <Label htmlFor="email">E-mail</Label>
       </InputWrap>
-      <Button
-        disabled
-        size="fullWidth"
-        variant="darkBorder"
-        onClick={submitHandler}
-      >
+      <Button disabled variant="darkBorder" onClick={submitHandler}>
         Подписаться
       </Button>
     </Wrapper>

@@ -37,6 +37,16 @@ import { ICity } from 'src/types'
 import { fetchCity } from 'src/api/utils/fetchCity'
 import { setCookie } from 'cookies-next'
 import { IRatingValue, getRating } from 'src/utils/newUtils/getRating'
+import styled from 'styled-components'
+import { laptopBreakpoint } from 'src/styles/variables'
+
+const DecktopWrapper = styled.div`
+  display: block;
+
+  @media (max-width: ${laptopBreakpoint}) {
+    display: none;
+  }
+`
 
 interface Props {
   salonData: ISalonPage
@@ -137,6 +147,32 @@ const Salon: FC<Props> = ({ salonData, othersSalons, cityData }) => {
         />
       ) : null}
       {salon?.photos?.length > 0 && <MobileSalonPhotos salon={salon} />}
+      {salon?.photos?.length || isOwner ? (
+        <DecktopWrapper>
+          <Slider
+            city={salon.city}
+            type="portfolio"
+            items={salon.photos}
+            isOwner={isOwner}
+            title="Фото салона"
+            // isEditing={isPortfolioEditing}
+            // setIsEditing={setIsPortfolioEditing}
+            // deleteFunction={onDelete}
+            pt={52}
+            pb={31}
+          >
+            {/* {isPortfolioEditing ? <PhotoAdd onAdd={() => {}} /> : null}
+              {isPortfolioEditing && isOwner ? (
+                <NoItemsText>Нажмите плюс, чтобы добавить работы</NoItemsText>
+              ) : !master?.photosWorks?.length && isOwner ? (
+                <NoItemsText>
+                  Нет добавленных работ. Нажмите на карандаш, чтобы добавить
+                  работы в портфолио
+                </NoItemsText>
+              ) : null} */}
+          </Slider>
+        </DecktopWrapper>
+      ) : null}
       {salon?.masters?.length || isOwner ? (
         <MobileServicesForClient
           isOwner={isOwner}

@@ -24,11 +24,18 @@ import { IPhoto } from 'src/types'
 import { ISalonPage } from 'src/types/salon'
 import { IHandleClickNextTabInForm } from '../../../..'
 import { IFormAboutProps } from 'src/components/pages/Master/CreateMaster/components/RegistrationForm/components/About'
+import { IUsePhotoProps } from 'src/components/blocks/Form/PhotoArrayField/usePhotos'
 
 interface Props extends IFormAboutProps {
   photos: IPhoto[]
   setPhotosArray: ISetState<string[]>
 }
+
+interface IphotoArrayPros
+  extends Pick<
+    IUsePhotoProps,
+    'photoType' | 'kind' | 'photos' | 'setPhotosArray'
+  > {}
 
 const About: FC<Props> = ({
   setClickCity,
@@ -39,7 +46,7 @@ const About: FC<Props> = ({
   setPhotosArray,
 }) => {
   const [view, setView] = useState<boolean>(false)
-  const photoArrayProps = {
+  const photoArrayProps: IphotoArrayPros = {
     photoType: 'salonPhoto',
     kind: 'small',
     photos,

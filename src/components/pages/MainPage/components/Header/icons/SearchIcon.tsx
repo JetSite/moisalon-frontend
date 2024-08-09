@@ -1,11 +1,10 @@
-import { FC, MouseEventHandler } from 'react'
+import { FC } from 'react'
 
 interface Props {
-  searchIconClickHandler?: MouseEventHandler<SVGSVGElement>
   fill?: string
 }
 
-const SearchIcon: FC<Props> = ({ fill = '#000', searchIconClickHandler }) => (
+const SearchIcon: FC<Props> = ({ fill = '#000' }) => (
   <svg
     width="21"
     height="23"
@@ -13,7 +12,6 @@ const SearchIcon: FC<Props> = ({ fill = '#000', searchIconClickHandler }) => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     id="searchSvg"
-    onClick={searchIconClickHandler}
   >
     <path
       d="M11.8062 14L19.6769 22"

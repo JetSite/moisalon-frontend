@@ -37,7 +37,7 @@ const CabinetRequests: FC<Props> = ({ requestsData, meID }) => {
   const {
     rentalRequests,
     deletedRentalRequests,
-    rentslRequestsSalons,
+    rentalRequestsSalons,
     deletedRentalRequestsSalons,
   } = requestsData
   const [showDeleted, setShowDeleted] = useState<boolean>(false)
@@ -75,7 +75,7 @@ const CabinetRequests: FC<Props> = ({ requestsData, meID }) => {
         <SalonRequests
           setShowDeleted={setShowDeleted}
           salonDeletedRequests={deletedRentalRequestsSalons}
-          salonRequests={rentslRequestsSalons}
+          salonRequests={rentalRequestsSalons}
           showDeleted={showDeleted}
           activeTab={activeTab}
         />
@@ -83,7 +83,7 @@ const CabinetRequests: FC<Props> = ({ requestsData, meID }) => {
         <MyRequests
           setShowDeleted={setShowDeleted}
           myDeletedRequests={deletedRentalRequests}
-          myRequests={rentslRequestsSalons}
+          myRequests={rentalRequests}
           showDeleted={showDeleted}
           activeTab={activeTab}
         />

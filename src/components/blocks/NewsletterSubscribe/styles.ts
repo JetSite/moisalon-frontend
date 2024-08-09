@@ -4,6 +4,7 @@ import { laptopBreakpoint, tabletBreakpoint } from '../../../styles/variables'
 export const Wrapper = styled.div`
   width: 100%;
   padding: 57px 140px;
+  gap: 50px;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
@@ -21,8 +22,9 @@ export const Wrapper = styled.div`
   }
 `
 
-export const Text = styled.div`
-  min-width: 439px;
+export const Text = styled.p`
+  max-width: 439px;
+  min-width: fit-content;
   color: #fff;
   font-size: 18px;
   font-weight: 600;
@@ -40,6 +42,7 @@ export const Text = styled.div`
 `
 
 export const InputWrap = styled.div`
+  max-width: 332px;
   width: 100%;
   position: relative;
 `
@@ -57,9 +60,8 @@ export const Label = styled.label`
 `
 
 export const Input = styled.input`
-  min-width: 332px;
+  width: 100%;
   height: 39px;
-  margin-right: 124px;
   padding: 0 0 14px 0;
   border: 0;
   border-bottom: 1px solid #fff;

@@ -1,5 +1,6 @@
 import styled from 'styled-components'
-import { laptopBreakpoint } from '../../../../../styles/variables'
+import { laptopBreakpoint, red } from '../../../../../styles/variables'
+import { IconStiled, TrashIcon } from 'src/components/ui/Icons/Trash'
 
 export const Wrapper = styled.div`
   max-width: 710px;
@@ -29,6 +30,7 @@ export const Item = styled.div`
   cursor: pointer;
   transition: 0.3s;
   border: 1px solid #f8f8f8;
+  position: relative;
   &:hover {
     border: 1px solid #000000;
     background: #fff;
@@ -103,7 +105,28 @@ export const SubTitle = styled.p`
   }
 `
 
-export const Button = styled.div`
+export const DeleteButton = styled.button`
+  cursor: pointer;
+  position: absolute;
+  right: 16px;
+  padding: 0;
+  border: none;
+  margin: 0;
+  width: 26px;
+`
+
+export const TrashIconStyled = styled(TrashIcon)`
+  opacity: 0.5;
+  :hover {
+    opacity: 0.7;
+    fill: ${red};
+  }
+`
+
+export const ButtonStyled = styled.button`
+  border: none;
+  margin: 0;
+  padding: 0;
   cursor: pointer;
   height: 55px;
   width: 350px;

@@ -79,9 +79,7 @@ const Header = ({ loading = false }) => {
   const quantity =
     cart?.cartContent?.reduce((acc, item) => acc + item.quantity, 0) || 0
 
-  const logoClickHandler = () => {
-    router.push(`/${city.slug}`)
-  }
+  const logoClickHandler = () => {}
 
   const searchIconClickHandler = () => {
     setShowSearchPopup(!showSearchPopup)
@@ -121,11 +119,10 @@ const Header = ({ loading = false }) => {
       <Wrapper showSearchPopup={showSearchPopup} isAboutPage={isAboutPage}>
         <HeaderContent>
           <HeaderMenu>
-            <LogoWrap>
+            <LogoWrap href={`/${city.slug}`}>
               <Image
                 alt="logo"
                 src={isAboutPage ? '/logo-white-header.svg' : '/logo.svg'}
-                onClick={logoClickHandler}
               />
             </LogoWrap>
             <Nav>
@@ -137,7 +134,7 @@ const Header = ({ loading = false }) => {
                       active={!!activeLink(router.pathname, link.pathArr)}
                       disable={link.disabled}
                       isAboutPage={isAboutPage}
-                    // visible={!!link?.visible}
+                      // visible={!!link?.visible}
                     >
                       {link.disabled ? (
                         <p>{link.title}</p>
@@ -190,6 +187,7 @@ const Header = ({ loading = false }) => {
               </CitySelectText>
             </LinkCitySelect>
             <LinkSearch
+              onClick={searchIconClickHandler}
               onMouseMove={() => setFillSearch(red)}
               onMouseLeave={() =>
                 setFillSearch(
@@ -197,13 +195,10 @@ const Header = ({ loading = false }) => {
                 )
               }
             >
-              <SearchIcon
-                fill={fillSearch}
-                searchIconClickHandler={searchIconClickHandler}
-              />
+              <SearchIcon fill={fillSearch} />
             </LinkSearch>
             {!!user?.info ? (
-              <ProfilePhotoWrap onClick={() => router.push('/masterCabinet')}>
+              <ProfilePhotoWrap href="/masterCabinet">
                 <ProfilePhoto
                   src={
                     user?.info?.avatar
@@ -217,23 +212,20 @@ const Header = ({ loading = false }) => {
               </ProfilePhotoWrap>
             ) : (
               <LinkProfile
+                href={authConfig.notAuthLink}
                 onMouseMove={() => setFillProfile(red)}
                 onMouseLeave={() =>
                   setFillProfile(isAboutPage ? '#fff' : '#000')
                 }
                 onClick={() => {
-                  if (user === null) {
-                    router.push(authConfig.notAuthLink)
-                    return
-                  }
                   ym('reachGoal', 'click_login_head')
-                    ; (window as any).dataLayer.push({
-                      event: 'event',
-                      eventProps: {
-                        category: 'click',
-                        action: 'login_head',
-                      },
-                    })
+                  ;(window as any).dataLayer.push({
+                    event: 'event',
+                    eventProps: {
+                      category: 'click',
+                      action: 'login_head',
+                    },
+                  })
                 }}
               >
                 <ProfileIcon fill={fillProfile} />
@@ -241,26 +233,16 @@ const Header = ({ loading = false }) => {
             )}
 
             <LinkFavorites
+              href="/favorites"
               onMouseMove={() => setFillFav(red)}
               onMouseLeave={() => setFillFav(isAboutPage ? '#fff' : '#000')}
-              onClick={() => router.push('/favorites')}
             >
               <HeartIcon fill={fillFav} />
             </LinkFavorites>
             <CartIconWrap
+              href={user?.info ? `/cart` : authConfig.notAuthLink}
               onMouseMove={() => setFillCart(red)}
               onMouseLeave={() => setFillCart(isAboutPage ? '#fff' : '#000')}
-              onClick={() => {
-                user?.info
-                  ? router.push(`/cart`)
-                  : router.push(
-                    {
-                      pathname: 'authConfig.notAuthLink',
-                      query: { error: 'notAuthorized' },
-                    },
-                    authConfig.notAuthLink,
-                  )
-              }}
             >
               <CartIcon fill={fillCart} />
               {quantity != 0 ? (

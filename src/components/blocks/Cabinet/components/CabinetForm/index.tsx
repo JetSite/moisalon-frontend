@@ -131,11 +131,6 @@ const CabinetForm: FC<Props> = ({
 
   const onSubmit = useCallback(
     async (values: { [key: string]: string }) => {
-      // if (true) {
-      //   console.log(cities)
-      //   console.log(cityId)
-      //   return
-      // }
       if (!photo) {
         setNoPhotoError(true)
         setErrors(['Необходимо добавить фото'])
