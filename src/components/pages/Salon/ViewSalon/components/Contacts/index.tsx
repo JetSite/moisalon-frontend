@@ -124,12 +124,14 @@ const Contacts: FC<Props> = ({
               <Schedule workingHours={workingHours} />
             </SheduleWrap>
           </ContentWrapperFlex>
-          <RouteBlock>
-            <RouteBlockTitle>
-              Описание маршрута:&nbsp; {locationDirections}
-            </RouteBlockTitle>
-            <RouteDescription>{''}</RouteDescription>
-          </RouteBlock>
+          {locationDirections && (
+            <RouteBlock>
+              <RouteBlockTitle>
+                Описание маршрута:&nbsp; {locationDirections}
+              </RouteBlockTitle>
+              <RouteDescription>{''}</RouteDescription>
+            </RouteBlock>
+          )}
           {metroStations?.length ? (
             <SubwayFlex>
               {metroStations.map((item, key) => (
@@ -145,7 +147,12 @@ const Contacts: FC<Props> = ({
           <ContentBottom>
             <ContentWrapperElement>
               {coordinates?.longitude && coordinates?.latitude ? (
-                <Map address={address} />
+                <Map
+                  address={{
+                    longitude: coordinates?.longitude,
+                    latitude: coordinates.latitude,
+                  }}
+                />
               ) : null}
             </ContentWrapperElement>
             <ContentWrapperElement>

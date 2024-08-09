@@ -69,6 +69,8 @@ export const getAuthLink = (accessToken?: string) => {
     return forward(operation)
   })
   const errorLink = onError(error => {
+    console.log(error)
+
     if (error.networkError?.message.includes('headers')) {
       if (typeof window !== 'undefined') {
         deleteCookie(authConfig.tokenKeyName)

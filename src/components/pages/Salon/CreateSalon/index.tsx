@@ -207,7 +207,7 @@ const CreateSalon: FC<Props> = ({ salon, cities, rent = false }) => {
             ref5={ref5}
             ref6={ref6}
             salon={salon}
-            setNoPhotoError={setNoPhotoError}
+            noPhotoError={noPhotoError}
             logo={logo}
           />
         </Wrapper>

@@ -8,6 +8,8 @@ export const Wrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 36px;
+  flex-wrap: wrap;
+  gap: 12px;
 
   @media (max-width: ${laptopBreakpoint}) {
     height: 100px;

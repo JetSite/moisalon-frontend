@@ -1,8 +1,13 @@
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../../../styles/variables'
+import { PHOTO_URL } from 'src/api/variables'
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{ url: string }>`
   padding: 0 140px;
+  background-image: ${({ url }) => 'url(' + PHOTO_URL + url + ')'};
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 
   @media (max-width: ${laptopBreakpoint}) {
     padding: 0 20px;

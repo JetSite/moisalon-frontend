@@ -79,5 +79,6 @@ export const getPrepareInputSalonForm: IGetPrepareInputSalonForm = ({
     logo: logo?.id,
     photos,
     rent,
+    cover: photos.length ? photos[0] : null,
   }
 }

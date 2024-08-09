@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import { laptopBreakpoint } from '../../../styles/variables'
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.ul`
   display: flex;
   justify-content: flex-start;
   @media (max-width: ${laptopBreakpoint}) {
@@ -14,7 +14,7 @@ export const Wrapper = styled.div`
   }
 `
 
-export const Tag = styled.div`
+export const Tag = styled.li`
   border: 1px solid #000000;
   border-radius: 50px;
   font-weight: 500;

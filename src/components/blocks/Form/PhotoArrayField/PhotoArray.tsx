@@ -2,7 +2,7 @@ import React, { FC, useCallback } from 'react'
 import PhotoAdd from './PhotoAdd'
 import PhotoItem from './PhotoItem'
 import { Grid } from '@material-ui/core'
-import usePhotos from './usePhotos'
+import usePhotos, { IUsePhotoProps } from './usePhotos'
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../styles/variables'
 import { useMutation } from '@apollo/client'
@@ -29,12 +29,7 @@ const Wrap = styled.div`
   align-items: flex-start;
 `
 
-interface Props extends PhotoArrayFieldProps {
-  description?: string
-  photos: IPhoto[]
-  defaultPhotoId?: IID
-  onSetDefault: (event: any) => void
-}
+interface Props extends PhotoArrayFieldProps, IUsePhotoProps {}
 
 const PhotoArray: FC<Props> = props => {
   const { photos, defaultPhotoId, onSetDefault, description, variant } = props
@@ -45,10 +40,10 @@ const PhotoArray: FC<Props> = props => {
       <Grid item key={photo.id}>
         <PhotoItem
           photo={photo}
-          isDefault={photo.id === defaultPhotoId}
+          // isDefault={photo.id === defaultPhotoId}
           onChange={onChange}
           onRemove={onRemove}
-          onSetDefault={onSetDefault}
+          // onSetDefault={onSetDefault}
         />
       </Grid>
     )

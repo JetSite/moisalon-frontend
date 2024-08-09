@@ -1,7 +1,9 @@
-import React, { useCallback, useState } from 'react'
+import React, { FC, MouseEvent, useCallback, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { makeStyles } from '@material-ui/core'
 import { PHOTO_URL } from 'src/api/variables'
+import { IUsePhotoResult } from './usePhotos'
+import { IPhoto } from 'src/types'
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -18,21 +20,25 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-const PhotoItem = ({ photo, onSetDefault, onRemove, onChange, isDefault }) => {
+interface Props extends Pick<IUsePhotoResult, 'onRemove' | 'onChange'> {
+  photo: IPhoto
+}
+
+const PhotoItem: FC<Props> = ({ photo, onRemove, onChange }) => {
   const { id, url } = photo
   const [isHover, setHover] = useState<boolean>(false)
   const classes = useStyles()
 
   const onDrop = useCallback(
-    files => {
+    (files: File[]) => {
       onChange(id, files)
     },
     [onChange, id],
   )
 
   const handleOnRemove = useCallback(
-    ev => {
-      ev.stopPropagation()
+    (e: MouseEvent<HTMLDivElement>) => {
+      e.stopPropagation()
       onRemove(id)
     },
     [onRemove, id],
@@ -57,6 +63,7 @@ const PhotoItem = ({ photo, onSetDefault, onRemove, onChange, isDefault }) => {
       <div
         style={{
           backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
           height: 100,
           width: 100,
           backgroundImage: `url(${PHOTO_URL + url})`,

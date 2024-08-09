@@ -113,14 +113,14 @@ const Header: FC<Props> = ({ salon, isOwner }) => {
           origin="SALON"
           originData={salon}
         />
-        <Wrapper>
+        <div style={{ padding: '0 140px' }}>
           <BackButton
             type="Салон"
             link={isOwner ? '/masterCabinet' : `/${city.slug}/salon`}
             name={salon.name}
           />
-        </Wrapper>
-        <Wrapper>
+        </div>
+        <Wrapper url={salon.cover?.url || salon.photos[0]?.url || ''}>
           <Socials>
             <noindex>
               {salon?.onlineBookingUrl ? (

@@ -32,6 +32,8 @@ export const InputWrap = styled.div`
   border-radius: 5px;
   overflow: hidden;
   -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 
   &:before {
     position: absolute;
@@ -81,6 +83,8 @@ export const Input = styled.input`
   padding-right: 50px;
   height: 56px;
   -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
   ::-webkit-input-placeholder {
     color: #a2a2a2;
     font-weight: 600;

@@ -11,3 +11,9 @@ export const dadataConfig = {
 export const PHOTO_URL = dev
   ? `https://moisalon-backend.jetsite.ru`
   : `https://moisalon-backend.jetsite.ru`
+
+export const UPLOAD_PHOTO_OPTIONS = {
+  maxSizeMB: 1,
+  maxWidthOrHeight: 1200,
+  useWebWorker: true,
+}

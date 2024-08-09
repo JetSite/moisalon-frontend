@@ -1,10 +1,12 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, FC, RefObject } from 'react'
 import styled from 'styled-components'
 import SearchBlock from './components/SearchBlock'
 import SearchResults from './components/SearchResults'
 import { laptopBreakpoint } from '../../../styles/variables'
+import { ISetState } from 'src/types/common'
+import { ISearchQuery } from './components/Search'
 
-const SearchPopupWrapper = styled.div`
+const SearchPopupWrapper = styled.section`
   position: fixed;
   top: 112px;
   left: 0;
@@ -25,7 +27,16 @@ const SearchPopupWrapper = styled.div`
   }
 `
 
-const SearchPopup = ({
+interface Props {
+  showSearchPopup: boolean
+  setShowSearchPopup: ISetState<boolean>
+  setFillSearch: ISetState<string>
+  fillFav: string
+  fillProfile: string
+  fillCart: string
+}
+
+const SearchPopup: FC<Props> = ({
   showSearchPopup,
   setShowSearchPopup,
   fillFav,
@@ -33,8 +44,8 @@ const SearchPopup = ({
   fillCart,
   setFillSearch,
 }) => {
-  const [query, setQuery] = useState({})
-  const searchPopupRef = useRef()
+  const [query, setQuery] = useState<ISearchQuery>({ query: '', city: '' })
+  const searchPopupRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
     if (showSearchPopup) {
@@ -49,16 +60,12 @@ const SearchPopup = ({
     }
   }, [fillFav, fillProfile, fillCart])
 
-  const useOutsideClick = ref => {
+  const useOutsideClick = (ref: RefObject<HTMLElement>) => {
     useEffect(() => {
-      const handleClickOutside = e => {
-        if (
-          e.target.id === 'searchSvg' ||
-          e.target.id === 'searchIconPath1' ||
-          e.target.id === 'searchIconPath2'
-        )
-          return
-        if (ref.current && !ref.current.contains(e.target)) {
+      const handleClickOutside = (e: MouseEvent) => {
+        const target = e.target as Node
+
+        if (ref.current && !ref.current.contains(target)) {
           setShowSearchPopup(false)
           setFillSearch('#000')
         }
@@ -72,11 +79,9 @@ const SearchPopup = ({
   useOutsideClick(searchPopupRef)
 
   return (
-    <SearchPopupWrapper show={showSearchPopup} ref={searchPopupRef}>
+    <SearchPopupWrapper ref={searchPopupRef}>
       <SearchBlock
         title="Найти услугу / специалиста / косметику"
-        showSearchPopup={showSearchPopup}
-        setShowSearchPopup={setShowSearchPopup}
         query={query}
         setQuery={setQuery}
       />

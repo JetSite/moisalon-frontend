@@ -24,7 +24,7 @@ import { DELETED_RENTAL_REQUESTS_FOR_SALON } from 'src/api/graphql/rentalRequest
 export interface ICabinetRequestsData {
   rentalRequests: IRentalRequest[]
   deletedRentalRequests: IRentalRequest[]
-  rentslRequestsSalons: IRentalRequest[]
+  rentalRequestsSalons: IRentalRequest[]
   deletedRentalRequestsSalons: IRentalRequest[]
 }
 
@@ -36,10 +36,6 @@ interface Props {
 
 const CabinetPage: NextPage<Props> = ({ requests, user: datauser }) => {
   const { user, loading, me } = useAuthStore(getStoreData)
-
-  console.log(user)
-
-  console.log('user', datauser)
 
   if (loading || !user) return <CreatePageSkeleton />
 
@@ -59,12 +55,22 @@ export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async (
   const accessToken = getCookie(authConfig.tokenKeyName, context)
   const apolloClient = initializeApollo({ accessToken })
 
+  if (!accessToken) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: true,
+      },
+    }
+  }
+
   const meData = await apolloClient.query({
     query: ME,
   })
+
   const id = meData.data?.me.id || null
 
-  if (!accessToken || !id) {
+  if (!id) {
     return {
       redirect: {
         destination: '/login',
@@ -80,7 +86,7 @@ export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async (
     const user = flattenStrapiResponse(userData.data.usersPermissionsUser)
     const salonIDArr = user.salons.map((e: ISalon) => e.id)
 
-    const data = await Promise.all([
+    const queries = [
       apolloClient.query({
         query: RENTAL_REQUESTS_FOR_USER,
         variables: { id },
@@ -89,26 +95,31 @@ export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async (
         query: DELETED_RENTAL_REQUESTS_FOR_USER,
         variables: { id },
       }),
-      apolloClient.query({
-        query: RENTAL_REQUESTS_FOR_SALON,
-        variables: { id: salonIDArr },
-      }),
-      apolloClient.query({
-        query: DELETED_RENTAL_REQUESTS_FOR_SALON,
-        variables: { id: salonIDArr },
-      }),
-    ])
+    ]
+
+    if (salonIDArr.length > 0) {
+      queries.push(
+        apolloClient.query({
+          query: RENTAL_REQUESTS_FOR_SALON,
+          variables: { id: salonIDArr },
+        }),
+        apolloClient.query({
+          query: DELETED_RENTAL_REQUESTS_FOR_SALON,
+          variables: { id: salonIDArr },
+        }),
+      )
+    }
+
+    const data = await Promise.all(queries)
 
     const rentalRequests = flattenStrapiResponse(data[0].data?.rentalRequests)
     const deletedRentalRequests = flattenStrapiResponse(
       data[1].data?.rentalRequests,
     )
-    const rentslRequestsSalons = flattenStrapiResponse(
-      data[2].data.rentalRequests,
-    )
-    const deletedRentalRequestsSalons = flattenStrapiResponse(
-      data[3].data.rentalRequests,
-    )
+    const rentalRequestsSalons =
+      flattenStrapiResponse(data[2]?.data.rentalRequests) || []
+    const deletedRentalRequestsSalons =
+      flattenStrapiResponse(data[3]?.data.rentalRequests) || []
 
     return {
       props: {
@@ -116,7 +127,7 @@ export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async (
         requests: {
           rentalRequests,
           deletedRentalRequests,
-          rentslRequestsSalons,
+          rentalRequestsSalons,
           deletedRentalRequestsSalons,
         },
         user: userData.data.usersPermissionsUser,

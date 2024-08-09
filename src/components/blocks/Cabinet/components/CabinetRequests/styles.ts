@@ -178,6 +178,7 @@ export const MasterPhoto = styled.div`
 export const Photo = styled.img`
   width: 100%;
   border-radius: 50%;
+  height: 100%;
 `
 export const Info = styled.div``
 export const Name = styled.h5`

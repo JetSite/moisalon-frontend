@@ -7,7 +7,8 @@ import { useMutation } from '@apollo/client'
 import { UPLOAD } from 'src/api/graphql/common/upload'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { IPhoto } from 'src/types'
-import { PHOTO_URL } from 'src/api/variables'
+import { PHOTO_URL, UPLOAD_PHOTO_OPTIONS } from 'src/api/variables'
+import imageCompression from 'browser-image-compression'
 
 const Wrapper = styled.div`
   width: 120px;
@@ -152,14 +153,22 @@ const Avatar: FC<Props> = ({
   const image = photo ? photo.url : null
   const isEmpty = !image
 
-  const [uploadImage] = useMutation(UPLOAD)
+  const [uploadImage] = useMutation(UPLOAD, {
+    onError: err => {
+      setNoPhotoError && setNoPhotoError(true)
+    },
+  })
 
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
       if (acceptedFiles.length > 0) {
         const file = acceptedFiles[0]
         try {
-          const res = await uploadImage({ variables: { file } })
+          const compressedFile = await imageCompression(
+            file,
+            UPLOAD_PHOTO_OPTIONS,
+          )
+          const res = await uploadImage({ variables: { file: compressedFile } })
           if (res?.data?.upload?.data?.id) {
             const normalisedPhoto = flattenStrapiResponse(res.data.upload.data)
             setPhoto && setPhoto(normalisedPhoto)

@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState, Ref } from 'react'
+import { useRef, useEffect, useState, Ref, FC } from 'react'
 import { YMaps, Map, Placemark } from '@pbe/react-yandex-maps'
 import { Map as YandexMap } from 'yandex-maps'
 
@@ -7,7 +7,7 @@ interface Props {
   view?: boolean
 }
 
-export default function MapBlock({ address, view }: Props) {
+const MapBlock: FC<Props> = ({ address, view }) => {
   if (!address) return <></>
   const mapRef = useRef<YandexMap | null>(null)
   let center = [55.751267, 37.621226]
@@ -56,3 +56,4 @@ export default function MapBlock({ address, view }: Props) {
     </YMaps>
   )
 }
+export default MapBlock

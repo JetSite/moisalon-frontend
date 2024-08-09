@@ -27,8 +27,6 @@ export const getDadataCity: IGetCity = async query => {
     }
     const data = await response.json()
 
-    console.log(data)
-
     if (data && data.suggestions && data.suggestions.length > 0) {
       res = data.suggestions.map((e: { data: any; value: string }) => ({
         geoLat: e.data.geo_lat ? Number(e.data.geo_lat) : null,

@@ -44,14 +44,13 @@ export const useLocationSuggestions = ({
       setCities(response)
     },
   })
-  console.log(cities)
 
   useEffect(() => {
     if (!cities.length) {
       // если нет гододов в сторе запрашиваем что есть в базе
-      // getCities({ variables: { itemsCount: 100 } })
+      getCities({ variables: { itemsCount: 100 } })
     }
-  }, [cities.length, getCities])
+  }, [cities.length])
 
   const locationClickHandler = (location: string) => {
     if (window && window.setFormValue) {

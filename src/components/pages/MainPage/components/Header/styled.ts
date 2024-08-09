@@ -2,7 +2,7 @@ import Link from 'next/link'
 import styled from 'styled-components'
 import { red, laptopBreakpoint } from '../../../../../styles/variables'
 
-export const LogoWrap = styled.div`
+export const LogoWrap = styled.a`
   width: 83px;
   height: 100%;
   cursor: pointer;
@@ -55,20 +55,25 @@ export const WrappperMobile = styled.div`
   }
 `
 
-export const HeaderContent = styled.div`
+export const HeaderContent = styled.header`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-wrap: wrap;
+  gap: 50px;
   width: 1440px;
   margin-left: auto;
   margin-right: auto;
   padding: 0 140px;
+  justify-content: space-between;
+  align-items: center; /* Добавлено для вертикального выравнивания */
 `
 
 export const Nav = styled.nav`
   margin-left: 30px;
   position: relative;
-  top: -5px;
+  display: flex;
+  gap: 20px;
+  flex: 1 1 0%;
+  align-items: center;
 
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
@@ -77,8 +82,9 @@ export const Nav = styled.nav`
 
 export const HeaderMenu = styled.div`
   display: flex;
-  align-items: center;
+  flex: 1 1 0%;
   height: 43px;
+  align-items: center;
 
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
@@ -87,6 +93,11 @@ export const HeaderMenu = styled.div`
 
 export const NavItemWrapper = styled.ul`
   display: flex;
+  gap: 20px;
+  flex: 1 1 0%;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
 `
 
 export const NavItem = styled.li<{
@@ -98,7 +109,6 @@ export const NavItem = styled.li<{
   display: ${({ visible = true }) => (visible ? 'block' : 'none')};
   font-weight: 600;
   opacity: ${({ disable }) => (disable ? '0.4' : '1')};
-  margin-right: 30px;
   a {
     color: ${props =>
       props.active ? red : props.isAboutPage ? '#fff' : '#000'};
@@ -121,9 +131,13 @@ export const NavItem = styled.li<{
   }
 `
 
-export const Links = styled.div`
+export const Links = styled.nav`
   display: flex;
-  align-items: flex-start;
+  gap: 20px;
+  max-width: 390px;
+  flex: 1 1 0%;
+  justify-content: space-between;
+  margin-left: auto; /* Добавлено для выравнивания справа */
 
   @media (max-width: ${laptopBreakpoint}) {
     display: flex;
@@ -180,7 +194,6 @@ export const LinkCitySelect = styled.div`
   height: 23px;
   display: flex;
   justify-content: flex-end;
-  margin-right: 50px;
   column-gap: 17px;
   cursor: pointer;
 
@@ -207,9 +220,9 @@ export const LinkCitySelect = styled.div`
   }
 `
 
-export const LinkFavorites = styled.div`
+export const LinkFavorites = styled.a`
   height: 23px;
-  margin-right: 50px;
+
   cursor: pointer;
 
   @media (max-width: ${laptopBreakpoint}) {
@@ -217,10 +230,17 @@ export const LinkFavorites = styled.div`
   }
 `
 
-export const LinkSearch = styled.div`
+export const LinkSearch = styled.button`
   height: 23px;
-  margin-right: 50px;
+  border: none;
+  padding: 0;
+  margin: 0;
   cursor: pointer;
+
+  :disabled {
+    opacity: 0.8;
+    cursor: default;
+  }
 
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
@@ -237,20 +257,21 @@ export const LinkSearchMobile = styled.div`
   }
 `
 
-export const LinkProfile = styled.div`
+export const LinkProfile = styled.a`
   height: 23px;
-  margin-right: 50px;
   cursor: pointer;
+
+  :hover {
+  }
 
   @media (max-width: ${laptopBreakpoint}) {
     margin-right: 0;
   }
 `
 
-export const ProfilePhotoWrap = styled.div`
+export const ProfilePhotoWrap = styled.a`
   width: 24px;
   height: 24px;
-  margin-right: 50px;
   cursor: pointer;
   position: relative;
 
@@ -353,7 +374,7 @@ export const RightMobile = styled.div`
   max-width: 125px;
 `
 
-export const CartIconWrap = styled.div`
+export const CartIconWrap = styled.a`
   position: relative;
   cursor: pointer;
 `

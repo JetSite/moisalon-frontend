@@ -1,52 +1,59 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, FC } from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import Link from 'next/link'
 import { MainContainer } from '../../../../../styles/common'
 import { Wrapper, Category, Title, List, ListItem, EmptyResult } from './styled'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
-import { masterSearchQuery } from '../../../../../_graphql-legacy/search/masterSearch'
-;('../../../../../_graphql-legacy/search/searchQuery')
 import { brandSearchQuery } from '../../../../../_graphql-legacy/search/brandSearch'
-import RotatingLoader from '../../../../ui/RotatingLoader'
+import RotatingLoader from '../../../RotatingLoader'
 import { cyrToTranslit } from '../../../../../utils/translit'
+import { ISetState } from 'src/types/common'
+import { ISalon } from 'src/types/salon'
+import { IMaster } from 'src/types/masters'
+import { IBrand } from 'src/types/brands'
 
-const SearchResults = ({ setShowSearchPopup, query }) => {
-  const [masterSearchData, setMasterSearchData] = useState(null)
-  const [salonSearchData, setSalonSearchData] = useState(null)
-  const [salonRentSearchData, setSalonRentSearchData] = useState(null)
-  const [brandSearchData, setBrandSearchData] = useState(null)
+interface Props {
+  setShowSearchPopup: ISetState<boolean>
+  query: any
+}
+
+const SearchResults: FC<Props> = ({ setShowSearchPopup, query }) => {
+  const [masterSearchData, setMasterSearchData] = useState<IMaster[]>([])
+  const [salonSearchData, setSalonSearchData] = useState<ISalon[]>([])
+  const [salonRentSearchData, setSalonRentSearchData] = useState<ISalon[]>([])
+  const [brandSearchData, setBrandSearchData] = useState<IBrand[]>([])
   const [masterLoading, setMasterLoading] = useState(false)
   const [salonLoading, setSalonLoading] = useState(false)
   const [salonRentLoading, setSalonRentLoading] = useState(false)
   const [brandLoading, setBrandLoading] = useState(false)
   const { city, me } = useAuthStore(getStoreData)
 
-  const { refetch: refetchMastersSearch } = useQuery(masterSearchQuery, {
-    variables: {
-      variables: {
-        input: {
-          query: (query && query.query) || '',
-          city: city.slug,
-        },
-      },
-    },
-    skip: true,
-    notifyOnNetworkStatusChange: true,
-    onCompleted: res => {
-      setMasterLoading(false)
-      if (res) {
-        setMasterSearchData(res.masterSearch.connection.nodes.slice(0, 8))
-      }
-    },
-  })
+  // const { refetch: refetchMastersSearch } = useQuery(masterSearchQuery, {
+  //   variables: {
+  //     variables: {
+  //       input: {
+  //         query: (query && query.query) || '',
+  //         city: city.slug,
+  //       },
+  //     },
+  //   },
+  //   skip: true,
+  //   notifyOnNetworkStatusChange: true,
+  //   onCompleted: res => {
+  //     setMasterLoading(false)
+  //     if (res) {
+  //       setMasterSearchData(res.masterSearch.connection.nodes.slice(0, 8))
+  //     }
+  //   },
+  // })
 
   let cityInStorage
   if (typeof window !== 'undefined') {
     cityInStorage = localStorage.getItem('citySalon')
   }
   const querySearch = {
-    ...EmptySearchQuery,
+    // ...EmptySearchQuery,
     query: (query && query.query) || '',
     lessor: false,
     city:
@@ -57,7 +64,7 @@ const SearchResults = ({ setShowSearchPopup, query }) => {
         : '',
   }
   const queryRentSearch = {
-    ...EmptySearchQuery,
+    // ...EmptySearchQuery,
     query: (query && query.query) || '',
     lessor: true,
     city:
@@ -67,77 +74,74 @@ const SearchResults = ({ setShowSearchPopup, query }) => {
         ? cityInStorage
         : '',
   }
-  const { refetch: refetchSalonsSearch } = useQuery(searchQuery, {
-    variables: { input: querySearch },
-    notifyOnNetworkStatusChange: true,
-    skip: true,
-    onCompleted: res => {
-      setSalonLoading(false)
-      if (res?.salonSearch) {
-        setSalonSearchData(res.salonSearch.salonsConnection.nodes.slice(0, 8))
-      }
-    },
-  })
+  // const { refetch: refetchSalonsSearch } = useQuery(searchQuery, {
+  //   variables: { input: querySearch },
+  //   notifyOnNetworkStatusChange: true,
+  //   skip: true,
+  //   onCompleted: res => {
+  //     setSalonLoading(false)
+  //     if (res?.salonSearch) {
+  //       setSalonSearchData(res.salonSearch.salonsConnection.nodes.slice(0, 8))
+  //     }
+  //   },
+  // })
 
-  const { refetch: refetchSalonsRentSearch } = useQuery(searchQuery, {
-    variables: { input: queryRentSearch },
-    notifyOnNetworkStatusChange: true,
-    skip: true,
-    onCompleted: res => {
-      setSalonRentLoading(false)
-      if (res?.salonSearch) {
-        setSalonRentSearchData(
-          res.salonSearch.salonsConnection.nodes.slice(0, 8),
-        )
-      }
-    },
-  })
+  // const { refetch: refetchSalonsRentSearch } = useQuery(searchQuery, {
+  //   variables: { input: queryRentSearch },
+  //   notifyOnNetworkStatusChange: true,
+  //   skip: true,
+  //   onCompleted: res => {
+  //     setSalonRentLoading(false)
+  //     if (res?.salonSearch) {
+  //       setSalonRentSearchData(
+  //         res.salonSearch.salonsConnection.nodes.slice(0, 8),
+  //       )
+  //     }
+  //   },
+  // })
 
-  const { refetch: refetchBrandsSearch } = useQuery(brandSearchQuery, {
-    variables: {
-      query: (query && query.query) || '',
-    },
-    skip: true,
-    notifyOnNetworkStatusChange: true,
-    onCompleted: res => {
-      setBrandLoading(false)
-      if (res) {
-        setBrandSearchData(res.brandsSearch.connection.nodes.slice(0, 8))
-      }
-    },
-  })
-
-  useEffect(() => {
-    setMasterLoading(true)
-    setBrandLoading(true)
-
-    refetchMastersSearch({
-      input: {
-        query: (query && query.query) || '',
-        cursor: null,
-        city: city ? city : 'Москва',
-      },
-    })
-    refetchBrandsSearch({
-      variables: {
-        query: (query && query.query) || '',
-        cursor: null,
-      },
-    })
-  }, [query])
+  // const { refetch: refetchBrandsSearch } = useQuery(brandSearchQuery, {
+  //   variables: {
+  //     query: (query && query.query) || '',
+  //   },
+  //   skip: true,
+  //   notifyOnNetworkStatusChange: true,
+  //   onCompleted: res => {
+  //     setBrandLoading(false)
+  //     if (res) {
+  //       setBrandSearchData(res.brandsSearch.connection.nodes.slice(0, 8))
+  //     }
+  //   },
+  // })
 
   useEffect(() => {
-    setSalonLoading(true)
-    refetchSalonsSearch({
-      variables: { input: querySearch },
-    })
-  }, [querySearch?.query, querySearch?.city])
-
-  useEffect(() => {
-    setSalonRentLoading(true)
-    refetchSalonsRentSearch({
-      variables: { input: querySearch },
-    })
+    // setMasterLoading(true)
+    // setBrandLoading(true)
+    //   refetchMastersSearch({
+    //     input: {
+    //       query: (query && query.query) || '',
+    //       cursor: null,
+    //       city: city ? city : 'Москва',
+    //     },
+    //   })
+    //   refetchBrandsSearch({
+    //     variables: {
+    //       query: (query && query.query) || '',
+    //       cursor: null,
+    //     },
+    //   })
+    // }, [query])
+    // useEffect(() => {
+    //   setSalonLoading(true)
+    //   refetchSalonsSearch({
+    //     variables: { input: querySearch },
+    //   })
+    // }, [querySearch?.query, querySearch?.city])
+    // useEffect(() => {
+    //   setSalonRentLoading(true)
+    //   refetchSalonsRentSearch({
+    //     variables: { input: querySearch },
+    //   })
   }, [queryRentSearch?.query, queryRentSearch?.city])
 
   const clickItemHandler = () => {
@@ -155,12 +159,12 @@ const SearchResults = ({ setShowSearchPopup, query }) => {
             <Category>
               <Title>Мастера</Title>
               <List>
-                {masterSearchData?.length && !masterLoading ? (
+                {masterSearchData?.length ? (
                   masterSearchData.map(master => (
                     <Link
-                      href={`/${
-                        cyrToTranslit(master?.addressFull?.city) || city.slug
-                      }/master/${master.id}`}
+                      href={`/${master?.city.slug || city.slug}/master/${
+                        master.id
+                      }`}
                       passHref
                     >
                       <ListItem key={master.id} onClick={clickItemHandler}>
@@ -179,14 +183,12 @@ const SearchResults = ({ setShowSearchPopup, query }) => {
                 {salonSearchData?.length && !salonLoading ? (
                   salonSearchData.map(salon => (
                     <Link
-                      href={`/${
-                        cyrToTranslit(salon?.salon?.address?.city) || city.slug
-                      }/salon/${salon?.salon?.id}`}
+                      href={`/${salon.city.slug || city.slug}/salon/${
+                        salon.id
+                      }`}
                       passHref
                     >
-                      <ListItem key={salon.salon.id}>
-                        {salon.salon.name}
-                      </ListItem>
+                      <ListItem key={salon.id}>{salon.name}</ListItem>
                     </Link>
                   ))
                 ) : (
@@ -200,14 +202,10 @@ const SearchResults = ({ setShowSearchPopup, query }) => {
                 {salonRentSearchData?.length && !salonRentLoading ? (
                   salonRentSearchData.map(salon => (
                     <Link
-                      href={`/${
-                        cyrToTranslit(salon?.salon?.address?.city) || city.slug
-                      }/rent/${salon?.salon?.id}`}
+                      href={`/${salon.city.slug || city.slug}/rent/${salon.id}`}
                       passHref
                     >
-                      <ListItem key={salon.salon.id}>
-                        {salon.salon.name}
-                      </ListItem>
+                      <ListItem key={salon.id}>{salon.name}</ListItem>
                     </Link>
                   ))
                 ) : (
@@ -223,9 +221,9 @@ const SearchResults = ({ setShowSearchPopup, query }) => {
                 {brandSearchData?.length && !brandLoading ? (
                   brandSearchData.map(brand => (
                     <Link
-                      href={`/${
-                        cyrToTranslit(brand?.addressFull?.city) || city.slug
-                      }/brand/${brand.id}`}
+                      href={`/${brand.city.slug || city.slug}/brand/${
+                        brand.id
+                      }`}
                       passHref
                     >
                       <ListItem key={brand.id}>{brand.name}</ListItem>
