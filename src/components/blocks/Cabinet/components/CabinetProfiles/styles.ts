@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { laptopBreakpoint, red } from '../../../../../styles/variables'
 import { IconStiled, TrashIcon } from 'src/components/ui/Icons/Trash'
+import Link from 'next/link'
 
 export const Wrapper = styled.div`
   max-width: 710px;
@@ -20,7 +21,8 @@ export const MobileWrapper = styled.div`
   }
 `
 
-export const Item = styled.div`
+export const Item = styled(Link)`
+  display: block;
   width: 100%;
   background: #f8f8f8;
   border-radius: 5px;
@@ -112,7 +114,6 @@ export const DeleteButton = styled.button`
   padding: 0;
   border: none;
   margin: 0;
-  width: 26px;
 `
 
 export const TrashIconStyled = styled(TrashIcon)`
