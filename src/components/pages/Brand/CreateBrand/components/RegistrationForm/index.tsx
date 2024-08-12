@@ -1,24 +1,24 @@
-import { useState, useCallback } from "react";
-import { useMutation } from "@apollo/react-hooks";
-import { Wrapper, Title } from "./styled";
-import { MobileVisible, MobileHidden } from "../../../../../../styles/common";
-import AutoFocusedForm from "../../../../../blocks/Form/AutoFocusedForm";
-import { updateBrandPersonalInformationMutation } from "../../../../../../_graphql-legacy/brand/updateBrandPersonalInformationMutation";
-import { updateBrandNameMutation } from "../../../../../../_graphql-legacy/brand/updateBrandName";
-import Error from "../../../../../blocks/Form/Error";
-import Button from "../../../../../ui/Button";
-import { createBrandMutation } from "../../../../../../_graphql-legacy/brand/createBrandMutation";
-import { useRouter } from "next/router";
-import About from "./components/About";
-import Socials from "./components/Socials";
-import { useShallow } from "zustand/react/shallow";
-import { getStoreData, getStoreEvent } from "src/store/utils";
-import useAuthStore from "src/store/authStore";
-import { useLazyQuery } from "@apollo/client";
-import { USER } from "src/api/graphql/me/queries/getUser";
-import { flattenStrapiResponse } from "src/utils/flattenStrapiResponse";
-import { CREATE_BRAND } from "src/api/graphql/brand/mutations/createBrand";
-import { set } from "lodash";
+import { useState, useCallback } from 'react'
+import { useMutation } from '@apollo/react-hooks'
+import { Wrapper, Title } from './styled'
+import { MobileVisible, MobileHidden } from '../../../../../../styles/common'
+import AutoFocusedForm from '../../../../../blocks/Form/AutoFocusedForm'
+import { updateBrandPersonalInformationMutation } from '../../../../../../_graphql-legacy/brand/updateBrandPersonalInformationMutation'
+import { updateBrandNameMutation } from '../../../../../../_graphql-legacy/brand/updateBrandName'
+import Error from '../../../../../blocks/Form/Error'
+import Button from '../../../../../ui/Button'
+import { createBrandMutation } from '../../../../../../_graphql-legacy/brand/createBrandMutation'
+import { useRouter } from 'next/router'
+import About from './components/About'
+import Socials from './components/Socials'
+import { useShallow } from 'zustand/react/shallow'
+import { getStoreData, getStoreEvent } from 'src/store/utils'
+import useAuthStore from 'src/store/authStore'
+import { useLazyQuery } from '@apollo/client'
+import { USER } from 'src/api/graphql/me/queries/getUser'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { CREATE_BRAND } from 'src/api/graphql/brand/mutations/createBrand'
+import { set } from 'lodash'
 
 const RegistrationForm = ({
   allTabs,
@@ -32,17 +32,16 @@ const RegistrationForm = ({
   const { me, user } = useAuthStore(useShallow(getStoreData))
   const { setUser } = useAuthStore(useShallow(getStoreEvent))
   const [loading, setLoading] = useState<boolean>(false)
-  const [errors, setErrors] = useState<string[] | null>(null);
-  const [isErrorPopupOpen, setErrorPopupOpen] = useState(false);
-  const [clickAddress, setClickAddress] = useState(true);
+  const [errors, setErrors] = useState<string[] | null>(null)
+  const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
+  const [clickAddress, setClickAddress] = useState(true)
   const [clickCity, setClickCity] = useState<string | null>(null)
-  const router = useRouter();
+  const router = useRouter()
 
   console.log('photoBrand', photoBrand)
 
   const [getUser] = useLazyQuery(USER, {
     onCompleted: data => {
-
       const prepareData = flattenStrapiResponse(data.usersPermissionsUser)
 
       console.log('prepareData', prepareData)
@@ -72,28 +71,28 @@ const RegistrationForm = ({
   const onSubmit = useCallback(
     (values: any) => {
       if (!clickAddress || !values.address) {
-        setErrors(["Выберите адрес места работы из выпадающего списка"]);
-        setErrorPopupOpen(true);
-        return;
+        setErrors(['Выберите адрес места работы из выпадающего списка'])
+        setErrorPopupOpen(true)
+        return
       }
       if (!brand && !photoBrand) {
-        setNoPhotoError(true);
-        setErrors(["Необходимо добавить фото бренда"]);
-        setErrorPopupOpen(true);
-        return;
+        setNoPhotoError(true)
+        setErrors(['Необходимо добавить фото бренда'])
+        setErrorPopupOpen(true)
+        return
       }
       const phone = {
         phoneNumber: values?.phone?.phoneNumber,
         haveTelegram: values?.phone?.haveTelegram || false,
         haveViber: values?.phone?.haveViber || false,
         haveWhatsApp: values?.phone?.haveWhatsApp || false,
-      };
+      }
 
       const socialNetworks = values.socialNetworkUrls
         ? Object?.keys(values.socialNetworkUrls)?.map(e => ({
-          title: e,
-          link: values.socialNetworkUrls[e] as string,
-        }))
+            title: e,
+            link: values.socialNetworkUrls[e] as string,
+          }))
         : []
 
       const inputToSave = {
@@ -109,20 +108,21 @@ const RegistrationForm = ({
         webSiteUrl: values.webSiteUrl,
         socialNetworks,
         user: user?.info.id,
-      };
+        publishedAt: new Date().toISOString(),
+      }
 
       if (!brand) {
         try {
-          setLoading(true);
+          setLoading(true)
           createBrand({
             variables: {
               input: {
                 ...inputToSave,
               },
             },
-          });
+          })
         } catch (error) {
-          console.error(error);
+          console.error(error)
         }
       }
 
@@ -148,8 +148,8 @@ const RegistrationForm = ({
       // }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [clickAddress, photoBrand]
-  );
+    [clickAddress, photoBrand],
+  )
 
   return (
     <Wrapper>
@@ -181,7 +181,7 @@ const RegistrationForm = ({
                   type="submit"
                   disabled={pristine || loading}
                 >
-                  {loading ? "Подождите" : "Сохранить и перейти в кабинет"}
+                  {loading ? 'Подождите' : 'Сохранить и перейти в кабинет'}
                 </Button>
               </MobileHidden>
               <MobileVisible>
@@ -192,15 +192,15 @@ const RegistrationForm = ({
                   type="submit"
                   disabled={pristine || loading}
                 >
-                  {loading ? "Подождите" : "Сохранить и перейти в кабинет"}
+                  {loading ? 'Подождите' : 'Сохранить и перейти в кабинет'}
                 </Button>
               </MobileVisible>
             </form>
-          );
+          )
         }}
       />
     </Wrapper>
-  );
-};
+  )
+}
 
-export default RegistrationForm;
+export default RegistrationForm
