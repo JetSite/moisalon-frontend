@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
 
 interface Props {
   isOpen: boolean
-  title: string
+  title: IChildren
   city?: string
   description?: string
   content?: () => ReactElement

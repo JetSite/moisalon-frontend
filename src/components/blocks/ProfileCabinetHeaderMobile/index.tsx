@@ -21,11 +21,18 @@ import { cyrToTranslit } from '../../../utils/translit'
 import { PHOTO_URL } from '../../../api/variables'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
-import { Dispatch, FC, SetStateAction } from 'react'
+import { Dispatch, FC, MouseEvent, SetStateAction, useState } from 'react'
 import { ITab } from 'src/components/ui/TabsSlider'
 import { IMasterCabinetTab } from 'src/components/pages/Master/MasterCabinet'
 import { IUser } from 'src/types/me'
 import { ISetState } from 'src/types/common'
+import EmptyListItem, {
+  TypeItem,
+} from '../Cabinet/components/CabinetProfiles/new_components/EmptyListItem'
+import { IBrand } from 'src/types/brands'
+import { ISalon } from 'src/types/salon'
+import { IMaster } from 'src/types/masters'
+import DeleteEntityPopup from '../Cabinet/components/CabinetProfiles/new_components/EmptyDeletePopup'
 
 interface Props {
   setActiveTab: ISetState<string>
@@ -42,10 +49,27 @@ const CabinetHeaderMobile: FC<Props> = ({
   toggle,
   setToggle,
 }) => {
-  const salons = user.owner.salons
-  const master = user.owner.masters?.length ? user.owner.masters[0] : null
-  const brands = user.owner.brand
+  if (!user || !user.owner) return null
+  const { salons, masters, brands } = user.owner
   const { city } = useAuthStore(getStoreData)
+
+  const [openPopup, setOpenPopup] = useState(false)
+  const [deleteItem, setDeleteItem] = useState<
+    IMaster | ISalon | IBrand | null
+  >(null)
+  const [deleteItemType, setDeleteItemType] = useState<TypeItem | null>(null)
+
+  const handeleDeleteOpenPopup = (
+    e: MouseEvent<HTMLButtonElement>,
+    item: IMaster | ISalon | IBrand,
+    type: TypeItem,
+  ) => {
+    e.stopPropagation()
+    e.preventDefault()
+    setDeleteItem(item)
+    setDeleteItemType(type)
+    setOpenPopup(true)
+  }
 
   return (
     <Wrapper>
@@ -60,87 +84,46 @@ const CabinetHeaderMobile: FC<Props> = ({
         <Text>
           <Title>{user.info.username}</Title>
           <Subtitle>Кабинет пользователя</Subtitle>
-          {salons?.length || master?.id || brands?.length ? (
+          {salons?.length || masters?.length || brands?.length ? (
             <ProfilesButton toggle={toggle} onClick={() => setToggle(!toggle)}>
               Мои профили
             </ProfilesButton>
           ) : null}
         </Text>
       </Info>
-      {master && toggle ? (
+      {masters && toggle ? (
         <Wrap>
-          {master.id ? (
-            <Link
-              href={`/${master.city.slug || city?.slug}/master/${master?.id}`}
-            >
-              <Item>
-                <Container>
-                  <Avatar
-                    alt="avatar"
-                    src={PHOTO_URL + master.photo?.url || 'empty-photo.svg'}
-                  />
-                  <Content>
-                    <Name>{master?.name}</Name>
-                    <Type>Профиль мастера</Type>
-                  </Content>
-                </Container>
-              </Item>
-            </Link>
-          ) : null}
-          {salons && salons.length
-            ? salons.map(item => (
-                <div key={item.id}>
-                  <Link
-                    href={
-                      item.workplacesCount
-                        ? `/${item.city?.slug || city?.slug}/rent/${item?.id}`
-                        : `/${item.city?.slug || city?.slug}/salon/${item?.id}`
-                    }
-                  >
-                    <Item>
-                      <Container>
-                        <Avatar
-                          alt="avatar"
-                          src={PHOTO_URL + item.logo?.url || 'empty-photo.svg'}
-                        />
-                        <Content>
-                          <Name>{item?.name}</Name>
-                          <Type>
-                            {item?.workplacesCount
-                              ? 'Профиль салона арендодателя'
-                              : 'Профиль салона'}
-                          </Type>
-                        </Content>
-                      </Container>
-                    </Item>
-                  </Link>
-                </div>
+          {!!masters && !!masters.length
+            ? masters.map(item => (
+                <EmptyListItem
+                  key={item.id}
+                  item={item}
+                  itemType="master"
+                  citySlug={item.city?.slug || city.slug}
+                  handeleDeleteOpenPopup={handeleDeleteOpenPopup}
+                />
               ))
             : null}
-          {brands && brands?.length
+          {!!salons && salons.length
+            ? salons.map(item => (
+                <EmptyListItem
+                  key={item.id}
+                  item={item}
+                  itemType="salon"
+                  citySlug={item.city?.slug || city.slug}
+                  handeleDeleteOpenPopup={handeleDeleteOpenPopup}
+                />
+              ))
+            : null}
+          {!!brands && brands.length
             ? brands.map(item => (
-                <div key={item.id}>
-                  <Link
-                    href={`/${item.city.slug || city?.slug}/brand/${item.id}`}
-                  >
-                    <Item>
-                      <Container>
-                        <Avatar
-                          alt="avatar"
-                          src={
-                            item.logo
-                              ? `${PHOTO_URL}${item.logo.url}`
-                              : 'empty-photo.svg'
-                          }
-                        />
-                        <Content>
-                          <Name>{item.name}</Name>
-                          <Type>Профиль бренда</Type>
-                        </Content>
-                      </Container>
-                    </Item>
-                  </Link>
-                </div>
+                <EmptyListItem
+                  key={item.id}
+                  item={item}
+                  itemType="brand"
+                  citySlug={item.city?.slug || city.slug}
+                  handeleDeleteOpenPopup={handeleDeleteOpenPopup}
+                />
               ))
             : null}
         </Wrap>
@@ -158,6 +141,14 @@ const CabinetHeaderMobile: FC<Props> = ({
         setToggle={setToggle}
         setActiveTab={setActiveTab}
       />
+      {deleteItem && deleteItemType && (
+        <DeleteEntityPopup
+          isOpen={openPopup}
+          onClose={() => setOpenPopup(false)}
+          deleteItem={deleteItem}
+          deleteItemType={deleteItemType}
+        />
+      )}
     </Wrapper>
   )
 }

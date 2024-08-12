@@ -206,7 +206,7 @@ export const Type = styled.p`
   line-height: 17px;
 `
 
-export const Wrap = styled.div`
+export const Wrap = styled.ul`
   width: 80%;
   margin: 0 auto;
   top: -29px;
