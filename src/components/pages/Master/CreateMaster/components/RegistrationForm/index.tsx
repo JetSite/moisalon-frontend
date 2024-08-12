@@ -170,10 +170,10 @@ const RegistrationForm = ({
             setErrorPopupOpen(true)
           },
           onCompleted: async data => {
-            setSelectCityId(data.data.createCity.data.id)
-            const findCityData = flattenStrapiResponse(
-              data.data.createCity.data,
-            )
+            console.log(data)
+
+            setSelectCityId(data.createCity.data.id)
+            const findCityData = flattenStrapiResponse(data.createCity.data)
             setCitiesArray(prev => prev.concat(findCityData))
 
             const input = getPrepareInputMasterForm({
@@ -183,7 +183,7 @@ const RegistrationForm = ({
               photoId: photo?.id,
             })
             console.log('input not found city', input)
-            if (master.id) {
+            if (master?.id) {
               await mutate({
                 variables: { masterId: master?.id, input },
                 onError: onErrorMutate,
@@ -192,7 +192,11 @@ const RegistrationForm = ({
             } else {
               await createMaster({
                 variables: {
-                  input: { user: me?.info.id, ...input },
+                  input: {
+                    user: me?.info.id,
+                    ...input,
+                    publishedAt: new Date().toISOString(),
+                  },
                 },
               })
             }
@@ -242,13 +246,13 @@ const RegistrationForm = ({
           master
             ? master
             : me?.info
-              ? {
+            ? {
                 email: me?.info?.email,
                 phone: { phoneNumber: me?.info?.phone },
                 name: me?.info?.username,
                 city: me?.info?.city,
               }
-              : null
+            : null
         }
         onSubmit={onSubmit}
         keepDirtyOnReinitialize
