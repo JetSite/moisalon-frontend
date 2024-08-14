@@ -1,9 +1,11 @@
-import { useState } from 'react'
+import { FC, useState } from 'react'
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../../../styles/variables'
 import MobileCatalogItem from './MobileCatalogItem'
+import { IService, IServiceCategory } from 'src/types/services'
+import { IGroupedServices } from 'src/types'
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ masterPage?: boolean }>`
   width: ${props => (props.masterPage ? '100%' : 'initial')};
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
@@ -24,7 +26,7 @@ const Item = styled.div`
   margin-bottom: 5px;
 `
 
-const TitleWrapper = styled.div`
+const TitleWrapper = styled.div<{ masterPage?: boolean }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -32,7 +34,7 @@ const TitleWrapper = styled.div`
   cursor: ${props => (props.masterPage ? 'pointer' : 'initial')};
 `
 
-const TickIcon = styled.div`
+const TickIcon = styled.div<{ open: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -46,18 +48,24 @@ const Icon = styled.img`
   width: 100%;
 `
 
-const ItemWrapper = styled.div`
+const ItemWrapper = styled.div<{ open: boolean }>`
   display: ${({ open }) => (open ? 'block' : 'none')};
   margin-bottom: ${({ open }) => (open ? '40px' : '0')};
 `
 
-const ucFirst = str => {
+const ucFirst = (str: string) => {
   if (!str) return str
 
   return str[0].toUpperCase() + str.slice(1)
 }
 
-export function MobileCatalogGroupForClient({ serviceBlock, masterPage }) {
+interface IMobileCatalogGroup {
+  serviceBlock: IGroupedServices
+  entriesItems: IService[]
+  masterPage?: boolean
+}
+
+const MobileCatalogGroupForClient: FC<IMobileCatalogGroup> = ({ serviceBlock, masterPage }) => {
   const [openGroup, setOpenGroup] = useState(false)
 
   if (!serviceBlock?.services) {
@@ -67,6 +75,8 @@ export function MobileCatalogGroupForClient({ serviceBlock, masterPage }) {
   const openGroupHandler = () => {
     setOpenGroup(!openGroup)
   }
+
+  console.log('serviceBlock', serviceBlock)
 
   const services = serviceBlock?.services?.map((service, idx) => {
     return (
@@ -92,3 +102,5 @@ export function MobileCatalogGroupForClient({ serviceBlock, masterPage }) {
     </Wrapper>
   )
 }
+
+export default MobileCatalogGroupForClient;

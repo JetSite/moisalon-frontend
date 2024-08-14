@@ -17,7 +17,7 @@ export const ListWrapper = styled.div`
   flex-wrap: wrap;
   min-width: 572px;
   margin-bottom: 45px;
-  gap: 20px;
+  gap: 21px;
 
   @media (max-width: ${laptopBreakpoint}) {
     margin: 0;
@@ -39,7 +39,7 @@ export const SearchListWrapper = styled.div`
   flex-wrap: wrap;
   min-width: 572px;
   margin-bottom: 45px;
-  gap: 22px;
+  gap: 21px;
 
   @media (max-width: ${laptopBreakpoint}) {
     margin: 0;
@@ -166,3 +166,4 @@ export const SalonCardWrapper = styled.div`
     height: 277px;
   }
 `
+export const LoaderWrapper = styled.div``

@@ -3,8 +3,8 @@ import { useQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
 import { brandSearchQuery } from '../../../../../../../_graphql-legacy/search/brandSearch'
 import Button from '../../../../../../ui/Button'
-import Search from '../MasterBrands/components/Search'
-import SearchResults from '../MasterBrands/components/SearchResults'
+import Search from './components/Search'
+import SearchResults from './components/SearchResults'
 import BrandItem from '../BrandsList/BrandItem'
 import { BrandsContent, OwnBrandsContent, Title } from '../BrandsList/styles'
 import { BrandItemWrapper, ListWrapper, Published, Text } from './styles'
@@ -47,19 +47,19 @@ const MasterBrands = ({ dataSearch, handlePublish, me }) => {
         const pageInfo = fetchMoreResult.brandsSearch.connection.pageInfo
         return newNodes.length
           ? {
-              ...previousResult,
-              brandsSearch: {
-                ...previousResult.brandsSearch,
-                connection: {
-                  ...previousResult.brandsSearch.connection,
-                  pageInfo,
-                  nodes: [
-                    ...previousResult.brandsSearch.connection.nodes,
-                    ...newNodes,
-                  ],
-                },
+            ...previousResult,
+            brandsSearch: {
+              ...previousResult.brandsSearch,
+              connection: {
+                ...previousResult.brandsSearch.connection,
+                pageInfo,
+                nodes: [
+                  ...previousResult.brandsSearch.connection.nodes,
+                  ...newNodes,
+                ],
               },
-            }
+            },
+          }
           : previousResult
       },
     })
@@ -100,8 +100,7 @@ const MasterBrands = ({ dataSearch, handlePublish, me }) => {
         key={item.id}
         onClick={() =>
           router.push(
-            `/${cyrToTranslit(item?.addressFull?.city) || city?.slug}/brand/${
-              item?.seo?.slug || item.id
+            `/${cyrToTranslit(item?.addressFull?.city) || city?.slug}/brand/${item?.seo?.slug || item.id
             }`,
           )
         }

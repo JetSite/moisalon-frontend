@@ -110,7 +110,7 @@ export const Input = styled.input`
   }
 `
 
-export const Published = styled.div`
+export const Published = styled.div<{ published: boolean }>`
   display: ${({ published }) => (published ? 'block' : 'none')};
   position: absolute;
   top: 0;

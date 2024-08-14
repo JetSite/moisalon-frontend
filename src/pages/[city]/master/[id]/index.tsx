@@ -1,8 +1,7 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, use, useCallback, useEffect, useState } from 'react'
 import Head from 'next/head'
 import { addApolloState, initializeApollo } from '../../../../api/apollo-client'
-import { useQuery } from '@apollo/client'
-import { reviewsForMaster } from '../../../../_graphql-legacy/master/reviewsForMaster'
+import { useMutation, useQuery } from '@apollo/client'
 import MainLayout from '../../../../layouts/MainLayout'
 import SearchBlock from '../../../../components/blocks/SearchBlock'
 import Header from '../../../../components/pages/Master/ViewMaster/components/Header'
@@ -15,9 +14,7 @@ import InviteMaster from '../../../../components/pages/Master/ViewMaster/compone
 import Contacts from '../../../../components/pages/Master/ViewMaster/components/Contacts'
 import ServicesForClient from '../../../../components/pages/Master/ViewMaster/components/ServicesForClient'
 import Slider from '../../../../components/blocks/Slider'
-import AddBrands from '../../../../components/pages/Master/AddBrands'
 import AddSalons from '../../../../components/pages/Master/AddSalons'
-import PhotoAdd from '../../../../components/pages/Master/ViewMaster/components/PhotoAdd'
 import { NoItemsText } from '../../../../styles/common'
 import { MASTER_PAGE } from 'src/api/graphql/master/queries/masterPage'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
@@ -30,33 +27,115 @@ import { GetServerSideProps } from 'next'
 import { defaultValues, defaultcCitiesList } from 'src/api/authConfig'
 import { fetchCity } from 'src/api/utils/fetchCity'
 import { IMaster } from 'src/types/masters'
-import { ICity } from 'src/types'
+import { ICity, IPhoto } from 'src/types'
 import { getGroupedServices } from 'src/utils/getGrupedServices'
 import { getRating } from 'src/utils/newUtils/getRating'
 import { Nullable } from 'src/types/common'
 import Resume from 'src/components/pages/Master/ViewMaster/components/Resume'
+import PhotoAdd from 'src/components/pages/Master/ViewMaster/components/PhotoAdd'
+import { ISalon } from 'src/types/salon'
+import { IBrand } from 'src/types/brands'
+import { UPDATE_MASTER } from 'src/api/graphql/master/mutations/updateMaster'
+import AddBrands from 'src/components/pages/Master/AddBrands'
+import { getServiceCategories } from 'src/api/graphql/service/queries/getServiceCategories'
+import { IServiceCategory, IServices } from 'src/types/services'
 
 interface Props {
   masterData: IMaster
   randomMasters: IMaster[]
+  allServices: IServiceCategory[]
   cityData: ICity
 }
 
-const Master: FC<Props> = ({ masterData, randomMasters, cityData }) => {
+const Master: FC<Props> = ({ masterData, randomMasters, allServices, cityData }) => {
   const [master, setMaster] = useState<IMaster>(masterData)
   const { user, city } = useAuthStore(getStoreData)
-  const { catalogs } = useBaseStore(getStoreData)
-  const [editClientServices, setEditClientServices] = useState(false)
   const [activeTab, setActiveTab] = useState(0)
   const [isBrandsEditing, setIsBrandsEditing] = useState(false)
   const [isSalonsEditing, setIsSalonsEditing] = useState(false)
   const [isPortfolioEditing, setIsPortfolioEditing] = useState(false)
   const [isDiplomsEditing, setIsDiplomsEditing] = useState(false)
-  const salonServicesMasterCatalog: any[] = []
+  const [works, setWorks] = useState<IPhoto[]>(master?.photosWorks || [])
+  const [diplomas, setDiplomas] = useState<IPhoto[]>(master?.photosDiploma || [])
+  const [salons, setSalons] = useState<ISalon[]>(master?.salons || [])
+  const [brands, setBrands] = useState<IBrand[]>(master?.brands || [])
+  const [services, setServices] = useState<IServices[]>(master?.services || [])
 
   const isOwner = !!user?.owner?.masters?.find(e => e.id === master?.id)
+  const servicesData = getServicesByCategory(services)
 
-  const servicesData = getServicesByCategory(master?.services)
+  console.log('services', services)
+
+  const [updateMaster] = useMutation(UPDATE_MASTER)
+
+  useEffect(() => {
+    if (works.length !== master.photosWorks.length) {
+      updateMaster({
+        variables: {
+          masterId: master.id,
+          input: {
+            photosWorks: [...works.map(e => e.id)],
+          },
+        },
+      })
+    }
+  }, [works])
+
+  const addWorksHandler = async (photo: IPhoto) => {
+    setWorks(prevState => [...prevState, photo])
+  }
+
+  useEffect(() => {
+    if (master?.photosDiploma?.length !== diplomas.length) {
+      updateMaster({
+        variables: {
+          masterId: master.id,
+          input: {
+            photosDiploma: [...diplomas.map(e => e.id)],
+          },
+        },
+      })
+    }
+  }, [diplomas])
+
+
+  const addDiplomasHandler = (photo: IPhoto) => {
+    setDiplomas(prevState => [...prevState, photo])
+  }
+
+  useEffect(() => {
+    if (salons.length !== master.salons.length) {
+      updateMaster({
+        variables: {
+          masterId: master.id,
+          input: {
+            salons: salons.map(salon => salon.id)
+          }
+        }
+      })
+    }
+  }, [salons])
+
+  const handleRemoveSalon = (id: string) => {
+    setSalons(prevState => prevState.filter(e => e.id !== id))
+  }
+
+  useEffect(() => {
+    if (brands.length !== master.brands.length) {
+      updateMaster({
+        variables: {
+          masterId: master.id,
+          input: {
+            brands: brands.map(salon => salon.id)
+          }
+        }
+      })
+    }
+  }, [brands])
+
+  const handleRemoveBrand = (id: string) => {
+    setBrands(prevState => prevState.filter(e => e.id !== id))
+  }
 
   return (
     <MainLayout>
@@ -81,29 +160,29 @@ const Master: FC<Props> = ({ masterData, randomMasters, cityData }) => {
               id: 2,
               text: 'Услуги',
               link: '#services',
-              count: master?.services?.length,
-              show: !!master?.services?.length || isOwner,
+              count: services?.length,
+              show: !!services?.length || isOwner,
             },
             {
               id: 3,
               text: 'Примеры',
               link: '#portfolio',
-              count: master?.photosWorks?.length,
-              show: !!master?.photosWorks?.length || isOwner,
+              count: works?.length,
+              show: !!works?.length || isOwner,
             },
             {
               id: 4,
               text: 'Дипломы',
               link: '#diploms',
-              count: master?.photosDiploma?.length,
-              show: !!master?.photosDiploma?.length || isOwner,
+              count: diplomas?.length,
+              show: !!diplomas?.length || isOwner,
             },
             {
               id: 5,
               text: 'Бренды',
               link: '#brands',
-              count: master?.brands?.length,
-              show: !!master?.brands?.length || isOwner,
+              count: brands?.length,
+              show: !!brands?.length || isOwner,
             },
             {
               id: 6,
@@ -121,7 +200,8 @@ const Master: FC<Props> = ({ masterData, randomMasters, cityData }) => {
             servicesData={servicesData}
             isOwner={isOwner}
             master={master}
-            salonServicesMasterCatalog={salonServicesMasterCatalog}
+            allServices={allServices}
+            setServices={setServices}
           />
         ) : null}
         {master?.services?.length || isOwner ? (
@@ -129,15 +209,16 @@ const Master: FC<Props> = ({ masterData, randomMasters, cityData }) => {
             servicesData={servicesData}
             master={master}
             isOwner={isOwner}
-            // refetchMaster={refetchMaster}
+            allServices={allServices}
+            setServices={setServices}
           />
         ) : null}
-        {master?.photosWorks?.length || isOwner ? (
+        {works?.length || isOwner ? (
           <>
             <Slider
               city={city}
               type="portfolio"
-              items={master?.photosWorks}
+              items={works}
               isOwner={isOwner}
               title="Примеры работ"
               isEditing={isPortfolioEditing}
@@ -146,10 +227,10 @@ const Master: FC<Props> = ({ masterData, randomMasters, cityData }) => {
               pt={52}
               pb={31}
             >
-              {isPortfolioEditing ? <PhotoAdd onAdd={() => {}} /> : null}
+              {isPortfolioEditing ? <PhotoAdd onAdd={addWorksHandler} /> : null}
               {isPortfolioEditing && isOwner ? (
                 <NoItemsText>Нажмите плюс, чтобы добавить работы</NoItemsText>
-              ) : !master?.photosWorks?.length && isOwner ? (
+              ) : !works?.length && isOwner ? (
                 <NoItemsText>
                   Нет добавленных работ. Нажмите на карандаш, чтобы добавить
                   работы в портфолио
@@ -158,11 +239,11 @@ const Master: FC<Props> = ({ masterData, randomMasters, cityData }) => {
             </Slider>
           </>
         ) : null}
-        {master?.photosDiploma?.length || isOwner ? (
+        {diplomas?.length || isOwner ? (
           <Slider
             city={city}
             type="diploms"
-            items={master?.photosDiploma}
+            items={diplomas}
             isOwner={isOwner}
             title="Дипломы и сертификаты"
             isEditing={isDiplomsEditing}
@@ -172,35 +253,35 @@ const Master: FC<Props> = ({ masterData, randomMasters, cityData }) => {
             pb={31}
           >
             <>
-              {isDiplomsEditing ? <PhotoAdd onAdd={() => {}} /> : null}
+              {isDiplomsEditing ? <PhotoAdd onAdd={addDiplomasHandler} /> : null}
               {isDiplomsEditing && isOwner ? (
                 <NoItemsText>
                   Нажмите плюс, чтобы добавить сертификаты или дипломы
                 </NoItemsText>
-              ) : !master?.photosDiploma?.length && isOwner ? (
+              ) : !diplomas?.length && isOwner ? (
                 <NoItemsText>
-                  Нет добавленных работ. Нажмите на карандаш, чтобы добавить
+                  Нет добавленных дипломов или сертификатов. Нажмите на карандаш, чтобы добавить
                   сертификаты или дипломы в портфолио
                 </NoItemsText>
               ) : null}
             </>
           </Slider>
         ) : null}
-        {master?.salons?.length || isOwner ? (
+        {salons?.length || isOwner ? (
           <Slider
             city={city}
             type="salons"
-            items={master.salons}
+            items={salons}
             isOwner={isOwner}
             title="Салоны, в которых я работаю"
             isEditing={isSalonsEditing}
             setIsEditing={setIsSalonsEditing}
-            // deleteFunction={handleRemoveSalon}
+            deleteFunction={handleRemoveSalon}
             pt={52}
             pb={31}
           >
             <>
-              {!master?.salons?.length ? (
+              {!salons?.length ? (
                 !isSalonsEditing ? (
                   <NoItemsText>
                     Нет добавленных салонов. Нажмите на карандаш, чтобы добавить
@@ -209,21 +290,21 @@ const Master: FC<Props> = ({ masterData, randomMasters, cityData }) => {
                 ) : null
               ) : null}
               {isSalonsEditing ? (
-                <AddSalons master={master} refetchMaster={() => {}} />
+                <AddSalons master={master} salons={salons} setSalons={setSalons} />
               ) : null}
             </>
           </Slider>
         ) : null}
-        {master?.brands?.length || isOwner ? (
+        {brands?.length || isOwner ? (
           <Slider
             city={city}
             type="brands"
-            items={master?.brands}
+            items={brands}
             isOwner={isOwner}
             title="Бренды, с которыми я работаю"
             isEditing={isBrandsEditing}
             setIsEditing={setIsBrandsEditing}
-            // deleteFunction={handleRemoveBrand}
+            deleteFunction={handleRemoveBrand}
             pt={52}
             pb={31}
             noAll
@@ -231,14 +312,14 @@ const Master: FC<Props> = ({ masterData, randomMasters, cityData }) => {
             noBottom
           >
             <>
-              {!master?.brands?.length && !isBrandsEditing && (
+              {!brands?.length && !isBrandsEditing && (
                 <NoItemsText>
                   Нет добавленных брендов. Нажмите на карандаш, чтобы добавить
                   бренды
                 </NoItemsText>
               )}
               {isBrandsEditing ? (
-                <AddBrands refetch={() => {}} master={master} />
+                <AddBrands master={master} brands={brands} setBrands={setBrands} />
               ) : null}
             </>
           </Slider>
@@ -303,12 +384,16 @@ export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async ({
         itemsCount: 10,
       },
     }),
+    apolloClient.query({
+      query: getServiceCategories,
+    }),
   ])
 
   const masterData: IMaster | null =
     flattenStrapiResponse(data[0]?.data?.master?.data) || null
   const randomMasters: IMaster[] =
     flattenStrapiResponse(data[1]?.data?.masters?.data) || []
+  const allServices = flattenStrapiResponse(data[2]?.data?.serviceCategories?.data) || []
 
   const reviewsCount = masterData?.reviews?.length || 0
   const { rating, ratingCount } = getRating(masterData?.ratings)
@@ -331,6 +416,7 @@ export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async ({
         const { rating, ratingCount } = getRating(e.ratings)
         return { ...e, rating, ratingCount, reviewsCount }
       }),
+      allServices,
       cityData,
     },
   }

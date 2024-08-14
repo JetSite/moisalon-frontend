@@ -36,7 +36,10 @@ const SalonSlide: FC<Props> = ({ item, isEditing, deleteFunction }) => {
         shareLink={`https://moi.salon/${city.slug}/salon/${item?.id}`}
       />
       {isEditing && (
-        <DeleteSalon onClick={() => deleteFunction(item.id)}>
+        <DeleteSalon onClick={(e) => {
+          e.stopPropagation()
+          deleteFunction(item.id)
+        }}>
           <Button
             variant="withRoundBorder"
             size="roundMedium"

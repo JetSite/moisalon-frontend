@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Dispatch, SetStateAction, FC } from 'react'
 import styled from 'styled-components'
 import {
   Checkbox,
@@ -6,8 +6,9 @@ import {
   styled as styledMaterial,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import CatalogSubGroup from '../CatalogSubGroup'
 import { laptopBreakpoint } from '../../../../../../styles/variables'
+import CatalogItem from '../CatalogItem'
+import { IService, IServiceCategory } from 'src/types/services'
 
 export const BpIcon = styledMaterial('span')(() => ({
   borderRadius: 3,
@@ -79,20 +80,29 @@ const ShowMore = styled.span`
 
 const Item = styled.div``
 
-const ucFirst = str => {
+const ucFirst = (str: string) => {
   if (!str) return str
 
   return str[0].toUpperCase() + str.slice(1)
 }
 
-export function CatalogGroup({
-  group,
+interface ICatalogGroup {
+  serviceBlock: IServiceCategory
+  entriesItems: IService[]
+  allServices: IServiceCategory[]
+  setEntriesItems: Dispatch<SetStateAction<IService[]>>
+  handleDeleteEntries: (serviceBlock: IServiceCategory) => void;
+  handleAddEntries: (serviceBlock: IServiceCategory) => void;
+}
+
+const CatalogGroup: FC<ICatalogGroup> = ({
+  serviceBlock,
   entriesItems,
+  allServices,
   setEntriesItems,
   handleDeleteEntries,
   handleAddEntries,
-  services,
-}) {
+}) => {
   const classes = useStyles()
   const [collapsed, setCollapsed] = useState(true)
   const [checkAll, setCheckAll] = useState(false)
@@ -101,14 +111,14 @@ export function CatalogGroup({
   useEffect(() => {
     let count = 0
     for (let i = 0; i < entriesItems?.length; i++) {
-      for (let j = 0; j < group?.subGroups?.length; j++) {
-        if (entriesItems[i]?.id === group?.subGroups[j]?.id) {
+      for (let j = 0; j < serviceBlock?.services?.length; j++) {
+        if (entriesItems[i]?.id === serviceBlock?.services[j]?.id) {
           count++
-          if (group?.subGroups[j]?.items?.length) {
-            for (let k = 0; k < group?.subGroups[j]?.items?.length; k++) {
+          if (serviceBlock?.services?.length) {
+            for (let k = 0; k < serviceBlock?.services?.length; k++) {
               if (
                 entriesItems.find(
-                  item => item?.id === group?.subGroups[j]?.items[k]?.id,
+                  item => item?.id === serviceBlock?.services[j]?.id,
                 )
               ) {
                 count++
@@ -123,10 +133,10 @@ export function CatalogGroup({
 
   useEffect(() => {
     let count = 0
-    for (let i = 0; i < group?.subGroups?.length; i++) {
+    for (let i = 0; i < serviceBlock?.services?.length; i++) {
       count++
-      if (group?.subGroups[i]?.items?.length) {
-        for (let j = 0; j < group?.subGroups[i]?.items?.length; j++) {
+      if (serviceBlock?.services?.length) {
+        for (let j = 0; j < serviceBlock?.services?.length; j++) {
           count++
         }
       }
@@ -138,26 +148,20 @@ export function CatalogGroup({
     }
   }, [checkedLength])
 
-  if (!group?.subGroups) {
+  if (!serviceBlock?.services) {
     return null
   }
 
-  const subGroups = group?.subGroups.map((subGroup, idx) => (
-    <CatalogSubGroup
-      key={idx}
-      subGroup={subGroup}
-      services={services}
-      entriesItems={entriesItems}
-      setEntriesItems={setEntriesItems}
-    />
-  ))
+  const services = serviceBlock?.services?.map((service, idx) => {
+    return <CatalogItem key={idx} item={service} entriesItems={entriesItems} setEntriesItems={setEntriesItems} allServices={allServices} />
+  })
 
-  if (subGroups?.length === 0) {
+  if (services?.length === 0) {
     return null
   }
 
-  const visibleItems = subGroups?.slice(0, 3)
-  const collapsedItems = subGroups?.slice(3)
+  const visibleItems = services?.slice(0, 3)
+  const collapsedItems = services?.slice(3)
   const collapsedText = collapsed ? 'Развернуть' : 'Скрыть'
 
   const handleChange = () => {
@@ -166,9 +170,9 @@ export function CatalogGroup({
 
   const handleCheckAll = () => {
     if (checkAll) {
-      handleDeleteEntries(group)
+      handleDeleteEntries(serviceBlock)
     } else {
-      handleAddEntries(group)
+      handleAddEntries(serviceBlock)
     }
   }
 
@@ -176,7 +180,7 @@ export function CatalogGroup({
     <Wrapper>
       <Content>
         <FormControlLabel
-          label={<Title>{ucFirst(group?.title)}</Title>}
+          label={<Title>{ucFirst(serviceBlock?.title)}</Title>}
           control={
             <Checkbox
               className={classes.root}
@@ -190,9 +194,11 @@ export function CatalogGroup({
       </Content>
       <Item>{visibleItems}</Item>
       {!collapsed && <Item>{collapsedItems}</Item>}
-      {subGroups?.length > 3 && (
+      {services?.length > 3 && (
         <ShowMore onClick={handleChange}>{collapsedText}</ShowMore>
       )}
     </Wrapper>
   )
 }
+
+export default CatalogGroup;

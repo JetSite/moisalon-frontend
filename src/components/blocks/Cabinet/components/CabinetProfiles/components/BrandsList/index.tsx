@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { cyrToTranslit } from '../../../../../../../utils/translit'
-import BrandItem from './BrandItem'
 import { BrandsContent, MainTitle, ListWrapper, TextNoBrands } from './styles'
+import BrandItem from './BrandItem'
 
 const BrandsList = ({ brands, handlePublish }) => {
   const { city } = useAuthStore(getStoreData)
@@ -12,9 +12,8 @@ const BrandsList = ({ brands, handlePublish }) => {
         <ListWrapper heightLarge={brands.length}>
           {brands.map(brand => (
             <Link
-              href={`/${
-                cyrToTranslit(brand?.addressFull?.city) || city?.slug
-              }/brand/${brand?.seo?.slug || brand.id}`}
+              href={`/${cyrToTranslit(brand?.addressFull?.city) || city?.slug
+                }/brand/${brand?.seo?.slug || brand.id}`}
               key={brand.id}
             >
               <BrandItem

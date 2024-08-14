@@ -1,161 +1,99 @@
-import { FC, useCallback } from 'react'
-import { useQuery, useMutation } from '@apollo/client'
+import { Dispatch, FC, SetStateAction, useCallback, useEffect, useState } from 'react'
+import { useQuery } from '@apollo/client'
 import {
   SalonsContent,
   Title,
-  ListWrapper,
   SalonItemWrapper,
   Published,
+  LoaderWrapper,
 } from './styled'
-import Button from '../../../ui/Button'
-import Search from './components/Search'
-import SearchResults from './components/SearchResults'
-;('../../../../_graphql-legacy/search/searchQuery')
-import { addUserSalonsMutation } from '../../../../_graphql-legacy/master/addUserSalonsMutation'
-import { removeUserSalonsMutation } from '../../../../_graphql-legacy/master/removeUserSalonsMutation'
 import SalonItem from '../../../blocks/SalonCard'
 import { IMaster } from 'src/types/masters'
+import { ISalon } from 'src/types/salon'
+import { getSalonsByName } from 'src/api/graphql/salon/queries/getSalonsByName'
+import Search from './components/Search'
+import SearchResults from './components/SearchResults'
+import debounce from 'lodash/debounce';
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse';
+import RotatingLoader from 'src/components/ui/RotatingLoader';
 
 interface Props {
   master: IMaster
-  refetchMaster: () => void
+  salons: ISalon[]
+  setSalons: Dispatch<SetStateAction<ISalon[]>>
 }
 
-const AddSalons: FC<Props> = ({ master, refetchMaster }) => {
-  // const dataSearch = (master && master?.salonIds) || []
+const AddSalons: FC<Props> = ({ master, salons, setSalons }) => {
+  const [dataSearch, setDataSearch] = useState<ISalon[]>([])
+  const [inputValue, setInputValue] = useState('')
+  const [debouncedInputValue, setDebouncedInputValue] = useState('')
 
-  const [addSalons] = useMutation(addUserSalonsMutation, {
-    onCompleted: () => {
-      refetchMaster()
-    },
+  const { loading } = useQuery(getSalonsByName, {
+    skip: !debouncedInputValue,
+    variables: { name: debouncedInputValue },
+    onCompleted: (data) => {
+      if (data?.salons?.data) {
+        const salons = flattenStrapiResponse(data.salons.data)
+        setDataSearch(salons)
+      }
+    }
   })
-  const [removeSalons] = useMutation(removeUserSalonsMutation, {
-    onCompleted: () => {
-      refetchMaster()
+
+  const debouncedSetInputValue = useCallback(
+    debounce((value) => {
+      setDebouncedInputValue(value);
+    }, 500),
+    []
+  );
+
+  const handleInputChange = (value: string) => {
+    setInputValue(value);
+    debouncedSetInputValue(value);
+  };
+
+  const handlePublish = useCallback(
+    (ev: any, item: ISalon, published: boolean) => {
+      ev.preventDefault()
+      if (!published) {
+        setSalons(prevState => [...prevState, item])
+      } else {
+        setSalons(prevState => prevState.filter(salon => salon.id !== item.id))
+      }
     },
+    [master],
+  )
+
+  console.log('dataSearch', dataSearch)
+
+  const salonsListSearch = dataSearch?.map(item => {
+    return (
+      <SalonItemWrapper
+        key={item?.id}
+        onClick={e =>
+          handlePublish(
+            e,
+            item,
+            !!salons.find(salon => salon.id === item.id)
+          )
+        }
+      >
+        <SalonItem item={item} />
+        <Published published={!!salons.find(salon => salon.id === item.id)} />
+      </SalonItemWrapper>
+    )
   })
-
-  // const querySearch = {
-  //   ...EmptySearchQuery,
-  //   query: (query && query.query) || '',
-  //   city: '',
-  // }
-
-  // const { data, loading, fetchMore } = useQuery(searchQuery, {
-  //   variables: { input: querySearch },
-  //   fetchPolicy: 'cache-and-network',
-  //   nextFetchPolicy: 'cache-first',
-  // })
-
-  // const salonsSearchResult = data?.salonSearch?.salonsConnection
-  // const slicedList = salonsSearchResult?.nodes
-  // const hasNextPage = data?.salonSearch?.salonsConnection?.pageInfo?.hasNextPage
-
-  // const onFetchMore = useCallback(() => {
-  //   fetchMore({
-  //     variables: {
-  //       input: {
-  //         ...EmptySearchQuery,
-  //         ...query,
-  //         city: '',
-  //       },
-  //       cursor: data?.salonSearch?.salonsConnection?.pageInfo?.endCursor,
-  //     },
-
-  //     updateQuery(previousResult, { fetchMoreResult }) {
-  //       const newNodes = fetchMoreResult.salonSearch.salonsConnection.nodes
-  //       const pageInfo = fetchMoreResult.salonSearch.salonsConnection.pageInfo
-
-  //       return newNodes.length
-  //         ? {
-  //             ...previousResult,
-  //             salonSearch: {
-  //               ...previousResult.salonSearch,
-  //               salonsConnection: {
-  //                 ...previousResult.salonSearch.salonsConnection,
-  //                 pageInfo,
-  //                 nodes: [
-  //                   ...previousResult.salonSearch.salonsConnection.nodes,
-  //                   ...newNodes,
-  //                 ],
-  //               },
-  //             },
-  //           }
-  //         : previousResult
-  //     },
-  //   })
-  // })
-
-  // const fetchMoreButton = hasNextPage ? (
-  //   <Button
-  //     // onClick={onFetchMore}
-  //     variant="withRoundBorder"
-  //     size="roundSmall"
-  //     font="roundMedium"
-  //   >
-  //     Загрузить ещё
-  //   </Button>
-  // ) : null
-
-  // const handlePublish = useCallback(
-  //   (ev, id, published) => {
-  //     ev.preventDefault()
-  //     if (!published) {
-  //       addSalons({
-  //         variables: {
-  //           ids: [id],
-  //           masterId: master?.id,
-  //         },
-  //       })
-  //     } else {
-  //       removeSalons({
-  //         variables: {
-  //           ids: [id],
-  //           masterId: master?.id,
-  //         },
-  //       })
-  //     }
-  //   },
-  //   [addSalons, removeSalons, master],
-  // )
-
-  // const salonsList = slicedList?.map(item => {
-  //   return (
-  //     <SalonItemWrapper
-  //       key={item?.salon?.id}
-  //       onClick={e =>
-  //         handlePublish(
-  //           e,
-  //           item?.salon?.id,
-  //           dataSearch.find(el => el === item?.salon?.id),
-  //         )
-  //       }
-  //     >
-  //       <SalonItem item={item?.salon} />
-  //       <Published published={dataSearch.find(el => el === item?.salon?.id)} />
-  //     </SalonItemWrapper>
-  //   )
-  // })
 
   return (
     <SalonsContent>
       <Title>Добавить салоны</Title>
-      <Search />
-      {/* {query?.query?.length > 0 ? (
+      <Search inputValue={inputValue} setInputValue={handleInputChange} />
+      {inputValue.length > 0 ? (
         <>
-          <SearchResults
-            searchResults={salonsList}
-            // dataSearch={dataSearch}
-            // handlePublish={handlePublish}
-          />
-          {fetchMoreButton}
+          {loading ? <LoaderWrapper><RotatingLoader /></LoaderWrapper> : <SearchResults
+            searchResults={salonsListSearch}
+          />}
         </>
-      ) : (
-        <>
-          <ListWrapper>{salonsList}</ListWrapper>
-          {fetchMoreButton}
-        </>
-      )} */}
+      ) : null}
     </SalonsContent>
   )
 }

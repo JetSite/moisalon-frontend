@@ -15,7 +15,6 @@ export const MASTER_PAGE = gql`
         id
         attributes {
           name
-          name
           reviewsCount
           rating
           ratingCount
@@ -28,8 +27,6 @@ export const MASTER_PAGE = gql`
           haveWhatsApp
           searchWork
           phone
-          phone
-          email
           email
           address
           office
