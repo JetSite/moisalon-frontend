@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { lighten } from 'polished'
 import { laptopBreakpoint } from '../../../../../../styles/variables'
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{ masterPage: boolean }>`
   display: ${props => (props.masterPage ? 'block' : 'none')};
   padding-top: ${props => (props.masterPage ? '20px' : '0')};
 
@@ -17,7 +17,7 @@ export const NoServicesText = styled.p`
   margin-bottom: 60px;
 `
 
-export const Top = styled.div`
+export const Top = styled.div<{ masterPage: boolean }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -36,7 +36,7 @@ export const TitleWrap = styled.div`
   display: flex;
 `
 
-export const Title = styled.p`
+export const Title = styled.p<{ masterPage: boolean }>`
   font-size: ${props => (props.masterPage ? '22px' : '30px')};
   font-weight: 600;
 

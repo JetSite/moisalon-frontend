@@ -38,7 +38,7 @@ export const ListWrapper = styled.div`
   }
 `
 
-export const ItemWrapper = styled.div`
+export const ItemWrapper = styled.div<{ published: boolean }>`
   position: relative;
   display: flex;
   justify-content: center;
@@ -72,7 +72,7 @@ export const TextNoBrands = styled.p`
   line-height: 30px;
 `
 
-export const RemoveButton = styled.div`
+export const RemoveButton = styled.div<{ published: boolean }>`
   display: ${({ published }) => (published ? 'block' : 'none')};
   width: 42px;
   height: 42px;

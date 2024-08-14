@@ -7,8 +7,8 @@ export const PortfolioItemBlock = styled.div`
   width: 275px;
   height: 275px;
   background: ${props => `url(${PHOTO_URL}${props.item.url}) no-repeat
-    center`};
-  background-size: contain;
+    top`};
+  background-size: cover;
 
   @media (max-width: ${laptopBreakpoint}) {
     width: 176px;

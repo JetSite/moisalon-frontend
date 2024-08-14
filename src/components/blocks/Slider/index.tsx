@@ -128,16 +128,16 @@ const Slider: FC<Props> = ({
 
   const firstSlide = items?.length
     ? customProps({
-        type,
-        item: items[0],
-        typeObject,
-        bgColor,
-        isEditing,
-        deleteFunction,
-        salon,
-        landingMaster,
-        city,
-      })
+      type,
+      item: items[0],
+      typeObject,
+      bgColor,
+      isEditing,
+      deleteFunction,
+      salon,
+      landingMaster,
+      city,
+    })
     : null
 
   return (
@@ -169,7 +169,7 @@ const Slider: FC<Props> = ({
               >
                 <span>{title}</span>
                 {isOwner ? (
-                  <EditIcons disable setIsEditing={setIsEditing} />
+                  <EditIcons setIsEditing={setIsEditing} />
                 ) : null}
               </Title>
               {items?.length > 0 && (
@@ -265,9 +265,9 @@ const Slider: FC<Props> = ({
             ) : null}
             {children}
             {!landingMaster &&
-            !landingSalon &&
-            !landingBrand &&
-            !noAllButton ? (
+              !landingSalon &&
+              !landingBrand &&
+              !noAllButton ? (
               <ShowAllWrapper>{customTypeProps.showAllLink}</ShowAllWrapper>
             ) : null}
             {!noBottom ? <Bottom>{customTypeProps.bottom}</Bottom> : null}

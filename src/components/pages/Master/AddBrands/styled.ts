@@ -25,3 +25,4 @@ export const ListWrapper = styled.div`
     min-width: 100%;
   }
 `
+export const LoaderWrapper = styled.div``

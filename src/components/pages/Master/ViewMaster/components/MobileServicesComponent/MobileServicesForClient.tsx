@@ -1,6 +1,5 @@
 import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react'
-import { useMutation } from '@apollo/client'
-import { CatalogGroupForClient } from './components/CatalogGroupForClient'
+import MobileCatalogGroupForClient from './MobileCatalogGroupForClient'
 import { MainContainer } from '../../../../../../styles/common'
 import {
   Wrapper,
@@ -8,16 +7,14 @@ import {
   Title,
   Count,
   Content,
-  PhoneButton,
-  LeftColumn,
-  RightColumn,
   NoServicesText,
-} from './styled'
+  TitleWrap,
+} from './styles'
+import { useMutation } from '@apollo/client'
 import EditIcons from '../../../../../ui/EditIcons'
-import { updateServiceMasterMutation } from '../../../../../../_graphql-legacy/master/updateServiceMasterMutation'
-import { IGroupedServices } from 'src/types'
-import { IMaster } from 'src/types/masters'
 import EditSalonServicesForClient from '../../../../Salon/EditSalonServicesForClient'
+import { IMaster } from 'src/types/masters'
+import { IGroupedServices } from 'src/types'
 import { IService, IServiceCategory, IServices } from 'src/types/services'
 import { UPDATE_MASTER } from 'src/api/graphql/master/mutations/updateMaster'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
@@ -28,14 +25,16 @@ interface Props {
   master: IMaster
   allServices: IServiceCategory[]
   setServices: Dispatch<SetStateAction<IServices[]>>
+  masterPage?: boolean
 }
 
-const Services: FC<Props> = ({
+const MobileServicesComponent: FC<Props> = ({
   servicesData,
   isOwner,
   master,
   allServices,
   setServices,
+  masterPage = false,
 }) => {
   const [isEditing, setIsEditing] = useState(false)
   const [entriesItems, setEntriesItems] = useState<IService[]>([])
@@ -56,14 +55,6 @@ const Services: FC<Props> = ({
   }, [servicesData])
 
   const handleEditConfirm = async () => {
-    const servicesDataCount = servicesData?.reduce((acc, category) => {
-      return acc + category.services.length
-    }, 0)
-    if (servicesDataCount === entriesItems.length) {
-      setIsEditing(false)
-      return
-    }
-
     const services = entriesItems.map(service => {
       return { service: service.id }
     })
@@ -84,65 +75,48 @@ const Services: FC<Props> = ({
 
   const groups = servicesData?.map((serviceBlock, idx) => {
     return (
-      <CatalogGroupForClient
+      <MobileCatalogGroupForClient
         entriesItems={entriesItems}
         key={idx}
         serviceBlock={serviceBlock}
+        masterPage={masterPage}
       />
     )
   })
 
-  const secondColumnStart = Math.round(groups?.length / 2)
-
-  const phone = master?.phone
-
   return (
     <MainContainer id="services">
-      <Wrapper>
-        <Top>
-          <Title>
-            Услуги
+      <Wrapper masterPage={masterPage}>
+        <Top masterPage={masterPage}>
+          <TitleWrap>
+            <Title masterPage={masterPage}>Услуги</Title>
             {isOwner && (
               <EditIcons
                 handleEditConfirm={handleEditConfirm}
                 setIsEditing={setIsEditing}
               />
             )}
-          </Title>
+          </TitleWrap>
           <Count>{servicesCount || 0}</Count>
         </Top>
         {!isEditing ? (
           groups?.length ? (
-            <Content>
-              <LeftColumn>{groups.slice(0, secondColumnStart)}</LeftColumn>
-              <RightColumn>{groups.slice(secondColumnStart)}</RightColumn>
-            </Content>
+            <Content>{groups}</Content>
           ) : (
             <NoServicesText>Мастер пока не добавил услуги</NoServicesText>
           )
         ) : (
           <EditSalonServicesForClient
+            masterPage={masterPage}
             setEntriesItems={setEntriesItems}
             entriesItems={entriesItems}
             services={allServices}
+            mobile
           />
         )}
-        <noindex>
-          {master?.onlineBookingUrl ? (
-            <PhoneButton
-              href={master?.onlineBookingUrl}
-              target="_blank"
-              rel="nofollow"
-            >
-              Онлайн запись
-            </PhoneButton>
-          ) : (
-            <PhoneButton href={`tel:${phone}`}>Онлайн запись</PhoneButton>
-          )}
-        </noindex>
       </Wrapper>
     </MainContainer>
   )
 }
 
-export default Services
+export default MobileServicesComponent

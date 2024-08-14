@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import {
   Checkbox,
@@ -8,6 +8,7 @@ import {
 import TextField from '@material-ui/core/TextField'
 import { makeStyles } from '@material-ui/core/styles'
 import { laptopBreakpoint } from '../../../../../../styles/variables'
+import { IService, IServiceCategory } from 'src/types/services'
 
 export const BpIcon = styledMaterial('span')(() => ({
   borderRadius: 3,
@@ -75,16 +76,20 @@ const Title = styled.h4`
   }
 `
 
-export default function CatalogItem({
+interface ICatalogItem {
+  item: IService
+  entriesItems: IService[]
+  setEntriesItems: any
+  allServices: IServiceCategory[]
+}
+
+const CatalogItem: FC<ICatalogItem> = ({
   item,
-  setEntriesItems,
   entriesItems,
-  setCheckedLength,
-  checkedLength,
-  services,
-}) {
+  setEntriesItems,
+  allServices,
+}) => {
   const classes = useStyles()
-  const service = entriesItems?.find(el => el?.id === item?.id)
   const [checked, setChecked] = useState(false)
 
   useEffect(() => {
@@ -96,34 +101,35 @@ export default function CatalogItem({
   }, [entriesItems])
 
   const handleChecked = () => {
-    if (entriesItems?.find(el => el.id === item?.id)) {
-      setEntriesItems(entriesItems?.filter(entry => entry.id !== item?.id))
-      setCheckedLength(checkedLength - 1)
+    if (entriesItems?.find(el => el?.id === item?.id)) {
+      setEntriesItems(entriesItems?.filter(entry => entry?.id !== item?.id))
     } else {
-      const service = services?.find(el => el?.id === item?.id)
-      const newItem = {
-        id: item?.id,
-        price: service?.price || 0,
-      }
-      setEntriesItems([...entriesItems, newItem])
-      setCheckedLength(checkedLength + 1)
+      let foundService;
+      allServices?.map(category => {
+        category.services.forEach(el => {
+          if (el?.id === item?.id) {
+            foundService = el
+          }
+        })
+      })
+      setEntriesItems([...entriesItems, foundService])
     }
   }
 
-  const setHandlePrice = value => {
-    setEntriesItems(
-      entriesItems.map(el => {
-        if (el?.id === item?.id) {
-          return {
-            id: el?.id,
-            price: Number(value),
-          }
-        } else {
-          return el
-        }
-      }),
-    )
-  }
+  // const setHandlePrice = value => {
+  //   setEntriesItems(
+  //     entriesItems.map(el => {
+  //       if (el?.id === item?.id) {
+  //         return {
+  //           id: el?.id,
+  //           price: Number(value),
+  //         }
+  //       } else {
+  //         return el
+  //       }
+  //     }),
+  //   )
+  // }
 
   return (
     <Wrapper>
@@ -142,7 +148,7 @@ export default function CatalogItem({
             }
           />
         </Content>
-        {checked ? (
+        {/* {checked ? (
           <Input
             id="standard-number"
             label=""
@@ -151,11 +157,13 @@ export default function CatalogItem({
             InputLabelProps={{
               shrink: true,
             }}
-            value={service?.price || ''}
+            value={item?.priceFrom || ''}
             onChange={e => setHandlePrice(e.target.value)}
           />
-        ) : null}
+        ) : null} */}
       </Top>
     </Wrapper>
   )
 }
+
+export default CatalogItem;
