@@ -36,8 +36,6 @@ export const salonFragment = `data {
             }
           }
         }
-        
-      salonID
       address
       published
       rent
@@ -72,8 +70,6 @@ export const salonFragment = `data {
       contactPersonName
       contactPersonPhone
       contactPersonEmail
-      salonContactPersonWorkingHoursAt
-      salonContactPersonWorkingHoursTo
       workplacesCount
       mastersCount
       brandsCount
