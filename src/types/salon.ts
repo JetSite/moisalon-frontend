@@ -54,6 +54,7 @@ export interface ISalon {
   ratings: IRating[]
   reviews: IReview[]
   workingHours: IWorkingHours[]
+  contactPersonWH: IWorkingHours[]
 }
 
 export interface ISalonPage extends ISalon {

@@ -72,6 +72,10 @@ export const getPrepareInputSalonForm: IGetPrepareInputSalonForm = ({
       workingHoursOptions,
       values.workingHours,
     ),
+    contactPersonWH: transformWorkingHours(
+      workingHoursOptions,
+      values.contactPersonWorkingHours,
+    ),
     services: servicesForInput,
     activities: values.activities,
     city: findCity?.id || selectCity?.id || null,

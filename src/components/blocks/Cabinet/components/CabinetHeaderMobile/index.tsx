@@ -87,7 +87,7 @@ const CabinetHeaderMobile: FC<Props> = ({ master, category, reviews }) => {
         {
           title: 'Мои услуги',
           icon: '/cabinet-services-icon.svg',
-          quantity: master?.master?.servicesMaster?.length || 0,
+          quantity: user?.owner.masters?.length || 0,
           anchor: '#services',
         },
         {
@@ -99,7 +99,7 @@ const CabinetHeaderMobile: FC<Props> = ({ master, category, reviews }) => {
         {
           title: 'Мои бренды',
           icon: '/cabinet-brands-icon.svg',
-          quantity: user?.owner?.brand?.length || 0,
+          quantity: user?.owner?.brands?.length || 0,
           anchor: '#brands',
         },
         {

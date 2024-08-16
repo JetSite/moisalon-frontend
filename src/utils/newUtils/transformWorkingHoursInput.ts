@@ -1,6 +1,6 @@
 import { IOptions } from 'src/components/blocks/Form/WorkingTimeField/WorkingTime'
 
-interface IWorkingHoursInput {
+export interface IWorkingHoursInput {
   startDayOfWeek: string
   endDayOfWeek: string
   startHour: number

@@ -3,11 +3,15 @@ import { useDropzone } from 'react-dropzone'
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../../../../../styles/variables'
 import uploadPhoto from '../../../../../../../../utils/uploadPhoto'
-import { PHOTO_URL } from '../../../../../../../../api/variables'
+import {
+  PHOTO_URL,
+  UPLOAD_PHOTO_OPTIONS,
+} from '../../../../../../../../api/variables'
 import { IPhotoAddProps } from '..'
 import { useMutation } from '@apollo/client'
 import { UPLOAD } from 'src/api/graphql/common/upload'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import imageCompression from 'browser-image-compression'
 
 const Wrapper = styled.div`
   position: relative;
@@ -72,7 +76,11 @@ const PhotoAdd: FC<IPhotoAddProps> = ({ defaultPhoto, setDefaultPhoto }) => {
       if (acceptedFiles.length > 0) {
         const file = acceptedFiles[0]
         try {
-          const res = await uploadImage({ variables: { file } })
+          const compressedFile = await imageCompression(
+            file,
+            UPLOAD_PHOTO_OPTIONS,
+          )
+          const res = await uploadImage({ variables: { file: compressedFile } })
           if (res?.data?.upload?.data?.id) {
             const normalisedPhoto = flattenStrapiResponse(res.data.upload.data)
             setDefaultPhoto && setDefaultPhoto(normalisedPhoto)

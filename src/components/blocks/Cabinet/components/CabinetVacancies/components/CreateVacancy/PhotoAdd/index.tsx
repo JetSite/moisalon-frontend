@@ -3,10 +3,14 @@ import { useDropzone } from 'react-dropzone'
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../../../../../styles/variables'
 import uploadPhoto from '../../../../../../../../utils/uploadPhoto'
-import { PHOTO_URL } from '../../../../../../../../api/variables'
+import {
+  PHOTO_URL,
+  UPLOAD_PHOTO_OPTIONS,
+} from '../../../../../../../../api/variables'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { useMutation } from '@apollo/client'
 import { UPLOAD } from 'src/api/graphql/common/upload'
+import imageCompression from 'browser-image-compression'
 
 const Photo = styled.div`
   width: 100%;
@@ -60,8 +64,8 @@ const PhotoAdd = ({ onAdd, type, hover, photoId }) => {
     type === 'master'
       ? 'master'
       : type === 'salon'
-        ? 'salonPhoto'
-        : 'brandPhoto'
+      ? 'salonPhoto'
+      : 'brandPhoto'
 
   const [uploadImage] = useMutation(UPLOAD)
 
@@ -70,7 +74,11 @@ const PhotoAdd = ({ onAdd, type, hover, photoId }) => {
       if (acceptedFiles.length > 0) {
         const file = acceptedFiles[0]
         try {
-          const res = await uploadImage({ variables: { file } })
+          const compressedFile = await imageCompression(
+            file,
+            UPLOAD_PHOTO_OPTIONS,
+          )
+          const res = await uploadImage({ variables: { file: compressedFile } })
           if (res?.data?.upload?.data?.id) {
             const normalisedPhoto = flattenStrapiResponse(res.data.upload.data)
             if (normalisedPhoto.id) {

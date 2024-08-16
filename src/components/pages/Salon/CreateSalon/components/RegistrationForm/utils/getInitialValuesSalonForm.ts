@@ -1,5 +1,7 @@
+import { workingHoursOptions } from 'src/components/blocks/Form/WorkingTimeField/WorkingTime'
 import { ISocialNetworks } from 'src/types'
 import { ISalonPage } from 'src/types/salon'
+import { reverseTransformWorkingHours } from 'src/utils/newUtils/reverseTransformWorkingHours'
 
 interface ISalonPhonesInitialValue {
   phoneNumber: string
@@ -96,25 +98,34 @@ export const getInitialValuesSalonForm: IgetInitialValuesSalonForm = salon => {
   return {
     ...initialInput,
     socialNetworkUrls,
-    workingHours: [
-      {
-        startDayOfWeek: 'MONDAY',
-        startHour: 0,
-        startMinute: 0,
-        endDayOfWeek: 'FRIDAY',
-        endHour: 23,
-        endMinute: 59,
-      },
-    ],
-    contactPersonWorkingHours: [
-      {
-        startDayOfWeek: 'MONDAY',
-        startHour: 0,
-        startMinute: 0,
-        endDayOfWeek: 'FRIDAY',
-        endHour: 23,
-        endMinute: 59,
-      },
-    ],
+    workingHours:
+      salon && salon.workingHours.length
+        ? reverseTransformWorkingHours(workingHoursOptions, salon.workingHours)
+        : [
+            {
+              startDayOfWeek: 'MONDAY',
+              startHour: 0,
+              startMinute: 0,
+              endDayOfWeek: 'FRIDAY',
+              endHour: 23,
+              endMinute: 59,
+            },
+          ],
+    contactPersonWorkingHours:
+      salon && salon.contactPersonWH.length
+        ? reverseTransformWorkingHours(
+            workingHoursOptions,
+            salon.contactPersonWH,
+          )
+        : [
+            {
+              startDayOfWeek: 'MONDAY',
+              startHour: 0,
+              startMinute: 0,
+              endDayOfWeek: 'FRIDAY',
+              endHour: 23,
+              endMinute: 59,
+            },
+          ],
   }
 }

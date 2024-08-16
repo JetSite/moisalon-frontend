@@ -12,6 +12,7 @@ import { socialNetworksFragment } from '../../fragments/socialNetworks'
 import { imageInfo } from '../../common/imageInfo'
 import { phonesFragment } from '../../fragments/phones'
 import { cityFragment } from '../../fragments/city'
+import { contactPersonWHFragment } from '../../fragments/contactPersonWH'
 
 export const GET_RENT_SALONS = gql`
   query salons($slug: String!,$itemsCount: Int!, $id: ID) {
@@ -20,7 +21,7 @@ export const GET_RENT_SALONS = gql`
         id
         attributes {
             name
-            salonID
+            
             address
             published
             rent
@@ -48,8 +49,9 @@ export const GET_RENT_SALONS = gql`
             contactPersonName
             contactPersonPhone
             contactPersonEmail
-            salonContactPersonWorkingHoursAt
-            salonContactPersonWorkingHoursTo
+            contactPersonWH {
+              ${contactPersonWHFragment}
+            }
             workplacesCount
             mastersCount
             brandsCount

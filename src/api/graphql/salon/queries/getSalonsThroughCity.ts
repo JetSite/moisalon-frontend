@@ -6,6 +6,7 @@ import { ratingsFragment } from '../../fragments/ratings'
 import { reviewsFragment } from '../../fragments/reviews'
 import { phonesFragment } from '../../fragments/phones'
 import { cityFragment } from '../../fragments/city'
+import { contactPersonWHFragment } from '../../fragments/contactPersonWH'
 
 export const getSalonsThroughCity = gql`
   query getSalonsThroughCity($slug: [String], $pageSize: Int, $page: Int, $sort: [String]) {
@@ -18,7 +19,7 @@ export const getSalonsThroughCity = gql`
         attributes {
           name
           slug
-          salonID
+          
           address
           published
           rent
@@ -52,8 +53,9 @@ export const getSalonsThroughCity = gql`
           contactPersonName
           contactPersonPhone
           contactPersonEmail
-          salonContactPersonWorkingHoursAt
-          salonContactPersonWorkingHoursTo
+          contactPersonWH {
+              ${contactPersonWHFragment}
+            }
           workplacesCount
           mastersCount
           brandsCount
