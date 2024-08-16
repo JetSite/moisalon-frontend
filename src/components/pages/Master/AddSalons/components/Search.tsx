@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, FC } from 'react'
 import { Wrapper, InputWrap, Input } from '../styled'
 
-const Search = () => {
-  const [inputValue, setInputValue] = useState('')
+interface Props {
+  inputValue: string
+  setInputValue: (value: string) => void
+}
 
-  const queryHandler = e => {
+const Search: FC<Props> = ({ inputValue, setInputValue }) => {
+  const queryHandler = (e: any) => {
     setInputValue(e.target.value)
-    setQuery({
-      query: e.target.value,
-    })
   }
 
   return (

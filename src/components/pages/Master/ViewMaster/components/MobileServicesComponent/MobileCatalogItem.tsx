@@ -1,7 +1,9 @@
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../../../styles/variables'
+import { IService, IServices } from 'src/types/services'
+import { FC } from 'react'
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ masterPage?: boolean }>`
   width: 100%;
   margin-bottom: 5px;
   border-bottom: ${props => (props.masterPage ? '1px solid #e2e2e2' : 'none')};
@@ -29,8 +31,12 @@ const Price = styled.p`
   font-weight: 400;
   font-size: 14px;
 `
+interface IMobileCatalogItem {
+  item: IServices
+  masterPage?: boolean
+}
 
-export default function MobileCatalogItem({ item, masterPage }) {
+const MobileCatalogItem: FC<IMobileCatalogItem> = ({ item, masterPage }) => {
   return (
     <Wrapper masterPage={masterPage}>
       <Top>
@@ -44,3 +50,5 @@ export default function MobileCatalogItem({ item, masterPage }) {
     </Wrapper>
   )
 }
+
+export default MobileCatalogItem;

@@ -36,7 +36,7 @@ export const Count = styled.p`
   font-weight: 600;
 `
 
-export const Content = styled.div`
+export const Content = styled.div<{ masterPage?: boolean }>`
   display: ${props => (props.masterPage ? 'block' : 'flex')};
   justify-content: space-between;
   column-gap: 40px;
