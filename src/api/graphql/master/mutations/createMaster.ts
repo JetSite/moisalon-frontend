@@ -8,6 +8,7 @@ export const CREATE_MASTER = gql`
       data {
         id
         attributes {
+          publishedAt
           name
           email
           phone

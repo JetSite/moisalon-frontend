@@ -219,7 +219,11 @@ const RegistrationForm = ({
         } else {
           await createMaster({
             variables: {
-              input: { user: me?.info.id, ...input },
+              input: {
+                user: me?.info.id,
+                ...input,
+                publishedAt: new Date().toISOString(),
+              },
               onCompleted,
               onError: onErrorMutate,
             },

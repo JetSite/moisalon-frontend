@@ -155,7 +155,13 @@ const RegistrationForm: FC<Props> = ({
           })
         } else {
           createSalon({
-            variables: { input: { user: me?.info.id, ...input } },
+            variables: {
+              input: {
+                user: me?.info.id,
+                ...input,
+                publishedAt: new Date().toISOString(),
+              },
+            },
           }).then(data => {
             router.push(
               `/${findCityData?.slug}/${rent ? 'rent' : 'salon'}/${
@@ -180,7 +186,13 @@ const RegistrationForm: FC<Props> = ({
         })
       } else {
         createSalon({
-          variables: { input: { user: me?.info.id, ...input } },
+          variables: {
+            input: {
+              user: me?.info.id,
+              ...input,
+              publishedAt: new Date().toISOString(),
+            },
+          },
         }).then(data => {
           router.push(
             `/${findCity?.slug}/${rent ? 'rent' : 'salon'}/${
@@ -191,6 +203,8 @@ const RegistrationForm: FC<Props> = ({
       }
     }
   }
+
+  console.log(new Date().toISOString().slice(0, -2))
 
   return (
     <Wrapper>
@@ -259,9 +273,9 @@ const RegistrationForm: FC<Props> = ({
                   size="fullWidth"
                   font="popUp"
                   type="submit"
-                  disabled={
-                    pristine || loadingCreate || loadingUpdate || loading
-                  }
+                  // disabled={
+                  //   pristine || loadingCreate || loadingUpdate || loading
+                  // }
                 >
                   {loadingCreate || loadingUpdate || loading
                     ? 'Подождите'
