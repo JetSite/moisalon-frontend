@@ -231,6 +231,7 @@ const Slider: FC<Props> = ({
                         landingMaster,
                         city,
                       })
+
                       return (
                         <SwiperSlide
                           style={{

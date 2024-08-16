@@ -43,7 +43,7 @@ const Footer: FC<Props> = ({ loading = false, noMobileFooter }) => {
   const currentYear = new Date().getFullYear()
 
   return (
-    <Wrapper loading={loading} noMobileFooter={noMobileFooter}>
+    <Wrapper noMobileFooter={noMobileFooter}>
       <MainContainer>
         {!loading ? <NewsletterSubscribe /> : null}
         <Content>

@@ -1,9 +1,9 @@
-import { useQuery } from '@apollo/client'
+import { useLazyQuery, useQuery } from '@apollo/client'
 import { getSalons } from '../../../../../api/graphql/salon/queries/getSalons'
 import Slider from '../../../../blocks/Slider'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { ISalon } from 'src/types/salon'
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { MainSlider } from '../MainMasterSlider'
 import { getRating } from 'src/utils/newUtils/getRating'
 
@@ -12,26 +12,37 @@ interface Props extends MainSlider {
 }
 
 const MainSalonsSlider: FC<Props> = ({ city, rent, data }) => {
-  const { data: salons, loading } = useQuery(getSalons, {
+  const [fetchSalon, { data: salons, loading }] = useLazyQuery(getSalons, {
     variables: {
       slug: city.slug,
       itemsCount: 10,
     },
-    skip: !!data,
   })
 
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+    if (!data) {
+      fetchSalon()
+    }
+  }, [data, fetchSalon])
+
+  if (!isClient) {
+    return null
+  }
+
   const prepareSalons: ISalon[] =
-    flattenStrapiResponse(salons?.salons?.data) || data
-  const salonsFlattened = prepareSalons?.map(e => {
+    flattenStrapiResponse(salons?.salons?.data) || data || []
+  const salonsFlattened = prepareSalons.map(e => {
     const reviewsCount = e.reviews.length
     const { rating, ratingCount } = getRating(e.ratings)
     return { ...e, rating, ratingCount, reviewsCount }
   })
-
   return (
     <Slider
       city={city}
-      type={rent ? 'rentSalons' : 'salons'}
+      type={'salons'}
       loading={loading}
       items={salonsFlattened}
       title="Салоны красоты"

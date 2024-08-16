@@ -136,7 +136,7 @@ export const Text = styled.p`
 
 export const Divider = styled.p``
 
-export const ProfileBlock = styled.a`
+export const ProfileBlock = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 20px;
