@@ -222,6 +222,7 @@ const RegistrationForm = ({
               input: { user: me?.info.id, ...input },
               onCompleted,
               onError: onErrorMutate,
+              publishedAt: new Date().toISOString(),
             },
           })
         }

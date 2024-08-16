@@ -7,6 +7,7 @@ export const CREATE_SALON = gql`
         id
         attributes {
           name
+          publishedAt
         }
       }
     }
