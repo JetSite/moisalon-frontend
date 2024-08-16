@@ -13,6 +13,7 @@ import salonServicesMFragment from '../fragments/salonServicesMFragment'
 import { ratingsFragment } from '../../fragments/ratings'
 import { reviewsFragment } from '../../fragments/reviews'
 import { vacanciesFragment } from '../../me/fragments/vacancies'
+import { contactPersonWHFragment } from '../../fragments/contactPersonWH'
 
 export const SALON_USER_ID = gql`
   query Salons($id: ID!) {
@@ -41,7 +42,7 @@ export const SALON_USER_ID = gql`
                 }
               }
               
-            salonID
+            
             address
             published
             rent
@@ -74,8 +75,9 @@ export const SALON_USER_ID = gql`
             contactPersonName
             contactPersonPhone
             contactPersonEmail
-            salonContactPersonWorkingHoursAt
-            salonContactPersonWorkingHoursTo
+            contactPersonWH {
+              ${contactPersonWHFragment}
+            }
             workplacesCount
             mastersCount
             brandsCount

@@ -16,6 +16,7 @@ import { vacanciesFragment } from '../../me/fragments/vacancies'
 import { paymentMethodsFragment } from '../../fragments/paymentMethods'
 import { rentalPeriodFragment } from '../../fragments/rentalPeriod'
 import { salonWorkplacesFragment } from '../fragments/salonWorkplaces'
+import { contactPersonWHFragment } from '../../fragments/contactPersonWH'
 
 export const getSalonPage = gql`
   query salon($id: ID) {
@@ -43,8 +44,6 @@ export const getSalonPage = gql`
                   }
                 }
               }
-              
-            salonID
             address
             published
             rent
@@ -56,7 +55,6 @@ export const getSalonPage = gql`
             socialNetworks {
               ${socialNetworksFragment}
             }
-
             ownerConfirmed
             onlineBookingUrl
             workingHours {
@@ -77,8 +75,9 @@ export const getSalonPage = gql`
             contactPersonName
             contactPersonPhone
             contactPersonEmail
-            salonContactPersonWorkingHoursAt
-            salonContactPersonWorkingHoursTo
+            contactPersonWH {
+              ${contactPersonWHFragment}
+            }
             workplacesCount
             mastersCount
             brandsCount

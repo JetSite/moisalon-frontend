@@ -70,7 +70,8 @@ const Rent: FC<Props> = ({
     },
   })
 
-  const isOwner = !!me?.owner?.salons?.find(item => item.id === salon.id)
+  // const isOwner = !!me?.owner?.salons?.find(item => item.id === salon.id)
+  const isOwner = false
 
   return (
     <MainLayout>

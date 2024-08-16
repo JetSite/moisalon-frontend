@@ -34,6 +34,7 @@ interface Props extends IMastersPageProps {
 
 const AllMasters: FC<Props> = ({ masters, salons, brands, ...props }) => {
   const layout = { brands, masters, salons }
+
   return (
     <CategoryPageLayout {...layout}>
       <AllMastersPage {...props} />
