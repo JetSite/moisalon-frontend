@@ -22,7 +22,7 @@ export const getSalons = gql`
         attributes {
             name
             address
-            published
+            
             rent
             webSiteUrl
             email

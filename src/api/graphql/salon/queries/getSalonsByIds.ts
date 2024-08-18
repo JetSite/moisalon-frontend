@@ -21,7 +21,7 @@ export const getSalonsByIds = gql`
           slug
           
           address
-          published
+          
           rent
           webSiteUrl
           email

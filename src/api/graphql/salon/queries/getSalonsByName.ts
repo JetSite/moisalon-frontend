@@ -20,7 +20,7 @@ export const getSalonsByName = gql`
             name
             
             address
-            published
+            
             rent
             webSiteUrl
             email

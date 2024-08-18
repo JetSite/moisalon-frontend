@@ -45,7 +45,7 @@ export const getSalonPage = gql`
                 }
               }
             address
-            published
+            
             rent
             webSiteUrl
             email

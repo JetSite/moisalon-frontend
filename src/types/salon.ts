@@ -41,7 +41,6 @@ export interface ISalon {
   description: string
   onlineBookingUrl: string
   webSiteUrl: string
-  published: boolean
   rent: boolean
   ownerConfirmed: boolean
   cover: IPhoto | null
