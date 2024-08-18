@@ -38,12 +38,12 @@ const FavoritesPage = () => {
 
       haveFavorites = !!keys.find(key => user.favorite[key].length)
     } else {
-      const favorites: { [K: string]: Array<any> } = JSON.parse(
-        localStorage.getItem('favorites') || '',
-      )
-      keys =
-        (Object.keys(favorites) as (keyof { [K: string]: Array<any> })[]) || []
-      haveFavorites = !!keys.find(key => favorites[key].length)
+      //   const favorites: { [K: string]: Array<any> } = JSON.parse(
+      //     localStorage.getItem('favorites') || '',
+      //   )
+      //   keys =
+      //     (Object.keys(favorites) as (keyof { [K: string]: Array<any> })[]) || []
+      //   haveFavorites = !!keys.find(key => favorites[key].length)
     }
   }, [])
 
