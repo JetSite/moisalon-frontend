@@ -36,8 +36,7 @@ export const salonFragment = `data {
             }
           }
         }
-      address
-      published
+      address    
       rent
       webSiteUrl
       email

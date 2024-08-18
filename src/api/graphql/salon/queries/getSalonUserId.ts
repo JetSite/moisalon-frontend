@@ -44,7 +44,7 @@ export const SALON_USER_ID = gql`
               
             
             address
-            published
+            
             rent
             webSiteUrl
             email

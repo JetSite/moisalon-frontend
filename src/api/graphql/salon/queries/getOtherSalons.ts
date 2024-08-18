@@ -19,7 +19,7 @@ export const getOtherSalons = gql`
             }
             
             address
-            published
+            
             rent
             webSiteUrl
             email

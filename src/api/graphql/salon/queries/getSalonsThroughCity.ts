@@ -21,7 +21,7 @@ export const getSalonsThroughCity = gql`
           slug
           
           address
-          published
+          
           rent
           webSiteUrl
           email
