@@ -30,7 +30,7 @@ const BeautyFreeShop = ({
   useCheckCity(cityData)
 
   return (
-    <MainLayout MainLayout me={me}>
+    <MainLayout>
       <MainContainer>
         <BeautyFreeShopPage
           dataProducts={dataProducts}

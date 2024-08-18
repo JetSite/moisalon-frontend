@@ -11,7 +11,6 @@ attr_value {
           id
           attributes {
             title
-            attributeGroupType
           }
         }
       }

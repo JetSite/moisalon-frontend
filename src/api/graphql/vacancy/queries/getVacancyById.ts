@@ -27,7 +27,7 @@ export const getVacancyById = gql`
                 data {
                     id
                     attributes {
-                        brandName
+                        name
                     }
                 }
             }
@@ -35,7 +35,7 @@ export const getVacancyById = gql`
                 data {
                     id
                     attributes {
-                        salonName
+                        name
                     }
                 }
             }
