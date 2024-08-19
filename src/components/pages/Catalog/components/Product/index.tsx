@@ -231,11 +231,11 @@ const ButtonsWrapper = styled.div`
   width: 100%;
 `
 
-const Available = styled.div`
+const Available = styled.div<{ avaible?: boolean }>`
   margin-top: 25px;
   margin-bottom: 15px;
   padding-left: 7px;
-  color: ${red};
+  color: ${({ avaible }) => (avaible ? 'green' : red)};
   font-size: 13px;
   font-weight: 600;
   position: relative;
@@ -244,10 +244,10 @@ const Available = styled.div`
     content: '';
     width: 5px;
     height: 5px;
-    background-color: ${red};
+    background-color: ${({ avaible }) => (avaible ? 'green' : red)};
     border-radius: 100%;
     position: absolute;
-    top: 6px;
+    top: 4px;
     left: 0;
   }
 
@@ -363,7 +363,7 @@ const Product = ({
           </ImageWrapper>
           <Content>
             <Name>{newItem?.product?.name}</Name>
-            <Available>
+            <Available avaible={newItem?.product?.availableInStock > 0}>
               {newItem?.product?.availableInStock > 0
                 ? 'В наличии'
                 : 'Нет в наличии'}
