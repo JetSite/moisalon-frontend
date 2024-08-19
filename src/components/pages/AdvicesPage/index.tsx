@@ -5,10 +5,10 @@ import MainLayout from '../../../layouts/MainLayout'
 import { MainContainer } from '../../../styles/common'
 import MobileViewCards from '../MainPage/components/MobileViewCards'
 import NavigationList from './components/NavigationList'
-import AdvicesList from './components/AdvicesList'
-import FullAdvice from './components/AdvicesList/FullAdvice'
 import { Wrapper, Navigation, Title, Content } from './styles'
 import { getFeedCategory } from 'src/api/graphql/feed/queries/getFeedCategory'
+import FullAdvice from './components/AdvicesList/FullAdvice'
+import AdvicesList from './components/AdvicesList'
 
 interface Props {
   categories: any

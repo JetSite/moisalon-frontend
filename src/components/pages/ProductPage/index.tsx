@@ -29,20 +29,10 @@ import {
   ButtonsWrapper,
   Detail,
 } from './styled'
-import Stars from '../../ui/Stars'
-import { addToCartB2cMutation } from '../../../_graphql-legacy/cart/addToB2cCart'
-import { removeItemB2cMutation } from '../../../_graphql-legacy/cart/removeItemB2c'
 import { PHOTO_URL } from '../../../api/variables'
-import Rating from '../../ui/Rating'
-import BackButton from '../../ui/BackButton'
 import Reviews from '../../blocks/Reviews'
-import { reviewsforProductB2c } from '../../../_graphql-legacy/reviewsforProductB2c'
-import { createReviewMutation } from '../../../_graphql-legacy/createReviewMutation'
-import { getCart } from '../../../_graphql-legacy/cart/getCart'
 import Button from '../../ui/Button'
 import Popup from '../../ui/Popup'
-import { cyrToTranslit } from '../../../utils/translit'
-import { Count } from '../../blocks/Reviews/styled'
 import { pluralize } from '../../../utils/pluralize'
 import FastBuyPopup from '../../ui/FastBuyPopup'
 import useAuthStore from 'src/store/authStore'
@@ -260,11 +250,10 @@ const ProductPage: FC<IProductPageProps> = ({ product, reviews }) => {
           <Right>
             <Title>{newItem?.product?.name}</Title>
             {product?.brand?.dontShowPrice ? null : (
-              <Price>{`${
-                (newItem?.product?.salePrice &&
+              <Price>{`${(newItem?.product?.salePrice &&
                   newItem?.product?.salePrice?.toLocaleString()) ||
                 newItem?.product?.regularPrice?.toLocaleString()
-              } ₽`}</Price>
+                } ₽`}</Price>
             )}
             <AvailableQuantity
               isWrongQuantity={

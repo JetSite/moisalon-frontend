@@ -97,7 +97,7 @@ export const WrapButton = styled.div`
   margin-top: 48px;
 `
 
-export const CustomButton = styled.div`
+export const CustomButton = styled.div<{ disabled: boolean }>`
   cursor: pointer;
   position: relative;
   color: #000;
@@ -110,6 +110,13 @@ export const CustomButton = styled.div`
   justify-content: center;
   opacity: ${({ disabled }) => (disabled ? 0.3 : 1)};
   pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
+  transition: 0.3s;
+
+  &:hover {
+    background: ${red};
+    border-color: ${red};
+    color: #fff;
+  }
 `
 
 export const TopCustomButton = styled.p`
@@ -142,7 +149,7 @@ export const Minus = styled.div`
   }
 `
 
-export const Plus = styled(Minus)`
+export const Plus = styled(Minus) <{ disabled: boolean }>`
   background: #f0f0f0 url('/icon-plus.svg') no-repeat center;
   background-size: 13px;
   pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
@@ -153,7 +160,7 @@ export const Plus = styled(Minus)`
   }
 `
 
-export const Quantity = styled.p`
+export const Quantity = styled.p<{ isWrongQuantity: boolean }>`
   color: ${({ isWrongQuantity }) => (isWrongQuantity ? red : '#000')};
   font-size: 10px;
   line-height: 16px;
@@ -265,7 +272,7 @@ export const Terms = styled.p`
   width: 100%;
 `
 
-export const AvailableQuantity = styled.p`
+export const AvailableQuantity = styled.p<{ isWrongQuantity: boolean }>`
   color: ${({ isWrongQuantity }) => (isWrongQuantity ? red : '#000')};
   font-weight: 600;
   font-size: 18px;
