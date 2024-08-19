@@ -10,6 +10,7 @@ import {
 import BackButton from '../../../../ui/BackButton'
 import { PHOTO_URL } from '../../../../../api/variables'
 import { getFeed } from 'src/api/graphql/feed/queries/getFeed'
+import ReactMarkdown from 'react-markdown'
 
 const FullAdvice = ({ adviceClicked, backHandler }) => {
   const { data: fullAdviceData, loading } = useQuery(getFeed, {
@@ -34,11 +35,9 @@ const FullAdvice = ({ adviceClicked, backHandler }) => {
         <MobileVisible>
           <AdvTitle>{item?.title}</AdvTitle>
         </MobileVisible>
-        <AdvDescription
-          dangerouslySetInnerHTML={{
-            __html: item?.content,
-          }}
-        />
+        <AdvDescription>
+          <ReactMarkdown>{item?.content}</ReactMarkdown>
+        </AdvDescription>
       </AdvItem>
     </>
   ) : null

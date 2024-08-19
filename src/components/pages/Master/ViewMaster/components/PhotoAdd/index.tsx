@@ -66,6 +66,7 @@ const PhotoAdd: FC<PhotoAddProps> = ({ onAdd }) => {
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*',
     onDrop,
+    multiple: false,
   })
 
   return (

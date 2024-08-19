@@ -46,7 +46,7 @@ const VacancyPage = ({ vacancy, beautyCategories, beautyAllContent }) => {
     vacancy?.cover && vacancy?.cover[0]?.url ? vacancy.cover[0].url : ''
 
   const originInfo = item => {
-    switch (item?.vacancy_type?.title) {
+    switch (item?.vacancy_type?.title || 'SALON') {
       case 'MASTER':
         return {
           originType: 'Мастер',
@@ -58,8 +58,8 @@ const VacancyPage = ({ vacancy, beautyCategories, beautyAllContent }) => {
       case 'SALON':
         return {
           originType: 'Салон',
-          originName: item.salon?.salonName,
-          customTitle: `в салоне ${item.salon?.salonName}`,
+          originName: item.salon?.name,
+          customTitle: `в салоне ${item.salon?.name}`,
           buttonLink: 'salon',
           originLink: `/${
             cyrToTranslit(item?.salonOrigin?.address?.city) || city.slug

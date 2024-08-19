@@ -244,6 +244,8 @@ const Cart = ({ me }) => {
     })
   }
 
+  console.log('cart', cart)
+
   return (
     <Wrapper>
       <BackButton
@@ -253,7 +255,6 @@ const Cart = ({ me }) => {
       />
       {!cart?.cartContent?.length ? (
         <>
-          {' '}
           <NoItemsText>Ваша корзина пуста, наполните её товарами.</NoItemsText>
           <NoItemsTextRed
             onClick={() => router.push(`/${city.slug}/beautyFreeShop`)}
@@ -263,7 +264,6 @@ const Cart = ({ me }) => {
         </>
       ) : (
         <>
-          {' '}
           <Title>Корзина ({CountProduct(cart?.cartContent)})</Title>
           <Wrap>
             <ProductsWrap>
@@ -307,8 +307,8 @@ const Cart = ({ me }) => {
               </Total>
               {productBrands?.length
                 ? checkedProductBrands(checkedProducts, productBrands).map(
-                    item =>
-                      item?.minimalOrderPrice &&
+                  item =>
+                    item?.minimalOrderPrice &&
                       productBrands
                         .map(item =>
                           item?.minimalOrderPrice
@@ -316,15 +316,15 @@ const Cart = ({ me }) => {
                             : true,
                         )
                         .find(el => el === item.name) ? (
-                        <TotalBrand key={item.id}>
-                          <TextBrandSumm>
-                            Минимальная сумма заказа бренда - {item.name}:
-                          </TextBrandSumm>
+                      <TotalBrand key={item.id}>
+                        <TextBrandSumm>
+                          Минимальная сумма заказа бренда - {item.name}:
+                        </TextBrandSumm>
 
-                          <TextBrandTotal>{`${item.minimalOrderPrice} ₽`}</TextBrandTotal>
-                        </TotalBrand>
-                      ) : null,
-                  )
+                        <TextBrandTotal>{`${item.minimalOrderPrice} ₽`}</TextBrandTotal>
+                      </TotalBrand>
+                    ) : null,
+                )
                 : null}
               <Button
                 size="fullWidth"

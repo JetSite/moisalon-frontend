@@ -1,5 +1,5 @@
-import AdviceItem from './AdviceItem'
 import { AdvList } from '../../styles'
+import AdviceItem from './AdviceItem'
 
 const AdvicesList = ({
   items,
