@@ -220,10 +220,15 @@ export const LinkCitySelect = styled.div`
   }
 `
 
-export const LinkFavorites = styled.a`
+export const LinkFavorites = styled.a<{
+  disabled?: boolean
+}>`
   height: 23px;
+  cursor: ${({ disabled }) => (!disabled ? 'pointer' : 'default')};
+  opacity: ${({ disabled }) => (disabled ? '0.5' : '1')};
 
-  cursor: pointer;
+  :hover {
+  }
 
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
@@ -257,11 +262,13 @@ export const LinkSearchMobile = styled.div`
   }
 `
 
-export const LinkProfile = styled.a`
+export const LinkProfile = styled.a<{ disabled?: boolean }>`
   height: 23px;
-  cursor: pointer;
+  cursor: ${({ disabled }) => (!disabled ? 'pointer' : 'default')};
+  opacity: ${({ disabled }) => (disabled ? '0.5' : '1')};
 
   :hover {
+    ${({ disabled }) => (!disabled ? red : '#000')};
   }
 
   @media (max-width: ${laptopBreakpoint}) {

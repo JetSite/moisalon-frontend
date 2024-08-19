@@ -42,3 +42,16 @@ export const TitlePage = styled.h2`
     text-transform: none;
   }
 `
+
+export const Empty = styled.p`
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 40px 140px;
+  font-size: 18px;
+  line-height: 30px;
+  text-align: center;
+
+  @media (max-width: ${laptopBreakpoint}) {
+    padding: 40px 20px;
+  }
+`

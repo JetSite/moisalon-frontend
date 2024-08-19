@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { FC, useRef, useState } from 'react'
 import { MainContainer } from '../../../../styles/common'
 import {
   Title,
@@ -9,8 +9,9 @@ import {
   Empty,
   ItemToggle,
 } from './styled'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import SwiperCore, { Navigation } from 'swiper/core'
+import { Swiper, SwiperClass, SwiperSlide } from 'swiper/react'
+import SwiperCore from 'swiper'
+import { Navigation } from 'swiper/modules'
 import Link from 'next/link'
 import {
   ButtonNext,
@@ -21,10 +22,20 @@ import Good from './components/Good'
 import { cyrToTranslit } from '../../../../utils/translit'
 import { getStoreData } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
+import { ISetState } from 'src/types/common'
+import { IProduct } from 'src/types/product'
 
 SwiperCore.use([Navigation])
 
-const GoodsFavorites = ({
+interface Props {
+  title?: string
+  cabinet?: boolean
+  mobile?: boolean
+  handleDeleted: () => void
+  setProductEmpty?: ISetState<boolean>
+}
+
+const GoodsFavorites: FC<Props> = ({
   title,
   setProductEmpty = () => {},
   cabinet = false,
@@ -35,30 +46,33 @@ const GoodsFavorites = ({
   const { city } = useAuthStore(getStoreData)
   const navigationNextRef = useRef(null)
 
-  const onBeforeInit = Swiper => {
+  const onBeforeInit = (Swiper: SwiperClass) => {
     if (typeof Swiper.params.navigation !== 'boolean') {
       const navigation = Swiper.params.navigation
-      navigation.prevEl = navigationPrevRef.current
-      navigation.nextEl = navigationNextRef.current
+      if (navigation) {
+        navigation.prevEl = navigationPrevRef.current
+        navigation.nextEl = navigationNextRef.current
+      }
     }
   }
 
   const [deleteItem, setDeleteItem] = useState(false)
   const [toggle, setToggle] = useState(mobile && cabinet && true)
 
-  let products
+  let products: IProduct[] = []
   if (typeof window !== 'undefined') {
-    products = JSON.parse(localStorage.getItem('favorites'))?.products || []
+    products =
+      JSON.parse(localStorage.getItem('favorites') || '')?.products || []
     if (!products.length) {
-      setProductEmpty(true)
+      setProductEmpty && setProductEmpty(true)
     }
-  }
+  } else return <div></div>
 
   return (
     <MainContainer>
       {mobile && cabinet ? (
         <ItemToggle
-          disabled={!!!products?.length}
+          disabled={!products?.length}
           toggle={!toggle}
           onClick={() => setToggle(!toggle)}
         >
@@ -68,7 +82,7 @@ const GoodsFavorites = ({
       {!toggle && products?.length ? (
         <Wrapper cabinet={cabinet}>
           <Top>
-            <Title cabinet={cabinet}>{title}</Title>
+            {title && <Title cabinet={cabinet}>{title}</Title>}
             <NavigationWrapper>
               <ButtonPrev ref={navigationPrevRef} />
               <ButtonNext ref={navigationNextRef} />
@@ -111,9 +125,7 @@ const GoodsFavorites = ({
                       }}
                       key={i}
                     >
-                      <Link
-                        href={`/${cyrToTranslit(city)}/product/${product?.id}`}
-                      >
+                      <Link href={`/${city.slug}/product/${product?.id}`}>
                         <Good
                           cabinet={cabinet}
                           product={product}
