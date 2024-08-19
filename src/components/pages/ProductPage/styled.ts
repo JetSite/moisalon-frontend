@@ -67,8 +67,8 @@ export const Right = styled.div`
 export const Title = styled.h1`
   max-width: 614px;
   font-weight: 500;
-  font-size: 40px;
-  line-height: 55px;
+  font-size: 36px;
+  line-height: 1.5;
   text-transform: uppercase;
 
   @media (max-width: ${laptopBreakpoint}) {
@@ -149,7 +149,7 @@ export const Minus = styled.div`
   }
 `
 
-export const Plus = styled(Minus) <{ disabled: boolean }>`
+export const Plus = styled(Minus)<{ disabled: boolean }>`
   background: #f0f0f0 url('/icon-plus.svg') no-repeat center;
   background-size: 13px;
   pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
