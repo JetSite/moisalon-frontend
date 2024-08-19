@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../styles/variables'
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{ cabinet: boolean }>`
   margin-top: ${props => (props.cabinet ? '0' : '60px')};
   margin-bottom: ${props => (props.cabinet ? '0' : '60px')};
   padding: ${props => (props.cabinet ? '0' : '0 140px')};
@@ -18,7 +18,7 @@ export const Top = styled.div`
   align-items: center;
 `
 
-export const ItemToggle = styled.div`
+export const ItemToggle = styled.div<{ disabled: boolean; toggle: boolean }>`
   width: 100%;
   position: relative;
   transition: 0.3s;
@@ -43,7 +43,7 @@ export const ItemToggle = styled.div`
   }
 `
 
-export const Title = styled.p`
+export const Title = styled.p<{ cabinet: boolean }>`
   font-size: 30px;
   font-weight: 600;
   margin-bottom: 55px;
@@ -63,7 +63,7 @@ export const SwiperWrap = styled.div`
   width: 100%;
 `
 
-export const WrapperItem = styled.div`
+export const WrapperItem = styled.div<{ cabinet: boolean }>`
   height: ${props => (props.cabinet ? '100%' : '85%')};
   display: flex;
   flex-direction: column;

@@ -17,8 +17,19 @@ import { red } from '../../../../../styles/variables'
 import HeartFullFill from '../../../MainPage/components/Header/icons/HeartFullFill'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
+import { FC, MouseEvent } from 'react'
+import { IProduct } from 'src/types/product'
+import { ISetState } from 'src/types/common'
 
-const Good = ({
+interface Props {
+  product: IProduct
+  cabinet: boolean
+  deleteItem: boolean
+  setDeleteItem: ISetState<boolean>
+  handleDeleted: () => void
+}
+
+const Good: FC<Props> = ({
   product,
   deleteItem,
   setDeleteItem,
@@ -26,7 +37,7 @@ const Good = ({
   handleDeleted,
 }) => {
   const { me } = useAuthStore(getStoreData)
-  const addFavorite = (e, product) => {
+  const addFavorite = (e: MouseEvent<HTMLDivElement>, product: IProduct) => {
     e.preventDefault()
     e.stopPropagation()
     favoritesInStorage('products', product)
@@ -40,8 +51,8 @@ const Good = ({
         <Image
           alt="image"
           src={
-            product?.photoIds[0]
-              ? `${PHOTO_URL}${product?.photoIds[0]}/original`
+            product?.cover
+              ? `${PHOTO_URL}${product?.cover.url}`
               : '/cosmetic_placeholder.jpg'
           }
         />
@@ -51,16 +62,16 @@ const Good = ({
       </TopGoodWrapper>
       <BottomGoodWrapper>
         <Wrap>
-          <Name>{product?.title}</Name>
-          {product?.dontShowPrice && !me?.info ? null : (
+          <Name>{product?.name}</Name>
+          {!me?.info ? null : (
             <Price>
               <NewPrice>
-                {product?.amount
-                  ? `${product?.amount.toLocaleString()} ₽`
-                  : 'Цена по запросу'}{' '}
+                {product?.salePrice
+                  ? `${product?.salePrice.toLocaleString()} ₽`
+                  : 'Цена по запросу'}
                 <OldPrice>
-                  {product?.currentAmount
-                    ? `${product?.currentAmount.toLocaleString()}₽`
+                  {product?.regularPrice
+                    ? `${product?.regularPrice.toLocaleString()}₽`
                     : null}
                 </OldPrice>
               </NewPrice>

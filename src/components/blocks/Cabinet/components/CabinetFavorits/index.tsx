@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react'
 import Tabs from './components/tabs'
-import { Wrapper, Wrap, TitlePage, Top } from './styles'
+import { Wrapper, Wrap, TitlePage, Top, Empty } from './styles'
 import SalonsFavorites from '../../../../pages/FavoritesPage/SalonsFavorites'
 import MastersFavorites from '../../../../pages/FavoritesPage/MastersFavorites'
 import GoodsFavorites from '../../../../pages/FavoritesPage/GoodsFavorites'
@@ -16,6 +16,16 @@ const CabinetFavorits: FC = () => {
   const [activeTab, setActiveTab] = useState<string>('all')
   const mobileMedia = useMedia({ maxWidth: 992 }) // 768
 
+  let keys = []
+  let haveFavorites = false
+
+  if (user) {
+    keys = (Object.keys(user?.favorite) as (keyof IUserThings)[]) || []
+
+    haveFavorites = !!keys.find(key => {
+      return user.favorite[key].length
+    })
+  }
   const handleDeleted = () => {
     console.log('delete')
   }
@@ -65,107 +75,113 @@ const CabinetFavorits: FC = () => {
         activeTab={activeTab}
         setActiveTab={setActiveTab}
       />
-      {activeTab === 'salons' && !mobileMedia ? (
-        <SalonsFavorites
-          handleDeleted={handleDeleted}
-          cabinet
-          setActiveTab={setActiveTab}
-        />
-      ) : null}
-      {activeTab === 'masters' && !mobileMedia ? (
-        <MastersFavorites
-          handleDeleted={handleDeleted}
-          cabinet
-          setActiveTab={setActiveTab}
-        />
-      ) : null}
-      {activeTab === 'brands' && !mobileMedia ? (
-        <BrandsFavorites
-          handleDeleted={handleDeleted}
-          cabinet
-          setActiveTab={setActiveTab}
-        />
-      ) : null}
-      {activeTab === 'products' && !mobileMedia ? (
-        <GoodsFavorites handleDeleted={handleDeleted} cabinet />
-      ) : null}
-      {activeTab === 'educations' && !mobileMedia ? (
-        <EducationsFavorites handleDeleted={handleDeleted} cabinet />
-      ) : null}
-      {activeTab === 'all' && !mobileMedia ? (
+      {haveFavorites ? (
         <>
-          <SalonsFavorites
-            title="Избранные салоны"
-            setActiveTab={setActiveTab}
-            handleDeleted={handleDeleted}
-            cabinet
-          />
-          <Wrap>
+          {activeTab === 'salons' && !mobileMedia ? (
+            <SalonsFavorites
+              handleDeleted={handleDeleted}
+              cabinet
+              setActiveTab={setActiveTab}
+            />
+          ) : null}
+          {activeTab === 'masters' && !mobileMedia ? (
             <MastersFavorites
-              title="Избранные мастера"
-              setActiveTab={setActiveTab}
               handleDeleted={handleDeleted}
               cabinet
+              setActiveTab={setActiveTab}
             />
-          </Wrap>
-          <Wrap>
+          ) : null}
+          {activeTab === 'brands' && !mobileMedia ? (
             <BrandsFavorites
-              title="Избранные бренды"
-              setActiveTab={setActiveTab}
               handleDeleted={handleDeleted}
               cabinet
-            />
-          </Wrap>
-          <Wrap>
-            <GoodsFavorites
-              title="Избранные продукты"
               setActiveTab={setActiveTab}
-              handleDeleted={handleDeleted}
-              cabinet
             />
-          </Wrap>
-          <Wrap>
-            <EducationsFavorites
-              title="Избранные обучения"
-              setActiveTab={setActiveTab}
-              handleDeleted={handleDeleted}
-              cabinet
-            />
-          </Wrap>
+          ) : null}
+          {activeTab === 'products' && !mobileMedia ? (
+            <GoodsFavorites handleDeleted={handleDeleted} cabinet />
+          ) : null}
+          {activeTab === 'educations' && !mobileMedia ? (
+            <EducationsFavorites handleDeleted={handleDeleted} cabinet />
+          ) : null}
+          {activeTab === 'all' && !mobileMedia ? (
+            <>
+              <SalonsFavorites
+                title="Избранные салоны"
+                setActiveTab={setActiveTab}
+                handleDeleted={handleDeleted}
+                cabinet
+              />
+              <Wrap>
+                <MastersFavorites
+                  title="Избранные мастера"
+                  setActiveTab={setActiveTab}
+                  handleDeleted={handleDeleted}
+                  cabinet
+                />
+              </Wrap>
+              <Wrap>
+                <BrandsFavorites
+                  title="Избранные бренды"
+                  setActiveTab={setActiveTab}
+                  handleDeleted={handleDeleted}
+                  cabinet
+                />
+              </Wrap>
+              <Wrap>
+                <GoodsFavorites
+                  title="Избранные продукты"
+                  setActiveTab={setActiveTab}
+                  handleDeleted={handleDeleted}
+                  cabinet
+                />
+              </Wrap>
+              <Wrap>
+                <EducationsFavorites
+                  title="Избранные обучения"
+                  setActiveTab={setActiveTab}
+                  handleDeleted={handleDeleted}
+                  cabinet
+                />
+              </Wrap>
+            </>
+          ) : null}
+          {mobileMedia ? (
+            <>
+              <SalonsFavorites
+                mobile={mobileMedia}
+                setActiveTab={setActiveTab}
+                title="Избранные салоны"
+                cabinet
+              />
+              <MastersFavorites
+                mobile={mobileMedia}
+                setActiveTab={setActiveTab}
+                title="Избранные мастера"
+                cabinet
+              />
+              <BrandsFavorites
+                setActiveTab={setActiveTab}
+                mobile={mobileMedia}
+                title="Избранные бренды"
+                cabinet
+              />
+              <GoodsFavorites
+                mobile={mobileMedia}
+                title="Избранные продукты"
+                cabinet
+              />
+              <EducationsFavorites
+                mobile={mobileMedia}
+                title="Избранные обучения"
+                cabinet
+              />
+            </>
+          ) : null}
         </>
-      ) : null}
-      {mobileMedia ? (
-        <>
-          <SalonsFavorites
-            mobile={mobileMedia}
-            setActiveTab={setActiveTab}
-            title="Избранные салоны"
-            cabinet
-          />
-          <MastersFavorites
-            mobile={mobileMedia}
-            setActiveTab={setActiveTab}
-            title="Избранные мастера"
-            cabinet
-          />
-          <BrandsFavorites
-            setActiveTab={setActiveTab}
-            mobile={mobileMedia}
-            title="Избранные бренды"
-            cabinet
-          />
-          <GoodsFavorites
-            mobile={mobileMedia}
-            title="Избранные продукты"
-            cabinet
-          />
-          <EducationsFavorites
-            mobile={mobileMedia}
-            title="Избранные обучения"
-            cabinet
-          />
-        </>
-      ) : null}
+      ) : (
+        <Empty>Вы еще ничего не добавили в избранное</Empty>
+      )}
     </Wrapper>
   )
 }

@@ -116,7 +116,15 @@ export const MobileHeader: FC<Props> = ({
           </MobileLogoLink>
         </LogoMobile>
         <RightMobile>
-          <LinkProfile onClick={() => router.push('/favorites')}>
+          <LinkProfile
+            disabled
+            href="/favorites"
+            onClick={e => {
+              if (true) {
+                e.preventDefault()
+              }
+            }}
+          >
             <HeartIcon fill="#000" />
           </LinkProfile>
           {isLoggedIn ? (

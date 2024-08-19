@@ -29,23 +29,26 @@ const Empty = styled.p`
 
 const FavoritesPage = () => {
   const { user } = useAuthStore(getStoreData)
-  let haveFavorites = false
-  let keys = []
+  const [haveFavorites, setHaveFavorites] = useState(false)
 
   useEffect(() => {
+    let keys = []
+
     if (user) {
       keys = (Object.keys(user?.favorite) as (keyof IUserThings)[]) || []
-
-      haveFavorites = !!keys.find(key => user.favorite[key].length)
+      setHaveFavorites(!!keys.find(key => user.favorite[key].length))
     } else {
-      //   const favorites: { [K: string]: Array<any> } = JSON.parse(
-      //     localStorage.getItem('favorites') || '',
-      //   )
-      //   keys =
-      //     (Object.keys(favorites) as (keyof { [K: string]: Array<any> })[]) || []
-      //   haveFavorites = !!keys.find(key => favorites[key].length)
+      const favorites: { [K: string]: Array<any> } = JSON.parse(
+        localStorage.getItem('favorites') || '{}',
+      )
+
+      keys =
+        (Object.keys(favorites) as (keyof { [K: string]: Array<any> })[]) || []
+      setHaveFavorites(!!keys.find(key => favorites[key].length))
     }
-  }, [])
+  }, [user])
+
+  console.log(user)
 
   return (
     <Wrapper>
@@ -58,7 +61,7 @@ const FavoritesPage = () => {
         title="Избранные советы"
         setAdviceEmpty={setAdviceEmpty}
       /> */}
-      {haveFavorites ? (
+      {!haveFavorites ? (
         <Empty>Вы еще ничего не добавили в избранное</Empty>
       ) : null}
     </Wrapper>
