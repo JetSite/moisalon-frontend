@@ -113,8 +113,8 @@ const CabinetForm: FC<Props> = ({
         setMe({ info: prepareData as IMeInfo })
         setUser({
           info: { ...prepareData } as IMeInfo,
-          owner: { salons: [], masters: [] },
-          favorite: { salons: [], masters: [] },
+          owner: { ...user?.owner },
+          favorite: { ...user?.favorite },
         })
       }
 
