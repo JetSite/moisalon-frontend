@@ -47,7 +47,12 @@ interface Props {
   cityData: ICity
 }
 
-const Master: FC<Props> = ({ masterData, randomMasters, allServices, cityData }) => {
+const Master: FC<Props> = ({
+  masterData,
+  randomMasters,
+  allServices,
+  cityData,
+}) => {
   const [master, setMaster] = useState<IMaster>(masterData)
   const { user, city } = useAuthStore(getStoreData)
   const [activeTab, setActiveTab] = useState(0)
@@ -56,15 +61,15 @@ const Master: FC<Props> = ({ masterData, randomMasters, allServices, cityData })
   const [isPortfolioEditing, setIsPortfolioEditing] = useState(false)
   const [isDiplomsEditing, setIsDiplomsEditing] = useState(false)
   const [works, setWorks] = useState<IPhoto[]>(master?.photosWorks || [])
-  const [diplomas, setDiplomas] = useState<IPhoto[]>(master?.photosDiploma || [])
+  const [diplomas, setDiplomas] = useState<IPhoto[]>(
+    master?.photosDiploma || [],
+  )
   const [salons, setSalons] = useState<ISalon[]>(master?.salons || [])
   const [brands, setBrands] = useState<IBrand[]>(master?.brands || [])
   const [services, setServices] = useState<IServices[]>(master?.services || [])
 
   const isOwner = !!user?.owner?.masters?.find(e => e.id === master?.id)
   const servicesData = getServicesByCategory(services)
-
-  console.log('services', services)
 
   const [updateMaster] = useMutation(UPDATE_MASTER)
 
@@ -98,7 +103,6 @@ const Master: FC<Props> = ({ masterData, randomMasters, allServices, cityData })
     }
   }, [diplomas])
 
-
   const addDiplomasHandler = (photo: IPhoto) => {
     setDiplomas(prevState => [...prevState, photo])
   }
@@ -109,9 +113,9 @@ const Master: FC<Props> = ({ masterData, randomMasters, allServices, cityData })
         variables: {
           masterId: master.id,
           input: {
-            salons: salons.map(salon => salon.id)
-          }
-        }
+            salons: salons.map(salon => salon.id),
+          },
+        },
       })
     }
   }, [salons])
@@ -126,9 +130,9 @@ const Master: FC<Props> = ({ masterData, randomMasters, allServices, cityData })
         variables: {
           masterId: master.id,
           input: {
-            brands: brands.map(salon => salon.id)
-          }
-        }
+            brands: brands.map(salon => salon.id),
+          },
+        },
       })
     }
   }, [brands])
@@ -253,15 +257,17 @@ const Master: FC<Props> = ({ masterData, randomMasters, allServices, cityData })
             pb={31}
           >
             <>
-              {isDiplomsEditing ? <PhotoAdd onAdd={addDiplomasHandler} /> : null}
+              {isDiplomsEditing ? (
+                <PhotoAdd onAdd={addDiplomasHandler} />
+              ) : null}
               {isDiplomsEditing && isOwner ? (
                 <NoItemsText>
                   Нажмите плюс, чтобы добавить сертификаты или дипломы
                 </NoItemsText>
               ) : !diplomas?.length && isOwner ? (
                 <NoItemsText>
-                  Нет добавленных дипломов или сертификатов. Нажмите на карандаш, чтобы добавить
-                  сертификаты или дипломы в портфолио
+                  Нет добавленных дипломов или сертификатов. Нажмите на
+                  карандаш, чтобы добавить сертификаты или дипломы в портфолио
                 </NoItemsText>
               ) : null}
             </>
@@ -290,7 +296,11 @@ const Master: FC<Props> = ({ masterData, randomMasters, allServices, cityData })
                 ) : null
               ) : null}
               {isSalonsEditing ? (
-                <AddSalons master={master} salons={salons} setSalons={setSalons} />
+                <AddSalons
+                  master={master}
+                  salons={salons}
+                  setSalons={setSalons}
+                />
               ) : null}
             </>
           </Slider>
@@ -319,7 +329,11 @@ const Master: FC<Props> = ({ masterData, randomMasters, allServices, cityData })
                 </NoItemsText>
               )}
               {isBrandsEditing ? (
-                <AddBrands master={master} brands={brands} setBrands={setBrands} />
+                <AddBrands
+                  master={master}
+                  brands={brands}
+                  setBrands={setBrands}
+                />
               ) : null}
             </>
           </Slider>
@@ -393,7 +407,8 @@ export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async ({
     flattenStrapiResponse(data[0]?.data?.master?.data) || null
   const randomMasters: IMaster[] =
     flattenStrapiResponse(data[1]?.data?.masters?.data) || []
-  const allServices = flattenStrapiResponse(data[2]?.data?.serviceCategories?.data) || []
+  const allServices =
+    flattenStrapiResponse(data[2]?.data?.serviceCategories?.data) || []
 
   const reviewsCount = masterData?.reviews?.length || 0
   const { rating, ratingCount } = getRating(masterData?.ratings)

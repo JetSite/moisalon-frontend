@@ -10,7 +10,7 @@ export const MainHead = () => {
         <meta name="theme-color" content="#000000" />
         <meta name="yandex-verification" content="e5eb15699df5a43e" />
         <meta
-          http-equiv="Content-Security-Policy"
+          httpEquiv="Content-Security-Policy"
           content="upgrade-insecure-requests"
         />
         <meta

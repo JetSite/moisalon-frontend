@@ -183,9 +183,9 @@ const Header: FC<Props> = ({ master, isOwner }) => {
                 isFavorite={isFavorite}
                 onClick={e => (master ? addFavorite(e, master) : null)}
               />
-              {/* <Bell /> */}
+              <Bell />
             </NameContent>
-            {/* {isOwner ? (
+            {isOwner ? (
               <EditButton
                 onClick={() => {
                   router.push({
@@ -196,7 +196,7 @@ const Header: FC<Props> = ({ master, isOwner }) => {
               >
                 Редактировать профиль
               </EditButton>
-            ) : null} */}
+            ) : null}
           </NameWrapper>
           {master?.services && !!master?.services?.length ? (
             <Activities>
