@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback, useEffect } from 'react'
+import { useRef, useState, useCallback, useEffect, FC } from 'react'
 import scrollIntoView from 'scroll-into-view'
 import Header from '../../MainPage/components/Header'
 import { MainContainer } from '../../../../styles/common'
@@ -8,8 +8,13 @@ import { Wrapper } from './styled'
 import RegistrationForm from './components/RegistrationForm'
 import { IPhoto } from 'src/types'
 import { PHOTO_URL } from 'src/api/variables'
+import { IBrand } from 'src/types/brands'
 
-const CreateBrand = ({ brand }) => {
+export interface CreateBrandProps {
+  brand: IBrand
+}
+
+const CreateBrand: FC<CreateBrandProps> = ({ brand }) => {
   const allTabs = useRef()
   const ref1 = useRef()
   const ref2 = useRef()
@@ -29,7 +34,7 @@ const CreateBrand = ({ brand }) => {
   const [refActive, setRefActive] = useState(false)
   const [ref1Visible, setRef1Visible] = useState(true)
   const [ref2Visible, setRef2Visible] = useState(false)
-  const [photoBrand, setPhotoBrand] = useState<IPhoto | null>(null)
+  const [photoBrand, setPhotoBrand] = useState<IPhoto | null>(brand.logo)
   const [noPhotoError, setNoPhotoError] = useState(false)
 
   const handleElementPosition = (element, func, top) => {
@@ -83,6 +88,8 @@ const CreateBrand = ({ brand }) => {
       })
     }
   }
+
+  console.log('brand', brand)
 
   return (
     <>

@@ -156,7 +156,7 @@ const RegistrationForm = ({
       <Title>Информация о бренде</Title>
       <AutoFocusedForm
         onSubmit={onSubmit}
-        initialValues={{}}
+        initialValues={brand}
         keepDirtyOnReinitialize
         initialValuesEqual={() => true}
         render={({ handleSubmit, form, pristine }) => {

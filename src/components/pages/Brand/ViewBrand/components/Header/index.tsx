@@ -57,7 +57,13 @@ const Header: FC<Props> = ({ brand, isOwner }) => {
           <BackButton
             type="Бренд"
             name={brand?.name}
-            link={isOwner ? '/brandCabinet' : brand?.city?.slug ? `/${brand?.city?.slug}/brand` : `/moskva/brand`}
+            link={
+              isOwner
+                ? '/brandCabinet'
+                : brand?.city?.slug
+                ? `/${brand?.city?.slug}/brand`
+                : `/moskva/brand`
+            }
           />
         </Wrapper>
         <Wrapper>
@@ -65,15 +71,10 @@ const Header: FC<Props> = ({ brand, isOwner }) => {
             <Photo>{logo}</Photo>
             {isOwner ? (
               <EditButton
-                onClick={() =>
-                  router.push(
-                    {
-                      pathname: '/createBrand',
-                      query: { id: brand?.id },
-                    },
-                    '/createBrand',
-                  )
-                }
+                href={{
+                  pathname: '/createBrand',
+                  query: { id: brand?.id },
+                }}
               >
                 Редактировать профиль
               </EditButton>
@@ -82,10 +83,12 @@ const Header: FC<Props> = ({ brand, isOwner }) => {
           <IContainer>
             <Title isOwner={isOwner} brand={brand} />
           </IContainer>
-          {myPrice ? <MinimalSumm>
-            <MinimalSummTitle>Минимальная сумма заказа</MinimalSummTitle>
-            <MinimalSummText>от {myPrice} ₽</MinimalSummText>
-          </MinimalSumm> : null}
+          {myPrice ? (
+            <MinimalSumm>
+              <MinimalSummTitle>Минимальная сумма заказа</MinimalSummTitle>
+              <MinimalSummText>от {myPrice} ₽</MinimalSummText>
+            </MinimalSumm>
+          ) : null}
           {brand?.termsDeliveryPrice ? (
             !toggleTerms ? (
               <WrapCharacter>

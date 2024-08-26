@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../../../styles/variables'
+import Link from 'next/link'
 
 export const Wrapper = styled.div`
   padding: 0 140px;
@@ -40,7 +41,7 @@ export const Photo = styled.div`
   }
 `
 
-export const EditButton = styled.div`
+export const EditButton = styled(Link)`
   background: #f0f0f0;
   border-radius: 50px;
   width: 397px;

@@ -3,10 +3,14 @@ import { addApolloState, initializeApollo } from '../../api/apollo-client'
 import CreatePageSkeleton from '../../components/ui/ContentSkeleton/CreatePageSkeleton'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
-import CreateBrand from 'src/components/pages/Brand/CreateBrand'
+import CreateBrand, {
+  CreateBrandProps,
+} from 'src/components/pages/Brand/CreateBrand'
 import { getBrand } from 'src/api/graphql/brand/queries/getBrand'
+import { NextPage } from 'next'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 
-const CreateOrEditBrand = ({ brand }) => {
+const CreateOrEditBrand: NextPage<CreateBrandProps> = ({ brand }) => {
   const router = useRouter()
   const { me } = useAuthStore(getStoreData)
 
@@ -34,9 +38,8 @@ export async function getServerSideProps({ query }: any) {
     brand = brandQueryRes?.data?.brand
   }
 
-
   return addApolloState(apolloClient, {
-    props: { brand: brand || null },
+    props: { brand: flattenStrapiResponse(brand) || null },
   })
 }
 
