@@ -9,7 +9,7 @@ const VacancySlide: FC<{ item: IVacancy }> = ({ item }) => {
       <Vacancy
         title={item.title}
         id={item.cover[0].id}
-        photo={item.cover[0].url}
+        photos={item.cover}
         type="master"
 
         // amountFrom={item.amountFrom}

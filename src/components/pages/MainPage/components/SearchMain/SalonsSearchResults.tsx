@@ -1,5 +1,5 @@
 import React, { useState, FC, useEffect } from 'react'
-import { useQuery } from '@apollo/client'
+import { useLazyQuery, useQuery } from '@apollo/client'
 import { MobileVisible, MobileHidden } from '../../../../../styles/common'
 import { WrapperItemsSalons, Title, SalonCardWrapper } from './styled'
 import SalonCard from '../../../../blocks/SalonCard'
@@ -79,11 +79,12 @@ const SalonsSearchResults: FC<Props> = ({
   )
   const [sortOrder, setSortOrder] = useState<ISortOrder>(':desc')
 
-  const { refetch, loading } = useQuery(getSalonsThroughCity, {
-    skip: true,
+  const [refetch, { loading }] = useLazyQuery(getSalonsThroughCity, {
     notifyOnNetworkStatusChange: true,
     onCompleted: data => {
       const prepareData: ISalon[] = flattenStrapiResponse(data.salons)
+      console.log(prepareData)
+
       const newSalons = prepareData.map(e => {
         const reviewsCount = e.reviews.length
         const { rating, ratingCount } = getRating(e.ratings)
@@ -93,10 +94,14 @@ const SalonsSearchResults: FC<Props> = ({
     },
   })
 
+  console.log(updateSalonData)
+
   const onFetchMore = async () => {
     const sort = filtersType[sortProperty] + sortOrder
 
-    await refetch({ slug: cityData?.slug, page, sort })
+    await refetch({
+      variables: { slug: cityData?.slug, page, sort, pageSize: 10 },
+    })
     setPage(page + 1)
   }
 
@@ -116,7 +121,7 @@ const SalonsSearchResults: FC<Props> = ({
 
     setUpdateSalonData([])
     setPage(2)
-    await refetch({ slug: cityData?.slug, sort: [sort] })
+    await refetch({ variables: { slug: cityData?.slug, sort: [sort] } })
   }
 
   return (
