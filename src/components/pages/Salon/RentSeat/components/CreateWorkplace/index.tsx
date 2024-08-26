@@ -164,27 +164,27 @@ export const CreateWorkplace: FC<Props> = ({
 
     // setLoading(true)
 
-    // if (workplace) {
-    //   updateWorkplace({
-    //     variables: {
-    //       id: workplace.id,
-    //       input,
-    //     },
-    //   })
-    //   setSuccess(true)
-    //   return
-    // }
+    if (workplace) {
+      updateWorkplace({
+        variables: {
+          id: workplace.id,
+          input,
+        },
+      })
+      setSuccess(true)
+      return
+    }
 
-    // createWorkplace({
-    //   variables: {
-    //     input: {
-    //       ...input,
-    //       salon: salon.id,
-    //     },
-    //   },
-    // })
+    createWorkplace({
+      variables: {
+        input: {
+          ...input,
+          salon: salon.id,
+        },
+      },
+    })
 
-    // setSuccess(true)
+    setSuccess(true)
   }
 
   const states = {

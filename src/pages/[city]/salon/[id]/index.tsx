@@ -96,18 +96,22 @@ const Salon: FC<Props> = ({ salonData, othersSalons, cityData }) => {
   const handleRemoveBrand = (id: IID) => {}
 
   useEffect(() => {
-    updateSalon({
-      variables: {
-        salonId: salon.id,
-        input: {
-          photos: photosArray.map(e => e.id),
-          cover: photosArray.length ? photosArray[0].id : null,
+    if (isOwner) {
+      updateSalon({
+        variables: {
+          salonId: salon.id,
+          input: {
+            photos: photosArray.map(e => e.id),
+            cover: photosArray.length ? photosArray[0].id : null,
+          },
         },
-      },
-    })
+      })
+    }
   }, [photosArray])
 
   console.log('groupedServicesM', groupedServicesM)
+
+  console.log(salon.vacancies)
 
   return (
     <MainLayout>
