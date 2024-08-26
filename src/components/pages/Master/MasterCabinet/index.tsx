@@ -105,7 +105,7 @@ const MasterCabinet: FC<Props> = ({ user, requests }) => {
               title: 'Моё избранное',
               value: 'favorits',
               icon: '/icon-star.svg',
-              disable: true,
+              disable: false,
             },
             {
               title: 'Отзывы клиентов',
@@ -164,7 +164,7 @@ const MasterCabinet: FC<Props> = ({ user, requests }) => {
                 ).length,
                 visible: !!requests.rentalRequests.length,
               },
-              { title: 'Моё избранное', value: 'favorits', disable: true },
+              { title: 'Моё избранное', value: 'favorits', disable: false },
               { title: 'Отзывы клиентов', value: 'reviews' },
               { title: 'Мои акции', value: 'sales', disable: true },
               { title: 'Обучение', value: 'educations', disable: true },

@@ -28,6 +28,7 @@ interface Props {
   catalog: LazyType[] | null
   deleteItem: boolean
   setDeleteItem: ISetState<boolean>
+  handleDeleted?: ISetState<boolean>
 }
 
 const MasterItem: FC<Props> = ({
@@ -35,11 +36,14 @@ const MasterItem: FC<Props> = ({
   catalog,
   deleteItem,
   setDeleteItem,
+  handleDeleted,
 }) => {
-  const addFavorite = (e: MouseEvent<HTMLDivElement>, item: IMaster) => {
+  const addFavorite = (e: MouseEvent<HTMLDivElement>, master: IMaster) => {
     e.preventDefault()
     e.stopPropagation()
+    favoritesInStorage('masters', master)
     setDeleteItem(!deleteItem)
+    handleDeleted && handleDeleted(true)
   }
 
   const servicesCategories = getServicesCategories(master.services)

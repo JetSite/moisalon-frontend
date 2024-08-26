@@ -30,6 +30,11 @@ const Empty = styled.p`
 const FavoritesPage = () => {
   const { user } = useAuthStore(getStoreData)
   const [haveFavorites, setHaveFavorites] = useState(false)
+  let favorites: { [K: string]: Array<any> } = {}
+
+  if (typeof window !== 'undefined') {
+    favorites = JSON.parse(localStorage.getItem('favorites') || '{}')
+  }
 
   useEffect(() => {
     let keys = []
@@ -38,17 +43,11 @@ const FavoritesPage = () => {
       keys = (Object.keys(user?.favorite) as (keyof IUserThings)[]) || []
       setHaveFavorites(!!keys.find(key => user.favorite[key].length))
     } else {
-      const favorites: { [K: string]: Array<any> } = JSON.parse(
-        localStorage.getItem('favorites') || '{}',
-      )
-
       keys =
         (Object.keys(favorites) as (keyof { [K: string]: Array<any> })[]) || []
       setHaveFavorites(!!keys.find(key => favorites[key].length))
     }
-  }, [user])
-
-  console.log(user)
+  }, [user, favorites])
 
   return (
     <Wrapper>

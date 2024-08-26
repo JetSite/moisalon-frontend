@@ -11,7 +11,7 @@ interface Props {
   brand: IBrand
   setDeleteItem: ISetState<boolean>
   deleteItem: boolean
-  handleDeleted?: () => void
+  handleDeleted?: ISetState<boolean>
 }
 
 const BrandItem: FC<Props> = ({
@@ -23,9 +23,11 @@ const BrandItem: FC<Props> = ({
   const addFavorite = (e: MouseEvent<HTMLDivElement>, brand: IBrand) => {
     e.preventDefault()
     e.stopPropagation()
+    favoritesInStorage('brands', brand)
     setDeleteItem(!deleteItem)
-    handleDeleted && handleDeleted()
+    handleDeleted && handleDeleted(true)
   }
+
   return (
     <Item>
       <Image alt="logoBrand" src={PHOTO_URL + brand.logo.url} />

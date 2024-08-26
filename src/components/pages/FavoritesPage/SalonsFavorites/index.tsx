@@ -36,6 +36,7 @@ import useAuthStore from 'src/store/authStore'
 import useBaseStore from 'src/store/baseStore'
 import { NavigationOptions } from 'swiper/types'
 import { ISetState } from 'src/types/common'
+import { ISalon } from 'src/types/salon'
 
 SwiperCore.use([Navigation])
 
@@ -45,7 +46,7 @@ export interface ThingsProps {
   title?: string
   setActiveTab?: ISetState<string>
   mobile?: boolean
-  handleDeleted?: () => void
+  handleDeleted?: ISetState<boolean>
 }
 
 const SalonsFavorites: FC<ThingsProps> = ({
@@ -72,11 +73,14 @@ const SalonsFavorites: FC<ThingsProps> = ({
   const [deleteItem, setDeleteItem] = useState<boolean>(false)
   const [toggle, setToggle] = useState(mobile && cabinet && true)
 
-  const salons = user?.favorite?.salons
+  let salons: ISalon[] = user?.favorite?.salons || []
+  if (typeof window !== 'undefined') {
+    const salonsLocal =
+      JSON.parse(localStorage.getItem('favorites') || '{}')?.salons || []
+    if (!salons.length) salons = salonsLocal
+  } else return <div />
 
-  useEffect(() => {
-    if (!salons) setActiveTab('all')
-  }, [salons])
+  if (!salons) setActiveTab('all')
 
   return (
     <Wrapper>
@@ -146,7 +150,7 @@ const SalonsFavorites: FC<ThingsProps> = ({
                             salon={salon}
                             deleteItem={deleteItem}
                             setDeleteItem={setDeleteItem}
-                            handleDeleted={handleDeleted || (() => {})}
+                            handleDeleted={handleDeleted}
                           />
                         </Link>
                         {salon.salonPhones.length && !cabinet ? (

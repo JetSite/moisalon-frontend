@@ -233,11 +233,11 @@ const Header = ({ loading = false }) => {
             )}
 
             <LinkFavorites
-              disabled
-              onClick={e => e.preventDefault()}
+              // disabled
+              // onClick={e => e.preventDefault()}
               href="/favorites"
-              // onMouseMove={() => setFillFav(red)}
-              // onMouseLeave={() => setFillFav(isAboutPage ? '#fff' : '#000')}
+              onMouseMove={() => setFillFav(red)}
+              onMouseLeave={() => setFillFav(isAboutPage ? '#fff' : '#000')}
             >
               <HeartIcon fill={fillFav} />
             </LinkFavorites>

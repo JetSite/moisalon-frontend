@@ -1,4 +1,4 @@
-import { FC, useRef, useState } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
 import { MainContainer } from '../../../../styles/common'
 import {
   Title,
@@ -25,6 +25,7 @@ import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 import { ThingsProps } from '../SalonsFavorites'
 import { NavigationOptions } from 'swiper/types'
+import { IBrand } from 'src/types/brands'
 SwiperCore.use([Navigation])
 
 const BrandsFavorites: FC<ThingsProps> = ({
@@ -49,8 +50,12 @@ const BrandsFavorites: FC<ThingsProps> = ({
   const [deleteItem, setDeleteItem] = useState(false)
   const [toggle, setToggle] = useState(mobile && cabinet && true)
 
-  const brands = user?.favorite?.brand
-
+  let brands: IBrand[] = user?.favorite?.brands || []
+  if (typeof window !== 'undefined') {
+    const brandLocal =
+      JSON.parse(localStorage.getItem('favorites') || '{}')?.brands || []
+    if (!brands.length) brands = brandLocal
+  } else return <div></div>
   if (!brands?.length) {
     setActiveTab('all')
     return null

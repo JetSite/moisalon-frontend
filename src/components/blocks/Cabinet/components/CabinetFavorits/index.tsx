@@ -15,24 +15,36 @@ const CabinetFavorits: FC = () => {
   const { user } = useAuthStore(getStoreData)
   const [activeTab, setActiveTab] = useState<string>('all')
   const mobileMedia = useMedia({ maxWidth: 992 }) // 768
+  const [haveFavorites, setHaveFavorites] = useState(false)
+  const [favorites, setFavorites] = useState<IUserThings>({})
 
-  let keys = []
-  let haveFavorites = false
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setFavorites(JSON.parse(localStorage.getItem('favorites') || '{}'))
+    }
+    let keys = []
 
-  if (user) {
-    keys = (Object.keys(user?.favorite) as (keyof IUserThings)[]) || []
+    if (!user) {
+      keys = (Object.keys(user?.favorite) as (keyof IUserThings)[]) || []
+      setHaveFavorites(!!keys.find(key => user.favorite[key].length))
+    } else {
+      keys =
+        (Object.keys(favorites) as (keyof { [K: string]: Array<any> })[]) || []
+      setHaveFavorites(!!keys.find(key => favorites[key].length))
+    }
+  }, [user])
 
-    haveFavorites = !!keys.find(key => {
-      return user.favorite[key].length
-    })
-  }
+  console.log('favorites', favorites)
+
   const handleDeleted = () => {
-    console.log('delete')
+    console.log('handleDeleted')
+
+    setFavorites(JSON.parse(localStorage.getItem('favorites') || '{}'))
   }
   if (!user) return null
 
   const { salons, brands, masters, products, educations } =
-    user.favorite as IUserThings
+    favorites as IUserThings
 
   useEffect(() => {
     if (salons?.length) {
