@@ -6,7 +6,6 @@ import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../../../../../../styles/variables'
 import { ISetState } from 'src/types/common'
 import { IRentalPeriod } from 'src/types'
-import { ISalonWorkplace } from 'src/types/workplace'
 import { IPeriod } from '../../../type'
 
 const Wrapper = styled.div`

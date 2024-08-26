@@ -8,7 +8,7 @@ import GoodsFavorites from './GoodsFavorites'
 import EducationsFavorites from './EducationsFavorites'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
-import { IUser, IUserThings } from 'src/types/me'
+import { IUserThings } from 'src/types/me'
 
 const Wrapper = styled.div`
   min-height: 70vh;
@@ -30,39 +30,65 @@ const Empty = styled.p`
 const FavoritesPage = () => {
   const { user } = useAuthStore(getStoreData)
   const [haveFavorites, setHaveFavorites] = useState(false)
-  let favorites: { [K: string]: Array<any> } = {}
-
-  if (typeof window !== 'undefined') {
-    favorites = JSON.parse(localStorage.getItem('favorites') || '{}')
-  }
+  const [favorites, setFavorites] = useState<IUserThings | null>(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    let keys = []
-
-    if (user) {
-      keys = (Object.keys(user?.favorite) as (keyof IUserThings)[]) || []
-      setHaveFavorites(!!keys.find(key => user.favorite[key].length))
-    } else {
-      keys =
-        (Object.keys(favorites) as (keyof { [K: string]: Array<any> })[]) || []
-      setHaveFavorites(!!keys.find(key => favorites[key].length))
+    if (typeof window !== 'undefined') {
+      const storedFavorites = JSON.parse(
+        localStorage.getItem('favorites') || '{}',
+      )
+      setFavorites(storedFavorites)
+      setLoading(false)
     }
-  }, [user, favorites])
+  }, [])
+
+  useEffect(() => {
+    if (favorites) {
+      const keys = Object.keys(favorites) as (keyof IUserThings)[]
+      setHaveFavorites(!!keys.find(key => favorites[key].length > 0))
+    }
+  }, [favorites])
+
+  const handleDeleted = () => {
+    const updatedFavorites = JSON.parse(
+      localStorage.getItem('favorites') || '{}',
+    )
+    setFavorites(updatedFavorites)
+  }
+
+  if (loading) {
+    return null // Или добавьте лоадер, если хотите
+  }
 
   return (
     <Wrapper>
-      <MastersFavorites title="Избранные мастера" />
-      <SalonsFavorites title="Избранные салоны" />
-      <BrandsFavorites title="Избранные бренды" />
-      <GoodsFavorites title="Избранные продукты" />
-      <EducationsFavorites title="Избранные обучения" />
-      {/* <AdvicesFavorites
-        title="Избранные советы"
-        setAdviceEmpty={setAdviceEmpty}
-      /> */}
-      {!haveFavorites ? (
+      {haveFavorites ? (
+        <>
+          <MastersFavorites
+            handleDeleted={handleDeleted}
+            title="Избранные мастера"
+          />
+          <SalonsFavorites
+            handleDeleted={handleDeleted}
+            title="Избранные салоны"
+          />
+          <BrandsFavorites
+            handleDeleted={handleDeleted}
+            title="Избранные бренды"
+          />
+          <GoodsFavorites
+            handleDeleted={handleDeleted}
+            title="Избранные продукты"
+          />
+          <EducationsFavorites
+            handleDeleted={handleDeleted}
+            title="Избранные обучения"
+          />
+        </>
+      ) : (
         <Empty>Вы еще ничего не добавили в избранное</Empty>
-      ) : null}
+      )}
     </Wrapper>
   )
 }

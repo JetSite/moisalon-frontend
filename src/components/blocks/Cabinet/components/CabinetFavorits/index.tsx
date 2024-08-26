@@ -22,17 +22,20 @@ const CabinetFavorits: FC = () => {
     if (typeof window !== 'undefined') {
       setFavorites(JSON.parse(localStorage.getItem('favorites') || '{}'))
     }
+  }, [])
+
+  useEffect(() => {
     let keys = []
 
     if (!user) {
-      keys = (Object.keys(user?.favorite) as (keyof IUserThings)[]) || []
+      keys = (Object.keys(user.favorite) as (keyof IUserThings)[]) || []
       setHaveFavorites(!!keys.find(key => user.favorite[key].length))
     } else {
       keys =
         (Object.keys(favorites) as (keyof { [K: string]: Array<any> })[]) || []
       setHaveFavorites(!!keys.find(key => favorites[key].length))
     }
-  }, [user])
+  }, [user, favorites])
 
   console.log('favorites', favorites)
 
@@ -41,7 +44,7 @@ const CabinetFavorits: FC = () => {
 
     setFavorites(JSON.parse(localStorage.getItem('favorites') || '{}'))
   }
-  if (!user) return null
+  if (!user || !favorites) return null
 
   const { salons, brands, masters, products, educations } =
     favorites as IUserThings
@@ -68,6 +71,8 @@ const CabinetFavorits: FC = () => {
       return
     }
   }, [])
+
+  console.log(favorites)
 
   return (
     <Wrapper>

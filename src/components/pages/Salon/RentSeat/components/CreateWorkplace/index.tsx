@@ -109,6 +109,8 @@ export const CreateWorkplace: FC<Props> = ({
       })
       return prepareEquipment
     }
+    console.log('values', values)
+    console.log('periods', periods)
 
     const rentalPeriod = periods.length
       ? periods
@@ -155,34 +157,34 @@ export const CreateWorkplace: FC<Props> = ({
       services: values.activities || null,
       equipment: getPrepareEquipment(values),
       rentalPeriod,
-      publishedAt: '2007-12-03T10:15:30Z',
+      publishedAt: new Date().toISOString(),
     }
 
-    console.log('input', input, 'workplaceId', workplace?.id)
+    console.log('input', input.rentalPeriod, 'workplaceId', workplace?.id)
 
     // setLoading(true)
 
-    if (workplace) {
-      updateWorkplace({
-        variables: {
-          id: workplace.id,
-          input,
-        },
-      })
-      setSuccess(true)
-      return
-    }
+    // if (workplace) {
+    //   updateWorkplace({
+    //     variables: {
+    //       id: workplace.id,
+    //       input,
+    //     },
+    //   })
+    //   setSuccess(true)
+    //   return
+    // }
 
-    createWorkplace({
-      variables: {
-        input: {
-          ...input,
-          salon: salon.id,
-        },
-      },
-    })
+    // createWorkplace({
+    //   variables: {
+    //     input: {
+    //       ...input,
+    //       salon: salon.id,
+    //     },
+    //   },
+    // })
 
-    setSuccess(true)
+    // setSuccess(true)
   }
 
   const states = {
