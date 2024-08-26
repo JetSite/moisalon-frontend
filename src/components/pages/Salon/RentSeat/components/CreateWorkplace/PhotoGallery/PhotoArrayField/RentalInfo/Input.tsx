@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../../../../../../styles/variables'
 import { IPeriod } from '../../../type'
 import { ISetState } from 'src/types/common'
+import { useForm } from 'react-final-form'
 
 const InputWrapper = styled.div`
   position: relative;
@@ -54,6 +55,7 @@ const Input: FC<Props> = ({
   const findType = periods.find(e => {
     return e.id === name
   })
+  const { mutators } = useForm()
 
   const [value, setValue] = useState<string>(
     findType?.rentalCoast?.toString() || '',
@@ -72,7 +74,10 @@ const Input: FC<Props> = ({
         return { id: type.id, rentalCoast: Number(value) }
       }
     })
+    console.log(newArr)
+
     setPeriods(newArr)
+    mutators.update('period', () => newArr)
   }
 
   return (

@@ -82,6 +82,8 @@ const SalonsFavorites: FC<ThingsProps> = ({
 
   if (!salons) setActiveTab('all')
 
+  console.log(salons)
+
   return (
     <Wrapper>
       <MainContainer>
