@@ -27,13 +27,10 @@ import { FormApi } from 'final-form'
 import { IChangeWorkplaceFormStates, IChangeWorkplaceFormValues } from '../type'
 import { IRentalPeriod } from 'src/types'
 import { IEquipment } from 'src/types/equipment'
-import { getServicesForCatalog } from 'src/utils/newUtils/getServicesForCatalog'
-import { getGroupedServices } from 'src/utils/getGrupedServices'
-import { cyrToTranslit } from 'src/utils/translit'
 import { TextField } from '../../../../../../blocks/Form'
 import { Field } from 'react-final-form'
 
-function convertNumber(text) {
+function convertNumber(text: string) {
   if (text === undefined) {
     return undefined
   }
@@ -49,20 +46,6 @@ function convertNumber(text) {
   }
 
   return int
-}
-
-const findServices = (type, catalog, roomServices) => {
-  const resultArray = []
-  catalog
-    .filter(subgroup => subgroup.id === type)[0]
-    .items.map(item => {
-      roomServices?.map(service => {
-        if (service.id === item.id) {
-          resultArray.push(item.id)
-        }
-      })
-    })
-  return resultArray
 }
 
 interface Props {

@@ -7,10 +7,13 @@ import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { IID, ISetState } from 'src/types/common'
 import { UPLOAD_PHOTO_OPTIONS } from 'src/api/variables'
 import imageCompression from 'browser-image-compression'
+import splitArray from 'src/utils/newUtils/common/splitArray'
+
+import { useForm } from 'react-final-form'
 
 export interface IUsePhotoProps {
   photos: IPhoto[]
-  setPhotosArray?: ISetState<string[]>
+  setPhotosArray?: ISetState<IPhoto[]>
   onSetDefault?: (event: any) => void
   defaultPhotoId?: IID
   photoType?: 'salonPhoto' | 'master' | 'brandPhoto'
@@ -43,19 +46,12 @@ const usePhotos: IUsePhoto = ({
 }) => {
   const [error, setError] = useState<unknown>(undefined)
 
-  const [uploadImage] = useMutation(UPLOAD, {
-    onCompleted: data => {
-      const photo = flattenStrapiResponse(data.upload.data) as IPhoto
-      setPhotosArray && setPhotosArray(prev => prev.concat(photo.id))
-      addPhoto(0, photo)
-      if (defaultPhotoId === '' || photos.length === 0) {
-        onSetDefault && onSetDefault(photo.id)
-      }
-    },
-  })
+  const [uploadImage] = useMutation(UPLOAD)
+  const { mutators } = useForm()
 
   const onAdd = useCallback(
     (files: File[]) => {
+      console.log('onAdd')
       for (let i = 0; i < files.length; i++) {
         const file = files[i]
         const uploadFile = async () => {
@@ -63,8 +59,25 @@ const usePhotos: IUsePhoto = ({
             file,
             UPLOAD_PHOTO_OPTIONS,
           )
+          await uploadImage({
+            variables: { file: compressedFile },
+            onError: error => setError(error),
+            onCompleted: data => {
+              const photo = flattenStrapiResponse(data.upload.data) as IPhoto
+              setPhotosArray && setPhotosArray(prev => prev.concat(photo))
+              console.log(photos.length)
 
-          await uploadImage({ variables: { file: compressedFile } })
+              addPhoto(1 + photos.length + i, photo)
+
+              if (
+                defaultPhotoId === '' ||
+                photos.length === 0 ||
+                defaultPhotoId === photos[0].id
+              ) {
+                onSetDefault && onSetDefault(photos[0]?.id || photo.id)
+              }
+            },
+          })
         }
         uploadFile()
       }
@@ -74,14 +87,21 @@ const usePhotos: IUsePhoto = ({
 
   const onRemove = useCallback(
     (id: IID) => {
-      const index = photos.findIndex(t => t.id === id)
+      const index = photos.findIndex(photo => photo.id === id)
+
       if (index > -1) {
-        const photo = photos[index]
-        if (photo.id === defaultPhotoId && photos.length > 1) {
-          const defaultPhoto = photos.find((t, i) => i !== index)
-          onSetDefault && defaultPhoto && onSetDefault(defaultPhoto.id)
+        // Удаляем фото из массива через react-final-form's FieldArray
+        // removePhoto(index)
+        mutators.remove('photos', index)
+
+        // Теперь обновляем массив идентификаторов фотографий
+        const updatedPhotos = photos.filter((_, i) => i !== index)
+        setPhotosArray && setPhotosArray(updatedPhotos)
+
+        // Устанавливаем новую фотографию по умолчанию, если нужно
+        if (onSetDefault && id === defaultPhotoId) {
+          onSetDefault('')
         }
-        removePhoto(index)
       }
     },
     [photos, removePhoto, defaultPhotoId, onSetDefault],
@@ -89,28 +109,34 @@ const usePhotos: IUsePhoto = ({
 
   const onChange = useCallback(
     (id: IID, files: File[]) => {
-      const index = photos.findIndex(t => t.id === id)
+      const index = photos.findIndex(photo => photo.id === id)
       if (index < 0) {
         return
       }
+
       const isDefaultPhoto = photos[index].id === defaultPhotoId
       for (let i = 0; i < files.length; i++) {
         const file = files[i]
+
         const uploadFile = async () => {
-          await uploadPhoto(file, photoType)
-            .then(id => {
-              const url = URL.createObjectURL(file)
-              const photo = {
-                id,
-                url,
-                name: '',
-              }
-              updatePhoto(index, photo)
+          const compressedFile = await imageCompression(
+            file,
+            UPLOAD_PHOTO_OPTIONS,
+          )
+          await uploadImage({
+            variables: { file: compressedFile },
+            onError: error => setError(error),
+            onCompleted: data => {
+              const photo = flattenStrapiResponse(data.upload.data) as IPhoto
+              const [startArr, endArr] = splitArray(photos, index, i !== 0)
+              const newArr = startArr.concat(photo).concat(endArr)
+              setPhotosArray && setPhotosArray(newArr)
+              updatePhoto(index + i, photo)
               if (isDefaultPhoto) {
-                onSetDefault && onSetDefault(id)
+                onSetDefault && onSetDefault(photo.id)
               }
-            })
-            .catch(error => setError(error))
+            },
+          })
         }
         uploadFile()
       }

@@ -32,6 +32,7 @@ interface IInitialInput
     | 'webSiteUrl'
     | 'salonPhones'
     | 'address'
+    | 'photos'
   > {
   activities: string[] | null
   services: { id: string }[] | []
@@ -73,6 +74,7 @@ export const getInitialValuesSalonForm: IgetInitialValuesSalonForm = salon => {
         })),
         activities: salon.activities.map(e => e.id) || null,
         services: salon.services.map(e => ({ id: e.service.id })) || [],
+        photos: salon.photos || [],
       }
     : {
         name: '',
@@ -84,6 +86,7 @@ export const getInitialValuesSalonForm: IgetInitialValuesSalonForm = salon => {
         onlineBookingUrl: '',
         webSiteUrl: '',
         address: '',
+        photos: [],
         salonPhones: [
           {
             haveTelegram: false,

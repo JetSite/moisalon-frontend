@@ -4,13 +4,20 @@ import {
   LeftColumn,
   RightColumn,
 } from '../../Master/ViewMaster/components/ServicesComponent/styles'
-import { Dispatch, FC, SetStateAction } from 'react'
+import { Dispatch, FC, SetStateAction, useEffect } from 'react'
 import { IEntries } from '../ViewSalon/components/Services'
 import {
   IGroupedCategories,
   IGroupedService,
 } from 'src/utils/getGrupedServices'
 import { ISetState } from 'src/types/common'
+import { useLazyQuery } from '@apollo/client'
+import { getServiceCategories } from 'src/api/graphql/service/queries/getServiceCategories'
+import useBaseStore from 'src/store/baseStore'
+import { getStoreData, getStoreEvent } from 'src/store/utils'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { IServiceInForm } from 'src/types/services'
+import { getServicesForCatalog } from 'src/utils/newUtils/getServicesForCatalog'
 
 interface Props {
   groupedServices: IGroupedCategories[]
@@ -25,6 +32,19 @@ const EditSalonServices: FC<Props> = ({
   entriesItems,
   mobile = false,
 }) => {
+  const [getServices, { loading, data }] = useLazyQuery(getServiceCategories)
+  const { services } = useBaseStore(getStoreData)
+  const { setServices } = useBaseStore(getStoreEvent)
+
+  useEffect(() => {
+    if (!services.length) {
+      getServices()
+      if (data) setServices(flattenStrapiResponse(data.serviceCategories))
+    }
+  }, [services, data])
+
+  console.log(loading)
+
   const handleDeleteEntries = (items: IGroupedService[]) => {
     let newItems = entriesItems
     for (let i = newItems.length - 1; i >= 0; i--) {
@@ -73,11 +93,11 @@ const EditSalonServices: FC<Props> = ({
     })
     .filter(element => element !== null)
 
-  const secondColumnStart = Math.round(groups.length / 2)
+  const secondColumnStart = Math.round(groups?.length / 2)
   return !mobile ? (
     <Content>
-      <LeftColumn>{groups.slice(0, secondColumnStart)}</LeftColumn>
-      <RightColumn>{groups.slice(secondColumnStart)}</RightColumn>
+      <LeftColumn>{groups?.slice(0, secondColumnStart)}</LeftColumn>
+      <RightColumn>{groups?.slice(secondColumnStart)}</RightColumn>
     </Content>
   ) : (
     <Content>{groups}</Content>

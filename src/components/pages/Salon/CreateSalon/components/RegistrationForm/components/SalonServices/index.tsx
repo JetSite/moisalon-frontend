@@ -44,6 +44,8 @@ const SalonServices: FC<Props> = ({
   handleClickNextTab,
   number,
 }) => {
+  console.log(services)
+
   return (
     <Wrapper ref={ref3} id="services">
       <Title>Сервис для посетителей</Title>

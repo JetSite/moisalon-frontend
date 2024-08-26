@@ -28,14 +28,11 @@ import { IUsePhotoProps } from 'src/components/blocks/Form/PhotoArrayField/usePh
 
 interface Props extends IFormAboutProps {
   photos: IPhoto[]
-  setPhotosArray: ISetState<string[]>
+  setPhotosArray: ISetState<IPhoto[]>
 }
 
-interface IphotoArrayPros
-  extends Pick<
-    IUsePhotoProps,
-    'photoType' | 'kind' | 'photos' | 'setPhotosArray'
-  > {}
+export interface IphotoArrayPros
+  extends Pick<IUsePhotoProps, 'photoType' | 'kind' | 'setPhotosArray'> {}
 
 const About: FC<Props> = ({
   setClickCity,
@@ -49,7 +46,6 @@ const About: FC<Props> = ({
   const photoArrayProps: IphotoArrayPros = {
     photoType: 'salonPhoto',
     kind: 'small',
-    photos,
     setPhotosArray,
   }
 
