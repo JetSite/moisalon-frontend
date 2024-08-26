@@ -2,7 +2,7 @@ import React, { FC, useCallback } from 'react'
 import PhotoAdd from './PhotoAdd'
 import PhotoItem from './PhotoItem'
 import { Grid } from '@material-ui/core'
-import usePhotos, { IUsePhotoProps } from './usePhotos'
+import usePhotos, { IUsePhotoProps, IUsePhotoResult } from './usePhotos'
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../styles/variables'
 import { useMutation } from '@apollo/client'
@@ -29,13 +29,24 @@ const Wrap = styled.div`
   align-items: flex-start;
 `
 
-interface Props extends PhotoArrayFieldProps, IUsePhotoProps {}
+interface Props
+  extends PhotoArrayFieldProps,
+    Omit<IUsePhotoProps, 'onRemove' | 'onChange' | 'onAdd'>,
+    Pick<IUsePhotoResult, 'onAdd' | 'onChange' | 'onRemove'> {}
 
 const PhotoArray: FC<Props> = props => {
-  const { photos, defaultPhotoId, onSetDefault, description, variant } = props
-  const { onRemove, onChange, onAdd } = usePhotos(props)
+  const {
+    photos,
+    defaultPhotoId,
+    onSetDefault,
+    description,
+    variant,
+    onChange,
+    onRemove,
+    onAdd,
+  } = props
 
-  const photoList = photos.map(photo => {
+  const photoList = photos?.map(photo => {
     return (
       <Grid item key={photo.id}>
         <PhotoItem

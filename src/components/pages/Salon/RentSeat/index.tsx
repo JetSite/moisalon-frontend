@@ -50,6 +50,8 @@ const RentSeat: FC<Props> = ({ salonData, retnalPeriods, equipments }) => {
     },
   ])
 
+  console.log(salon.rent)
+
   return (
     <>
       <Header />

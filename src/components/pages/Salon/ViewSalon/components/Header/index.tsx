@@ -101,8 +101,6 @@ const Header: FC<Props> = ({ salon, isOwner }) => {
     })
   }
 
-  console.log(isOwner)
-
   return (
     <>
       <MainContainer>

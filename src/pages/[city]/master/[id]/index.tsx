@@ -28,7 +28,6 @@ import { defaultValues, defaultcCitiesList } from 'src/api/authConfig'
 import { fetchCity } from 'src/api/utils/fetchCity'
 import { IMaster } from 'src/types/masters'
 import { ICity, IPhoto } from 'src/types'
-import { getGroupedServices } from 'src/utils/getGrupedServices'
 import { getRating } from 'src/utils/newUtils/getRating'
 import { Nullable } from 'src/types/common'
 import Resume from 'src/components/pages/Master/ViewMaster/components/Resume'
@@ -39,6 +38,8 @@ import { UPDATE_MASTER } from 'src/api/graphql/master/mutations/updateMaster'
 import AddBrands from 'src/components/pages/Master/AddBrands'
 import { getServiceCategories } from 'src/api/graphql/service/queries/getServiceCategories'
 import { IServiceCategory, IServices } from 'src/types/services'
+import AutoFocusedForm from 'src/components/blocks/Form/AutoFocusedForm'
+import PhotoArrayField from 'src/components/blocks/Form/PhotoArrayField'
 
 interface Props {
   masterData: IMaster
@@ -231,7 +232,21 @@ const Master: FC<Props> = ({
               pt={52}
               pb={31}
             >
-              {isPortfolioEditing ? <PhotoAdd onAdd={addWorksHandler} /> : null}
+              {isPortfolioEditing ? (
+                <AutoFocusedForm
+                  initialValues={{ photos: master.photosWorks }}
+                  onSubmit={() => {}}
+                  render={() => {
+                    return (
+                      <PhotoArrayField
+                        photoType="salonPhoto"
+                        kind="small"
+                        setPhotosArray={setWorks}
+                      />
+                    )
+                  }}
+                />
+              ) : null}
               {isPortfolioEditing && isOwner ? (
                 <NoItemsText>Нажмите плюс, чтобы добавить работы</NoItemsText>
               ) : !works?.length && isOwner ? (

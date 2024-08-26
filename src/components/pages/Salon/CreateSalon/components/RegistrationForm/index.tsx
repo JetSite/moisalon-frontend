@@ -13,7 +13,7 @@ import Schedule from './components/Schedule'
 import Administrator from './components/Administrator'
 import { useMutation } from '@apollo/react-hooks'
 import useBaseStore from 'src/store/baseStore'
-import { getStoreData } from 'src/store/utils'
+import { getStoreData, getStoreEvent } from 'src/store/utils'
 import { ISalonPage } from 'src/types/salon'
 import { IServiceInForm } from 'src/types/services'
 import { IHandleClickNextTabInForm } from '../..'
@@ -68,11 +68,11 @@ const RegistrationForm: FC<Props> = ({
   const [errors, setErrors] = useState<string[] | null>(null)
   const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
   const { services, activities } = useBaseStore(getStoreData)
-  const { me } = useAuthStore(getStoreData)
+  const { me, user } = useAuthStore(getStoreData)
+  const { setUser } = useAuthStore(getStoreEvent)
+
   const salonServicesCatalog: IServiceInForm[] = getServicesForCatalog(services)
-  const [photosArray, setPhotosArray] = useState<string[]>(
-    salon?.photos?.map(e => e.id) || [],
-  )
+  const [photosArray, setPhotosArray] = useState<IPhoto[]>(salon?.photos || [])
   const [loading, setLoading] = useState(false)
 
   const salonActivitiesCatalog = activities
@@ -144,7 +144,7 @@ const RegistrationForm: FC<Props> = ({
           values,
           logo,
           findCity,
-          photos: photosArray,
+          photos: photosArray.map(e => e.id),
           rent,
         })
         if (salon?.id) {
@@ -163,6 +163,17 @@ const RegistrationForm: FC<Props> = ({
               },
             },
           }).then(data => {
+            user?.owner.salons &&
+              setUser({
+                ...user,
+                owner: {
+                  ...user.owner,
+                  salons: [
+                    ...user.owner.salons,
+                    flattenStrapiResponse(data.data.createSalon),
+                  ],
+                },
+              })
             router.push(
               `/${findCityData?.slug}/${rent ? 'rent' : 'salon'}/${
                 data.data.createSalon.data.id
@@ -176,7 +187,8 @@ const RegistrationForm: FC<Props> = ({
         values,
         logo,
         findCity,
-        photos: photosArray,
+        photos: photosArray.map(e => e.id),
+        rent,
       })
       if (salon?.id) {
         mutate({ variables: { salonId: salon.id, input } }).then(() => {
@@ -194,6 +206,17 @@ const RegistrationForm: FC<Props> = ({
             },
           },
         }).then(data => {
+          user?.owner.salons &&
+            setUser({
+              ...user,
+              owner: {
+                ...user.owner,
+                salons: [
+                  ...user.owner.salons,
+                  flattenStrapiResponse(data.data.createSalon),
+                ],
+              },
+            })
           router.push(
             `/${findCity?.slug}/${rent ? 'rent' : 'salon'}/${
               data.data.createSalon.data.id
@@ -203,8 +226,6 @@ const RegistrationForm: FC<Props> = ({
       }
     }
   }
-
-  console.log(new Date().toISOString().slice(0, -2))
 
   return (
     <Wrapper>

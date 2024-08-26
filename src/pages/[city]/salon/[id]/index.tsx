@@ -1,7 +1,7 @@
 import { FC, useEffect, useMemo, useState } from 'react'
-import { useQuery, useMutation } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import MainLayout from '../../../../layouts/MainLayout'
-import { addApolloState, initializeApollo } from '../../../../api/apollo-client'
+import { initializeApollo } from '../../../../api/apollo-client'
 import SearchBlock from '../../../../components/blocks/SearchBlock'
 import Header from '../../../../components/pages/Salon/ViewSalon/components/Header'
 import TabsSlider from '../../../../components/ui/TabsSlider'
@@ -9,15 +9,12 @@ import About from '../../../../components/pages/Salon/ViewSalon/components/About
 import Services from '../../../../components/pages/Salon/ViewSalon/components/Services'
 import ServicesForClient from '../../../../components/pages/Salon/ViewSalon/components/ServicesForClient'
 import { brandsSalon } from '../../../../_graphql-legacy/salon/brandsSalon'
-import { reviewsForSalon } from '../../../../_graphql-legacy/salon/reviewsForSalon'
 import Contacts from '../../../../components/pages/Salon/ViewSalon/components/Contacts'
 import SalonReviews from '../../../../components/pages/Salon/ViewSalon/components/SalonReviews'
 import InviteSalon from '../../../../components/pages/Salon/ViewSalon/components/Invite'
 import MobileServicesComponent from '../../../../components/pages/Salon/ViewSalon/components/MobileServicesComponent/MobileServicesComponent'
 import MobileServicesForClient from '../../../../components/pages/Salon/ViewSalon/components/MobileServicesComponent/MobileServicesForClient'
 import MobileSalonPhotos from '../../../../components/pages/Salon/ViewSalon/components/MobileSalonPhotos'
-import catalogOrDefault, { ICatalog } from '../../../../utils/catalogOrDefault'
-import { removeSalonBrandsMutation } from '../../../../_graphql-legacy/salon/removeSalonBrandsMutation'
 import Slider from '../../../../components/blocks/Slider'
 import AddBrands from '../../../../components/pages/Salon/AddBrands'
 import { NoItemsText } from '../../../../styles/common'
@@ -31,14 +28,16 @@ import { getSalonPage } from 'src/api/graphql/salon/queries/getSalon'
 import { getOtherSalons } from 'src/api/graphql/salon/queries/getOtherSalons'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
-import useBaseStore from 'src/store/baseStore'
-import { authConfig, defaultValues } from 'src/api/authConfig'
-import { ICity } from 'src/types'
+import { ICity, IPhoto } from 'src/types'
 import { fetchCity } from 'src/api/utils/fetchCity'
-import { setCookie } from 'cookies-next'
-import { IRatingValue, getRating } from 'src/utils/newUtils/getRating'
+import { getRating } from 'src/utils/newUtils/getRating'
 import styled from 'styled-components'
 import { laptopBreakpoint } from 'src/styles/variables'
+import PhotoArrayField from 'src/components/blocks/Form/PhotoArrayField'
+import { IphotoArrayPros } from 'src/components/pages/Salon/CreateSalon/components/RegistrationForm/components/About'
+import { UPDATE_SALON } from 'src/api/graphql/salon/mutations/updateSalon'
+import AutoFocusedForm from 'src/components/blocks/Form/AutoFocusedForm'
+import Button from 'src/components/ui/Button'
 
 const DecktopWrapper = styled.div`
   display: block;
@@ -60,19 +59,19 @@ const Salon: FC<Props> = ({ salonData, othersSalons, cityData }) => {
   const [editClientServices, setEditClientServices] = useState<boolean>(false)
   const [salon, setSalon] = useState<ISalonPage>(salonData)
   const [brands, setBrands] = useState<IBrand[]>(salonData?.brands)
+  const [photosArray, setPhotosArray] = useState<IPhoto[]>(salon?.photos || [])
   const { user } = useAuthStore(getStoreData)
-  const groupedServices =
-    // useMemo(
-    // () =>
-    getGroupedServices(salon.services)
-  //   [salon],
-  // )
+  const [isPortfolioEditing, setIsPortfolioEditing] = useState<boolean>(false)
+  const groupedServices = getGroupedServices(salon.services)
+
   const groupedServicesM = useMemo(
     () => getGroupedServices(salon.servicesM),
     [salon],
   )
 
   const [isBrandsEditing, setIsBrandsEditing] = useState<boolean>(false)
+
+  const [updateSalon, { loading }] = useMutation(UPDATE_SALON)
 
   const { refetch: refetchSalon } = useQuery(getSalonPage, {
     skip: true,
@@ -95,6 +94,20 @@ const Salon: FC<Props> = ({ salonData, othersSalons, cityData }) => {
   const isOwner = !!user?.owner?.salons?.find(e => e.id === salon.id)
 
   const handleRemoveBrand = (id: IID) => {}
+
+  useEffect(() => {
+    updateSalon({
+      variables: {
+        salonId: salon.id,
+        input: {
+          photos: photosArray.map(e => e.id),
+          cover: photosArray.length ? photosArray[0].id : null,
+        },
+      },
+    })
+  }, [photosArray])
+
+  console.log('groupedServicesM', groupedServicesM)
 
   return (
     <MainLayout>
@@ -152,24 +165,38 @@ const Salon: FC<Props> = ({ salonData, othersSalons, cityData }) => {
           <Slider
             city={salon.city}
             type="portfolio"
-            items={salon.photos}
+            items={photosArray}
             isOwner={isOwner}
             title="Фото салона"
-            // isEditing={isPortfolioEditing}
-            // setIsEditing={setIsPortfolioEditing}
+            isEditing={isPortfolioEditing}
+            setIsEditing={setIsPortfolioEditing}
             // deleteFunction={onDelete}
             pt={52}
             pb={31}
           >
-            {/* {isPortfolioEditing ? <PhotoAdd onAdd={() => {}} /> : null}
-              {isPortfolioEditing && isOwner ? (
-                <NoItemsText>Нажмите плюс, чтобы добавить работы</NoItemsText>
-              ) : !master?.photosWorks?.length && isOwner ? (
-                <NoItemsText>
-                  Нет добавленных работ. Нажмите на карандаш, чтобы добавить
-                  работы в портфолио
-                </NoItemsText>
-              ) : null} */}
+            {isPortfolioEditing ? (
+              <AutoFocusedForm
+                initialValues={{ photos: salon.photos }}
+                onSubmit={() => {}}
+                render={() => {
+                  return (
+                    <PhotoArrayField
+                      photoType="salonPhoto"
+                      kind="small"
+                      setPhotosArray={setPhotosArray}
+                    />
+                  )
+                }}
+              />
+            ) : null}
+            {isPortfolioEditing && isOwner ? (
+              <NoItemsText>Нажмите плюс, чтобы добавить работы</NoItemsText>
+            ) : !photosArray.length && isOwner ? (
+              <NoItemsText>
+                Нет добавленных работ. Нажмите на карандаш, чтобы добавить
+                работы в портфолио
+              </NoItemsText>
+            ) : null}
           </Slider>
         </DecktopWrapper>
       ) : null}

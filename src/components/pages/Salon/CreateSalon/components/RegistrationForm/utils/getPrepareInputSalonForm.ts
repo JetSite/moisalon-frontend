@@ -33,7 +33,7 @@ interface Props {
   logo: IPhoto | null
   selectCity?: ICity | null
   photos: string[]
-  rent?: boolean
+  rent: boolean
 }
 
 type IGetPrepareInputSalonForm = (props: Props) => IPrepareInputSalonForm
@@ -49,6 +49,8 @@ export const getPrepareInputSalonForm: IGetPrepareInputSalonForm = ({
   const servicesForInput = values.services?.map((item: { id: IID }) => ({
     service: item.id,
   }))
+
+  console.log(rent)
 
   const socialNetworks = values.socialNetworkUrls
     ? Object?.keys(values.socialNetworkUrls)?.map(e => ({

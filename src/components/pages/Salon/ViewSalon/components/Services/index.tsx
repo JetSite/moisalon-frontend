@@ -26,6 +26,11 @@ import { updateSalonServicesMutation } from '../../../../../../_graphql-legacy/s
 import { ISalonPage } from 'src/types/salon'
 import { IApolloRefetch, IID, ISetState } from 'src/types/common'
 import { IGroupedCategories } from 'src/utils/getGrupedServices'
+import EditSalonServices from '../../../EditSalonServices'
+import useBaseStore from 'src/store/baseStore'
+import { getStoreData } from 'src/store/utils'
+import { IServiceInForm } from 'src/types/services'
+import { getServicesForCatalog } from 'src/utils/newUtils/getServicesForCatalog'
 
 export interface IEntries {
   id: IID
@@ -53,8 +58,21 @@ const Services: FC<Props> = ({
 }) => {
   const [openWritePopup, setOpenWritePopup] = useState<boolean>(false)
   const [openSuccessPopup, setOpenSuccessPopup] = useState<boolean>(false)
+  const [entriesItems, setEntriesItems] = useState<IEntries[]>([])
 
   const [isEditing, setIsEditing] = useState<boolean>(false)
+
+  const { services, activities } = useBaseStore(getStoreData)
+
+  const salonServicesCatalog: IServiceInForm[] = getServicesForCatalog(services)
+
+  const salonActivitiesCatalog = activities
+    ? activities.map(({ title, id }) => ({
+        id,
+        name: id,
+        title: title,
+      }))
+    : []
 
   const [updateServices] = useMutation(updateSalonServicesMutation, {
     onCompleted: () => {
@@ -102,6 +120,8 @@ const Services: FC<Props> = ({
 
   const phone = salon?.salonPhones && salon?.salonPhones[0]?.phoneNumber
 
+  console.log(salonServicesCatalog)
+
   return (
     <MainContainer id="services">
       <Wrapper>
@@ -129,13 +149,11 @@ const Services: FC<Props> = ({
             </NoServicesText>
           )
         ) : (
-          <></>
-          // <EditSalonServices
-          //   setEntriesItems={setEntriesItems}
-          //   entriesItems={entriesItems}
-          //   entries={entries}
-          //   salonWorkplacesServicesCatalog={salonWorkplacesServicesCatalog}
-          // />
+          <EditSalonServices
+            setEntriesItems={setEntriesItems}
+            entriesItems={entriesItems}
+            salonWorkplacesServicesCatalog={salonServicesCatalog}
+          />
         )}
         <noindex>
           {salon?.onlineBookingUrl ? (

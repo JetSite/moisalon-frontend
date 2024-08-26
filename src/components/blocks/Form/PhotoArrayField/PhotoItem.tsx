@@ -31,6 +31,8 @@ const PhotoItem: FC<Props> = ({ photo, onRemove, onChange }) => {
 
   const onDrop = useCallback(
     (files: File[]) => {
+      console.log('first')
+
       onChange(id, files)
     },
     [onChange, id],

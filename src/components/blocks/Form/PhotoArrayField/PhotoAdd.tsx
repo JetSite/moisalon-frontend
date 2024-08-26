@@ -1,9 +1,10 @@
-import React, { useCallback } from 'react'
+import React, { FC, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../styles/variables'
+import { IUsePhotoResult } from './usePhotos'
 
-const Photo = styled.div`
+const Photo = styled.div<{ isDragActive?: boolean }>`
   width: 175px;
   height: 175px;
   border: 1px solid #ededed;
@@ -12,7 +13,13 @@ const Photo = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  background: #f2f0f0 url('/icon-plus.svg') no-repeat center;
+  background: url('/icon-plus.svg') no-repeat center;
+  background-color: rgba(
+    0,
+    0,
+    0,
+    ${({ isDragActive }) => (isDragActive ? 0.3 : 0.1)}
+  );
 
   @media (max-width: ${laptopBreakpoint}) {
     width: 158px;
@@ -20,9 +27,11 @@ const Photo = styled.div`
   }
 `
 
-const PhotoAdd = ({ onAdd }) => {
+interface Props extends Pick<IUsePhotoResult, 'onAdd'> {}
+
+const PhotoAdd: FC<Props> = ({ onAdd }) => {
   const onDrop = useCallback(
-    acceptedFiles => {
+    (acceptedFiles: File[]) => {
       onAdd(acceptedFiles)
     },
     [onAdd],
@@ -37,7 +46,7 @@ const PhotoAdd = ({ onAdd }) => {
       <input {...getInputProps()} />
       <div>
         <div>
-          <Photo />
+          <Photo isDragActive={isDragActive} />
         </div>
       </div>
     </div>
