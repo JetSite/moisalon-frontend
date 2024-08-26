@@ -46,7 +46,7 @@ interface Props {
   salon: ISalon
   deleteItem: boolean
   setDeleteItem: ISetState<boolean>
-  handleDeleted: () => void
+  handleDeleted?: ISetState<boolean>
 }
 
 const SalonCard: FC<Props> = ({
@@ -62,8 +62,9 @@ const SalonCard: FC<Props> = ({
   const addFavorite = (e: MouseEvent<HTMLDivElement>, salon: ISalon) => {
     e.preventDefault()
     e.stopPropagation()
+    favoritesInStorage('salons', salon)
     setDeleteItem(!deleteItem)
-    handleDeleted && handleDeleted()
+    handleDeleted && handleDeleted(true)
   }
 
   useEffect(() => {

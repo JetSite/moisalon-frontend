@@ -62,7 +62,7 @@ const GoodsFavorites: FC<Props> = ({
   let products: IProduct[] = []
   if (typeof window !== 'undefined') {
     products =
-      JSON.parse(localStorage.getItem('favorites') || '')?.products || []
+      JSON.parse(localStorage.getItem('favorites') || '{}')?.products || []
     if (!products.length) {
       setProductEmpty && setProductEmpty(true)
     }

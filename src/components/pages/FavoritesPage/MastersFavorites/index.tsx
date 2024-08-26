@@ -1,4 +1,4 @@
-import { FC, useRef, useState } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
 import { MainContainer } from '../../../../styles/common'
 import {
   Title,
@@ -27,6 +27,7 @@ import useAuthStore from 'src/store/authStore'
 import useBaseStore from 'src/store/baseStore'
 import { NavigationOptions } from 'swiper/types'
 import { ThingsProps } from '../SalonsFavorites'
+import { IMaster } from 'src/types/masters'
 
 SwiperCore.use([Navigation])
 
@@ -36,6 +37,7 @@ const MastersFavorites: FC<ThingsProps> = ({
   cabinet = false,
   mobile = false,
   setActiveTab = () => {},
+  handleDeleted,
 }) => {
   const navigationPrevRef = useRef(null)
   const navigationNextRef = useRef(null)
@@ -53,7 +55,12 @@ const MastersFavorites: FC<ThingsProps> = ({
   const [deleteItem, setDeleteItem] = useState(false)
   const [toggle, setToggle] = useState(mobile && cabinet && true)
 
-  const masters = user?.favorite?.masters
+  let masters: IMaster[] = user?.favorite?.masters || []
+  if (typeof window !== 'undefined') {
+    const mastersLocal =
+      JSON.parse(localStorage.getItem('favorites') || '{}')?.masters || []
+    if (!masters.length) masters = mastersLocal
+  } else return <div></div>
 
   if (!masters?.length) {
     setActiveTab('all')
@@ -128,6 +135,7 @@ const MastersFavorites: FC<ThingsProps> = ({
                             catalog={catalogs}
                             deleteItem={deleteItem}
                             setDeleteItem={setDeleteItem}
+                            handleDeleted={handleDeleted}
                           />
                         </Link>
                         {master?.phone && !cabinet ? (
