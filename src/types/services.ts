@@ -14,8 +14,9 @@ export interface IServiceInForm {
 
 export interface IServiceCategories {
   id: IID
-  serviceName?: string
-  service: IService
+  title?: string
+  services?: IService[]
+  services_m?: IService[]
 }
 
 export interface IService {

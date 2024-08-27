@@ -35,8 +35,6 @@ export const useAddressSuggestions: IUseAddressSuggestions = (
   const validAddress = isEnoughLength(debouncedAddress)
   const [loading, setLoading] = useState(false)
 
-  console.log(address)
-
   useEffect(() => {
     const getAdress = async (
       string: string,

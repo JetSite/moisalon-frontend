@@ -204,7 +204,7 @@ const Master: FC<Props> = ({
           <ServicesForClient
             servicesData={servicesData}
             isOwner={isOwner}
-            master={master}
+            entries={master}
             allServices={allServices}
             setServices={setServices}
           />
@@ -212,7 +212,7 @@ const Master: FC<Props> = ({
         {master?.services?.length || isOwner ? (
           <MobileServicesForClient
             servicesData={servicesData}
-            master={master}
+            entries={master}
             isOwner={isOwner}
             allServices={allServices}
             setServices={setServices}
@@ -345,7 +345,7 @@ const Master: FC<Props> = ({
               )}
               {isBrandsEditing ? (
                 <AddBrands
-                  master={master}
+                  entries={master}
                   brands={brands}
                   setBrands={setBrands}
                 />

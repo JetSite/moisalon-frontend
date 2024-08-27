@@ -82,8 +82,6 @@ const AddressNoSalonField: FC<IAddressNoSalonFieldProps> = ({
     }
   }, [coordinates])
 
-  console.log(rest)
-
   return (
     <AddressWrap noMap={!rest.noMap}>
       <AutosuggestFieldStyled

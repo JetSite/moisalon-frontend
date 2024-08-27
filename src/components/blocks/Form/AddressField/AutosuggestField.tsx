@@ -178,8 +178,6 @@ const AutosuggestField: FC<AutosuggestFieldProps> = ({
     renderSuggestion,
   }
 
-  console.log(loading)
-
   return (
     <div className={classes.root}>
       <Autosuggest

@@ -15,6 +15,7 @@ const DictionaryGroupsField: FC<Props> = ({ name, groups = [] }) => {
         const {
           fields: { value, push, remove },
         } = arrayField
+
         const groupControls = groups.map(group => {
           const groupProps = {
             group,

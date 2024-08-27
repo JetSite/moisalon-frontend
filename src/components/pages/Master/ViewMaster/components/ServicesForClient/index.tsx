@@ -21,21 +21,29 @@ import EditSalonServicesForClient from '../../../../Salon/EditSalonServicesForCl
 import { IService, IServiceCategory, IServices } from 'src/types/services'
 import { UPDATE_MASTER } from 'src/api/graphql/master/mutations/updateMaster'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { ISalon } from 'src/types/salon'
+import { UPDATE_SALON } from 'src/api/graphql/salon/mutations/updateSalon'
 
 interface Props {
   servicesData: IGroupedServices[]
   isOwner: boolean
-  master: IMaster
+  entries: IMaster | ISalon
   allServices: IServiceCategory[]
   setServices: Dispatch<SetStateAction<IServices[]>>
+  type?: 'master' | 'salon'
+  serviceType?: 'default' | 'forMaster'
+  title?: string
 }
 
 const Services: FC<Props> = ({
   servicesData,
   isOwner,
-  master,
+  entries,
   allServices,
   setServices,
+  type = 'master',
+  serviceType = 'default',
+  title = 'Услуги',
 }) => {
   const [isEditing, setIsEditing] = useState(false)
   const [entriesItems, setEntriesItems] = useState<IService[]>([])
@@ -44,15 +52,16 @@ const Services: FC<Props> = ({
   }, 0)
 
   const [updateMaster] = useMutation(UPDATE_MASTER)
+  const [updateSalon] = useMutation(UPDATE_SALON)
 
   useEffect(() => {
-    const masterSerivces: IService[] = []
+    const entriesSerivces: IService[] = []
     servicesData?.map(category => {
       category.services.map(service => {
-        masterSerivces.push(service.service)
+        entriesSerivces.push(service.service)
       })
     })
-    setEntriesItems(masterSerivces)
+    setEntriesItems(entriesSerivces)
   }, [servicesData])
 
   const handleEditConfirm = async () => {
@@ -67,16 +76,42 @@ const Services: FC<Props> = ({
     const services = entriesItems.map(service => {
       return { service: service.id }
     })
-    const response = await updateMaster({
-      variables: {
-        masterId: master.id,
-        input: {
-          services,
-        }
-      },
-    })
+
+    const input =
+      serviceType === 'forMaster'
+        ? { servicesM: services }
+        : { services: services }
+    const response =
+      type === 'master'
+        ? await updateMaster({
+            variables: {
+              masterId: entries.id,
+              input,
+            },
+          })
+        : type === 'salon'
+        ? await updateSalon({
+            variables: {
+              salonId: entries.id,
+              input,
+            },
+          })
+        : null
+
     if (response?.data?.updateMaster?.data?.id) {
-      const newServices = flattenStrapiResponse(response?.data?.updateMaster?.data?.attributes?.services)
+      const newServices = flattenStrapiResponse(
+        response?.data?.updateMaster?.data?.attributes?.services,
+      )
+      setServices(newServices)
+    } else if (response?.data?.updateSalon?.data?.id) {
+      const newServices =
+        serviceType === 'forMaster'
+          ? flattenStrapiResponse(
+              response?.data?.updateSalon?.data?.attributes?.servicesM,
+            )
+          : flattenStrapiResponse(
+              response?.data?.updateSalon?.data?.attributes?.services,
+            )
       setServices(newServices)
     }
     setIsEditing(false)
@@ -94,14 +129,16 @@ const Services: FC<Props> = ({
 
   const secondColumnStart = Math.round(groups?.length / 2)
 
-  const phone = master?.phone
+  const phone =
+    (entries as IMaster).phone ||
+    (entries as ISalon).salonPhones[0]?.phoneNumber
 
   return (
     <MainContainer id="services">
       <Wrapper>
         <Top>
           <Title>
-            Услуги
+            {title}
             {isOwner && (
               <EditIcons
                 handleEditConfirm={handleEditConfirm}
@@ -128,9 +165,9 @@ const Services: FC<Props> = ({
           />
         )}
         <noindex>
-          {master?.onlineBookingUrl ? (
+          {entries?.onlineBookingUrl ? (
             <PhoneButton
-              href={master?.onlineBookingUrl}
+              href={entries?.onlineBookingUrl}
               target="_blank"
               rel="nofollow"
             >

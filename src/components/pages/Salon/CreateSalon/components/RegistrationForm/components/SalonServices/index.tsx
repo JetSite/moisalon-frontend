@@ -19,20 +19,23 @@ const Wrapper = styled.div`
 `
 
 const Title = styled.div`
-  display: none;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e3e3e3;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.5;
+
   @media (max-width: ${laptopBreakpoint}) {
-    display: block;
     margin-bottom: 12px;
     padding-bottom: 8px;
-    border-bottom: 1px solid #e3e3e3;
     font-size: 16px;
-    font-weight: 600;
-    line-height: 25px;
   }
 `
 
 interface Props {
   services: IServiceInForm[]
+  servicesM: IServiceInForm[]
   ref3: RefObject<HTMLDivElement>
   number: number
   handleClickNextTab: IHandleClickNextTabInForm
@@ -40,16 +43,18 @@ interface Props {
 
 const SalonServices: FC<Props> = ({
   services,
+  servicesM,
   ref3,
   handleClickNextTab,
   number,
 }) => {
-  console.log(services)
-
   return (
-    <Wrapper ref={ref3} id="services">
+    <Wrapper ref={ref3} id="service">
       <Title>Сервис для посетителей</Title>
       <DictionaryGroupsField name="services" groups={services} />
+      <Title>Сервис для мастеров</Title>
+      <DictionaryGroupsField name="servicesM" groups={servicesM} />
+
       <MobileHidden>
         <Button
           onClick={e => {

@@ -48,7 +48,7 @@ data {
         }
       }
     }
-    value
+    promoCode
     publishedAt
   }
 }

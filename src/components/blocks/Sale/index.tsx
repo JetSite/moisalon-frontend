@@ -171,10 +171,10 @@ const Sale: FC<SaleProps> = ({
               </Date>
             </SaleData>
           ) : null}
-          {item?.value ? (
+          {item?.promoCode ? (
             <Promo>
               <PromoText>Промокод</PromoText>
-              <PromoText>{item.value}</PromoText>
+              <PromoText>{item.promoCode}</PromoText>
             </Promo>
           ) : null}
         </SaleBottom>

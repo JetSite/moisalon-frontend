@@ -6,23 +6,22 @@ import SearchBlock from '../../../../components/blocks/SearchBlock'
 import Header from '../../../../components/pages/Salon/ViewSalon/components/Header'
 import TabsSlider from '../../../../components/ui/TabsSlider'
 import About from '../../../../components/pages/Salon/ViewSalon/components/About'
-import Services from '../../../../components/pages/Salon/ViewSalon/components/Services'
-import ServicesForClient from '../../../../components/pages/Salon/ViewSalon/components/ServicesForClient'
+import ServicesForClient from '../../../../components/pages/Master/ViewMaster/components/ServicesForClient'
 import { brandsSalon } from '../../../../_graphql-legacy/salon/brandsSalon'
 import Contacts from '../../../../components/pages/Salon/ViewSalon/components/Contacts'
 import SalonReviews from '../../../../components/pages/Salon/ViewSalon/components/SalonReviews'
 import InviteSalon from '../../../../components/pages/Salon/ViewSalon/components/Invite'
-import MobileServicesComponent from '../../../../components/pages/Salon/ViewSalon/components/MobileServicesComponent/MobileServicesComponent'
-import MobileServicesForClient from '../../../../components/pages/Salon/ViewSalon/components/MobileServicesComponent/MobileServicesForClient'
+// import MobileServicesComponent from '../../../../components/pages/Salon/ViewSalon/components/MobileServicesComponent/MobileServicesComponent'
+// import MobileServicesForClient from '../../../../components/pages/Salon/ViewSalon/components/MobileServicesComponent/MobileServicesForClient'
+import MobileServicesForClient from '../../../../components/pages/Master/ViewMaster/components/MobileServicesComponent/MobileServicesForClient'
 import MobileSalonPhotos from '../../../../components/pages/Salon/ViewSalon/components/MobileSalonPhotos'
 import Slider from '../../../../components/blocks/Slider'
-import AddBrands from '../../../../components/pages/Salon/AddBrands'
+import AddBrands from 'src/components/pages/Master/AddBrands'
 import { NoItemsText } from '../../../../styles/common'
 import { GetServerSideProps } from 'next'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { ISalon, ISalonPage } from 'src/types/salon'
 import { IID, Nullable } from 'src/types/common'
-import { getGroupedServices } from 'src/utils/getGrupedServices'
 import { IBrand } from 'src/types/brands'
 import { getSalonPage } from 'src/api/graphql/salon/queries/getSalon'
 import { getOtherSalons } from 'src/api/graphql/salon/queries/getOtherSalons'
@@ -34,10 +33,12 @@ import { getRating } from 'src/utils/newUtils/getRating'
 import styled from 'styled-components'
 import { laptopBreakpoint } from 'src/styles/variables'
 import PhotoArrayField from 'src/components/blocks/Form/PhotoArrayField'
-import { IphotoArrayPros } from 'src/components/pages/Salon/CreateSalon/components/RegistrationForm/components/About'
 import { UPDATE_SALON } from 'src/api/graphql/salon/mutations/updateSalon'
 import AutoFocusedForm from 'src/components/blocks/Form/AutoFocusedForm'
-import Button from 'src/components/ui/Button'
+import { getServiceCategories } from 'src/api/graphql/service/queries/getServiceCategories'
+import { IService, IServiceCategory, IServices } from 'src/types/services'
+import { getServicesByCategory } from 'src/utils/serviceCatalog'
+import { GET_SERVICES_M_CAT } from 'src/api/graphql/service/queries/getServicesMCat'
 
 const DecktopWrapper = styled.div`
   display: block;
@@ -51,9 +52,17 @@ interface Props {
   salonData: ISalonPage
   othersSalons: ISalon[]
   cityData: ICity
+  services: IServiceCategory[]
+  servicesM: IServiceCategory[]
 }
 
-const Salon: FC<Props> = ({ salonData, othersSalons, cityData }) => {
+const Salon: FC<Props> = ({
+  salonData,
+  othersSalons,
+  cityData,
+  services: allServices,
+  servicesM: allServicesM,
+}) => {
   const [activeTab, setActiveTab] = useState<number>(0)
   const [edit, setEdit] = useState<boolean>(false)
   const [editClientServices, setEditClientServices] = useState<boolean>(false)
@@ -62,16 +71,29 @@ const Salon: FC<Props> = ({ salonData, othersSalons, cityData }) => {
   const [photosArray, setPhotosArray] = useState<IPhoto[]>(salon?.photos || [])
   const { user } = useAuthStore(getStoreData)
   const [isPortfolioEditing, setIsPortfolioEditing] = useState<boolean>(false)
-  const groupedServices = getGroupedServices(salon.services)
-
-  const groupedServicesM = useMemo(
-    () => getGroupedServices(salon.servicesM),
-    [salon],
+  const [services, setServices] = useState<IServices[]>(salon?.services || [])
+  const [servicesM, setServicesM] = useState<IServices[]>(
+    salon?.servicesM || [],
   )
+  const servicesData = getServicesByCategory(services)
+  const servicesMData = getServicesByCategory(servicesM)
 
   const [isBrandsEditing, setIsBrandsEditing] = useState<boolean>(false)
 
   const [updateSalon, { loading }] = useMutation(UPDATE_SALON)
+
+  useEffect(() => {
+    if (brands.length !== salon.brands.length) {
+      updateSalon({
+        variables: {
+          salonId: salon.id,
+          input: {
+            brands: brands.map(salon => salon.id),
+          },
+        },
+      })
+    }
+  }, [brands])
 
   const { refetch: refetchSalon } = useQuery(getSalonPage, {
     skip: true,
@@ -81,19 +103,11 @@ const Salon: FC<Props> = ({ salonData, othersSalons, cityData }) => {
     },
   })
 
-  const { refetch: refetchBrands } = useQuery(brandsSalon, {
-    variables: { id: salon.id },
-    skip: true,
-    onCompleted: res => {
-      if (res) {
-        setBrands(res.brandsSalon)
-      }
-    },
-  })
-
   const isOwner = !!user?.owner?.salons?.find(e => e.id === salon.id)
 
-  const handleRemoveBrand = (id: IID) => {}
+  const handleRemoveBrand = (id: string) => {
+    setBrands(prevState => prevState.filter(e => e.id !== id))
+  }
 
   useEffect(() => {
     if (isOwner) {
@@ -108,10 +122,6 @@ const Salon: FC<Props> = ({ salonData, othersSalons, cityData }) => {
       })
     }
   }, [photosArray])
-
-  console.log('groupedServicesM', groupedServicesM)
-
-  console.log(salon.vacancies)
 
   return (
     <MainLayout>
@@ -155,14 +165,14 @@ const Salon: FC<Props> = ({ salonData, othersSalons, cityData }) => {
         ]}
       />
       <About salon={salon} />
-      {salon.services?.length || isOwner ? (
+      {/* {salon.services?.length || isOwner ? (
         <MobileServicesComponent
           isOwner={isOwner}
           groupedServices={groupedServicesM}
           salon={salon}
           refetchSalon={refetchSalon}
         />
-      ) : null}
+      ) : null} */}
       {salon?.photos?.length > 0 && <MobileSalonPhotos salon={salon} />}
       {salon?.photos?.length || isOwner ? (
         <DecktopWrapper>
@@ -204,34 +214,50 @@ const Salon: FC<Props> = ({ salonData, othersSalons, cityData }) => {
           </Slider>
         </DecktopWrapper>
       ) : null}
-      {salon?.masters?.length || isOwner ? (
+      {salon?.services?.length || isOwner ? (
         <MobileServicesForClient
+          servicesData={servicesData}
+          entries={salon}
+          type="salon"
           isOwner={isOwner}
-          groupedServices={groupedServices}
-          salon={salon}
-          refetchSalon={refetchSalon}
+          title="Услуги для клиентов"
+          allServices={allServices}
+          setServices={setServices}
         />
       ) : null}
-      {salon.services?.length || isOwner ? (
-        <Services
-          groupedServices={groupedServicesM}
+      {salon?.servicesM?.length || isOwner ? (
+        <MobileServicesForClient
+          servicesData={servicesMData}
+          entries={salon}
+          type="salon"
           isOwner={isOwner}
-          edit={edit}
-          setEdit={setEdit}
-          salon={salon}
-          refetchSalon={refetchSalon}
-          count={salon.services?.length}
+          serviceType="forMaster"
+          title="Услуги для мастеров"
+          allServices={allServicesM}
+          setServices={setServicesM}
         />
       ) : null}
       {salon?.services.length || isOwner ? (
         <ServicesForClient
-          groupedServices={groupedServices}
+          servicesData={servicesData}
+          type="salon"
           isOwner={isOwner}
-          edit={editClientServices}
-          setEdit={setEditClientServices}
-          salon={salon}
-          count={salon?.services?.length}
-          refetchSalon={refetchSalon}
+          entries={salon}
+          title="Услуги для клиентов"
+          allServices={allServices}
+          setServices={setServices}
+        />
+      ) : null}
+      {salon?.servicesM.length || isOwner ? (
+        <ServicesForClient
+          servicesData={servicesMData}
+          type="salon"
+          serviceType="forMaster"
+          title="Услуги для мастеров"
+          isOwner={isOwner}
+          entries={salon}
+          allServices={allServicesM}
+          setServices={setServicesM}
         />
       ) : null}
       {salon.vacancies?.length ? (
@@ -267,7 +293,11 @@ const Salon: FC<Props> = ({ salonData, othersSalons, cityData }) => {
               </NoItemsText>
             )}
             {isBrandsEditing ? (
-              <AddBrands refetchBrands={refetchBrands} salonId={salon.id} />
+              <AddBrands
+                entries={salon}
+                brands={brands}
+                setBrands={setBrands}
+              />
             ) : null}
           </>
         </Slider>
@@ -331,10 +361,27 @@ export const getServerSideProps: GetServerSideProps<
       query: getOtherSalons,
       variables: { id },
     }),
+    apolloClient.query({
+      query: getServiceCategories,
+    }),
+    apolloClient.query({
+      query: GET_SERVICES_M_CAT,
+    }),
   ])
 
   const salonData: ISalonPage | null =
     flattenStrapiResponse(data[0]?.data?.salon) || null
+
+  const services =
+    flattenStrapiResponse(data[2]?.data?.serviceCategories?.data) || []
+
+  const servicesM =
+    flattenStrapiResponse(data[3]?.data?.servicesMCat.data)?.map(
+      (e: { [K: string]: unknown }) => ({
+        ...e,
+        services: e.services_m,
+      }),
+    ) || []
 
   const othersSalons: ISalon[] =
     flattenStrapiResponse(data[1]?.data?.salons) || []
@@ -363,6 +410,8 @@ export const getServerSideProps: GetServerSideProps<
         const { rating, ratingCount } = getRating(e.ratings)
         return { ...e, rating, ratingCount, reviewsCount }
       }),
+      services,
+      servicesM,
       cityData,
     },
   }

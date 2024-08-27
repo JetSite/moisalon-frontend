@@ -36,14 +36,14 @@ const EditSalonServices: FC<Props> = ({
   const { services } = useBaseStore(getStoreData)
   const { setServices } = useBaseStore(getStoreEvent)
 
+  const salonServicesCatalog: IServiceInForm[] = getServicesForCatalog(services)
+
   useEffect(() => {
     if (!services.length) {
       getServices()
       if (data) setServices(flattenStrapiResponse(data.serviceCategories))
     }
   }, [services, data])
-
-  console.log(loading)
 
   const handleDeleteEntries = (items: IGroupedService[]) => {
     let newItems = entriesItems

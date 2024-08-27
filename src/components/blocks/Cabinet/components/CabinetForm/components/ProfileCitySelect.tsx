@@ -1,7 +1,6 @@
 import { FC, RefObject, useEffect } from 'react'
 import { Wrapper, CityList, CityItem } from './styles'
 import { CustomWindow, IID, ISetState } from 'src/types/common'
-import { useAddressSuggestions } from 'src/components/blocks/Form/AddressField/useAddressSuggestions'
 import useBaseStore from 'src/store/baseStore'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
 import { useLazyQuery, useMutation } from '@apollo/client'

@@ -19,12 +19,14 @@ import { IServiceCategories } from 'src/types/services'
 import { ICity } from 'src/types'
 import { useEffect } from 'react'
 import useBaseStore from 'src/store/baseStore'
+import { GET_SERVICES_M_CAT } from 'src/api/graphql/service/queries/getServicesMCat'
 
 interface Props {
   salon: ISalonPage
   services: IServiceCategories[]
   activities: ISalonActivity[]
   cities: ICity[]
+  servicesM: IServiceCategories[]
 }
 
 const CreateOrEditSalon: NextPage<Props> = ({
@@ -32,14 +34,17 @@ const CreateOrEditSalon: NextPage<Props> = ({
   services,
   activities,
   cities,
+  servicesM,
 }) => {
   const router = useRouter()
   const { me } = useAuthStore(getStoreData)
-  const { setServices, setSalonActivities } = useBaseStore(getStoreEvent)
+  const { setServices, setSalonActivities, setServicesM } =
+    useBaseStore(getStoreEvent)
 
   useEffect(() => {
     setServices(services)
     setSalonActivities(activities)
+    setServicesM(servicesM)
   }, [])
 
   if (me === null) {
@@ -71,16 +76,18 @@ export const getServerSideProps: GetServerSideProps<
     apolloClient.query({ query: getServiceCategories }),
     apolloClient.query({ query: GET_SALON_ACTIVITIES }),
     apolloClient.query({ query: getCities, variables: { itemsCount: 100 } }),
+    apolloClient.query({ query: GET_SERVICES_M_CAT }),
   ])
 
   const services = flattenStrapiResponse(data[0].data.serviceCategories)
   const activities = flattenStrapiResponse(data[1].data.salonActivities)
   const cities = flattenStrapiResponse(data[2].data.cities)
+  const servicesM = flattenStrapiResponse(data[3].data.servicesMCat)
 
   const salon = salonData ? flattenStrapiResponse(salonData.data.salon) : null
 
   return {
-    props: { salon, services, activities, cities },
+    props: { salon, services, activities, cities, servicesM },
   }
 }
 

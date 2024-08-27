@@ -60,23 +60,61 @@ export function getServicesCategories(services) {
 }
 type IServicesByCategory = (services: any[]) => IGroupedServices[]
 export const getServicesByCategory: IServicesByCategory = services => {
-  const servicesData: any = {}
+  const servicesData: Record<string, { category: string; services: any[] }> = {}
 
-  if (services && !!services.length) {
+  if (services && services.length > 0) {
     services.forEach(service => {
-      service.service.service_categories.forEach((categoryItem: any) => {
-        const category: string = categoryItem.title as string
+      // Обработка service_m_category
+      if (service.service.service_m_category) {
+        const category = service.service.service_m_category.title as string
         if (!servicesData[category]) {
           servicesData[category] = {
             category,
-            services: [] as any[],
+            services: [],
           }
         }
-        ;(servicesData[category]?.services as unknown as any).push(service)
-      })
+        servicesData[category].services.push({
+          ...service,
+          service: {
+            ...service.service,
+            service_categories: [service.service.service_m_category],
+            service_m_category: [service.service.service_m_category],
+          },
+        })
+      }
+
+      // Обработка service_categories
+      if (service.service.service_categories) {
+        service.service.service_categories.forEach((categoryItem: any) => {
+          const category = categoryItem.title as string
+          if (!servicesData[category]) {
+            servicesData[category] = {
+              category,
+              services: [],
+            }
+          }
+          servicesData[category].services.push(service)
+        })
+      }
+
+      // Если ни service_m_category, ни service_categories нет
+      if (
+        !service.service.service_m_category &&
+        !service.service.service_categories
+      ) {
+        const category = 'Uncategorized'
+        if (!servicesData[category]) {
+          servicesData[category] = {
+            category,
+            services: [],
+          }
+        }
+        servicesData[category].services.push(service)
+      }
     })
 
     return Object.values(servicesData)
   }
+
   return []
 }

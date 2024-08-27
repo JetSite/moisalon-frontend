@@ -36,6 +36,7 @@ interface IInitialInput
   > {
   activities: string[] | null
   services: { id: string }[] | []
+  servicesM: { id: string }[] | []
   salonPhones: ISalonPhonesInitialValue[]
 }
 
@@ -74,6 +75,7 @@ export const getInitialValuesSalonForm: IgetInitialValuesSalonForm = salon => {
         })),
         activities: salon.activities.map(e => e.id) || null,
         services: salon.services.map(e => ({ id: e.service.id })) || [],
+        servicesM: salon.servicesM.map(e => ({ id: e.service.id })) || [],
         photos: salon.photos || [],
       }
     : {
@@ -97,6 +99,7 @@ export const getInitialValuesSalonForm: IgetInitialValuesSalonForm = salon => {
         ],
         activities: null,
         services: [],
+        servicesM: [],
       }
   return {
     ...initialInput,

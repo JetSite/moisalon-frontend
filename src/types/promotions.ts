@@ -9,7 +9,7 @@ export interface IPromotions {
   dateStart: string
   dateEnd: string
   deleted: boolean
-  value: string
+  promoCode: string
   publishedAt: string | null
   masters?: {
     id: string
