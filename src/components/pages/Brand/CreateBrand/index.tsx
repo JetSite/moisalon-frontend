@@ -6,18 +6,20 @@ import Controls from '../../../blocks/Form/Controls'
 import BackArrow from '../../../ui/BackArrow'
 import { Wrapper } from './styled'
 import RegistrationForm from './components/RegistrationForm'
-import { IPhoto } from 'src/types'
+import { ICity, IPhoto } from 'src/types'
 import { PHOTO_URL } from 'src/api/variables'
 import { IBrand } from 'src/types/brands'
+import { ISetState } from 'src/types/common'
 
 export interface CreateBrandProps {
-  brand: IBrand
+  brand: Partial<IBrand>
+  cities: ICity[]
 }
 
-const CreateBrand: FC<CreateBrandProps> = ({ brand }) => {
-  const allTabs = useRef()
-  const ref1 = useRef()
-  const ref2 = useRef()
+const CreateBrand: FC<CreateBrandProps> = ({ brand, cities }) => {
+  const allTabs = useRef<HTMLFormElement>(null)
+  const ref1 = useRef<HTMLDivElement>(null)
+  const ref2 = useRef<HTMLDivElement>(null)
 
   const [tabs] = useState([
     { id: '1', value: 'Информация о бренде', anchor: 'about' },
@@ -31,21 +33,28 @@ const CreateBrand: FC<CreateBrandProps> = ({ brand }) => {
     },
   ])
 
-  const [refActive, setRefActive] = useState(false)
+  const [refActive, setRefActive] = useState<string | boolean>(false)
   const [ref1Visible, setRef1Visible] = useState(true)
   const [ref2Visible, setRef2Visible] = useState(false)
-  const [photoBrand, setPhotoBrand] = useState<IPhoto | null>(brand?.logo)
+  const [photoBrand, setPhotoBrand] = useState<IPhoto | null>(
+    brand?.logo || null,
+  )
   const [noPhotoError, setNoPhotoError] = useState(false)
 
-  const handleElementPosition = (element, func, top) => {
-    const posTop = element?.getBoundingClientRect()?.top
-    if (
+  const handleElementPosition = (
+    element: HTMLDivElement | null,
+    func: ISetState<boolean>,
+    top: number,
+  ) => {
+    if (!element) return
+
+    const posTop = element.getBoundingClientRect().top
+    const isVisible =
       posTop > 0
-        ? window?.innerHeight > posTop + top
-        : element?.clientHeight + posTop > window?.innerHeight
-    ) {
-      func(true)
-    } else func(false)
+        ? window.innerHeight > posTop + top
+        : element.clientHeight + posTop > window.innerHeight
+
+    func(isVisible)
   }
 
   useEffect(() => {
@@ -75,21 +84,21 @@ const CreateBrand: FC<CreateBrandProps> = ({ brand }) => {
     }
   }, [ref1Visible, ref2Visible])
 
-  const handleClickNextTab = number => {
+  const handleClickNextTab = (number: number) => {
     const newTab = tabs.find(item => +item.id === number + 1)
-    const element = document.getElementById(newTab.anchor.replace('#', ''))
-    if (element) {
-      scrollIntoView(element, {
-        time: 500,
-        align: {
-          top: 0,
-          topOffset: 100,
-        },
-      })
+    if (newTab) {
+      const element = document.getElementById(newTab.anchor.replace('#', ''))
+      if (element) {
+        scrollIntoView(element, {
+          time: 500,
+          align: {
+            top: 0,
+            topOffset: 100,
+          },
+        })
+      }
     }
   }
-
-  console.log('brand', brand)
 
   return (
     <>
@@ -107,6 +116,7 @@ const CreateBrand: FC<CreateBrandProps> = ({ brand }) => {
             setNoPhotoError={setNoPhotoError}
           />
           <RegistrationForm
+            cities={cities}
             allTabs={allTabs}
             handleClickNextTab={handleClickNextTab}
             ref1={ref1}

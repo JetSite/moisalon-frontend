@@ -7,10 +7,12 @@ import CreateBrand, {
   CreateBrandProps,
 } from 'src/components/pages/Brand/CreateBrand'
 import { getBrand } from 'src/api/graphql/brand/queries/getBrand'
-import { NextPage } from 'next'
+import { GetServerSideProps, NextPage } from 'next'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { getCities } from 'src/api/graphql/city/getCities'
+import { Nullable } from 'src/types/common'
 
-const CreateOrEditBrand: NextPage<CreateBrandProps> = ({ brand }) => {
+const CreateOrEditBrand: NextPage<CreateBrandProps> = ({ brand, cities }) => {
   const router = useRouter()
   const { me } = useAuthStore(getStoreData)
 
@@ -21,25 +23,33 @@ const CreateOrEditBrand: NextPage<CreateBrandProps> = ({ brand }) => {
     router.push('/login')
     return <CreatePageSkeleton />
   } else {
-    return <CreateBrand brand={brand} />
+    return <CreateBrand cities={cities} brand={brand} />
   }
 }
 
-export async function getServerSideProps({ query }: any) {
+export const getServerSideProps: GetServerSideProps<
+  Nullable<CreateBrandProps>
+> = async ctx => {
   const apolloClient = initializeApollo()
 
   let brand
 
-  if (query?.id) {
+  if (ctx.query?.id) {
     const brandQueryRes = await apolloClient.query({
       query: getBrand,
-      variables: { id: query.id },
+      variables: { id: ctx.query.id },
     })
     brand = brandQueryRes?.data?.brand
   }
 
+  const data = await Promise.all([
+    apolloClient.query({ query: getCities, variables: { itemsCount: 100 } }),
+  ])
+
+  const cities = flattenStrapiResponse(data[0].data.cities) || null
+
   return addApolloState(apolloClient, {
-    props: { brand: flattenStrapiResponse(brand) || null },
+    props: { brand: flattenStrapiResponse(brand) || null, cities },
   })
 }
 

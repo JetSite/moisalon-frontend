@@ -15,34 +15,40 @@ export interface IAddressSuggestion {
   zipcode: string
 }
 
-type IuseAddressSuggestions = (
+type IUseAddressSuggestions = (
   addres: string,
   onlyCity?: boolean,
   debounce?: number,
+  setLoading?: ISetState<boolean>,
 ) => {
   suggestions: string[]
   coordinates: IAddressSuggestion | null
 }
 
-export const useAddressSuggestions: IuseAddressSuggestions = (
+export const useAddressSuggestions: IUseAddressSuggestions = (
   address,
   onlyCity,
   debounce = 500,
+  setLoading,
 ) => {
   const [data, setData] = useState<IAddressSuggestion[]>([])
   const [debouncedAddress] = useDebounce(address, debounce)
   const validAddress = isEnoughLength(debouncedAddress)
+
+  console.log(address)
 
   useEffect(() => {
     const getAdress = async (
       string: string,
       setData: ISetState<IAddressSuggestion[]>,
     ) => {
+      setLoading && setLoading(true)
       const res = onlyCity
         ? await getDadataCity(string)
         : await getDadataAddress(string)
 
       setData(res)
+      setLoading && setLoading(false)
     }
     if (validAddress) {
       getAdress(debouncedAddress, setData)

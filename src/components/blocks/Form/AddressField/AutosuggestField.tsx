@@ -1,38 +1,69 @@
-import { FC, useState, useCallback, useEffect } from 'react'
-import Autosuggest from 'react-autosuggest'
-import { TextField, Paper, MenuItem } from '@material-ui/core'
+import {
+  FC,
+  useState,
+  useCallback,
+  useEffect,
+  FormEvent,
+  forwardRef,
+  ReactElement,
+  ReactNode,
+} from 'react'
+import Autosuggest, { SuggestionSelectedEventData } from 'react-autosuggest'
+import {
+  TextField,
+  Paper,
+  MenuItem,
+  InputAdornment,
+  CircularProgress,
+  TextFieldProps,
+  StandardTextFieldProps,
+  BaseTextFieldProps,
+} from '@material-ui/core'
 import { makeStyles, withStyles } from '@material-ui/core/styles'
-import { FieldInputProps, FieldMetaState } from 'react-final-form'
+import {
+  FieldInputProps,
+  FieldMetaState,
+  FieldRenderProps,
+} from 'react-final-form'
+import { ISetState } from 'src/types/common'
 
 const handleSuggestionsFetchRequested = () => {}
 
-interface RenderInputProps extends Autosuggest.RenderInputComponentProps {
-  meta: FieldMetaState<any>
+interface RenderInputProps
+  extends Autosuggest.RenderInputComponentProps,
+    Pick<FieldRenderProps<string, HTMLElement>, 'input' | 'meta'> {
+  loading: boolean
+  label?: string
 }
 
-const InputComponent = (props: RenderInputProps) => {
-  const { inputRef = () => {}, ref, meta, ...rest } = props
-  const showError =
-    ((meta.submitError && !meta.dirtySinceLastSubmit) || meta.error) &&
-    meta.touched
+const InputComponent = forwardRef<HTMLInputElement, RenderInputProps>(
+  (props, ref) => {
+    const { meta, loading, ...rest } = props
 
-  return (
-    <TextField
-      fullWidth
-      multiline={true}
-      maxRows={2}
-      error={showError}
-      helperText={showError ? meta.error || meta.submitError : undefined}
-      InputProps={{
-        inputRef: (node: HTMLInputElement) => {
-          ref(node)
-          inputRef(node)
-        },
-      }}
-      {...rest}
-    />
-  )
-}
+    const showError =
+      ((meta.submitError && !meta.dirtySinceLastSubmit) || meta.error) &&
+      meta.touched
+
+    return (
+      <TextField
+        fullWidth
+        multiline={true}
+        maxRows={2}
+        error={showError}
+        helperText={showError ? meta.error || meta.submitError : undefined}
+        InputProps={{
+          inputRef: ref, // Используем forwardRef для корректной передачи ref
+          endAdornment: loading ? (
+            <InputAdornment position="end">
+              <CircularProgress size={20} />
+            </InputAdornment>
+          ) : null,
+        }}
+        {...(rest as BaseTextFieldProps)}
+      />
+    )
+  },
+)
 
 const StyledMenuItem = withStyles({
   root: {
@@ -88,10 +119,12 @@ interface AutosuggestFieldProps {
   input: FieldInputProps<string>
   suggestions: string[]
   fullWidth: boolean
+  loading: boolean
 }
 
 const AutosuggestField: FC<AutosuggestFieldProps> = ({
   suggestions,
+  loading,
   label,
   ...rest
 }) => {
@@ -99,7 +132,7 @@ const AutosuggestField: FC<AutosuggestFieldProps> = ({
   const [isClearRequested, setIsClearRequested] = useState(false)
 
   useEffect(() => {
-    const el = document.querySelector('.Mui-error')
+    const el = document.querySelector('.Mui-error') as HTMLElement | null
     if (el) {
       el.focus()
     }
@@ -114,7 +147,7 @@ const AutosuggestField: FC<AutosuggestFieldProps> = ({
   }, [])
 
   const handleChange = useCallback(
-    (event, data) => {
+    (_: FormEvent<HTMLElement>, data: Autosuggest.ChangeEvent) => {
       const { newValue } = data
       if (newValue !== undefined) {
         onChange(newValue)
@@ -125,7 +158,7 @@ const AutosuggestField: FC<AutosuggestFieldProps> = ({
   )
 
   const handleSelected = useCallback(
-    (event, data) => {
+    (_: FormEvent<HTMLElement>, data: SuggestionSelectedEventData<string>) => {
       const { suggestion } = data
       if (suggestion !== undefined) {
         onChange(suggestion)
@@ -136,6 +169,7 @@ const AutosuggestField: FC<AutosuggestFieldProps> = ({
   )
 
   const autosuggestProps = {
+    loading,
     suggestions: isClearRequested ? [] : suggestions,
     onSuggestionsFetchRequested: handleSuggestionsFetchRequested,
     onSuggestionsClearRequested: handleSuggestionsClearRequested,
@@ -144,15 +178,25 @@ const AutosuggestField: FC<AutosuggestFieldProps> = ({
     renderSuggestion,
   }
 
+  console.log(loading)
+
   return (
     <div className={classes.root}>
       <Autosuggest
-        renderInputComponent={props => InputComponent({ label, ...props })}
+        renderInputComponent={props => (
+          <InputComponent
+            {...props}
+            input={rest.input}
+            meta={rest.meta}
+            loading={loading}
+          />
+        )}
         {...autosuggestProps}
         inputProps={{
           id: name,
           value: value,
           onChange: handleChange,
+
           ...rest,
         }}
         theme={{

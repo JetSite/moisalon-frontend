@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, FC, RefObject, FormHTMLAttributes } from 'react'
 import { useMutation } from '@apollo/react-hooks'
 import { Wrapper, Title } from './styled'
 import { MobileVisible, MobileHidden } from '../../../../../../styles/common'
@@ -18,9 +18,23 @@ import { useLazyQuery } from '@apollo/client'
 import { USER } from 'src/api/graphql/me/queries/getUser'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { CREATE_BRAND } from 'src/api/graphql/brand/mutations/createBrand'
-import { set } from 'lodash'
+import { ICity, IPhoto } from 'src/types'
+import { CreateBrandProps } from '../..'
+import { ISetState } from 'src/types/common'
+import { cyrToTranslit } from 'src/utils/translit'
+import { CREATE_CITY } from 'src/api/graphql/city/mutations/createCity'
+import { UPDATE_BRAND } from 'src/api/graphql/brand/mutations/updateBrand'
 
-const RegistrationForm = ({
+interface Props extends CreateBrandProps {
+  allTabs: RefObject<HTMLFormElement>
+  ref1: RefObject<HTMLDivElement>
+  ref2: RefObject<HTMLDivElement>
+  handleClickNextTab: (number: number) => void
+  photoBrand: IPhoto | null
+  setNoPhotoError: ISetState<boolean>
+}
+
+const RegistrationForm: FC<Props> = ({
   allTabs,
   ref1,
   ref2,
@@ -28,9 +42,11 @@ const RegistrationForm = ({
   photoBrand,
   brand,
   setNoPhotoError,
+  cities,
 }) => {
   const { me, user } = useAuthStore(useShallow(getStoreData))
   const { setUser } = useAuthStore(useShallow(getStoreEvent))
+  const [citiesArray, setCitiesArray] = useState<ICity[]>(cities)
   const [loading, setLoading] = useState<boolean>(false)
   const [errors, setErrors] = useState<string[] | null>(null)
   const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
@@ -38,13 +54,9 @@ const RegistrationForm = ({
   const [clickCity, setClickCity] = useState<string | null>(null)
   const router = useRouter()
 
-  console.log('photoBrand', photoBrand)
-
   const [getUser] = useLazyQuery(USER, {
     onCompleted: data => {
       const prepareData = flattenStrapiResponse(data.usersPermissionsUser)
-
-      console.log('prepareData', prepareData)
 
       if (user) {
         const newData = {
@@ -65,6 +77,13 @@ const RegistrationForm = ({
     onCompleted: () => {
       getUser({ variables: { id: me?.info?.id } })
       router.push('/masterCabinet')
+    },
+  })
+  const [addCity] = useMutation(CREATE_CITY)
+  const [updateBrand] = useMutation(UPDATE_BRAND, {
+    onCompleted: data => {
+      getUser({ variables: { id: me?.info?.id } })
+      router.push(`/${brand.city?.slug}/brand/${brand.id}`)
     },
   })
 
@@ -95,36 +114,120 @@ const RegistrationForm = ({
           }))
         : []
 
-      const inputToSave = {
-        name: values.name,
-        logo: photoBrand.id,
-        // country: values.country,
-        phones: [phone],
-        email: values.email,
-        address: values.address,
-        description: values.description,
-        history: values.history,
-        manufacture: values.manufacture,
-        webSiteUrl: values.webSiteUrl,
-        socialNetworks,
-        user: user?.info.id,
-        publishedAt: new Date().toISOString(),
-      }
+      const findCity =
+        citiesArray?.find(e => e.slug === cyrToTranslit(clickCity)) || null
 
-      if (!brand) {
+      if (!findCity) {
+        setLoading(true)
+        addCity({
+          variables: { name: clickCity, slug: cyrToTranslit(clickCity) },
+          onCompleted: data => {
+            const findCityData = flattenStrapiResponse(data.createCity)
+            setCitiesArray(prev => prev.concat(findCityData))
+
+            console.log(findCityData)
+
+            const inputToSave = {
+              name: values.name,
+              logo: photoBrand?.id,
+              city: findCityData.id,
+              // country: values.country,
+              phones: [phone],
+              email: values.email,
+              address: values.address,
+              description: values.description,
+              history: values.history,
+              manufacture: values.manufacture,
+              webSiteUrl: values.webSiteUrl,
+              socialNetworks,
+              user: user?.info.id,
+              publishedAt: new Date().toISOString(),
+            }
+
+            try {
+              if (!brand) {
+                createBrand({
+                  variables: {
+                    input: {
+                      ...inputToSave,
+                    },
+                  },
+                })
+              } else {
+                updateBrand({
+                  variables: {
+                    brandId: brand.id,
+                    input: {
+                      ...inputToSave,
+                    },
+                  },
+                })
+              }
+            } catch (error) {
+              console.error(error)
+              setLoading(false)
+            }
+          },
+        })
+      } else {
+        const inputToSave = {
+          name: values.name,
+          logo: photoBrand?.id,
+          city: findCity.id,
+          // country: values.country,
+          phones: [phone],
+          email: values.email,
+          address: values.address,
+          description: values.description,
+          history: values.history,
+          manufacture: values.manufacture,
+          webSiteUrl: values.webSiteUrl,
+          socialNetworks,
+          user: user?.info.id,
+          publishedAt: new Date().toISOString(),
+        }
         try {
-          setLoading(true)
-          createBrand({
-            variables: {
-              input: {
-                ...inputToSave,
+          if (!brand) {
+            setLoading(true)
+            createBrand({
+              variables: {
+                input: {
+                  ...inputToSave,
+                },
               },
-            },
-          })
+            })
+          } else {
+            updateBrand({
+              variables: {
+                brandId: brand.id,
+                input: {
+                  ...inputToSave,
+                },
+              },
+            })
+          }
         } catch (error) {
           console.error(error)
+          setLoading(false)
         }
       }
+
+      console.log('values', values)
+
+      // if (!brand) {
+      //   try {
+      //     setLoading(true)
+      //     createBrand({
+      //       variables: {
+      //         input: {
+      //           ...inputToSave,
+      //         },
+      //       },
+      //     })
+      //   } catch (error) {
+      //     console.error(error)
+      //   }
+      // }
 
       // if (brand) {
       //   updateName({

@@ -51,7 +51,7 @@ interface Props {
   name: string
   label?: string
   validate?: (value: string) => string | undefined
-  requiredField: boolean
+  requiredField?: boolean
 }
 
 const PhoneField = forwardRef<HTMLInputElement, Props>((props, ref) => {
