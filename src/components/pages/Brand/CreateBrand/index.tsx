@@ -34,7 +34,7 @@ const CreateBrand: FC<CreateBrandProps> = ({ brand }) => {
   const [refActive, setRefActive] = useState(false)
   const [ref1Visible, setRef1Visible] = useState(true)
   const [ref2Visible, setRef2Visible] = useState(false)
-  const [photoBrand, setPhotoBrand] = useState<IPhoto | null>(brand.logo)
+  const [photoBrand, setPhotoBrand] = useState<IPhoto | null>(brand?.logo)
   const [noPhotoError, setNoPhotoError] = useState(false)
 
   const handleElementPosition = (element, func, top) => {
