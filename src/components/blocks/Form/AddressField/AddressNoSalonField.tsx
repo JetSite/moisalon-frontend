@@ -67,12 +67,8 @@ const AddressNoSalonField: FC<IAddressNoSalonFieldProps> = ({
   view,
   ...rest
 }) => {
-  const [loading, setLoading] = useState(false)
-  const { suggestions, coordinates } = useAddressSuggestions(
+  const { suggestions, coordinates, loading } = useAddressSuggestions(
     rest.input.value,
-    false,
-    500,
-    setLoading,
   )
   const address = {
     longitude: coordinates?.geoLon,
