@@ -2,6 +2,7 @@ import { ICity, ICountry, IPhone, IPhoto, IRating, ISocialNetworks } from '.'
 import { IID } from './common'
 import { IMaster } from './masters'
 import { IProduct } from './product'
+import { IPromotions } from './promotions'
 import { IReview } from './reviews'
 import { ISalon } from './salon'
 import { IVacancy } from './vacancies'
@@ -38,4 +39,5 @@ export interface IBrand {
   products: IProduct[]
   phones: IPhone
   dontShowPrice: boolean
+  promotions: IPromotions[]
 }

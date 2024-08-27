@@ -1,6 +1,7 @@
 import { ICity, IGender, IPhoto, IRating, ISocialNetworks } from '.'
 import { IBrand } from './brands'
 import { IID } from './common'
+import { IPromotions } from './promotions'
 import { IReview } from './reviews'
 import { ISalon } from './salon'
 import { IServices } from './services'
@@ -53,6 +54,7 @@ export interface IMaster {
   photosWorks: IPhoto[]
   socialNetworks: ISocialNetworks[]
   city: ICity
+  promotions: IPromotions[]
 }
 
 export interface IMasterCreateInput {

@@ -1,5 +1,6 @@
 import { imageInfo } from '../../common/imageInfo'
 import { cityFragment } from '../../fragments/city'
+import { promotionFragment } from '../../fragments/promotion'
 import { ratingsFragment } from '../../fragments/ratings'
 import { reviewsFragment } from '../../fragments/reviews'
 import { socialNetworksFragment } from '../../fragments/socialNetworks'
@@ -91,6 +92,9 @@ export const salonFragment = `data {
       }
       reviews {
         ${reviewsFragment}
+      }
+      promotions {
+        ${promotionFragment}
       }
 
   }

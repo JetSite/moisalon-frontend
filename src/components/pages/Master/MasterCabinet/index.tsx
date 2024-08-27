@@ -166,7 +166,7 @@ const MasterCabinet: FC<Props> = ({ user, requests }) => {
               },
               { title: 'Моё избранное', value: 'favorits', disable: false },
               { title: 'Отзывы клиентов', value: 'reviews' },
-              { title: 'Мои акции', value: 'sales', disable: true },
+              { title: 'Мои акции', value: 'sales', disable: false },
               { title: 'Обучение', value: 'educations', disable: true },
               { title: 'Вакансии', value: 'vacancies' },
               { title: 'Мероприятия', value: 'events', disable: true },
@@ -200,7 +200,7 @@ const MasterCabinet: FC<Props> = ({ user, requests }) => {
           ) : activeTab === 'favorits' ? (
             <CabinetFavorits />
           ) : activeTab === 'sales' ? (
-            <CabinetSales me={user} />
+            <CabinetSales user={user} />
           ) : activeTab === 'educations' ? (
             <CabinetEducations me={user} />
           ) : activeTab === 'vacancies' ? (

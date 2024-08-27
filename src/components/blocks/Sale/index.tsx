@@ -1,11 +1,16 @@
 import { FC, useState } from 'react'
 import styled from 'styled-components'
-import PhotoAdd from '../CreateSale/PhotoAdd'
 import moment from 'moment'
 import 'moment/locale/ru'
 import { laptopBreakpoint } from '../../../styles/variables'
 import { PHOTO_URL } from '../../../api/variables'
 import { ISale } from 'src/types/sale'
+import { IPromotionsType } from '../Cabinet/components/CabinetSales'
+import { IPhoto } from 'src/types'
+import PhotoAdd, { IPhotoAddProps } from '../CreateBanner/PhotoAdd'
+import { ISetState } from 'src/types/common'
+import { IProjection } from 'yandex-maps'
+import { IPromotions } from 'src/types/promotions'
 
 const SaleWrap = styled.div<{ type: string | undefined }>`
   width: 375px;
@@ -110,33 +115,44 @@ const PromoText = styled.p`
   }
 `
 
-interface SaleProps {
+interface SaleProps extends Partial<Omit<IPhotoAddProps, 'hover'>> {
   create?: boolean
-  onAdd?: (photoId: string) => void
-  type?: string
-  item: ISale
+  type: IPromotionsType
+  item: IPromotions
 }
 
-const Sale: FC<SaleProps> = ({ create = false, onAdd, type, item }) => {
+const Sale: FC<SaleProps> = ({
+  create = false,
+  type,
+  item,
+  setPhoto,
+  photo,
+}) => {
   const [hover, setHover] = useState(false)
 
+  console.log(item)
+
   return (
-    <SaleWrap type={type}>
+    <SaleWrap type={type as string}>
       {!create ? (
         <SaleTop>
-          <Image alt="photo" src={`${PHOTO_URL}${item?.cover.url}`} />
+          <Image
+            alt="photo"
+            src={`${PHOTO_URL}${item?.cover?.url || photo?.url}`}
+          />
         </SaleTop>
       ) : (
         <SaleTop
           onMouseOver={() => setHover(true)}
           onMouseLeave={() => setHover(false)}
         >
-          {/* <PhotoAdd
-            photoId={item?.photoId}
-            hover={hover && item?.photoId}
-            onAdd={onAdd}
-            type={type}
-          /> */}
+          {setPhoto && (
+            <PhotoAdd
+              photo={photo || null}
+              setPhoto={setPhoto}
+              hover={hover && !!item?.cover?.id}
+            />
+          )}
         </SaleTop>
       )}
       <SaleContent>
