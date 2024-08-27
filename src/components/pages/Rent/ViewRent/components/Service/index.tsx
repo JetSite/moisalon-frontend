@@ -65,15 +65,16 @@ const Icon = styled.img``
 
 interface Props {
   services: IServiceCategories[]
+  title?: string
 }
 
-const Service: FC<Props> = ({ services }) => {
+const Service: FC<Props> = ({ services, title = 'Сервис для посетителей' }) => {
   console.log(services)
 
   return (
     <MainContainer id="service">
       <Wrapper>
-        <Title>Сервис для посетителей</Title>
+        <Title>{title}</Title>
         <Content>
           {services?.map(item => (
             <Item key={item.id}>

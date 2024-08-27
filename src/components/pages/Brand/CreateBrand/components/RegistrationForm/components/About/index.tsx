@@ -1,18 +1,22 @@
-import { Field } from "react-final-form";
-import { CheckBox, PhoneField, TextField } from "../../../../../../../blocks/Form";
-import Button from "../../../../../../../ui/Button";
+import { Field } from 'react-final-form'
+import {
+  CheckBox,
+  PhoneField,
+  TextField,
+} from '../../../../../../../blocks/Form'
+import Button from '../../../../../../../ui/Button'
 import {
   required,
   email,
   composeValidators,
-} from "../../../../../../../../utils/validations";
-import { MobileHidden } from "../../../../../../../../styles/common";
-import { WrapperForm, FieldWrap, FieldStyled } from "../../styled";
-import AddressNoSalonField from "../../../../../../../blocks/Form/AddressField/AddressNoSalonField";
-import { FC, RefObject, useState } from "react";
-import { Checkbox, Label } from "src/components/pages/Rent/RentFilter/style";
-import { ISetState } from "src/types/common";
-import { IHandleClickNextTabInForm } from "src/components/pages/Salon/CreateSalon";
+} from '../../../../../../../../utils/validations'
+import { MobileHidden } from '../../../../../../../../styles/common'
+import { WrapperForm, FieldWrap, FieldStyled } from '../../styled'
+import AddressNoSalonField from '../../../../../../../blocks/Form/AddressField/AddressNoSalonField'
+import { FC, RefObject, useState } from 'react'
+import { Checkbox, Label } from 'src/components/pages/Rent/RentFilter/style'
+import { ISetState } from 'src/types/common'
+import { IHandleClickNextTabInForm } from 'src/components/pages/Salon/CreateSalon'
 
 export interface IFormAboutProps {
   setClickCity: ISetState<string | null>
@@ -21,7 +25,12 @@ export interface IFormAboutProps {
   ref1: RefObject<HTMLDivElement>
 }
 
-const About: FC<IFormAboutProps> = ({ setClickCity, ref1, handleClickNextTab, number }) => {
+const About: FC<IFormAboutProps> = ({
+  setClickCity,
+  ref1,
+  handleClickNextTab,
+  number,
+}) => {
   const [view, setView] = useState<boolean>(false)
 
   return (
@@ -110,9 +119,9 @@ const About: FC<IFormAboutProps> = ({ setClickCity, ref1, handleClickNextTab, nu
       </FieldWrap>
       <MobileHidden>
         <Button
-          onClick={(e) => {
-            e.preventDefault();
-            handleClickNextTab(number);
+          onClick={e => {
+            e.preventDefault()
+            handleClickNextTab(number)
           }}
           variant="red"
           size="width374"
@@ -122,7 +131,7 @@ const About: FC<IFormAboutProps> = ({ setClickCity, ref1, handleClickNextTab, nu
         </Button>
       </MobileHidden>
     </WrapperForm>
-  );
-};
+  )
+}
 
-export default About;
+export default About

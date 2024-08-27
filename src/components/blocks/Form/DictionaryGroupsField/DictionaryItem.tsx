@@ -69,14 +69,15 @@ const DictionaryItem: FC<Props> = ({
 }) => {
   const [check, setCheck] = useState<boolean>(checked)
   useEffect(() => {
-    if (!check) {
-      const index = value.map(t => t.id).indexOf(id)
-
+    if (check) {
+      if (!value.some(item => item.id === id)) {
+        push({ id })
+      }
+    } else {
+      const index = value.findIndex(item => item.id === id)
       if (index > -1) {
         remove(index)
       }
-    } else {
-      push({ id })
     }
   }, [check])
 

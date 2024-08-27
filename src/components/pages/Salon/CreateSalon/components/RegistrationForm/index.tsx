@@ -67,11 +67,14 @@ const RegistrationForm: FC<Props> = ({
   const [clickCity, setClickCity] = useState<string | null>(null)
   const [errors, setErrors] = useState<string[] | null>(null)
   const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
-  const { services, activities } = useBaseStore(getStoreData)
+  const { services, activities, servicesM } = useBaseStore(getStoreData)
   const { me, user } = useAuthStore(getStoreData)
   const { setUser } = useAuthStore(getStoreEvent)
 
   const salonServicesCatalog: IServiceInForm[] = getServicesForCatalog(services)
+  const salonServicesMCatalog: IServiceInForm[] =
+    getServicesForCatalog(servicesM)
+
   const [photosArray, setPhotosArray] = useState<IPhoto[]>(salon?.photos || [])
   const [loading, setLoading] = useState(false)
 
@@ -87,7 +90,6 @@ const RegistrationForm: FC<Props> = ({
     () => getInitialValuesSalonForm(salon),
     [],
   )
-
   useEffect(() => {
     if (noPhotoError) {
       setErrorPopupOpen(true)
@@ -132,6 +134,7 @@ const RegistrationForm: FC<Props> = ({
       return
     }
     setLoading(true)
+
     const findCity =
       citiesArray?.find(e => e.slug === cyrToTranslit(clickCity)) || null
     if (!findCity) {
@@ -147,6 +150,7 @@ const RegistrationForm: FC<Props> = ({
           photos: photosArray.map(e => e.id),
           rent,
         })
+
         if (salon?.id) {
           mutate({ variables: { salonId: salon.id, input } }).then(() => {
             router.push(
@@ -190,6 +194,7 @@ const RegistrationForm: FC<Props> = ({
         photos: photosArray.map(e => e.id),
         rent,
       })
+
       if (salon?.id) {
         mutate({ variables: { salonId: salon.id, input } }).then(() => {
           router.push(
@@ -256,6 +261,7 @@ const RegistrationForm: FC<Props> = ({
                 ref3={ref3}
                 number={3}
                 services={salonServicesCatalog}
+                servicesM={salonServicesMCatalog}
                 handleClickNextTab={handleClickNextTab}
               />
               <Schedule
@@ -294,9 +300,9 @@ const RegistrationForm: FC<Props> = ({
                   size="fullWidth"
                   font="popUp"
                   type="submit"
-                  // disabled={
-                  //   pristine || loadingCreate || loadingUpdate || loading
-                  // }
+                  disabled={
+                    pristine || loadingCreate || loadingUpdate || loading
+                  }
                 >
                   {loadingCreate || loadingUpdate || loading
                     ? 'Подождите'

@@ -26,7 +26,10 @@ export const useLocationSuggestions = ({
   setLocationName,
   onlyCity,
 }: Props) => {
-  const { suggestions, coordinates } = useAddressSuggestions(input, onlyCity) // получаем город или адрес
+  const { suggestions, coordinates, loading } = useAddressSuggestions(
+    input,
+    onlyCity,
+  ) // получаем город или адрес
   const { setCities } = useBaseStore(getStoreEvent)
   const { cities } = useBaseStore(getStoreData)
   const [addCity] = useMutation(CREATE_CITY, {
@@ -71,5 +74,6 @@ export const useLocationSuggestions = ({
     suggestions,
     locationClickHandler,
     coordinates,
+    loading,
   }
 }

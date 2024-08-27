@@ -24,18 +24,18 @@ const EditSalonServices: FC<IEditSalonServices> = ({
 }) => {
   const handleDeleteEntries = (serviceBlock: IServiceCategory) => {
     const newItems = entriesItems.filter(
-      (entry) => !serviceBlock.services.find((service) => service.id === entry.id)
+      entry => !serviceBlock.services.find(service => service.id === entry.id),
     )
     setEntriesItems(newItems)
   }
 
   const handleAddEntries = (serviceBlock: IServiceCategory) => {
     const newItems = [...entriesItems, ...serviceBlock.services]
-    const uniqueServices = newItems.filter((service, index, self) =>
-      index === self.findIndex((s) => s.id === service.id)
-    );
+    const uniqueServices = newItems.filter(
+      (service, index, self) =>
+        index === self.findIndex(s => s.id === service.id),
+    )
     setEntriesItems(uniqueServices)
-
   }
 
   const groups = services?.map((serviceBlock, idx) => {

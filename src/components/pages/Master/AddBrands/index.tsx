@@ -8,20 +8,21 @@ import {
 import BrandItem from '../../../blocks/Cabinet/components/CabinetProfiles/components/BrandsList/BrandItem'
 import { IBrand } from 'src/types/brands'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
-import debounce from 'lodash/debounce';
+import debounce from 'lodash/debounce'
 import { IMaster } from 'src/types/masters'
 import Search from '../AddSalons/components/Search'
 import RotatingLoader from 'src/components/ui/RotatingLoader'
 import SearchResults from '../AddSalons/components/SearchResults'
 import { getBrandsByName } from 'src/api/graphql/brand/queries/getBrandsByName'
+import { ISalon } from 'src/types/salon'
 
 interface Props {
-  master: IMaster
+  entries: IMaster | ISalon
   brands: IBrand[]
   setBrands: Dispatch<SetStateAction<IBrand[]>>
 }
 
-const AddBrands: FC<Props> = ({ master, brands, setBrands }) => {
+const AddBrands: FC<Props> = ({ entries, brands, setBrands }) => {
   const [dataSearch, setDataSearch] = useState<IBrand[]>([])
   const [inputValue, setInputValue] = useState('')
   const [debouncedInputValue, setDebouncedInputValue] = useState('')
@@ -29,25 +30,25 @@ const AddBrands: FC<Props> = ({ master, brands, setBrands }) => {
   const { loading } = useQuery(getBrandsByName, {
     skip: !debouncedInputValue,
     variables: { name: debouncedInputValue },
-    onCompleted: (data) => {
+    onCompleted: data => {
       if (data?.brands?.data) {
         const brands = flattenStrapiResponse(data.brands.data)
         setDataSearch(brands)
       }
-    }
+    },
   })
 
   const debouncedSetInputValue = useCallback(
-    debounce((value) => {
-      setDebouncedInputValue(value);
+    debounce(value => {
+      setDebouncedInputValue(value)
     }, 500),
-    []
-  );
+    [],
+  )
 
   const handleInputChange = (value: string) => {
-    setInputValue(value);
-    debouncedSetInputValue(value);
-  };
+    setInputValue(value)
+    debouncedSetInputValue(value)
+  }
 
   const handlePublish = useCallback(
     (ev: any, item: IBrand, published: boolean) => {
@@ -58,7 +59,7 @@ const AddBrands: FC<Props> = ({ master, brands, setBrands }) => {
         setBrands(prevState => prevState.filter(brand => brand.id !== item.id))
       }
     },
-    [master],
+    [entries],
   )
 
   console.log('dataSearch', dataSearch)
@@ -68,11 +69,7 @@ const AddBrands: FC<Props> = ({ master, brands, setBrands }) => {
       <BrandItemWrapper
         key={item.id}
         onClick={e =>
-          handlePublish(
-            e,
-            item,
-            !!brands.find(brand => brand.id === item.id)
-          )
+          handlePublish(e, item, !!brands.find(brand => brand.id === item.id))
         }
       >
         <BrandItem brand={item} />
@@ -87,9 +84,13 @@ const AddBrands: FC<Props> = ({ master, brands, setBrands }) => {
       <Search inputValue={inputValue} setInputValue={handleInputChange} />
       {inputValue.length > 0 ? (
         <>
-          {loading ? <LoaderWrapper><RotatingLoader /></LoaderWrapper> : <SearchResults
-            searchResults={brandsListSearch}
-          />}
+          {loading ? (
+            <LoaderWrapper>
+              <RotatingLoader />
+            </LoaderWrapper>
+          ) : (
+            <SearchResults searchResults={brandsListSearch} />
+          )}
         </>
       ) : null}
     </BrandsContent>

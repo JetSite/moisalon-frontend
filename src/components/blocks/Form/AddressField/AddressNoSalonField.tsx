@@ -1,11 +1,20 @@
 import AutosuggestField from './AutosuggestField'
-import { useAddressSuggestions } from './useAddressSuggestions'
+import {
+  IAddressSuggestion,
+  useAddressSuggestions,
+} from './useAddressSuggestions'
 import Map from '../../Map'
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../styles/variables'
-import { FC, useEffect } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { TextFieldProps } from '@material-ui/core'
-import { FieldInputProps } from 'react-final-form'
+import {
+  FieldInputProps,
+  FieldMetaState,
+  FieldRenderProps,
+} from 'react-final-form'
+import { ISetState } from 'src/types/common'
+import { ICity } from 'src/types'
 
 const AutosuggestFieldStyled = styled(AutosuggestField)`
   .MuiInputBase-inputMultiline {
@@ -41,11 +50,14 @@ const MapWrap = styled.div`
 `
 
 export interface IAddressNoSalonFieldProps
-  extends FieldInputProps<any, HTMLElement> {
+  extends Pick<FieldRenderProps<any, HTMLElement>, 'input' | 'meta'> {
   fullWidth?: boolean
   salonId?: string | null
   label: string
   noMap?: boolean
+  view: boolean
+  setClickCity: ISetState<string | null>
+  setClickAddress?: ISetState<IAddressSuggestion | null>
 }
 
 const AddressNoSalonField: FC<IAddressNoSalonFieldProps> = ({
@@ -55,14 +67,16 @@ const AddressNoSalonField: FC<IAddressNoSalonFieldProps> = ({
   view,
   ...rest
 }) => {
-  const { suggestions, coordinates } = useAddressSuggestions(rest.input.value)
+  const { suggestions, coordinates, loading } = useAddressSuggestions(
+    rest.input.value,
+  )
   const address = {
     longitude: coordinates?.geoLon,
     latitude: coordinates?.geoLat,
   }
 
   useEffect(() => {
-    rest.setClickCity(coordinates?.city)
+    rest.setClickCity(coordinates?.city || null)
     if (rest.setClickAddress) {
       rest.setClickAddress(coordinates)
     }
@@ -75,6 +89,7 @@ const AddressNoSalonField: FC<IAddressNoSalonFieldProps> = ({
         fullWidth={fullWidth}
         label={label}
         suggestions={suggestions}
+        loading={loading}
       />
       {!rest.noMap ? (
         <MapWrap>

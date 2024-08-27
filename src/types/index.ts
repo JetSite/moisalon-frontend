@@ -97,7 +97,7 @@ export interface IGender {
 
 export interface IWorkplacesType {
   id: IID
-  workplaceType: string
+  title: string
 }
 
 export interface IRentalPeriod {

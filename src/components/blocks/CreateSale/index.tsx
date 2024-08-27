@@ -18,6 +18,7 @@ import { IMaster } from 'src/types/masters'
 import { IPhoto } from 'src/types'
 import { CREATE_PROMOTION } from 'src/api/graphql/promotion/mutations/createPromotion'
 import { ISetState } from 'src/types/common'
+import { IPromotions } from 'src/types/promotions'
 
 const FieldWrap = styled.div`
   margin-bottom: 14px;
@@ -51,6 +52,16 @@ const ButtonWrap = styled.div`
   }
 `
 
+type IFormValues = Pick<
+  IPromotions,
+  | 'title'
+  | 'fullDescription'
+  | 'shortDescription'
+  | 'promoCode'
+  | 'dateStart'
+  | 'dateEnd'
+>
+
 interface Props {
   type: IPromotionsType
   activeProfile: ISalon | IBrand | IMaster | null
@@ -80,7 +91,7 @@ const CreateSale: FC<Props> = ({ setCreateSale, type, activeProfile }) => {
   })
 
   const onSubmit = useCallback(
-    async values => {
+    async (values: IFormValues) => {
       console.log(values)
 
       if (!photo) {
@@ -94,9 +105,9 @@ const CreateSale: FC<Props> = ({ setCreateSale, type, activeProfile }) => {
             input: {
               title: values.title,
               cover: photo.id,
-              fullDescription: values.desc,
-              shortDescription: values.short_desc,
-              value: values.value,
+              fullDescription: values.fullDescription,
+              shortDescription: values.shortDescription,
+              promoCode: values.promoCode,
               dateStart: values.dateStart,
               dateEnd: values.dateEnd,
               [type as string]: activeProfile.id,
@@ -117,14 +128,14 @@ const CreateSale: FC<Props> = ({ setCreateSale, type, activeProfile }) => {
   return (
     <>
       <AutoFocusedForm
-        onSubmit={onSubmit}
+        onSubmit={e => onSubmit(e as IFormValues)}
         subscription={{ values: true }}
         render={({ handleSubmit, pristine, values }) => {
           return (
             <form onSubmit={handleSubmit}>
               <div style={{ marginBottom: 20 }}>
                 <Sale
-                  item={values}
+                  item={values as IPromotions}
                   photo={photo}
                   setPhoto={setPhoto}
                   type={type}
@@ -151,7 +162,7 @@ const CreateSale: FC<Props> = ({ setCreateSale, type, activeProfile }) => {
               </FieldWrap>
               <FieldWrap>
                 <FieldStyled
-                  name="short_desc"
+                  name="shortDescription"
                   component={TextField}
                   label="Краткое описание акции"
                   validate={required}
@@ -162,7 +173,7 @@ const CreateSale: FC<Props> = ({ setCreateSale, type, activeProfile }) => {
               </FieldWrap>
               <FieldWrap>
                 <FieldStyled
-                  name="desc"
+                  name="fullDescription"
                   component={TextField}
                   label="Описание акции"
                   validate={required}
@@ -173,7 +184,7 @@ const CreateSale: FC<Props> = ({ setCreateSale, type, activeProfile }) => {
               </FieldWrap>
               <FieldWrap>
                 <FieldStyled
-                  name="value"
+                  name="promoCode"
                   component={TextField}
                   label="Промокод"
                   maxLength={15}

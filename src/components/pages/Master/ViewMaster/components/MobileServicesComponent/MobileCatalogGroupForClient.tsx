@@ -65,7 +65,10 @@ interface IMobileCatalogGroup {
   masterPage?: boolean
 }
 
-const MobileCatalogGroupForClient: FC<IMobileCatalogGroup> = ({ serviceBlock, masterPage }) => {
+const MobileCatalogGroupForClient: FC<IMobileCatalogGroup> = ({
+  serviceBlock,
+  masterPage,
+}) => {
   const [openGroup, setOpenGroup] = useState(false)
 
   if (!serviceBlock?.services) {
@@ -75,8 +78,6 @@ const MobileCatalogGroupForClient: FC<IMobileCatalogGroup> = ({ serviceBlock, ma
   const openGroupHandler = () => {
     setOpenGroup(!openGroup)
   }
-
-  console.log('serviceBlock', serviceBlock)
 
   const services = serviceBlock?.services?.map((service, idx) => {
     return (
@@ -103,4 +104,4 @@ const MobileCatalogGroupForClient: FC<IMobileCatalogGroup> = ({ serviceBlock, ma
   )
 }
 
-export default MobileCatalogGroupForClient;
+export default MobileCatalogGroupForClient

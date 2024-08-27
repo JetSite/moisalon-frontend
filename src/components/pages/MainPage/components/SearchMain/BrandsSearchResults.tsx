@@ -69,6 +69,7 @@ const BrandsSearchResults: FC<Props> = ({
             {updateBrandData?.map(brand => (
               <div
                 onClick={() => {
+                  console.log(brand)
                   router.push(
                     `/${brand.city.slug || city.slug}/brand/${brand.id}`,
                   )
@@ -79,8 +80,9 @@ const BrandsSearchResults: FC<Props> = ({
                   <BrandItem
                     loading={loading}
                     brand={brand}
-                    shareLink={`https://moi.salon/${brand.city?.slug || city?.slug
-                      }/brand/${brand.id}`}
+                    shareLink={`https://moi.salon/${
+                      brand.city?.slug || city?.slug
+                    }/brand/${brand.id}`}
                     type="search-page"
                   />
                 </LinkStyled>

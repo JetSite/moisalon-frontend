@@ -18,23 +18,31 @@ import { IGroupedServices } from 'src/types'
 import { IService, IServiceCategory, IServices } from 'src/types/services'
 import { UPDATE_MASTER } from 'src/api/graphql/master/mutations/updateMaster'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { ISalon } from 'src/types/salon'
+import { UPDATE_SALON } from 'src/api/graphql/salon/mutations/updateSalon'
 
 interface Props {
   servicesData: IGroupedServices[]
   isOwner: boolean
-  master: IMaster
+  entries: IMaster | ISalon
   allServices: IServiceCategory[]
   setServices: Dispatch<SetStateAction<IServices[]>>
   masterPage?: boolean
+  type?: 'master' | 'salon'
+  serviceType?: 'default' | 'forMaster'
+  title?: string
 }
 
 const MobileServicesComponent: FC<Props> = ({
   servicesData,
   isOwner,
-  master,
+  entries,
   allServices,
   setServices,
   masterPage = false,
+  type = 'master',
+  serviceType = 'default',
+  title = 'Услуги',
 }) => {
   const [isEditing, setIsEditing] = useState(false)
   const [entriesItems, setEntriesItems] = useState<IService[]>([])
@@ -43,31 +51,57 @@ const MobileServicesComponent: FC<Props> = ({
   }, 0)
 
   const [updateMaster] = useMutation(UPDATE_MASTER)
+  const [updateSalon] = useMutation(UPDATE_SALON)
 
   useEffect(() => {
-    const masterSerivces: IService[] = []
+    const entriesSerivces: IService[] = []
     servicesData?.map(category => {
       category.services.map(service => {
-        masterSerivces.push(service.service)
+        entriesSerivces.push(service.service)
       })
     })
-    setEntriesItems(masterSerivces)
+    setEntriesItems(entriesSerivces)
   }, [servicesData])
 
   const handleEditConfirm = async () => {
     const services = entriesItems.map(service => {
       return { service: service.id }
     })
-    const response = await updateMaster({
-      variables: {
-        masterId: master.id,
-        input: {
-          services,
-        }
-      },
-    })
+    const input =
+      serviceType === 'forMaster'
+        ? { servicesM: services }
+        : { services: services }
+    const response =
+      type === 'master'
+        ? await updateMaster({
+            variables: {
+              masterId: entries.id,
+              input,
+            },
+          })
+        : type === 'salon'
+        ? await updateSalon({
+            variables: {
+              salonId: entries.id,
+              input,
+            },
+          })
+        : null
+
     if (response?.data?.updateMaster?.data?.id) {
-      const newServices = flattenStrapiResponse(response?.data?.updateMaster?.data?.attributes?.services)
+      const newServices = flattenStrapiResponse(
+        response?.data?.updateMaster?.data?.attributes?.services,
+      )
+      setServices(newServices)
+    } else if (response?.data?.updateSalon?.data?.id) {
+      const newServices =
+        serviceType === 'forMaster'
+          ? flattenStrapiResponse(
+              response?.data?.updateSalon?.data?.attributes?.servicesM,
+            )
+          : flattenStrapiResponse(
+              response?.data?.updateSalon?.data?.attributes?.services,
+            )
       setServices(newServices)
     }
     setIsEditing(false)
@@ -89,7 +123,7 @@ const MobileServicesComponent: FC<Props> = ({
       <Wrapper masterPage={masterPage}>
         <Top masterPage={masterPage}>
           <TitleWrap>
-            <Title masterPage={masterPage}>Услуги</Title>
+            <Title masterPage={masterPage}>{title}</Title>
             {isOwner && (
               <EditIcons
                 handleEditConfirm={handleEditConfirm}

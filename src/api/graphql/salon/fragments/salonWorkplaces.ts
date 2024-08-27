@@ -35,7 +35,7 @@ data{
       data {
         id
         attributes {
-          workplaceType
+          title
         }
       }
     }

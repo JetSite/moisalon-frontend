@@ -1,27 +1,16 @@
 import { FC, useEffect, useMemo, useState } from 'react'
-import Head from 'next/head'
 import { useQuery } from '@apollo/client'
 import MainLayout from '../../../../layouts/MainLayout'
-import { salonQuery } from '../../../../_graphql-legacy/salon/salonQuery'
-import { salonSlugQuery } from '../../../../_graphql-legacy/salon/salonSlugQuery'
-import { addApolloState, initializeApollo } from '../../../../api/apollo-client'
+import { initializeApollo } from '../../../../api/apollo-client'
 import SearchBlock from '../../../../components/blocks/SearchBlock'
 import TabsSlider from '../../../../components/ui/TabsSlider'
 import About from '../../../../components/pages/Salon/ViewSalon/components/About'
-import { reviewsForSalon } from '../../../../_graphql-legacy/salon/reviewsForSalon'
 import Contacts from '../../../../components/pages/Salon/ViewSalon/components/Contacts'
 import SalonReviews from '../../../../components/pages/Salon/ViewSalon/components/SalonReviews'
-import catalogOrDefault from '../../../../utils/catalogOrDefault'
-import { citySuggestionsQuery } from '../../../../_graphql-legacy/city/citySuggestionsQuery'
-import { cyrToTranslit } from '../../../../utils/translit'
 import Ribbon from '../../../../components/pages/MainPage/components/Ribbon'
 import RentSlider from '../../../../components/pages/Rent/ViewRent/components/RentSlider'
 import Service from '../../../../components/pages/Rent/ViewRent/components/Service'
-import { currentVacancies } from '../../../../_graphql-legacy/vacancies/currentVacancies'
-import { getCategories } from '../../../../_graphql-legacy/advices/getCategories'
-import { getAll } from '../../../../_graphql-legacy/advices/getAll'
 import Slider from '../../../../components/blocks/Slider'
-import { scoreSalon } from '../../../../_graphql-legacy/salon/scoreSalon'
 import { getStoreData } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
 import useBaseStore from 'src/store/baseStore'
@@ -34,7 +23,6 @@ import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { getRating } from 'src/utils/newUtils/getRating'
 import { GET_RENT_SALONS } from 'src/api/graphql/salon/queries/getRentSalons'
 import { getSalonPage } from 'src/api/graphql/salon/queries/getSalon'
-// import Header from '../../../../components/pages/Salon/ViewSalon/components/Header'
 import Header from '../../../../components/pages/Rent/ViewRent/components/Header'
 import { getFeedCategories } from 'src/api/graphql/feed/queries/getFeedCategories'
 import { getFeeds } from 'src/api/graphql/feed/queries/getFeeds'
@@ -56,7 +44,7 @@ const Rent: FC<Props> = ({
 }) => {
   const [activeTab, setActiveTab] = useState<number>(0)
   const [salon, setSalon] = useState<ISalonPage>(rentData)
-  const { me } = useAuthStore(getStoreData)
+  const { user } = useAuthStore(getStoreData)
   const { catalogs } = useBaseStore(getStoreData)
 
   const [workplaces, setWorkplaces] = useState(salon.workplaces)
@@ -69,8 +57,9 @@ const Rent: FC<Props> = ({
     },
   })
 
-  // const isOwner = !!me?.owner?.salons?.find(item => item.id === salon.id)
-  const isOwner = false
+  const isOwner = !!user?.owner?.salons?.find(item => item.id === salon.id)
+
+  console.log('salon', salon)
 
   return (
     <MainLayout>
@@ -85,7 +74,7 @@ const Rent: FC<Props> = ({
       </Head> */}
       <>
         <SearchBlock />
-        <Header salon={salon} isOwner={!isOwner} setActiveTab={setActiveTab} />
+        <Header salon={salon} isOwner={isOwner} setActiveTab={setActiveTab} />
         <TabsSlider
           activeTab={activeTab}
           setActiveTab={setActiveTab}
@@ -122,6 +111,10 @@ const Rent: FC<Props> = ({
           <RentSlider title="Аренда рабочих мест" salon={salon} />
         ) : null}
         {salon.services?.length ? <Service services={salon.services} /> : null}
+        {salon.servicesM?.length ? (
+          <Service title="Сервис для мастеров" services={salon.servicesM} />
+        ) : null}
+
         {salon.vacancies?.length ? (
           <Slider
             type="vacancies"

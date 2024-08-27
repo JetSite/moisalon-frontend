@@ -15,16 +15,17 @@ export interface IAddressSuggestion {
   zipcode: string
 }
 
-type IuseAddressSuggestions = (
+type IUseAddressSuggestions = (
   addres: string,
   onlyCity?: boolean,
   debounce?: number,
 ) => {
   suggestions: string[]
   coordinates: IAddressSuggestion | null
+  loading: boolean
 }
 
-export const useAddressSuggestions: IuseAddressSuggestions = (
+export const useAddressSuggestions: IUseAddressSuggestions = (
   address,
   onlyCity,
   debounce = 500,
@@ -32,17 +33,20 @@ export const useAddressSuggestions: IuseAddressSuggestions = (
   const [data, setData] = useState<IAddressSuggestion[]>([])
   const [debouncedAddress] = useDebounce(address, debounce)
   const validAddress = isEnoughLength(debouncedAddress)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     const getAdress = async (
       string: string,
       setData: ISetState<IAddressSuggestion[]>,
     ) => {
+      setLoading(true)
       const res = onlyCity
         ? await getDadataCity(string)
         : await getDadataAddress(string)
 
       setData(res)
+      setLoading(false)
     }
     if (validAddress) {
       getAdress(debouncedAddress, setData)
@@ -50,7 +54,7 @@ export const useAddressSuggestions: IuseAddressSuggestions = (
   }, [debouncedAddress])
 
   if (!data) {
-    return { suggestions: [], coordinates: null }
+    return { suggestions: [], coordinates: null, loading }
   }
 
   let prepareSuggestions = data.length
@@ -61,5 +65,5 @@ export const useAddressSuggestions: IuseAddressSuggestions = (
     prepareSuggestions.length >= 1 ? prepareSuggestions[0] : null
   const suggestions = prepareSuggestions.map(e => e.value)
 
-  return { suggestions, coordinates }
+  return { suggestions, coordinates, loading }
 }

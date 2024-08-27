@@ -50,7 +50,9 @@ export const getPrepareInputSalonForm: IGetPrepareInputSalonForm = ({
     service: item.id,
   }))
 
-  console.log(rent)
+  const servicesMForInput = values.servicesM?.map((item: { id: IID }) => ({
+    service: item.id,
+  }))
 
   const socialNetworks = values.socialNetworkUrls
     ? Object?.keys(values.socialNetworkUrls)?.map(e => ({
@@ -79,6 +81,7 @@ export const getPrepareInputSalonForm: IGetPrepareInputSalonForm = ({
       values.contactPersonWorkingHours,
     ),
     services: servicesForInput,
+    servicesM: servicesMForInput,
     activities: values.activities,
     city: findCity?.id || selectCity?.id || null,
     address: values.address,
