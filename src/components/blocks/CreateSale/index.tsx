@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 import { useMutation } from '@apollo/client'
-import { useCallback, useState } from 'react'
+import { FC, useCallback, useState } from 'react'
 import AutoFocusedForm from '../Form/AutoFocusedForm'
-import { FieldStyled } from '../../blocks/Cabinet/components/CabinetForm/styled'
+import { FieldStyled } from '../Cabinet/components/CabinetForm/styled'
 import { TextField } from '../Form'
 import { required } from '../../../utils/validations'
 import Error from '../Form/Error'
@@ -11,6 +11,13 @@ import Button from '../../ui/Button'
 import Sale from '../Sale'
 import { createSaleMutation } from '../../../_graphql-legacy/sales/createSaleMutation'
 import Popup from '../../ui/Popup'
+import { IPromotionsType } from '../Cabinet/components/CabinetSales'
+import { ISalon } from 'src/types/salon'
+import { IBrand } from 'src/types/brands'
+import { IMaster } from 'src/types/masters'
+import { IPhoto } from 'src/types'
+import { CREATE_PROMOTION } from 'src/api/graphql/promotion/mutations/createPromotion'
+import { ISetState } from 'src/types/common'
 
 const FieldWrap = styled.div`
   margin-bottom: 14px;
@@ -44,14 +51,20 @@ const ButtonWrap = styled.div`
   }
 `
 
-const CreateSale = ({ setCreateSale, type, activeProfile, refetch }) => {
-  const [errors, setErrors] = useState(null)
+interface Props {
+  type: IPromotionsType
+  activeProfile: ISalon | IBrand | IMaster | null
+  setCreateSale: ISetState<boolean>
+}
+
+const CreateSale: FC<Props> = ({ setCreateSale, type, activeProfile }) => {
+  const [errors, setErrors] = useState<string[] | null>(null)
   const [loading, setLoading] = useState(false)
-  const [photoId, setPhotoId] = useState(null)
   const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
   const [openPopup, setOpenPopup] = useState(false)
+  const [photo, setPhoto] = useState<IPhoto | null>(null)
 
-  const [createSale] = useMutation(createSaleMutation, {
+  const [createSale] = useMutation(CREATE_PROMOTION, {
     onError: error => {
       const errorMessages = error.graphQLErrors.map(e => e.message)
       setLoading(false)
@@ -60,46 +73,41 @@ const CreateSale = ({ setCreateSale, type, activeProfile, refetch }) => {
     },
     onCompleted: async data => {
       setLoading(false)
-      await refetch({
-        variables: {
-          originId: activeProfile.id,
-        },
-      })
+      console.log(data)
+
       setOpenPopup(true)
     },
   })
 
   const onSubmit = useCallback(
     async values => {
-      if (!photoId) {
+      console.log(values)
+
+      if (!photo) {
         setErrors(['Необходимо добавить фото'])
         setErrorPopupOpen(true)
         return
-      }
-      setLoading(true)
-      createSale({
-        variables: {
-          input: {
-            title: values.title,
-            origin: type.toUpperCase(),
-            originId: activeProfile?.id,
-            photoId,
-            desc: values.desc,
-            short_desc: values.short_desc,
-            value: values.value,
-            dateStart: values.dateStart,
-            dateEnd: values.dateEnd,
+      } else if (activeProfile) {
+        setLoading(true)
+        createSale({
+          variables: {
+            input: {
+              title: values.title,
+              cover: photo.id,
+              fullDescription: values.desc,
+              shortDescription: values.short_desc,
+              value: values.value,
+              dateStart: values.dateStart,
+              dateEnd: values.dateEnd,
+              [type as string]: activeProfile.id,
+            },
           },
-        },
-      })
+        })
+      }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [photoId],
+    [photo],
   )
-
-  const onAdd = photoId => {
-    setPhotoId(photoId)
-  }
 
   const closePopup = () => {
     setOpenPopup(false)
@@ -116,23 +124,20 @@ const CreateSale = ({ setCreateSale, type, activeProfile, refetch }) => {
             <form onSubmit={handleSubmit}>
               <div style={{ marginBottom: 20 }}>
                 <Sale
-                  photoId={photoId}
-                  onAdd={onAdd}
-                  dateStart={values.dateStart}
-                  dateEnd={values.dateEnd}
+                  item={values}
+                  photo={photo}
+                  setPhoto={setPhoto}
                   type={type}
                   create
-                  title={values.title}
-                  promo={values.value}
-                  name={`${
-                    type === 'master'
-                      ? 'Мастер'
-                      : type === 'salon'
-                      ? 'Салон'
-                      : type === 'brand'
-                      ? 'Бренд'
-                      : ''
-                  } ${activeProfile?.name}`}
+                  // name={`${
+                  //   type === 'master'
+                  //     ? 'Мастер'
+                  //     : type === 'salon'
+                  //     ? 'Салон'
+                  //     : type === 'brand'
+                  //     ? 'Бренд'
+                  //     : ''
+                  // } ${activeProfile?.name}`}
                 />
               </div>
               <FieldWrap>

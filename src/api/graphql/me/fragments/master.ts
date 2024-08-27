@@ -1,5 +1,6 @@
 import { cityInfo } from '../../common/cityInfo'
 import { imageInfo } from '../../common/imageInfo'
+import { promotionFragment } from '../../fragments/promotion'
 import { ratingsFragment } from '../../fragments/ratings'
 import { reviewsFragment } from '../../fragments/reviews'
 import servicesFragment from '../../fragments/services'
@@ -39,6 +40,9 @@ export const masterFragment = `data {
       }
       reviews {
         ${reviewsFragment}
+      }
+      promotions {
+        ${promotionFragment}
       }
       resumes {
         data {

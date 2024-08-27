@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, FC } from 'react'
 import { useQuery } from '@apollo/client'
 import {
   Wrapper,
@@ -20,8 +20,21 @@ import CreateSale from '../../../CreateSale'
 import Sale from '../../../Sale'
 import { MobileHidden, MobileVisible } from '../../../../../styles/common'
 import { PHOTO_URL } from '../../../../../api/variables'
+import { IUser } from 'src/types/me'
+import { ISalon } from 'src/types/salon'
+import { IMaster } from 'src/types/masters'
+import { IBrand } from 'src/types/brands'
+import { IPromotions } from 'src/types/promotions'
 
-const CabinetSalesList = ({ sales, loading }) => {
+interface PropsList {
+  sales: IPromotions[]
+  loading: boolean
+  type: IPromotionsType
+}
+
+export type IPromotionsType = 'salon' | 'master' | 'brand' | null
+
+const CabinetSalesList: FC<PropsList> = ({ sales, loading, type }) => {
   if (loading) {
     return <SkeletonWrap variant="rect" />
   }
@@ -31,26 +44,7 @@ const CabinetSalesList = ({ sales, loading }) => {
       {sales?.length > 0 ? (
         <>
           {sales?.map(item => (
-            <Sale
-              title={item.title}
-              name={`${
-                item?.origin.toLowerCase() === 'master'
-                  ? 'Мастер'
-                  : item.origin.toLowerCase() === 'salon'
-                  ? 'Салон'
-                  : item.origin.toLowerCase() === 'brand'
-                  ? 'Бренд'
-                  : ''
-              } ${
-                item?.masterOrigin?.name ||
-                item?.salonOrigin?.name ||
-                item?.brandOrigin?.name
-              }`}
-              promo={item.value}
-              photoId={item.photoId}
-              dateStart={item.dateStart}
-              dateEnd={item.dateEnd}
-            />
+            <Sale type={type} item={item} key={item.id} />
           ))}
         </>
       ) : (
@@ -60,68 +54,50 @@ const CabinetSalesList = ({ sales, loading }) => {
   )
 }
 
-const CabinetSales = ({ me }) => {
-  const salons = me?.salons
-  const master = me?.master
-  const brands = me?.userBrands
+interface Props {
+  user: IUser
+}
+
+const CabinetSales: FC<Props> = ({ user }) => {
+  const { salons, masters, brands } = user.owner
 
   const [id, setId] = useState('')
-  const [type, setType] = useState(null)
-  const [activeProfile, setActiveProfile] = useState(null)
-  const [sales, setSales] = useState([])
+  const [type, setType] = useState<IPromotionsType>(null)
+  const [activeProfile, setActiveProfile] = useState<
+    ISalon | IMaster | IBrand | null
+  >(null)
   const [loading, setLoading] = useState(false)
   const [createSale, setCreateSale] = useState(false)
-
-  const { data, refetch: refetchSales } = useQuery(currentSales, {
-    skip: true,
-    variables: {
-      originId: id,
-    },
-    onCompleted: res => {
-      setSales(res?.currentSales)
-      setLoading(false)
-    },
-  })
-
-  useEffect(() => {
-    if (id) {
-      setLoading(true)
-      setSales([])
-      refetchSales({
-        variables: {
-          originId: id,
-        },
-      })
-    }
-  }, [type, id])
 
   return (
     <Wrapper>
       <TitlePage>Мои акции</TitlePage>
       <Subtitle>Нажмите на профиль для просмотра или создания акций</Subtitle>
-      {!master?.id && !salons?.length && !brands?.length ? (
+      {!masters?.length && !salons?.length && !brands?.length ? (
         <Subtitle>У Вас нет профиля</Subtitle>
       ) : null}
-      {master?.id && !activeProfile ? (
-        <Item
-          onClick={() => {
-            setType('master')
-            setId(master?.id)
-            setActiveProfile(master)
-          }}
-        >
-          <Container>
-            <Avatar
-              alt="avatar"
-              src={master?.photo?.url || 'empty-photo.svg'}
-            />
-            <Content>
-              <Name>{master?.name}</Name>
-              <Type>Профиль мастера</Type>
-            </Content>
-          </Container>
-        </Item>
-      ) : null}
+      {masters?.length && !activeProfile
+        ? masters?.map(master => (
+            <Item
+              onClick={() => {
+                setType('master')
+                setId(master?.id)
+                setActiveProfile(master)
+              }}
+            >
+              <Container>
+                <Avatar
+                  alt="avatar"
+                  src={PHOTO_URL + master?.photo?.url || 'empty-photo.svg'}
+                />
+                <Content>
+                  <Name>{master?.name}</Name>
+                  <Type>Профиль мастера</Type>
+                </Content>
+              </Container>
+            </Item>
+          ))
+        : null}
       {salons?.length && !activeProfile
         ? salons.map(item => (
             <div key={item.id}>
@@ -135,12 +111,12 @@ const CabinetSales = ({ me }) => {
                 <Container>
                   <Avatar
                     alt="avatar"
-                    src={item?.logo?.url || 'empty-photo.svg'}
+                    src={PHOTO_URL + item?.logo?.url || 'empty-photo.svg'}
                   />
                   <Content>
                     <Name>{item?.name}</Name>
                     <Type>
-                      {item?.lessor
+                      {item?.rent
                         ? 'Профиль салона арендодателя'
                         : 'Профиль салона'}
                     </Type>
@@ -164,8 +140,8 @@ const CabinetSales = ({ me }) => {
                   <Avatar
                     alt="avatar"
                     src={
-                      item?.logoId
-                        ? `${PHOTO_URL}${item?.logoId}/original`
+                      item?.logo
+                        ? `${PHOTO_URL}${item?.logo.url}`
                         : 'empty-photo.svg'
                     }
                   />
@@ -192,10 +168,13 @@ const CabinetSales = ({ me }) => {
             <Container>
               <Avatar
                 alt="avatar"
-                src={master?.photo?.url || 'empty-photo.svg'}
+                src={
+                  PHOTO_URL + (activeProfile as IMaster).photo?.url ||
+                  'empty-photo.svg'
+                }
               />
               <Content>
-                <Name>{master?.name}</Name>
+                <Name>{(activeProfile as IMaster).name}</Name>
                 <Type>Профиль мастера</Type>
               </Content>
             </Container>
@@ -222,11 +201,14 @@ const CabinetSales = ({ me }) => {
                   Создать акцию
                 </Button>
               </MobileVisible>
-              <CabinetSalesList sales={sales} loading={loading} />
+              <CabinetSalesList
+                type={type}
+                sales={activeProfile.promotions}
+                loading={loading}
+              />
             </>
           ) : (
             <CreateSale
-              refetch={refetchSales}
               type={type}
               activeProfile={activeProfile}
               setCreateSale={setCreateSale}
@@ -248,7 +230,10 @@ const CabinetSales = ({ me }) => {
             <Container>
               <Avatar
                 alt="avatar"
-                src={activeProfile?.logo?.url || 'empty-photo.svg'}
+                src={
+                  PHOTO_URL + (activeProfile as ISalon).logo?.url ||
+                  'empty-photo.svg'
+                }
               />
               <Content>
                 <Name>{activeProfile?.name}</Name>
@@ -278,11 +263,14 @@ const CabinetSales = ({ me }) => {
                   Создать акцию
                 </Button>
               </MobileVisible>
-              <CabinetSalesList sales={sales} loading={loading} />
+              <CabinetSalesList
+                type={type}
+                sales={activeProfile.promotions}
+                loading={loading}
+              />
             </>
           ) : (
             <CreateSale
-              refetch={refetchSales}
               type={type}
               activeProfile={activeProfile}
               setCreateSale={setCreateSale}
@@ -305,9 +293,8 @@ const CabinetSales = ({ me }) => {
               <Avatar
                 alt="avatar"
                 src={
-                  activeProfile?.logoId
-                    ? `${PHOTO_URL}${activeProfile?.logoId}/original`
-                    : 'empty-photo.svg'
+                  PHOTO_URL + (activeProfile as ISalon).logo?.url ||
+                  'empty-photo.svg'
                 }
               />
               <Content>
@@ -338,11 +325,14 @@ const CabinetSales = ({ me }) => {
                   Создать акцию
                 </Button>
               </MobileVisible>
-              <CabinetSalesList sales={sales} loading={loading} />
+              <CabinetSalesList
+                type={type}
+                sales={activeProfile.promotions}
+                loading={loading}
+              />
             </>
           ) : (
             <CreateSale
-              refetch={refetchSales}
               type={type}
               activeProfile={activeProfile}
               setCreateSale={setCreateSale}

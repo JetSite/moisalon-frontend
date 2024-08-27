@@ -1,9 +1,15 @@
-import { useCallback } from 'react'
+import { FC, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../styles/variables'
 import uploadPhoto from '../../../../utils/uploadPhoto'
-import { PHOTO_URL } from '../../../../api/variables'
+import { PHOTO_URL, UPLOAD_PHOTO_OPTIONS } from '../../../../api/variables'
+import { IPhoto } from 'src/types'
+import imageCompression from 'browser-image-compression'
+import { useMutation } from '@apollo/client'
+import { UPLOAD } from 'src/api/graphql/common/upload'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { ISetState } from 'src/types/common'
 
 const Photo = styled.div`
   width: 100%;
@@ -52,19 +58,35 @@ const Image = styled.img`
   object-fit: cover;
 `
 
-const PhotoAdd = ({ onAdd, hover, photoId }) => {
+export interface IPhotoAddProps {
+  hover: boolean
+  photo: IPhoto | null
+  setPhoto: ISetState<IPhoto | null>
+}
+
+const PhotoAdd: FC<IPhotoAddProps> = ({ hover, photo, setPhoto }) => {
+  const [uploadImage] = useMutation(UPLOAD)
+
   const photoType = 'master'
   const onDrop = useCallback(
-    files => {
+    (files: File[]) => {
       const file = files[0]
       const uploadFile = async () => {
-        await uploadPhoto(file, photoType).then(photoId => {
-          onAdd(photoId)
+        const compressedFile = await imageCompression(
+          file,
+          UPLOAD_PHOTO_OPTIONS,
+        )
+        await uploadImage({
+          variables: { file: compressedFile },
+          onCompleted: data => {
+            const photo = flattenStrapiResponse(data.upload.data) as IPhoto
+            setPhoto(photo)
+          },
         })
       }
       uploadFile()
     },
-    [photoType, onAdd],
+    [photoType],
   )
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -81,8 +103,8 @@ const PhotoAdd = ({ onAdd, hover, photoId }) => {
     <>
       <div {...getRootProps()}>
         <input {...getInputProps()} />
-        {!photoId ? <Photo /> : null}
-        <Image alt="photo" src={`${PHOTO_URL}${photoId}/original`} />
+        {!photo ? <Photo /> : null}
+        <Image alt="photo" src={`${PHOTO_URL}${photo?.url}`} />
         {onHoverControls}
       </div>
     </>

@@ -10,6 +10,7 @@ import {
 import { IBrand } from './brands'
 import { IID } from './common'
 import { IMaster } from './masters'
+import { IPromotions } from './promotions'
 import { IReview } from './reviews'
 import { IServiceCategories, IServices } from './services'
 import { IVacancy } from './vacancies'
@@ -54,6 +55,7 @@ export interface ISalon {
   reviews: IReview[]
   workingHours: IWorkingHours[]
   contactPersonWH: IWorkingHours[]
+  promotions: IPromotions[]
 }
 
 export interface ISalonPage extends ISalon {
