@@ -10,6 +10,7 @@ import {
 } from '../../../../utils/validations'
 import Icon from './Icon'
 import { FieldStyled } from '../../../pages/Salon/CreateSalon/components/RegistrationForm/styled'
+import { parseFieldsToString } from 'src/utils/newUtils/formsHelpers'
 
 const PhoneWrapper = styled(Grid)`
   position: relative;
@@ -66,6 +67,7 @@ const PhoneField = forwardRef<HTMLInputElement, Props>((props, ref) => {
     <PhoneWrapper container spacing={3}>
       <Grid item xs={12}>
         <FieldStyled
+          parse={parseFieldsToString}
           name={`${name}.phoneNumber`}
           type="phone"
           render={(props: FieldRenderProps<any, HTMLElement, any>) => {

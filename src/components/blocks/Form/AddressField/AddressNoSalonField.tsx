@@ -55,9 +55,10 @@ export interface IAddressNoSalonFieldProps
   salonId?: string | null
   label: string
   noMap?: boolean
-  view: boolean
+  view?: boolean
   setClickCity: ISetState<string | null>
   setClickAddress?: ISetState<IAddressSuggestion | null>
+  onlyCity?: boolean
 }
 
 const AddressNoSalonField: FC<IAddressNoSalonFieldProps> = ({
@@ -65,10 +66,12 @@ const AddressNoSalonField: FC<IAddressNoSalonFieldProps> = ({
   fullWidth = true,
   salonId = null,
   view,
+  onlyCity,
   ...rest
 }) => {
   const { suggestions, coordinates, loading } = useAddressSuggestions(
     rest.input.value,
+    onlyCity,
   )
   const address = {
     longitude: coordinates?.geoLon,

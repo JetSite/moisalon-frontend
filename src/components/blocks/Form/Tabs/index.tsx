@@ -7,18 +7,30 @@ import { currentUserSalonsAndMasterQuery } from '../../../../_graphql-legacy/mas
 import { cyrToTranslit } from '../../../../utils/translit'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
-import { Back, Quantity, Tab, Text, TextRed, Wrapper } from './style'
-import { FC } from 'react'
+import {
+  Back,
+  Quantity,
+  Tab,
+  TabButton,
+  TabLink,
+  TextRed,
+  Wrapper,
+} from './style'
+import { FC, useState } from 'react'
 import { ITab } from 'src/components/pages/Salon/CreateSalon/config'
+import Popup from 'src/components/ui/Popup'
+import Button from 'src/components/ui/Button'
 
 interface Props {
   tabs: ITab[]
   refActive?: string | boolean
+  dirtyForm: boolean
 }
 
-const Tabs: FC<Props> = ({ tabs, refActive }) => {
+const Tabs: FC<Props> = ({ tabs, refActive, dirtyForm }) => {
   const router = useRouter()
   const { logout } = useAuthStore(getStoreEvent)
+  const [open, setOpen] = useState(false)
 
   const handleClick = (item: ITab) => {
     const element = document.getElementById(item.anchor.replace('#', ''))
@@ -32,36 +44,53 @@ const Tabs: FC<Props> = ({ tabs, refActive }) => {
       })
     }
   }
-
+  const handlePopupClose = () => {
+    setOpen(false)
+  }
   return (
     <Wrapper>
-      {tabs.map(item => (
-        <Tab key={item.id}>
-          {item.back ? <Back /> : null}
-          {item.value ? (
-            <Text
-              onClick={() => {
-                handleClick(item)
-                if (item.href && item.link) {
-                  router.push({
-                    pathname: item.href,
-                    query: { id: item.link },
-                  })
-                }
-              }}
-              active={item.id === refActive}
-            >
-              {item.value}
-            </Text>
-          ) : null}
-          {item.quantity ? <Quantity>{item.quantity}</Quantity> : null}
-        </Tab>
-      ))}
+      {tabs.map(item => {
+        const link =
+          item.href && item.link ? item.href + '?id=' + item.link : null
+
+        return (
+          <Tab key={item.id}>
+            {item.back && <Back />}
+            {item.value && (
+              <>
+                {link ? (
+                  <TabLink href={link} active={item.id === refActive}>
+                    {item.value}
+                  </TabLink>
+                ) : (
+                  <TabButton
+                    onClick={() => handleClick(item)}
+                    active={item.id === refActive}
+                  >
+                    {item.value}
+                  </TabButton>
+                )}
+              </>
+            )}
+            {item.quantity && <Quantity>{item.quantity}</Quantity>}
+          </Tab>
+        )
+      })}
       {router?.asPath !== '/masterCabinet' ? (
         <Tab>
-          <Text onClick={() => router.push('/masterCabinet')}>
-            Назад в кабинет пользователя
-          </Text>
+          {dirtyForm ? (
+            <TabButton
+              onClick={() => {
+                setOpen(true)
+              }}
+            >
+              Назад в кабинет пользователя
+            </TabButton>
+          ) : (
+            <TabLink href="/masterCabinet">
+              Назад в кабинет пользователя
+            </TabLink>
+          )}
         </Tab>
       ) : null}
       <TextRed
@@ -71,6 +100,30 @@ const Tabs: FC<Props> = ({ tabs, refActive }) => {
       >
         Выход
       </TextRed>
+      <Popup
+        isOpen={open}
+        onClose={handlePopupClose}
+        title="Вы прерываете заполнение профиля!"
+        description=""
+        content={() => {
+          return <p>Вся несохраненная информация будет утеряна. Вы уверены?</p>
+        }}
+      >
+        <Button
+          onClick={() => router.push('/masterCabinet')}
+          style={{ marginTop: 25 }}
+          variant="gray"
+        >
+          Выйти
+        </Button>
+        <Button
+          onClick={handlePopupClose}
+          style={{ marginTop: 25 }}
+          variant="red"
+        >
+          Остаться
+        </Button>
+      </Popup>
     </Wrapper>
   )
 }

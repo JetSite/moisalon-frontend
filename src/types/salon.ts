@@ -56,6 +56,7 @@ export interface ISalon {
   workingHours: IWorkingHours[]
   contactPersonWH: IWorkingHours[]
   promotions: IPromotions[]
+  videoReviewUrl: string | null
 }
 
 export interface ISalonPage extends ISalon {

@@ -38,7 +38,7 @@ interface RenderInputProps
 
 const InputComponent = forwardRef<HTMLInputElement, RenderInputProps>(
   (props, ref) => {
-    const { meta, loading, ...rest } = props
+    const { meta, loading, label, ...rest } = props
 
     const showError =
       ((meta.submitError && !meta.dirtySinceLastSubmit) || meta.error) &&
@@ -49,6 +49,7 @@ const InputComponent = forwardRef<HTMLInputElement, RenderInputProps>(
         fullWidth
         multiline={true}
         maxRows={2}
+        label={label}
         error={showError}
         helperText={showError ? meta.error || meta.submitError : undefined}
         InputProps={{
@@ -157,6 +158,8 @@ const AutosuggestField: FC<AutosuggestFieldProps> = ({
     [onChange],
   )
 
+  // console.log('first', label)
+
   const handleSelected = useCallback(
     (_: FormEvent<HTMLElement>, data: SuggestionSelectedEventData<string>) => {
       const { suggestion } = data
@@ -187,6 +190,7 @@ const AutosuggestField: FC<AutosuggestFieldProps> = ({
             input={rest.input}
             meta={rest.meta}
             loading={loading}
+            label={label}
           />
         )}
         {...autosuggestProps}

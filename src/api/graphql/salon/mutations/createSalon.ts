@@ -5,7 +5,10 @@ import { socialNetworksFragment } from '../../fragments/socialNetworks'
 import { contactPersonWHFragment } from '../../fragments/contactPersonWH'
 import { imageInfo } from '../../common/imageInfo'
 import { masterFragment } from '../../me/fragments/master'
-import { salonAdministratorsFragment, salonServicesFragment } from '../fragments'
+import {
+  salonAdministratorsFragment,
+  salonServicesFragment,
+} from '../fragments'
 import { brandsFragment } from '../../fragments/brands'
 import salonServicesMFragment from '../fragments/salonServicesMFragment'
 import { ratingsFragment } from '../../fragments/ratings'
@@ -44,6 +47,7 @@ export const CREATE_SALON = gql`
             rent
             webSiteUrl
             email
+            videoReviewUrl
             salonPhones {
               ${phonesFragment}
             }

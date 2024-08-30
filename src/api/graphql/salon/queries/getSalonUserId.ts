@@ -44,10 +44,10 @@ export const SALON_USER_ID = gql`
               
             
             address
-            
             rent
             webSiteUrl
             email
+            videoReviewUrl
             salonPhones {
               ${phonesFragment}
             }

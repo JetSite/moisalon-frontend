@@ -3,7 +3,7 @@ import { ISocialNetworks } from 'src/types'
 import { ISalonPage } from 'src/types/salon'
 import { reverseTransformWorkingHours } from 'src/utils/newUtils/reverseTransformWorkingHours'
 
-interface ISalonPhonesInitialValue {
+export interface IPhonesInitialValue {
   phoneNumber: string
   haveTelegram: boolean
   haveViber: boolean
@@ -33,17 +33,20 @@ interface IInitialInput
     | 'salonPhones'
     | 'address'
     | 'photos'
+    | 'videoReviewUrl'
   > {
   activities: string[] | null
   services: { id: string }[] | []
   servicesM: { id: string }[] | []
-  salonPhones: ISalonPhonesInitialValue[]
+  salonPhones: IPhonesInitialValue[]
+  contactPersonPhone: { phoneNumber: string }
 }
 
 export interface IInitialValuesSalonForm extends IInitialInput {
-  socialNetworkUrls: { [K: string]: string | null }
+  socialNetworkUrls?: { [K: string]: string | null }
   workingHours: IWorkingHours[]
   contactPersonWorkingHours: IWorkingHours[]
+  checkCart: boolean
 }
 
 export type IgetInitialValuesSalonForm = (
@@ -53,7 +56,7 @@ export type IgetInitialValuesSalonForm = (
 export const getInitialValuesSalonForm: IgetInitialValuesSalonForm = salon => {
   const socialNetworkUrls = {} as { [K: string]: string | null }
   salon?.socialNetworks.forEach(e => {
-    socialNetworkUrls[e.title] = e.link || null
+    socialNetworkUrls[e.title] = e.link || ''
   })
 
   const initialInput: IInitialInput = salon
@@ -64,7 +67,9 @@ export const getInitialValuesSalonForm: IgetInitialValuesSalonForm = salon => {
         locationDirections: salon.locationDirections,
         contactPersonEmail: salon.contactPersonEmail,
         contactPersonName: salon.contactPersonName,
+        contactPersonPhone: { phoneNumber: salon.contactPersonPhone || '' },
         onlineBookingUrl: salon.onlineBookingUrl,
+        videoReviewUrl: salon.videoReviewUrl || '',
         webSiteUrl: salon.webSiteUrl,
         address: salon?.address,
         salonPhones: salon.salonPhones.map(e => ({
@@ -84,6 +89,8 @@ export const getInitialValuesSalonForm: IgetInitialValuesSalonForm = salon => {
         description: '',
         locationDirections: '',
         contactPersonEmail: '',
+        videoReviewUrl: '',
+        contactPersonPhone: { phoneNumber: '' },
         contactPersonName: '',
         onlineBookingUrl: '',
         webSiteUrl: '',
@@ -101,9 +108,10 @@ export const getInitialValuesSalonForm: IgetInitialValuesSalonForm = salon => {
         services: [],
         servicesM: [],
       }
-  return {
+
+  const result: IInitialValuesSalonForm = {
     ...initialInput,
-    socialNetworkUrls,
+    checkCart: true,
     workingHours:
       salon && salon.workingHours.length
         ? reverseTransformWorkingHours(workingHoursOptions, salon.workingHours)
@@ -134,4 +142,11 @@ export const getInitialValuesSalonForm: IgetInitialValuesSalonForm = salon => {
             },
           ],
   }
+
+  // Добавляем socialNetworkUrls только если есть ключи
+  if (Object.keys(socialNetworkUrls).length) {
+    result.socialNetworkUrls = socialNetworkUrls
+  }
+
+  return result
 }

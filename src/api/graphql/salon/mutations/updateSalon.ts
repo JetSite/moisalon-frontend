@@ -47,6 +47,7 @@ export const UPDATE_SALON = gql`
             rent
             webSiteUrl
             email
+            videoReviewUrl
             salonPhones {
               ${phonesFragment}
             }

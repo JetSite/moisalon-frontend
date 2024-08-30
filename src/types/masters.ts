@@ -17,7 +17,7 @@ export interface IResume {
   age: number
   workSchedule: string
   salary: string
-  region: ICity
+  city: ICity
   gender: IGender
 }
 
@@ -27,7 +27,6 @@ export interface IMaster {
   phone: string
   email: string
   address: string
-
   reviewsCount: number
   rating: number
   ratingCount: number
@@ -43,7 +42,7 @@ export interface IMaster {
   longitude: string
   office: string
   onlineBookingUrl: string
-  resumes: IResume[]
+  resume: IResume | null
   photosDiploma: IPhoto[]
   salons: ISalon[]
   photo: IPhoto
@@ -55,21 +54,4 @@ export interface IMaster {
   socialNetworks: ISocialNetworks[]
   city: ICity
   promotions: IPromotions[]
-}
-
-export interface IMasterCreateInput {
-  name: string
-  email: string
-  phone: string
-  description: string
-  address: string
-  searchWork?: boolean
-  services: IMasterServices[]
-  webSiteUrl?: string
-  haveTelegram?: boolean
-  haveViber?: boolean
-  haveWhatsApp?: boolean
-  photo: IID
-  city: IID
-  resumes?: IID[]
 }

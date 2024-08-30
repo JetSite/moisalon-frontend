@@ -25,13 +25,14 @@ import { ISalonPage } from 'src/types/salon'
 import { IHandleClickNextTabInForm } from '../../../..'
 import { IFormAboutProps } from 'src/components/pages/Master/CreateMaster/components/RegistrationForm/components/About'
 import { IUsePhotoProps } from 'src/components/blocks/Form/PhotoArrayField/usePhotos'
+import { parseFieldsToString } from 'src/utils/newUtils/formsHelpers'
 
 interface Props extends IFormAboutProps {
   photos: IPhoto[]
   setPhotosArray: ISetState<IPhoto[]>
 }
 
-export interface IphotoArrayPros
+export interface IPhotoArrayPros
   extends Pick<IUsePhotoProps, 'photoType' | 'kind' | 'setPhotosArray'> {}
 
 const About: FC<Props> = ({
@@ -42,8 +43,8 @@ const About: FC<Props> = ({
   photos,
   setPhotosArray,
 }) => {
-  const [view, setView] = useState<boolean>(false)
-  const photoArrayProps: IphotoArrayPros = {
+  const [view, setView] = useState<boolean>(true)
+  const photoArrayProps: IPhotoArrayPros = {
     photoType: 'salonPhoto',
     kind: 'small',
     setPhotosArray,
@@ -53,6 +54,7 @@ const About: FC<Props> = ({
     <WrapperForm ref={ref1} id="about">
       <FieldWrap>
         <FieldStyled
+          parse={parseFieldsToString}
           name="name"
           component={TextField}
           label="Название"
@@ -65,6 +67,7 @@ const About: FC<Props> = ({
       </FieldWrap>
       <FieldWrap>
         <FieldStyled
+          parse={parseFieldsToString}
           name="email"
           component={TextField}
           label="E-mail"
@@ -75,6 +78,7 @@ const About: FC<Props> = ({
       </FieldWrap>
       <FieldWrap>
         <FieldStyled
+          parse={parseFieldsToString}
           name="address"
           setClickCity={setClickCity}
           component={AddressNoSalonField}
@@ -106,13 +110,15 @@ const About: FC<Props> = ({
       />
       <VideoFieldWrap>
         <Field
-          name="video"
+          parse={parseFieldsToString}
+          name="videoReviewUrl"
           component={TextField}
           label="Ссылка на видеообзор салона"
         />
       </VideoFieldWrap>
       <VideoFieldWrap>
         <Field
+          parse={parseFieldsToString}
           name="onlineBookingUrl"
           component={TextField}
           label="Ссылка на ваш сервис онлайн записи"
@@ -120,6 +126,7 @@ const About: FC<Props> = ({
       </VideoFieldWrap>
       <FieldWrap>
         <FieldStyled
+          parse={parseFieldsToString}
           name="description"
           component={TextField}
           multiline={true}

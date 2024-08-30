@@ -29,9 +29,8 @@ export interface IPrepareInputSalonForm {
 
 interface Props {
   values: { [K: string]: any }
-  findCity: ICity | null
+  findCity?: ICity | null
   logo: IPhoto | null
-  selectCity?: ICity | null
   photos: string[]
   rent: boolean
 }
@@ -42,7 +41,6 @@ export const getPrepareInputSalonForm: IGetPrepareInputSalonForm = ({
   values,
   findCity,
   logo,
-  selectCity,
   photos,
   rent = false,
 }) => {
@@ -65,6 +63,7 @@ export const getPrepareInputSalonForm: IGetPrepareInputSalonForm = ({
     email: values.email,
     salonPhones: values.salonPhones,
     description: values.description,
+    videoReviewUrl: values.videoReviewUrl,
     locationDirections: values.locationDirections,
     contactPersonEmail: values.contactPersonEmail,
     contactPersonName: values.contactPersonName,
@@ -83,7 +82,7 @@ export const getPrepareInputSalonForm: IGetPrepareInputSalonForm = ({
     services: servicesForInput,
     servicesM: servicesMForInput,
     activities: values.activities,
-    city: findCity?.id || selectCity?.id || null,
+    city: findCity?.id || null,
     address: values.address,
     logo: logo?.id,
     photos,

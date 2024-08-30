@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FC } from 'react'
 import { Field } from 'react-final-form'
 import styled from 'styled-components'
 import { isUrl } from '../../../../../../../../utils/validations'
@@ -6,6 +6,8 @@ import SocialNetworkUrlsField from '../../../../../../../blocks/Form/SocialNetwo
 import TextFieldAdapter from '../../../../../../../blocks/Form/TextField'
 import { FieldWrap } from '../../styled'
 import { laptopBreakpoint } from '../../../../../../../../styles/variables'
+import { parseFieldsToString } from 'src/utils/newUtils/formsHelpers'
+import { IMasterFormProps } from '../..'
 
 const Wrapper = styled.div`
   margin-top: 120px;
@@ -29,12 +31,15 @@ const Title = styled.p`
   }
 `
 
-const Socials = ({ ref4 }) => {
+interface Props extends Pick<IMasterFormProps, 'ref4'> {}
+
+const Socials: FC<Props> = ({ ref4 }) => {
   return (
     <Wrapper id="socials" ref={ref4}>
       <Title>Дополнительная информация</Title>
       <FieldWrap>
         <Field
+          parse={parseFieldsToString}
           name="webSiteUrl"
           component={TextFieldAdapter}
           label="Веб-сайт"

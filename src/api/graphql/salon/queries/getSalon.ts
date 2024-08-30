@@ -49,6 +49,7 @@ export const getSalonPage = gql`
             rent
             webSiteUrl
             email
+            videoReviewUrl
             salonPhones {
               ${phonesFragment}
             }

@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { red, laptopBreakpoint } from '../../../../styles/variables'
 import styled from 'styled-components'
 
@@ -22,12 +23,23 @@ export const Back = styled.div`
 `
 
 export const Tab = styled.div`
-  cursor: pointer;
   position: relative;
   display: block;
 `
 
-export const Text = styled.div<{ active?: boolean }>`
+export const TabButton = styled.button<{ active?: boolean }>`
+  display: inline-block;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 45px;
+  text-decoration: ${props => (props.active ? 'underline' : '')};
+  transition: 0.5s;
+  &:hover {
+    color: #f03;
+  }
+`
+
+export const TabLink = styled(Link)<{ active?: boolean }>`
   display: inline-block;
   font-size: 18px;
   font-weight: 600;

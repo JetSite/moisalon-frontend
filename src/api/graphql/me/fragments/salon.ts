@@ -41,6 +41,7 @@ export const salonFragment = `data {
       rent
       webSiteUrl
       email
+      videoReviewUrl
       salonPhones {
         phoneNumber
         haveTelegram

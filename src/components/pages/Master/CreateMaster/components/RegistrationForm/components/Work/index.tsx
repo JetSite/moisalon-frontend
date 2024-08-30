@@ -1,4 +1,4 @@
-import { Field } from 'react-final-form'
+import { Field, useForm } from 'react-final-form'
 import styled from 'styled-components'
 import { required } from '../../../../../../../../utils/validations'
 import { TextField } from '../../../../../../../blocks/Form'
@@ -6,6 +6,11 @@ import Button from '../../../../../../../ui/Button'
 import { MobileHidden } from '../../../../../../../../styles/common'
 import { FieldStyled, FieldWrap } from '../../styled'
 import { laptopBreakpoint } from '../../../../../../../../styles/variables'
+import { FC, useState } from 'react'
+import { IMasterFormProps } from '../..'
+import { parseFieldsToString } from 'src/utils/newUtils/formsHelpers'
+import AddressNoSalonField from '../../../../../../../blocks/Form/AddressField/AddressNoSalonField'
+import { ISetState } from 'src/types/common'
 
 const Wrapper = styled.div`
   padding-top: 120px;
@@ -87,7 +92,19 @@ const Checkbox = styled.input`
   }
 `
 
-const Work = ({ ref3, handleClickNextTab, number }) => {
+interface Props extends Pick<IMasterFormProps, 'ref3' | 'handleClickNextTab'> {
+  number: number
+  setClickCity: ISetState<string | null>
+}
+
+const Work: FC<Props> = ({
+  ref3,
+  handleClickNextTab,
+  number,
+  setClickCity,
+}) => {
+  const [searchWork, setSearchWork] = useState(false)
+
   return (
     <Wrapper ref={ref3} id="profInfo">
       <MobileTitle>Профессиональная информация</MobileTitle>
@@ -96,6 +113,7 @@ const Work = ({ ref3, handleClickNextTab, number }) => {
         указывается рядом с отзывами и видна другим пользователям.
       </Title>
       <FieldStyled
+        parse={parseFieldsToString}
         name="description"
         component={TextField}
         label="Расскажите о своем любимом деле"
@@ -108,7 +126,11 @@ const Work = ({ ref3, handleClickNextTab, number }) => {
         <Field name="searchWork" type="checkbox">
           {({ input }) => (
             <>
-              <Checkbox {...input} id={input?.name} />
+              <Checkbox
+                onClick={() => setSearchWork(!searchWork)}
+                {...input}
+                id={input?.name}
+              />
               <Label htmlFor="searchWork">Ищу работу</Label>
             </>
           )}
@@ -116,20 +138,26 @@ const Work = ({ ref3, handleClickNextTab, number }) => {
         <FieldResumeWrapper>
           <FieldWrap>
             <FieldStyled
+              parse={parseFieldsToString}
+              validate={required}
               name="resume_title"
               component={TextField}
               label="Заголовок резюме"
+              requiredField={searchWork}
             />
           </FieldWrap>
           <FieldWrap>
             <FieldStyled
+              parse={parseFieldsToString}
               name="resume_specialization"
               component={TextField}
               label="Специальность"
+              requiredField={searchWork}
             />
           </FieldWrap>
           <FieldWrap>
             <FieldStyled
+              parse={parseFieldsToString}
               name="resume_age"
               component={TextField}
               label="Возраст"
@@ -142,15 +170,21 @@ const Work = ({ ref3, handleClickNextTab, number }) => {
               label="Пол"
             />
           </FieldWrap> */}
+
           <FieldWrap>
             <FieldStyled
-              name="resume_region"
-              component={TextField}
-              label="Регион"
+              parse={parseFieldsToString}
+              name="resume_city"
+              setClickCity={setClickCity}
+              component={AddressNoSalonField}
+              label="Город"
+              noMap
+              onlyCity
             />
           </FieldWrap>
           <FieldWrap>
             <FieldStyled
+              parse={parseFieldsToString}
               name="resume_workSchedule"
               component={TextField}
               label="График работы"
@@ -158,13 +192,16 @@ const Work = ({ ref3, handleClickNextTab, number }) => {
           </FieldWrap>
           <FieldWrap>
             <FieldStyled
+              parse={parseFieldsToString}
               name="resume_salary"
               component={TextField}
               label="З/п"
+              requiredField={searchWork}
             />
           </FieldWrap>
           <FieldWrap>
             <FieldStyled
+              parse={parseFieldsToString}
               name="resume_content"
               component={TextField}
               label="Вставьте здесь свое резюме"

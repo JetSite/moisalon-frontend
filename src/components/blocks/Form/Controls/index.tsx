@@ -30,6 +30,7 @@ interface Props {
   setNoPhotoError?: ISetState<boolean>
   noSetPhoto?: boolean
   setPhoto?: ISetState<IPhoto | null>
+  dirtyForm: boolean
 }
 
 const Controls: FC<Props> = ({
@@ -39,6 +40,7 @@ const Controls: FC<Props> = ({
   setPhoto,
   photoType,
   photo,
+  dirtyForm,
   noSetPhoto = false,
   noPhotoError,
   setNoPhotoError,
@@ -54,7 +56,7 @@ const Controls: FC<Props> = ({
         noPhotoError={noPhotoError}
         setNoPhotoError={setNoPhotoError}
       />
-      <Tabs refActive={refActive} tabs={tabs} />
+      <Tabs dirtyForm={dirtyForm} refActive={refActive} tabs={tabs} />
     </Wrapper>
   )
 }

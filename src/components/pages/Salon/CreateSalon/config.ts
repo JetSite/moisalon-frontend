@@ -16,7 +16,7 @@ type IGetTabs = (salon: ISalon) => ITab[]
 const tabs = [
   { id: '1', value: 'Информация о салоне', anchor: 'about' },
   { id: '2', value: 'Вид деятельности', anchor: 'vid' },
-  { id: '3', value: 'Сервис для посетителей', anchor: 'services' },
+  { id: '3', value: 'Сервис', anchor: 'service' },
   { id: '4', value: 'График работы', anchor: 'schedule' },
   { id: '5', value: 'Маршрут и администратор', anchor: 'administartor' },
   { id: '6', value: 'Дополнительная информация', anchor: 'socials' },
