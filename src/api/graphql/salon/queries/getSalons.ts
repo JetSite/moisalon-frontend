@@ -26,6 +26,7 @@ export const getSalons = gql`
             rent
             webSiteUrl
             email
+            videoReviewUrl
             salonPhones {
               ${phonesFragment}
             }

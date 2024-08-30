@@ -7,6 +7,7 @@ import { salonFragment } from '../../me/fragments/salon'
 import { cityFragment } from '../../fragments/city'
 import servicesFragment from '../../fragments/services'
 import { brandsFragment } from '../../fragments/brands'
+import { resumeFragment } from '../../fragments/resume'
 
 export const MASTER_PAGE = gql`
   query master($id: ID!) {
@@ -66,18 +67,8 @@ export const MASTER_PAGE = gql`
           services {
            ${servicesFragment}
           }
-          resumes {
-            data {
-              id
-              attributes {
-                title
-                content
-                specialization
-                age
-                workSchedule
-                salary
-              }
-            }
+          resume {
+            ${resumeFragment}
           }
         }
       }

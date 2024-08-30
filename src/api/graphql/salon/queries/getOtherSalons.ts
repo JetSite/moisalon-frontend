@@ -23,6 +23,7 @@ export const getOtherSalons = gql`
             rent
             webSiteUrl
             email
+            videoReviewUrl
             salonPhones {
               phoneNumber
               haveTelegram

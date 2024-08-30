@@ -1,9 +1,9 @@
 import { gql } from '@apollo/client'
 import { cityFragment } from '../../fragments/city'
 
-export const CREATE_RESUME = gql`
-  mutation createResume($input: MasterResumeInput!) {
-    createMasterResume(data: $input) {
+export const UPDATE_RESUME = gql`
+  mutation updateResume($resumeId: ID!, $input: MasterResumeInput!) {
+    updateMasterResume(id: $resumeId, data: $input) {
       data {
         id
         attributes {

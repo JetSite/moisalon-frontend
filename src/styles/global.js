@@ -44,6 +44,8 @@ p {
 button {
   padding: 0;
   background: none;
+  border: none;
+  cursor: pointer;
 }
 
 ul li,
@@ -53,6 +55,8 @@ ol li {
 
 a {
   text-decoration: none;
+  color: black;
+  text-decoration-color: inherit;
 }
 
 input {

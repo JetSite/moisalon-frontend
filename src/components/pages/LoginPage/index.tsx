@@ -157,7 +157,7 @@ const LoginPage: FC = () => {
                     name="showPassword"
                     checked={showPassword}
                   />
-                  <Label>show password</Label>
+                  <Label>Показать пароль</Label>
                 </CheckboxWrapper>
                 <Button
                   variant="red"

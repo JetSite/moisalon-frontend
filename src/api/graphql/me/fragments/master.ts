@@ -2,6 +2,7 @@ import { cityInfo } from '../../common/cityInfo'
 import { imageInfo } from '../../common/imageInfo'
 import { promotionFragment } from '../../fragments/promotion'
 import { ratingsFragment } from '../../fragments/ratings'
+import { resumeFragment } from '../../fragments/resume'
 import { reviewsFragment } from '../../fragments/reviews'
 import servicesFragment from '../../fragments/services'
 
@@ -44,18 +45,8 @@ export const masterFragment = `data {
       promotions {
         ${promotionFragment}
       }
-      resumes {
-        data {
-          id
-          attributes {
-            title
-            content
-            specialization
-            age
-            workSchedule
-            salary
-          }
-        }
+      resume {
+        ${resumeFragment}
       }
   }
 }

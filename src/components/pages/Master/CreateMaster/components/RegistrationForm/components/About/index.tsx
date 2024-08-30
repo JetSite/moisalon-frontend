@@ -14,6 +14,7 @@ import { FC, RefObject, useState } from 'react'
 import { ISetState } from 'src/types/common'
 import { ICity } from 'src/types'
 import { IHandleClickNextTabInForm } from 'src/components/pages/Salon/CreateSalon'
+import { parseFieldsToString } from 'src/utils/newUtils/formsHelpers'
 
 export interface IFormAboutProps {
   setClickCity: ISetState<string | null>
@@ -28,12 +29,13 @@ const About: FC<IFormAboutProps> = ({
   number,
   setClickCity,
 }) => {
-  const [view, setView] = useState<boolean>(false)
+  const [view, setView] = useState<boolean>(true)
 
   return (
     <WrapperForm ref={ref1} id="about">
       <FieldWrap>
         <FieldStyled
+          parse={parseFieldsToString}
           name="name"
           component={TextField}
           label="ФИО"
@@ -46,6 +48,7 @@ const About: FC<IFormAboutProps> = ({
       </FieldWrap>
       <FieldWrap>
         <FieldStyled
+          parse={parseFieldsToString}
           name="email"
           component={TextField}
           label="E-mail"
@@ -56,6 +59,7 @@ const About: FC<IFormAboutProps> = ({
       </FieldWrap>
       <FieldWrap>
         <FieldStyled
+          parse={parseFieldsToString}
           name="address"
           setClickCity={setClickCity}
           component={AddressNoSalonField}
@@ -63,6 +67,7 @@ const About: FC<IFormAboutProps> = ({
           validate={required}
           requiredField
           view={view}
+          onlyCity
         />
       </FieldWrap>
       <FieldWrap>
@@ -81,9 +86,14 @@ const About: FC<IFormAboutProps> = ({
           }}
         </Field>
       </FieldWrap>
-      <FieldWrap>
-        <Field name="birthday" component={TextField} label="Дата рождения" />
-      </FieldWrap>
+      {/* <FieldWrap>
+        <Field
+          parse={parseFieldsToString}
+          name="birthday"
+          component={TextField}
+          label="Дата рождения"
+        />
+      </FieldWrap> */}
       <MobileHidden>
         <Button
           onClick={e => {

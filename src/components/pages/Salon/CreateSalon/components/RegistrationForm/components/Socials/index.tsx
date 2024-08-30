@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FC, RefObject } from 'react'
 import { Field } from 'react-final-form'
 import styled from 'styled-components'
 import { isUrl } from '../../../../../../../../utils/validations'
@@ -8,6 +8,7 @@ import { FieldWrap } from '../../styled'
 
 import { laptopBreakpoint } from '../../../../../../../../styles/variables'
 import Group from '../../../../../../../blocks/Form/Group'
+import { parseFieldsToString } from 'src/utils/newUtils/formsHelpers'
 
 const Wrapper = styled.div`
   margin-top: 105px;
@@ -33,13 +34,18 @@ const Title = styled.div`
   }
 `
 
-const Socials = ({ ref6 }) => {
+interface Props {
+  ref6: RefObject<HTMLDivElement>
+}
+
+const Socials: FC<Props> = ({ ref6 }) => {
   return (
     <Wrapper id="socials" ref={ref6}>
       <Title>Дополнительная информация</Title>
-      <Group description="Дополнительные социальные сети" mbDesc="30">
+      <Group description="Дополнительные социальные сети" mbDesc={30}>
         <FieldWrap>
           <Field
+            parse={parseFieldsToString}
             name="webSiteUrl"
             component={TextFieldAdapter}
             label="Веб-сайт"

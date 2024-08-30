@@ -9,6 +9,7 @@ import { FormHelperText, Box, useMediaQuery, useTheme } from '@material-ui/core'
 import { laptopBreakpoint } from '../../../../styles/variables'
 import { ILengthValidate } from 'src/utils/validations'
 import { IActivitiesInForm } from 'src/components/pages/Salon/CreateSalon/components/RegistrationForm/components/SalonActivities'
+import { parseFieldsToString } from 'src/utils/newUtils/formsHelpers'
 
 const AllChecked = styled.input<{ check?: boolean }>`
   background: ${props => (!props.check ? '#fff' : '#f03')};
@@ -54,7 +55,6 @@ interface Props {
   fullWidth?: boolean
   withButton?: boolean
   validate?: ILengthValidate
-  defaultSpecialization?: boolean
   mbDesc?: number
   mbWrapper?: number
   onlyOneChoose?: boolean
@@ -74,7 +74,6 @@ const DictionaryField: FC<Props> = props => {
     fullWidth = true,
     withButton = false,
     validate,
-    defaultSpecialization = false,
     mbDesc = 75,
     mbWrapper = 54,
     onlyOneChoose = false,

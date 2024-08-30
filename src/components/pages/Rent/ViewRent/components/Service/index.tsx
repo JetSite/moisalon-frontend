@@ -69,8 +69,6 @@ interface Props {
 }
 
 const Service: FC<Props> = ({ services, title = 'Сервис для посетителей' }) => {
-  console.log(services)
-
   return (
     <MainContainer id="service">
       <Wrapper>

@@ -19,12 +19,11 @@ export const getSalonsThroughCity = gql`
         attributes {
           name
           slug
-          
           address
-          
           rent
           webSiteUrl
           email
+          videoReviewUrl
           salonPhones {
             ${phonesFragment}
           }

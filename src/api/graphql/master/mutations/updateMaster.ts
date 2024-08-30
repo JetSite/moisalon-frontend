@@ -8,6 +8,7 @@ import { reviewsFragment } from '../../fragments/reviews'
 import { ratingsFragment } from '../../fragments/ratings'
 import { salonFragment } from '../../me/fragments/salon'
 import { brandsFragment } from '../../fragments/brands'
+import { resumeFragment } from '../../fragments/resume'
 
 export const UPDATE_MASTER = gql`
   mutation updateMaster($masterId: ID!, $input: MasterInput!) {
@@ -67,18 +68,8 @@ export const UPDATE_MASTER = gql`
           services {
            ${servicesFragment}
           }
-          resumes {
-            data {
-              id
-              attributes {
-                title
-                content
-                specialization
-                age
-                workSchedule
-                salary
-              }
-            }
+          resume {
+            ${resumeFragment}
           }
         }
       }

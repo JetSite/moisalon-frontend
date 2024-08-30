@@ -9,6 +9,7 @@ import { laptopBreakpoint } from '../../../../../../../../styles/variables'
 import { email } from '../../../../../../../../utils/validations'
 import { FC, RefObject } from 'react'
 import { IHandleClickNextTabInForm } from '../../../..'
+import { parseFieldsToString } from 'src/utils/newUtils/formsHelpers'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -56,6 +57,7 @@ const Administartor: FC<Props> = ({ ref5, handleClickNextTab, number }) => {
         <WrapperForm>
           <FieldWrap>
             <Field
+              parse={parseFieldsToString}
               name="locationDirections"
               component={TextField}
               label="Описание маршрута"
@@ -63,6 +65,7 @@ const Administartor: FC<Props> = ({ ref5, handleClickNextTab, number }) => {
           </FieldWrap>
           <FieldWrap>
             <Field
+              parse={parseFieldsToString}
               name="contactPersonName"
               component={TextField}
               label="Имя администратора"
@@ -77,6 +80,7 @@ const Administartor: FC<Props> = ({ ref5, handleClickNextTab, number }) => {
           </FieldWrap>
           <FieldWrap>
             <Field
+              parse={parseFieldsToString}
               name="contactPersonEmail"
               component={TextField}
               label="E-mail"

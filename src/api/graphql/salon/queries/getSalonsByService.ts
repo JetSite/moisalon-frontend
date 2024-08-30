@@ -18,12 +18,11 @@ export const getSalonsByService = gql`
         id
         attributes {
             name
-            
             address
-            
             rent
             webSiteUrl
             email
+            videoReviewUrl
             salonPhones {
               ${phonesFragment}
             }

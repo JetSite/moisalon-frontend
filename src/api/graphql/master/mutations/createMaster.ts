@@ -1,6 +1,7 @@
 import { gql } from '@apollo/client'
 import servicesFragment from '../../fragments/services'
 import { cityInfo } from '../../common/cityInfo'
+import { resumeFragment } from '../../fragments/resume'
 
 export const CREATE_MASTER = gql`
   mutation createMaster($input: MasterInput!) {
@@ -33,18 +34,8 @@ export const CREATE_MASTER = gql`
           city {
             ${cityInfo}
           }
-          resumes {
-            data {
-              id
-              attributes {
-                title
-                content
-                specialization
-                age
-                workSchedule
-                salary
-              }
-            }
+          resume {
+            ${resumeFragment}
           }
         }
       }

@@ -1,9 +1,12 @@
 import styled from 'styled-components'
 import Button from '../../../../../../../ui/Button'
-import DictionaryField from '../../../../../../../blocks/Form/DictionaryField/index.tsx'
+import DictionaryField from '../../../../../../../blocks/Form/DictionaryField'
 import { lengthValidate } from '../../../../../../../../utils/validations'
 import { MobileHidden } from '../../../../../../../../styles/common'
 import { laptopBreakpoint } from '../../../../../../../../styles/variables'
+import { FC } from 'react'
+import { IMasterFormProps } from '../..'
+import { IService } from 'src/types/services'
 
 const Text = styled.p`
   margin-top: 70px;
@@ -43,15 +46,23 @@ const Wrap = styled.div`
   padding-top: 15px;
 `
 
-const MasterSpecializationsList = ({
-  serviceCatalogs,
+interface Props
+  extends Pick<
+    IMasterFormProps,
+    'ref2' | 'serviceCategories' | 'handleClickNextTab'
+  > {
+  number: number
+}
+
+const MasterSpecializationsList: FC<Props> = ({
+  serviceCategories,
   ref2,
   handleClickNextTab,
   number,
 }) => {
-  const services = []
-  serviceCatalogs?.forEach(item => {
-    item.services.forEach(service => {
+  const services: IService[] = []
+  serviceCategories?.forEach(item => {
+    item.services?.forEach(service => {
       services.push(service)
     })
   })
@@ -63,7 +74,6 @@ const MasterSpecializationsList = ({
         description="Выберите один или несколько пунктов, 
       который описывает вас как профессионала."
         name="specializations"
-        defaultSpecialization
         groups={services}
         withButton={true}
         validate={lengthValidate}

@@ -1,10 +1,16 @@
-import { Field } from "react-final-form";
-import TextField from "../TextField";
-import { isUrl } from "../../../../utils/validations";
-import { FieldWrap } from "../../../pages/Master/CreateMaster/components/RegistrationForm/styled";
+import { Field, FieldInputProps } from 'react-final-form'
+import TextField from '../TextField'
+import { isUrl } from '../../../../utils/validations'
+import { FieldWrap } from '../../../pages/Master/CreateMaster/components/RegistrationForm/styled'
+import { parseFieldsToString } from 'src/utils/newUtils/formsHelpers'
+import { FC } from 'react'
 
-const SocialNetworkUrlsField = ({ input }) => {
-  const { name } = input;
+interface Props {
+  input: FieldInputProps<any>
+}
+
+const SocialNetworkUrlsField: FC<Props> = ({ input }) => {
+  const { name } = input
   return (
     <>
       {/* <FieldWrap>
@@ -53,7 +59,7 @@ const SocialNetworkUrlsField = ({ input }) => {
         />
       </FieldWrap>
     </>
-  );
-};
+  )
+}
 
-export default SocialNetworkUrlsField;
+export default SocialNetworkUrlsField
