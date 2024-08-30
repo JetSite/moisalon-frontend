@@ -86,14 +86,14 @@ const RegistrationForm: FC<IMasterFormProps> = ({
             values,
             photo,
           })
-          // handleCreateOrUpdateMaster({
-          //   citiesArray,
-          //   setCitiesArray,
-          //   clickCity,
-          //   clickCityResume,
-          //   master,
-          //   input,
-          // })
+          handleCreateOrUpdateMaster({
+            citiesArray,
+            setCitiesArray,
+            clickCity,
+            clickCityResume,
+            master,
+            input,
+          })
 
           console.log('values', values)
         }

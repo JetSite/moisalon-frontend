@@ -95,7 +95,7 @@ export const RenderMasterForm: FC<Props> = ({
           type="submit"
           disabled={!dirtyForm || fetchLoading || loading}
         >
-          Сохранить и перейти в кабинет
+          {loading ? 'Подождите' : 'Сохранить и перейти в кабинет'}{' '}
         </Button>
       </MobileVisible>
     </form>
