@@ -1,11 +1,6 @@
-import styled from 'styled-components'
 import scrollIntoView from 'scroll-into-view'
 import { useRouter } from 'next/router'
-import { red, laptopBreakpoint } from '../../../../styles/variables'
-import { useQuery } from '@apollo/client'
-import { currentUserSalonsAndMasterQuery } from '../../../../_graphql-legacy/master/currentUserSalonsAndMasterQuery'
-import { cyrToTranslit } from '../../../../utils/translit'
-import { getStoreData, getStoreEvent } from 'src/store/utils'
+import { getStoreEvent } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
 import {
   Back,
@@ -16,10 +11,8 @@ import {
   TextRed,
   Wrapper,
 } from './style'
-import { FC, useState } from 'react'
+import { FC } from 'react'
 import { ITab } from 'src/components/pages/Salon/CreateSalon/config'
-import Popup from 'src/components/ui/Popup'
-import Button from 'src/components/ui/Button'
 
 interface Props {
   tabs: ITab[]
@@ -30,7 +23,6 @@ interface Props {
 const Tabs: FC<Props> = ({ tabs, refActive, dirtyForm }) => {
   const router = useRouter()
   const { logout } = useAuthStore(getStoreEvent)
-  const [open, setOpen] = useState(false)
 
   const handleClick = (item: ITab) => {
     const element = document.getElementById(item.anchor.replace('#', ''))
@@ -44,9 +36,7 @@ const Tabs: FC<Props> = ({ tabs, refActive, dirtyForm }) => {
       })
     }
   }
-  const handlePopupClose = () => {
-    setOpen(false)
-  }
+
   return (
     <Wrapper>
       {tabs.map(item => {
@@ -78,19 +68,7 @@ const Tabs: FC<Props> = ({ tabs, refActive, dirtyForm }) => {
       })}
       {router?.asPath !== '/masterCabinet' ? (
         <Tab>
-          {dirtyForm ? (
-            <TabButton
-              onClick={() => {
-                setOpen(true)
-              }}
-            >
-              Назад в кабинет пользователя
-            </TabButton>
-          ) : (
-            <TabLink href="/masterCabinet">
-              Назад в кабинет пользователя
-            </TabLink>
-          )}
+          <TabLink href="/masterCabinet">Назад в кабинет пользователя</TabLink>
         </Tab>
       ) : null}
       <TextRed
@@ -100,30 +78,6 @@ const Tabs: FC<Props> = ({ tabs, refActive, dirtyForm }) => {
       >
         Выход
       </TextRed>
-      <Popup
-        isOpen={open}
-        onClose={handlePopupClose}
-        title="Вы прерываете заполнение профиля!"
-        description=""
-        content={() => {
-          return <p>Вся несохраненная информация будет утеряна. Вы уверены?</p>
-        }}
-      >
-        <Button
-          onClick={() => router.push('/masterCabinet')}
-          style={{ marginTop: 25 }}
-          variant="gray"
-        >
-          Выйти
-        </Button>
-        <Button
-          onClick={handlePopupClose}
-          style={{ marginTop: 25 }}
-          variant="red"
-        >
-          Остаться
-        </Button>
-      </Popup>
     </Wrapper>
   )
 }

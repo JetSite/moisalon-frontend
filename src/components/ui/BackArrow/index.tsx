@@ -2,7 +2,7 @@ import Link from 'next/link'
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../styles/variables'
 
-const Wrapper = styled.div`
+const WrapperLink = styled(Link)`
   display: none;
   @media (max-width: ${laptopBreakpoint}) {
     display: block;
@@ -19,14 +19,11 @@ const Icon = styled.img`
   height: auto;
 `
 
-const BackArrow = ({ link }) => {
-  const editedLink = link.split('?')
+const BackArrow = ({ link }: { link: string }) => {
   return (
-    <Link href={`/${link}`} as={`/${editedLink[0]}`}>
-      <Wrapper>
-        <Icon src="/arrow-back.svg" />
-      </Wrapper>
-    </Link>
+    <WrapperLink href={`/${link}`} data-navigate={`/${link}`}>
+      <Icon src="/arrow-back.svg" />
+    </WrapperLink>
   )
 }
 

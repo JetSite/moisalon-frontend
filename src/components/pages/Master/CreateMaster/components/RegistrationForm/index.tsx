@@ -102,10 +102,6 @@ const RegistrationForm: FC<IMasterFormProps> = ({
     [photo, clickCity, citiesArray],
   )
 
-  console.log('initialValues', initialValues)
-
-  console.log('dirtyForm', dirtyForm)
-
   return (
     <Wrapper>
       <Title>Мои данные</Title>

@@ -43,8 +43,6 @@ export const RenderMasterForm: FC<Props> = ({
 }) => {
   const { handleSubmit, form } = formProps
 
-  console.log('master', master)
-
   useEffect(() => {
     const unsubscribe = form.subscribe(
       ({ dirty }) => {

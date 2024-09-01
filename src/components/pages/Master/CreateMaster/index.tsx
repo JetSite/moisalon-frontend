@@ -13,6 +13,8 @@ import { UPDATE_MASTER_PHOTO } from 'src/_graphql-legacy/master/updateMasterPhot
 import { ICity, IPhone, IPhoto } from 'src/types'
 import { useElementVisibility } from '../../Salon/CreateSalon/components/RegistrationForm/utils/useElementVisibility'
 import { ITab } from '../../Salon/CreateSalon/config'
+import { useRouter } from 'next/router'
+import { FormGuardPopup } from 'src/components/blocks/Form/FormGuardPopup'
 
 interface Props {
   master: IMaster | null
@@ -104,6 +106,7 @@ const CreateMaster: FC<Props> = ({ master, serviceCategories, cities }) => {
             setDirtyForm={setDirtyForm}
           />
         </Wrapper>
+        <FormGuardPopup setDirtyForm={setDirtyForm} dirtyForm={dirtyForm} />
       </MainContainer>
     </>
   )

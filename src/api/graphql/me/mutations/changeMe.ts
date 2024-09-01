@@ -72,7 +72,7 @@ export const changeMe = gql`
                 city {
                   ${cityInfo}
                 }
-                resumes {
+                resume {
                   data {
                     id
                     attributes {
