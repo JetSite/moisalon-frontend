@@ -353,9 +353,7 @@ const Master: FC<Props> = ({
             </>
           </Slider>
         ) : null}
-        {masterData?.resumes && !!masterData.resumes.length ? (
-          <Resume resume={masterData.resumes[0]} />
-        ) : null}
+        {masterData?.resume ? <Resume resume={masterData.resume} /> : null}
         <ReviewsMaster reviews={master?.reviews} masterId={master?.id} />
         <Contacts
           phone={master?.phone || master?.phone}
