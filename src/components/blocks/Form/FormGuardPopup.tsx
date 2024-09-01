@@ -42,7 +42,7 @@ export const FormGuardPopup: FC<Props> = ({ dirtyForm, setDirtyForm }) => {
     }
 
     const handleRouteChange = (url: string) => {
-      if (dirtyForm) {
+      if (dirtyForm && link) {
         console.log('first')
 
         router.events.emit('routeChangeError')

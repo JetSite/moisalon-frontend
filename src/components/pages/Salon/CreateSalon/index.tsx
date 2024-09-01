@@ -22,6 +22,7 @@ import { ICity, IPhoto } from 'src/types'
 import { useMutation } from '@apollo/client'
 import { UPDATE_SALON_PHOTO } from 'src/api/graphql/salon/mutations/updateSalonPhoto'
 import { useElementVisibility } from './components/RegistrationForm/utils/useElementVisibility'
+import { FormGuardPopup } from 'src/components/blocks/Form/FormGuardPopup'
 
 export type IHandleClickNextTabInForm = (number: number) => void
 
@@ -97,6 +98,7 @@ const CreateSalon: FC<Props> = ({ salon, cities, rent = false }) => {
             dirtyForm={dirtyForm}
           />
         </Wrapper>
+        <FormGuardPopup setDirtyForm={setDirtyForm} dirtyForm={dirtyForm} />
       </MainContainer>
     </>
   )
