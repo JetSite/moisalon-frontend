@@ -65,7 +65,7 @@ export const getPrepareInputMasterForm: IGetPrepareInputMasterForm = ({
     haveViber: values?.phone?.haveViber || false,
     haveWhatsApp: values?.phone?.haveWhatsApp || false,
     photo: photo.id,
-    city: findCity?.id || null,
+    city: findCity?.id || values.city || null,
     resumeInput: {
       title: values.resume_title,
       content: values.resume_content,

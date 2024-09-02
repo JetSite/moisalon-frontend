@@ -95,6 +95,7 @@ const Checkbox = styled.input`
 interface Props extends Pick<IMasterFormProps, 'ref3' | 'handleClickNextTab'> {
   number: number
   setClickCity: ISetState<string | null>
+  search?: boolean
 }
 
 const Work: FC<Props> = ({
@@ -102,8 +103,11 @@ const Work: FC<Props> = ({
   handleClickNextTab,
   number,
   setClickCity,
+  search = false,
 }) => {
-  const [searchWork, setSearchWork] = useState(false)
+  const [searchWork, setSearchWork] = useState(search)
+
+  console.log('searchWork', searchWork)
 
   return (
     <Wrapper ref={ref3} id="profInfo">
@@ -139,11 +143,11 @@ const Work: FC<Props> = ({
           <FieldWrap>
             <FieldStyled
               parse={parseFieldsToString}
-              validate={required}
+              validate={!searchWork && required}
               name="resume_title"
               component={TextField}
               label="Заголовок резюме"
-              requiredField={searchWork}
+              // requiredField={searchWork}
             />
           </FieldWrap>
           <FieldWrap>
@@ -152,7 +156,6 @@ const Work: FC<Props> = ({
               name="resume_specialization"
               component={TextField}
               label="Специальность"
-              requiredField={searchWork}
             />
           </FieldWrap>
           <FieldWrap>
@@ -193,10 +196,11 @@ const Work: FC<Props> = ({
           <FieldWrap>
             <FieldStyled
               parse={parseFieldsToString}
+              validate={!searchWork && required}
               name="resume_salary"
               component={TextField}
               label="З/п"
-              requiredField={searchWork}
+              // requiredField={searchWork}
             />
           </FieldWrap>
           <FieldWrap>

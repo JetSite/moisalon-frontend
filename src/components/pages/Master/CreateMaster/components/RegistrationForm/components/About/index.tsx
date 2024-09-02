@@ -67,7 +67,6 @@ const About: FC<IFormAboutProps> = ({
           validate={required}
           requiredField
           view={view}
-          onlyCity
         />
       </FieldWrap>
       <FieldWrap>
