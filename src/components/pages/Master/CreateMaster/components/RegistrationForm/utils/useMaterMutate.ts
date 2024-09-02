@@ -65,7 +65,7 @@ export const useMasterMutate: IUseMasterMutate = ({
 
     user && setUser({ ...user, owner: { ...user?.owner, masters: newMasters } })
     router.push(`${masterData.city.slug}/master/${masterData.id}`)
-    // setLoading(false)
+    setLoading(false)
   }
 
   const [createResume] = useMutation(CREATE_RESUME)
@@ -88,16 +88,20 @@ export const useMasterMutate: IUseMasterMutate = ({
     master,
     input: initialInput,
   }) => {
+    console.log('initialInput', initialInput)
     setLoading(true)
     const { resumeInput, ...input } = initialInput
     const resumeId = master?.resume?.id || null
     const masterId = master?.id
     const findCityResume =
       citiesArray?.find(
-        e => e.slug === cyrToTranslit(clickCityResume ?? clickCity),
+        e =>
+          e.slug === cyrToTranslit(clickCityResume || clickCity || input.city),
       ) || null
     const findCity =
-      citiesArray?.find(e => e.slug === cyrToTranslit(clickCity)) || null
+      citiesArray?.find(
+        e => e.slug === cyrToTranslit(clickCity || input.city),
+      ) || null
 
     const mutateMaster = (resume: IID | null) => {
       if (!findCity) {
@@ -184,9 +188,11 @@ export const useMasterMutate: IUseMasterMutate = ({
           } else {
             createResume({
               variables: {
-                input: resumeInput,
-                city: findCityData.id,
-                publishedAt: new Date().toISOString(),
+                input: {
+                  ...resumeInput,
+                  city: findCityData.id,
+                  publishedAt: new Date().toISOString(),
+                },
               },
               onCompleted: onCompletedResume,
               onError,
@@ -207,9 +213,11 @@ export const useMasterMutate: IUseMasterMutate = ({
       } else {
         createResume({
           variables: {
-            input: initialInput.resumeInput,
-            city: findCityResume.id,
-            publishedAt: new Date().toISOString(),
+            input: {
+              ...resumeInput,
+              city: findCityResume.id,
+              publishedAt: new Date().toISOString(),
+            },
           },
           onCompleted: onCompletedResume,
           onError,

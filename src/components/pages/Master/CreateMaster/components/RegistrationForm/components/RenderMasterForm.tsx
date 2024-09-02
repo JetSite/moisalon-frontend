@@ -69,6 +69,7 @@ export const RenderMasterForm: FC<Props> = ({
         number={2}
       />
       <Work
+        search={master?.searchWork}
         setClickCity={setClickCityResume}
         ref3={ref3}
         handleClickNextTab={handleClickNextTab}

@@ -43,8 +43,7 @@ export const FormGuardPopup: FC<Props> = ({ dirtyForm, setDirtyForm }) => {
 
     const handleRouteChange = (url: string) => {
       if (dirtyForm && link) {
-        console.log('first')
-
+        console.log(`Переход прерван на ${url}`)
         router.events.emit('routeChangeError')
         throw `Переход прерван на ${url}`
       }

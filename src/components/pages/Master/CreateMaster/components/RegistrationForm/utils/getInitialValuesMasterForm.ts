@@ -12,6 +12,7 @@ interface IInitialInput
   > {
   specializations: string[]
   phone: IPhonesInitialValue
+  city: string
 }
 
 export interface IInitialValuesMasterForm extends IInitialInput {
@@ -42,6 +43,7 @@ export const getInitialValuesMasterForm: IgetInitialValuesMasterForm = (
         description: master.description,
         specializations: master.services.map(e => e.service.id) || [],
         webSiteUrl: master.webSiteUrl,
+        city: master.city.name || '',
       }
     : {
         email: user?.info.email || '',
@@ -57,6 +59,7 @@ export const getInitialValuesMasterForm: IgetInitialValuesMasterForm = (
         searchWork: false,
         specializations: [],
         webSiteUrl: '',
+        city: '',
       }
 
   const result: IInitialValuesMasterForm = {

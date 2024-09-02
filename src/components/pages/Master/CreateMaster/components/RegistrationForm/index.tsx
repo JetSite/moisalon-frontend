@@ -68,8 +68,6 @@ const RegistrationForm: FC<IMasterFormProps> = ({
 
   const onSubmit = useCallback(
     async (values: IInitialValuesMasterForm) => {
-      console.log('values', values)
-
       if (!values.address) {
         setErrors(['Введите адрес места работы из выпадающего списка'])
         setErrorPopupOpen(true)
@@ -80,7 +78,6 @@ const RegistrationForm: FC<IMasterFormProps> = ({
         setErrorPopupOpen(true)
         return
       } else {
-        console.log('values', values)
         if (photo) {
           const input = getPrepareInputMasterForm({
             values,
@@ -94,8 +91,6 @@ const RegistrationForm: FC<IMasterFormProps> = ({
             master,
             input,
           })
-
-          console.log('values', values)
         }
       }
     },
