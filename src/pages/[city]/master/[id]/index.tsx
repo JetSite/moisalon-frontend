@@ -273,7 +273,19 @@ const Master: FC<Props> = ({
           >
             <>
               {isDiplomsEditing ? (
-                <PhotoAdd onAdd={addDiplomasHandler} />
+                <AutoFocusedForm
+                  initialValues={{ photos: master.photosDiploma }}
+                  onSubmit={() => {}}
+                  render={() => {
+                    return (
+                      <PhotoArrayField
+                        photoType="salonPhoto"
+                        kind="small"
+                        setPhotosArray={setDiplomas}
+                      />
+                    )
+                  }}
+                />
               ) : null}
               {isDiplomsEditing && isOwner ? (
                 <NoItemsText>

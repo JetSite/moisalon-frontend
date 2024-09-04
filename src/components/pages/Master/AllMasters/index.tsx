@@ -32,32 +32,22 @@ const AllMastersPage: FC<IMastersPageProps> = ({
       <MobileHidden>
         <SearchBlock title="Найти своего мастера" />
       </MobileHidden>
-      {masterData.length ? (
-        <>
-          <CSSTransition
-            in={true}
-            timeout={500}
-            classNames="banner"
-            unmountOnExit
-          >
-            <WrapBanner>
-              <Line text="Вы – профессионал? Присоединяйтесь, чтобы воспользоваться привилегиями." />
-              <CategoryImage />
-            </WrapBanner>
-          </CSSTransition>
-          <MainContainer>
-            <WrapperResults>
-              <MastersSearchResults
-                cityData={cityData}
-                masterData={masterData}
-                pagination={pagination}
-              />
-            </WrapperResults>
-          </MainContainer>
-        </>
-      ) : (
-        <NotFound />
-      )}
+
+      <CSSTransition in={true} timeout={500} classNames="banner" unmountOnExit>
+        <WrapBanner>
+          <Line text="Вы – профессионал? Присоединяйтесь, чтобы воспользоваться привилегиями." />
+          <CategoryImage />
+        </WrapBanner>
+      </CSSTransition>
+      <MainContainer>
+        <WrapperResults>
+          <MastersSearchResults
+            cityData={cityData}
+            masterData={masterData}
+            pagination={pagination}
+          />
+        </WrapperResults>
+      </MainContainer>
     </>
   )
 }

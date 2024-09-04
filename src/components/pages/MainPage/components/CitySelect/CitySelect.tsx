@@ -56,7 +56,7 @@ const CitySelect: FC<Props> = ({
   const { me } = useAuthStore(getStoreData)
   const { cities } = useBaseStore(getStoreData)
   const { setCities } = useBaseStore(getStoreEvent)
-  const [citiesList, setCitiesList] = useState<ICity[]>([])
+  const [citiesList, setCitiesList] = useState<ICity[]>(cities || [])
   const router = useRouter()
   const [refetch, { loading }] = useLazyQuery(getCities, {
     variables: { itemsCount: 100 },

@@ -41,7 +41,9 @@ export const RenderMasterForm: FC<Props> = ({
   serviceCategories,
   setClickCityResume,
 }) => {
-  const { handleSubmit, form } = formProps
+  const { handleSubmit, form, valid } = formProps
+
+  console.log('valid', valid)
 
   useEffect(() => {
     const unsubscribe = form.subscribe(

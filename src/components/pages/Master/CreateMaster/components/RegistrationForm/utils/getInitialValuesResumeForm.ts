@@ -28,7 +28,7 @@ export const getInitialValuesResumeForm: IgetInitialValuesResumeForm =
           resume_age: resume.age.toString() || '',
           resume_workSchedule: resume.workSchedule || '',
           resume_salary: resume.salary || '',
-          resume_city: resume.city.name || resume.city.slug || '',
+          resume_city: resume.city?.name || resume.city?.slug || '',
         }
       : {
           resume_title: '',

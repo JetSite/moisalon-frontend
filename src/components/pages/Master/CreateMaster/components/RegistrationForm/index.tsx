@@ -17,7 +17,6 @@ import { getPrepareInputMasterForm } from './utils/getPrepareInputMasterForm'
 import { useMasterMutate } from './utils/useMaterMutate'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
-import { cyrToTranslit } from 'src/utils/translit'
 
 export interface IMasterFormProps {
   master: IMaster | null
@@ -96,6 +95,8 @@ const RegistrationForm: FC<IMasterFormProps> = ({
     },
     [photo, clickCity, citiesArray],
   )
+
+  console.log('master', master)
 
   return (
     <Wrapper>

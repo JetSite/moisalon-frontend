@@ -126,6 +126,7 @@ export const useMasterMutate: IUseMasterMutate = ({
                 variables: {
                   input: {
                     ...input,
+                    user: user?.info.id,
                     resume,
                     city: findCityData.id,
                   },
@@ -147,6 +148,7 @@ export const useMasterMutate: IUseMasterMutate = ({
             variables: {
               input: {
                 ...input,
+                user: user?.info.id,
                 resume,
                 city: findCity.id,
                 publishedAt: new Date().toISOString(),
