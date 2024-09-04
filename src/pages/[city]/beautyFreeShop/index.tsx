@@ -8,7 +8,6 @@ import { MainContainer } from '../../../styles/common'
 import { brandSlugQuery } from '../../../_graphql-legacy/brand/brandSlugQuery'
 import { scoreBrand } from '../../../_graphql-legacy/brand/scoreBrand'
 import { citySuggestionsQuery } from '../../../_graphql-legacy/city/citySuggestionsQuery'
-import useCheckCity from '../../../hooks/checkCity'
 import { getBrand } from 'src/api/graphql/brand/queries/getBrand'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
@@ -26,8 +25,6 @@ const BeautyFreeShop = ({
   const [brand, setBrand] = useState(brandData)
   const { me } = useAuthStore(getStoreData)
   const { setMe } = useAuthStore(getStoreEvent)
-
-  useCheckCity(cityData)
 
   return (
     <MainLayout>

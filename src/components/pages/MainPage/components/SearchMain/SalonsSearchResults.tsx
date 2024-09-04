@@ -56,6 +56,12 @@ const SalonsSearchResults: FC<Props> = ({
   const totalCount = pagination?.total || 0
   const router = useRouter()
 
+  console.log('salonData', salonData)
+
+  useEffect(() => {
+    setUpdateSalonData(salonData)
+  }, [salonData])
+
   let storageSort
   if (typeof window !== 'undefined') {
     storageSort =
@@ -94,13 +100,11 @@ const SalonsSearchResults: FC<Props> = ({
     },
   })
 
-  console.log(updateSalonData)
-
   const onFetchMore = async () => {
     const sort = filtersType[sortProperty] + sortOrder
 
     await refetch({
-      variables: { slug: cityData?.slug, page, sort, pageSize: 10 },
+      variables: { slug: cityData?.slug, page, sort, pageSize: 9 },
     })
     setPage(page + 1)
   }
@@ -117,8 +121,6 @@ const SalonsSearchResults: FC<Props> = ({
       rent ? settingsConfig.rentSort : settingsConfig.salonSort,
       sort,
     )
-    console.log('sort', sort)
-
     setUpdateSalonData([])
     setPage(2)
     await refetch({ variables: { slug: cityData?.slug, sort: [sort] } })

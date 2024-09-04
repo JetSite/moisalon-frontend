@@ -47,13 +47,17 @@ const MastersSearchResults: FC<Props> = ({
 }) => {
   const [page, setPage] = useState<number>(2)
   const hasNextPage = pagination && pagination.pageCount + 1 !== page
-  const [totalCount, setTotalCount] = useState<number>(pagination?.total || 0)
+  const totalCount = pagination?.total || 0
   const { me } = useAuthStore(getStoreData)
   const [updateMasterData, setUpdateMasterData] =
     useState<IMaster[]>(masterData)
   const { city } = useAuthStore(getStoreData)
   const [resumeFilter, setResumeFilter] = useState<boolean>(false)
   const router = useRouter()
+
+  useEffect(() => {
+    setUpdateMasterData(masterData)
+  }, [masterData])
 
   let storageSort
   if (typeof window !== 'undefined') {
@@ -82,8 +86,6 @@ const MastersSearchResults: FC<Props> = ({
     onCompleted: data => {
       const prepareData = flattenStrapiResponse(data.masters)
       setUpdateMasterData(prev => prev.concat(prepareData))
-      setTotalCount(getTotalCount(data.masters) || 0)
-
       console.log(resumeFilter)
     },
     onError: err => {

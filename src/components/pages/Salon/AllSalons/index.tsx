@@ -40,34 +40,29 @@ const AllSalonsPage: FC<ISalonsPageProps> = ({
       <MobileHidden>
         <SearchBlock title="Найти свой салон" />
       </MobileHidden>
-      {salonData.length ? (
-        <>
-          <CSSTransition
-            in={view === 'list'}
-            timeout={500}
-            classNames="banner"
-            unmountOnExit
-          >
-            <WrapBanner>
-              <Line text="Вы – профессионал? Присоединяйтесь, чтобы воспользоваться привилегиями." />
-              <CategoryImage />
-            </WrapBanner>
-          </CSSTransition>
-          <MainContainer>
-            <WrapperResults>
-              <SalonsSearchResults
-                cityData={cityData}
-                pagination={pagination}
-                view={view}
-                setView={setView}
-                salonData={salonData}
-              />
-            </WrapperResults>
-          </MainContainer>
-        </>
-      ) : (
-        <NotFound />
-      )}
+
+      <CSSTransition
+        in={view === 'list'}
+        timeout={500}
+        classNames="banner"
+        unmountOnExit
+      >
+        <WrapBanner>
+          <Line text="Вы – профессионал? Присоединяйтесь, чтобы воспользоваться привилегиями." />
+          <CategoryImage />
+        </WrapBanner>
+      </CSSTransition>
+      <MainContainer>
+        <WrapperResults>
+          <SalonsSearchResults
+            cityData={cityData}
+            pagination={pagination}
+            view={view}
+            setView={setView}
+            salonData={salonData}
+          />
+        </WrapperResults>
+      </MainContainer>
     </>
   )
 }

@@ -10,7 +10,7 @@ import { GetServerSideProps } from 'next'
 import { getSalonsThroughCity } from 'src/api/graphql/salon/queries/getSalonsThroughCity'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { fetchCity } from 'src/api/utils/fetchCity'
-import { authConfig, defaultValues } from 'src/api/authConfig'
+import { defaultValues } from 'src/api/authConfig'
 import { ISalon } from 'src/types/salon'
 import { IPagination } from 'src/types'
 import { getBrands } from 'src/api/graphql/brand/queries/getBrands'
@@ -18,11 +18,7 @@ import { IBrand } from 'src/types/brands'
 import { getMasters } from 'src/api/graphql/master/queries/getMasters'
 import { IMaster } from 'src/types/masters'
 import { getSalons } from 'src/api/graphql/salon/queries/getSalons'
-import { checkErr } from 'src/api/utils/checkErr'
 import { getRating } from 'src/utils/newUtils/getRating'
-import { INextContext, Nullable } from 'src/types/common'
-import { ApolloQueryResult } from '@apollo/client'
-import Cookies from 'cookies'
 
 export interface ITotalCount {
   brands: number | null
@@ -66,7 +62,7 @@ export const getServerSideProps: GetServerSideProps<
   const data = await Promise.all([
     apolloClient.query({
       query: getSalonsThroughCity,
-      variables: { slug: ctx.query.city },
+      variables: { slug: ctx.query.city, pageSize: 9 },
     }),
     apolloClient.query({
       query: getBrands,

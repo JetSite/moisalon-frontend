@@ -143,7 +143,7 @@ const Work: FC<Props> = ({
           <FieldWrap>
             <FieldStyled
               parse={parseFieldsToString}
-              validate={!searchWork && required}
+              validate={searchWork && required}
               name="resume_title"
               component={TextField}
               label="Заголовок резюме"
@@ -196,7 +196,7 @@ const Work: FC<Props> = ({
           <FieldWrap>
             <FieldStyled
               parse={parseFieldsToString}
-              validate={!searchWork && required}
+              validate={searchWork && required}
               name="resume_salary"
               component={TextField}
               label="З/п"
