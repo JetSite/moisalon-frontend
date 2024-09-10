@@ -10,6 +10,7 @@ import useAuthStore from 'src/store/authStore'
 import { Dispatch, FC, SetStateAction } from 'react'
 import { ISetState, LazyType } from 'src/types/common'
 import { IMasterCabinetTab } from 'src/components/pages/Master/MasterCabinet'
+import Link from 'next/link'
 
 const Wrapper = styled.div`
   margin-top: 50px;
@@ -36,7 +37,7 @@ const Tab = styled.div`
   display: block;
 `
 
-const Text = styled.div<{ active?: boolean; disable?: boolean }>`
+const TextLink = styled(Link)<{ active?: boolean; disable?: boolean }>`
   display: inline-block;
   cursor: ${props => (props.disable ? 'default' : 'pointer')};
   opacity: ${props => (props.disable ? '0.3' : '')};
@@ -50,7 +51,7 @@ const Text = styled.div<{ active?: boolean; disable?: boolean }>`
   }
 `
 
-const TextRed = styled.div`
+const TextRed = styled(Link)`
   display: inline-block;
   font-size: 18px;
   font-weight: 600;
@@ -80,11 +81,13 @@ interface Props {
   tabs: IMasterCabinetTab[]
   setActiveTab: ISetState<string>
   activeTab: string
+  dirtyForm?: boolean
 }
 
-const Tabs: FC<Props> = ({ tabs, setActiveTab, activeTab }) => {
+const Tabs: FC<Props> = ({ tabs, setActiveTab, activeTab, dirtyForm }) => {
   const router = useRouter()
-  const { setMe, logout } = useAuthStore(getStoreEvent)
+  const { city } = useAuthStore(getStoreData)
+  const { logout } = useAuthStore(getStoreEvent)
   const { masterCabinetTabs } = useAuthStore(getStoreData)
 
   const dev = process.env.NEXT_PUBLIC_ENV !== 'production'
@@ -111,13 +114,20 @@ const Tabs: FC<Props> = ({ tabs, setActiveTab, activeTab }) => {
         return (
           <Tab key={item.value}>
             {item.title ? (
-              <Text
+              <TextLink
+                shallow
+                href={{ query: { tab: item.value } }}
+                onClick={e => {
+                  if (item.disable) {
+                    e.preventDefault()
+                  }
+                }}
                 disable={item.disable}
-                onClick={() => !item.disable && setActiveTab(item.value)}
+                data-disable={item.disable}
                 active={item.value === activeTab}
               >
                 {item.title}
-              </Text>
+              </TextLink>
             ) : null}
             {quantity && quantity > 0 ? <Quantity>{quantity}</Quantity> : null}
           </Tab>
@@ -125,12 +135,14 @@ const Tabs: FC<Props> = ({ tabs, setActiveTab, activeTab }) => {
       })}
       {router?.asPath !== '/masterCabinet' ? (
         <Tab>
-          <Text onClick={() => router.push('/masterCabinet')}>
+          <TextLink shallow href={'/masterCabinet'}>
             Назад в кабинет пользователя
-          </Text>
+          </TextLink>
         </Tab>
       ) : null}
       <TextRed
+        shallow
+        href={'/' + city.slug}
         onClick={() => {
           logout(router)
         }}

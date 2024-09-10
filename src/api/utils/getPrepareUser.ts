@@ -33,6 +33,7 @@ export const getPrepareUser: IGetPrepareUser = data => {
     id: prepareData.id,
     email: prepareData.email,
     avatar: prepareData.avatar,
+    birthDate: prepareData.birthDate,
   }
   const owner: IUserThings = {
     salons: prepareData.salons,

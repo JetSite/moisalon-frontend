@@ -5,7 +5,9 @@ import Header from '../../MainPage/components/Header'
 import { Wrapper } from './styled'
 import ControlsTabs from '../../../blocks/Form/ControlsTabs'
 import { useMutation } from '@apollo/client'
-import CabinetForm from '../../../blocks/Cabinet/components/CabinetForm'
+import CabinetForm, {
+  CabinetFormProps,
+} from '../../../blocks/Cabinet/components/CabinetForm'
 import { changeDataMutation } from '../../../../_graphql-legacy/changeDataMutation'
 import CabinetProfiles from '../../../blocks/Cabinet/components/CabinetProfiles'
 import CabinetListReviews from '../../../blocks/Cabinet/components/CabinetListReviews'
@@ -40,39 +42,29 @@ export interface IMasterCabinetTab {
   visible?: boolean
 }
 
-interface Props {
-  // refetch: IRefetch
+interface Props extends Pick<CabinetFormProps, 'cities'> {
   user: IUser
   requests: ICabinetRequestsData
 }
 
-const MasterCabinet: FC<Props> = ({ user, requests }) => {
+const MasterCabinet: FC<Props> = ({ user, requests, cities }) => {
   const [photo, setPhoto] = useState<IPhoto | null>(user.info.avatar || null)
   const [noPhotoError, setNoPhotoError] = useState<boolean>(false)
-  const [, setErrors] = useState<string[] | null>(null)
-  const [, setErrorPopupOpen] = useState<boolean | null>(null)
   const [toggle, setToggle] = useState(false)
   const { unreadMessagesCount } = useChat()
-
-  const [mutate] = useMutation(changeDataMutation, {
-    onError: error => {
-      const errorMessages = error.graphQLErrors.map(e => e.message)
-      setErrors(errorMessages)
-      setErrorPopupOpen(true)
-    },
-    onCompleted: data => {
-      console.log(data)
-    },
-  })
-
-  const [activeTab, setActiveTab] = useState<string>('about')
+  const [dirtyForm, setDirtyForm] = useState(false)
   const router = useRouter()
+  const [activeTab, setActiveTab] = useState<string>(
+    (router.query.tab as unknown as string) || 'about',
+  )
 
   useEffect(() => {
     if (router?.query?.tab) {
       setActiveTab(router?.query?.tab as string)
     }
   }, [router?.query?.tab])
+
+  console.log(activeTab)
 
   return (
     <>
@@ -116,7 +108,7 @@ const MasterCabinet: FC<Props> = ({ user, requests }) => {
             {
               title: 'Мои акции',
               value: 'sales',
-              disable: true,
+              disable: false,
             },
             {
               title: 'Обучение',
@@ -141,7 +133,7 @@ const MasterCabinet: FC<Props> = ({ user, requests }) => {
         />
         <Wrapper>
           <ControlsTabs
-            onAdd={() => {}}
+            dirtyForm={dirtyForm}
             activeTab={activeTab}
             setPhoto={setPhoto}
             setActiveTab={setActiveTab}
@@ -186,7 +178,15 @@ const MasterCabinet: FC<Props> = ({ user, requests }) => {
             }
           />
           {activeTab === 'about' ? (
-            <CabinetForm setNoPhotoError={setNoPhotoError} photo={photo} auth />
+            <CabinetForm
+              user={user}
+              cities={cities}
+              setDirtyForm={setDirtyForm}
+              dirtyForm={dirtyForm}
+              setNoPhotoError={setNoPhotoError}
+              photo={photo}
+              auth
+            />
           ) : activeTab === 'orders' ? (
             <CabinetOrders user={user} />
           ) : activeTab === 'requests' ? (

@@ -8,7 +8,7 @@ import {
   Icon,
   CardQuantity,
 } from '../styles'
-import { getStoreEvent } from 'src/store/utils'
+import { getStoreData, getStoreEvent } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
 import { Dispatch, FC, SetStateAction } from 'react'
 import { IMasterCabinetTab } from 'src/components/pages/Master/MasterCabinet'
@@ -20,21 +20,24 @@ interface Props {
   setToggle: ISetState<boolean>
 }
 
-const MenuCards: FC<Props> = ({ tabs, setActiveTab, setToggle }) => {
+const MenuCards: FC<Props> = ({ tabs }) => {
   const router = useRouter()
   const { logout } = useAuthStore(getStoreEvent)
+  const { city } = useAuthStore(getStoreData)
 
   return (
     <CardsWrapper>
       {tabs?.map(tab =>
         tab.visible !== false ? (
           <Card
+            shallow
+            href={{ query: { tab: tab.value } }}
             disable={tab.disable}
+            data-disable={tab.disable}
             key={tab.value}
-            onClick={() => {
-              if (!tab.disable) {
-                setActiveTab(tab.value)
-                setToggle(false)
+            onClick={e => {
+              if (tab.disable) {
+                e.preventDefault()
               }
             }}
           >
@@ -49,6 +52,8 @@ const MenuCards: FC<Props> = ({ tabs, setActiveTab, setToggle }) => {
         ) : null,
       )}
       <Card
+        shallow
+        href={'/' + city.slug}
         onClick={() => {
           logout(router)
         }}

@@ -23,7 +23,7 @@ const Wrapper = styled.div`
 
 interface Props {
   id: IID | null
-  onAdd: (id: IID) => void
+  onAdd?: (id: IID) => void
   tabs: IMasterCabinetTab[]
   setPhoto: ISetState<IPhoto | null>
   photoType: string
@@ -33,6 +33,7 @@ interface Props {
   setNoPhotoError: ISetState<boolean>
   activeTab: string
   setActiveTab: ISetState<string>
+  dirtyForm: boolean
 }
 
 const ControlsTabs: FC<Props> = ({
@@ -47,6 +48,7 @@ const ControlsTabs: FC<Props> = ({
   setNoPhotoError,
   activeTab,
   setActiveTab,
+  dirtyForm,
 }) => {
   return (
     <Wrapper>
@@ -60,7 +62,12 @@ const ControlsTabs: FC<Props> = ({
         noPhotoError={noPhotoError}
         setNoPhotoError={setNoPhotoError}
       />
-      <Tabs tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
+      <Tabs
+        dirtyForm={dirtyForm}
+        tabs={tabs}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+      />
     </Wrapper>
   )
 }

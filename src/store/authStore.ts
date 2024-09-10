@@ -6,6 +6,7 @@ import { Nullable } from 'src/types/common'
 import { IMe, IUser } from 'src/types/me'
 import { cyrToTranslit } from 'src/utils/translit'
 import { create } from 'zustand'
+import useBaseStore from './baseStore'
 
 export interface IMasterCabinetTabs {
   requests?: number | null
@@ -65,6 +66,8 @@ const useAuthStore = create<IUseAuthStore>((set, get) => ({
     })),
   logout: router => {
     set(state => {
+      const { setCart } = useBaseStore.getState()
+      setCart(null)
       deleteCookie(authConfig.tokenKeyName)
       localStorage.removeItem(authConfig.tokenKeyName)
       return {

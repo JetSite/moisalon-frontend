@@ -48,12 +48,17 @@ const MastersSearchResults: FC<Props> = ({
   const [page, setPage] = useState<number>(2)
   const hasNextPage = pagination && pagination.pageCount + 1 !== page
   const totalCount = pagination?.total || 0
-  const { me } = useAuthStore(getStoreData)
+  const { user } = useAuthStore(getStoreData)
   const [updateMasterData, setUpdateMasterData] =
     useState<IMaster[]>(masterData)
   const { city } = useAuthStore(getStoreData)
   const [resumeFilter, setResumeFilter] = useState<boolean>(false)
   const router = useRouter()
+
+  console.log('hasNextPage', hasNextPage)
+  console.log('pagination.pageCount', pagination?.pageCount)
+
+  console.log('page', page)
 
   useEffect(() => {
     setUpdateMasterData(masterData)
@@ -141,6 +146,8 @@ const MastersSearchResults: FC<Props> = ({
             sort: [sort],
           },
         })
+
+    setPage(2)
   }
 
   return (
@@ -165,7 +172,7 @@ const MastersSearchResults: FC<Props> = ({
           sortOrder={sortOrder}
           master
         />
-        {me?.owner?.salons && me?.owner?.salons?.length > 0 ? (
+        {user?.owner?.salons && user?.owner?.salons?.length > 0 ? (
           <>
             <Checkbox
               checked={!!resumeFilter}

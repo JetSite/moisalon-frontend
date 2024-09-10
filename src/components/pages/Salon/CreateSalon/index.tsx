@@ -78,7 +78,6 @@ const CreateSalon: FC<Props> = ({ salon, cities, rent = false }) => {
             photo={logo ? { ...logo, url: `${PHOTO_URL}${logo?.url}` } : null}
             noPhotoError={noPhotoError}
             setNoPhotoError={setNoPhotoError}
-            dirtyForm={dirtyForm}
           />
           <RegistrationForm
             cities={cities}

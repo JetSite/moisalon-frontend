@@ -17,10 +17,9 @@ import { ITab } from 'src/components/pages/Salon/CreateSalon/config'
 interface Props {
   tabs: ITab[]
   refActive?: string | boolean
-  dirtyForm: boolean
 }
 
-const Tabs: FC<Props> = ({ tabs, refActive, dirtyForm }) => {
+const Tabs: FC<Props> = ({ tabs, refActive }) => {
   const router = useRouter()
   const { logout } = useAuthStore(getStoreEvent)
 

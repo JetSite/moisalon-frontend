@@ -24,7 +24,6 @@ const AuthProvider: FC<{ children: IChildren; pageProps: any }> = ({
 }) => {
   const router = useRouter()
   const { me, loading, user } = useAuthStore(useShallow(getStoreData))
-  const data = useAuthStore(getStoreData)
 
   const { setMe, setLoading, setCity, setUser } = useAuthStore(
     useShallow(getStoreEvent),
@@ -72,6 +71,7 @@ const AuthProvider: FC<{ children: IChildren; pageProps: any }> = ({
         id: prepareData.id,
         email: prepareData.email,
         avatar: prepareData.avatar,
+        birthDate: prepareData.birthDate,
       }
       const owner: IUserThings = {
         salons: prepareData.salons,
@@ -125,6 +125,15 @@ const AuthProvider: FC<{ children: IChildren; pageProps: any }> = ({
     setLoading(meLoading || userLoading)
     if (pageProps.user && !user) {
       const prepareUser = getPrepareUser(pageProps.user)
+
+      const cart = flattenStrapiResponse(
+        pageProps.user.data.attributes.cart.data,
+      )
+
+      if (cart) {
+        setCart(cart)
+      }
+
       if (prepareUser) {
         const ownerKeys = Object.keys(prepareUser.owner) as Array<
           keyof IUserThings
@@ -156,7 +165,8 @@ const AuthProvider: FC<{ children: IChildren; pageProps: any }> = ({
           getUser({ variables: { id: me.info.id } })
         }
       }
-      console.log('AuthProvider', me)
+      console.log('AuthProvider me', me)
+      console.log('AuthProvider user', user)
     }
   }, [me, router, pageProps])
 

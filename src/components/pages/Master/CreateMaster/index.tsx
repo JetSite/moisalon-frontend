@@ -88,7 +88,6 @@ const CreateMaster: FC<Props> = ({ master, serviceCategories, cities }) => {
             setPhoto={setPhoto}
             noPhotoError={noPhotoError}
             setNoPhotoError={setNoPhotoError}
-            dirtyForm={dirtyForm}
           />
           <RegistrationForm
             allTabs={allTabs}

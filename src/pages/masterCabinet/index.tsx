@@ -20,6 +20,8 @@ import { RENTAL_REQUESTS_FOR_SALON } from 'src/api/graphql/rentalRequest/queries
 import { USER } from 'src/api/graphql/me/queries/getUser'
 import { ISalon } from 'src/types/salon'
 import { DELETED_RENTAL_REQUESTS_FOR_SALON } from 'src/api/graphql/rentalRequest/queries/getDeletedRequestsForSalon'
+import { getCities } from 'src/api/graphql/city/getCities'
+import { ICity } from 'src/types'
 
 export interface ICabinetRequestsData {
   rentalRequests: IRentalRequest[]
@@ -32,9 +34,10 @@ interface Props {
   accessToken?: string
   requests: ICabinetRequestsData
   user: ApolloQueryResult<any>
+  cities: ICity[]
 }
 
-const CabinetPage: NextPage<Props> = ({ requests, user: datauser }) => {
+const CabinetPage: NextPage<Props> = ({ requests, cities }) => {
   const { user, loading, me } = useAuthStore(getStoreData)
 
   if (loading || !user) return <CreatePageSkeleton />
@@ -42,16 +45,17 @@ const CabinetPage: NextPage<Props> = ({ requests, user: datauser }) => {
   return !user.info?.username ||
     !user.info?.city?.name ||
     !user.info?.phone ||
+    !user.info.birthDate ||
     !user.info?.email ? (
-    <Cabinet />
+    <Cabinet user={user} cities={cities} />
   ) : (
-    <MasterCabinet user={user} requests={requests} />
+    <MasterCabinet user={user} requests={requests} cities={cities} />
   )
 }
 
-export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async (
-  context: OptionsType,
-) => {
+export const getServerSideProps: GetServerSideProps<
+  Nullable<Props>
+> = async context => {
   const accessToken = getCookie(authConfig.tokenKeyName, context)
   const apolloClient = initializeApollo({ accessToken })
 
@@ -87,6 +91,8 @@ export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async (
     const salonIDArr = user.salons.map((e: ISalon) => e.id)
 
     const queries = [
+      apolloClient.query({ query: getCities, variables: { itemsCount: 100 } }),
+
       apolloClient.query({
         query: RENTAL_REQUESTS_FOR_USER,
         variables: { id },
@@ -112,18 +118,21 @@ export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async (
 
     const data = await Promise.all(queries)
 
-    const rentalRequests = flattenStrapiResponse(data[0].data?.rentalRequests)
+    const cities = flattenStrapiResponse(data[0].data.cities) as ICity[]
+
+    const rentalRequests = flattenStrapiResponse(data[1].data?.rentalRequests)
     const deletedRentalRequests = flattenStrapiResponse(
-      data[1].data?.rentalRequests,
+      data[2].data?.rentalRequests,
     )
     const rentalRequestsSalons =
-      flattenStrapiResponse(data[2]?.data.rentalRequests) || []
-    const deletedRentalRequestsSalons =
       flattenStrapiResponse(data[3]?.data.rentalRequests) || []
+    const deletedRentalRequestsSalons =
+      flattenStrapiResponse(data[4]?.data.rentalRequests) || []
 
     return {
       props: {
         accessToken,
+        cities,
         requests: {
           rentalRequests,
           deletedRentalRequests,

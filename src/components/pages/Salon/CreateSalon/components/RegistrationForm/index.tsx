@@ -109,8 +109,6 @@ const RegistrationForm: FC<ISalonFormProps> = ({
     })
   }
 
-  console.log('initialValues', initialValues)
-
   return (
     <Wrapper>
       <Title>Расскажите о своем салоне</Title>

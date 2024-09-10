@@ -61,6 +61,7 @@ const TextFieldAdapter = forwardRef<HTMLDivElement, Props>((props, ref) => {
     <TextFieldStyled
       inputRef={ref}
       fullWidth={fullWidth}
+      InputLabelProps={{ shrink: type === 'date' || undefined }}
       value={value}
       type={type}
       {...rest}
