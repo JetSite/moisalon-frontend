@@ -87,7 +87,7 @@ const Header = ({ loading = false }) => {
   }
 
   return (
-    <>
+    <header>
       <CookiePopup />
       {showSearchPopup ? (
         <SearchPopup
@@ -119,7 +119,7 @@ const Header = ({ loading = false }) => {
       <Wrapper showSearchPopup={showSearchPopup} isAboutPage={isAboutPage}>
         <HeaderContent>
           <HeaderMenu>
-            <LogoWrap href={`/${city.slug}`}>
+            <LogoWrap shallow href={`/${city.slug}`}>
               <Image
                 alt="logo"
                 src={isAboutPage ? '/logo-white-header.svg' : '/logo.svg'}
@@ -242,20 +242,13 @@ const Header = ({ loading = false }) => {
               <HeartIcon fill={fillFav} />
             </LinkFavorites>
             <CartIconWrap
-              href={user?.info ? `/cart` : authConfig.notAuthLink}
+              shallow
+              href={`/cart`}
               onMouseMove={() => setFillCart(red)}
               onMouseLeave={() => setFillCart(isAboutPage ? '#fff' : '#000')}
             >
               <CartIcon fill={fillCart} />
-              {quantity != 0 ? (
-                <Count
-                  onClick={() =>
-                    router.push(user?.info ? `/cart` : authConfig.notAuthLink)
-                  }
-                >
-                  {quantity}
-                </Count>
-              ) : null}
+              {quantity != 0 ? <Count>{quantity}</Count> : null}
             </CartIconWrap>
           </Links>
           <ChangeCityPopup
@@ -269,7 +262,7 @@ const Header = ({ loading = false }) => {
         setShowCitySelect={setShowCitySelect}
         setShowHamburgerMenu={setShowHamburgerMenu}
       />
-    </>
+    </header>
   )
 }
 

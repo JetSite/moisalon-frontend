@@ -20,7 +20,7 @@ const Wrapper = styled.div`
   }
 `
 
-interface Props {
+export interface IControlsFormProps {
   tabs: ITab[]
   photoType: string
   refActive?: string | boolean
@@ -30,17 +30,15 @@ interface Props {
   setNoPhotoError?: ISetState<boolean>
   noSetPhoto?: boolean
   setPhoto?: ISetState<IPhoto | null>
-  dirtyForm: boolean
 }
 
-const Controls: FC<Props> = ({
+const Controls: FC<IControlsFormProps> = ({
   onAdd,
   refActive,
   tabs,
   setPhoto,
   photoType,
   photo,
-  dirtyForm,
   noSetPhoto = false,
   noPhotoError,
   setNoPhotoError,
@@ -56,7 +54,7 @@ const Controls: FC<Props> = ({
         noPhotoError={noPhotoError}
         setNoPhotoError={setNoPhotoError}
       />
-      <Tabs dirtyForm={dirtyForm} refActive={refActive} tabs={tabs} />
+      <Tabs refActive={refActive} tabs={tabs} />
     </Wrapper>
   )
 }

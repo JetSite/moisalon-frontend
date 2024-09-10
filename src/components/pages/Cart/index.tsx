@@ -70,7 +70,7 @@ export const BpCheckedIcon = styled(BpIcon)({
   },
 })
 
-const useStyles = makeStyles({
+export const useStyles = makeStyles({
   root: {
     '&:hover': {
       backgroundColor: 'transparent !important',
@@ -307,8 +307,8 @@ const Cart = ({ me }) => {
               </Total>
               {productBrands?.length
                 ? checkedProductBrands(checkedProducts, productBrands).map(
-                  item =>
-                    item?.minimalOrderPrice &&
+                    item =>
+                      item?.minimalOrderPrice &&
                       productBrands
                         .map(item =>
                           item?.minimalOrderPrice
@@ -316,15 +316,15 @@ const Cart = ({ me }) => {
                             : true,
                         )
                         .find(el => el === item.name) ? (
-                      <TotalBrand key={item.id}>
-                        <TextBrandSumm>
-                          Минимальная сумма заказа бренда - {item.name}:
-                        </TextBrandSumm>
+                        <TotalBrand key={item.id}>
+                          <TextBrandSumm>
+                            Минимальная сумма заказа бренда - {item.name}:
+                          </TextBrandSumm>
 
-                        <TextBrandTotal>{`${item.minimalOrderPrice} ₽`}</TextBrandTotal>
-                      </TotalBrand>
-                    ) : null,
-                )
+                          <TextBrandTotal>{`${item.minimalOrderPrice} ₽`}</TextBrandTotal>
+                        </TotalBrand>
+                      ) : null,
+                  )
                 : null}
               <Button
                 size="fullWidth"

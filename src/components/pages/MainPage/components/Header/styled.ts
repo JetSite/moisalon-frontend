@@ -2,7 +2,7 @@ import Link from 'next/link'
 import styled from 'styled-components'
 import { red, laptopBreakpoint } from '../../../../../styles/variables'
 
-export const LogoWrap = styled.a`
+export const LogoWrap = styled(Link)`
   width: 83px;
   height: 100%;
   cursor: pointer;
@@ -220,7 +220,7 @@ export const LinkCitySelect = styled.div`
   }
 `
 
-export const LinkFavorites = styled.a<{
+export const LinkFavorites = styled(Link)<{
   disabled?: boolean
 }>`
   height: 23px;
@@ -262,7 +262,7 @@ export const LinkSearchMobile = styled.div`
   }
 `
 
-export const LinkProfile = styled.a<{ disabled?: boolean }>`
+export const LinkProfile = styled(Link)<{ disabled?: boolean }>`
   height: 23px;
   cursor: ${({ disabled }) => (!disabled ? 'pointer' : 'default')};
   opacity: ${({ disabled }) => (disabled ? '0.5' : '1')};
@@ -381,7 +381,7 @@ export const RightMobile = styled.div`
   max-width: 125px;
 `
 
-export const CartIconWrap = styled.a`
+export const CartIconWrap = styled(Link)`
   position: relative;
   cursor: pointer;
 `

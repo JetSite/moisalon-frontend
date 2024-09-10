@@ -29,6 +29,10 @@ export const FormGuardPopup: FC<Props> = ({ dirtyForm, setDirtyForm }) => {
         linkElement.getAttribute('href') ||
         linkElement.getAttribute('data-navigate')
 
+      const disabled = linkElement.getAttribute('data-disable')
+
+      if (disabled) return
+
       if (href) {
         if (dirtyForm) {
           e.preventDefault()

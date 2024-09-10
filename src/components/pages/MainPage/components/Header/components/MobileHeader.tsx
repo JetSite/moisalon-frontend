@@ -117,13 +117,14 @@ export const MobileHeader: FC<Props> = ({
         </LogoMobile>
         <RightMobile>
           <LinkProfile
-            disabled
+            shallow
+            // disabled
             href="/favorites"
-            onClick={e => {
-              if (true) {
-                e.preventDefault()
-              }
-            }}
+            // onClick={e => {
+            //   if (true) {
+            //     e.preventDefault()
+            //   }
+            // }}
           >
             <HeartIcon fill="#000" />
           </LinkProfile>
@@ -141,33 +142,20 @@ export const MobileHeader: FC<Props> = ({
             <LinkProfile
               onMouseMove={() => setFillProfile(red)}
               onMouseLeave={() => setFillProfile('#000')}
-              onClick={() => router.push('/login')}
+              href="/login"
+              shallow
             >
               <ProfileIcon fill="#000" />
             </LinkProfile>
           )}
           <CartIconWrap
+            shallow
+            href={`/cart`}
             onMouseMove={() => setFillCart(red)}
             onMouseLeave={() => setFillCart('#000')}
-            onClick={() =>
-              router.push(
-                user?.info
-                  ? `/cartB2b`
-                  : {
-                      pathname: '/login',
-                      query: { error: 'notAuthorized' },
-                    },
-              )
-            }
           >
             <CartIcon fill="#000" />
-            {quantity != 0 ? (
-              <Count
-                onClick={() => router.push(user?.info ? `/cartB2b` : '/login')}
-              >
-                {quantity}
-              </Count>
-            ) : null}
+            {quantity != 0 ? <Count>{quantity}</Count> : null}
           </CartIconWrap>
         </RightMobile>
       </HeaderMobile>

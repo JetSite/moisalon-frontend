@@ -15,6 +15,7 @@ export interface IMeInfo {
   phone: string
   city: ICity
   avatar: IPhoto | null
+  birthDate: string | null
 }
 
 export interface IOwnersIds

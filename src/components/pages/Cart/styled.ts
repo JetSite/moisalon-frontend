@@ -3,6 +3,9 @@ import { laptopBreakpoint } from '../../../styles/variables'
 
 export const Wrapper = styled.div`
   max-width: 1440px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; // Заставляем Wrapper заполнять оставшееся пространство в main
   width: 100%;
   padding: 0 140px;
   margin: 0 auto;

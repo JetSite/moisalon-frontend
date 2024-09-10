@@ -7,6 +7,8 @@ import { currentUserSalonsAndMasterQuery } from '../../../../../_graphql-legacy/
 import { cyrToTranslit } from '../../../../../utils/translit'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
+import { FC } from 'react'
+import { IControlsFormProps } from 'src/components/blocks/Form/Controls'
 
 const Wrapper = styled.div`
   max-width: 395px;
@@ -56,8 +58,9 @@ const IconBack = styled.div`
   }
 `
 
-const Controls = ({
-  id,
+interface Props extends Omit<IControlsFormProps, 'tabs'> {}
+
+const Controls: FC<Props> = ({
   onAdd,
   setPhoto,
   photoType,
@@ -75,7 +78,6 @@ const Controls = ({
     <Wrapper>
       <Avatar
         setPhoto={setPhoto}
-        id={id}
         photo={photo}
         onAdd={onAdd}
         photoType={photoType}

@@ -14,6 +14,7 @@ export const USER = gql`
         id
         attributes {
           username
+          birthDate
           phone
           email
           role {

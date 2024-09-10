@@ -9,6 +9,7 @@ export const changeMe = gql`
         id
         attributes {
           username
+          birthDate
           email
           phone
           avatar {

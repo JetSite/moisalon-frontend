@@ -40,7 +40,7 @@ const AddressWrap = styled.div<{ noMap?: boolean }>`
   min-height: ${({ noMap }) => (noMap ? '345px' : 'none')};
 
   @media (max-width: ${laptopBreakpoint}) {
-    min-height: 180px;
+    min-height: ${({ noMap }) => (noMap ? '180px' : 'none')};
   }
 `
 

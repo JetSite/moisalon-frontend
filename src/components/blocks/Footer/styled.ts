@@ -6,7 +6,7 @@ import {
   tabletBreakpoint,
 } from '../../../styles/variables'
 
-export const Wrapper = styled.div<{
+export const Wrapper = styled.footer<{
   loading?: boolean
   noMobileFooter?: boolean
 }>`
