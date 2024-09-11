@@ -5,6 +5,7 @@ import { getSales } from 'src/api/graphql/sale/queries/getSales'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { ISale } from 'src/types/sale'
 import { FC } from 'react'
+import { useQuery } from '@apollo/client'
 
 interface SalesProps {
   sales: ISale[]

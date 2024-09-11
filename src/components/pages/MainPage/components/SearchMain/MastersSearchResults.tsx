@@ -230,7 +230,7 @@ const MastersSearchResults: FC<Props> = ({
               ))
             : null}
         </WrapperItemsMasters>
-        {hasNextPage ? (
+        {hasNextPage && updateMasterData.length > 9 ? (
           <>
             <MobileHidden>
               <Button

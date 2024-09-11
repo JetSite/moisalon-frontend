@@ -11,7 +11,7 @@ export const saleFragment = `
             deleted
             shortDescription
             fullDescription
-            value
+            promoCode
             cover {
                 ${imageInfo}
             }

@@ -56,8 +56,6 @@ const SalonsSearchResults: FC<Props> = ({
   const totalCount = pagination?.total || 0
   const router = useRouter()
 
-  console.log('salonData', salonData)
-
   useEffect(() => {
     setUpdateSalonData(salonData)
   }, [salonData])
@@ -195,7 +193,7 @@ const SalonsSearchResults: FC<Props> = ({
                   </li>
                 ))}
             </WrapperItemsSalons>
-            {hasNextPage ? (
+            {hasNextPage && updateSalonData.length > 8 ? (
               <>
                 <MobileHidden>
                   <Button
