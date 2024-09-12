@@ -8,7 +8,6 @@ import { vacanciesFragment } from '../../me/fragments/vacancies'
 import { reviewsFragment } from '../../fragments/reviews'
 import { ratingsFragment } from '../../fragments/ratings'
 import { countryFragment } from '../../fragments/country'
-import { brandsFragment } from '../../fragments/brands'
 import { phonesFragment } from '../../fragments/phones'
 import { productFragment } from '../../product/fragment/product'
 

@@ -57,7 +57,7 @@ export const useBrandMutate: IUseBrandMutate = ({
   const { user } = useAuthStore(getStoreData)
 
   const onError = (error: ApolloError) => {
-    const errorMessages = error.graphQLErrors.map(e => e.message)
+    const errorMessages = error.graphQLErrors?.map(e => e.message) || []
     setErrors(errorMessages)
     setErrorPopupOpen(true)
   }
@@ -72,16 +72,16 @@ export const useBrandMutate: IUseBrandMutate = ({
       : [brandData]
 
     user && setUser({ ...user, owner: { ...user?.owner, brands: newBrand } })
-    // router.push(`${brandData.city.slug}/brand/${brandData.id}`)
+    router.push(`${brandData.city.slug}/brand/${brandData.id}`)
     setLoading(false)
   }
 
-  const [updateBrand, { loading: loadingUpdate }] = useMutation(UPDATE_BRAND, {
+  const [updateBrand] = useMutation(UPDATE_BRAND, {
     onError,
     onCompleted,
   })
 
-  const [createBrand, { loading: loadingCreate }] = useMutation(CREATE_BRAND, {
+  const [createBrand] = useMutation(CREATE_BRAND, {
     onError,
     onCompleted,
   })
@@ -212,7 +212,7 @@ export const useBrandMutate: IUseBrandMutate = ({
   }
 
   return {
-    loading: loadingCreate || loadingUpdate,
+    loading: loading,
     handleCreateOrUpdateBrand,
   }
 }
