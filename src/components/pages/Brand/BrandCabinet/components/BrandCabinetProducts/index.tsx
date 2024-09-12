@@ -1,7 +1,6 @@
-import { TextField } from "../../../../../Form";
-import Button from "../../../../../ui/Button";
-import { required } from "../../../../../../utils/validations";
-import { MobileHidden } from "../../../../../../styles/common";
+import Button from '../../../../../ui/Button'
+import { required } from '../../../../../../utils/validations'
+import { MobileHidden } from '../../../../../../styles/common'
 import {
   WrapperForm,
   FieldWrap,
@@ -10,14 +9,31 @@ import {
   Title,
   FieldTitleStyled,
   FieldStyled,
-} from "./styles";
-import PhotoArrayField from "../../../../../blocks/Form/PhotoArrayField/PhotoArrayField";
+} from './styles'
+import PhotoArrayField from '../../../../../blocks/Form/PhotoArrayField/PhotoArrayField'
+import { FC, RefObject } from 'react'
+import { IHandleClickNextTabInForm } from 'src/components/pages/Salon/CreateSalon'
+import { TextField } from 'src/components/blocks/Form'
+import { ISetState } from 'src/types/common'
+import { IPhoto } from 'src/types'
+import { IPhotoArrayPros } from 'src/components/pages/Salon/CreateSalon/components/RegistrationForm/components/About'
 
-const BrandCabinetProducts = ({ ref1, handleClickNextTab }) => {
-  const photoArrayProps = {
-    photoType: "salonPhoto",
-    kind: "small",
-  };
+export interface BrandCabinetProductsProps {
+  ref1: RefObject<HTMLDivElement>
+  handleClickNextTab: IHandleClickNextTabInForm
+  setPhotosArray: ISetState<IPhoto[]>
+}
+
+const BrandCabinetProducts: FC<BrandCabinetProductsProps> = ({
+  ref1,
+  handleClickNextTab,
+  setPhotosArray,
+}) => {
+  const photoArrayProps: IPhotoArrayPros = {
+    photoType: 'brandPhoto',
+    kind: 'small',
+    setPhotosArray,
+  }
   return (
     <WrapperForm ref={ref1} id="products">
       <Title>
@@ -64,14 +80,16 @@ const BrandCabinetProducts = ({ ref1, handleClickNextTab }) => {
           />
         </FieldPriceWrap>
       </PriceWrap>
-
       <FieldTitleStyled requiredField>Фото продукта</FieldTitleStyled>
-      <PhotoArrayField {...photoArrayProps} />
+      <PhotoArrayField
+        {...photoArrayProps}
+        description="Загрузите до 10 фото интерьера салона – это поможет клиенту сделать выбор. Рекомендуем горизонтальную ориентацию фото."
+      />{' '}
       <MobileHidden>
         <Button
-          onClick={(e) => {
-            e.preventDefault();
-            handleClickNextTab();
+          onClick={e => {
+            e.preventDefault()
+            handleClickNextTab(1)
           }}
           variant="red"
           size="width374"
@@ -81,7 +99,7 @@ const BrandCabinetProducts = ({ ref1, handleClickNextTab }) => {
         </Button>
       </MobileHidden>
     </WrapperForm>
-  );
-};
+  )
+}
 
-export default BrandCabinetProducts;
+export default BrandCabinetProducts

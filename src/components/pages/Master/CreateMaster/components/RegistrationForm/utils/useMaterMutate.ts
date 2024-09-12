@@ -129,6 +129,7 @@ export const useMasterMutate: IUseMasterMutate = ({
                     user: user?.info.id,
                     resume,
                     city: findCityData.id,
+                    publishedAt: new Date().toISOString(),
                   },
                 },
               })

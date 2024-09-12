@@ -44,7 +44,7 @@ export const VideoFieldWrap = styled.div`
   margin-bottom: 62px;
 `
 
-export const FieldTitleStyled = styled.p`
+export const FieldTitleStyled = styled.p<{ requiredField?: boolean }>`
   position: relative;
   width: fit-content;
   margin-bottom: 32px;

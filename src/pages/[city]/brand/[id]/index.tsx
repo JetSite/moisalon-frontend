@@ -37,9 +37,9 @@ interface Props {
 
 const Brand: FC<Props> = ({ brandData, othersBrands }) => {
   const [brand, setBrand] = useState(brandData)
-  const { me, city } = useAuthStore(getStoreData)
+  const { user, city } = useAuthStore(getStoreData)
   const [activeTab, setActiveTab] = useState<number>(0)
-  const isOwner = !!me?.owner?.brands?.find(e => e.id === brand.id)
+  const isOwner = !!user?.owner?.brands?.find(e => e.id === brand.id)
 
   const salons = brand.salons.map(e => {
     const reviewsCount = e.reviews.length
@@ -159,7 +159,7 @@ const Brand: FC<Props> = ({ brandData, othersBrands }) => {
           title={'Контакты'}
         />
         <BrandReviews brandId={brand?.id} reviews={brand.reviews} />
-        <InviteBrand isLoggedIn={me?.info.id} />
+        <InviteBrand isLoggedIn={user?.info.id} />
         <Line text="Для просмотра оптовых цен, войдите или зарегистрируйтесь!" />
         <Slider
           type="brands"

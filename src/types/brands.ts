@@ -37,7 +37,8 @@ export interface IBrand {
   salons: ISalon[]
   country: ICountry | null
   products: IProduct[]
-  phones: IPhone
+  phones: IPhone[]
   dontShowPrice: boolean
   promotions: IPromotions[]
+  webSiteUrl: string | null
 }

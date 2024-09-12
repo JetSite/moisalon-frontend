@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react'
 import { ISetState } from 'src/types/common'
 import { getDadataCity } from 'src/api/dadata/getCity'
 
-const isEnoughLength = (address: string) =>
-  address ? address.length > 2 : false
+export const isEnoughLength = (string: string) =>
+  string ? string.length > 2 : false
 
 export interface IAddressSuggestion {
   geoLat: number

@@ -11,6 +11,7 @@ import { IReview } from 'src/types/reviews'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 import { PHOTO_URL } from 'src/api/variables'
+import { IBrand } from 'src/types/brands'
 
 export interface IMobileHeaderTab {
   title: string
@@ -67,12 +68,12 @@ const brand: IMobileHeaderTab[] = [
 ]
 
 interface Props {
-  category?: ISalonPage
+  category?: ISalonPage | IBrand
   master?: IMaster
   reviews?: IReview[]
 }
 
-const CabinetHeaderMobile: FC<Props> = ({ master, category, reviews }) => {
+const CabinetHeaderMobile: FC<Props> = ({ category }) => {
   const { user } = useAuthStore(getStoreData)
   const router = useRouter()
   let cards: IMobileHeaderTab[] = []
@@ -138,7 +139,7 @@ const CabinetHeaderMobile: FC<Props> = ({ master, category, reviews }) => {
       break
     case '/rentSalonSeat':
       cards = rentSalonSeat
-      subtitle = category?.rent ? 'Рабочие места' : 'Кабинет'
+      subtitle = (category as ISalonPage)?.rent ? 'Рабочие места' : 'Кабинет'
       break
 
     default:
