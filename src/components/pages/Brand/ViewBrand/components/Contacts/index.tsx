@@ -114,7 +114,7 @@ const Contacts: FC<Props> = ({
           <ContentBottom>
             <ContentWrapperElement>
               {longitude && latitude ? (
-                <Map address={{ latitude, longitude }} />
+                <Map view address={{ latitude, longitude }} />
               ) : null}
             </ContentWrapperElement>
           </ContentBottom>

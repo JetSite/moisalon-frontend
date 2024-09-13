@@ -15,6 +15,7 @@ import {
 } from '../utils/getInitialValuesBrandForm'
 import { getPrepareInputBrandForm } from '../utils/getPrepareInputBrandForm'
 import { useBrandMutate } from '../utils/useBrandMutate'
+import { ICoordinate } from 'src/components/blocks/Form/AddressField/AddressNoSalonField'
 
 interface Props extends CreateBrandProps {
   allTabs: RefObject<HTMLFormElement>
@@ -46,6 +47,7 @@ const RegistrationForm: FC<Props> = ({
   const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
   const [selectCity, setSelectCity] = useState<string | null>(null)
   const [selectCountry, setSelectCountry] = useState<string | null>(null)
+  const [coordinate, setCootdinates] = useState<ICoordinate | null>(null)
 
   const initialValues = useMemo<IInitialValuesBrandForm>(
     () => getInitialValuesBrandForm(brand),
@@ -58,9 +60,7 @@ const RegistrationForm: FC<Props> = ({
   })
 
   const onSubmit = (values: IInitialValuesBrandForm) => {
-    console.log('values', values)
-
-    if (!selectCity || !values.address) {
+    if (!selectCity || !values.address || !coordinate) {
       setErrors([
         'Выберите адрес представительства бренда из выпадающего списка',
       ])
@@ -82,9 +82,8 @@ const RegistrationForm: FC<Props> = ({
       return
     }
 
-    const input = getPrepareInputBrandForm({ values, logo })
+    const input = getPrepareInputBrandForm({ values, logo, coordinate })
 
-    console.log('input', input)
     handleCreateOrUpdateBrand({
       setCitiesArray,
       citiesArray,
@@ -96,6 +95,9 @@ const RegistrationForm: FC<Props> = ({
       brand,
     })
   }
+
+  console.log(coordinate)
+
   return (
     <Wrapper>
       <Title>Информация о бренде</Title>
@@ -118,6 +120,7 @@ const RegistrationForm: FC<Props> = ({
           return (
             <form onSubmit={handleSubmit} ref={allTabs}>
               <About
+                setCootdinates={setCootdinates}
                 ref1={ref1}
                 setSelectCity={setSelectCity}
                 setSelectCountry={setSelectCountry}

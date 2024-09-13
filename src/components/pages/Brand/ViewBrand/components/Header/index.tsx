@@ -71,6 +71,7 @@ const Header: FC<Props> = ({ brand, isOwner }) => {
             <Photo>{logo}</Photo>
             {isOwner ? (
               <EditButton
+                shallow
                 href={{
                   pathname: '/createBrand',
                   query: { id: brand?.id },
