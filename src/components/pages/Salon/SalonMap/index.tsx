@@ -25,10 +25,11 @@ import { ISalon, ISalonPage } from 'src/types/salon'
 import { getRating } from 'src/utils/newUtils/getRating'
 import { getSalonsByIds } from 'src/api/graphql/salon/queries/getSalonsByIds'
 import { IView } from '../AllSalons'
-import { ISetState } from 'src/types/common'
+import { IID, ISetState } from 'src/types/common'
 import { ICity } from 'src/types'
 import { MobileHidden, MobileVisible } from 'src/styles/common'
 import Button from 'src/components/ui/Button'
+import { getSalonsThroughCity } from 'src/api/graphql/salon/queries/getSalonsThroughCity'
 
 const WrapperMapBlock = styled.div`
   display: flex;
@@ -169,15 +170,25 @@ const SalonMap: FC<ISalonMapProps> = ({
   const [hasNextPage, setHasNextPage] = useState<boolean>(
     pagination && pagination.pageCount + 1 !== page,
   )
-  const [ids, setIds] = useState<any>(null)
+  const [ids, setIds] = useState<IID[] | null>(null)
   const [activePlacemark, setActivePlacemark] = useState<any>(null)
   const mapRef = useRef<any>(null)
   const scrollRef = useRef<any>(null)
   const objectManagerRef = useRef<any>(null)
 
-  const [refetch, { loading }] = useLazyQuery(getSalonsByIds, {
+  const [refetch, { loading }] = useLazyQuery(getSalonsThroughCity, {
     notifyOnNetworkStatusChange: true,
   })
+
+  const [refetchByID, { loading: loadingByID }] = useLazyQuery(getSalonsByIds, {
+    notifyOnNetworkStatusChange: true,
+  })
+
+  const [viewCount, setViewCount] = useState<number>(salonsList.length)
+
+  useEffect(() => {
+    setViewCount(salonsList.length)
+  }, [salonsList])
 
   const normaliseSalons = useCallback(
     (res: ApolloQueryResult<any>) => {
@@ -203,7 +214,9 @@ const SalonMap: FC<ISalonMapProps> = ({
   )
 
   const onFetchMore = async () => {
-    const res = await refetch({ variables: { page } })
+    const res = await refetch({
+      variables: { slug: cityData?.slug, pageSize: 9, page },
+    })
     const newSalons = normaliseSalons(res)
     if (newSalons) {
       setSalonsList(prev => [...prev, ...newSalons])
@@ -226,7 +239,11 @@ const SalonMap: FC<ISalonMapProps> = ({
 
   const refecthSalons = useCallback(async () => {
     setPage(2)
-    const res = await refetch({ variables: { salonIds: ids, page: 1 } })
+    const res = ids?.length
+      ? await refetchByID({ variables: { salonIds: ids, page: 1 } })
+      : await refetch({
+          variables: { slug: cityData?.slug, pageSize: 9, page: 1 },
+        })
     const newSalons = normaliseSalons(res)
     if (newSalons) {
       setFilteredSalons(newSalons)
@@ -246,7 +263,7 @@ const SalonMap: FC<ISalonMapProps> = ({
           onClick={onFetchMore}
           size="width100"
           variant="darkTransparent"
-          disabled={loading}
+          disabled={loading || loadingByID}
         >
           Показать еще
         </Button>
@@ -257,7 +274,7 @@ const SalonMap: FC<ISalonMapProps> = ({
           variant="withRoundBorder"
           font="roundSmall"
           onClick={onFetchMore}
-          disabled={loading}
+          disabled={loading || loadingByID}
         >
           Показать еще салоны
         </Button>
@@ -271,6 +288,16 @@ const SalonMap: FC<ISalonMapProps> = ({
         {`${pluralize(totalCount || 0, 'Найден', 'Найдено', 'Найдено')} ${
           totalCount || 0
         } ${pluralize(totalCount || 0, 'салон', 'салона', 'салонов')}`}
+      </Title>
+
+      <Title>
+        {pluralize(viewCount, 'Показан', 'Показаны', 'Показано')}
+        &nbsp;
+        {viewCount}
+        &nbsp; из &nbsp;
+        {totalCount}
+        &nbsp;
+        {pluralize(totalCount, 'салон', 'салона', 'салонов')}
       </Title>
       <FilterSearchResults
         salon
@@ -422,7 +449,7 @@ const SalonMap: FC<ISalonMapProps> = ({
                         <SalonCard
                           seatCount={1}
                           rent={rent}
-                          loading={loading}
+                          loading={loading || loadingByID}
                           item={salon}
                           shareLink={`/${city.slug}/salon/${salon.id}`}
                         />
@@ -482,7 +509,7 @@ const SalonMap: FC<ISalonMapProps> = ({
                         <SalonCard
                           seatCount={1}
                           rent={rent}
-                          loading={loading}
+                          loading={loading || loadingByID}
                           item={salon}
                           shareLink={`/${city.slug}/salon/${salon.id}`}
                         />
@@ -523,7 +550,7 @@ const SalonMap: FC<ISalonMapProps> = ({
                           <SalonCard
                             seatCount={1}
                             rent={rent}
-                            loading={loading}
+                            loading={loading || loadingByID}
                             item={salon}
                             shareLink={`/${city.slug}/salon/${salon.id}`}
                           />
@@ -552,7 +579,7 @@ const SalonMap: FC<ISalonMapProps> = ({
                           <SalonCard
                             seatCount={1}
                             rent={rent}
-                            loading={loading}
+                            loading={loading || loadingByID}
                             item={salon}
                             shareLink={`/${city.slug}/salon/${salon.id}`}
                           />

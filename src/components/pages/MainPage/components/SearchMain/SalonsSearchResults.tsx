@@ -55,6 +55,11 @@ const SalonsSearchResults: FC<Props> = ({
   const { city } = useAuthStore(getStoreData)
   const totalCount = pagination?.total || 0
   const router = useRouter()
+  const [viewCount, setViewCount] = useState<number>(updateSalonData.length)
+
+  useEffect(() => {
+    setViewCount(updateSalonData.length)
+  }, [updateSalonData])
 
   useEffect(() => {
     setUpdateSalonData(salonData)
@@ -129,6 +134,8 @@ const SalonsSearchResults: FC<Props> = ({
       <div id="result">
         {view === 'list' ? (
           <>
+            {' '}
+            показано 19 из 100
             {!rent ? (
               <Title>
                 {pluralize(totalCount, 'Найден', 'Найдено', 'Найдено')}
@@ -147,6 +154,15 @@ const SalonsSearchResults: FC<Props> = ({
                 'салонов',
               )}`}</Title>
             )}
+            <Title>
+              {pluralize(viewCount, 'Показан', 'Показаны', 'Показано')}
+              &nbsp;
+              {viewCount}
+              &nbsp; из &nbsp;
+              {totalCount}
+              &nbsp;
+              {pluralize(totalCount, 'салон', 'салона', 'салонов')}
+            </Title>
             {!main && rent ? (
               <RentFilter
                 setFilterOpen={setFilterOpen}
