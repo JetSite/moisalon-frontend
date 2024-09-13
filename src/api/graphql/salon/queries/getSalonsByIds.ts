@@ -12,7 +12,7 @@ export const getSalonsByIds = gql`
   query getSalonsByIds($salonIds: [ID], $page: Int) {
     salons(
       filters: { id: { in: $salonIds } },
-      pagination: { pageSize: 10, page: $page }
+      pagination: { pageSize: 9, page: $page }
     ) {
       data {
         id
