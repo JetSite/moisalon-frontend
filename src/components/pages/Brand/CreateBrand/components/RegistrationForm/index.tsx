@@ -47,7 +47,7 @@ const RegistrationForm: FC<Props> = ({
   const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
   const [selectCity, setSelectCity] = useState<string | null>(null)
   const [selectCountry, setSelectCountry] = useState<string | null>(null)
-  const [coordinate, setCootdinates] = useState<ICoordinate | null>(null)
+  const [coordinate, setCoordinates] = useState<ICoordinate | null>(null)
 
   const initialValues = useMemo<IInitialValuesBrandForm>(
     () => getInitialValuesBrandForm(brand),
@@ -118,7 +118,7 @@ const RegistrationForm: FC<Props> = ({
           return (
             <form onSubmit={handleSubmit} ref={allTabs}>
               <About
-                setCootdinates={setCootdinates}
+                setCoordinates={setCoordinates}
                 ref1={ref1}
                 setSelectCity={setSelectCity}
                 setSelectCountry={setSelectCountry}

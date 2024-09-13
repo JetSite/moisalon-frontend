@@ -13,6 +13,7 @@ import {
 import { ISetState } from 'src/types/common'
 import { RenderSalonForm } from './components/RenderSalonForm'
 import { useSalonMutate } from './utils/useSalonMutate'
+import { ICoordinate } from 'src/components/blocks/Form/AddressField/AddressNoSalonField'
 
 export interface ISalonFormProps {
   allTabs: RefObject<HTMLFormElement>
@@ -55,6 +56,7 @@ const RegistrationForm: FC<ISalonFormProps> = ({
   const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
   const [photosArray, setPhotosArray] = useState<IPhoto[]>(salon?.photos || [])
   const [loading, setLoading] = useState(false)
+  const [coordinate, setCoordinates] = useState<ICoordinate | null>(null)
 
   const { loading: fetchLoading, handleCreateOrUpdateSalon } = useSalonMutate({
     setErrors,
@@ -73,7 +75,7 @@ const RegistrationForm: FC<ISalonFormProps> = ({
   }, [noPhotoError])
 
   const onSubmit = (values: IInitialValuesSalonForm) => {
-    if (!clickCity) {
+    if (!clickCity || !coordinate) {
       setErrors(['Нужно добавить адрес'])
       setErrorPopupOpen(true)
       handleClickNextTab(0)
@@ -97,6 +99,7 @@ const RegistrationForm: FC<ISalonFormProps> = ({
       logo,
       photos: photosArray.map(e => e.id),
       rent,
+      coordinate,
     })
 
     handleCreateOrUpdateSalon({
@@ -140,6 +143,7 @@ const RegistrationForm: FC<ISalonFormProps> = ({
               setClickCity={setClickCity}
               errors={errors}
               fetchLoading={fetchLoading}
+              setCoordinates={setCoordinates}
             />
           )}
         />

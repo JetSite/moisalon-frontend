@@ -1,4 +1,5 @@
 import { defaultValues } from 'src/api/authConfig'
+import { ICoordinate } from 'src/components/blocks/Form/AddressField/AddressNoSalonField'
 import { workingHoursOptions } from 'src/components/blocks/Form/WorkingTimeField/WorkingTime'
 import { ICity, IPhoto } from 'src/types'
 import { IID } from 'src/types/common'
@@ -33,6 +34,7 @@ interface Props {
   logo: IPhoto | null
   photos: string[]
   rent: boolean
+  coordinate: ICoordinate
 }
 
 type IGetPrepareInputSalonForm = (props: Props) => IPrepareInputSalonForm
@@ -42,6 +44,7 @@ export const getPrepareInputSalonForm: IGetPrepareInputSalonForm = ({
   findCity,
   logo,
   photos,
+  coordinate,
   rent = false,
 }) => {
   const servicesForInput = values.services?.map((item: { id: IID }) => ({
@@ -88,5 +91,6 @@ export const getPrepareInputSalonForm: IGetPrepareInputSalonForm = ({
     photos,
     rent,
     cover: photos.length ? photos[0] : null,
+    ...coordinate,
   }
 }

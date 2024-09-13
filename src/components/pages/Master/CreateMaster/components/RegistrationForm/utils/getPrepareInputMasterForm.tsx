@@ -1,3 +1,4 @@
+import { ICoordinate } from 'src/components/blocks/Form/AddressField/AddressNoSalonField'
 import { ICity, IPhoto } from 'src/types'
 import { IID } from 'src/types/common'
 import { IMasterServices } from 'src/types/masters'
@@ -38,6 +39,7 @@ interface Props {
   findCity?: ICity | null
   findCityResume?: ICity | null
   photo: IPhoto
+  coordinate: ICoordinate
 }
 
 type IGetPrepareInputMasterForm = (props: Props) => IMasterCreateInput
@@ -47,6 +49,7 @@ export const getPrepareInputMasterForm: IGetPrepareInputMasterForm = ({
   photo,
   findCity,
   findCityResume,
+  coordinate,
 }) => {
   const servicesForInput = values.specializations.map((item: { id: IID }) => ({
     service: item,
@@ -66,6 +69,7 @@ export const getPrepareInputMasterForm: IGetPrepareInputMasterForm = ({
     haveWhatsApp: values?.phone?.haveWhatsApp || false,
     photo: photo.id,
     city: findCity?.id || values.city || null,
+    ...coordinate,
     resumeInput: {
       title: values.resume_title,
       content: values.resume_content,

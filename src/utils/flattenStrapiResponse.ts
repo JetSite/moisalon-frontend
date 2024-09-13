@@ -52,10 +52,10 @@ export const flattenStrapiResponse: IFlattenStrapiResponse = data => {
     for (const key in data) {
       if (Object.prototype.hasOwnProperty.call(data, key)) {
         const typedKey = key as keyof StrapiDataObject
-        if (!key.includes('__'))
-          (data as AttributesObject)[typedKey] = flattenStrapiResponse(
-            (data as AttributesObject)[typedKey],
-          )
+        if (!key.includes('__')) {
+          const typedData = data as AttributesObject
+          typedData[typedKey] = flattenStrapiResponse(typedData[typedKey])
+        }
       }
     }
 
