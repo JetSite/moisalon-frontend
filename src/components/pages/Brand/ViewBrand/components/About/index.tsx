@@ -16,9 +16,9 @@ interface Props {
 }
 
 const About: FC<Props> = ({ brand }) => {
-  const description = brand?.description || ''
-  const history = brand?.history || ''
-  const manufacture = brand?.manufacture || ''
+  const description = brand?.description?.replace(/\n/g, '<br />') || ''
+  const history = brand?.history?.replace(/\n/g, '<br />') || ''
+  const manufacture = brand?.manufacture?.replace(/\n/g, '<br />') || ''
   const [collapsed, setCollapsed] = useState(true)
   const [collapsedHistory, setCollapsedHistory] = useState(true)
   const [collapsedManufacture, setCollapsedManufacture] = useState(true)
@@ -78,7 +78,8 @@ const About: FC<Props> = ({ brand }) => {
               'Нет описания'
             )}
           </MainDescriptionBox>
-          {description && description.length > 180 ? (
+          {description &&
+          (description.length > 180 || description.includes('<br />')) ? (
             <ShowMore onClick={handleChange}>{collapsedText}</ShowMore>
           ) : null}
           {manufacture ? <Title>Производство бренда</Title> : null}
@@ -99,7 +100,8 @@ const About: FC<Props> = ({ brand }) => {
               )
             ) : null}
           </MainDescriptionBox>
-          {manufacture && manufacture.length > 180 ? (
+          {manufacture &&
+          (manufacture.length > 180 || manufacture.includes('<br />')) ? (
             <ShowMore onClick={handleChangeManufacture}>
               {collapsedTextManufacture}
             </ShowMore>
@@ -122,7 +124,7 @@ const About: FC<Props> = ({ brand }) => {
               )
             ) : null}
           </MainDescriptionBox>
-          {history && history.length > 180 ? (
+          {history && (history.length > 180 || history.includes('<br />')) ? (
             <ShowMore onClick={handleChangeHistory}>
               {collapsedTextHistory}
             </ShowMore>

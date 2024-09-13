@@ -52,16 +52,18 @@ const Contacts: FC<Props> = ({
               <InfoTitle>Почтовый адрес:</InfoTitle>
               <InfoDescription>{address}</InfoDescription>
             </Info>
-            {phones && phones?.phoneNumber ? (
+            {phones && phones?.length ? (
               openPhone ? (
-                <Info>
-                  <InfoTitle>Телефон:</InfoTitle>
-                  <InfoDescription>
-                    <a href={`tel:${phones.phoneNumber}`}>
-                      {defaultNumber(phones.phoneNumber)}
-                    </a>
-                  </InfoDescription>
-                </Info>
+                phones.map(phone => (
+                  <Info>
+                    <InfoTitle>Телефон:</InfoTitle>
+                    <InfoDescription>
+                      <a href={`tel:${phone.phoneNumber}`}>
+                        {defaultNumber(phone.phoneNumber)}
+                      </a>
+                    </InfoDescription>
+                  </Info>
+                ))
               ) : (
                 <Info>
                   <InfoTitle>Телефон:</InfoTitle>
@@ -70,7 +72,7 @@ const Contacts: FC<Props> = ({
                     onClick={() => setOpenPhone(true)}
                   >
                     <BlurPhone>
-                      {defaultNumber(phones.phoneNumber)
+                      {defaultNumber(phones[0].phoneNumber)
                         .split('')
                         .splice(0, 8)
                         .join('')}{' '}
@@ -94,18 +96,20 @@ const Contacts: FC<Props> = ({
                 <a href={`mailto:${email}`}>{email}</a>
               </InfoDescription>
             </Info>
-            {longitude && latitude && address ? <noindex>
-              <Info>
-                <InfoTitle>Адрес:</InfoTitle>
-                <Address
-                  href={`https://yandex.ru/maps/?pt=${longitude},${latitude}&z=18&l=map`}
-                  target="_blank"
-                  rel="nofollow"
-                >
-                  {address}
-                </Address>
-              </Info>
-            </noindex> : null}
+            {longitude && latitude && address ? (
+              <noindex>
+                <Info>
+                  <InfoTitle>Адрес:</InfoTitle>
+                  <Address
+                    href={`https://yandex.ru/maps/?pt=${longitude},${latitude}&z=18&l=map`}
+                    target="_blank"
+                    rel="nofollow"
+                  >
+                    {address}
+                  </Address>
+                </Info>
+              </noindex>
+            ) : null}
           </InfoBlock>
           <ContentBottom>
             <ContentWrapperElement>

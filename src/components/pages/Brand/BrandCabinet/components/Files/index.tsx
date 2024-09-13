@@ -113,7 +113,7 @@ const Files = ({ id }) => {
   const [fileXsl, setFileXsl] = useState(undefined)
   const [fileProduct, setFileProduct] = useState(undefined)
   const [errors, setErrors] = useState(null)
-  const [successText, setSuccessText] = useState(null)
+  const [successText, setSuccessText] = useState<string | null>(null)
   const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
   const [isSuccessPopupOpen, setSuccessPopupOpen] = useState(false)
   const [loadingFile, setLoadingFile] = useState(false)
@@ -243,7 +243,7 @@ const Files = ({ id }) => {
               <Title>
                 Загрузите список цен в формате xlsx или добавьте ссылку на файл
               </Title>
-              <Label for="file-upload">Выберите файл</Label>
+              <Label htmlFor="file-upload">Выберите файл</Label>
               <input
                 type="file"
                 id="file-upload"
@@ -294,7 +294,7 @@ const Files = ({ id }) => {
               <Title>
                 Загрузите архив фотографий продуктов в формате zip или rar
               </Title>
-              <Label for="file-uploadRar">Выберите файл</Label>
+              <Label htmlFor="file-uploadRar">Выберите файл</Label>
               <input
                 type="file"
                 id="file-uploadRar"

@@ -12,6 +12,7 @@ import { getStoreData } from 'src/store/utils'
 import { IBrand } from 'src/types/brands'
 import { ISalon } from 'src/types/salon'
 import { IMaster } from 'src/types/masters'
+import { PageWrapper } from './MainLayout'
 
 interface Props {
   rent?: boolean
@@ -31,7 +32,7 @@ const CategoryPageLayout: FC<Props> = ({
   const { city, loading } = useAuthStore(getStoreData)
 
   return (
-    <>
+    <PageWrapper>
       <Header loading={loading} />
       {children}
       {rent ? null : <MasterSlider city={city} data={masters} />}
@@ -44,7 +45,7 @@ const CategoryPageLayout: FC<Props> = ({
       <Line text="Вы – профессионал? Присоединяйтесь, чтобы воспользоваться привилегиями." />
       <About />
       <Footer loading={loading} />
-    </>
+    </PageWrapper>
   )
 }
 

@@ -8,6 +8,7 @@ import { SelectProps } from '@material-ui/core'
 const TextFieldStyled = styled(TextField)`
   .MuiInputBase-input {
     font-size: 16px;
+    line-height: 1.4;
   }
   .MuiFormLabel-root {
     font-size: 14px;

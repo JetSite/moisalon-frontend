@@ -14,14 +14,6 @@ export const PageWrapper = styled.div`
   flex-direction: column;
   min-height: 100vh; // Минимальная высота на весь экран
 
-  header {
-    flex-shrink: 0; // Хедер занимает свою высоту
-  }
-
-  footer {
-    flex-shrink: 0; // Футер занимает свою высоту
-  }
-
   main {
     flex-grow: 1; // Основной контент занимает всё оставшееся пространство
     display: flex; // Добавляем flexbox для управления содержимым

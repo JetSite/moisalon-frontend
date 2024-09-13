@@ -45,7 +45,7 @@ const CabinetForm: FC<Props> = ({
       <TitleCabinet>{brand.name}</TitleCabinet>
       <TextCabinet>Кабинет бренда</TextCabinet>
       <Files id={brand.id} />
-      <AutoFocusedForm
+      {/* <AutoFocusedForm
         // initialValues={initialValues}
         onSubmit={onSubmit}
         render={({ handleSubmit, pristine }) => {
@@ -75,7 +75,7 @@ const CabinetForm: FC<Props> = ({
             </form>
           )
         }}
-      />
+      /> */}
     </Wrapper>
   )
 }
