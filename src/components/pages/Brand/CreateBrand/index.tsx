@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback, useEffect, FC } from 'react'
+import { useRef, useState, useCallback, useEffect, FC, useMemo } from 'react'
 import scrollIntoView from 'scroll-into-view'
 import Header from '../../MainPage/components/Header'
 import { MainContainer } from '../../../../styles/common'
@@ -6,99 +6,43 @@ import Controls from '../../../blocks/Form/Controls'
 import BackArrow from '../../../ui/BackArrow'
 import { Wrapper } from './styled'
 import RegistrationForm from './components/RegistrationForm'
-import { ICity, IPhoto } from 'src/types'
+import { ICity, ICountry, IPhoto } from 'src/types'
 import { PHOTO_URL } from 'src/api/variables'
 import { IBrand } from 'src/types/brands'
 import { ISetState } from 'src/types/common'
+import { gtBrandTabs } from './config'
+import { useElementVisibility } from '../../Salon/CreateSalon/components/RegistrationForm/utils/useElementVisibility'
+import { FormGuardPopup } from 'src/components/blocks/Form/FormGuardPopup'
 
 export interface CreateBrandProps {
-  brand: Partial<IBrand>
+  brand: IBrand | null
   cities: ICity[]
+  countries: ICountry[]
 }
 
-const CreateBrand: FC<CreateBrandProps> = ({ brand, cities }) => {
+const CreateBrand: FC<CreateBrandProps> = ({ brand, cities, countries }) => {
   const allTabs = useRef<HTMLFormElement>(null)
   const ref1 = useRef<HTMLDivElement>(null)
   const ref2 = useRef<HTMLDivElement>(null)
+  const [dirtyForm, setDirtyForm] = useState(false)
 
-  const [tabs] = useState([
-    { id: '1', value: 'Информация о бренде', anchor: 'about' },
-    { id: '2', value: 'Дополнительная информация', anchor: 'socials' },
-    {
-      id: '3',
-      value: 'Кабинет бренда',
-      anchor: 'cabinet',
-      href: '/brandCabinet',
-      link: brand?.id,
-    },
-  ])
+  const tabs = useMemo(() => gtBrandTabs(brand), [brand])
 
   const [refActive, setRefActive] = useState<string | boolean>(false)
-  const [ref1Visible, setRef1Visible] = useState(true)
-  const [ref2Visible, setRef2Visible] = useState(false)
-  const [photoBrand, setPhotoBrand] = useState<IPhoto | null>(
-    brand?.logo || null,
-  )
+  const [logo, setLogo] = useState<IPhoto | null>(brand?.logo || null)
   const [noPhotoError, setNoPhotoError] = useState(false)
 
-  const handleElementPosition = (
-    element: HTMLDivElement | null,
-    func: ISetState<boolean>,
-    top: number,
-  ) => {
-    if (!element) return
-
-    const posTop = element.getBoundingClientRect().top
-    const isVisible =
-      posTop > 0
-        ? window.innerHeight > posTop + top
-        : element.clientHeight + posTop > window.innerHeight
-
-    func(isVisible)
-  }
+  const { handleScroll, handleClick } = useElementVisibility(
+    [
+      { ref: ref1, setVisible: setRefActive.bind(null, '1') },
+      { ref: ref2, setVisible: setRefActive.bind(null, '2') },
+    ],
+    tabs,
+  )
 
   useEffect(() => {
-    ref1Visible ? setRefActive('1') : ref2Visible ? setRefActive('2') : null
-  }, [ref1Visible, ref2Visible])
-
-  const handleScroll = useCallback(() => {
-    const elements = [
-      {
-        el: ref1?.current,
-        func: setRef1Visible,
-        top: 0,
-      },
-      {
-        el: ref2?.current,
-        func: setRef2Visible,
-        top: 0,
-      },
-    ]
-    elements.forEach(el => handleElementPosition(el.el, el.func, el.top))
-  }, [])
-
-  useEffect(() => {
-    document.addEventListener('scroll', handleScroll)
-    return () => {
-      document.removeEventListener('scroll', handleScroll)
-    }
-  }, [ref1Visible, ref2Visible])
-
-  const handleClickNextTab = (number: number) => {
-    const newTab = tabs.find(item => +item.id === number + 1)
-    if (newTab) {
-      const element = document.getElementById(newTab.anchor.replace('#', ''))
-      if (element) {
-        scrollIntoView(element, {
-          time: 500,
-          align: {
-            top: 0,
-            topOffset: 100,
-          },
-        })
-      }
-    }
-  }
+    handleScroll()
+  }, [handleScroll])
 
   return (
     <>
@@ -110,22 +54,26 @@ const CreateBrand: FC<CreateBrandProps> = ({ brand, cities }) => {
             tabs={tabs}
             photoType={'brandPhoto'}
             refActive={refActive}
-            photo={photoBrand ? { url: `${PHOTO_URL}${photoBrand.url}` } : null}
-            setPhoto={setPhotoBrand}
+            photo={logo ? { url: `${PHOTO_URL}${logo.url}` } : null}
+            setPhoto={setLogo}
             noPhotoError={noPhotoError}
             setNoPhotoError={setNoPhotoError}
           />
           <RegistrationForm
             cities={cities}
+            countries={countries}
             allTabs={allTabs}
-            handleClickNextTab={handleClickNextTab}
+            handleClickNextTab={handleClick}
             ref1={ref1}
             ref2={ref2}
-            photoBrand={photoBrand}
+            logo={logo}
             brand={brand}
             setNoPhotoError={setNoPhotoError}
+            setDirtyForm={setDirtyForm}
+            dirtyForm={dirtyForm}
           />
         </Wrapper>
+        <FormGuardPopup setDirtyForm={setDirtyForm} dirtyForm={dirtyForm} />
       </MainContainer>
     </>
   )

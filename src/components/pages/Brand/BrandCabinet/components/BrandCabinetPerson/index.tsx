@@ -1,6 +1,5 @@
-import { Field } from "react-final-form";
-import { TextField } from "../../../../../Form";
-import { email } from "../../../../../../utils/validations";
+import { Field } from 'react-final-form'
+import { email } from '../../../../../../utils/validations'
 import {
   WrapperForm,
   FieldWrap,
@@ -8,16 +7,17 @@ import {
   AvatarWrap,
   AddPerson,
   Plus,
-} from "./styles";
-import { PhoneField } from "../../../../../Form";
-import AddressNoSalonField from "../../../../../blocks/Form/AddressField/AddressNoSalonField";
-import Avatar from "../../../../../blocks/Form/Avatar";
+} from './styles'
+import AddressNoSalonField from '../../../../../blocks/Form/AddressField/AddressNoSalonField'
+import Avatar from '../../../../../blocks/Form/Avatar'
+import { PhoneField, TextField } from 'src/components/blocks/Form'
+import { parseFieldsToString } from 'src/utils/newUtils/formsHelpers'
 
-const BrandCabinetPerson = ({ ref3 }) => {
+const BrandCabinetPerson = ({ ref3, setClickCity }) => {
   const photoArrayProps = {
-    photoType: "salonPhoto",
-    kind: "small",
-  };
+    photoType: 'salonPhoto',
+    kind: 'small',
+  }
   return (
     <WrapperForm ref={ref3} id="person">
       <Title>
@@ -29,7 +29,7 @@ const BrandCabinetPerson = ({ ref3 }) => {
         <Field name="name" component={TextField} label="Имя" />
       </FieldWrap>
       <FieldWrap>
-        <PhoneField name="phone" label="Телефон" requiredField="false" />
+        <PhoneField name="phone" label="Телефон" requiredField={false} />
       </FieldWrap>
       <FieldWrap>
         <Field
@@ -41,7 +41,15 @@ const BrandCabinetPerson = ({ ref3 }) => {
         />
       </FieldWrap>
       <FieldWrap>
-        <Field name="address" component={AddressNoSalonField} label="Город" />
+        <Field
+          parse={parseFieldsToString}
+          name="address"
+          setClickCity={setClickCity}
+          component={AddressNoSalonField}
+          label="Город"
+          noMap
+          onlyCity
+        />
       </FieldWrap>
       <AvatarWrap>
         <Title>Фото регионального представителя</Title>
@@ -52,7 +60,7 @@ const BrandCabinetPerson = ({ ref3 }) => {
         <Plus />
       </AddPerson>
     </WrapperForm>
-  );
-};
+  )
+}
 
-export default BrandCabinetPerson;
+export default BrandCabinetPerson

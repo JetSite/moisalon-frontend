@@ -129,7 +129,7 @@ export const MobileHeader: FC<Props> = ({
             <HeartIcon fill="#000" />
           </LinkProfile>
           {isLoggedIn ? (
-            <ProfilePhotoWrap onClick={() => router.push('/masterCabinet')}>
+            <ProfilePhotoWrap shallow href={'/masterCabinet'}>
               <ProfilePhoto
                 src={
                   user?.info?.avatar

@@ -276,7 +276,7 @@ export const LinkProfile = styled(Link)<{ disabled?: boolean }>`
   }
 `
 
-export const ProfilePhotoWrap = styled.a`
+export const ProfilePhotoWrap = styled(Link)`
   width: 24px;
   height: 24px;
   cursor: pointer;

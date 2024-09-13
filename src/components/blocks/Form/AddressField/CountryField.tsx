@@ -3,12 +3,12 @@ import {
   IAddressSuggestion,
   useAddressSuggestions,
 } from './useAddressSuggestions'
-import Map from '../../Map'
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../styles/variables'
 import { FC, useEffect } from 'react'
 import { FieldRenderProps } from 'react-final-form'
 import { ISetState } from 'src/types/common'
+import { useCountrySuggestions } from './useCountrySuggestions'
 
 const AutosuggestFieldStyled = styled(AutosuggestField)`
   .MuiInputBase-inputMultiline {
@@ -28,59 +28,33 @@ const AutosuggestFieldStyled = styled(AutosuggestField)`
   }
 `
 
-const AddressWrap = styled.div<{ noMap?: boolean }>`
+const CountryWrap = styled.div`
   position: relative;
-  width: 100%;
-  min-height: ${({ noMap }) => (noMap ? '345px' : 'none')};
-
-  @media (max-width: ${laptopBreakpoint}) {
-    min-height: ${({ noMap }) => (noMap ? '180px' : 'none')};
-  }
-`
-
-const MapWrap = styled.div`
-  padding-top: 20px;
   width: 100%;
 `
 
 export interface IAddressNoSalonFieldProps
   extends Pick<FieldRenderProps<any, HTMLElement>, 'input' | 'meta'> {
   fullWidth?: boolean
-  salonId?: string | null
   label: string
-  noMap?: boolean
-  view?: boolean
-  setClickCity: ISetState<string | null>
-  setClickAddress?: ISetState<IAddressSuggestion | null>
-  onlyCity?: boolean
+  setSelectCountry: ISetState<string | null>
 }
 
-const AddressNoSalonField: FC<IAddressNoSalonFieldProps> = ({
-  label = 'Адрес',
+const CountryField: FC<IAddressNoSalonFieldProps> = ({
+  label = 'Страна',
   fullWidth = true,
-  salonId = null,
-  view,
-  onlyCity,
   ...rest
 }) => {
-  const { suggestions, coordinates, loading } = useAddressSuggestions(
+  const { suggestions, coordinates, loading } = useCountrySuggestions(
     rest.input.value,
-    onlyCity,
   )
-  const address = {
-    longitude: coordinates?.geoLon,
-    latitude: coordinates?.geoLat,
-  }
 
   useEffect(() => {
-    rest.setClickCity(coordinates?.city || null)
-    if (rest.setClickAddress) {
-      rest.setClickAddress(coordinates)
-    }
+    rest.setSelectCountry(coordinates?.value || null)
   }, [coordinates])
 
   return (
-    <AddressWrap noMap={!rest.noMap}>
+    <CountryWrap>
       <AutosuggestFieldStyled
         {...rest}
         fullWidth={fullWidth}
@@ -88,13 +62,8 @@ const AddressNoSalonField: FC<IAddressNoSalonFieldProps> = ({
         suggestions={suggestions}
         loading={loading}
       />
-      {!rest.noMap ? (
-        <MapWrap>
-          <Map view={view} address={address} />
-        </MapWrap>
-      ) : null}
-    </AddressWrap>
+    </CountryWrap>
   )
 }
 
-export default AddressNoSalonField
+export default CountryField

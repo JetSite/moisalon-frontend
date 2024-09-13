@@ -17,26 +17,32 @@ import { FC, RefObject, useState } from 'react'
 import { Checkbox, Label } from 'src/components/pages/Rent/RentFilter/style'
 import { ISetState } from 'src/types/common'
 import { IHandleClickNextTabInForm } from 'src/components/pages/Salon/CreateSalon'
+import { parseFieldsToString } from 'src/utils/newUtils/formsHelpers'
+import PhoneArrayField from 'src/components/blocks/Form/PhoneField/PhoneArrayField'
+import CountryField from 'src/components/blocks/Form/AddressField/CountryField'
 
 export interface IFormAboutProps {
-  setClickCity: ISetState<string | null>
+  setSelectCity: ISetState<string | null>
+  setSelectCountry: ISetState<string | null>
   number: number
   handleClickNextTab: IHandleClickNextTabInForm
   ref1: RefObject<HTMLDivElement>
 }
 
 const About: FC<IFormAboutProps> = ({
-  setClickCity,
+  setSelectCity,
+  setSelectCountry,
   ref1,
   handleClickNextTab,
   number,
 }) => {
-  const [view, setView] = useState<boolean>(false)
+  const [view, setView] = useState<boolean>(true)
 
   return (
     <WrapperForm ref={ref1} id="about">
       <FieldWrap>
         <Field
+          parse={parseFieldsToString}
           name="name"
           component={TextField}
           label="Название *"
@@ -44,18 +50,21 @@ const About: FC<IFormAboutProps> = ({
         />
       </FieldWrap>
       <FieldWrap>
-        <Field
+        <FieldStyled
           name="country"
-          component={TextField}
+          setSelectCountry={setSelectCountry}
+          component={CountryField}
           label="Страна производителя *"
           validate={required}
+          requiredField
         />
       </FieldWrap>
       <FieldWrap>
-        <PhoneField name="phone" label="Телефон *" />
+        <PhoneArrayField name="phones" />
       </FieldWrap>
       <FieldWrap>
         <Field
+          parse={parseFieldsToString}
           name="email"
           component={TextField}
           label="E-mail *"
@@ -66,7 +75,7 @@ const About: FC<IFormAboutProps> = ({
       <FieldWrap>
         <FieldStyled
           name="address"
-          setClickCity={setClickCity}
+          setClickCity={setSelectCity}
           component={AddressNoSalonField}
           label="Адрес"
           validate={required}
@@ -92,6 +101,7 @@ const About: FC<IFormAboutProps> = ({
       </FieldWrap>
       <FieldWrap>
         <Field
+          parse={parseFieldsToString}
           name="description"
           component={TextField}
           label="Описание бренда"
@@ -101,6 +111,7 @@ const About: FC<IFormAboutProps> = ({
       </FieldWrap>
       <FieldWrap>
         <Field
+          parse={parseFieldsToString}
           name="history"
           component={TextField}
           label="История бренда"
@@ -110,6 +121,7 @@ const About: FC<IFormAboutProps> = ({
       </FieldWrap>
       <FieldWrap>
         <Field
+          parse={parseFieldsToString}
           name="manufacture"
           component={TextField}
           label="Производство бренда"
