@@ -35,6 +35,7 @@ export const getBrand = gql`
           manufacture
           minimalOrderPrice
           termsDeliveryPrice
+          webSiteUrl
           socialNetworks {
             ${socialNetworksFragment}
           }

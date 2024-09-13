@@ -35,6 +35,7 @@ export const UPDATE_BRAND = gql`
           manufacture
           minimalOrderPrice
           termsDeliveryPrice
+          webSiteUrl
           socialNetworks {
             ${socialNetworksFragment}
           }

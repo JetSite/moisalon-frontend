@@ -20,6 +20,7 @@ export const MainContainer = styled.section`
   max-width: 1440px;
   margin-left: auto;
   margin-right: auto;
+  width: 100%;
 
   @media (max-width: ${laptopBreakpoint}) {
     padding: 0;

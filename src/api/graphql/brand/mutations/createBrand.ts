@@ -35,6 +35,7 @@ export const CREATE_BRAND = gql`
           manufacture
           minimalOrderPrice
           termsDeliveryPrice
+          webSiteUrl
           socialNetworks {
             ${socialNetworksFragment}
           }

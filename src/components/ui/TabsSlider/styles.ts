@@ -86,7 +86,8 @@ export const Text = styled.p`
 `
 
 export const Content = styled.div`
-  width: 1440px;
+  max-width: 1440px;
+  width: 100%;
   padding: 10px 140px;
   margin-left: auto;
   margin-right: auto;
