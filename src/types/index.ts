@@ -39,8 +39,8 @@ export interface ICity {
   id?: IID
   name?: string
   slug: string
-  latitude?: string
-  longitude?: string
+  latitude?: number
+  longitude?: number
 }
 
 export interface IWorkingHours {
