@@ -25,7 +25,7 @@ export interface IBrand {
   longitude?: number
   manufacture?: string
   minimalOrderPrice?: number
-  termsDeliveryPrice?: number
+  termsDeliveryPrice?: string
   socialNetworks: ISocialNetworks[]
   vacancies: IVacancy[]
   reviews: IReview[]

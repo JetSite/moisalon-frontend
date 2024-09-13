@@ -2,6 +2,7 @@ import { ICoordinate } from 'src/components/blocks/Form/AddressField/AddressNoSa
 import { IPhonesInitialValue } from 'src/components/pages/Salon/CreateSalon/components/RegistrationForm/utils/getInitialValuesSalonForm'
 import { ICity, ICountry, IPhoto } from 'src/types'
 import { IID } from 'src/types/common'
+import { parseToNumber } from 'src/utils/newUtils/common'
 
 export interface IPrepareInputBrandForm {
   socialNetworks: { title: string; link: string }[]
@@ -53,6 +54,8 @@ export const getPrepareInputBrandForm: IGetPrepareInputBrandForm = ({
     history: values.history,
     manufacture: values.manufacture,
     webSiteUrl: values.webSiteUrl,
+    minimalOrderPrice: parseToNumber(values.minimalOrderPrice),
+    termsDeliveryPrice: values.termsDeliveryPrice,
     socialNetworks,
     ...coordinate,
   }

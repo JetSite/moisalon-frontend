@@ -107,6 +107,25 @@ const About: FC<IFormAboutProps> = ({
       <FieldWrap>
         <Field
           parse={parseFieldsToString}
+          name="minimalOrderPrice"
+          component={TextField}
+          type="number"
+          label="Минимальная сумма доставки"
+        />
+      </FieldWrap>
+      <FieldWrap>
+        <Field
+          parse={parseFieldsToString}
+          name="termsDeliveryPrice"
+          component={TextField}
+          multiline={true}
+          maxLength="20000"
+          label="Условия и стоимость доставки"
+        />
+      </FieldWrap>
+      <FieldWrap>
+        <Field
+          parse={parseFieldsToString}
           name="description"
           component={TextField}
           label="Описание бренда"
