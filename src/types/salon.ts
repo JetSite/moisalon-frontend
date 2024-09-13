@@ -27,8 +27,8 @@ export interface ISalon {
   email: string
   address: string
   createdAt: string
-  latitude: string
-  longitude: string
+  latitude: number
+  longitude: number
   locationDirections: string
   updatedAt: string
   contactPersonName: string

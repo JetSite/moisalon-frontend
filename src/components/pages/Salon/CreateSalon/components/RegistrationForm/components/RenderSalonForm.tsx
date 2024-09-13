@@ -15,6 +15,7 @@ import useBaseStore from 'src/store/baseStore'
 import { getStoreData } from 'src/store/utils'
 import { ISetState } from 'src/types/common'
 import { IPhoto } from 'src/types'
+import { ICoordinate } from 'src/components/blocks/Form/AddressField/AddressNoSalonField'
 
 interface Props
   extends Omit<ISalonFormProps, 'cities' | 'noPhotoError' | 'rent'> {
@@ -24,6 +25,7 @@ interface Props
   setClickCity: ISetState<string | null>
   errors: string[] | null
   fetchLoading: boolean
+  setCoordinates: ISetState<ICoordinate | null>
 }
 
 export const RenderSalonForm: FC<Props> = ({
@@ -44,6 +46,7 @@ export const RenderSalonForm: FC<Props> = ({
   handleClickNextTab,
   setClickCity,
   fetchLoading,
+  setCoordinates,
 }) => {
   const { handleSubmit, form } = formProps
   const { services, activities, servicesM } = useBaseStore(getStoreData)
@@ -78,6 +81,7 @@ export const RenderSalonForm: FC<Props> = ({
         number={1}
         handleClickNextTab={handleClickNextTab}
         setPhotosArray={setPhotosArray}
+        setCoordinates={setCoordinates}
       />
       <SalonActivities
         ref2={ref2}

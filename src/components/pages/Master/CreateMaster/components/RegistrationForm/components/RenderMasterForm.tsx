@@ -9,6 +9,7 @@ import Work from './Work'
 import { ISetState } from 'src/types/common'
 import { IPhoto } from 'src/types'
 import { IMasterFormProps } from '..'
+import { ICoordinate } from 'src/components/blocks/Form/AddressField/AddressNoSalonField'
 
 interface Props
   extends Omit<
@@ -21,6 +22,7 @@ interface Props
   errors: string[] | null
   fetchLoading: boolean
   setClickCityResume: ISetState<string | null>
+  setCoordinates: ISetState<ICoordinate | null>
 }
 
 export const RenderMasterForm: FC<Props> = ({
@@ -40,6 +42,7 @@ export const RenderMasterForm: FC<Props> = ({
   fetchLoading,
   serviceCategories,
   setClickCityResume,
+  setCoordinates,
 }) => {
   const { handleSubmit, form, valid } = formProps
 
@@ -63,6 +66,7 @@ export const RenderMasterForm: FC<Props> = ({
         handleClickNextTab={handleClickNextTab}
         number={1}
         setClickCity={setClickCity}
+        setCoordinates={setCoordinates}
       />
       <MasterSpecializationsList
         handleClickNextTab={handleClickNextTab}

@@ -17,6 +17,7 @@ import { getPrepareInputMasterForm } from './utils/getPrepareInputMasterForm'
 import { useMasterMutate } from './utils/useMaterMutate'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
+import { ICoordinate } from 'src/components/blocks/Form/AddressField/AddressNoSalonField'
 
 export interface IMasterFormProps {
   master: IMaster | null
@@ -55,6 +56,7 @@ const RegistrationForm: FC<IMasterFormProps> = ({
   const [errors, setErrors] = useState<string[] | null>(null)
   const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
   const [clickCityResume, setClickCityResume] = useState<string | null>(null)
+  const [coordinate, setCoordinates] = useState<ICoordinate | null>(null)
 
   const initialValues = useMemo<IInitialValuesMasterForm>(
     () => getInitialValuesMasterForm(master, user),
@@ -67,7 +69,7 @@ const RegistrationForm: FC<IMasterFormProps> = ({
 
   const onSubmit = useCallback(
     async (values: IInitialValuesMasterForm) => {
-      if (!values.address) {
+      if (!values.address || !coordinate) {
         setErrors(['Введите адрес места работы из выпадающего списка'])
         setErrorPopupOpen(true)
         return
@@ -81,7 +83,9 @@ const RegistrationForm: FC<IMasterFormProps> = ({
           const input = getPrepareInputMasterForm({
             values,
             photo,
+            coordinate,
           })
+
           handleCreateOrUpdateMaster({
             citiesArray,
             setCitiesArray,
@@ -95,8 +99,6 @@ const RegistrationForm: FC<IMasterFormProps> = ({
     },
     [photo, clickCity, citiesArray],
   )
-
-  console.log('master', master)
 
   return (
     <Wrapper>
@@ -127,6 +129,7 @@ const RegistrationForm: FC<IMasterFormProps> = ({
             serviceCategories={serviceCategories}
             errors={errors}
             setClickCityResume={setClickCityResume}
+            setCoordinates={setCoordinates}
           />
         )}
       />

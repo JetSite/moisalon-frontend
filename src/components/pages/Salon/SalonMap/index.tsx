@@ -7,7 +7,7 @@ import {
 } from '../../../../styles/variables'
 import { useMedia } from 'use-media'
 import Link from 'next/link'
-import { useQuery } from '@apollo/client'
+import { ApolloQueryResult, useLazyQuery, useQuery } from '@apollo/client'
 import { pluralize } from '../../../../utils/pluralize'
 import FilterSearchResults from '../../../blocks/FilterSearchResults'
 import SalonCard from '../../../blocks/SalonCard'
@@ -21,7 +21,7 @@ import {
   YMaps,
 } from '@pbe/react-yandex-maps'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
-import { ISalon } from 'src/types/salon'
+import { ISalon, ISalonPage } from 'src/types/salon'
 import { getRating } from 'src/utils/newUtils/getRating'
 import { getSalonsByIds } from 'src/api/graphql/salon/queries/getSalonsByIds'
 import { IView } from '../AllSalons'
@@ -173,38 +173,28 @@ const SalonMap: FC<ISalonMapProps> = ({
   const scrollRef = useRef<any>(null)
   const objectManagerRef = useRef<any>(null)
 
-  const { refetch, loading } = useQuery(getSalonsByIds, {
-    skip: true,
+  const [refetch, { loading }] = useLazyQuery(getSalonsByIds, {
     notifyOnNetworkStatusChange: true,
   })
 
+  useEffect(() => {
+    setTotalCount(salonsList.length)
+  }, [salonsList])
+
   const normaliseSalons = useCallback(
-    (res: any) => {
+    (res: ApolloQueryResult<any>) => {
+      const salons = flattenStrapiResponse(res.data.salons) as ISalon[]
+      console.log(salons)
+
       if (res?.data?.salons?.data) {
-        const prepareData: ISalon[] = res.data.salons.data.map((salon: any) => {
-          const ratingRes = flattenStrapiResponse(salon.attributes.ratings)
+        const prepareData: ISalon[] = salons.map(salon => {
+          const ratingRes = flattenStrapiResponse(salon.ratings)
           const { rating, ratingCount } = getRating(ratingRes)
           return {
-            id: salon.id,
-            name: salon.attributes.name,
-            address: salon.attributes.address,
-            salonPhones: salon.attributes.salonPhones,
-            email: salon.attributes.email,
-            services: salon.attributes.services.map((service: any) => {
-              return {
-                service: {
-                  title: service.service.data.attributes.title,
-                },
-              }
-            }),
-            reviewsCount: salon.attributes.reviews.data.length,
+            ...salon,
+            reviewsCount: salon.reviews.length,
             rating,
             ratingCount,
-            latitude: salon.attributes?.latitude,
-            longitude: salon.attributes?.longitude,
-            cover: {
-              url: salon.attributes.cover?.data?.attributes?.url,
-            },
           }
         })
         setHasNextPage(res?.data?.salons?.meta?.pagination?.pageCount > page)
@@ -215,7 +205,7 @@ const SalonMap: FC<ISalonMapProps> = ({
   )
 
   const onFetchMore = async () => {
-    const res = await refetch({ page })
+    const res = await refetch({ variables: { page } })
     const newSalons = normaliseSalons(res)
     if (newSalons) {
       setSalonsList(prev => [...prev, ...newSalons])
@@ -223,10 +213,14 @@ const SalonMap: FC<ISalonMapProps> = ({
     }
   }
 
+  const findSalonCoordinate = salonsList.find(e => e.latitude && e.longitude)
+
   const mapData = {
     center:
       cityData?.latitude && cityData?.longitude
-        ? [+cityData.latitude, +cityData.longitude]
+        ? [cityData.latitude, cityData.longitude]
+        : findSalonCoordinate
+        ? [findSalonCoordinate.latitude, findSalonCoordinate.longitude]
         : [55.751574, 37.573856],
     zoom: 10,
     behaviors: ['default', 'scrollZoom'],
@@ -234,7 +228,7 @@ const SalonMap: FC<ISalonMapProps> = ({
 
   const refecthSalons = useCallback(async () => {
     setPage(2)
-    const res = await refetch({ salonIds: ids, page: 1 })
+    const res = await refetch({ variables: { salonIds: ids, page: 1 } })
     const newSalons = normaliseSalons(res)
     if (newSalons) {
       setFilteredSalons(newSalons)

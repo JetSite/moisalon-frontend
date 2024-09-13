@@ -58,7 +58,7 @@ export interface IAddressNoSalonFieldProps
   setClickCity: ISetState<string | null>
   setClickAddress?: ISetState<IAddressSuggestion | null>
   onlyCity?: boolean
-  setCootdinates?: ISetState<ICoordinate | null>
+  setCoordinates?: ISetState<ICoordinate | null>
 }
 
 const AddressNoSalonField: FC<IAddressNoSalonFieldProps> = ({
@@ -67,7 +67,7 @@ const AddressNoSalonField: FC<IAddressNoSalonFieldProps> = ({
   salonId = null,
   view,
   onlyCity,
-  setCootdinates,
+  setCoordinates,
   setClickCity,
   setClickAddress,
   ...rest
@@ -79,21 +79,23 @@ const AddressNoSalonField: FC<IAddressNoSalonFieldProps> = ({
   )
 
   useEffect(() => {
-    setAddres({
-      longitude: coordinates?.geoLon || 0,
-      latitude: coordinates?.geoLat || 0,
-    })
     setClickCity(coordinates?.city || null)
     if (setClickAddress) {
       setClickAddress(coordinates)
     }
-    if (setCootdinates && coordinates?.geoLon && coordinates?.geoLat) {
-      setCootdinates({
+    if (setCoordinates && coordinates?.geoLon && coordinates?.geoLat) {
+      setAddres({
+        longitude: coordinates?.geoLon || 0,
+        latitude: coordinates?.geoLat || 0,
+      })
+      setCoordinates({
         longitude: coordinates?.geoLon || 0,
         latitude: coordinates?.geoLat || 0,
       })
     }
-  }, [coordinates, setCootdinates, setClickCity, setClickAddress, setAddres])
+  }, [coordinates, setCoordinates, setClickCity, setClickAddress, setAddres])
+
+  console.log(address)
 
   return (
     <AddressWrap noMap={!rest.noMap}>

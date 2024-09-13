@@ -40,8 +40,8 @@ const About: FC<Props> = ({
   ref1,
   handleClickNextTab,
   number,
-  photos,
   setPhotosArray,
+  setCoordinates,
 }) => {
   const [view, setView] = useState<boolean>(true)
   const photoArrayProps: IPhotoArrayPros = {
@@ -82,6 +82,7 @@ const About: FC<Props> = ({
           name="address"
           setClickCity={setClickCity}
           component={AddressNoSalonField}
+          setCoordinates={setCoordinates}
           label="Адрес"
           requiredField
           view={view}

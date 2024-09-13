@@ -55,11 +55,6 @@ const MastersSearchResults: FC<Props> = ({
   const [resumeFilter, setResumeFilter] = useState<boolean>(false)
   const router = useRouter()
 
-  console.log('hasNextPage', hasNextPage)
-  console.log('pagination.pageCount', pagination?.pageCount)
-
-  console.log('page', page)
-
   useEffect(() => {
     setUpdateMasterData(masterData)
   }, [masterData])

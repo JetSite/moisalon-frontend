@@ -29,7 +29,7 @@ export interface IFormAboutProps {
   number: number
   handleClickNextTab: IHandleClickNextTabInForm
   ref1: RefObject<HTMLDivElement>
-  setCootdinates: ISetState<ICoordinate | null>
+  setCoordinates: ISetState<ICoordinate | null>
 }
 
 const About: FC<IFormAboutProps> = ({
@@ -37,7 +37,7 @@ const About: FC<IFormAboutProps> = ({
   setSelectCountry,
   ref1,
   handleClickNextTab,
-  setCootdinates,
+  setCoordinates,
   number,
 }) => {
   const [view, setView] = useState<boolean>(true)
@@ -80,7 +80,7 @@ const About: FC<IFormAboutProps> = ({
         <FieldStyled
           name="address"
           setClickCity={setSelectCity}
-          setCootdinates={setCootdinates}
+          setCoordinates={setCoordinates}
           component={AddressNoSalonField}
           label="Адрес"
           validate={required}

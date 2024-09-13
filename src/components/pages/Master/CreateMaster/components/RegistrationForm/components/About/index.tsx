@@ -8,7 +8,9 @@ import {
 } from '../../../../../../../../utils/validations'
 import { MobileHidden } from '../../../../../../../../styles/common'
 import { WrapperForm, FieldWrap, FieldStyled } from '../../styled'
-import AddressNoSalonField from '../../../../../../../blocks/Form/AddressField/AddressNoSalonField'
+import AddressNoSalonField, {
+  ICoordinate,
+} from '../../../../../../../blocks/Form/AddressField/AddressNoSalonField'
 import { Checkbox, Label } from '../../../../../../Rent/RentFilter/style'
 import { FC, RefObject, useState } from 'react'
 import { ISetState } from 'src/types/common'
@@ -21,6 +23,7 @@ export interface IFormAboutProps {
   number: number
   handleClickNextTab: IHandleClickNextTabInForm
   ref1: RefObject<HTMLDivElement>
+  setCoordinates: ISetState<ICoordinate | null>
 }
 
 const About: FC<IFormAboutProps> = ({
@@ -28,6 +31,7 @@ const About: FC<IFormAboutProps> = ({
   handleClickNextTab,
   number,
   setClickCity,
+  setCoordinates,
 }) => {
   const [view, setView] = useState<boolean>(true)
 
@@ -63,6 +67,7 @@ const About: FC<IFormAboutProps> = ({
           name="address"
           setClickCity={setClickCity}
           component={AddressNoSalonField}
+          setCoordinates={setCoordinates}
           label="Адрес"
           validate={required}
           requiredField
