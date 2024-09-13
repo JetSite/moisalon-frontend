@@ -49,6 +49,8 @@ const MobileCards = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  max-height: 400px;
+  overflow: scroll;
 `
 
 const WrapperBack = styled.div`
@@ -159,10 +161,10 @@ const SalonMap: FC<ISalonMapProps> = ({
   cityData,
 }) => {
   const { city } = useAuthStore(getStoreData)
-  const mobileMedia = useMedia({ maxWidth: 768 })
+  const mobileMedia = useMedia({ maxWidth: 992 }) // 768
   const [salonsList, setSalonsList] = useState<ISalon[]>(salonData)
   const [filteredSalons, setFilteredSalons] = useState<ISalon[]>([])
-  const [totalCount, setTotalCount] = useState<number>(pagination?.total || 0)
+  const totalCount = pagination?.total || 0
   const [page, setPage] = useState<number>(2)
   const [hasNextPage, setHasNextPage] = useState<boolean>(
     pagination && pagination.pageCount + 1 !== page,
@@ -176,10 +178,6 @@ const SalonMap: FC<ISalonMapProps> = ({
   const [refetch, { loading }] = useLazyQuery(getSalonsByIds, {
     notifyOnNetworkStatusChange: true,
   })
-
-  useEffect(() => {
-    setTotalCount(salonsList.length)
-  }, [salonsList])
 
   const normaliseSalons = useCallback(
     (res: ApolloQueryResult<any>) => {
@@ -242,7 +240,7 @@ const SalonMap: FC<ISalonMapProps> = ({
   }, [ids])
 
   const fetchMoreButtonMap = hasNextPage ? (
-    <div style={{ position: 'relative', top: '-5px' }}>
+    <div style={{ position: 'relative' }}>
       <MobileHidden>
         <Button
           onClick={onFetchMore}
@@ -405,7 +403,6 @@ const SalonMap: FC<ISalonMapProps> = ({
               <Back
                 onClick={() => {
                   setFilteredSalons([])
-                  setTotalCount(pagination?.total || 0)
                 }}
               >
                 Назад
@@ -504,13 +501,12 @@ const SalonMap: FC<ISalonMapProps> = ({
               <WrapperBack
                 onClick={() => {
                   setFilteredSalons([])
-                  setTotalCount(pagination?.total || 0)
                 }}
               >
                 Назад
               </WrapperBack>
             ) : null}
-            {!!filteredSalons.length ? (
+            {true ? (
               <>
                 <MapItems>
                   {filteredSalons?.map(salon => (
