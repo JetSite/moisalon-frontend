@@ -202,7 +202,7 @@ export const BrandWeb = styled.a`
   color: #ff0033;
 
   @media (max-width: ${laptopBreakpoint}) {
-    grid-row: 5 / 6;
+    /* grid-row: 5 / 6; */
     font-size: 10px;
     font-weight: 600;
     line-height: 16px;

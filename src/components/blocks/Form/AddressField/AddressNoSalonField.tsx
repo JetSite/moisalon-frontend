@@ -6,7 +6,7 @@ import {
 import Map from '../../Map'
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../styles/variables'
-import { FC, useEffect } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { FieldRenderProps } from 'react-final-form'
 import { ISetState } from 'src/types/common'
 
@@ -43,6 +43,11 @@ const MapWrap = styled.div`
   width: 100%;
 `
 
+export interface ICoordinate {
+  longitude: number
+  latitude: number
+}
+
 export interface IAddressNoSalonFieldProps
   extends Pick<FieldRenderProps<any, HTMLElement>, 'input' | 'meta'> {
   fullWidth?: boolean
@@ -53,6 +58,7 @@ export interface IAddressNoSalonFieldProps
   setClickCity: ISetState<string | null>
   setClickAddress?: ISetState<IAddressSuggestion | null>
   onlyCity?: boolean
+  setCootdinates?: ISetState<ICoordinate | null>
 }
 
 const AddressNoSalonField: FC<IAddressNoSalonFieldProps> = ({
@@ -61,23 +67,33 @@ const AddressNoSalonField: FC<IAddressNoSalonFieldProps> = ({
   salonId = null,
   view,
   onlyCity,
+  setCootdinates,
+  setClickCity,
+  setClickAddress,
   ...rest
 }) => {
+  const [address, setAddres] = useState<ICoordinate | null>(null)
   const { suggestions, coordinates, loading } = useAddressSuggestions(
     rest.input.value,
     onlyCity,
   )
-  const address = {
-    longitude: coordinates?.geoLon,
-    latitude: coordinates?.geoLat,
-  }
 
   useEffect(() => {
-    rest.setClickCity(coordinates?.city || null)
-    if (rest.setClickAddress) {
-      rest.setClickAddress(coordinates)
+    setAddres({
+      longitude: coordinates?.geoLon || 0,
+      latitude: coordinates?.geoLat || 0,
+    })
+    setClickCity(coordinates?.city || null)
+    if (setClickAddress) {
+      setClickAddress(coordinates)
     }
-  }, [coordinates])
+    if (setCootdinates && coordinates?.geoLon && coordinates?.geoLat) {
+      setCootdinates({
+        longitude: coordinates?.geoLon || 0,
+        latitude: coordinates?.geoLat || 0,
+      })
+    }
+  }, [coordinates, setCootdinates, setClickCity, setClickAddress, setAddres])
 
   return (
     <AddressWrap noMap={!rest.noMap}>
@@ -88,7 +104,7 @@ const AddressNoSalonField: FC<IAddressNoSalonFieldProps> = ({
         suggestions={suggestions}
         loading={loading}
       />
-      {!rest.noMap ? (
+      {!rest.noMap && address ? (
         <MapWrap>
           <Map view={view} address={address} />
         </MapWrap>

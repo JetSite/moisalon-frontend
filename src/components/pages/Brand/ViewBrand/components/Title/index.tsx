@@ -69,8 +69,6 @@ const Title: FC<Props> = ({ brand, isOwner }) => {
     })
   }
 
-  console.log(brand)
-
   return (
     <>
       <ContentLeft>
@@ -135,7 +133,11 @@ const Title: FC<Props> = ({ brand, isOwner }) => {
           </noindex>
         </Socials>
         <BrandWeb href={`mailto:${brand.email}`}>{brand.email}</BrandWeb>
-        <BrandWeb href={`${brand.webSiteUrl}`}>{brand.webSiteUrl}</BrandWeb>
+        {brand.webSiteUrl && (
+          <BrandWeb target="__blank" href={`${brand.webSiteUrl}`}>
+            {brand.webSiteUrl}
+          </BrandWeb>
+        )}
       </ContentRight>
     </>
   )

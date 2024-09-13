@@ -1,3 +1,4 @@
+import { ICoordinate } from 'src/components/blocks/Form/AddressField/AddressNoSalonField'
 import { IPhonesInitialValue } from 'src/components/pages/Salon/CreateSalon/components/RegistrationForm/utils/getInitialValuesSalonForm'
 import { ICity, ICountry, IPhoto } from 'src/types'
 import { IID } from 'src/types/common'
@@ -22,6 +23,7 @@ interface Props {
   findCity?: ICity | null
   findCountry?: ICountry | null
   logo: IPhoto
+  coordinate: ICoordinate
 }
 
 type IGetPrepareInputBrandForm = (props: Props) => IPrepareInputBrandForm
@@ -31,6 +33,7 @@ export const getPrepareInputBrandForm: IGetPrepareInputBrandForm = ({
   findCity,
   findCountry,
   logo,
+  coordinate,
 }) => {
   const socialNetworks = values.socialNetworkUrls
     ? Object?.keys(values.socialNetworkUrls)?.map(e => ({
@@ -51,5 +54,6 @@ export const getPrepareInputBrandForm: IGetPrepareInputBrandForm = ({
     manufacture: values.manufacture,
     webSiteUrl: values.webSiteUrl,
     socialNetworks,
+    ...coordinate,
   }
 }
