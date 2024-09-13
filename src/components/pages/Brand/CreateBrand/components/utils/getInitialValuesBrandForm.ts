@@ -11,9 +11,11 @@ interface IInitialInput
     | 'history'
     | 'manufacture'
     | 'webSiteUrl'
+    | 'termsDeliveryPrice'
   > {
   phones: IPhonesInitialValue[]
   country: string
+  minimalOrderPrice: string
 }
 
 export interface IInitialValuesBrandForm extends IInitialInput {
@@ -38,8 +40,10 @@ export const getInitialValuesBrandForm: IgetInitialValuesBrandForm = brand => {
         description: brand.description || '',
         email: brand.email,
         history: brand.history || '',
-        manufacture: brand.manufacture,
+        manufacture: brand.manufacture || '',
         name: brand.name,
+        minimalOrderPrice: brand.minimalOrderPrice?.toString() || '',
+        termsDeliveryPrice: brand.termsDeliveryPrice || '',
         webSiteUrl: brand.webSiteUrl || '',
         phones: brand.phones.map(e => ({
           phoneNumber: e.phoneNumber || '',
@@ -47,8 +51,6 @@ export const getInitialValuesBrandForm: IgetInitialValuesBrandForm = brand => {
           haveViber: !!e.haveViber,
           haveWhatsApp: !!e.haveWhatsApp,
         })),
-
-        // webSiteUrl: brand,
       }
     : {
         name: '',
@@ -57,6 +59,10 @@ export const getInitialValuesBrandForm: IgetInitialValuesBrandForm = brand => {
         country: '',
         webSiteUrl: '',
         address: '',
+        history: '',
+        manufacture: '',
+        minimalOrderPrice: '',
+        termsDeliveryPrice: '',
         phones: [
           {
             haveTelegram: false,

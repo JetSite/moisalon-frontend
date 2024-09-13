@@ -21,7 +21,7 @@ const Icon = styled.img`
 
 const BackArrow = ({ link }: { link: string }) => {
   return (
-    <WrapperLink href={`/${link}`} data-navigate={`/${link}`}>
+    <WrapperLink shallow href={`/${link}`} data-navigate={`/${link}`}>
       <Icon src="/arrow-back.svg" />
     </WrapperLink>
   )

@@ -96,8 +96,6 @@ const RegistrationForm: FC<Props> = ({
     })
   }
 
-  console.log(coordinate)
-
   return (
     <Wrapper>
       <Title>Информация о бренде</Title>

@@ -26,7 +26,6 @@ import {
   Logo,
   SkeletonCircle,
 } from 'src/components/pages/Salon/ViewSalon/components/Header/styled'
-import { getRating } from 'src/utils/newUtils/getRating'
 
 interface Props {
   brand: IBrand
@@ -102,10 +101,9 @@ const Header: FC<Props> = ({ brand, isOwner }) => {
                 <OpenCharacter onClick={() => setToggleTerms(false)}>
                   Условия заказа
                 </OpenCharacter>
-                <Terms>{brand?.termsDeliveryPrice}</Terms>
                 <Terms
                   dangerouslySetInnerHTML={{
-                    __html: brand?.termsDeliveryPrice,
+                    __html: brand?.termsDeliveryPrice.replace(/\n/g, '<br />'),
                   }}
                 />
               </WrapCharacter>
