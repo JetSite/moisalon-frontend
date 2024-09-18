@@ -1,15 +1,9 @@
 import { useRef, useState, useEffect, useCallback, FC } from 'react'
-import styled from 'styled-components'
 import { Scrollbar } from 'react-scrollbars-custom'
-import {
-  laptopBreakpoint,
-  mobileBreakpoint,
-} from '../../../../styles/variables'
+import * as Styled from './style'
 import { useMedia } from 'use-media'
 import Link from 'next/link'
 import { ApolloQueryResult, useLazyQuery, useQuery } from '@apollo/client'
-import { pluralize } from '../../../../utils/pluralize'
-import FilterSearchResults from '../../../blocks/FilterSearchResults'
 import SalonCard from '../../../blocks/SalonCard'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
@@ -17,7 +11,6 @@ import {
   GeolocationControl,
   Map,
   ObjectManager,
-  Placemark,
   YMaps,
 } from '@pbe/react-yandex-maps'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
@@ -30,123 +23,9 @@ import { ICity } from 'src/types'
 import { MobileHidden, MobileVisible } from 'src/styles/common'
 import Button from 'src/components/ui/Button'
 import { getSalonsThroughCity } from 'src/api/graphql/salon/queries/getSalonsThroughCity'
-
-const WrapperMapBlock = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 55px;
-  position: relative;
-
-  @media (max-width: ${mobileBreakpoint}) {
-    flex-direction: column;
-  }
-`
-
-const MobileCards = styled.div`
-  width: 100%;
-  background: #fff;
-  padding: 0 20px;
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-height: 400px;
-  overflow: scroll;
-`
-
-const WrapperBack = styled.div`
-  font-size: 16px;
-  font-weight: 600;
-  color: #f03;
-  cursor: pointer;
-  padding: 20px 0;
-`
-
-const Icon = styled.img``
-
-const MapItems = styled.div`
-  height: 600px;
-  padding: 10px 20px;
-  padding-right: 10px;
-  @media (max-width: ${laptopBreakpoint}) {
-    height: auto;
-    padding: 0;
-    display: flex;
-    gap: 25px;
-    flex-wrap: wrap;
-    padding-bottom: 10px;
-  }
-
-  @media (max-width: ${mobileBreakpoint}) {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-`
-
-const Back = styled.p`
-  font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 5px;
-  cursor: pointer;
-  color: #f03;
-  margin-left: 18px;
-  @media (max-width: ${laptopBreakpoint}) {
-    font-size: 16px;
-  }
-`
-
-const WrapCard = styled.div`
-  margin-bottom: 15px;
-  &:last-child {
-    margin-bottom: 0px;
-  }
-  @media (max-width: ${laptopBreakpoint}) {
-    width: 280px;
-    margin-bottom: 0;
-  }
-`
-
-const SalonCardWrapper = styled.div`
-  width: 373px;
-  height: 100%;
-
-  @media (max-width: ${laptopBreakpoint}) {
-    width: 100%;
-    margin-right: 0;
-  }
-`
-
-const ScrollWrap = styled.div`
-  width: 413px;
-  @media (max-width: ${laptopBreakpoint}) {
-    display: none;
-  }
-`
-
-const ButtonListMobile = styled.div`
-  position: absolute;
-  bottom: -55px;
-  width: 100%;
-`
-
-const Title = styled.h3`
-  margin-top: 64px;
-  margin-bottom: 55px;
-  font-size: 30px;
-  font-weight: 600;
-
-  @media (max-width: ${laptopBreakpoint}) {
-    margin-top: 36px;
-    margin-bottom: 28px;
-    text-align: left;
-    font-size: 22px;
-  }
-`
+import { IUseSalonSearchResult } from '../../MainPage/components/SearchMain/utils/useSalonSearch'
 
 interface ISalonMapProps {
-  view: IView
-  setView?: ISetState<IView>
   rent: boolean
   salonData: ISalon[]
   pagination: any
@@ -154,8 +33,6 @@ interface ISalonMapProps {
 }
 
 const SalonMap: FC<ISalonMapProps> = ({
-  view,
-  setView,
   rent,
   salonData,
   pagination,
@@ -165,7 +42,6 @@ const SalonMap: FC<ISalonMapProps> = ({
   const mobileMedia = useMedia({ maxWidth: 992 }) // 768
   const [salonsList, setSalonsList] = useState<ISalon[]>(salonData)
   const [filteredSalons, setFilteredSalons] = useState<ISalon[]>([])
-  const totalCount = pagination?.total || 0
   const [page, setPage] = useState<number>(2)
   const [hasNextPage, setHasNextPage] = useState<boolean>(
     pagination && pagination.pageCount + 1 !== page,
@@ -284,30 +160,7 @@ const SalonMap: FC<ISalonMapProps> = ({
 
   return (
     <>
-      <Title>
-        {`${pluralize(totalCount || 0, 'Найден', 'Найдено', 'Найдено')} ${
-          totalCount || 0
-        } ${pluralize(totalCount || 0, 'салон', 'салона', 'салонов')}`}
-      </Title>
-
-      <Title>
-        {pluralize(viewCount, 'Показан', 'Показаны', 'Показано')}
-        &nbsp;
-        {viewCount}
-        &nbsp; из &nbsp;
-        {totalCount}
-        &nbsp;
-        {pluralize(totalCount, 'салон', 'салона', 'салонов')}
-      </Title>
-      <FilterSearchResults
-        salon
-        view={view}
-        setView={setView}
-        sortOrder=":asc"
-        sortProperty="по рейтингу"
-        handleFilter={() => {}}
-      />
-      <WrapperMapBlock>
+      <Styled.WrapperMapBlock>
         <YMaps query={{ load: 'package.full' }}>
           <Map
             instanceRef={mapRef}
@@ -396,7 +249,7 @@ const SalonMap: FC<ISalonMapProps> = ({
           </Map>
         </YMaps>
         {!!filteredSalons.length ? (
-          <ScrollWrap>
+          <Styled.ScrollWrap>
             <Scrollbar
               ref={scrollRef}
               style={{ width: '100%', height: 600 }}
@@ -427,16 +280,16 @@ const SalonMap: FC<ISalonMapProps> = ({
                 },
               }}
             >
-              <Back
+              <Styled.Back
                 onClick={() => {
                   setFilteredSalons([])
                 }}
               >
                 Назад
-              </Back>
-              <MapItems>
+              </Styled.Back>
+              <Styled.MapItems>
                 {filteredSalons?.map(salon => (
-                  <WrapCard key={salon?.id}>
+                  <Styled.WrapCard key={salon?.id}>
                     <Link
                       href={
                         rent
@@ -445,7 +298,7 @@ const SalonMap: FC<ISalonMapProps> = ({
                       }
                       key={salon.id}
                     >
-                      <SalonCardWrapper>
+                      <Styled.SalonCardWrapper>
                         <SalonCard
                           seatCount={1}
                           rent={rent}
@@ -453,17 +306,17 @@ const SalonMap: FC<ISalonMapProps> = ({
                           item={salon}
                           shareLink={`/${city.slug}/salon/${salon.id}`}
                         />
-                      </SalonCardWrapper>
+                      </Styled.SalonCardWrapper>
                     </Link>
-                  </WrapCard>
+                  </Styled.WrapCard>
                 ))}
                 {fetchMoreButtonMap}
-              </MapItems>
+              </Styled.MapItems>
             </Scrollbar>
-          </ScrollWrap>
+          </Styled.ScrollWrap>
         ) : null}
         {salonsList && !!salonsList.length && !filteredSalons.length ? (
-          <ScrollWrap>
+          <Styled.ScrollWrap>
             <Scrollbar
               ref={scrollRef}
               style={{ width: '100%', height: 600 }}
@@ -494,9 +347,9 @@ const SalonMap: FC<ISalonMapProps> = ({
                 },
               }}
             >
-              <MapItems>
+              <Styled.MapItems>
                 {salonsList?.map(salon => (
-                  <WrapCard key={salon?.id}>
+                  <Styled.WrapCard key={salon?.id}>
                     <Link
                       href={
                         rent
@@ -505,7 +358,7 @@ const SalonMap: FC<ISalonMapProps> = ({
                       }
                       key={salon.id}
                     >
-                      <SalonCardWrapper>
+                      <Styled.SalonCardWrapper>
                         <SalonCard
                           seatCount={1}
                           rent={rent}
@@ -513,31 +366,31 @@ const SalonMap: FC<ISalonMapProps> = ({
                           item={salon}
                           shareLink={`/${city.slug}/salon/${salon.id}`}
                         />
-                      </SalonCardWrapper>
+                      </Styled.SalonCardWrapper>
                     </Link>
-                  </WrapCard>
+                  </Styled.WrapCard>
                 ))}
                 {fetchMoreButtonMap}
-              </MapItems>
+              </Styled.MapItems>
             </Scrollbar>
-          </ScrollWrap>
+          </Styled.ScrollWrap>
         ) : null}
         {mobileMedia ? (
-          <MobileCards>
+          <Styled.MobileCards>
             {!!filteredSalons.length ? (
-              <WrapperBack
+              <Styled.WrapperBack
                 onClick={() => {
                   setFilteredSalons([])
                 }}
               >
                 Назад
-              </WrapperBack>
+              </Styled.WrapperBack>
             ) : null}
             {true ? (
               <>
-                <MapItems>
+                <Styled.MapItems>
                   {filteredSalons?.map(salon => (
-                    <WrapCard>
+                    <Styled.WrapCard>
                       <Link
                         href={
                           rent
@@ -546,7 +399,7 @@ const SalonMap: FC<ISalonMapProps> = ({
                         }
                         key={salon.id}
                       >
-                        <SalonCardWrapper>
+                        <Styled.SalonCardWrapper>
                           <SalonCard
                             seatCount={1}
                             rent={rent}
@@ -554,19 +407,19 @@ const SalonMap: FC<ISalonMapProps> = ({
                             item={salon}
                             shareLink={`/${city.slug}/salon/${salon.id}`}
                           />
-                        </SalonCardWrapper>
+                        </Styled.SalonCardWrapper>
                       </Link>
-                    </WrapCard>
+                    </Styled.WrapCard>
                   ))}
                   {fetchMoreButtonMap}
-                </MapItems>
+                </Styled.MapItems>
               </>
             ) : null}
             {salonsList && !!salonsList?.length && !filteredSalons.length ? (
               <>
-                <MapItems>
+                <Styled.MapItems>
                   {salonsList?.map(salon => (
-                    <WrapCard>
+                    <Styled.WrapCard>
                       <Link
                         href={
                           rent
@@ -575,7 +428,7 @@ const SalonMap: FC<ISalonMapProps> = ({
                         }
                         key={salon.id}
                       >
-                        <SalonCardWrapper>
+                        <Styled.SalonCardWrapper>
                           <SalonCard
                             seatCount={1}
                             rent={rent}
@@ -583,17 +436,17 @@ const SalonMap: FC<ISalonMapProps> = ({
                             item={salon}
                             shareLink={`/${city.slug}/salon/${salon.id}`}
                           />
-                        </SalonCardWrapper>
+                        </Styled.SalonCardWrapper>
                       </Link>
-                    </WrapCard>
+                    </Styled.WrapCard>
                   ))}
                   {fetchMoreButtonMap}
-                </MapItems>
+                </Styled.MapItems>
               </>
             ) : null}
-          </MobileCards>
+          </Styled.MobileCards>
         ) : null}
-      </WrapperMapBlock>
+      </Styled.WrapperMapBlock>
     </>
   )
 }

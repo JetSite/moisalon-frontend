@@ -113,7 +113,7 @@ const RentFilter: FC<Props> = ({
     }
   }
 
-  const configChackBox = [
+  const configCheckBox = [
     { label: 'Наличными', name: 'paymentMethods.cash' },
     { label: 'Банковский перевод', name: 'paymentMethods.wireTransfer' },
     { label: 'Оплата картой', name: 'paymentMethods.bankingCard' },
@@ -125,7 +125,7 @@ const RentFilter: FC<Props> = ({
 
   return (
     <Wrapper>
-      <More onClick={() => setFilterOpen(!filterOpen)}>
+      <More disabled onClick={() => setFilterOpen(!filterOpen)}>
         {!filterOpen ? 'Больше параметров' : 'Меньше параметров'}
       </More>
       <Collapse in={filterOpen}>
@@ -234,7 +234,7 @@ const RentFilter: FC<Props> = ({
                   <Block>
                     <BlockTitle>Способ оплаты</BlockTitle>
                     <PriceFieldsWrapper>
-                      {configChackBox.map(item => (
+                      {configCheckBox.map(item => (
                         <Field
                           key={item.label}
                           name={item.name}

@@ -53,7 +53,11 @@ export const Wrapper = styled.div`
 `
 
 export const WrapperResults = styled.div`
-  padding: 0 140px;
+  max-width: 1160px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 40px;
 
   @media (max-width: ${laptopBreakpoint}) {
     padding: 0 20px;

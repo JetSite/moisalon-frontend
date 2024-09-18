@@ -36,9 +36,6 @@ const Contacts: FC<Props> = ({
   phones,
 }) => {
   const [openPhone, setOpenPhone] = useState(true)
-  useEffect(() => {
-    setOpenPhone(false)
-  }, [])
 
   return (
     <MainContainer id="contacts">

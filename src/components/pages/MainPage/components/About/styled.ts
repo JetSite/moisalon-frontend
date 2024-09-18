@@ -155,8 +155,8 @@ export const Bottom = styled.div`
 export const Left = styled.div`
   width: 50%;
   background: #f2f0f0;
-  padding-right: 77px;
-  padding-left: 138px;
+  padding-left: 20px;
+  padding-right: 20px;
   padding-bottom: 102px;
   padding-top: 468px;
   position: relative;
@@ -202,10 +202,10 @@ export const Left = styled.div`
 
 export const Right = styled.div`
   width: 50%;
-  padding-left: 77px;
-  padding-right: 138px;
   padding-bottom: 102px;
   padding-top: 468px;
+  padding-left: 20px;
+  padding-right: 20px;
   position: relative;
   &:after {
     content: '';
@@ -256,12 +256,14 @@ export const BottomContentLeft = styled.div<{
   imageHeight?: number
   imageTop?: number
 }>`
-  width: 506px;
-  padding: 0 70px;
+  max-width: 500px;
+  width: 100%;
+  padding: 0 40px;
   padding-top: 35px;
   padding-bottom: 50px;
   background: #ffffff;
   position: relative;
+  margin: 0 auto;
 
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
@@ -357,6 +359,9 @@ export const BottomContentText = styled.p`
 
 export const ButtonWrapper = styled.div`
   height: 135px;
+  max-width: 500px;
+  width: 100%;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

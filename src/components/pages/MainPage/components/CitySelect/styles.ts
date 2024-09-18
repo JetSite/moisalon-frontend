@@ -49,7 +49,7 @@ export const Blur = styled.div<{ showCitySelect: boolean }>`
     display: ${props => (props.showCitySelect ? 'block' : 'none')};
     top: 0;
     left: 0;
-    background-color: rgba(255, 255, 255, 0.9 *);
+    background-color: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(10px);
     background-image: -moz-element(#VestingWidget);
     filter: blur(10px);
@@ -133,6 +133,8 @@ export const CityInput = styled.input`
 `
 
 export const CitiesListWrapper = styled.ul`
+  max-height: 400px;
+  overflow: scroll;
   margin-top: 23px;
 `
 

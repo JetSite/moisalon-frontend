@@ -1,7 +1,7 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useMemo, useState } from 'react'
 import Head from 'next/head'
 import MainLayout from '../../../../layouts/MainLayout'
-import { addApolloState, initializeApollo } from '../../../../api/apollo-client'
+import { initializeApollo } from '../../../../api/apollo-client'
 import SearchBlock from '../../../../components/blocks/SearchBlock'
 import Header from '../../../../components/pages/Brand/ViewBrand/components/Header'
 import TabsSlider from '../../../../components/ui/TabsSlider'
@@ -10,24 +10,18 @@ import Contacts from '../../../../components/pages/Brand/ViewBrand/components/Co
 import BrandReviews from '../../../../components/pages/Brand/ViewBrand/components/BrandReviews/index'
 import InviteBrand from '../../../../components/pages/Brand/ViewBrand/components/Invite'
 import Line from '../../../../components/pages/MainPage/components/Line'
-import { removeItemB2cMutation } from '../../../../_graphql-legacy/cart/removeItemB2c'
 import Slider from '../../../../components/blocks/Slider'
-import { addToCartB2cMutation } from '../../../../_graphql-legacy/cart/addToB2cCart'
 import { getBrand } from 'src/api/graphql/brand/queries/getBrand'
 import { getBrands } from 'src/api/graphql/brand/queries/getBrands'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
-import useBaseStore from 'src/store/baseStore'
 import { getStoreData } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
-import { useMutation } from '@apollo/client'
 import { IBrand } from 'src/types/brands'
 import { GetServerSideProps } from 'next'
 import { fetchCity } from 'src/api/utils/fetchCity'
 import { ICity } from 'src/types'
 import { Nullable } from 'src/types/common'
 import { getRating } from 'src/utils/newUtils/getRating'
-import { ISalon } from 'src/types/salon'
-import { IMaster } from 'src/types/masters'
 
 interface Props {
   brandData: IBrand
@@ -40,6 +34,47 @@ const Brand: FC<Props> = ({ brandData, othersBrands }) => {
   const { user, city } = useAuthStore(getStoreData)
   const [activeTab, setActiveTab] = useState<number>(0)
   const isOwner = !!user?.owner?.brands?.find(e => e.id === brand.id)
+
+  const tabs = useMemo(
+    () => [
+      { id: 1, text: 'О бренде', link: '#about', show: true },
+      {
+        id: 2,
+        text: 'Продукция',
+        link: '#goods',
+        count: brand?.products?.length,
+        show: !!brand?.products?.length,
+      },
+      {
+        id: 5,
+        text: 'Мастера',
+        link: '#masters',
+        count: brand?.masters?.length,
+        show: !!brand?.masters?.length,
+      },
+      {
+        id: 6,
+        text: 'Салоны',
+        link: '#salons',
+        count: brand?.salons?.length,
+        show: !!brand?.salons?.length,
+      },
+      {
+        id: 3,
+        text: 'Контакты',
+        link: '#contacts',
+        show: true,
+      },
+      {
+        id: 7,
+        text: 'Отзывы',
+        link: '#reviews',
+        count: brand?.reviews?.length,
+        show: true,
+      },
+    ],
+    [brand],
+  )
 
   const salons = brand.salons.map(e => {
     const reviewsCount = e.reviews.length
@@ -69,43 +104,7 @@ const Brand: FC<Props> = ({ brandData, othersBrands }) => {
         <TabsSlider
           activeTab={activeTab}
           setActiveTab={setActiveTab}
-          tabs={[
-            { id: 1, text: 'О бренде', link: '#about', show: true },
-            {
-              id: 2,
-              text: 'Продукция',
-              link: '#goods',
-              count: brand?.products?.length,
-              show: !!brand?.products?.length,
-            },
-            {
-              id: 5,
-              text: 'Мастера',
-              link: '#masters',
-              count: brand?.masters?.length,
-              show: !!brand?.masters?.length,
-            },
-            {
-              id: 6,
-              text: 'Салоны',
-              link: '#salons',
-              count: brand?.salons?.length,
-              show: !!brand?.salons?.length,
-            },
-            {
-              id: 3,
-              text: 'Контакты',
-              link: '#contacts',
-              show: true,
-            },
-            {
-              id: 7,
-              text: 'Отзывы',
-              link: '#reviews',
-              count: brand?.reviews?.length,
-              show: true,
-            },
-          ]}
+          tabs={tabs}
         />
         <About brand={brand} />
         {brand.products?.length ? (

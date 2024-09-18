@@ -19,6 +19,7 @@ import { getMasters } from 'src/api/graphql/master/queries/getMasters'
 import { IMaster } from 'src/types/masters'
 import { getSalons } from 'src/api/graphql/salon/queries/getSalons'
 import { getRating } from 'src/utils/newUtils/getRating'
+import { Nullable } from 'src/types/common'
 
 export interface ITotalCount {
   brands: number | null
@@ -27,9 +28,9 @@ export interface ITotalCount {
 }
 
 interface Props extends ISalonsPageProps {
-  brands: IBrand[] | null
-  masters: IMaster[] | null
-  salons: ISalon[] | null
+  brands: IBrand[]
+  masters: IMaster[]
+  salons: ISalon[]
 }
 
 const AllSalons: FC<Props> = ({ brands, masters, salons, ...props }) => {
@@ -43,7 +44,7 @@ const AllSalons: FC<Props> = ({ brands, masters, salons, ...props }) => {
 }
 
 export const getServerSideProps: GetServerSideProps<
-  ISalonsPageProps
+  Nullable<ISalonsPageProps>
 > = async ctx => {
   const apolloClient = initializeApollo()
 
@@ -62,7 +63,7 @@ export const getServerSideProps: GetServerSideProps<
   const data = await Promise.all([
     apolloClient.query({
       query: getSalonsThroughCity,
-      variables: { slug: ctx.query.city, pageSize: 9 },
+      variables: { slug: ctx.query.city, pageSize: 9, sort: ['rating:asc'] },
     }),
     apolloClient.query({
       query: getBrands,

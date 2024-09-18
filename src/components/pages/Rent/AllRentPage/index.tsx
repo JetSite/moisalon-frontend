@@ -1,7 +1,6 @@
 import React, { useState, useEffect, FC } from 'react'
 import { CSSTransition } from 'react-transition-group'
 import { MainContainer } from '../../../../styles/common'
-import SalonsSearchResults from '../../MainPage/components/SearchMain/SalonsSearchResults'
 import SearchBlock from '../../../blocks/SearchBlock'
 import { WrapBanner } from './styles'
 import { WrapperResults } from '../../MainPage/components/SearchMain/styled'
@@ -12,12 +11,13 @@ import { ISalon } from 'src/types/salon'
 import { ITotalCount } from 'src/pages/[city]/salon'
 import { ICity, IPagination } from 'src/types'
 import { IView } from '../../Salon/AllSalons'
+import { SalonsSearch } from '../../MainPage/components/SearchMain/SalonSearch'
 
 export interface IRentsPageProps {
   rentData: ISalon[] | []
   totalCount: ITotalCount
   cityData: ICity
-  pagination: IPagination | null
+  pagination: IPagination
 }
 
 const AllRentPage: FC<IRentsPageProps> = ({
@@ -55,7 +55,7 @@ const AllRentPage: FC<IRentsPageProps> = ({
           </MobileHidden>
           <MainContainer>
             <WrapperResults>
-              <SalonsSearchResults
+              <SalonsSearch
                 rent
                 cityData={cityData}
                 pagination={pagination}
