@@ -134,11 +134,15 @@ export const LeftGroup = styled.div`
   }
 `
 
-export const More = styled.p`
-  cursor: pointer;
+export const More = styled.button`
   color: #f03;
   border-bottom: 1px dotted #f03;
   display: inline;
+  :disabled {
+    cursor: default;
+    color: gray;
+    border-bottom: 1px dotted gray;
+  }
 `
 
 export const Block = styled.div`

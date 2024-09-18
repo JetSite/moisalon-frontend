@@ -39,10 +39,6 @@ const Contacts = ({
 }) => {
   const [openPhone, setOpenPhone] = useState(true)
 
-  useEffect(() => {
-    setOpenPhone(false)
-  }, [])
-
   return (
     <MainContainer id="contacts">
       <Wrapper>

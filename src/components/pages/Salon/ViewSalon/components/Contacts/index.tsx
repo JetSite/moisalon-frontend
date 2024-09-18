@@ -75,11 +75,15 @@ const Contacts: FC<Props> = ({
               {phones?.length ? (
                 openPhone ? (
                   <ContentWrapperElement>
-                    {phones?.map((item, i) => (
-                      <PhoneNumber href={`tel:${item?.phoneNumber}`} key={i}>
-                        {defaultNumber(item?.phoneNumber)}
-                      </PhoneNumber>
-                    ))}
+                    {phones?.map((item, i) => {
+                      console.log(item)
+
+                      return (
+                        <PhoneNumber href={`tel:${item?.phoneNumber}`} key={i}>
+                          {defaultNumber(item?.phoneNumber)}
+                        </PhoneNumber>
+                      )
+                    })}
                   </ContentWrapperElement>
                 ) : (
                   <ContentWrapperElement>

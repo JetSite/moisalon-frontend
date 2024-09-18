@@ -9,8 +9,9 @@ import {
   Wrap,
   TextFilter,
 } from './styles'
-import { ISetState } from 'src/types/common'
+import { IUseSalonSearchResult } from 'src/components/pages/MainPage/components/SearchMain/utils/useSalonSearch'
 import { IView } from 'src/components/pages/Salon/AllSalons'
+import { ISetState } from 'src/types/common'
 
 export const filtersType = {
   'по отзывам': 'reviewsCount',
@@ -21,71 +22,73 @@ export type IFiltersType = keyof typeof filtersType
 
 export type ISortOrder = ':asc' | ':desc'
 
-interface Props {
+interface Props
+  extends Partial<
+    Pick<IUseSalonSearchResult, 'sortProperty' | 'sortOrder' | 'handleFilter'>
+  > {
   view?: IView
   setView?: ISetState<IView>
   salon?: boolean
   main?: boolean
   master?: boolean
-  sortOrder: ISortOrder
-  sortProperty: IFiltersType
-  handleFilter: (filter: IFiltersType) => void
 }
 
 const FilterSearchResults: FC<Props> = ({
   view = 'list',
   setView,
   salon = false,
+  master = false,
   main,
   sortProperty,
   sortOrder,
-  master = false,
   handleFilter,
 }) => {
   return (
-    true && (
-      <Wrapper view={view}>
-        {view === 'list' ? (
-          <Wrap>
-            {(Object.keys(filtersType) as IFiltersType[]).map((filter, i) => {
-              return (
-                <FilterItem
-                  onClick={
-                    master || salon ? () => handleFilter(filter) : undefined
-                  }
-                  salon={salon}
-                  active={filter === sortProperty}
-                  key={i}
+    <Wrapper view={view}>
+      {view === 'list' ? (
+        <Wrap>
+          {(Object.keys(filtersType) as IFiltersType[]).map((filter, i) => {
+            return (
+              <FilterItem
+                onClick={
+                  master || salon
+                    ? () => {
+                        handleFilter && handleFilter(filter)
+                      }
+                    : undefined
+                }
+                salon={salon}
+                active={filter === sortProperty}
+                key={i}
+              >
+                <Text active={filter === sortProperty}>{filter}</Text>
+                <FilterArrowWrap
+                  active={filter === sortProperty && sortOrder === ':desc'}
                 >
-                  <Text active={filter === sortProperty}>{filter}</Text>
-                  <FilterArrowWrap
-                    active={filter === sortProperty && sortOrder === ':desc'}
-                  >
-                    <FilterArrow src="/filter-arrow.png" />
-                  </FilterArrowWrap>
-                </FilterItem>
-              )
-            })}
-          </Wrap>
-        ) : null}
-        {salon && !main ? (
-          <FilterWrap active={view === 'list'}>
-            <TextFilter
-              onClick={() => setView && setView('list')}
-              active={view === 'list'}
-            >
-              Список
-            </TextFilter>
-            <TextFilter
-              onClick={() => setView && setView('map')}
-              active={view === 'map'}
-            >
-              На карте
-            </TextFilter>
-          </FilterWrap>
-        ) : null}
-      </Wrapper>
-    )
+                  <FilterArrow src="/filter-arrow.png" />
+                </FilterArrowWrap>
+              </FilterItem>
+            )
+          })}
+        </Wrap>
+      ) : null}
+      {salon && !main ? (
+        <FilterWrap active={view === 'list'}>
+          <TextFilter
+            onClick={() => setView && setView('list')}
+            active={view === 'list'}
+          >
+            Список
+          </TextFilter>
+          <TextFilter
+            onClick={() => setView && setView('map')}
+            active={view === 'map'}
+          >
+            На карте
+          </TextFilter>
+        </FilterWrap>
+      ) : null}
+    </Wrapper>
   )
 }
 
