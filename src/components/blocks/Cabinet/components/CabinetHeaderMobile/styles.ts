@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { red, laptopBreakpoint } from '../../../../../styles/variables'
+import Link from 'next/link'
 
 export const Wrapper = styled.div`
   display: none;
@@ -61,7 +62,7 @@ export const CardsWrapper = styled.div`
   }
 `
 
-export const Card = styled.div`
+export const Card = styled(Link)`
   display: flex;
   flex-direction: column;
   flex-shrink: 0;

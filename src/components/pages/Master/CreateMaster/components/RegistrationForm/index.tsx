@@ -18,6 +18,7 @@ import { useMasterMutate } from './utils/useMaterMutate'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 import { ICoordinate } from 'src/components/blocks/Form/AddressField/AddressNoSalonField'
+import { FormRenderProps } from 'react-final-form'
 
 export interface IMasterFormProps {
   master: IMaster | null
@@ -103,13 +104,10 @@ const RegistrationForm: FC<IMasterFormProps> = ({
   return (
     <Wrapper>
       <Title>Мои данные</Title>
-      <AutoFocusedForm
+      <AutoFocusedForm<IInitialValuesMasterForm>
         initialValues={initialValues}
-        onSubmit={e => onSubmit(e as IInitialValuesMasterForm)}
+        onSubmit={onSubmit}
         keepDirtyOnReinitialize
-        initialValuesEqual={(initial, values) => {
-          return JSON.stringify(initial) === JSON.stringify(values)
-        }}
         render={formProps => (
           <RenderMasterForm
             formProps={formProps}

@@ -1,9 +1,10 @@
 import React, { ChangeEvent, FC, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { laptopBreakpoint } from '../../../../../../../../../styles/variables'
-import { IPeriod } from '../../../type'
+import { laptopBreakpoint } from '../../../../../../../../styles/variables'
+import { IPeriod } from '../../type'
 import { ISetState } from 'src/types/common'
 import { useForm } from 'react-final-form'
+import { FormApi } from 'final-form'
 
 const InputWrapper = styled.div`
   position: relative;
@@ -42,6 +43,7 @@ interface Props {
   placeholder?: string
   maxLength?: number
   min?: string | number
+  form: FormApi<Record<string, any>>
 }
 
 const Input: FC<Props> = ({
@@ -50,13 +52,10 @@ const Input: FC<Props> = ({
   placeholder,
   periods,
   setPeriods,
+  form,
   ...rest
 }) => {
-  const findType = periods.find(e => {
-    return e.id === name
-  })
-  const { mutators } = useForm()
-
+  const findType = periods.find(e => e.id === name)
   const [value, setValue] = useState<string>(
     findType?.rentalCoast?.toString() || '',
   )
@@ -66,18 +65,17 @@ const Input: FC<Props> = ({
   }, [periods])
 
   const changeValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value)
+    const currentValue = e.target.value
+    setValue(currentValue)
     const newArr = periods.map(type => {
       if (type.id !== name) {
         return type
       } else {
-        return { id: type.id, rentalCoast: Number(value) }
+        return { id: type.id, rentalCoast: Number(currentValue) }
       }
     })
-    console.log(newArr)
-
+    form.change('rentalPeriod', newArr)
     setPeriods(newArr)
-    mutators.update('period', () => newArr)
   }
 
   return (
@@ -87,6 +85,14 @@ const Input: FC<Props> = ({
         type={type}
         placeholder={placeholder}
         value={value}
+        onFocus={() => {
+          const findType = periods.find(type => type.id === name)
+          if (!findType) {
+            const newArr = [...periods, { id: name }]
+            form.change('rentalPeriod', newArr)
+            setPeriods(newArr)
+          }
+        }}
         onChange={changeValueHandler}
         {...rest}
       />

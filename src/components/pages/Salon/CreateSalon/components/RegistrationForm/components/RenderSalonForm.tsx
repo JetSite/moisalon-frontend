@@ -16,10 +16,11 @@ import { getStoreData } from 'src/store/utils'
 import { ISetState } from 'src/types/common'
 import { IPhoto } from 'src/types'
 import { ICoordinate } from 'src/components/blocks/Form/AddressField/AddressNoSalonField'
+import { IInitialValuesSalonForm } from '../utils/getInitialValuesSalonForm'
 
 interface Props
   extends Omit<ISalonFormProps, 'cities' | 'noPhotoError' | 'rent'> {
-  formProps: FormRenderProps<Record<string, any>>
+  formProps: FormRenderProps<IInitialValuesSalonForm>
   loading: boolean
   setPhotosArray: ISetState<IPhoto[]>
   setClickCity: ISetState<string | null>

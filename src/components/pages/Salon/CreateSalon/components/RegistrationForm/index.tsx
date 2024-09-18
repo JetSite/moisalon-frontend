@@ -116,13 +116,11 @@ const RegistrationForm: FC<ISalonFormProps> = ({
     <Wrapper>
       <Title>Расскажите о своем салоне</Title>
       {initialValues && (
-        <AutoFocusedForm
+        <AutoFocusedForm<IInitialValuesSalonForm>
           initialValues={initialValues}
           // keepDirtyOnReinitialize
-          initialValuesEqual={(initial, values) => {
-            return JSON.stringify(initial) === JSON.stringify(values)
-          }}
-          onSubmit={e => onSubmit(e as IInitialValuesSalonForm)}
+
+          onSubmit={onSubmit}
           render={form => (
             <RenderSalonForm
               formProps={form}

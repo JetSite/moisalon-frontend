@@ -58,63 +58,64 @@ export function getServicesCategories(services) {
   }
   return []
 }
-type IServicesByCategory = (services: any[]) => IGroupedServices[]
+// Типы для входящих данных
+interface ICategory {
+  title: string
+}
+
+interface IService {
+  service_m_category?: ICategory
+  service_categories?: ICategory[]
+}
+
+interface IRawService {
+  service?: IService
+}
+
+// Тип для результата
+interface IGroupedServices {
+  category: string
+  services: IRawService[]
+}
+
+// Тип функции
+type IServicesByCategory = (services: IRawService[]) => IGroupedServices[]
+
+// Основная функция
 export const getServicesByCategory: IServicesByCategory = services => {
-  const servicesData: Record<string, { category: string; services: any[] }> = {}
+  const servicesData: Record<string, IGroupedServices> = {}
 
-  if (services && services.length > 0) {
-    services.forEach(service => {
-      // Обработка service_m_category
-      if (service.service.service_m_category) {
-        const category = service.service.service_m_category.title as string
-        if (!servicesData[category]) {
-          servicesData[category] = {
-            category,
-            services: [],
-          }
-        }
-        servicesData[category].services.push({
-          ...service,
-          service: {
-            ...service.service,
-            service_categories: [service.service.service_m_category],
-            service_m_category: [service.service.service_m_category],
-          },
-        })
-      }
+  services.forEach(service => {
+    // Новая переменная, которая будет хранить либо service_m_category, либо service_categories
+    const categories = service.service?.service_m_category
+      ? [service.service.service_m_category]
+      : service.service?.service_categories || []
 
-      // Обработка service_categories
-      if (service.service.service_categories) {
-        service.service.service_categories.forEach((categoryItem: any) => {
-          const category = categoryItem.title as string
-          if (!servicesData[category]) {
-            servicesData[category] = {
-              category,
-              services: [],
-            }
-          }
-          servicesData[category].services.push(service)
-        })
+    // Обработка категорий
+    categories.forEach(categoryItem => {
+      const categoryTitle = categoryItem.title
+      if (!servicesData[categoryTitle]) {
+        servicesData[categoryTitle] = { category: categoryTitle, services: [] }
       }
-
-      // Если ни service_m_category, ни service_categories нет
-      if (
-        !service.service.service_m_category &&
-        !service.service.service_categories
-      ) {
-        const category = 'Uncategorized'
-        if (!servicesData[category]) {
-          servicesData[category] = {
-            category,
-            services: [],
-          }
-        }
-        servicesData[category].services.push(service)
-      }
+      servicesData[categoryTitle].services.push({
+        ...service,
+        service: {
+          ...service.service,
+          service_categories: categories,
+          service_m_category: service.service?.service_m_category,
+        },
+      })
     })
 
-    return Object.values(servicesData)
-  }
+    // Если ни `service_m_category`, ни `service_categories` нет
+    if (categories.length === 0) {
+      const uncategorized = 'Uncategorized'
+      if (!servicesData[uncategorized]) {
+        servicesData[uncategorized] = { category: uncategorized, services: [] }
+      }
+      servicesData[uncategorized].services.push(service)
+    }
+  })
 
-  return []
+  return Object.values(servicesData)
 }

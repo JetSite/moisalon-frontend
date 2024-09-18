@@ -33,6 +33,7 @@ export const isArray: IIsObject = data =>
   Object.prototype.toString.call(data) === '[object Array]'
 
 export const flattenStrapiResponse: IFlattenStrapiResponse = data => {
+  if (!data) return null
   if (isArray(data)) {
     return (data as StrapiDataObject[]).map(item => flattenStrapiResponse(item))
   }

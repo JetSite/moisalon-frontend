@@ -38,7 +38,7 @@ export const Title = styled.p`
   }
 `
 
-export const Desc = styled.p`
+export const Desc = styled.h3`
   font-size: 16px;
   font-weight: 600;
   margin-top: 30px;
@@ -59,7 +59,7 @@ export const Subdesc = styled.p`
   font-size: 12px;
   line-height: 18px;
   color: #808080;
-  /* margin-bottom: 20px; */
+  margin-bottom: 20px;
 `
 
 export const PhotoWrap = styled.div`

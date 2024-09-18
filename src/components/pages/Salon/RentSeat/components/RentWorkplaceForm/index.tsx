@@ -1,5 +1,5 @@
-import { useState, useEffect, FC } from 'react'
-import { CreateWorkplace } from '../CreateWorkplace'
+import { useState, FC } from 'react'
+import { CreateWorkplace, ICreateWorkplaceProps } from '../CreateWorkplace'
 import Workplace from './components/Workplace'
 import {
   Wrapper,
@@ -9,30 +9,26 @@ import {
   WrapperWorkplace,
   ButtonCustom,
 } from './styles'
-import { ISalonPage } from 'src/types/salon'
 import { ISalonWorkplace } from 'src/types/workplace'
-import { IApolloRefetch, IID } from 'src/types/common'
-import { IRentalPeriod } from 'src/types'
-import { IEquipment } from 'src/types/equipment'
 
-interface Props {
-  salon: ISalonPage
-  refetchSalon: IApolloRefetch
+interface Props
+  extends Omit<ICreateWorkplaceProps, 'workplace' | 'setWorkplace'> {
   refetchSalonLoad: boolean
-  retnalPeriods: IRentalPeriod[]
-  equipments: IEquipment[]
 }
 
 const RentWorkplaceForm: FC<Props> = ({
   salon,
   refetchSalon,
   refetchSalonLoad,
-  retnalPeriods,
-  equipments,
+  rentalPeriods,
+  groupedEquipments,
+  paymentMethods,
+  quantityFields,
+  workplaceTypes,
 }) => {
   const [createWorkplace, setCreateWorkplace] = useState<boolean>(false)
   const [workplace, setWorkplace] = useState<ISalonWorkplace | null>(null)
-  const [workplaceId, setWorkplaceId] = useState<IID | null>(null)
+  console.log(salon?.workplaces)
 
   return (
     <Wrapper>
@@ -53,7 +49,6 @@ const RentWorkplaceForm: FC<Props> = ({
                     onClick={() => {
                       setWorkplace(item)
                       setCreateWorkplace(true)
-                      setWorkplaceId(item.id)
                     }}
                   />
                 ))}
@@ -73,15 +68,15 @@ const RentWorkplaceForm: FC<Props> = ({
         </>
       ) : (
         <CreateWorkplace
-          setCreateWorkplace={setCreateWorkplace}
           workplace={workplace}
           salon={salon}
-          setWorkplaceId={setWorkplaceId}
           setWorkplace={setWorkplace}
           refetchSalon={refetchSalon}
-          workplaceId={workplaceId}
-          retnalPeriods={retnalPeriods}
-          equipments={equipments}
+          rentalPeriods={rentalPeriods}
+          groupedEquipments={groupedEquipments}
+          quantityFields={quantityFields}
+          paymentMethods={paymentMethods}
+          workplaceTypes={workplaceTypes}
         />
       )}
     </Wrapper>

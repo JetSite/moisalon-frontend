@@ -4,6 +4,7 @@ import { onlyTitleFragment } from '../../fragments/onlyTitle'
 import { paymentMethodsFragment } from '../../fragments/paymentMethods'
 import { rentalPeriodFragment } from '../../fragments/rentalPeriod'
 import servicesFragment from '../../fragments/services'
+import { workplaceTypesFragment } from '../../fragments/workplaceTypes'
 
 export const salonWorkplacesFragment = `
 data{
@@ -24,6 +25,11 @@ data{
     electricitySocketsUpsCount
     electricitySocketsExtendersCount
     electricitySocketsCount
+    salon {
+      data {
+        id
+      }
+    }
     rentalPeriod {
       id
       rentalCost
@@ -32,12 +38,7 @@ data{
       }
     }
     workspaces_types {
-      data {
-        id
-        attributes {
-          title
-        }
-      }
+     ${workplaceTypesFragment}
     }
     gallery {
       ${imageInfo}

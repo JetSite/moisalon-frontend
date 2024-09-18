@@ -27,26 +27,20 @@ import { ISalonWorkplace } from 'src/types/workplace'
 import { IID, ISetState } from 'src/types/common'
 import { PHOTO_URL } from 'src/api/variables'
 
-interface Props {
+export interface ISuccessProps {
   salon: ISalonPage
-  resetRentalRate: () => void
   workplace: ISalonWorkplace | null
   setWorkplace: ISetState<ISalonWorkplace | null>
   setSuccess: ISetState<boolean>
   setShowAdditionalInfo: ISetState<boolean>
-  setWorkplaceId: ISetState<string | null>
-  workplaceId: string | null
 }
 
-const Success: FC<Props> = ({
+const Success: FC<ISuccessProps> = ({
   salon,
   workplace,
   setShowAdditionalInfo,
   setSuccess,
   setWorkplace,
-  setWorkplaceId,
-  resetRentalRate,
-  workplaceId,
 }) => {
   const router = useRouter()
   const { city } = useAuthStore(getStoreData)
@@ -57,7 +51,7 @@ const Success: FC<Props> = ({
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
   }, [])
 
-  const rentalPeriod = workplace?.rentalPeriod.find(e => e.rentalCost)
+  const rentalPeriod = workplace?.rentalPeriod?.find(e => e.rentalCost)
 
   const addButtonHandler = () => {
     setSuccess(false)
@@ -71,10 +65,7 @@ const Success: FC<Props> = ({
 
   const addNewWorkplaceButtonHandler = () => {
     setWorkplace(null)
-    setWorkplaceId(null)
-    resetRentalRate()
     editButtonHandler()
-    setSuccess(false)
   }
 
   const backHandler = () => {
@@ -90,9 +81,9 @@ const Success: FC<Props> = ({
             Теперь мастера смогут отправлять вам заявки на аренду.
           </Subtitle>
           <Link
-            href={`/${salon?.city?.slug || city.slug}/rent/${
-              salon?.id
-            }/room/${workplaceId}/seat/${workplace?.id}`}
+            href={`/${salon?.city?.slug || city.slug}/rent/${salon?.id}/seat/${
+              workplace?.id
+            }`}
             passHref
           >
             <TopLink target="_blank">Просмотр на платформе</TopLink>

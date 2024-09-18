@@ -23,7 +23,7 @@ interface Props {
 
 const MenuCards: FC<Props> = ({ cards, itemId }) => {
   const router = useRouter()
-  const { setMe, logout } = useAuthStore(getStoreEvent)
+  const { setUser, logout } = useAuthStore(getStoreEvent)
 
   const handleClick = (item: IMobileHeaderTab) => {
     if (item?.anchor) {
@@ -40,35 +40,18 @@ const MenuCards: FC<Props> = ({ cards, itemId }) => {
     }
   }
 
-  const { refetch } = useQuery(currentUserSalonsAndMasterQuery, {
-    skip: true,
-    onCompleted: res => {
-      setMe({
-        info: res?.me?.info,
-        masters: res?.me?.master,
-        locationByIp: res?.locationByIp,
-        salons: res?.me?.salons,
-        rentalRequests: res?.me?.rentalRequests,
-      })
-    },
-  })
-
   return (
     <CardsWrapper>
       {cards?.map((card, id) => (
         <Card
+          shallow
+          href={{
+            pathname: card.href,
+            query: { id: itemId },
+          }}
           key={id}
           onClick={() => {
             handleClick(card)
-            if (card.href) {
-              router.push(
-                {
-                  pathname: card.href,
-                  query: { id: itemId },
-                },
-                card.href,
-              )
-            }
           }}
         >
           <CardTitle>{card.title}</CardTitle>
@@ -81,6 +64,8 @@ const MenuCards: FC<Props> = ({ cards, itemId }) => {
         </Card>
       ))}
       <Card
+        shallow
+        href={'/login'}
         onClick={() => {
           logout(router)
         }}
