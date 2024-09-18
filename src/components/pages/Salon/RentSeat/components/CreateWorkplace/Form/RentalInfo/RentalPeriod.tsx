@@ -1,12 +1,11 @@
 import { FC, useEffect, useState } from 'react'
-import { Field } from 'react-final-form'
+import { Field, useForm } from 'react-final-form'
 import Checkbox from './Checkbox'
 import Input from './Input'
 import styled from 'styled-components'
-import { laptopBreakpoint } from '../../../../../../../../../styles/variables'
-import { ISetState } from 'src/types/common'
+import { laptopBreakpoint } from '../../../../../../../../styles/variables'
 import { IRentalPeriod } from 'src/types'
-import { IPeriod } from '../../../type'
+import { IPeriod } from '../../type'
 
 const Wrapper = styled.div`
   margin-bottom: 30px;
@@ -51,12 +50,14 @@ const BottomCheckbox = styled.div`
 `
 
 interface Props {
-  periods: IPeriod[]
-  setPeriods: ISetState<IPeriod[]>
-  retnalPeriods: IRentalPeriod[]
+  rentalPeriods: IRentalPeriod[]
+  initialPeriod: IPeriod[]
 }
 
-const RentalInfo: FC<Props> = ({ periods, setPeriods, retnalPeriods }) => {
+const RentalPeriod: FC<Props> = ({ rentalPeriods, initialPeriod }) => {
+  const form = useForm()
+  const [periods, setPeriods] = useState<IPeriod[]>(initialPeriod)
+
   const [showRentalPrices, setShowRentalPrices] = useState(
     !periods.find(e => e.id === 'CustomRate'),
   )
@@ -66,6 +67,7 @@ const RentalInfo: FC<Props> = ({ periods, setPeriods, retnalPeriods }) => {
   }
 
   useEffect(() => {
+    form.change('rentalPeriod', periods)
     if (!periods.length) {
       setPeriods([{ id: 'CustomRate' }])
       setShowRentalPrices(false)
@@ -104,14 +106,14 @@ const RentalInfo: FC<Props> = ({ periods, setPeriods, retnalPeriods }) => {
     const findType = periods.find(type => type.id === value)
     if (!findType) setPeriods([...periods, { id: value }])
   }
-
   return (
     <Wrapper>
       <TopCheckboxes showRentalPrices={showRentalPrices}>
-        {retnalPeriods.map(period => (
+        {rentalPeriods.map(period => (
           <FieldsWrapper>
             <FieldWrapCheckbox>
               <Field
+                tabIndex="-1"
                 name="rentalRate"
                 value={period.id}
                 component={Checkbox}
@@ -135,6 +137,7 @@ const RentalInfo: FC<Props> = ({ periods, setPeriods, retnalPeriods }) => {
                 min="0"
                 periods={periods}
                 setPeriods={setPeriods}
+                form={form}
               />
             </FieldWrap>
           </FieldsWrapper>
@@ -155,4 +158,4 @@ const RentalInfo: FC<Props> = ({ periods, setPeriods, retnalPeriods }) => {
   )
 }
 
-export default RentalInfo
+export default RentalPeriod

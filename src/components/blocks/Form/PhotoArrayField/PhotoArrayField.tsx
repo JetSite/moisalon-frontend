@@ -8,9 +8,11 @@ export interface PhotoArrayFieldProps
   extends Omit<IUsePhotoProps, 'onRemove' | 'onChange' | 'onAdd' | 'photos'> {
   variant?: 'normal' | string
   description?: string
+  name?: string
 }
 
 const PhotoArrayField: FC<PhotoArrayFieldProps> = ({
+  name = 'photos',
   variant = 'normal',
   kind,
   photoType,
@@ -23,7 +25,7 @@ const PhotoArrayField: FC<PhotoArrayFieldProps> = ({
         const { value: defaultPhotoId, onChange: onSetDefault } = input
 
         return (
-          <FieldArray name="photos">
+          <FieldArray name={name}>
             {({ fields }) => {
               const { value, remove, update, insert } = fields
 

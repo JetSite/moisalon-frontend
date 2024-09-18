@@ -19,7 +19,7 @@ export interface ISalonWorkplace {
   subRent: boolean
   title: string
   workspaces_types: IWorkplacesType[]
-  rentalPeriod: ISalonRentalPeriod[]
+  rentalPeriod: ISalonRentalPeriod[] | null
   payment_methods: IPaymentMethods[]
   gallery: IPhoto[]
   cover: IPhoto | null
@@ -30,10 +30,11 @@ export interface ISalonWorkplace {
   floor: number | null
   hasWindows: boolean
   isAvailableForRent: boolean
-  space: string
-  wetPointsHands: string | null
-  wetPointsHead: string | null
-  wetPointsShower: string | null
+  space: number | null
+  wetPointsHands: number | null
+  wetPointsHead: number | null
+  wetPointsShower: number | null
   withLicense: boolean
   services: IService[]
+  salon: { id: IID }
 }

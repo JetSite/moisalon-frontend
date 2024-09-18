@@ -194,11 +194,8 @@ const CabinetForm: FC<CabinetFormProps> = ({
         <Title>Мои данные </Title>
         <SubTitle>Пользователь </SubTitle>
       </Flex>
-      <AutoFocusedForm
+      <AutoFocusedForm<ICabinetFormIvitialValues>
         initialValues={initialValues}
-        initialValuesEqual={(initial, values) => {
-          return JSON.stringify(initial) === JSON.stringify(values)
-        }}
         onSubmit={onSubmit}
         render={({ form, handleSubmit }) => {
           useEffect(() => {

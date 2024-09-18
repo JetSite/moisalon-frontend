@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC, useMemo, useState } from 'react'
 import { MainContainer, MobileHidden } from '../../../../styles/common'
 import Header from '../../MainPage/components/Header'
 import Controls from '../../../blocks/Form/Controls'
@@ -10,26 +10,32 @@ import { ISalonPage } from 'src/types/salon'
 import { useLazyQuery, useQuery } from '@apollo/client'
 import { getSalonPage } from 'src/api/graphql/salon/queries/getSalon'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
-import { IPhoto, IRentalPeriod } from 'src/types'
-import { IEquipment } from 'src/types/equipment'
+import {
+  IPaymentMethods,
+  IPhoto,
+  IRentalPeriod,
+  IWorkplacesType,
+} from 'src/types'
+import { IGroupedCategories } from 'src/utils/getGrupedServices'
+import { quantityFieldsConfig } from './config'
 
-interface ITab {
-  id: string
-  value: string
-  anchor: string
-  href: string
-  link: string
-  back: boolean
-}
-
-interface Props {
+export interface IRentSeatProps {
   salonData: ISalonPage
-  retnalPeriods: IRentalPeriod[]
-  equipments: IEquipment[]
+  rentalPeriods: IRentalPeriod[]
+  groupedEquipments: IGroupedCategories[]
+  paymentMethods: IPaymentMethods[]
+  workplaceTypes: IWorkplacesType[]
 }
 
-const RentSeat: FC<Props> = ({ salonData, retnalPeriods, equipments }) => {
+const RentSeat: FC<IRentSeatProps> = ({
+  salonData,
+  rentalPeriods,
+  groupedEquipments,
+  paymentMethods,
+  workplaceTypes,
+}) => {
   const [salon, setSalon] = useState<ISalonPage>(salonData)
+  const quantityFields = useMemo(() => quantityFieldsConfig, [])
   const [refetchSalon, { loading }] = useLazyQuery(getSalonPage, {
     variables: { id: salonData.id },
     onCompleted: async data => {
@@ -39,18 +45,21 @@ const RentSeat: FC<Props> = ({ salonData, retnalPeriods, equipments }) => {
     },
   })
 
-  const [tabs] = useState<ITab[]>([
-    {
-      id: '1',
-      value: 'Данные салона',
-      anchor: 'cabinet',
-      href: '/rentSalonSeat',
-      link: salonData.id,
-      back: true,
-    },
-  ])
+  const tabs = useMemo(
+    () => [
+      {
+        id: '1',
+        value: 'Данные салона',
+        anchor: 'cabinet',
+        href: '/rentSalonSeat',
+        link: salonData.id,
+        back: true,
+      },
+    ],
+    [salonData],
+  )
 
-  console.log(salon.rent)
+  console.log('salon', salon)
 
   return (
     <>
@@ -73,15 +82,16 @@ const RentSeat: FC<Props> = ({ salonData, retnalPeriods, equipments }) => {
               }
             />
           </MobileHidden>
-          {salonData?.rent ? (
-            <RentWorkplaceForm
-              refetchSalonLoad={loading}
-              refetchSalon={refetchSalon}
-              retnalPeriods={retnalPeriods}
-              equipments={equipments}
-              salon={salon}
-            />
-          ) : null}
+          <RentWorkplaceForm
+            refetchSalonLoad={loading}
+            refetchSalon={refetchSalon}
+            rentalPeriods={rentalPeriods}
+            groupedEquipments={groupedEquipments}
+            salon={salon}
+            paymentMethods={paymentMethods}
+            quantityFields={quantityFields}
+            workplaceTypes={workplaceTypes}
+          />
         </Wrapper>
       </MainContainer>
     </>

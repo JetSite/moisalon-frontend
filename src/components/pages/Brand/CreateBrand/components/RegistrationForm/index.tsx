@@ -99,11 +99,10 @@ const RegistrationForm: FC<Props> = ({
   return (
     <Wrapper>
       <Title>Информация о бренде</Title>
-      <AutoFocusedForm
-        onSubmit={e => onSubmit(e as IInitialValuesBrandForm)}
+      <AutoFocusedForm<IInitialValuesBrandForm>
+        onSubmit={onSubmit}
         initialValues={initialValues}
         keepDirtyOnReinitialize
-        initialValuesEqual={() => true}
         render={({ handleSubmit, form }) => {
           useEffect(() => {
             const unsubscribe = form.subscribe(

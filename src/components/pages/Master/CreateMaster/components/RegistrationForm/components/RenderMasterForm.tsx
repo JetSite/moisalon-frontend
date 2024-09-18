@@ -10,13 +10,14 @@ import { ISetState } from 'src/types/common'
 import { IPhoto } from 'src/types'
 import { IMasterFormProps } from '..'
 import { ICoordinate } from 'src/components/blocks/Form/AddressField/AddressNoSalonField'
+import { IInitialValuesMasterForm } from '../utils/getInitialValuesMasterForm'
 
 interface Props
   extends Omit<
     IMasterFormProps,
     'setPhotosArray' | 'setNoPhotoError' | 'cities'
   > {
-  formProps: FormRenderProps<Record<string, any>>
+  formProps: FormRenderProps<IInitialValuesMasterForm>
   loading: boolean
   setClickCity: ISetState<string | null>
   errors: string[] | null
@@ -44,9 +45,7 @@ export const RenderMasterForm: FC<Props> = ({
   setClickCityResume,
   setCoordinates,
 }) => {
-  const { handleSubmit, form, valid } = formProps
-
-  console.log('valid', valid)
+  const { handleSubmit, form } = formProps
 
   useEffect(() => {
     const unsubscribe = form.subscribe(

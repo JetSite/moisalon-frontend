@@ -12,6 +12,7 @@ import splitArray from 'src/utils/newUtils/common/splitArray'
 import { useForm } from 'react-final-form'
 
 export interface IUsePhotoProps {
+  name?: string
   photos: IPhoto[]
   setPhotosArray?: ISetState<IPhoto[]>
   onSetDefault?: (event: any) => void

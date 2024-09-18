@@ -1,7 +1,8 @@
 import { Field, FieldRenderProps } from 'react-final-form'
 import styled from 'styled-components'
-import { laptopBreakpoint } from '../../../../../../../../../styles/variables'
+import { laptopBreakpoint } from '../../../../../../../../styles/variables'
 import { FC } from 'react'
+import { IPeriod } from '../../type'
 
 const CheckboxWrapper = styled.div`
   height: 21px;
@@ -53,7 +54,7 @@ interface Props extends FieldRenderProps<string, HTMLElement> {
   label: string
   name: string
   checkboxPricesHandler: (e: string) => void
-  rentalType: IRentalType[]
+  rentalType: IPeriod[]
 }
 
 const Checkbox: FC<Props> = ({

@@ -1,10 +1,14 @@
 import styled from 'styled-components'
 import { Field } from 'react-final-form'
-import { laptopBreakpoint } from '../../../../../../../styles/variables'
+import { laptopBreakpoint } from '../../../../../../../../styles/variables'
 
 export const Wrapper = styled.div``
 
 export const FieldWrap = styled.div`
+  margin-top: 14px;
+`
+
+export const FieldWrapItem = styled.li`
   margin-top: 14px;
 `
 
@@ -37,7 +41,7 @@ export const Detail = styled.p`
   text-transform: uppercase;
 `
 
-export const CheckboxWrapper = styled.div`
+export const CheckboxWrapper = styled.li`
   margin-bottom: 15px;
 `
 
@@ -76,6 +80,7 @@ export const Label = styled.label`
   cursor: pointer;
 `
 
-export const CheckboxLicenseWrapper = styled(CheckboxWrapper)`
+export const CheckboxLicenseWrapper = styled.div`
+  margin-bottom: 15px;
   margin-top: 20px;
 `

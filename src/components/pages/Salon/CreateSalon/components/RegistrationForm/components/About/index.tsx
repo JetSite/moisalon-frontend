@@ -33,7 +33,10 @@ interface Props extends IFormAboutProps {
 }
 
 export interface IPhotoArrayPros
-  extends Pick<IUsePhotoProps, 'photoType' | 'kind' | 'setPhotosArray'> {}
+  extends Pick<
+    IUsePhotoProps,
+    'photoType' | 'kind' | 'setPhotosArray' | 'name'
+  > {}
 
 const About: FC<Props> = ({
   setClickCity,

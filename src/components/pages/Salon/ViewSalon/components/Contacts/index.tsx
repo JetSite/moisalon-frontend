@@ -43,7 +43,7 @@ interface Props {
   socialNetworkUrls: ISocialNetworks[]
   metroStations?: IMetroStations[]
   locationDirections: string
-  coordinates: { longitude: string; latitude: string }
+  coordinates: { longitude: number; latitude: number }
 }
 
 const Contacts: FC<Props> = ({
@@ -57,10 +57,6 @@ const Contacts: FC<Props> = ({
   coordinates,
 }) => {
   const [openPhone, setOpenPhone] = useState<boolean>(true)
-
-  useEffect(() => {
-    setOpenPhone(false)
-  }, [])
 
   return (
     <MainContainer id="contacts">

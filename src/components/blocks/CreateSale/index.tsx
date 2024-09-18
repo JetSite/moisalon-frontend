@@ -127,8 +127,8 @@ const CreateSale: FC<Props> = ({ setCreateSale, type, activeProfile }) => {
 
   return (
     <>
-      <AutoFocusedForm
-        onSubmit={e => onSubmit(e as IFormValues)}
+      <AutoFocusedForm<IFormValues>
+        onSubmit={onSubmit}
         subscription={{ values: true }}
         render={({ handleSubmit, pristine, values }) => {
           return (
