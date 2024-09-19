@@ -1,10 +1,7 @@
 import { useRouter } from 'next/router'
 import { FC } from 'react'
 import { ISalon } from 'src/types/salon'
-import {
-  SalonCardWrapper,
-  WrapperItemsSalons,
-} from '../MainPage/components/SearchMain/styled'
+import * as Styled from '../MainPage/components/SearchMain/styled'
 import SalonCard from 'src/components/blocks/SalonCard'
 import Button from 'src/components/ui/Button'
 import { MobileHidden, MobileVisible } from 'src/styles/common'
@@ -26,9 +23,9 @@ export const SalonList: FC<Props> = ({
   const router = useRouter()
   return (
     <>
-      <WrapperItemsSalons>
+      <Styled.WrapperItemsSalons>
         {updateSalonData.map(salon => (
-          <li
+          <Styled.SalonCardWrapper
             key={salon.id}
             onClick={() =>
               router.push(
@@ -37,13 +34,12 @@ export const SalonList: FC<Props> = ({
                   : `/${salon.city.slug}/salon/${salon.id}`,
               )
             }
+            id={salon.id.toString()}
           >
-            <SalonCardWrapper id={salon.id.toString()}>
-              <SalonCard item={salon} rent={rent} loading={loading} />
-            </SalonCardWrapper>
-          </li>
+            <SalonCard item={salon} rent={rent} loading={loading} />
+          </Styled.SalonCardWrapper>
         ))}
-      </WrapperItemsSalons>
+      </Styled.WrapperItemsSalons>
       {hasNextPage ? (
         <>
           <MobileHidden>

@@ -423,8 +423,9 @@ export const MasterInfo = styled.div`
   }
 `
 
-export const SalonCardWrapper = styled.div`
-  width: 373px;
+export const SalonCardWrapper = styled.li`
+  max-width: 373px;
+  width: 30%;
   height: 100%;
   cursor: pointer;
 
