@@ -5,7 +5,7 @@ export const Wrapper = styled.div<{ showCitySelect: boolean }>`
   position: fixed;
   top: 112px;
   right: 0;
-  z-index: 300;
+  z-index: 350;
   min-width: 591px;
   min-height: 580px;
   padding: 52px 120px;
