@@ -3,12 +3,16 @@ import styled from 'styled-components'
 
 import { laptopBreakpoint } from '../../../styles/variables'
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{ isSticky?: boolean }>`
   box-sizing: border-box;
   position: sticky;
-  top: 108px;
-  z-index: 200;
+  top: 80px;
+  z-index: 300;
   background-color: #fff;
+  box-shadow: ${({ isSticky }) =>
+    isSticky
+      ? '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)'
+      : 'none'};
 
   @media (max-width: ${laptopBreakpoint}) {
     top: 86px;
@@ -88,7 +92,7 @@ export const Text = styled.p`
 export const Content = styled.div`
   max-width: 1440px;
   width: 100%;
-  padding: 10px 140px;
+  padding: 20px 140px;
   margin-left: auto;
   margin-right: auto;
 

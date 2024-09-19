@@ -68,12 +68,12 @@ interface IService {
   service_categories?: ICategory[]
 }
 
-interface IRawService {
+export interface IRawService {
   service?: IService
 }
 
 // Тип для результата
-interface IGroupedServices {
+export interface IGroupedServices {
   category: string
   services: IRawService[]
 }

@@ -20,13 +20,14 @@ import { UPDATE_MASTER } from 'src/api/graphql/master/mutations/updateMaster'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { ISalon } from 'src/types/salon'
 import { UPDATE_SALON } from 'src/api/graphql/salon/mutations/updateSalon'
+import { IRawService } from 'src/utils/serviceCatalog'
 
 interface Props {
   servicesData: IGroupedServices[]
   isOwner: boolean
   entries: IMaster | ISalon
   allServices: IServiceCategory[]
-  setServices: Dispatch<SetStateAction<IServices[]>>
+  setServices: Dispatch<SetStateAction<IRawService[]>>
   masterPage?: boolean
   type?: 'master' | 'salon'
   serviceType?: 'default' | 'forMaster'
