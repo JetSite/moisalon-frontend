@@ -5,7 +5,7 @@ import { laptopBreakpoint } from '../../../styles/variables'
 export const Wrapper = styled.div`
   position: relative;
   width: 100%;
-  width: 372.5px;
+  max-width: 372.5px;
   border-radius: 5px;
   background: #ffffff;
   overflow: hidden;

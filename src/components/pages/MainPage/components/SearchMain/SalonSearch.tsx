@@ -51,20 +51,24 @@ export const SalonsSearch: FC<Props> = ({
 
   return (
     <div id="result">
-      <SearchResultsTitle
-        viewCount={updateSalonData.length}
-        totalCount={totalCount}
-        rent={rent}
-        cityData={cityData}
-      />
-      {view === 'list' && !main && rent ? (
-        <RentFilter
-          setFilterOpen={setFilterOpen}
-          filterOpen={filterOpen}
-          filters={filters}
-          setFilters={setFilters}
-        />
-      ) : null}
+      {view === 'list' && (
+        <>
+          <SearchResultsTitle
+            viewCount={updateSalonData.length}
+            totalCount={totalCount}
+            rent={rent}
+            cityData={cityData}
+          />
+          {!main && rent ? (
+            <RentFilter
+              setFilterOpen={setFilterOpen}
+              filterOpen={filterOpen}
+              filters={filters}
+              setFilters={setFilters}
+            />
+          ) : null}
+        </>
+      )}
       <FilterSearchResults
         handleFilter={handleFilter}
         sortProperty={sortProperty}
