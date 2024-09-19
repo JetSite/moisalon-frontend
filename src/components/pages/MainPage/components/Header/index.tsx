@@ -1,29 +1,6 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import {
-  HeaderContent,
-  Image,
-  Nav,
-  NavItemWrapper,
-  Wrapper,
-  WrappperMobile,
-  NavItem,
-  Links,
-  HeaderMenu,
-  LinkCitySelect,
-  CitySelectText,
-  LinkFavorites,
-  LinkProfile,
-  FakeWrapper,
-  LinkSearch,
-  ProfilePhotoWrap,
-  ProfilePhoto,
-  CartIconWrap,
-  Count,
-  LogoWrap,
-  AdditionalNavWrapper,
-  MoreIconWrap,
-} from './styled'
+import * as Styled from './styled'
 import { red } from '../../../../../styles/variables'
 import SearchIcon from './icons/SearchIcon'
 import ProfileIcon from './icons/ProfileIcon'
@@ -99,7 +76,7 @@ const Header = ({ loading = false }) => {
           setFillSearch={setFillSearch}
         />
       ) : null}
-      <WrappperMobile>
+      <Styled.WrappperMobile>
         <MobileHeader
           user={user}
           quantity={quantity}
@@ -114,22 +91,25 @@ const Header = ({ loading = false }) => {
           showSearchPopup={showSearchPopup}
           setShowSearchPopup={setShowSearchPopup}
         />
-      </WrappperMobile>
-      {showSearchPopup ? <FakeWrapper /> : null}
-      <Wrapper showSearchPopup={showSearchPopup} isAboutPage={isAboutPage}>
-        <HeaderContent>
-          <HeaderMenu>
-            <LogoWrap shallow href={`/${city.slug}`}>
-              <Image
+      </Styled.WrappperMobile>
+      {showSearchPopup ? <Styled.FakeWrapper /> : null}
+      <Styled.Wrapper
+        showSearchPopup={showSearchPopup}
+        isAboutPage={isAboutPage}
+      >
+        <Styled.HeaderContent>
+          <Styled.HeaderMenu>
+            <Styled.LogoWrap shallow href={`/${city.slug}`}>
+              <Styled.Image
                 alt="logo"
                 src={isAboutPage ? '/logo-white-header.svg' : '/logo.svg'}
               />
-            </LogoWrap>
-            <Nav>
-              <NavItemWrapper>
+            </Styled.LogoWrap>
+            <Styled.Nav>
+              <Styled.NavItemWrapper>
                 {getMainPageHeaderLinks(city.slug, !!user?.info).navLinks.map(
                   (link, i) => (
-                    <NavItem
+                    <Styled.NavItem
                       key={i}
                       active={!!activeLink(router.pathname, link.pathArr)}
                       disable={link.disabled}
@@ -143,7 +123,7 @@ const Header = ({ loading = false }) => {
                           {link.title}
                         </Link>
                       )}
-                    </NavItem>
+                    </Styled.NavItem>
                   ),
                 )}
                 <AdditionalNav
@@ -153,10 +133,10 @@ const Header = ({ loading = false }) => {
                   setShowAdditionalNav={setShowCatalogMenu}
                   links={getMainPageHeaderLinks(city.slug).addCatalogLinks}
                 />
-              </NavItemWrapper>
-            </Nav>
-            <AdditionalNavWrapper>
-              <MoreIconWrap
+              </Styled.NavItemWrapper>
+            </Styled.Nav>
+            <Styled.AdditionalNavWrapper>
+              <Styled.MoreIconWrap
                 onMouseEnter={() => setFillMoreIcon(red)}
                 onMouseLeave={() =>
                   setFillMoreIcon(isAboutPage ? '#fff' : '#000')
@@ -167,26 +147,28 @@ const Header = ({ loading = false }) => {
                   fill={fillMoreIcon}
                   showAdditionalNav={showAdditionalNav}
                 />
-              </MoreIconWrap>
+              </Styled.MoreIconWrap>
               <AdditionalNav
                 isAboutPage={isAboutPage}
                 showAdditionalNav={showAdditionalNav}
                 setShowAdditionalNav={setShowAdditionalNav}
                 links={getMainPageHeaderLinks(city.slug).addNavLinks}
               />
-            </AdditionalNavWrapper>
-          </HeaderMenu>
-          <Links>
-            <LinkCitySelect onClick={() => setShowCitySelect(!showCitySelect)}>
+            </Styled.AdditionalNavWrapper>
+          </Styled.HeaderMenu>
+          <Styled.Links>
+            <Styled.LinkCitySelect
+              onClick={() => setShowCitySelect(!showCitySelect)}
+            >
               <CityPingIcon
                 showCitySelect={showCitySelect}
                 isAboutPage={isAboutPage}
               />
-              <CitySelectText showCitySelect={showCitySelect}>
+              <Styled.CitySelectText showCitySelect={showCitySelect}>
                 {city.name}
-              </CitySelectText>
-            </LinkCitySelect>
-            <LinkSearch
+              </Styled.CitySelectText>
+            </Styled.LinkCitySelect>
+            <Styled.LinkSearch
               onClick={searchIconClickHandler}
               onMouseMove={() => setFillSearch(red)}
               onMouseLeave={() =>
@@ -196,10 +178,10 @@ const Header = ({ loading = false }) => {
               }
             >
               <SearchIcon fill={fillSearch} />
-            </LinkSearch>
+            </Styled.LinkSearch>
             {!!user?.info ? (
-              <ProfilePhotoWrap href="/masterCabinet">
-                <ProfilePhoto
+              <Styled.ProfilePhotoWrap href="/masterCabinet">
+                <Styled.ProfilePhoto
                   src={
                     user?.info?.avatar
                       ? `${PHOTO_URL}${user?.info?.avatar.url}`
@@ -209,9 +191,9 @@ const Header = ({ loading = false }) => {
                 {/* {unreadMessagesCount > 0 && (
                   <UnreadMessages>{unreadMessagesCount}</UnreadMessages>
                 )} */}
-              </ProfilePhotoWrap>
+              </Styled.ProfilePhotoWrap>
             ) : (
-              <LinkProfile
+              <Styled.LinkProfile
                 href={authConfig.notAuthLink}
                 onMouseMove={() => setFillProfile(red)}
                 onMouseLeave={() =>
@@ -229,10 +211,10 @@ const Header = ({ loading = false }) => {
                 }}
               >
                 <ProfileIcon fill={fillProfile} />
-              </LinkProfile>
+              </Styled.LinkProfile>
             )}
 
-            <LinkFavorites
+            <Styled.LinkFavorites
               // disabled
               // onClick={e => e.preventDefault()}
               href="/favorites"
@@ -240,23 +222,23 @@ const Header = ({ loading = false }) => {
               onMouseLeave={() => setFillFav(isAboutPage ? '#fff' : '#000')}
             >
               <HeartIcon fill={fillFav} />
-            </LinkFavorites>
-            <CartIconWrap
+            </Styled.LinkFavorites>
+            <Styled.CartIconWrap
               shallow
               href={`/cart`}
               onMouseMove={() => setFillCart(red)}
               onMouseLeave={() => setFillCart(isAboutPage ? '#fff' : '#000')}
             >
               <CartIcon fill={fillCart} />
-              {quantity != 0 ? <Count>{quantity}</Count> : null}
-            </CartIconWrap>
-          </Links>
+              {quantity != 0 ? <Styled.Count>{quantity}</Styled.Count> : null}
+            </Styled.CartIconWrap>
+          </Styled.Links>
           <ChangeCityPopup
             openPopup={openPopup && !loading && !!user}
             setPopupOpen={setPopupOpen}
           />
-        </HeaderContent>
-      </Wrapper>
+        </Styled.HeaderContent>
+      </Styled.Wrapper>
       <CitySelect
         showCitySelect={showCitySelect}
         setShowCitySelect={setShowCitySelect}

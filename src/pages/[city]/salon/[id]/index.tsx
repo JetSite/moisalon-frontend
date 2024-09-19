@@ -7,7 +7,6 @@ import Header from '../../../../components/pages/Salon/ViewSalon/components/Head
 import TabsSlider from '../../../../components/ui/TabsSlider'
 import About from '../../../../components/pages/Salon/ViewSalon/components/About'
 import ServicesForClient from '../../../../components/pages/Master/ViewMaster/components/ServicesForClient'
-import { brandsSalon } from '../../../../_graphql-legacy/salon/brandsSalon'
 import Contacts from '../../../../components/pages/Salon/ViewSalon/components/Contacts'
 import SalonReviews from '../../../../components/pages/Salon/ViewSalon/components/SalonReviews'
 import InviteSalon from '../../../../components/pages/Salon/ViewSalon/components/Invite'
@@ -37,7 +36,7 @@ import { UPDATE_SALON } from 'src/api/graphql/salon/mutations/updateSalon'
 import AutoFocusedForm from 'src/components/blocks/Form/AutoFocusedForm'
 import { getServiceCategories } from 'src/api/graphql/service/queries/getServiceCategories'
 import { IService, IServiceCategory, IServices } from 'src/types/services'
-import { getServicesByCategory } from 'src/utils/serviceCatalog'
+import { IRawService, getServicesByCategory } from 'src/utils/serviceCatalog'
 import { GET_SERVICES_M_CAT } from 'src/api/graphql/service/queries/getServicesMCat'
 
 const DecktopWrapper = styled.div`
@@ -71,8 +70,8 @@ const Salon: FC<Props> = ({
   const [photosArray, setPhotosArray] = useState<IPhoto[]>(salon?.photos || [])
   const { user } = useAuthStore(getStoreData)
   const [isPortfolioEditing, setIsPortfolioEditing] = useState<boolean>(false)
-  const [services, setServices] = useState<IServices[]>(salon?.services || [])
-  const [servicesM, setServicesM] = useState<IServices[]>(
+  const [services, setServices] = useState<IRawService[]>(salon?.services || [])
+  const [servicesM, setServicesM] = useState<IRawService[]>(
     salon?.servicesM || [],
   )
   const servicesData = getServicesByCategory(services)

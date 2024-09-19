@@ -28,13 +28,13 @@ export const Wrapper = styled.div<{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: relative;
+  position: fixed;
   box-sizing: border-box;
-
-  position: ${({ showSearchPopup }) => (showSearchPopup ? 'fixed' : 'sticky')};
+  /* position: ${({ showSearchPopup }) =>
+    showSearchPopup ? 'fixed' : 'sticky'}; */
   width: 100%;
   top: 0;
-  z-index: 600;
+  z-index: 200;
   color: ${({ isAboutPage }) => (isAboutPage ? '#fff' : '#000')};
   background-color: ${({ isAboutPage }) => (isAboutPage ? '#000' : '#fff')};
 
