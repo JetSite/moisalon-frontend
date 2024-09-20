@@ -18,7 +18,7 @@ export const FakeWrapper = styled.div`
   height: 112px;
 `
 
-export const Wrapper = styled.div<{
+export const Wrapper = styled.header<{
   showSearchPopup: boolean
   isAboutPage: boolean
 }>`
@@ -28,10 +28,8 @@ export const Wrapper = styled.div<{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: fixed;
   box-sizing: border-box;
-  /* position: ${({ showSearchPopup }) =>
-    showSearchPopup ? 'fixed' : 'sticky'}; */
+  position: ${({ showSearchPopup }) => (showSearchPopup ? 'fixed' : 'sticky')};
   width: 100%;
   top: 0;
   z-index: 200;
@@ -443,7 +441,7 @@ export const CloseBtn = styled.div<{ show: boolean }>`
 `
 
 export const MobileTitle = styled.h2`
-  margin: 10px 0;
+  margin: 12px 0;
   color: #808080;
   font-size: 10px;
   font-weight: 500;

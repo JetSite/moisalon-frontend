@@ -64,7 +64,7 @@ const Header = ({ loading = false }) => {
   }
 
   return (
-    <header>
+    <>
       <CookiePopup />
       {showSearchPopup ? (
         <SearchPopup
@@ -244,7 +244,7 @@ const Header = ({ loading = false }) => {
         setShowCitySelect={setShowCitySelect}
         setShowHamburgerMenu={setShowHamburgerMenu}
       />
-    </header>
+    </>
   )
 }
 
