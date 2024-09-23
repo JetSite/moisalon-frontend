@@ -2,7 +2,7 @@ import { FC, useEffect, useMemo, useState } from 'react'
 import Head from 'next/head'
 import { useQuery } from '@apollo/client'
 import { Wrapper, NoProducts } from './styles'
-import FilterCatalog from '../../ui/FilterCatalog'
+import FilterCatalog, { IFilterCatalog } from '../../ui/FilterCatalog'
 import { getProducts } from 'src/api/graphql/product/queries/getProducts'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import useAuthStore from 'src/store/authStore'
@@ -24,10 +24,10 @@ const BeautyFreeShopPage: FC<IBeautyFreeShopPageProps> = ({
   dataProductCategories,
 }) => {
   const { user } = useAuthStore(getStoreData)
+
   const [selectBrand, setSelectBrand] = useState<IBrand | null>(null)
   const [filter, setFilter] = useState<string | null>(null)
-  const [productsData, setProductsData] = useState(dataProducts)
-  const [selectedProduct, setSelectedProduct] = useState('Все категории')
+  const [productsData, setProductsData] = useState<IProduct[]>(dataProducts)
 
   const { refetch: refectchProducts, loading: refetchLoading } = useQuery(
     getProducts,
@@ -59,8 +59,6 @@ const BeautyFreeShopPage: FC<IBeautyFreeShopPageProps> = ({
     }
   }, [filter])
 
-  console.log(brands)
-
   return (
     <>
       {/* <Head>
@@ -72,16 +70,17 @@ const BeautyFreeShopPage: FC<IBeautyFreeShopPageProps> = ({
           <meta property="og:image" content={brandData?.photo?.url} />
         ) : null}
       </Head> */}
-      {selectBrand && <Header brand={selectBrand} isOwner={false} />}
+
       <Wrapper>
         <FilterCatalog
           setSelectBrand={setSelectBrand}
           brands={brands}
+          setProductsData={setProductsData}
           productCategories={dataProductCategories}
+          dataProducts={dataProducts}
+          productsData={productsData}
           setFilterProduct={setFilter}
           filterProduct={filter}
-          selectedProduct={selectedProduct}
-          setSelectedProduct={setSelectedProduct}
         />
       </Wrapper>
       {productsData && !!productsData?.length ? (

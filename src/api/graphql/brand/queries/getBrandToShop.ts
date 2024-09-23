@@ -12,16 +12,31 @@ import { phonesFragment } from '../../fragments/phones'
 import { productFragment } from '../../product/fragment/product'
 import { metaInfo } from '../../common/metaInfo'
 
-export const BRANDS = gql`
+export const BRANDS_TO_SHOP = gql`
   query brands($itemsCount: Int, $page: Int) {
     brands(pagination: { page: $page, pageSize: $itemsCount }) {
       data {
         id
         attributes {
           name
+          slug
+          seoTitle
+          seoDescription
+          description
+          address
+          name
+          history
           rating
           ratingCount
           reviewsCount
+          email
+          office
+          latitude
+          longitude
+          manufacture
+          minimalOrderPrice
+          termsDeliveryPrice
+          webSiteUrl
           socialNetworks {
             ${socialNetworksFragment}
           }
@@ -36,6 +51,9 @@ export const BRANDS = gql`
           }
           logo {
             ${imageInfo}
+          }
+          products {
+            ${productFragment}
           }
         }
       }

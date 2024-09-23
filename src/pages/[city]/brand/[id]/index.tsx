@@ -12,7 +12,7 @@ import InviteBrand from '../../../../components/pages/Brand/ViewBrand/components
 import Line from '../../../../components/pages/MainPage/components/Line'
 import Slider from '../../../../components/blocks/Slider'
 import { getBrand } from 'src/api/graphql/brand/queries/getBrand'
-import { BRANDS } from 'src/api/graphql/brand/queries/BRANDS'
+import { BRANDS } from 'src/api/graphql/brand/queries/getBrands'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { getStoreData } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'

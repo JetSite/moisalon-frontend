@@ -64,7 +64,7 @@ const MasterCabinet: FC<Props> = ({ user, requests, cities }) => {
     }
   }, [router?.query?.tab])
 
-  console.log(activeTab)
+  console.log(requests)
 
   return (
     <>

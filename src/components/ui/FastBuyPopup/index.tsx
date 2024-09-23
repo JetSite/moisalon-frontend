@@ -85,8 +85,6 @@ const FastBuyPopup: FC<Props> = ({
     },
   })
 
-  console.log('name', name)
-
   const buyProduct = () => {
     if (!name || name.length < 2) {
       setError('Некорректное имя')

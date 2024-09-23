@@ -6,7 +6,7 @@ import AllBrandsPage, {
   IBrandPageProps,
 } from '../../../components/pages/Brand/AllBrands'
 import { citySuggestionsQuery } from '../../../_graphql-legacy/city/citySuggestionsQuery'
-import { BRANDS } from 'src/api/graphql/brand/queries/BRANDS'
+import { BRANDS } from 'src/api/graphql/brand/queries/getBrands'
 import { totalBrands } from 'src/api/graphql/brand/queries/totalBrands'
 import { totalSalons } from 'src/api/graphql/salon/queries/totalSalons'
 import { totalMasters } from 'src/api/graphql/master/queries/totalMasters'

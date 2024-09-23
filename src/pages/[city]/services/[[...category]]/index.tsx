@@ -11,7 +11,7 @@ import { getSalonsByService } from 'src/api/graphql/salon/queries/getSalonsBySer
 import { IMaster } from 'src/types/masters'
 import { ISalon } from 'src/types/salon'
 import { getMasters } from 'src/api/graphql/master/queries/getMasters'
-import { BRANDS } from 'src/api/graphql/brand/queries/BRANDS'
+import { BRANDS } from 'src/api/graphql/brand/queries/getBrands'
 import { getSalons } from 'src/api/graphql/salon/queries/getSalons'
 import { IBrand } from 'src/types/brands'
 

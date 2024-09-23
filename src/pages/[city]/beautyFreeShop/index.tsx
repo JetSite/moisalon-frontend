@@ -21,7 +21,7 @@ import { GetServerSideProps, NextPage } from 'next'
 import { Nullable } from 'src/types/common'
 import { IBrand } from 'src/types/brands'
 import { IProduct, IProductCategories } from 'src/types/product'
-import { BRANDS } from 'src/api/graphql/brand/queries/BRANDS'
+import { BRANDS_TO_SHOP } from 'src/api/graphql/brand/queries/getBrandToShop'
 
 interface Props extends IBeautyFreeShopPageProps {}
 
@@ -49,7 +49,7 @@ export const getServerSideProps: GetServerSideProps<
   const apolloClient = initializeApollo()
 
   const brandsRes = await apolloClient.query({
-    query: BRANDS,
+    query: BRANDS_TO_SHOP,
     variables: { itemsCount: 100 },
   })
 

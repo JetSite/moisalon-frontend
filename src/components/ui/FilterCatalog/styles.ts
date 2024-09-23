@@ -1,8 +1,9 @@
 import styled from 'styled-components'
-import Select from '../../blocks/Form/Select'
+import Select, { ISelectProps } from '../../blocks/Form/Select'
 import { red, laptopBreakpoint } from '../../../styles/variables.js'
 
 export const Wrapper = styled.div`
+  background-color: white;
   margin-bottom: 20px;
   display: flex;
   justify-content: space-between;

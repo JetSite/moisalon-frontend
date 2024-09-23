@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client'
-import { BRANDS } from 'src/api/graphql/brand/queries/BRANDS'
+import { BRANDS } from 'src/api/graphql/brand/queries/getBrands'
 import Slider from '../../../../blocks/Slider'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { FC } from 'react'
