@@ -19,7 +19,7 @@ import {
   LogoBlock,
   Photo,
 } from './styled'
-import RatingEdit from '../../../../ui/RatingEdit/index.tsx'
+import RatingEdit from '../../../../ui/RatingEdit'
 import {
   favoritesInStorage,
   inStorage,
@@ -36,7 +36,7 @@ const Title = ({
   brand,
   scoreBrandCount,
   loadingScore,
-  me,
+  user,
   refetchBrand,
   refetchScore,
 }) => {

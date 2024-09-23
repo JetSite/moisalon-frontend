@@ -28,12 +28,11 @@ export const Wrapper = styled.div<{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: fixed;
+  /* position: relative; */
   box-sizing: border-box;
-  /* position: ${({ showSearchPopup }) =>
-    showSearchPopup ? 'fixed' : 'sticky'}; */
+  position: ${({ showSearchPopup }) => (showSearchPopup ? 'fixed' : 'sticky')};
   width: 100%;
-  top: 0;
+  top: 0px;
   z-index: 200;
   color: ${({ isAboutPage }) => (isAboutPage ? '#fff' : '#000')};
   background-color: ${({ isAboutPage }) => (isAboutPage ? '#000' : '#fff')};
@@ -43,7 +42,7 @@ export const Wrapper = styled.div<{
   }
 `
 
-export const WrappperMobile = styled.div`
+export const WrappperMobile = styled.header`
   display: none;
 
   @media (max-width: ${laptopBreakpoint}) {
@@ -415,6 +414,7 @@ export const AdditionalNavContent = styled.div<{
 }>`
   display: ${({ showAdditionalNav }) => (showAdditionalNav ? 'flex' : 'none')};
   position: absolute;
+  z-index: 400;
   top: 35px;
   left: ${props => (props.catalog ? 'initial' : '-2px')};
   right: ${props => (props.catalog ? '0' : 'initial')};
@@ -443,7 +443,7 @@ export const CloseBtn = styled.div<{ show: boolean }>`
 `
 
 export const MobileTitle = styled.h2`
-  margin: 10px 0;
+  margin: 12px 0;
   color: #808080;
   font-size: 10px;
   font-weight: 500;

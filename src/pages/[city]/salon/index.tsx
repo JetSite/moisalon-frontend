@@ -13,7 +13,7 @@ import { fetchCity } from 'src/api/utils/fetchCity'
 import { defaultValues } from 'src/api/authConfig'
 import { ISalon } from 'src/types/salon'
 import { IPagination } from 'src/types'
-import { getBrands } from 'src/api/graphql/brand/queries/getBrands'
+import { BRANDS } from 'src/api/graphql/brand/queries/BRANDS'
 import { IBrand } from 'src/types/brands'
 import { getMasters } from 'src/api/graphql/master/queries/getMasters'
 import { IMaster } from 'src/types/masters'
@@ -66,7 +66,7 @@ export const getServerSideProps: GetServerSideProps<
       variables: { slug: ctx.query.city, pageSize: 9, sort: ['rating:asc'] },
     }),
     apolloClient.query({
-      query: getBrands,
+      query: BRANDS,
       variables: {
         itemsCount: 10,
       },

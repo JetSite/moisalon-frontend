@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, FC } from 'react'
 import { useMutation } from '@apollo/react-hooks'
 import { PHOTO_URL } from '../../../api/variables'
 import { CSSTransition } from 'react-transition-group'
@@ -32,8 +32,19 @@ import {
   PhoneCode,
 } from './styles'
 import RotatingLoader from '../RotatingLoader'
+import { IMe } from 'src/types/me'
 
-const FastBuyPopup = ({ item, openBuyPopup, setOpenBuyPopup, me, brand }) => {
+interface Props {
+  me: IMe
+}
+
+const FastBuyPopup: FC<Props> = ({
+  item,
+  openBuyPopup,
+  setOpenBuyPopup,
+  me,
+  brand,
+}) => {
   const [productQuantity, setProductQuantity] = useState(1)
   const [phone, setPhone] = useState('')
   const [name, setName] = useState('')
@@ -44,11 +55,11 @@ const FastBuyPopup = ({ item, openBuyPopup, setOpenBuyPopup, me, brand }) => {
   useEffect(() => {
     if (!me?.info) return
 
-    if (me.info.displayName) {
-      setName(me.info.displayName)
+    if (me.info.username) {
+      setName(me.info.username)
     }
-    if (me.info.phoneNumber) {
-      setPhone(formatMobileNumber(me.info.phoneNumber.substring(1)))
+    if (me.info.phone) {
+      setPhone(formatMobileNumber(me.info.phone))
     }
   }, [me])
 
@@ -74,6 +85,8 @@ const FastBuyPopup = ({ item, openBuyPopup, setOpenBuyPopup, me, brand }) => {
     },
   })
 
+  console.log('name', name)
+
   const buyProduct = () => {
     if (!name || name.length < 2) {
       setError('Некорректное имя')
@@ -92,11 +105,12 @@ const FastBuyPopup = ({ item, openBuyPopup, setOpenBuyPopup, me, brand }) => {
       phone: `8${phone.replace(/-/g, '')}`,
     }
 
-    sendOrder({
-      variables: {
-        input: orderInput,
-      },
-    })
+    // sendOrder({
+    //   variables: {
+    //     input: orderInput,
+    //   },
+    // })
+    setSuccess(true)
   }
 
   const closePopup = e => {
@@ -204,7 +218,7 @@ const FastBuyPopup = ({ item, openBuyPopup, setOpenBuyPopup, me, brand }) => {
                       </QuantityButtons>
                     </QuantityWrap>
                     <Error>{error ? error : ''}</Error>
-                    <ButtonPopup onClick={buyProduct} variant="red" disabled>
+                    <ButtonPopup onClick={buyProduct} variant="red">
                       Отправить заказ
                     </ButtonPopup>
                   </>

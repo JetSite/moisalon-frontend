@@ -1,39 +1,33 @@
 import { FC, useEffect, useMemo, useState } from 'react'
 import Head from 'next/head'
 import { useQuery } from '@apollo/client'
-import Header from './components/Header'
 import { Wrapper, NoProducts } from './styles'
 import FilterCatalog from '../../ui/FilterCatalog'
-import useCheckMobileDevice from '../../../hooks/useCheckMobileDevice'
 import { getProducts } from 'src/api/graphql/product/queries/getProducts'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
-import { GET_CART } from 'src/api/graphql/cart/queries/getCart'
 import Catalog from '../Catalog'
-import useBaseStore from 'src/store/baseStore'
-import { IProduct } from 'src/types/product'
+import { IProduct, IProductCategories } from 'src/types/product'
+import { IBrand } from 'src/types/brands'
+import Header from '../Brand/ViewBrand/components/Header'
 
-interface IBeautyFreeShopPageProps {
-  brand: any
-  me: any
+export interface IBeautyFreeShopPageProps {
+  brands: IBrand[]
   dataProducts: IProduct[]
-  dataProductCategories: any
+  dataProductCategories: IProductCategories[]
 }
 
 const BeautyFreeShopPage: FC<IBeautyFreeShopPageProps> = ({
-  brand,
-  me,
+  brands,
   dataProducts,
   dataProductCategories,
 }) => {
   const { user } = useAuthStore(getStoreData)
-  const [filter, setFilter] = useState(null)
+  const [selectBrand, setSelectBrand] = useState<IBrand | null>(null)
+  const [filter, setFilter] = useState<string | null>(null)
   const [productsData, setProductsData] = useState(dataProducts)
-  // const [refetchLoading, setRefetchLoading] = useState(false)
   const [selectedProduct, setSelectedProduct] = useState('Все категории')
-
-  const isMobile = useCheckMobileDevice()
 
   const { refetch: refectchProducts, loading: refetchLoading } = useQuery(
     getProducts,
@@ -65,20 +59,24 @@ const BeautyFreeShopPage: FC<IBeautyFreeShopPageProps> = ({
     }
   }, [filter])
 
+  console.log(brands)
+
   return (
     <>
-      <Head>
-        {brand?.seo?.title ? <title>{brand?.seo?.title}</title> : null}
-        {brand?.seo?.description ? (
-          <meta name="description" content={brand?.seo?.description} />
+      {/* <Head>
+        {brandData?.seo?.title ? <title>{brandData?.seo?.title}</title> : null}
+        {brandData?.seo?.description ? (
+          <meta name="description" content={brandData?.seo?.description} />
         ) : null}
-        {brand?.photo?.url ? (
-          <meta property="og:image" content={brand?.photo?.url} />
+        {brandData?.photo?.url ? (
+          <meta property="og:image" content={brandData?.photo?.url} />
         ) : null}
-      </Head>
-      {/* <Header me={me} brand={brand} /> */}
+      </Head> */}
+      {selectBrand && <Header brand={selectBrand} isOwner={false} />}
       <Wrapper>
         <FilterCatalog
+          setSelectBrand={setSelectBrand}
+          brands={brands}
           productCategories={dataProductCategories}
           setFilterProduct={setFilter}
           filterProduct={filter}
@@ -95,8 +93,7 @@ const BeautyFreeShopPage: FC<IBeautyFreeShopPageProps> = ({
           loading={refetchLoading}
           // loadingCart={loadingCart}
           noTitle
-          me={me}
-          brand={brand}
+          brandData={brands}
         />
       ) : (
         <Wrapper>

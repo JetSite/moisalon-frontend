@@ -85,7 +85,7 @@ export const RadioWrap = styled.div`
   }
 `
 
-export const ShipingItem = styled.div`
+export const ShipingItem = styled.div<{ active?: boolean }>`
   width: 173px;
   border: ${props => (props.active ? '1px solid #f03' : '1px solid #000000')};
   border-radius: 50px;

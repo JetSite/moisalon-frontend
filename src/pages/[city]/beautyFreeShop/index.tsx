@@ -14,38 +14,43 @@ import { getStoreData, getStoreEvent } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
 import { getProducts } from 'src/api/graphql/product/queries/getProducts'
 import { getProductCategories } from 'src/api/graphql/product/queries/getProductCategories'
-import BeautyFreeShopPage from 'src/components/pages/BeautyFreeShop'
+import BeautyFreeShopPage, {
+  IBeautyFreeShopPageProps,
+} from 'src/components/pages/BeautyFreeShop'
+import { GetServerSideProps, NextPage } from 'next'
+import { Nullable } from 'src/types/common'
+import { IBrand } from 'src/types/brands'
+import { IProduct, IProductCategories } from 'src/types/product'
+import { BRANDS } from 'src/api/graphql/brand/queries/BRANDS'
 
-const BeautyFreeShop = ({
-  brandData,
+interface Props extends IBeautyFreeShopPageProps {}
+
+const BeautyFreeShop: NextPage<Props> = ({
+  brands,
   dataProducts,
   dataProductCategories,
-  cityData,
 }) => {
-  const [brand, setBrand] = useState(brandData)
-  const { me } = useAuthStore(getStoreData)
-  const { setMe } = useAuthStore(getStoreEvent)
-
   return (
     <MainLayout>
       <MainContainer>
         <BeautyFreeShopPage
           dataProducts={dataProducts}
           dataProductCategories={dataProductCategories}
-          me={me}
-          brand={brand}
+          brands={brands}
         />
       </MainContainer>
     </MainLayout>
   )
 }
 
-export async function getServerSideProps(ctx) {
+export const getServerSideProps: GetServerSideProps<
+  Nullable<Props>
+> = async ctx => {
   const apolloClient = initializeApollo()
 
-  const brandQueryRes = await apolloClient.query({
-    query: getBrand,
-    variables: { id: 4 },
+  const brandsRes = await apolloClient.query({
+    query: BRANDS,
+    variables: { itemsCount: 100 },
   })
 
   const data = await Promise.all([
@@ -57,7 +62,7 @@ export async function getServerSideProps(ctx) {
     }),
   ])
 
-  const brand = flattenStrapiResponse(brandQueryRes?.data?.brand?.data)
+  const brands = flattenStrapiResponse(brandsRes?.data?.brands)
   const products = flattenStrapiResponse(data[0]?.data?.products?.data)
   const productCategories = flattenStrapiResponse(
     data[1]?.data?.productCategories?.data,
@@ -65,7 +70,7 @@ export async function getServerSideProps(ctx) {
 
   return addApolloState(apolloClient, {
     props: {
-      brandData: brand,
+      brands,
       dataProducts: products,
       dataProductCategories: productCategories,
       cityData: 'Москва',

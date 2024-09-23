@@ -33,7 +33,6 @@ interface Props {
 }
 
 const Header: FC<Props> = ({ brand, isOwner }) => {
-  const router = useRouter()
   const [toggleTerms, setToggleTerms] = useState(false)
   const [myPrice, setMyPrice] = useState<string | null>(
     brand?.minimalOrderPrice?.toString() || null,

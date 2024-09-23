@@ -6,9 +6,6 @@ import { useRouter } from 'next/router'
 import BackButton from '../../ui/BackButton'
 import { Wrapper, SuccessOrderWrapper, SuccessOrderText } from './styles'
 import OrderForm from './components/OrderForm'
-import catalogOrDefault from '../../../utils/catalogOrDefault'
-import { removeItemB2cMutation } from '../../../_graphql-legacy/cart/removeItemB2c'
-import { cyrToTranslit } from '../../../utils/translit'
 import useBaseStore from 'src/store/baseStore'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
@@ -18,9 +15,6 @@ import { IAddressSuggestion } from 'src/components/blocks/Form/AddressField/useA
 import { IOrderInput } from 'src/types/orders'
 import SuccessForm from './components/SuccessForm'
 import { REMOVE_CART } from 'src/api/graphql/cart/mutations/removeCart'
-import { USER } from 'src/api/graphql/me/queries/getUser'
-import { useQuery } from '@apollo/client'
-import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 
 const paymentsMethods = {
   1: 'Оплата при доставке',

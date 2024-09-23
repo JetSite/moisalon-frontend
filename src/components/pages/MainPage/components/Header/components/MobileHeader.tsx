@@ -1,23 +1,6 @@
 import { Dispatch, FC, SetStateAction, useEffect } from 'react'
 import Link from 'next/link'
-import {
-  Image,
-  LinkProfile,
-  ProfilePhotoWrap,
-  ProfilePhoto,
-  MobileLogoLink,
-  HamburgerMenuIcon,
-  Line,
-  HeaderMobile,
-  LogoMobile,
-  LeftMobile,
-  RightMobile,
-  LinkSearchMobile,
-  CartIconWrap,
-  Count,
-  CloseBtn,
-  MobileTitle,
-} from '../styled'
+import * as Styled from '../styled'
 import { red } from '../../../../../../styles/variables'
 import SearchIcon from '../icons/SearchIcon'
 import ProfileIcon from '../icons/ProfileIcon'
@@ -80,43 +63,43 @@ export const MobileHeader: FC<Props> = ({
         setShowCitySelect={setShowCitySelect}
         defaultCity={defaultCity}
       />
-      <HeaderMobile showSearchPopup={showSearchPopup}>
-        <LeftMobile>
+      <Styled.HeaderMobile showSearchPopup={showSearchPopup}>
+        <Styled.LeftMobile>
           {!showSearchPopup ? (
-            <HamburgerMenuIcon
+            <Styled.HamburgerMenuIcon
               onClick={() => setShowHamburgerMenu(!showHamburgerMenu)}
             >
-              <Line />
-              <Line />
-              <Line />
-            </HamburgerMenuIcon>
+              <Styled.Line />
+              <Styled.Line />
+              <Styled.Line />
+            </Styled.HamburgerMenuIcon>
           ) : (
-            <CloseBtn
+            <Styled.CloseBtn
               show={showSearchPopup}
               onClick={() => setShowSearchPopup(false)}
             />
           )}
-          <LinkSearchMobile
+          <Styled.LinkSearchMobile
             onClick={() => setShowSearchPopup(!showSearchPopup)}
           >
             <SearchIcon fill={showSearchPopup ? red : '#000'} />
-          </LinkSearchMobile>
-          <LinkSearchMobile onClick={() => setShowCitySelect(true)}>
+          </Styled.LinkSearchMobile>
+          <Styled.LinkSearchMobile onClick={() => setShowCitySelect(true)}>
             <CityPingIcon />
-          </LinkSearchMobile>
-        </LeftMobile>
-        <LogoMobile>
-          <MobileLogoLink>
+          </Styled.LinkSearchMobile>
+        </Styled.LeftMobile>
+        <Styled.LogoMobile>
+          <Styled.MobileLogoLink>
             <Link
               href={`/${city.slug}`}
               // onClick={() => setActiveLink('')}
             >
-              <Image alt="logo" src="/logo.svg" />
+              <Styled.Image alt="logo" src="/logo.svg" />
             </Link>
-          </MobileLogoLink>
-        </LogoMobile>
-        <RightMobile>
-          <LinkProfile
+          </Styled.MobileLogoLink>
+        </Styled.LogoMobile>
+        <Styled.RightMobile>
+          <Styled.LinkProfile
             shallow
             // disabled
             href="/favorites"
@@ -127,39 +110,39 @@ export const MobileHeader: FC<Props> = ({
             // }}
           >
             <HeartIcon fill="#000" />
-          </LinkProfile>
+          </Styled.LinkProfile>
           {isLoggedIn ? (
-            <ProfilePhotoWrap shallow href={'/masterCabinet'}>
-              <ProfilePhoto
+            <Styled.ProfilePhotoWrap shallow href={'/masterCabinet'}>
+              <Styled.ProfilePhoto
                 src={
                   user?.info?.avatar
                     ? `${PHOTO_URL}${user?.info?.avatar.url}`
                     : '/empty-photo.svg'
                 }
               />
-            </ProfilePhotoWrap>
+            </Styled.ProfilePhotoWrap>
           ) : (
-            <LinkProfile
+            <Styled.LinkProfile
               onMouseMove={() => setFillProfile(red)}
               onMouseLeave={() => setFillProfile('#000')}
               href="/login"
               shallow
             >
               <ProfileIcon fill="#000" />
-            </LinkProfile>
+            </Styled.LinkProfile>
           )}
-          <CartIconWrap
+          <Styled.CartIconWrap
             shallow
             href={`/cart`}
             onMouseMove={() => setFillCart(red)}
             onMouseLeave={() => setFillCart('#000')}
           >
             <CartIcon fill="#000" />
-            {quantity != 0 ? <Count>{quantity}</Count> : null}
-          </CartIconWrap>
-        </RightMobile>
-      </HeaderMobile>
-      <MobileTitle>Платформа для мастеров и салонов</MobileTitle>
+            {quantity != 0 ? <Styled.Count>{quantity}</Styled.Count> : null}
+          </Styled.CartIconWrap>
+        </Styled.RightMobile>
+      </Styled.HeaderMobile>
+      <Styled.MobileTitle>Платформа для мастеров и салонов</Styled.MobileTitle>
     </>
   )
 }

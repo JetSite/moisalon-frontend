@@ -8,7 +8,7 @@ import AllRentPage, {
 import { GET_RENT_SALONS } from 'src/api/graphql/salon/queries/getRentSalons'
 import { fetchCity } from 'src/api/utils/fetchCity'
 import { defaultValues } from 'src/api/authConfig'
-import { getBrands } from 'src/api/graphql/brand/queries/getBrands'
+import { BRANDS } from 'src/api/graphql/brand/queries/BRANDS'
 import { getMasters } from 'src/api/graphql/master/queries/getMasters'
 import { getSalons } from 'src/api/graphql/salon/queries/getSalons'
 import { getTotalCount } from 'src/utils/getTotalCount'
@@ -63,7 +63,7 @@ export const getServerSideProps: GetServerSideProps<
       },
     }),
     apolloClient.query({
-      query: getBrands,
+      query: BRANDS,
       variables: {
         itemsCount: 10,
       },

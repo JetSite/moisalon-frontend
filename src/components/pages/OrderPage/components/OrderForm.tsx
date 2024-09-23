@@ -27,7 +27,7 @@ import {
   TextAreaWrap,
   ButtonWrap,
   BrandsAddresses,
-} from './../styles'
+} from '../styles'
 import { useMedia } from 'use-media'
 import { selectedGroupNamesMax } from '../../../../utils/serviceCatalog'
 import Steps from './Steps'

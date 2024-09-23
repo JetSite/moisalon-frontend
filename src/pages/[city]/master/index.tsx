@@ -13,7 +13,7 @@ import { getTotalCount } from 'src/utils/getTotalCount'
 import { fetchCity } from 'src/api/utils/fetchCity'
 import { defaultValues } from 'src/api/authConfig'
 import { IBrand } from 'src/types/brands'
-import { getBrands } from 'src/api/graphql/brand/queries/getBrands'
+import { BRANDS } from 'src/api/graphql/brand/queries/BRANDS'
 import { getMasters } from 'src/api/graphql/master/queries/getMasters'
 import { getSalons } from 'src/api/graphql/salon/queries/getSalons'
 import { ISalon } from 'src/types/salon'
@@ -63,7 +63,7 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
       },
     }),
     apolloClient.query({
-      query: getBrands,
+      query: BRANDS,
       variables: {
         itemsCount: 10,
       },

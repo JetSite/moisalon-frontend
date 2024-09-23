@@ -6,18 +6,18 @@ import Button from '../../ui/Button'
 import Popup from '../../ui/Popup'
 import { CREATE_CART } from 'src/api/graphql/cart/mutations/createCart'
 import { UPDATE_CART } from 'src/api/graphql/cart/mutations/updateCart'
-import { ICart } from 'src/types/product'
+import { ICart, IProduct } from 'src/types/product'
 import useBaseStore from 'src/store/baseStore'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { IUser } from 'src/types/me'
 
 interface ICatalogProps {
-  products: any
-  loading: any
-  user: any
+  products: IProduct[]
+  loading: boolean
+  user: IUser
   cart: ICart
-  me: any
-  noTitle: any
+  noTitle: boolean
   catalog: any
   refetchCart: any
   brand: any
@@ -27,7 +27,6 @@ const Catalog: FC<ICatalogProps> = ({
   products,
   loading,
   user,
-  me,
   noTitle,
   catalog = false,
   brand,
@@ -168,7 +167,6 @@ const Catalog: FC<ICatalogProps> = ({
                 loadingItems={loading}
                 loadingBottom={createCartLoading || updateCartLoading}
                 deleteFromCart={deleteFromCart}
-                me={me}
                 cart={cart}
                 item={item}
                 catalog={catalog}

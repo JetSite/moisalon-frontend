@@ -1,6 +1,6 @@
 import styled from 'styled-components'
-import Select from '../../blocks/Form/Select/index.tsx'
-import { red, laptopBreakpoint } from '../../../styles/variables'
+import Select from '../../blocks/Form/Select'
+import { red, laptopBreakpoint } from '../../../styles/variables.js'
 
 export const Wrapper = styled.div`
   margin-bottom: 20px;
@@ -15,7 +15,7 @@ export const Wrapper = styled.div`
   }
 `
 
-export const Filters = styled.div`
+export const Filters = styled.div<{ variant: keyof typeof colors }>`
   margin-top: 40px;
   margin-bottom: 20px;
   color: ${props => colors[props.variant]};
@@ -48,7 +48,7 @@ export const Category = styled(Filter)`
   /* cursor: pointer; */
 `
 
-export const RestFilters = styled(Filter)`
+export const RestFilters = styled(Filter)<{ variant: keyof typeof colors }>`
   position: relative;
   &:after {
     content: '';
@@ -66,7 +66,10 @@ export const RestFilters = styled(Filter)`
   }
 `
 
-export const FilterItem = styled.div`
+export const FilterItem = styled.div<{
+  variant: keyof typeof activeColors
+  active?: boolean
+}>`
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -103,7 +106,7 @@ export const ProductFilter = styled.div`
   }
 `
 
-export const ProductFilterItem = styled.div`
+export const ProductFilterItem = styled.div<{ active?: boolean }>`
   cursor: pointer;
   margin-right: 37px;
   font-size: 14px;
