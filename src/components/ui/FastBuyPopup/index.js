@@ -44,11 +44,11 @@ const FastBuyPopup = ({ item, openBuyPopup, setOpenBuyPopup, me, brand }) => {
   useEffect(() => {
     if (!me?.info) return
 
-    if (me.info.displayName) {
-      setName(me.info.displayName)
+    if (me.info.username) {
+      setName(me.info.username)
     }
-    if (me.info.phoneNumber) {
-      setPhone(formatMobileNumber(me.info.phoneNumber.substring(1)))
+    if (me.info.phone) {
+      setPhone(formatMobileNumber(me.info.phone))
     }
   }, [me])
 
@@ -85,18 +85,19 @@ const FastBuyPopup = ({ item, openBuyPopup, setOpenBuyPopup, me, brand }) => {
       return
     }
 
-    const orderInput = {
-      productId: item.id,
-      productCount: productQuantity,
-      name,
-      phone: `8${phone.replace(/-/g, '')}`,
-    }
+    // const orderInput = {
+    //   productId: item.id,
+    //   productCount: productQuantity,
+    //   name,
+    //   phone: `8${phone.replace(/-/g, '')}`,
+    // }
 
-    sendOrder({
-      variables: {
-        input: orderInput,
-      },
-    })
+    // sendOrder({
+    //   variables: {
+    //     input: orderInput,
+    //   },
+    // })
+    setSuccess(true)
   }
 
   const closePopup = e => {
@@ -204,7 +205,7 @@ const FastBuyPopup = ({ item, openBuyPopup, setOpenBuyPopup, me, brand }) => {
                       </QuantityButtons>
                     </QuantityWrap>
                     <Error>{error ? error : ''}</Error>
-                    <ButtonPopup onClick={buyProduct} variant="red" disabled>
+                    <ButtonPopup onClick={buyProduct} variant="red">
                       Отправить заказ
                     </ButtonPopup>
                   </>
