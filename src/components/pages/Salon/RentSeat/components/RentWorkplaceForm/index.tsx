@@ -28,7 +28,6 @@ const RentWorkplaceForm: FC<Props> = ({
 }) => {
   const [createWorkplace, setCreateWorkplace] = useState<boolean>(false)
   const [workplace, setWorkplace] = useState<ISalonWorkplace | null>(null)
-  console.log(salon?.workplaces)
 
   return (
     <Wrapper>

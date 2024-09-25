@@ -42,8 +42,7 @@ export type SlideType =
   | 'brands'
   | 'goods'
   | 'ribbon'
-  | 'portfolio'
-  | 'diploms'
+  | 'photos'
   | 'vacancies'
   | 'ads'
   | 'rentSalons'
@@ -53,7 +52,7 @@ interface Props {
   children?: IChildren
   type: SlideType
   items: IMaster[] | IBrand[] | ISalon[] | IPhoto[] | IProduct[] | IVacancy[]
-  title: string
+  title?: string
   typeObject?: IMaster | IBrand | ISalon | IPhoto | null
   noBottom?: boolean
   noAll?: boolean
@@ -72,6 +71,7 @@ interface Props {
   salon?: ISalonPage
   mobileTitleWidth?: boolean
   noPadding?: boolean
+  noAllPadding?: boolean
   city: ICity
 }
 
@@ -98,6 +98,7 @@ const Slider: FC<Props> = ({
   salon = null,
   mobileTitleWidth = false,
   noPadding = false,
+  noAllPadding = false,
   city,
 }) => {
   const navigationPrevRef = useRef(null)
@@ -128,16 +129,16 @@ const Slider: FC<Props> = ({
 
   const firstSlide = items?.length
     ? customProps({
-      type,
-      item: items[0],
-      typeObject,
-      bgColor,
-      isEditing,
-      deleteFunction,
-      salon,
-      landingMaster,
-      city,
-    })
+        type,
+        item: items[0],
+        typeObject,
+        bgColor,
+        isEditing,
+        deleteFunction,
+        salon,
+        landingMaster,
+        city,
+      })
     : null
 
   return (
@@ -148,6 +149,7 @@ const Slider: FC<Props> = ({
             bgWithIcons={type === 'masters'}
             pt={pt}
             pb={pb}
+            noAllPadding={noAllPadding}
             noPadding={noPadding ? noPadding : items?.length === 1}
           >
             <Top>
@@ -168,9 +170,7 @@ const Slider: FC<Props> = ({
                 mobileTitleWidth={mobileTitleWidth}
               >
                 <span>{title}</span>
-                {isOwner ? (
-                  <EditIcons setIsEditing={setIsEditing} />
-                ) : null}
+                {isOwner ? <EditIcons setIsEditing={setIsEditing} /> : null}
               </Title>
               {items?.length > 0 && (
                 <NavigationWrapper>
@@ -266,9 +266,9 @@ const Slider: FC<Props> = ({
             ) : null}
             {children}
             {!landingMaster &&
-              !landingSalon &&
-              !landingBrand &&
-              !noAllButton ? (
+            !landingSalon &&
+            !landingBrand &&
+            !noAllButton ? (
               <ShowAllWrapper>{customTypeProps.showAllLink}</ShowAllWrapper>
             ) : null}
             {!noBottom ? <Bottom>{customTypeProps.bottom}</Bottom> : null}

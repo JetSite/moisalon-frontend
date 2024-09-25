@@ -95,7 +95,7 @@ export const OnlineBookingButton: FC<Props> = ({
     }
   }
   return (
-    <>
+    <div>
       <ButtonWrapper onClick={onOpen}>{children}</ButtonWrapper>
       <>
         <WritePopup
@@ -119,6 +119,6 @@ export const OnlineBookingButton: FC<Props> = ({
           </Button>
         </Popup>
       </>
-    </>
+    </div>
   )
 }

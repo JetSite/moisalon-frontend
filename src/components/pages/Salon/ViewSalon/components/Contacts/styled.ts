@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../../../styles/variables'
+import Link from 'next/link'
 
 export const Wrapper = styled.div`
   padding: 0 140px;
@@ -154,8 +155,7 @@ export const ContentBottom = styled.div`
     flex-direction: column;
   }
 `
-
-const Social = styled.a`
+export const Social = styled(Link)<{ icon: string }>`
   width: 23px;
   height: 23px;
   background-size: cover;
@@ -163,6 +163,8 @@ const Social = styled.a`
   display: block;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
+  background: url(${({ icon }) => icon}) no-repeat center;
+  background-size: contain;
 
   &:hover {
     transform: scale(1.1);
@@ -172,16 +174,6 @@ const Social = styled.a`
     margin-right: 0;
     margin-left: 18px;
   }
-`
-
-export const SocialVk = styled(Social)`
-  background: url('/vk-icon.svg') no-repeat center;
-  background-size: contain;
-`
-
-export const SocialYT = styled(Social)`
-  background: url('/yt-icon.svg') no-repeat center;
-  background-size: contain;
 `
 
 export const BlurPhone = styled.p`

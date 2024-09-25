@@ -222,7 +222,7 @@ const Master: FC<Props> = ({
           <>
             <Slider
               city={city}
-              type="portfolio"
+              type="photos"
               items={works}
               isOwner={isOwner}
               title="Примеры работ"
@@ -261,7 +261,7 @@ const Master: FC<Props> = ({
         {diplomas?.length || isOwner ? (
           <Slider
             city={city}
-            type="diploms"
+            type="photos"
             items={diplomas}
             isOwner={isOwner}
             title="Дипломы и сертификаты"

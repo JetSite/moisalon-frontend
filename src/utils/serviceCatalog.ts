@@ -1,4 +1,5 @@
 import { IGroupedServices } from 'src/types'
+import { IService, IServiceCategories } from 'src/types/services'
 
 export function selectedGroupNames(selection, catalog, separator) {
   let names = catalog.groups
@@ -63,13 +64,9 @@ interface ICategory {
   title: string
 }
 
-interface IService {
-  service_m_category?: ICategory
-  service_categories?: ICategory[]
-}
-
 export interface IRawService {
-  service?: IService
+  service: IService
+  service_categories?: IServiceCategories[]
 }
 
 // Тип для результата
@@ -86,24 +83,28 @@ export const getServicesByCategory: IServicesByCategory = services => {
   const servicesData: Record<string, IGroupedServices> = {}
 
   services.forEach(service => {
-    // Новая переменная, которая будет хранить либо service_m_category, либо service_categories
     const categories = service.service?.service_m_category
       ? [service.service.service_m_category]
-      : service.service?.service_categories || []
+      : service.service?.service_categories || service.service_categories || []
 
-    // Обработка категорий
     categories.forEach(categoryItem => {
       const categoryTitle = categoryItem.title
+
       if (!servicesData[categoryTitle]) {
         servicesData[categoryTitle] = { category: categoryTitle, services: [] }
       }
+
+      const { service_categories, ...sProps } = service
+
       servicesData[categoryTitle].services.push({
-        ...service,
-        service: {
-          ...service.service,
-          service_categories: categories,
-          service_m_category: service.service?.service_m_category,
-        },
+        ...sProps,
+        ...(categories == service.service_categories && {
+          [service]: {
+            ...service.service,
+            service_categories: categories,
+            service_m_category: service.service?.service_m_category,
+          },
+        }),
       })
     })
 

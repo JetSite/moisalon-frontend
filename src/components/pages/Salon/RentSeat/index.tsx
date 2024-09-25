@@ -59,8 +59,6 @@ const RentSeat: FC<IRentSeatProps> = ({
     [salonData],
   )
 
-  console.log('salon', salon)
-
   return (
     <>
       <Header />

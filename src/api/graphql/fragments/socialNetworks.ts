@@ -1,19 +1,10 @@
-import { imageInfo } from '../common/imageInfo'
+import { sNetworksFragment } from './sNetworks'
 
 export const socialNetworksFragment = `
 id
 s_network {
-  data {
-    id
-    attributes {
-      title
-      logo {
-        ${imageInfo}
-      }
-      slug
-    }
+  ${sNetworksFragment}
   }
-}
 link
 title
 `

@@ -4,6 +4,7 @@ import { MainContainer } from '../../../../../../styles/common'
 import { FC } from 'react'
 import { IGroupedCategories } from 'src/utils/getGrupedServices'
 import { IService, IServiceCategories } from 'src/types/services'
+import { IRawService } from 'src/utils/serviceCatalog'
 
 const Wrapper = styled.div`
   padding: 0 140px;
@@ -64,7 +65,7 @@ const Text = styled.p`
 const Icon = styled.img``
 
 interface Props {
-  services: IServiceCategories[]
+  services: IRawService[]
   title?: string
 }
 
@@ -75,7 +76,7 @@ const Service: FC<Props> = ({ services, title = 'Сервис для посет�
         <Title>{title}</Title>
         <Content>
           {services?.map(item => (
-            <Item key={item.id}>
+            <Item key={item.service.id}>
               <Icon src="/service-rent-icon.svg" />
               <Text>{item?.service.title}</Text>
             </Item>

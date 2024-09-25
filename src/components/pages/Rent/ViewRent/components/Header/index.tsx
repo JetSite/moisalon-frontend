@@ -40,13 +40,11 @@ import {
 } from '../../../../../../utils/newUtils/common/checkUrls'
 import StarIcon from '../../../../MainPage/components/Header/icons/StarIcon'
 import scrollIntoView from 'scroll-into-view'
-import { useRouter } from 'next/router'
 import {
   TGIcon,
   VBIcon,
   WSIcon,
 } from '../../../../Master/ViewMaster/components/Contacts/styled'
-import { createScopesSalon } from '../../../../../../_graphql-legacy/salon/createScopesSalon'
 import RatingEdit from '../../../../../ui/RatingEdit'
 import { FC, useState } from 'react'
 import { ISalonPage } from 'src/types/salon'
@@ -67,7 +65,6 @@ interface Props {
 }
 
 const Header: FC<Props> = ({ isOwner, salon, setActiveTab }) => {
-  const router = useRouter()
   const [newRating, setNewRating] = useState<number>(0)
   const { me } = useAuthStore(getStoreData)
   const { rating, ratingCount } = getRating(salon.ratings, newRating)
@@ -286,7 +283,7 @@ const Header: FC<Props> = ({ isOwner, salon, setActiveTab }) => {
             )}
             <noindex>
               <OnlineBookingButton salon={salon}>
-                <OnlineBooking>Онлайн бронировани</OnlineBooking>
+                <OnlineBooking>Онлайн бронирование</OnlineBooking>
               </OnlineBookingButton>
               {/* {salon?.onlineBookingUrl ? (
                 <OnlineBooking
@@ -315,22 +312,20 @@ const Header: FC<Props> = ({ isOwner, salon, setActiveTab }) => {
         {isOwner ? (
           <EditButtonsWrapper>
             <EditButton
-              onClick={() =>
-                router.push({
-                  pathname: '/createLessorSalon',
-                  query: { id: salon?.id },
-                })
-              }
+              shallow
+              href={{
+                pathname: '/createLessorSalon',
+                query: { id: salon?.id },
+              }}
             >
               Редактировать профиль
             </EditButton>
             <EditButton
-              onClick={() =>
-                router.push({
-                  pathname: '/rentSalonSeat',
-                  query: { id: salon?.id },
-                })
-              }
+              shallow
+              href={{
+                pathname: '/rentSalonSeat',
+                query: { id: salon?.id },
+              }}
             >
               Редактировать рабочие места
             </EditButton>

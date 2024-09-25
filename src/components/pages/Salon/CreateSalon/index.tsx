@@ -18,7 +18,7 @@ import { PHOTO_URL } from '../../../../api/variables'
 import { getTabs } from './config'
 import { ISalonPage } from 'src/types/salon'
 import { ISetState } from 'src/types/common'
-import { ICity, IPhoto } from 'src/types'
+import { ICity, IPhoto, ISNetwork } from 'src/types'
 import { useMutation } from '@apollo/client'
 import { UPDATE_SALON_PHOTO } from 'src/api/graphql/salon/mutations/updateSalonPhoto'
 import { useElementVisibility } from './components/RegistrationForm/utils/useElementVisibility'
@@ -30,9 +30,10 @@ interface Props {
   rent?: boolean
   salon: ISalonPage
   cities: ICity[]
+  sNetworks: ISNetwork[]
 }
 
-const CreateSalon: FC<Props> = ({ salon, cities, rent = false }) => {
+const CreateSalon: FC<Props> = ({ salon, cities, rent = false, sNetworks }) => {
   const allTabs = useRef<HTMLFormElement>(null)
   const ref1 = useRef<HTMLDivElement>(null)
   const ref2 = useRef<HTMLDivElement>(null)
@@ -95,6 +96,7 @@ const CreateSalon: FC<Props> = ({ salon, cities, rent = false }) => {
             logo={logo}
             setDirtyForm={setDirtyForm}
             dirtyForm={dirtyForm}
+            sNetworks={sNetworks}
           />
         </Wrapper>
         <FormGuardPopup setDirtyForm={setDirtyForm} dirtyForm={dirtyForm} />

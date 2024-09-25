@@ -1,7 +1,7 @@
 import { defaultValues } from 'src/api/authConfig'
 import { ICoordinate } from 'src/components/blocks/Form/AddressField/AddressNoSalonField'
 import { workingHoursOptions } from 'src/components/blocks/Form/WorkingTimeField/WorkingTime'
-import { ICity, IPhoto } from 'src/types'
+import { ICity, IPhoto, ISNetwork } from 'src/types'
 import { IID } from 'src/types/common'
 import {
   IWorkingHoursInputResolve,
@@ -35,6 +35,7 @@ interface Props {
   photos: string[]
   rent: boolean
   coordinate: ICoordinate
+  sNetworks: ISNetwork[]
 }
 
 type IGetPrepareInputSalonForm = (props: Props) => IPrepareInputSalonForm
@@ -45,6 +46,7 @@ export const getPrepareInputSalonForm: IGetPrepareInputSalonForm = ({
   logo,
   photos,
   coordinate,
+  sNetworks,
   rent = false,
 }) => {
   const servicesForInput = values.services?.map((item: { id: IID }) => ({
@@ -59,6 +61,7 @@ export const getPrepareInputSalonForm: IGetPrepareInputSalonForm = ({
     ? Object?.keys(values.socialNetworkUrls)?.map(e => ({
         title: e,
         link: values.socialNetworkUrls[e] as string,
+        s_network: sNetworks.find(netWork => netWork.slug === e)?.id,
       }))
     : []
   return {
