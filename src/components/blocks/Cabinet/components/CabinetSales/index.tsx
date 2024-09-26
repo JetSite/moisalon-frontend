@@ -1,58 +1,15 @@
-import { useState, useEffect, FC } from 'react'
-import { useQuery } from '@apollo/client'
-import {
-  Wrapper,
-  TitlePage,
-  Subtitle,
-  Item,
-  Container,
-  Avatar,
-  Content,
-  Name,
-  Type,
-  SalesWrapper,
-  Back,
-  SkeletonWrap,
-} from './styles'
-import { currentSales } from '../../../../../_graphql-legacy/sales/currentSales'
-import Button from '../../../../ui/Button'
-import CreateSale from '../../../CreateSale'
-import Sale from '../../../Sale'
-import { MobileHidden, MobileVisible } from '../../../../../styles/common'
-import { PHOTO_URL } from '../../../../../api/variables'
+import { useState, FC, useMemo } from 'react'
+import * as Styled from './styles'
+
 import { IUser } from 'src/types/me'
 import { ISalon } from 'src/types/salon'
 import { IMaster } from 'src/types/masters'
 import { IBrand } from 'src/types/brands'
-import { IPromotions } from 'src/types/promotions'
-
-interface PropsList {
-  sales: IPromotions[]
-  loading: boolean
-  type: IPromotionsType
-}
+import ProfileSelect from './components/ProfileSelect'
+import { getPrepareData } from './utils/getPrepareData'
+import ActiveProfile from './components/ActiveProfile'
 
 export type IPromotionsType = 'salon' | 'master' | 'brand' | null
-
-const CabinetSalesList: FC<PropsList> = ({ sales, loading, type }) => {
-  if (loading) {
-    return <SkeletonWrap variant="rect" />
-  }
-
-  return (
-    <SalesWrapper>
-      {sales?.length > 0 ? (
-        <>
-          {sales?.map(item => (
-            <Sale type={type} item={item} key={item.id} />
-          ))}
-        </>
-      ) : (
-        <Subtitle>У профиля нет акций</Subtitle>
-      )}
-    </SalesWrapper>
-  )
-}
 
 interface Props {
   user: IUser
@@ -60,287 +17,61 @@ interface Props {
 
 const CabinetSales: FC<Props> = ({ user }) => {
   const { salons, masters, brands } = user.owner
-
   const [id, setId] = useState('')
   const [type, setType] = useState<IPromotionsType>(null)
   const [activeProfile, setActiveProfile] = useState<
     ISalon | IMaster | IBrand | null
   >(null)
-  const [loading, setLoading] = useState(false)
   const [createSale, setCreateSale] = useState(false)
 
+  const { profiles } = useMemo(
+    () => getPrepareData({ salons, masters, brands }),
+    [salons, brands, masters],
+  )
+
+  // Функция для обработки клика по профилю
+  const handleProfileClick = (profile: (typeof profiles)[0]) => {
+    setType(profile.profileType as 'master' | 'salon' | 'brand')
+    setId(profile.id)
+    switch (profile.profileType) {
+      case 'master':
+        const foundMaster = masters?.find(master => master.id === profile.id)
+        setActiveProfile(foundMaster || null)
+        break
+      case 'salon':
+        const foundSalon = salons?.find(salon => salon.id === profile.id)
+        setActiveProfile(foundSalon || null)
+        break
+      case 'brand':
+        const foundBrand = brands?.find(brand => brand.id === profile.id)
+        setActiveProfile(foundBrand || null)
+        break
+      default:
+        setActiveProfile(null)
+    }
+  }
+
   return (
-    <Wrapper>
-      <TitlePage>Мои акции</TitlePage>
-      <Subtitle>Нажмите на профиль для просмотра или создания акций</Subtitle>
-      {!masters?.length && !salons?.length && !brands?.length ? (
-        <Subtitle>У Вас нет профиля</Subtitle>
-      ) : null}
-      {masters?.length && !activeProfile
-        ? masters?.map(master => (
-            <Item
-              onClick={() => {
-                setType('master')
-                setId(master?.id)
-                setActiveProfile(master)
-              }}
-            >
-              <Container>
-                <Avatar
-                  alt="avatar"
-                  src={PHOTO_URL + master?.photo?.url || 'empty-photo.svg'}
-                />
-                <Content>
-                  <Name>{master?.name}</Name>
-                  <Type>Профиль мастера</Type>
-                </Content>
-              </Container>
-            </Item>
-          ))
-        : null}
-      {salons?.length && !activeProfile
-        ? salons.map(item => (
-            <div key={item.id}>
-              <Item
-                onClick={() => {
-                  setType('salon')
-                  setId(item?.id)
-                  setActiveProfile(item)
-                }}
-              >
-                <Container>
-                  <Avatar
-                    alt="avatar"
-                    src={PHOTO_URL + item?.logo?.url || 'empty-photo.svg'}
-                  />
-                  <Content>
-                    <Name>{item?.name}</Name>
-                    <Type>
-                      {item?.rent
-                        ? 'Профиль салона арендодателя'
-                        : 'Профиль салона'}
-                    </Type>
-                  </Content>
-                </Container>
-              </Item>
-            </div>
-          ))
-        : null}
-      {brands?.length && !activeProfile
-        ? brands.map(item => (
-            <div key={item.id}>
-              <Item
-                onClick={() => {
-                  setType('brand')
-                  setId(item?.id)
-                  setActiveProfile(item)
-                }}
-              >
-                <Container>
-                  <Avatar
-                    alt="avatar"
-                    src={
-                      item?.logo
-                        ? `${PHOTO_URL}${item?.logo.url}`
-                        : 'empty-photo.svg'
-                    }
-                  />
-                  <Content>
-                    <Name>{item?.name}</Name>
-                    <Type>Профиль бренда</Type>
-                  </Content>
-                </Container>
-              </Item>
-            </div>
-          ))
-        : null}
-      {type === 'master' && activeProfile ? (
-        <>
-          <Back
-            onClick={() => {
-              setActiveProfile(null)
-              setCreateSale(false)
-            }}
-          >
-            Назад
-          </Back>
-          <Item>
-            <Container>
-              <Avatar
-                alt="avatar"
-                src={
-                  PHOTO_URL + (activeProfile as IMaster).photo?.url ||
-                  'empty-photo.svg'
-                }
-              />
-              <Content>
-                <Name>{(activeProfile as IMaster).name}</Name>
-                <Type>Профиль мастера</Type>
-              </Content>
-            </Container>
-          </Item>
-          {!createSale ? (
-            <>
-              <MobileHidden>
-                <Button
-                  size="width374WithoutPadding"
-                  variant="darkTransparent"
-                  font="medium"
-                  onClick={() => setCreateSale(true)}
-                >
-                  Создать акцию
-                </Button>
-              </MobileHidden>
-              <MobileVisible>
-                <Button
-                  size="fullWidth"
-                  onClick={() => setCreateSale(true)}
-                  variant="darkTransparent"
-                  font="small"
-                >
-                  Создать акцию
-                </Button>
-              </MobileVisible>
-              <CabinetSalesList
-                type={type}
-                sales={activeProfile.promotions}
-                loading={loading}
-              />
-            </>
-          ) : (
-            <CreateSale
-              type={type}
-              activeProfile={activeProfile}
-              setCreateSale={setCreateSale}
-            />
-          )}
-        </>
-      ) : null}
-      {type === 'salon' && activeProfile ? (
-        <>
-          <Back
-            onClick={() => {
-              setActiveProfile(null)
-              setCreateSale(false)
-            }}
-          >
-            Назад
-          </Back>
-          <Item>
-            <Container>
-              <Avatar
-                alt="avatar"
-                src={
-                  PHOTO_URL + (activeProfile as ISalon).logo?.url ||
-                  'empty-photo.svg'
-                }
-              />
-              <Content>
-                <Name>{activeProfile?.name}</Name>
-                <Type>Профиль салона</Type>
-              </Content>
-            </Container>
-          </Item>
-          {!createSale ? (
-            <>
-              <MobileHidden>
-                <Button
-                  size="width374WithoutPadding"
-                  variant="darkTransparent"
-                  font="medium"
-                  onClick={() => setCreateSale(true)}
-                >
-                  Создать акцию
-                </Button>
-              </MobileHidden>
-              <MobileVisible>
-                <Button
-                  size="fullWidth"
-                  onClick={() => setCreateSale(true)}
-                  variant="darkTransparent"
-                  font="small"
-                >
-                  Создать акцию
-                </Button>
-              </MobileVisible>
-              <CabinetSalesList
-                type={type}
-                sales={activeProfile.promotions}
-                loading={loading}
-              />
-            </>
-          ) : (
-            <CreateSale
-              type={type}
-              activeProfile={activeProfile}
-              setCreateSale={setCreateSale}
-            />
-          )}
-        </>
-      ) : null}
-      {type === 'brand' && activeProfile ? (
-        <>
-          <Back
-            onClick={() => {
-              setActiveProfile(null)
-              setCreateSale(false)
-            }}
-          >
-            Назад
-          </Back>
-          <Item>
-            <Container>
-              <Avatar
-                alt="avatar"
-                src={
-                  PHOTO_URL + (activeProfile as ISalon).logo?.url ||
-                  'empty-photo.svg'
-                }
-              />
-              <Content>
-                <Name>{activeProfile?.name}</Name>
-                <Type>Профиль бренда</Type>
-              </Content>
-            </Container>
-          </Item>
-          {!createSale ? (
-            <>
-              <MobileHidden>
-                <Button
-                  size="width374WithoutPadding"
-                  variant="darkTransparent"
-                  font="medium"
-                  onClick={() => setCreateSale(true)}
-                >
-                  Создать акцию
-                </Button>
-              </MobileHidden>
-              <MobileVisible>
-                <Button
-                  size="fullWidth"
-                  onClick={() => setCreateSale(true)}
-                  variant="darkTransparent"
-                  font="small"
-                >
-                  Создать акцию
-                </Button>
-              </MobileVisible>
-              <CabinetSalesList
-                type={type}
-                sales={activeProfile.promotions}
-                loading={loading}
-              />
-            </>
-          ) : (
-            <CreateSale
-              type={type}
-              activeProfile={activeProfile}
-              setCreateSale={setCreateSale}
-            />
-          )}
-        </>
-      ) : null}
-    </Wrapper>
+    <Styled.Wrapper>
+      <Styled.TitlePage>Мои акции</Styled.TitlePage>
+      <Styled.Subtitle>
+        Нажмите на профиль для просмотра или создания акций
+      </Styled.Subtitle>
+      <ProfileSelect
+        profiles={profiles}
+        activeProfile={activeProfile}
+        onClickProfile={handleProfileClick}
+      />
+      {activeProfile && type && (
+        <ActiveProfile
+          activeProfile={activeProfile}
+          type={type}
+          createSale={createSale}
+          setCreateSale={setCreateSale}
+          setActiveProfile={setActiveProfile}
+        />
+      )}
+    </Styled.Wrapper>
   )
 }
 

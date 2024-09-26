@@ -1,4 +1,4 @@
-import { useState, useEffect, FC } from 'react'
+import { useState, useEffect, FC, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import { MainContainer } from '../../../../styles/common'
 import Header from '../../MainPage/components/Header'
@@ -32,6 +32,7 @@ import CabinetOrders from '../../../blocks/Cabinet/components/CabinetOrders'
 import CabinetRequests from 'src/components/blocks/Cabinet/components/CabinetRequests'
 import { ICabinetRequestsData } from 'src/pages/masterCabinet'
 import { request } from 'http'
+import { getTabs } from './utils/getTabs'
 
 export interface IMasterCabinetTab {
   title: string
@@ -58,13 +59,16 @@ const MasterCabinet: FC<Props> = ({ user, requests, cities }) => {
     (router.query.tab as unknown as string) || 'about',
   )
 
+  const { mobile, desktop } = useMemo(
+    () => getTabs({ requests, unreadMessagesCount }),
+    [request, unreadMessagesCount],
+  )
+
   useEffect(() => {
     if (router?.query?.tab) {
       setActiveTab(router?.query?.tab as string)
     }
   }, [router?.query?.tab])
-
-  console.log(activeTab)
 
   return (
     <>
@@ -72,61 +76,7 @@ const MasterCabinet: FC<Props> = ({ user, requests, cities }) => {
       <MainContainer>
         <ProfileCabinetHeaderMobile
           user={user}
-          tabs={[
-            { title: 'Мои данные', value: 'about', icon: '/icon-about.svg' },
-            {
-              title: 'Мои заказы',
-              value: 'orders',
-              icon: '/icon-orders.svg',
-              quantity: requests.rentalRequests.filter(
-                req => req.status.id === '2',
-              ).length,
-              disable: false,
-            },
-            {
-              title: 'Мои заявки',
-              value: 'requests',
-              icon: '/icon-orders.svg',
-              quantity:
-                requests.rentalRequests.filter(req => req.status.id === '1')
-                  .length || null,
-              disable: false,
-              visible: true,
-            },
-            {
-              title: 'Моё избранное',
-              value: 'favorits',
-              icon: '/icon-star.svg',
-              disable: false,
-            },
-            {
-              title: 'Отзывы клиентов',
-              value: 'reviews',
-              icon: '/icon-reviews.svg',
-            },
-            { title: 'Сообщения', value: 'chat', disable: true },
-            {
-              title: 'Мои акции',
-              value: 'sales',
-              disable: false,
-            },
-            {
-              title: 'Обучение',
-              value: 'educations',
-              disable: true,
-            },
-            {
-              title: 'Вакансии',
-              value: 'vacancies',
-            },
-            {
-              title: 'Мероприятия',
-              value: 'events',
-              disable: true,
-            },
-            { title: 'Размещение', value: 'priority', disable: true },
-            { title: 'Реклама', value: 'banner', disable: true },
-          ]}
+          tabs={mobile}
           toggle={toggle}
           setToggle={setToggle}
           setActiveTab={setActiveTab}
@@ -137,34 +87,7 @@ const MasterCabinet: FC<Props> = ({ user, requests, cities }) => {
             activeTab={activeTab}
             setPhoto={setPhoto}
             setActiveTab={setActiveTab}
-            tabs={[
-              { title: 'Мои данные', value: 'about' },
-              { title: 'Мои профили', value: 'profiles' },
-              {
-                title: 'Сообщения',
-                value: 'chat',
-                quantity: unreadMessagesCount,
-                disable: true,
-              },
-              { title: 'Мои заказы', value: 'orders', disable: true },
-              {
-                title: 'Мои заявки',
-                value: 'requests',
-                icon: '/icon-orders.svg',
-                quantity: requests.rentalRequests.filter(
-                  req => req.status.id === '1',
-                ).length,
-                visible: !!requests.rentalRequests.length,
-              },
-              { title: 'Моё избранное', value: 'favorits', disable: false },
-              { title: 'Отзывы клиентов', value: 'reviews' },
-              { title: 'Мои акции', value: 'sales', disable: false },
-              { title: 'Обучение', value: 'educations', disable: true },
-              { title: 'Вакансии', value: 'vacancies' },
-              { title: 'Мероприятия', value: 'events', disable: true },
-              { title: 'Размещение', value: 'priority', disable: true },
-              { title: 'Реклама', value: 'banner', disable: true },
-            ]}
+            tabs={desktop}
             id={null}
             photoType={'master'}
             noPhotoError={noPhotoError}

@@ -7,9 +7,20 @@ export const Wrapper = styled.div`
   width: 100%;
   padding-top: 35px;
   margin-bottom: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   @media (max-width: ${laptopBreakpoint}) {
     padding-top: 0;
     margin-bottom: 40px;
+  }
+`
+
+export const ButtonWrapper = styled.div`
+  display: flex;
+  margin-top: 40px;
+  @media (max-width: ${laptopBreakpoint}) {
+    margin-top: 20px;
   }
 `
 
@@ -113,7 +124,6 @@ export const SkeletonWrap = styled(Skeleton)`
 
 export const SalesWrapper = styled.div`
   width: 100%;
-  margin-top: 32px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;

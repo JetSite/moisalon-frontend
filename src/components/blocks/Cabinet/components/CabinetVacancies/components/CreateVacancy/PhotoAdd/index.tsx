@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { FC, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../../../../../styles/variables'
@@ -11,6 +11,8 @@ import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { useMutation } from '@apollo/client'
 import { UPLOAD } from 'src/api/graphql/common/upload'
 import imageCompression from 'browser-image-compression'
+import { IPromotionsType } from '../../../../CabinetSales'
+import { IID } from 'src/types/common'
 
 const Photo = styled.div`
   width: 100%;
@@ -59,7 +61,14 @@ const Image = styled.img`
   object-fit: cover;
 `
 
-const PhotoAdd = ({ onAdd, type, hover, photoId }) => {
+interface IPhotoAdd {
+  onAdd: () => void
+  type?: IPromotionsType
+  hover: boolean
+  photoId: IID
+}
+
+const PhotoAdd: FC<IPhotoAdd> = ({ onAdd, type, hover, photoId }) => {
   const photoType =
     type === 'master'
       ? 'master'

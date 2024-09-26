@@ -1,27 +1,8 @@
-import { FC, useEffect, useState } from 'react'
-import RequestsList from './components/RequestsList'
-import {
-  ShowDeletedButton,
-  Wrapper,
-  TabWrapper,
-  TabButton,
-  Tab,
-} from './styles'
-import { IUser } from 'src/types/me'
-import { IRentalRequest } from 'src/types/rentalRequest'
+import { FC, useState } from 'react'
+import * as Styled from './styles'
 import { Title } from '../CabinetOrders/styles'
-import { useLazyQuery, useQuery } from '@apollo/client'
-import { RENTAL_REQUESTS_FOR_USER } from 'src/api/graphql/rentalRequest/queries/getRequestsForUser'
-import { DELETED_RENTAL_REQUESTS_FOR_USER } from 'src/api/graphql/rentalRequest/queries/getDeletedRequestsForUser'
 import { IID } from 'src/types/common'
-import ContentCatalogSkeleton from 'src/components/ui/ContentSkeleton/ContentCatalogSkeleton'
-import ContentSkeleton from 'src/components/ui/ContentSkeleton/ContentSkeleton'
-import MainSkeleton from 'src/components/ui/ContentSkeleton/MainSkeleton'
-import { RequestsListSkeleton } from 'src/components/ui/Skeletons/RequestsListSkeleton'
-import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { ICabinetRequestsData } from 'src/pages/masterCabinet'
-import styled from 'styled-components'
-import { red } from 'src/styles/variables'
 import { MyRequests } from './components/MyRequests'
 import { SalonRequests } from './components/SalonsRequests'
 
@@ -32,7 +13,7 @@ interface Props {
   meID: IID
 }
 
-const CabinetRequests: FC<Props> = ({ requestsData, meID }) => {
+const CabinetRequests: FC<Props> = ({ requestsData }) => {
   const [activeTab, setActiveTab] = useState<ITabsVariant>('in')
   const {
     rentalRequests,
@@ -43,34 +24,34 @@ const CabinetRequests: FC<Props> = ({ requestsData, meID }) => {
   const [showDeleted, setShowDeleted] = useState<boolean>(false)
 
   return (
-    <Wrapper>
+    <Styled.Wrapper>
       <Title>{showDeleted ? 'Удалённые заявки' : 'Мои заявки'}</Title>
-      <ShowDeletedButton
+      <Styled.ShowDeletedButton
         active={showDeleted}
         onClick={() => {
           setShowDeleted(!showDeleted)
         }}
       >
         {showDeleted ? 'Назад' : 'Удалённые заявки'}
-      </ShowDeletedButton>
-      <TabWrapper>
-        <Tab>
-          <TabButton
+      </Styled.ShowDeletedButton>
+      <Styled.TabWrapper>
+        <Styled.Tab>
+          <Styled.TabButton
             onClick={() => setActiveTab('in')}
             active={activeTab === 'in'}
           >
             Входящие
-          </TabButton>
-        </Tab>
-        <Tab>
-          <TabButton
+          </Styled.TabButton>
+        </Styled.Tab>
+        <Styled.Tab>
+          <Styled.TabButton
             onClick={() => setActiveTab('out')}
             active={activeTab === 'out'}
           >
             Исходящие
-          </TabButton>
-        </Tab>
-      </TabWrapper>
+          </Styled.TabButton>
+        </Styled.Tab>
+      </Styled.TabWrapper>
       {activeTab === 'in' ? (
         <SalonRequests
           setShowDeleted={setShowDeleted}
@@ -88,7 +69,7 @@ const CabinetRequests: FC<Props> = ({ requestsData, meID }) => {
           activeTab={activeTab}
         />
       )}
-    </Wrapper>
+    </Styled.Wrapper>
   )
 }
 
