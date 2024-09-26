@@ -1,8 +1,9 @@
 import styled from 'styled-components'
-import { laptopBreakpoint } from '../../../../styles/variables'
+import { laptopBreakpoint } from '../../../styles/variables'
 
 export const Wrapper = styled.div`
   max-width: 1440px;
+  width: 100%;
   margin: 0 auto;
 
   @media (max-width: ${laptopBreakpoint}) {
@@ -12,6 +13,7 @@ export const Wrapper = styled.div`
 
 export const Content = styled.div`
   padding: 0 140px;
+  width: 100%;
 
   @media (max-width: ${laptopBreakpoint}) {
     padding: 0 20px;
@@ -33,6 +35,7 @@ export const Top = styled.div`
 
 export const TopImage = styled.div<{ photoUrl?: string }>`
   max-width: 1440px;
+  width: 100%;
   height: 610px;
   position: relative;
   margin: 0 auto;
@@ -78,7 +81,7 @@ export const OnlineBooking = styled.span`
   }
 `
 
-export const SalonDescription = styled.p`
+export const SalonDescription = styled.div`
   max-width: 624px;
   margin-top: 46px;
   font-weight: 400;
@@ -276,6 +279,11 @@ export const Photo = styled.img`
 export const BottomButtons = styled.div`
   margin-top: 50px;
   margin-bottom: 60px;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  gap: 32px;
+  flex-wrap: wrap;
 `
 
 export const DesktopBlock = styled.div`

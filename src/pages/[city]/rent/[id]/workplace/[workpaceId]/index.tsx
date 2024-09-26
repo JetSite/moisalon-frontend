@@ -21,6 +21,7 @@ import { GetServerSideProps, NextPage } from 'next'
 import { Nullable } from 'src/types/common'
 import { ICity } from 'src/types'
 import { ISalonWorkplace } from 'src/types/workplace'
+import { WorkplacePage } from 'src/components/pages/Workplace'
 
 interface Props {
   salonData: ISalonPage
@@ -29,7 +30,6 @@ interface Props {
 }
 
 const Workplace: NextPage<Props> = ({ salonData, city, workplaceData }) => {
-  const roomData = {}
   return (
     <MainLayout>
       {/* <Head>
@@ -43,10 +43,10 @@ const Workplace: NextPage<Props> = ({ salonData, city, workplaceData }) => {
       </Head> */}
       <>
         <SearchBlock />
-        <RentHeader
+        <WorkplacePage
           city={city}
           salonData={salonData}
-          workplaceData={workplaceData}
+          workplace={workplaceData}
         />
       </>
     </MainLayout>
@@ -68,20 +68,6 @@ export const getServerSideProps: GetServerSideProps<
   const salonID = ctx.params.id
   const workpaceID = ctx.params.workpaceId
 
-  // const salonQueryRes = await apolloClient.query({
-  //   query: salonSlugQuery,
-  //   variables: { slug: params.id },
-  // })
-
-  // const city = await apolloClient.query({
-  //   query: citySuggestionsQuery,
-  //   variables: {
-  //     city: query?.city || '',
-  //     count: 1,
-  //   },
-  // })
-
-  // const id = salonQueryRes?.data?.salonSlug?.id
   const data = await Promise.all([
     apolloClient.query({
       query: getSalonPage,

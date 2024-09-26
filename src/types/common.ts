@@ -2,6 +2,7 @@ import {
   ApolloCache,
   ApolloQueryResult,
   DefaultContext,
+  LazyQueryExecFunction,
   MutationFunctionOptions,
   OperationVariables,
 } from '@apollo/client'
@@ -26,6 +27,8 @@ export type IID = string
 export type IApolloRefetch = (
   variables?: Partial<OperationVariables> | undefined,
 ) => Promise<ApolloQueryResult<any>>
+
+export type IApolloLazyRefetch = LazyQueryExecFunction<any, OperationVariables>
 
 export type IAppoloMutationCallback = (variables?: any) => Promise<any>
 

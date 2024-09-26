@@ -26,6 +26,18 @@ import { getSalonPage } from 'src/api/graphql/salon/queries/getSalon'
 import Header from '../../../../components/pages/Rent/ViewRent/components/Header'
 import { getFeedCategories } from 'src/api/graphql/feed/queries/getFeedCategories'
 import { getFeeds } from 'src/api/graphql/feed/queries/getFeeds'
+import Head from 'next/head'
+import EntityDescription from 'src/components/newUI/EntityDescription'
+import styled from 'styled-components'
+import { laptopBreakpoint } from 'src/styles/variables'
+
+const Wrapper = styled.div`
+  padding: 0 140px;
+
+  @media (max-width: ${laptopBreakpoint}) {
+    padding: 0 20px;
+  }
+`
 
 interface Props {
   cityData: ICity
@@ -63,15 +75,15 @@ const Rent: FC<Props> = ({
 
   return (
     <MainLayout>
-      {/* <Head>
-        {salon?.seoTitle ? <title>{salon?.seoTitle}</title> : null}
-        {salon?.seo?.description ? (
-          <meta name="description" content={salon?.seo?.description} />
+      <Head>
+        {salon.seoTitle ? <title>{salon.seoTitle}</title> : null}
+        {salon.seoDescription ? (
+          <meta name="description" content={salon.seoDescription} />
         ) : null}
         {salon.logo?.url ? (
           <meta property="og:image" content={salon.logo.url} />
         ) : null}
-      </Head> */}
+      </Head>
       <>
         <SearchBlock />
         <Header salon={salon} isOwner={isOwner} setActiveTab={setActiveTab} />
@@ -106,7 +118,9 @@ const Rent: FC<Props> = ({
             { id: 6, text: 'Контакты', link: '#contacts', show: true },
           ]}
         />
-        <About salon={salon} />
+        <Wrapper>
+          <EntityDescription description={salon.description} />
+        </Wrapper>
         {workplaces?.length ? (
           <RentSlider title="Аренда рабочих мест" salon={salon} />
         ) : null}

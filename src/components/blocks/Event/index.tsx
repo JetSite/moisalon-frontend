@@ -1,6 +1,6 @@
 import { FC, useState } from 'react'
 import styled from 'styled-components'
-import PhotoAdd from '../CreateSale/PhotoAdd'
+import PhotoAdd from '../Cabinet/components/CabinetSales/components/CreateSale/PhotoAdd'
 import moment from 'moment'
 import 'moment/locale/ru'
 import { laptopBreakpoint, red } from '../../../styles/variables'

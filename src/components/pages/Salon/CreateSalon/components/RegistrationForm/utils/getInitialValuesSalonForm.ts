@@ -59,6 +59,9 @@ export const getInitialValuesSalonForm: IgetInitialValuesSalonForm = salon => {
     socialNetworkUrls[e.title] = e.link || ''
   })
 
+  console.log(socialNetworkUrls)
+  console.log(salon?.socialNetworks)
+
   const initialInput: IInitialInput = salon
     ? {
         name: salon.name,

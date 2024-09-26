@@ -4,7 +4,7 @@ import AutoFocusedForm from '../../../../../blocks/Form/AutoFocusedForm'
 import Error from '../../../../../blocks/Form/Error'
 import { ISalonPage } from 'src/types/salon'
 import { IHandleClickNextTabInForm } from '../..'
-import { ICity, IPhoto } from 'src/types'
+import { ICity, IPhoto, ISNetwork } from 'src/types'
 import { getPrepareInputSalonForm } from './utils/getPrepareInputSalonForm'
 import {
   IInitialValuesSalonForm,
@@ -31,6 +31,7 @@ export interface ISalonFormProps {
   cities: ICity[]
   setDirtyForm: ISetState<boolean>
   dirtyForm: boolean
+  sNetworks: ISNetwork[]
 }
 
 const RegistrationForm: FC<ISalonFormProps> = ({
@@ -47,6 +48,7 @@ const RegistrationForm: FC<ISalonFormProps> = ({
   rent,
   logo,
   cities,
+  sNetworks,
   setDirtyForm,
   dirtyForm,
 }) => {
@@ -100,6 +102,7 @@ const RegistrationForm: FC<ISalonFormProps> = ({
       photos: photosArray.map(e => e.id),
       rent,
       coordinate,
+      sNetworks,
     })
 
     handleCreateOrUpdateSalon({
@@ -142,6 +145,7 @@ const RegistrationForm: FC<ISalonFormProps> = ({
               errors={errors}
               fetchLoading={fetchLoading}
               setCoordinates={setCoordinates}
+              sNetworks={sNetworks}
             />
           )}
         />

@@ -68,10 +68,6 @@ const Success: FC<ISuccessProps> = ({
     editButtonHandler()
   }
 
-  const backHandler = () => {
-    router.push('/masterCabinet')
-  }
-
   return (
     !!workplace && (
       <Wrapper>
@@ -81,9 +77,9 @@ const Success: FC<ISuccessProps> = ({
             Теперь мастера смогут отправлять вам заявки на аренду.
           </Subtitle>
           <Link
-            href={`/${salon?.city?.slug || city.slug}/rent/${salon?.id}/seat/${
-              workplace?.id
-            }`}
+            href={`/${salon?.city?.slug || city.slug}/rent/${
+              salon?.id
+            }/workplace/${workplace?.id}`}
             passHref
           >
             <TopLink target="_blank">Просмотр на платформе</TopLink>
@@ -131,7 +127,9 @@ const Success: FC<ISuccessProps> = ({
             Чтобы удалить, отредактировать или временно снять рабочее место с
             публикации, зайдите в личный кабинет
           </BottomText>
-          <BackLink onClick={backHandler}>Вернуться в личный кабинет</BackLink>
+          <BackLink shallow href={'/masterCabinet'}>
+            Вернуться в личный кабинет
+          </BackLink>
         </BottomBlock>
       </Wrapper>
     )

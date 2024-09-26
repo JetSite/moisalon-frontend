@@ -104,7 +104,7 @@ const PhotoAdd: FC<IPhotoAddProps> = ({ hover, photo, setPhoto }) => {
       <div {...getRootProps()}>
         <input {...getInputProps()} />
         {!photo ? <Photo /> : null}
-        <Image alt="photo" src={`${PHOTO_URL}${photo?.url}`} />
+        {photo?.url && <Image alt="photo" src={`${PHOTO_URL}${photo.url}`} />}
         {onHoverControls}
       </div>
     </>

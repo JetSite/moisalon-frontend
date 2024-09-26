@@ -4,11 +4,8 @@ import { ITabsVariant } from '..'
 import RequestsList from './RequestsList'
 import { RequestsListSkeleton } from 'src/components/ui/Skeletons/RequestsListSkeleton'
 import { useLazyQuery } from '@apollo/client'
-import { RENTAL_REQUESTS_FOR_USER } from 'src/api/graphql/rentalRequest/queries/getRequestsForUser'
-import { DELETED_RENTAL_REQUESTS_FOR_USER } from 'src/api/graphql/rentalRequest/queries/getDeletedRequestsForUser'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { ISetState } from 'src/types/common'
-import { request } from 'http'
 import { RENTAL_REQUESTS_FOR_SALON } from 'src/api/graphql/rentalRequest/queries/getRequestsForSalon'
 import { DELETED_RENTAL_REQUESTS_FOR_SALON } from 'src/api/graphql/rentalRequest/queries/getDeletedRequestsForSalon'
 
@@ -41,6 +38,8 @@ export const SalonRequests: FC<Props> = ({
       setRequestsDeleted(flattenStrapiResponse(dataDeleted.rentalRequests))
     }
   }, [data, dataDeleted])
+
+  console.log(requests)
 
   return loading || loadingDelete ? (
     <RequestsListSkeleton />
