@@ -51,15 +51,16 @@ export const Icon = styled.img`
   margin-right: 13px;
 `
 
-export const OnlineBooking = styled.span`
-  cursor: pointer;
+export const OnlineBooking = styled.span<{ disabled?: boolean }>`
+  cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
   width: 295px;
   height: 55px;
   position: absolute;
   top: 170px;
   right: 138px;
   background: #ff0033;
-  box-shadow: 0px 16px 32px rgba(255, 0, 51, 0.3);
+  box-shadow: ${({ disabled }) =>
+    disabled ? 'none' : '  0px 16px 32px rgba(255, 0, 51, 0.3)'};
   border-radius: 43px;
   color: #fff;
   font-weight: 600;
@@ -68,8 +69,10 @@ export const OnlineBooking = styled.span`
   align-items: center;
   justify-content: center;
   transition: 0.3s;
+  ${({ disabled }) => disabled && 'background: gray;'}
   &:hover {
-    box-shadow: 0px 16px 32px rgba(255, 0, 51, 0.7);
+    box-shadow: ${({ disabled }) =>
+      disabled ? 'none' : ' 0px 16px 32px rgba(255, 0, 51, 0.7)'};
   }
   @media (max-width: ${laptopBreakpoint}) {
     font-size: 12px;
@@ -180,9 +183,9 @@ export const IconCircle = styled.img`
   }
 `
 
-export const ButtonRequest = styled.span`
+export const ButtonRequest = styled.span<{ disabled?: boolean }>`
   background: #ff0033;
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
   color: #fff;
   display: flex;
   width: 240px;
@@ -193,6 +196,7 @@ export const ButtonRequest = styled.span`
   align-items: center;
   justify-content: center;
   margin-top: 32px;
+  ${({ disabled }) => disabled && 'background: gray;'}
 `
 
 export const InfoItem = styled.div`
