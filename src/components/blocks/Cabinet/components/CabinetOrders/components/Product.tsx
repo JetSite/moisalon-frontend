@@ -10,7 +10,7 @@ interface IProps {
 }
 
 const Product: FC<IProps> = ({ item }) => {
-  const link = `${PHOTO_URL}${item?.product?.cover?.url}`
+  const link = `${PHOTO_URL}${item.product.cover?.url}`
   return <ProductWrapper link={link} />
 }
 

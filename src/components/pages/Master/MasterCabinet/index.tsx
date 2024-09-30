@@ -8,7 +8,6 @@ import { useMutation } from '@apollo/client'
 import CabinetForm, {
   CabinetFormProps,
 } from '../../../blocks/Cabinet/components/CabinetForm'
-import { changeDataMutation } from '../../../../_graphql-legacy/changeDataMutation'
 import CabinetProfiles from '../../../blocks/Cabinet/components/CabinetProfiles'
 import CabinetListReviews from '../../../blocks/Cabinet/components/CabinetListReviews'
 import ProfileCabinetHeaderMobile from '../../../blocks/ProfileCabinetHeaderMobile'
@@ -22,17 +21,12 @@ import CabinetPriority from '../../../blocks/Cabinet/components/CabinetPriority'
 import CabinetBanner from '../../../blocks/Cabinet/components/CabinetBanner'
 import { PHOTO_URL } from '../../../../api/variables'
 import { useChat } from '../../../../chatContext'
-import { IRefetch } from 'src/api/types'
-import { IMe, IUser } from 'src/types/me'
-import useAuthStore, { IMasterCabinetTabs } from 'src/store/authStore'
-import { getStoreData } from 'src/store/utils'
+import { IUser } from 'src/types/me'
 import { IPhoto } from 'src/types'
-import { IRentalRequest } from 'src/types/rentalRequest'
 import CabinetRequests from 'src/components/blocks/Cabinet/components/CabinetRequests'
 import { ICabinetRequestsData } from 'src/pages/masterCabinet'
 import { request } from 'http'
 import { getTabs } from './utils/getTabs'
-import useBaseStore from 'src/store/baseStore'
 import CabinetOrders from 'src/components/blocks/Cabinet/components/CabinetOrders'
 
 export interface IMasterCabinetTab {
@@ -50,7 +44,6 @@ interface Props extends Pick<CabinetFormProps, 'cities'> {
 }
 
 const MasterCabinet: FC<Props> = ({ user, requests, cities }) => {
-  const { cart } = useBaseStore(getStoreData)
   const [photo, setPhoto] = useState<IPhoto | null>(user.info.avatar || null)
   const [noPhotoError, setNoPhotoError] = useState<boolean>(false)
   const [toggle, setToggle] = useState(false)
@@ -62,7 +55,7 @@ const MasterCabinet: FC<Props> = ({ user, requests, cities }) => {
   )
 
   const { mobile, desktop } = useMemo(
-    () => getTabs({ requests, unreadMessagesCount, cart }),
+    () => getTabs({ requests, unreadMessagesCount, orders: user.orders }),
     [request, unreadMessagesCount],
   )
 
@@ -113,7 +106,7 @@ const MasterCabinet: FC<Props> = ({ user, requests, cities }) => {
               auth
             />
           ) : activeTab === 'orders' ? (
-            <CabinetOrders user={user} cart={cart} />
+            <CabinetOrders user={user} />
           ) : activeTab === 'requests' ? (
             <CabinetRequests meID={user.info.id} requestsData={requests} />
           ) : activeTab === 'profiles' ? (

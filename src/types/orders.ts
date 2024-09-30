@@ -15,8 +15,12 @@ export interface IOrder {
   cartContent: IProductCart[]
   order_status: {
     title: string
+    id: string
   }
   payment_method: {
+    title: string
+  }
+  delivery: {
     title: string
   }
   comment: string

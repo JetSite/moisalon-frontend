@@ -228,7 +228,8 @@ export const BottomButtonMobile = styled.div`
   display: none;
 
   @media (max-width: ${laptopBreakpoint}) {
-    display: block;
+    display: flex;
+    flex-direction: column;
     width: 100%;
     margin-top: 30px;
   }

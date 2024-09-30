@@ -14,6 +14,23 @@ data {
                 name
                 salePrice
                 regularPrice
+                brand {
+                  data {
+                    id
+                    attributes {
+                      name
+                      address
+                      phones {
+                        id
+                        phoneTitle
+                        phoneNumber
+                        haveViber
+                        haveWhatsApp
+                        haveTelegram
+                      }
+                    }
+                  }
+                }
                 cover {
                   ${imageInfo}
                 }
