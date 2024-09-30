@@ -39,8 +39,6 @@ export const SalonRequests: FC<Props> = ({
     }
   }, [data, dataDeleted])
 
-  console.log(requests)
-
   return loading || loadingDelete ? (
     <RequestsListSkeleton />
   ) : (

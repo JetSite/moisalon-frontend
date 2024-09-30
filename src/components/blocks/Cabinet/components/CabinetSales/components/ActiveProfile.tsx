@@ -91,7 +91,6 @@ const ActiveProfile: FC<ActiveProfileProps> = ({
 
   const handleSaleClick: ISaleHandler = e => {
     if (view === 'publish') return
-    console.log(e.currentTarget.id)
     const findSale =
       sales.find(element => element.id === e.currentTarget.id) || null
     setSale(findSale)
@@ -121,6 +120,8 @@ const ActiveProfile: FC<ActiveProfileProps> = ({
       })
     }
   }
+
+  console.log(activeProfile.promotions)
 
   return (
     <>

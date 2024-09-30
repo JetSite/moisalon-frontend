@@ -36,7 +36,7 @@ export const Header: FC<IWorkplacePageHeaderProps> = ({
             Онлайн бронирование
           </Styled.OnlineBooking>
         </OnlineBookingButton>
-        {salonData?.onlineBookingUrl ? (
+        {/* {salonData?.onlineBookingUrl ? (
           <noindex>
             <Styled.OnlineBooking
               as="a"
@@ -56,7 +56,7 @@ export const Header: FC<IWorkplacePageHeaderProps> = ({
             <Styled.Icon src="/booking-blank.svg" />
             Онлайн бронирование
           </Styled.OnlineBooking>
-        )}
+        )} */}
       </Styled.TopImage>
     </>
   )

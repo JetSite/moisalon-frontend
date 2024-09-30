@@ -28,11 +28,12 @@ import useAuthStore, { IMasterCabinetTabs } from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 import { IPhoto } from 'src/types'
 import { IRentalRequest } from 'src/types/rentalRequest'
-import CabinetOrders from '../../../blocks/Cabinet/components/CabinetOrders'
 import CabinetRequests from 'src/components/blocks/Cabinet/components/CabinetRequests'
 import { ICabinetRequestsData } from 'src/pages/masterCabinet'
 import { request } from 'http'
 import { getTabs } from './utils/getTabs'
+import useBaseStore from 'src/store/baseStore'
+import CabinetOrders from 'src/components/blocks/Cabinet/components/CabinetOrders'
 
 export interface IMasterCabinetTab {
   title: string
@@ -49,6 +50,7 @@ interface Props extends Pick<CabinetFormProps, 'cities'> {
 }
 
 const MasterCabinet: FC<Props> = ({ user, requests, cities }) => {
+  const { cart } = useBaseStore(getStoreData)
   const [photo, setPhoto] = useState<IPhoto | null>(user.info.avatar || null)
   const [noPhotoError, setNoPhotoError] = useState<boolean>(false)
   const [toggle, setToggle] = useState(false)
@@ -60,7 +62,7 @@ const MasterCabinet: FC<Props> = ({ user, requests, cities }) => {
   )
 
   const { mobile, desktop } = useMemo(
-    () => getTabs({ requests, unreadMessagesCount }),
+    () => getTabs({ requests, unreadMessagesCount, cart }),
     [request, unreadMessagesCount],
   )
 
@@ -111,7 +113,7 @@ const MasterCabinet: FC<Props> = ({ user, requests, cities }) => {
               auth
             />
           ) : activeTab === 'orders' ? (
-            <CabinetOrders user={user} />
+            <CabinetOrders user={user} cart={cart} />
           ) : activeTab === 'requests' ? (
             <CabinetRequests meID={user.info.id} requestsData={requests} />
           ) : activeTab === 'profiles' ? (

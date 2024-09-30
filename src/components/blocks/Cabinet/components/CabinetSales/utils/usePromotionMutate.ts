@@ -11,6 +11,8 @@ interface IHandleCreateOrUpdateSaleProps {
   valueType: { [K: string]: IID }
   sale: IPromotions | null
   input: { [K: string]: any }
+  buttonPublish?: boolean
+  promotions: IPromotions[]
 }
 
 export type IHandleCreateOrUpdateSale = (
@@ -53,6 +55,8 @@ export const usePromotionMutate: IUseSaleMutate = ({
     input,
     valueType,
     sale,
+    buttonPublish,
+    promotions,
   }) => {
     setLoading(true)
     const onCompleted = async (data: any) => {
@@ -60,13 +64,19 @@ export const usePromotionMutate: IUseSaleMutate = ({
         data.createPromotion || data.updatePromotion,
       )
 
-      console.log(prepareData)
+      if (buttonPublish) {
+        promotions.push(prepareData)
+      }
 
       setSales(pre => {
         const findSale = pre.find(e => e.id === prepareData.id)
         if (findSale) {
           const newArr = pre.filter(e => e.id !== findSale.id)
-          return [prepareData, ...newArr]
+          if (buttonPublish) {
+            return newArr
+          } else {
+            return [prepareData, ...newArr]
+          }
         } else {
           return [prepareData, ...pre]
         }
@@ -79,7 +89,10 @@ export const usePromotionMutate: IUseSaleMutate = ({
         updateSale({
           variables: {
             id: sale.id,
-            input,
+            input: {
+              ...input,
+              publishedAt: buttonPublish ? new Date().toISOString() : null,
+            },
           },
           onCompleted,
         })
@@ -89,6 +102,7 @@ export const usePromotionMutate: IUseSaleMutate = ({
             input: {
               ...input,
               ...valueType,
+              publishedAt: buttonPublish ? new Date().toISOString() : null,
             },
             onCompleted,
           },
