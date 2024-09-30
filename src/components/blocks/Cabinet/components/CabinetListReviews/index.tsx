@@ -28,7 +28,7 @@ const CabinetListReviews = () => {
   const { user, loading: loading } = useAuthStore(getStoreData)
   const salons = user?.owner?.salons
   const masters = user?.owner?.masters
-  const brands = user?.owner?.brand
+  const brands = user?.owner?.brands
   const reviews = user?.reviews
 
   const [id, setId] = useState<IID>('')

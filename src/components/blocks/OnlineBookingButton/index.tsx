@@ -49,6 +49,9 @@ export const OnlineBookingButton: FC<Props> = ({
     },
   })
   const onSubmit = (values: { [K: string]: string }) => {
+    // console.log(values)
+    // return
+
     const input = {
       title: 'Хочу арендовать у вас ' + (workplace?.title || 'рабочее место'),
       comment: values.message,
@@ -56,6 +59,7 @@ export const OnlineBookingButton: FC<Props> = ({
       user: user?.info.id,
       salon: salon.id,
       workplace: workplace?.id,
+      communication_types: values.contactType,
       status: '1',
       // type: workplace?.workspaces_types[0].id,
       contacts: `${

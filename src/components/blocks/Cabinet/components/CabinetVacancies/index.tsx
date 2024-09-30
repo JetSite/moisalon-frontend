@@ -31,7 +31,7 @@ const CabinetVacancies = () => {
   const { setUser } = useAuthStore(getStoreEvent)
 
   const salons = user?.owner?.salons
-  const brands = user?.owner?.brand
+  const brands = user?.owner?.brands
   const vacancies = user?.vacancies
 
   console.log('vacancies', vacancies)
@@ -51,14 +51,15 @@ const CabinetVacancies = () => {
         id: vacancyToRemoveId,
       },
     })
-    const updatedVacancies = user?.vacancies?.filter(item => item.id !== vacancyToRemoveId)
+    const updatedVacancies = user?.vacancies?.filter(
+      item => item.id !== vacancyToRemoveId,
+    )
     if (user) {
       setUser({
         ...user,
         vacancies: updatedVacancies,
       })
     }
-
   }
 
   const refetchVacancies = () => {
@@ -76,59 +77,59 @@ const CabinetVacancies = () => {
       ) : null}
       {salons?.length && !activeProfile
         ? salons.map(item => (
-          <div key={item.id}>
-            <Item
-              onClick={() => {
-                setType('salon')
-                setId(item?.id)
-                setActiveProfile(item)
-              }}
-            >
-              <Container>
-                <Avatar
-                  alt="avatar"
-                  src={PHOTO_URL + item?.logo?.url || 'empty-photo.svg'}
-                />
-                <Content>
-                  <Name>{item?.name}</Name>
-                  <Type>
-                    {item?.workplacesCount
-                      ? 'Профиль салона арендодателя'
-                      : 'Профиль салона'}
-                  </Type>
-                </Content>
-              </Container>
-            </Item>
-          </div>
-        ))
+            <div key={item.id}>
+              <Item
+                onClick={() => {
+                  setType('salon')
+                  setId(item?.id)
+                  setActiveProfile(item)
+                }}
+              >
+                <Container>
+                  <Avatar
+                    alt="avatar"
+                    src={PHOTO_URL + item?.logo?.url || 'empty-photo.svg'}
+                  />
+                  <Content>
+                    <Name>{item?.name}</Name>
+                    <Type>
+                      {item?.workplacesCount
+                        ? 'Профиль салона арендодателя'
+                        : 'Профиль салона'}
+                    </Type>
+                  </Content>
+                </Container>
+              </Item>
+            </div>
+          ))
         : null}
       {brands?.length && !activeProfile
         ? brands.map(item => (
-          <div key={item.id}>
-            <Item
-              onClick={() => {
-                setType('brand')
-                setId(item?.id)
-                setActiveProfile(item)
-              }}
-            >
-              <Container>
-                <Avatar
-                  alt="avatar"
-                  src={
-                    item?.logo
-                      ? `${PHOTO_URL}${item?.logo.url}`
-                      : 'empty-photo.svg'
-                  }
-                />
-                <Content>
-                  <Name>{item?.name}</Name>
-                  <Type>Профиль бренда</Type>
-                </Content>
-              </Container>
-            </Item>
-          </div>
-        ))
+            <div key={item.id}>
+              <Item
+                onClick={() => {
+                  setType('brand')
+                  setId(item?.id)
+                  setActiveProfile(item)
+                }}
+              >
+                <Container>
+                  <Avatar
+                    alt="avatar"
+                    src={
+                      item?.logo
+                        ? `${PHOTO_URL}${item?.logo.url}`
+                        : 'empty-photo.svg'
+                    }
+                  />
+                  <Content>
+                    <Name>{item?.name}</Name>
+                    <Type>Профиль бренда</Type>
+                  </Content>
+                </Container>
+              </Item>
+            </div>
+          ))
         : null}
       {type === 'salon' && activeProfile !== null ? (
         <>

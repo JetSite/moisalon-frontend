@@ -30,6 +30,12 @@ export const MainContainer = styled.section`
 export const FormField = styled.div`
   margin-bottom: 24px;
 `
+export const FormFieldRatio = styled.ul`
+  margin-bottom: 24px;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+`
 
 export const MobileHidden = styled.div`
   @media (max-width: ${laptopBreakpoint}) {

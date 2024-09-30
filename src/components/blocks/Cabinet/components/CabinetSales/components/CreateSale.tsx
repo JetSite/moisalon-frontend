@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { FC, useCallback, useEffect, useMemo, useState } from 'react'
+import { FC, FormEvent, useCallback, useEffect, useMemo, useState } from 'react'
 import AutoFocusedForm from '../../../../Form/AutoFocusedForm'
 import { FieldStyled } from '../../CabinetForm/styled'
 import { TextField } from '../../../../Form'
@@ -48,6 +48,9 @@ const FieldWrapDate = styled.div`
 `
 
 const ButtonWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   width: 350px;
   margin-top: 66px;
   @media (max-width: ${laptopBreakpoint}) {
@@ -75,6 +78,7 @@ const CreateSale: FC<Props> = ({
   const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
   const [openPopup, setOpenPopup] = useState(false)
   const [photo, setPhoto] = useState<IPhoto | null>(sale?.cover || null)
+  const [buttonPublish, setButtonPublish] = useState(false)
   const { loading, handleCreateOrUpdate } = usePromotionMutate({
     setErrors,
     setErrorPopupOpen,
@@ -97,8 +101,9 @@ const CreateSale: FC<Props> = ({
         setErrorPopupOpen(true)
         return
       }
-
-      const changetValues = removeUnchangedFields(values, initialValues)
+      const changetValues = removeUnchangedFields(values, initialValues, [
+        'cover',
+      ])
 
       const input = {
         title: changetValues.title,
@@ -110,21 +115,27 @@ const CreateSale: FC<Props> = ({
         dateEnd: changetValues.dateEnd,
       }
 
+      console.log(values)
+
       handleCreateOrUpdate({
         setOpenPopup,
         input,
         valueType: { [type as string]: activeProfile.id },
         sale,
+        buttonPublish,
+        promotions: activeProfile.promotions,
       })
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [photo, activeProfile, sale],
+    [photo, activeProfile, sale, buttonPublish],
   )
 
   const closePopup = () => {
     setOpenPopup(false)
     setCreateSale(false)
   }
+
+  console.log('activeProfile', activeProfile.promotions)
 
   return (
     <>
@@ -220,15 +231,25 @@ const CreateSale: FC<Props> = ({
                   variant="red"
                   size="width100"
                   type="submit"
+                  onClick={() => setButtonPublish(false)}
                   disabled={pristine || loading}
                 >
                   {loading ? 'Подождите' : 'Сохранить'}
                 </Button>
                 <Button
+                  value="public"
+                  variant="red"
+                  size="width100"
+                  type="submit"
+                  disabled={loading}
+                  onClick={() => setButtonPublish(true)}
+                >
+                  {loading ? 'Подождите' : 'Опубликовать'}
+                </Button>
+                <Button
                   variant="darkTransparent"
                   size="width100"
                   type="submit"
-                  style={{ marginTop: 20 }}
                   onClick={() => setCreateSale(false)}
                 >
                   Отменить

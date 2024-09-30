@@ -185,9 +185,6 @@ const CabinetForm: FC<CabinetFormProps> = ({
     birthDate: user.info.birthDate || '',
   }
 
-  console.log('initialValues', initialValues)
-  console.log('dirtyForm', dirtyForm)
-
   return (
     <Wrapper>
       <Flex>

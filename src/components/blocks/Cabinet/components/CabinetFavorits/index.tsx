@@ -72,8 +72,6 @@ const CabinetFavorits: FC = () => {
     }
   }, [])
 
-  console.log(favorites)
-
   return (
     <Wrapper>
       {!mobileMedia ? (
