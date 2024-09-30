@@ -28,6 +28,7 @@ import {
   AvailableQuantity,
   ButtonsWrapper,
   Detail,
+  OldPrice,
 } from './styled'
 import { PHOTO_URL } from '../../../api/variables'
 import Reviews from '../../blocks/Reviews'
@@ -45,6 +46,8 @@ import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { CREATE_CART } from 'src/api/graphql/cart/mutations/createCart'
 import { ADD_REVIEW_PRODUCT } from 'src/api/graphql/product/mutations/addReviewProduct'
 import { GET_PRODUCT_REVIEWS } from 'src/api/graphql/product/queries/getProductReviews'
+import EntityDescription from 'src/components/newUI/EntityDescription'
+import Slider from 'src/components/blocks/Slider'
 
 interface IProductPageProps {
   product: IProduct
@@ -215,6 +218,10 @@ const ProductPage: FC<IProductPageProps> = ({ product, reviews }) => {
     ? `${PHOTO_URL}${newItem.product.cover.url}`
     : ''
 
+  console.log(newItem)
+
+  console.log(product)
+
   return (
     <MainContainer>
       <FastBuyPopup
@@ -250,10 +257,16 @@ const ProductPage: FC<IProductPageProps> = ({ product, reviews }) => {
           <Right>
             <Title>{newItem?.product?.name}</Title>
             {product?.brand?.dontShowPrice ? null : (
-              <Price>{`${(newItem?.product?.salePrice &&
-                  newItem?.product?.salePrice?.toLocaleString()) ||
-                newItem?.product?.regularPrice?.toLocaleString()
+              <>
+                {newItem?.product?.salePrice ? (
+                  <OldPrice>{`${newItem?.product?.regularPrice?.toLocaleString()} ₽`}</OldPrice>
+                ) : null}
+                <Price>{`${
+                  (newItem?.product?.salePrice &&
+                    newItem?.product?.salePrice?.toLocaleString()) ||
+                  newItem?.product?.regularPrice?.toLocaleString()
                 } ₽`}</Price>
+              </>
             )}
             <AvailableQuantity
               isWrongQuantity={
@@ -392,13 +405,21 @@ const ProductPage: FC<IProductPageProps> = ({ product, reviews }) => {
                 </QuantityWrap>
               </WrapButton>
             )}
-            <Description
-              dangerouslySetInnerHTML={{
-                __html: newItem?.product?.fullDescription || '',
-              }}
-            />
+            <Description>
+              <EntityDescription
+                description={newItem?.product?.fullDescription || null}
+              />
+            </Description>
           </Right>
         </Wrap>
+        {newItem?.product?.gallery.length ? (
+          <Slider
+            noAllPadding
+            city={city}
+            type="photos"
+            items={newItem?.product?.gallery}
+          />
+        ) : null}
         <Reviews
           type="PRODUCT"
           id={newItem?.product?.id || ''}
