@@ -84,10 +84,34 @@ export const Price = styled.p`
   font-size: 20px;
   line-height: 25px;
   color: #f03;
-  margin-top: 35px;
   @media (max-width: ${laptopBreakpoint}) {
-    margin-top: 25px;
     text-align: center;
+  }
+`
+export const OldPrice = styled.p`
+  margin-top: 35px;
+  color: #a1a1a1;
+  font-weight: 600;
+  font-size: 11px;
+  line-height: 15px;
+  position: relative;
+  display: block;
+  width: min-content;
+  white-space: nowrap;
+
+  @media (max-width: ${laptopBreakpoint}) {
+    margin: 0 auto;
+    margin-top: 25px;
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    background: #a1a1a1;
+    height: 1px;
+    width: 100%;
+    top: 7px;
+    left: 0;
   }
 `
 

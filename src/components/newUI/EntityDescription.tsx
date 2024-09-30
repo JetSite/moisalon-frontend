@@ -1,8 +1,6 @@
 import { useState, useEffect, FC, useRef } from 'react'
 import styled from 'styled-components'
-import { MainContainer } from '../../styles/common'
 import { laptopBreakpoint } from '../../styles/variables'
-import { textTruncate } from 'src/utils/textTruncate'
 
 const Text = styled.p<{ isCollapsed: boolean }>`
   width: 67%;
