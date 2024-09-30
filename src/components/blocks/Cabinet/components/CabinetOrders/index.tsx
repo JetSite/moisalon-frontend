@@ -12,18 +12,16 @@ import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import RotatingLoader from 'src/components/ui/RotatingLoader'
 import { IUser } from 'src/types/me'
 import { ICart, IProductCart } from 'src/types/product'
+import { IOrder } from 'src/types/orders'
 
 interface Props {
   user: IUser
-  cart: ICart | null
 }
 
-const CabinetOrders: FC<Props> = ({ user, cart }) => {
+const CabinetOrders: FC<Props> = ({ user }) => {
   useEffect(() => console.log('first'), [])
   const router = useRouter()
-  const [orders, setOrders] = useState<IProductCart[]>(cart?.cartContent || [])
-
-  console.log('cart', cart)
+  const [orders, setOrders] = useState<IOrder[]>(user.orders)
 
   const [refetch, { loading }] = useLazyQuery(ORDERS_BY_USER, {
     onCompleted: data => {
@@ -31,11 +29,11 @@ const CabinetOrders: FC<Props> = ({ user, cart }) => {
 
       if (data?.orders?.data?.length) {
         console.log(data)
-        const ordersData: IProductCart[] =
-          flattenStrapiResponse(data?.orders) || []
+        const ordersData: IOrder[] = flattenStrapiResponse(data?.orders) || []
         // const sortedOrders = ordersData?.sort((a, b) => {
         //   return Number(new Date(b.createdAt)) - Number(new Date(a.createdAt))
         // })
+        setOrders(ordersData)
         // setOrders(sortedOrders)
       }
     },
@@ -61,7 +59,7 @@ const CabinetOrders: FC<Props> = ({ user, cart }) => {
     })
   }, [router])
 
-  console.log(user.info.id)
+  console.log('orders', orders)
 
   return (
     <Wrapper>
@@ -69,9 +67,9 @@ const CabinetOrders: FC<Props> = ({ user, cart }) => {
       {loading && <RotatingLoader />}
       {orders?.length && !loading ? (
         <OrdersList>
-          {/* {orders.map(order => (
-            <Order order={order.product} />
-          ))} */}
+          {orders.map(order => (
+            <Order order={order} />
+          ))}
         </OrdersList>
       ) : (
         <NoOrders>Нет заказов</NoOrders>

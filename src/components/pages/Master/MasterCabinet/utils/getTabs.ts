@@ -1,6 +1,7 @@
 import { ICabinetRequestsData } from 'src/pages/masterCabinet'
 import { IMasterCabinetTab } from '..'
 import { ICart } from 'src/types/product'
+import { IOrder } from 'src/types/orders'
 
 export type IGetTabs = (props: IGetTabsProps) => {
   mobile: IMasterCabinetTab[]
@@ -10,10 +11,14 @@ export type IGetTabs = (props: IGetTabsProps) => {
 interface IGetTabsProps {
   requests: ICabinetRequestsData
   unreadMessagesCount: number | null
-  cart: ICart | null
+  orders: IOrder[]
 }
 
-export const getTabs: IGetTabs = ({ requests, unreadMessagesCount, cart }) => {
+export const getTabs: IGetTabs = ({
+  requests,
+  unreadMessagesCount,
+  orders,
+}) => {
   return {
     mobile: [
       { title: 'Мои данные', value: 'about', icon: '/icon-about.svg' },
@@ -21,7 +26,7 @@ export const getTabs: IGetTabs = ({ requests, unreadMessagesCount, cart }) => {
         title: 'Мои заказы',
         value: 'orders',
         icon: '/icon-orders.svg',
-        quantity: cart?.cartContent.length,
+        quantity: orders.length,
         disable: false,
       },
       {
@@ -80,7 +85,7 @@ export const getTabs: IGetTabs = ({ requests, unreadMessagesCount, cart }) => {
       {
         title: 'Мои заказы',
         value: 'orders',
-        quantity: cart?.cartContent.length,
+        quantity: orders.length,
         disable: false,
       },
       {

@@ -218,8 +218,6 @@ const ProductPage: FC<IProductPageProps> = ({ product, reviews }) => {
     ? `${PHOTO_URL}${newItem.product.cover.url}`
     : ''
 
-  console.log(newItem)
-
   console.log(product)
 
   return (
@@ -274,8 +272,8 @@ const ProductPage: FC<IProductPageProps> = ({ product, reviews }) => {
                 newItem.quantity > product?.availableInStock
               }
             >
-              {`${product?.availableInStock} ${pluralize(
-                product?.availableInStock || 0,
+              {`${product?.availableInStock ?? 0} ${pluralize(
+                product?.availableInStock,
                 'упаковка',
                 'упаковки',
                 'упаковок',
@@ -299,6 +297,11 @@ const ProductPage: FC<IProductPageProps> = ({ product, reviews }) => {
                       variant="red"
                       font="medium"
                       mt="48"
+                      disabled={
+                        product?.availableInStock
+                          ? product.availableInStock === 0
+                          : true
+                      }
                       onClick={e => {
                         e.preventDefault()
                         e.stopPropagation()
@@ -327,7 +330,11 @@ const ProductPage: FC<IProductPageProps> = ({ product, reviews }) => {
                           addToCart(newItem?.product, 1)
                         }
                       }}
-                      disabled={product?.availableInStock === 0}
+                      disabled={
+                        product?.availableInStock
+                          ? product.availableInStock === 0
+                          : true
+                      }
                     >
                       Добавить в корзину
                     </Button>
@@ -340,6 +347,11 @@ const ProductPage: FC<IProductPageProps> = ({ product, reviews }) => {
                       variant="red"
                       font="popUp"
                       mt="37"
+                      disabled={
+                        product?.availableInStock
+                          ? product.availableInStock === 0
+                          : true
+                      }
                       onClick={e => {
                         e.preventDefault()
                         e.stopPropagation()
@@ -368,7 +380,11 @@ const ProductPage: FC<IProductPageProps> = ({ product, reviews }) => {
                           addToCart(newItem?.product, 1)
                         }
                       }}
-                      disabled={product?.availableInStock === 0}
+                      disabled={
+                        product?.availableInStock
+                          ? product.availableInStock === 0
+                          : true
+                      }
                     >
                       Добавить в корзину
                     </Button>
@@ -412,7 +428,7 @@ const ProductPage: FC<IProductPageProps> = ({ product, reviews }) => {
             </Description>
           </Right>
         </Wrap>
-        {newItem?.product?.gallery.length ? (
+        {newItem?.product?.gallery?.length ? (
           <Slider
             noAllPadding
             city={city}
