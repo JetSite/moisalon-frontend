@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { laptopBreakpoint, red } from '../../../../../../../styles/variables'
 import Button from '../../../../../../ui/Button'
 import { lighten } from 'polished'
+import Link from 'next/link'
 
 export const Wrapper = styled.div``
 
@@ -196,7 +197,7 @@ export const BottomText = styled.p`
   }
 `
 
-export const BackLink = styled.a`
+export const BackLink = styled(Link)`
   display: inline-block;
   margin-top: 30px;
   color: #2d9bf0;

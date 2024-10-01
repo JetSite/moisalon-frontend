@@ -9,6 +9,7 @@ import { FieldWrap } from '../../styled'
 import { laptopBreakpoint } from '../../../../../../../../styles/variables'
 import Group from '../../../../../../../blocks/Form/Group'
 import { parseFieldsToString } from 'src/utils/newUtils/formsHelpers'
+import { ISNetwork } from 'src/types'
 
 const Wrapper = styled.div`
   margin-top: 105px;
@@ -36,9 +37,10 @@ const Title = styled.div`
 
 interface Props {
   ref6: RefObject<HTMLDivElement>
+  sNetworks: ISNetwork[]
 }
 
-const Socials: FC<Props> = ({ ref6 }) => {
+const Socials: FC<Props> = ({ ref6, sNetworks }) => {
   return (
     <Wrapper id="socials" ref={ref6}>
       <Title>Дополнительная информация</Title>
@@ -53,7 +55,12 @@ const Socials: FC<Props> = ({ ref6 }) => {
             validate={isUrl}
           />
         </FieldWrap>
-        <Field name="socialNetworkUrls" component={SocialNetworkUrlsField} />
+        <Field
+          name="socialNetworkUrls"
+          render={({ input }) => (
+            <SocialNetworkUrlsField input={input} arrayFields={sNetworks} />
+          )}
+        />
       </Group>
     </Wrapper>
   )

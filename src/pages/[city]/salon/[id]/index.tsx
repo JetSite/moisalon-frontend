@@ -177,7 +177,7 @@ const Salon: FC<Props> = ({
         <DecktopWrapper>
           <Slider
             city={salon.city}
-            type="portfolio"
+            type="photos"
             items={photosArray}
             isOwner={isOwner}
             title="Фото салона"

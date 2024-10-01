@@ -6,48 +6,51 @@ import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 import { NoOrders, OrdersList, Title, Wrapper } from './styles'
 import Order from './components/Order'
-import { useQuery } from '@apollo/client'
+import { useLazyQuery, useQuery } from '@apollo/client'
 import { ORDERS_BY_USER } from 'src/api/graphql/order/queries/ordersByUser'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
-import { IOrder } from 'src/types/orders'
 import RotatingLoader from 'src/components/ui/RotatingLoader'
 import { IUser } from 'src/types/me'
+import { ICart, IProductCart } from 'src/types/product'
+import { IOrder } from 'src/types/orders'
 
 interface Props {
   user: IUser
 }
 
 const CabinetOrders: FC<Props> = ({ user }) => {
+  useEffect(() => console.log('first'), [])
   const router = useRouter()
-  const [orders, setOrders] = useState<IOrder[]>([])
+  const [orders, setOrders] = useState<IOrder[]>(user.orders)
 
-  const { loading } = useQuery(ORDERS_BY_USER, {
-    variables: {
-      filters: {
-        user: {
-          id: {
-            eq: user?.info.id,
-          },
-        },
-      },
-    },
+  const [refetch, { loading }] = useLazyQuery(ORDERS_BY_USER, {
     onCompleted: data => {
       if (data?.orders?.data?.length) {
         const ordersData: IOrder[] = flattenStrapiResponse(data?.orders) || []
-        const sortedOrders = ordersData?.sort((a, b) => {
-          return Number(new Date(b.createdAt)) - Number(new Date(a.createdAt))
-        })
-        setOrders(sortedOrders)
+        setOrders(ordersData)
       }
     },
   })
-
   useEffect(() => {
-    if (router.query?.section === 'orders') {
+    if (router.query?.tab === 'orders') {
       const orderBlock = document.getElementById('orders')
       orderBlock?.scrollIntoView({ block: 'center', behavior: 'smooth' })
     }
   }, [])
+
+  useEffect(() => {
+    refetch({
+      variables: {
+        filters: {
+          user: {
+            id: {
+              eq: user?.info.id,
+            },
+          },
+        },
+      },
+    })
+  }, [router])
 
   return (
     <Wrapper>

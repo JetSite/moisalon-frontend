@@ -3,7 +3,7 @@ import { Dialog, DialogActions, DialogContent } from '@material-ui/core'
 import { Field } from 'react-final-form'
 import AutoFocusedForm from '../../../../../blocks/Form/AutoFocusedForm'
 import TextField from '../../../../../blocks/Form/TextField'
-import { FormField } from '../../../../../../styles/common'
+import { FormField, FormFieldRatio } from '../../../../../../styles/common'
 import Button from '../../../../../ui/Button'
 import {
   required,
@@ -13,6 +13,7 @@ import {
 } from '../../../../../../utils/validations'
 import { FieldStyled } from '../../../CreateSalon/components/RegistrationForm/styled'
 import { IUser } from 'src/types/me'
+import RadioButton from 'src/components/newUI/Inputs/Radio'
 
 interface Props {
   open: boolean
@@ -36,6 +37,7 @@ const WritePopup: FC<Props> = ({ open, handleClose, onSubmit, user }) => {
               name: user?.info?.username,
               phone: user?.info?.phone,
               email: user?.info?.email,
+              contactType: '3',
             }}
             onSubmit={onSubmit}
             render={({ handleSubmit, form }) => {
@@ -71,6 +73,33 @@ const WritePopup: FC<Props> = ({ open, handleClose, onSubmit, user }) => {
                         validate={composeValidators(required, email)}
                       />
                     </FormField>
+                    <FormFieldRatio>
+                      <Field
+                        name="contactType"
+                        component={RadioButton}
+                        type="radio"
+                        value="4"
+                        id="contactType-4"
+                        label="По почте"
+                      />
+                      <Field
+                        name="contactType"
+                        component={RadioButton}
+                        type="radio"
+                        value="3"
+                        id="contactType-3"
+                        label="Позвонить"
+                      />
+                      <Field
+                        name="contactType"
+                        component={RadioButton}
+                        type="radio"
+                        value="7"
+                        id="contactType-7"
+                        label="Написать в мессенджере"
+                      />
+                    </FormFieldRatio>
+
                     <FormField>
                       <Field
                         fullWidth
@@ -82,7 +111,14 @@ const WritePopup: FC<Props> = ({ open, handleClose, onSubmit, user }) => {
                       />
                     </FormField>
                     <DialogActions>
-                      <div style={{ display: 'flex', flexDirection: 'column' }}>
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          width: '100%',
+                          alignItems: 'center',
+                        }}
+                      >
                         <Button
                           variant="red"
                           style={{ marginBottom: '10px' }}

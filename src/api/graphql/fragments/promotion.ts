@@ -50,6 +50,7 @@ data {
     }
     promoCode
     publishedAt
+    deleted
   }
 }
 `

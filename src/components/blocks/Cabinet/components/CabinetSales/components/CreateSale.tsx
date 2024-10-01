@@ -1,24 +1,28 @@
 import styled from 'styled-components'
-import { useMutation } from '@apollo/client'
-import { FC, useCallback, useState } from 'react'
-import AutoFocusedForm from '../Form/AutoFocusedForm'
-import { FieldStyled } from '../Cabinet/components/CabinetForm/styled'
-import { TextField } from '../Form'
-import { required } from '../../../utils/validations'
-import Error from '../Form/Error'
-import { laptopBreakpoint } from '../../../styles/variables'
-import Button from '../../ui/Button'
-import Sale from '../Sale'
-import { createSaleMutation } from '../../../_graphql-legacy/sales/createSaleMutation'
-import Popup from '../../ui/Popup'
-import { IPromotionsType } from '../Cabinet/components/CabinetSales'
+import { FC, FormEvent, useCallback, useEffect, useMemo, useState } from 'react'
+import AutoFocusedForm from '../../../../Form/AutoFocusedForm'
+import { FieldStyled } from '../../CabinetForm/styled'
+import { TextField } from '../../../../Form'
+import { required } from '../../../../../../utils/validations'
+import Error from '../../../../Form/Error'
+import { laptopBreakpoint } from '../../../../../../styles/variables'
+import Button from '../../../../../ui/Button'
+import Sale from '../../../../Sale'
+import Popup from '../../../../../ui/Popup'
+import { IPromotionsType } from '..'
 import { ISalon } from 'src/types/salon'
 import { IBrand } from 'src/types/brands'
 import { IMaster } from 'src/types/masters'
 import { IPhoto } from 'src/types'
-import { CREATE_PROMOTION } from 'src/api/graphql/promotion/mutations/createPromotion'
-import { ISetState } from 'src/types/common'
+import { IID, ISetState } from 'src/types/common'
 import { IPromotions } from 'src/types/promotions'
+import {
+  IInitialValuesSaleForm,
+  getInitialValuesSaleForm,
+} from '../utils/getInitialValuesSaleForm'
+import removeUnchangedFields from 'src/utils/newUtils/removeUnchangedFields'
+import { usePromotionMutate } from '../utils/usePromotionMutate'
+import { parseFieldsToString } from 'src/utils/newUtils/formsHelpers'
 
 const FieldWrap = styled.div`
   margin-bottom: 14px;
@@ -44,6 +48,9 @@ const FieldWrapDate = styled.div`
 `
 
 const ButtonWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   width: 350px;
   margin-top: 66px;
   @media (max-width: ${laptopBreakpoint}) {
@@ -52,72 +59,73 @@ const ButtonWrap = styled.div`
   }
 `
 
-type IFormValues = Pick<
-  IPromotions,
-  | 'title'
-  | 'fullDescription'
-  | 'shortDescription'
-  | 'promoCode'
-  | 'dateStart'
-  | 'dateEnd'
->
-
 interface Props {
   type: IPromotionsType
-  activeProfile: ISalon | IBrand | IMaster | null
+  activeProfile: ISalon | IBrand | IMaster
   setCreateSale: ISetState<boolean>
+  sale: IPromotions | null
+  setSales: ISetState<IPromotions[]>
 }
 
-const CreateSale: FC<Props> = ({ setCreateSale, type, activeProfile }) => {
+const CreateSale: FC<Props> = ({
+  setCreateSale,
+  type,
+  activeProfile,
+  sale,
+  setSales,
+}) => {
   const [errors, setErrors] = useState<string[] | null>(null)
-  const [loading, setLoading] = useState(false)
   const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
   const [openPopup, setOpenPopup] = useState(false)
-  const [photo, setPhoto] = useState<IPhoto | null>(null)
-
-  const [createSale] = useMutation(CREATE_PROMOTION, {
-    onError: error => {
-      const errorMessages = error.graphQLErrors.map(e => e.message)
-      setLoading(false)
-      setErrors(errorMessages)
-      setErrorPopupOpen(true)
-    },
-    onCompleted: async data => {
-      setLoading(false)
-      console.log(data)
-
-      setOpenPopup(true)
-    },
+  const [photo, setPhoto] = useState<IPhoto | null>(sale?.cover || null)
+  const [buttonPublish, setButtonPublish] = useState(false)
+  const { loading, handleCreateOrUpdate } = usePromotionMutate({
+    setErrors,
+    setErrorPopupOpen,
+    setSales,
   })
+  const initialValues = useMemo(
+    () =>
+      getInitialValuesSaleForm({
+        sale,
+        type,
+        profileID: activeProfile?.id,
+      }),
+    [sale, type, activeProfile],
+  )
 
   const onSubmit = useCallback(
-    async (values: IFormValues) => {
-      console.log(values)
-
+    async (values: IInitialValuesSaleForm) => {
       if (!photo) {
         setErrors(['Необходимо добавить фото'])
         setErrorPopupOpen(true)
         return
-      } else if (activeProfile) {
-        setLoading(true)
-        createSale({
-          variables: {
-            input: {
-              title: values.title,
-              cover: photo.id,
-              fullDescription: values.fullDescription,
-              shortDescription: values.shortDescription,
-              promoCode: values.promoCode,
-              dateStart: values.dateStart,
-              dateEnd: values.dateEnd,
-              [type as string]: activeProfile.id,
-            },
-          },
-        })
       }
+      const changetValues = removeUnchangedFields(values, initialValues, [
+        'cover',
+      ])
+
+      const input = {
+        title: changetValues.title,
+        cover: changetValues.cover?.id || null,
+        fullDescription: changetValues.fullDescription,
+        shortDescription: changetValues.shortDescription,
+        promoCode: changetValues.promoCode,
+        dateStart: changetValues.dateStart,
+        dateEnd: changetValues.dateEnd,
+      }
+
+      handleCreateOrUpdate({
+        setOpenPopup,
+        input,
+        valueType: { [type as string]: activeProfile.id },
+        sale,
+        buttonPublish,
+        promotions: activeProfile.promotions,
+      })
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [photo],
+    [photo, activeProfile, sale, buttonPublish],
   )
 
   const closePopup = () => {
@@ -127,32 +135,28 @@ const CreateSale: FC<Props> = ({ setCreateSale, type, activeProfile }) => {
 
   return (
     <>
-      <AutoFocusedForm<IFormValues>
+      <AutoFocusedForm<IInitialValuesSaleForm>
         onSubmit={onSubmit}
         subscription={{ values: true }}
-        render={({ handleSubmit, pristine, values }) => {
+        initialValues={initialValues}
+        render={({ handleSubmit, pristine, values, form }) => {
+          useEffect(() => {
+            form.change('cover', photo)
+          }, [photo])
           return (
             <form onSubmit={handleSubmit}>
-              <div style={{ marginBottom: 20 }}>
+              <ul style={{ marginBottom: 20 }}>
                 <Sale
                   item={values as IPromotions}
                   photo={photo}
                   setPhoto={setPhoto}
                   type={type}
                   create
-                  // name={`${
-                  //   type === 'master'
-                  //     ? 'Мастер'
-                  //     : type === 'salon'
-                  //     ? 'Салон'
-                  //     : type === 'brand'
-                  //     ? 'Бренд'
-                  //     : ''
-                  // } ${activeProfile?.name}`}
                 />
-              </div>
+              </ul>
               <FieldWrap>
                 <FieldStyled
+                  parse={parseFieldsToString}
                   name="title"
                   component={TextField}
                   label="Название акции"
@@ -162,6 +166,7 @@ const CreateSale: FC<Props> = ({ setCreateSale, type, activeProfile }) => {
               </FieldWrap>
               <FieldWrap>
                 <FieldStyled
+                  parse={parseFieldsToString}
                   name="shortDescription"
                   component={TextField}
                   label="Краткое описание акции"
@@ -173,6 +178,7 @@ const CreateSale: FC<Props> = ({ setCreateSale, type, activeProfile }) => {
               </FieldWrap>
               <FieldWrap>
                 <FieldStyled
+                  parse={parseFieldsToString}
                   name="fullDescription"
                   component={TextField}
                   label="Описание акции"
@@ -184,6 +190,7 @@ const CreateSale: FC<Props> = ({ setCreateSale, type, activeProfile }) => {
               </FieldWrap>
               <FieldWrap>
                 <FieldStyled
+                  parse={parseFieldsToString}
                   name="promoCode"
                   component={TextField}
                   label="Промокод"
@@ -192,6 +199,7 @@ const CreateSale: FC<Props> = ({ setCreateSale, type, activeProfile }) => {
               </FieldWrap>
               <FieldWrapDate>
                 <FieldStyled
+                  parse={parseFieldsToString}
                   name="dateStart"
                   component={'input'}
                   type="date"
@@ -201,6 +209,7 @@ const CreateSale: FC<Props> = ({ setCreateSale, type, activeProfile }) => {
               </FieldWrapDate>
               <FieldWrapDate>
                 <FieldStyled
+                  parse={parseFieldsToString}
                   name="dateEnd"
                   component={'input'}
                   type="date"
@@ -218,15 +227,25 @@ const CreateSale: FC<Props> = ({ setCreateSale, type, activeProfile }) => {
                   variant="red"
                   size="width100"
                   type="submit"
+                  onClick={() => setButtonPublish(false)}
                   disabled={pristine || loading}
                 >
                   {loading ? 'Подождите' : 'Сохранить'}
                 </Button>
                 <Button
+                  value="public"
+                  variant="red"
+                  size="width100"
+                  type="submit"
+                  disabled={loading}
+                  onClick={() => setButtonPublish(true)}
+                >
+                  {loading ? 'Подождите' : 'Опубликовать'}
+                </Button>
+                <Button
                   variant="darkTransparent"
                   size="width100"
                   type="submit"
-                  style={{ marginTop: 20 }}
                   onClick={() => setCreateSale(false)}
                 >
                   Отменить

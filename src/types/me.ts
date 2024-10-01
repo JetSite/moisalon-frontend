@@ -52,5 +52,5 @@ export interface IUser extends Omit<IMe, 'owner'> {
   favorite: IUserThings
   vacancies?: IVacancy[]
   reviews?: IUserReviews[]
-  orders?: IOrder[]
+  orders: IOrder[]
 }

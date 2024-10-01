@@ -71,8 +71,9 @@ export const Content = styled.div<{
   bgWithIcons: boolean
   pt: number
   pb: number
+  noAllPadding: boolean
 }>`
-  padding: 0 140px;
+  padding: ${({ noAllPadding }) => (noAllPadding ? 0 : '0 140px')};
   padding-top: ${({ pt }) => pt + 'px'};
   padding-bottom: ${({ pb }) => pb + 'px'};
   background: ${({ bgWithIcons }) =>

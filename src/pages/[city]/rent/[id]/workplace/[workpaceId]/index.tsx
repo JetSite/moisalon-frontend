@@ -3,16 +3,8 @@ import {
   addApolloState,
   initializeApollo,
 } from '../../../../../../api/apollo-client'
-import RentHeader from '../../../../../../components/pages/Rent/RentHeader'
 import SearchBlock from '../../../../../../components/blocks/SearchBlock'
-import { citySuggestionsQuery } from '../../../../../../_graphql-legacy/city/citySuggestionsQuery'
-import { salonQuery } from '../../../../../../_graphql-legacy/salon/salonQuery'
-import { salonSlugQuery } from '../../../../../../_graphql-legacy/salon/salonSlugQuery'
-import { seatQuery } from '../../../../../../_graphql-legacy/salon/seatQuery'
 import MainLayout from '../../../../../../layouts/MainLayout'
-import { cyrToTranslit } from '../../../../../../utils/translit'
-import useAuthStore from 'src/store/authStore'
-import { getStoreData } from 'src/store/utils'
 import { fetchCity } from 'src/api/utils/fetchCity'
 import { getSalonPage } from 'src/api/graphql/salon/queries/getSalon'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
@@ -21,6 +13,7 @@ import { GetServerSideProps, NextPage } from 'next'
 import { Nullable } from 'src/types/common'
 import { ICity } from 'src/types'
 import { ISalonWorkplace } from 'src/types/workplace'
+import { WorkplacePage } from 'src/components/pages/Workplace'
 
 interface Props {
   salonData: ISalonPage
@@ -29,7 +22,6 @@ interface Props {
 }
 
 const Workplace: NextPage<Props> = ({ salonData, city, workplaceData }) => {
-  const roomData = {}
   return (
     <MainLayout>
       {/* <Head>
@@ -43,10 +35,10 @@ const Workplace: NextPage<Props> = ({ salonData, city, workplaceData }) => {
       </Head> */}
       <>
         <SearchBlock />
-        <RentHeader
+        <WorkplacePage
           city={city}
           salonData={salonData}
-          workplaceData={workplaceData}
+          workplace={workplaceData}
         />
       </>
     </MainLayout>
@@ -68,20 +60,6 @@ export const getServerSideProps: GetServerSideProps<
   const salonID = ctx.params.id
   const workpaceID = ctx.params.workpaceId
 
-  // const salonQueryRes = await apolloClient.query({
-  //   query: salonSlugQuery,
-  //   variables: { slug: params.id },
-  // })
-
-  // const city = await apolloClient.query({
-  //   query: citySuggestionsQuery,
-  //   variables: {
-  //     city: query?.city || '',
-  //     count: 1,
-  //   },
-  // })
-
-  // const id = salonQueryRes?.data?.salonSlug?.id
   const data = await Promise.all([
     apolloClient.query({
       query: getSalonPage,

@@ -28,6 +28,8 @@ export const getSalonPage = gql`
             latitude
             longitude
             locationDirections
+            seoTitle
+            seoDescription
             city {
               ${cityFragment}
             }

@@ -1,8 +1,9 @@
 import styled from 'styled-components'
-import { laptopBreakpoint } from '../../../../styles/variables'
+import { laptopBreakpoint } from '../../../styles/variables'
 
 export const Wrapper = styled.div`
   max-width: 1440px;
+  width: 100%;
   margin: 0 auto;
 
   @media (max-width: ${laptopBreakpoint}) {
@@ -12,6 +13,7 @@ export const Wrapper = styled.div`
 
 export const Content = styled.div`
   padding: 0 140px;
+  width: 100%;
 
   @media (max-width: ${laptopBreakpoint}) {
     padding: 0 20px;
@@ -33,6 +35,7 @@ export const Top = styled.div`
 
 export const TopImage = styled.div<{ photoUrl?: string }>`
   max-width: 1440px;
+  width: 100%;
   height: 610px;
   position: relative;
   margin: 0 auto;
@@ -48,15 +51,16 @@ export const Icon = styled.img`
   margin-right: 13px;
 `
 
-export const OnlineBooking = styled.span`
-  cursor: pointer;
+export const OnlineBooking = styled.span<{ disabled?: boolean }>`
+  cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
   width: 295px;
   height: 55px;
   position: absolute;
   top: 170px;
   right: 138px;
   background: #ff0033;
-  box-shadow: 0px 16px 32px rgba(255, 0, 51, 0.3);
+  box-shadow: ${({ disabled }) =>
+    disabled ? 'none' : '  0px 16px 32px rgba(255, 0, 51, 0.3)'};
   border-radius: 43px;
   color: #fff;
   font-weight: 600;
@@ -65,8 +69,10 @@ export const OnlineBooking = styled.span`
   align-items: center;
   justify-content: center;
   transition: 0.3s;
+  ${({ disabled }) => disabled && 'background: gray;'}
   &:hover {
-    box-shadow: 0px 16px 32px rgba(255, 0, 51, 0.7);
+    box-shadow: ${({ disabled }) =>
+      disabled ? 'none' : ' 0px 16px 32px rgba(255, 0, 51, 0.7)'};
   }
   @media (max-width: ${laptopBreakpoint}) {
     font-size: 12px;
@@ -78,7 +84,7 @@ export const OnlineBooking = styled.span`
   }
 `
 
-export const SalonDescription = styled.p`
+export const SalonDescription = styled.div`
   max-width: 624px;
   margin-top: 46px;
   font-weight: 400;
@@ -177,9 +183,9 @@ export const IconCircle = styled.img`
   }
 `
 
-export const ButtonRequest = styled.span`
+export const ButtonRequest = styled.span<{ disabled?: boolean }>`
   background: #ff0033;
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
   color: #fff;
   display: flex;
   width: 240px;
@@ -190,6 +196,7 @@ export const ButtonRequest = styled.span`
   align-items: center;
   justify-content: center;
   margin-top: 32px;
+  ${({ disabled }) => disabled && 'background: gray;'}
 `
 
 export const InfoItem = styled.div`
@@ -276,6 +283,11 @@ export const Photo = styled.img`
 export const BottomButtons = styled.div`
   margin-top: 50px;
   margin-bottom: 60px;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  gap: 32px;
+  flex-wrap: wrap;
 `
 
 export const DesktopBlock = styled.div`

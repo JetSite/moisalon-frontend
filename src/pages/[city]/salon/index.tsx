@@ -60,10 +60,12 @@ export const getServerSideProps: GetServerSideProps<
   // const cityData = []
   // const pagination = []
 
+  const pageSize = 9
+
   const data = await Promise.all([
     apolloClient.query({
       query: getSalonsThroughCity,
-      variables: { slug: ctx.query.city, pageSize: 9, sort: ['rating:asc'] },
+      variables: { slug: ctx.query.city, pageSize, sort: ['rating:asc'] },
     }),
     apolloClient.query({
       query: BRANDS,
@@ -124,6 +126,7 @@ export const getServerSideProps: GetServerSideProps<
       },
       cityData,
       pagination,
+      pageSize,
     },
   }
 }

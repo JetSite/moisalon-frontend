@@ -18,7 +18,7 @@ export const FakeWrapper = styled.div`
   height: 112px;
 `
 
-export const Wrapper = styled.div<{
+export const Wrapper = styled.header<{
   showSearchPopup: boolean
   isAboutPage: boolean
 }>`

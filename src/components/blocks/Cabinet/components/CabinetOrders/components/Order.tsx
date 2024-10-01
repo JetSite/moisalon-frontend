@@ -1,30 +1,6 @@
 import { FC, useState } from 'react'
-import { useRouter } from 'next/router'
-import { useMutation } from '@apollo/react-hooks'
-import {
-  OrderWrapper,
-  OrderTop,
-  TopDate,
-  TopOrderNum,
-  OrderDetail,
-  OrderDetailMobile,
-  DetailName,
-  DetailValue,
-  DetailsWrapper,
-  OrderBottom,
-  BottomButton,
-  BottomButtonMobile,
-  BottomProducts,
-  ButtonStyled,
-  OrderIcon,
-  BottomProductsMobile,
-  HiddenMobileOrderDetail,
-  OrderDetailMobileWrap,
-} from '../styles'
+import * as Styled from '../styles'
 import BrandContacts from './BrandContacts'
-import BrandAddresses from './BrandAddresses'
-import { cyrToTranslit } from '../../../../../../utils/translit'
-import { getOrderPayLink } from '../../../../../../_graphql-legacy/orders/getOrderPayLink'
 import { IOrder } from 'src/types/orders'
 import Product from './Product'
 
@@ -33,226 +9,204 @@ interface IProps {
 }
 
 const Order: FC<IProps> = ({ order }) => {
-  const [productBrands, setProductBrands] = useState([])
   const [mobileOrderProducts, setMobileOrderProducts] = useState(false)
-  const router = useRouter()
+  const totalAmount =
+    order.cartContent?.reduce(
+      (acc, item) =>
+        acc +
+        (item.product.salePrice || item.product.regularPrice) * item.quantity,
+      0,
+    ) + ` ₽`
 
-  // const amount = order?.product.reduce(
-  //   (sum, { price, count }) => sum + price * count,
-  //   0,
-  // )
-  const paymentType = {
-    0: 'оплата картой на сайте',
-    1: 'оплата наличными',
-    2: 'безналичный расчет',
+  const deliveryTitle =
+    order?.delivery?.title ?? 'Нужно создать на подобии способа оплаты'
+  const paymentMethodTitle =
+    order.payment_method?.title ?? 'Не указан способ оплаты'
+  const orderStatusTitle = order.order_status?.title ?? 'Неизвестный статус'
+
+  const orderDate = new Date(order.createdAt)
+
+  const repeatHandler = () => {
+    // sessionStorage.setItem(
+    //   'cartChecked',
+    //   JSON.stringify({
+    //     items: [],
+    //     productBrands: [...productBrands],
+    //     order,
+    //   }),
+    // )
+    // router.push(`/order`)
   }
 
-  const deliveryType = {
-    0: 'самовывоз',
-    1: 'курьер',
+  const payHandler = () => {
+    // if (!me?.info) {
+    //   router.push('/login')
+    // } else {
+    //   getPayLink({
+    //     variables: {
+    //       orderId: order.id,
+    //     },
+    //   })
+    // }
   }
 
-  const orderStatus = {
-    new: 'Новый',
-    processing: 'В обработке',
-    delivered: 'Доставляется',
-    completed: 'Выполнен',
-    deleted: 'Удален',
-  }
-
-  const orderDate = new Date(order?.createdAt)
-  const totalAmount = order?.cartContent?.reduce(
-    (acc, item) =>
-      acc +
-      (item.product.salePrice || item.product.regularPrice) * item.quantity,
-    0,
-  )
-
-  // const repeatHandler = () => {
-  //   if (!me?.info) {
-  //     router.push('/login')
-  //   } else {
-  //     sessionStorage.setItem(
-  //       'cartChecked',
-  //       JSON.stringify({
-  //         items: [],
-  //         productBrands: [...productBrands],
-  //         order,
-  //       }),
-  //     )
-  //     router.push(`/order`)
-  //   }
-  // }
-
-  // const [getPayLink] = useMutation(getOrderPayLink, {
-  //   variables: {
-  //     orderId: order.id,
-  //   },
-  //   onCompleted: result => {
-  //     router.push(result.orderPayLink)
-  //   },
-  // })
-
-  // const payHandler = () => {
-  //   if (!me?.info) {
-  //     router.push('/login')
-  //   } else {
-  //     getPayLink({
-  //       variables: {
-  //         orderId: order.id,
-  //       },
-  //     })
-  //   }
-  // }
+  console.log(order.cartContent)
 
   return (
-    <OrderWrapper>
-      <OrderTop>
-        <TopDate>
+    <Styled.OrderWrapper>
+      <Styled.OrderTop>
+        <Styled.TopDate>
           {orderDate.toLocaleString([], {
             dateStyle: 'short',
             timeStyle: 'short',
           })}
-        </TopDate>
-        <TopOrderNum>№ {order?.id}</TopOrderNum>
-      </OrderTop>
+        </Styled.TopDate>
+        <Styled.TopOrderNum>№ {order?.id}</Styled.TopOrderNum>
+      </Styled.OrderTop>
       {order.order_status?.title && (
-        <OrderDetail>
-          <DetailName>Статус заказа</DetailName>
-          <DetailValue>{order.order_status.title}</DetailValue>
-        </OrderDetail>
+        <Styled.OrderDetail>
+          <Styled.DetailName>Статус заказа</Styled.DetailName>
+          <Styled.DetailValue>{orderStatusTitle}</Styled.DetailValue>
+        </Styled.OrderDetail>
       )}
-      {order?.address ? (
-        <OrderDetail>
-          <DetailName>Адрес</DetailName>
-          <DetailValue>{order?.address?.address}</DetailValue>
-        </OrderDetail>
+      {order.address ? (
+        <Styled.OrderDetail>
+          <Styled.DetailName>Адрес</Styled.DetailName>
+          <Styled.DetailValue>{order.address.address}</Styled.DetailValue>
+        </Styled.OrderDetail>
       ) : null}
-      {/* {!order?.address ? (
-        <OrderDetail>
-          <DetailName>Адрес</DetailName>
-          <DetailsWrapper>
-            {order?.brandsIds?.map(brandId => (
-              <BrandAddresses brandId={brandId} key={brandId} />
-            ))}
-          </DetailsWrapper>
-        </OrderDetail>
-      ) : null} */}
-      {/* <HiddenMobileOrderDetail>
-        <DetailName>Тип доставки</DetailName>
-        <DetailValue>{deliveryType[order?.delivery]}</DetailValue>
-      </HiddenMobileOrderDetail> */}
-      <OrderDetail>
-        <DetailName>Сумма заказа</DetailName>
-        <DetailValue>{totalAmount} ₽</DetailValue>
-      </OrderDetail>
-      <HiddenMobileOrderDetail>
-        <DetailName>Способ оплаты</DetailName>
-        <DetailValue>{order.payment_method.title}</DetailValue>
-      </HiddenMobileOrderDetail>
-      {/* <HiddenMobileOrderDetail>
-        <DetailName>Связаться с менеджером</DetailName>
-        <DetailsWrapper>
-          {order?.brandsIds?.map(brandId => (
-            <BrandContacts
-              brandId={brandId}
-              key={brandId}
-              productBrands={productBrands}
-              setProductBrands={setProductBrands}
-            />
-          ))}
-        </DetailsWrapper>
-      </HiddenMobileOrderDetail> */}
-      {/* <OrderDetailMobile
+      {!order.address ? (
+        <Styled.OrderDetail>
+          <Styled.DetailName>Адрес</Styled.DetailName>
+          <Styled.DetailsWrapper>
+            {/* {order.?.map(brandId => (
+              <Styled.Details>
+                <Styled.DetailsLeftAddress>
+                  <Styled.BrandName>{brand?.name}</Styled.BrandName>
+                  <Styled.BrandAddress>{brand?.address}</Styled.BrandAddress>
+                </Styled.DetailsLeftAddress>
+              </Styled.Details>
+            ))} */}
+          </Styled.DetailsWrapper>
+        </Styled.OrderDetail>
+      ) : null}
+      <Styled.HiddenMobileOrderDetail>
+        <Styled.DetailName>Тип доставки</Styled.DetailName>
+        <Styled.DetailValue>{deliveryTitle}</Styled.DetailValue>
+      </Styled.HiddenMobileOrderDetail>
+      <Styled.OrderDetail>
+        <Styled.DetailName>Сумма заказа</Styled.DetailName>
+        <Styled.DetailValue>{totalAmount} ₽</Styled.DetailValue>
+      </Styled.OrderDetail>
+      <Styled.HiddenMobileOrderDetail>
+        <Styled.DetailName>Способ оплаты</Styled.DetailName>
+        <Styled.DetailValue>{paymentMethodTitle}</Styled.DetailValue>
+      </Styled.HiddenMobileOrderDetail>
+      <Styled.HiddenMobileOrderDetail>
+        <Styled.DetailName>Связаться с менеджером</Styled.DetailName>
+        <Styled.DetailsWrapper>
+          {order.cartContent?.map(
+            cart =>
+              cart.product.brand.phones.length && (
+                <BrandContacts phone={cart.product.brand.phones[0]} />
+              ),
+          )}
+        </Styled.DetailsWrapper>
+      </Styled.HiddenMobileOrderDetail>
+      <Styled.OrderDetailMobile
         onClick={() => setMobileOrderProducts(!mobileOrderProducts)}
       >
-        <DetailName>Состав заказа:</DetailName>
-        <OrderIcon opened={mobileOrderProducts} />
-      </OrderDetailMobile> */}
-      <OrderBottom>
-        {/* {order?.status?.toLowerCase() === 'new' ? (
-          <BottomButton>
-            <ButtonStyled
-              variant="withRoundBorder"
-              size="round218"
-              font="roundMedium"
-              onClick={payHandler}
-            >
-              Оплатить заказ
-            </ButtonStyled>
-          </BottomButton>
-        ) : (
-          <BottomButton>
-            <ButtonStyled
-              variant="withRoundBorder"
-              size="round218"
-              font="roundMedium"
-              onClick={repeatHandler}
-            >
-              Повторить заказ
-            </ButtonStyled>
-          </BottomButton>
-        )} */}
-        <BottomProducts>
-          {order?.cartContent.map(item => (
-            <Product item={item} key={item.product.id} />
-          ))}
-        </BottomProducts>
+        <Styled.DetailName>Состав заказа:</Styled.DetailName>
+        <Styled.OrderIcon opened={mobileOrderProducts} />
+      </Styled.OrderDetailMobile>
+      <Styled.BottomButton>
+        {/* Кнопка с общим статусом заказа */}
+        <Styled.ButtonStyled
+          variant="withRoundBorder"
+          size="round218"
+          disabled
+          font="roundMedium"
+          style={{ margin: '20px 0 10px 0' }}
+        >
+          {orderStatusTitle}
+        </Styled.ButtonStyled>
+      </Styled.BottomButton>
 
-        {/* {mobileOrderProducts ? (
-          <>
-            <OrderDetailMobileWrap>
-              <DetailName>Тип доставки</DetailName>
-              <DetailValue>{deliveryType[order?.delivery]}</DetailValue>
-            </OrderDetailMobileWrap>
-            <OrderDetailMobileWrap>
-              <DetailName>Способ оплаты</DetailName>
-              <DetailValue>{paymentType[order?.payment]}</DetailValue>
-            </OrderDetailMobileWrap>
-            <OrderDetailMobileWrap>
-              <DetailName>Связаться с менеджером</DetailName>
-              <DetailsWrapper>
-                {order?.brandsIds?.map(brandId => (
-                  <BrandContacts
-                    brandId={brandId}
-                    key={brandId}
-                    productBrands={productBrands}
-                    setProductBrands={setProductBrands}
-                  />
-                ))}
-              </DetailsWrapper>
-            </OrderDetailMobileWrap>
+      {/* Отображаем действия в зависимости от статуса заказа */}
+      {['1', '4'].includes(order.order_status.id) && (
+        <Styled.BottomButton>
+          <Styled.ButtonStyled
+            variant="withRoundBorder"
+            size="round218"
+            font="roundMedium"
+            onClick={repeatHandler}
+          >
+            {order.order_status.id === '1'
+              ? 'Оплатить заказ'
+              : 'Повторить заказ'}
+          </Styled.ButtonStyled>
+        </Styled.BottomButton>
+      )}
+      <Styled.BottomProducts>
+        {order?.cartContent.map(item => (
+          <Product item={item} key={item.product.id} />
+        ))}
+      </Styled.BottomProducts>
 
-            <BottomProductsMobile>
-              {order?.product.map(item => (
-                <Product item={item} key={item.id} />
-              ))}
-            </BottomProductsMobile>
-          </>
-        ) : null} */}
-        {/* <BottomButtonMobile>
-          {order?.status?.toLowerCase() === 'new' ? (
-            <ButtonStyled
-              variant="withRoundBorder"
-              size="round148"
-              font="roundSmall"
-              onClick={payHandler}
-            >
-              Оплатить заказ
-            </ButtonStyled>
-          ) : (
-            <ButtonStyled
-              variant="withRoundBorder"
-              size="round148"
-              font="roundSmall"
-              onClick={repeatHandler}
-            >
-              Повторить заказ
-            </ButtonStyled>
-          )}
-        </BottomButtonMobile> */}
-      </OrderBottom>
-    </OrderWrapper>
+      {mobileOrderProducts ? (
+        <>
+          <Styled.OrderDetailMobileWrap>
+            <Styled.DetailName>Тип доставки</Styled.DetailName>
+            <Styled.DetailValue>{deliveryTitle}</Styled.DetailValue>
+          </Styled.OrderDetailMobileWrap>
+          <Styled.OrderDetailMobileWrap>
+            <Styled.DetailName>Способ оплаты</Styled.DetailName>
+            <Styled.DetailValue>{paymentMethodTitle}</Styled.DetailValue>
+          </Styled.OrderDetailMobileWrap>
+          <Styled.OrderDetailMobileWrap>
+            <Styled.DetailName>Связаться с менеджером</Styled.DetailName>
+            <Styled.DetailsWrapper>
+              {order.cartContent?.map(
+                cart =>
+                  cart.product.brand.phones.length && (
+                    <BrandContacts phone={cart.product.brand.phones[0]} />
+                  ),
+              )}
+            </Styled.DetailsWrapper>
+          </Styled.OrderDetailMobileWrap>
+
+          <Styled.BottomProductsMobile>
+            {order?.cartContent.map(item => (
+              <Product item={item} key={item.product.id} />
+            ))}
+          </Styled.BottomProductsMobile>
+        </>
+      ) : null}
+      <Styled.BottomButtonMobile>
+        <Styled.ButtonStyled
+          variant="withRoundBorder"
+          size="round148"
+          disabled
+          font="roundSmall"
+          style={{ margin: '20px 0 10px 0' }}
+        >
+          {orderStatusTitle}
+        </Styled.ButtonStyled>
+
+        {['1', '4'].includes(order.order_status.id) && (
+          <Styled.ButtonStyled
+            variant="withRoundBorder"
+            size="round148"
+            font="roundSmall"
+            onClick={payHandler}
+          >
+            {order.order_status.id === '1'
+              ? 'Оплатить заказ'
+              : 'Повторить заказ'}
+          </Styled.ButtonStyled>
+        )}
+      </Styled.BottomButtonMobile>
+    </Styled.OrderWrapper>
   )
 }
 

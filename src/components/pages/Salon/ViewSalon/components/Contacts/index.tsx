@@ -1,30 +1,7 @@
 import { useState, useEffect, FC } from 'react'
 import { MainContainer } from '../../../../../../styles/common'
 import Map from '../../../../../blocks/Map'
-import {
-  Wrapper,
-  Top,
-  ContentWrapper,
-  ContentWrapperElement,
-  Title,
-  Bottom,
-  PhoneNumber,
-  Email,
-  ContentWrapperFlex,
-  Content,
-  Address,
-  Socials,
-  SocialVk,
-  SocialYT,
-  SheduleWrap,
-  ContentBottom,
-  PhoneNumberClose,
-  BlurPhone,
-  SubwayFlex,
-  RouteBlock,
-  RouteBlockTitle,
-  RouteDescription,
-} from './styled'
+import * as Styled from './styled'
 import { Schedule } from '../../../../../ui/Shedule'
 import defaultNumber from '../../../../../../utils/defaultNumber'
 import SubwayStation from '../../../../../ui/SubwayStation'
@@ -34,6 +11,7 @@ import {
   ISocialNetworks,
   IWorkingHours,
 } from 'src/types'
+import { PHOTO_URL } from 'src/api/variables'
 
 interface Props {
   phones: ISalonPhones[]
@@ -60,80 +38,85 @@ const Contacts: FC<Props> = ({
 
   return (
     <MainContainer id="contacts">
-      <Wrapper>
-        <Top>
-          <ContentWrapper>
-            <Title>Контакты</Title>
-          </ContentWrapper>
-          <ContentWrapper>
-            <Title>График работы</Title>
-          </ContentWrapper>
-        </Top>
-        <Bottom>
-          <ContentWrapperFlex>
-            <Content>
+      <Styled.Wrapper>
+        <Styled.Top>
+          <Styled.ContentWrapper>
+            <Styled.Title>Контакты</Styled.Title>
+          </Styled.ContentWrapper>
+          <Styled.ContentWrapper>
+            <Styled.Title>График работы</Styled.Title>
+          </Styled.ContentWrapper>
+        </Styled.Top>
+        <Styled.Bottom>
+          <Styled.ContentWrapperFlex>
+            <Styled.Content>
               {phones?.length ? (
                 openPhone ? (
-                  <ContentWrapperElement>
+                  <Styled.ContentWrapperElement>
                     {phones?.map((item, i) => {
                       console.log(item)
 
                       return (
-                        <PhoneNumber href={`tel:${item?.phoneNumber}`} key={i}>
+                        <Styled.PhoneNumber
+                          href={`tel:${item?.phoneNumber}`}
+                          key={i}
+                        >
                           {defaultNumber(item?.phoneNumber)}
-                        </PhoneNumber>
+                        </Styled.PhoneNumber>
                       )
                     })}
-                  </ContentWrapperElement>
+                  </Styled.ContentWrapperElement>
                 ) : (
-                  <ContentWrapperElement>
+                  <Styled.ContentWrapperElement>
                     {phones.length &&
                       phones.slice(0, 1).map((item, i) => (
-                        <PhoneNumberClose
+                        <Styled.PhoneNumberClose
                           onClick={() => setOpenPhone(true)}
                           key={i}
                         >
-                          <BlurPhone>
+                          <Styled.BlurPhone>
                             {defaultNumber(item?.phoneNumber)
                               .split('')
                               .splice(0, 6)
                               .join('')}
-                          </BlurPhone>
+                          </Styled.BlurPhone>
                           Показать номер
-                        </PhoneNumberClose>
+                        </Styled.PhoneNumberClose>
                       ))}
-                  </ContentWrapperElement>
+                  </Styled.ContentWrapperElement>
                 )
               ) : null}
-              <ContentWrapperElement>
-                {email ? <Email href={`mailto:${email}`}>{email}</Email> : null}
+              <Styled.ContentWrapperElement>
+                {email ? (
+                  <Styled.Email href={`mailto:${email}`}>{email}</Styled.Email>
+                ) : null}
                 <noindex>
                   {address ? (
-                    <Address
+                    <Styled.Address
                       target="blank"
                       rel="nofollow"
                       href={`https://yandex.ru/maps/?pt=${coordinates.longitude},${coordinates.latitude}&z=18&l=map`}
                     >
                       {address}
-                    </Address>
+                    </Styled.Address>
                   ) : null}
                 </noindex>
-              </ContentWrapperElement>
-            </Content>
-            <SheduleWrap>
+              </Styled.ContentWrapperElement>
+            </Styled.Content>
+            <Styled.SheduleWrap>
               <Schedule workingHours={workingHours} />
-            </SheduleWrap>
-          </ContentWrapperFlex>
+            </Styled.SheduleWrap>
+          </Styled.ContentWrapperFlex>
           {locationDirections && (
-            <RouteBlock>
-              <RouteBlockTitle>
+            <Styled.RouteBlock>
+              <Styled.RouteBlockTitle>
                 Описание маршрута:&nbsp; {locationDirections}
-              </RouteBlockTitle>
-              <RouteDescription>{''}</RouteDescription>
-            </RouteBlock>
+              </Styled.RouteBlockTitle>
+              <Styled.RouteDescription>{''}</Styled.RouteDescription>
+            </Styled.RouteBlock>
           )}
           {metroStations?.length ? (
-            <SubwayFlex>
+            <Styled.SubwayFlex>
               {metroStations.map((item, key) => (
                 <SubwayStation
                   key={key}
@@ -142,10 +125,10 @@ const Contacts: FC<Props> = ({
                   length={metroStations?.length}
                 />
               ))}
-            </SubwayFlex>
+            </Styled.SubwayFlex>
           ) : null}
-          <ContentBottom>
-            <ContentWrapperElement>
+          <Styled.ContentBottom>
+            <Styled.ContentWrapperElement>
               {coordinates?.longitude && coordinates?.latitude ? (
                 <Map
                   address={{
@@ -154,21 +137,32 @@ const Contacts: FC<Props> = ({
                   }}
                 />
               ) : null}
-            </ContentWrapperElement>
-            <ContentWrapperElement>
+            </Styled.ContentWrapperElement>
+            <Styled.ContentWrapperElement>
               <noindex>
-                <Socials>
-                  {socialNetworkUrls.map(e => (
-                    <SocialYT href={e.link} target="_blank" rel="nofollow">
-                      {e.title}
-                    </SocialYT>
-                  ))}
-                </Socials>
+                <Styled.Socials>
+                  {socialNetworkUrls.map(
+                    e =>
+                      e.s_network.logo?.url && (
+                        <Styled.Social
+                          icon={
+                            e.s_network.logo?.url
+                              ? PHOTO_URL + e.s_network.logo?.url
+                              : '/vk-icon.svg'
+                          }
+                          href={e.link}
+                          about={e.s_network.title}
+                          target="_blank"
+                          rel="nofollow"
+                        />
+                      ),
+                  )}
+                </Styled.Socials>
               </noindex>
-            </ContentWrapperElement>
-          </ContentBottom>
-        </Bottom>
-      </Wrapper>
+            </Styled.ContentWrapperElement>
+          </Styled.ContentBottom>
+        </Styled.Bottom>
+      </Styled.Wrapper>
     </MainContainer>
   )
 }

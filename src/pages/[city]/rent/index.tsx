@@ -30,6 +30,8 @@ interface Props extends IRentsPageProps {
 const AllRent: FC<Props> = ({ brands, masters, salons, ...props }) => {
   const layout = { brands, masters, salons }
 
+  console.log(props.rentData)
+
   return (
     <>
       <Head>
@@ -54,12 +56,15 @@ export const getServerSideProps: GetServerSideProps<
     slug: defaultValues.citySlug,
   }
 
+  const pageSize = 9
+
   const data = await Promise.all([
     apolloClient.query({
       query: GET_RENT_SALONS,
       variables: {
         slug: cityData.slug,
-        itemsCount: 10,
+        pageSize,
+        sort: ['rating:asc'],
       },
     }),
     apolloClient.query({
@@ -119,6 +124,7 @@ export const getServerSideProps: GetServerSideProps<
       },
       cityData,
       pagination,
+      pageSize,
     },
   }
 }

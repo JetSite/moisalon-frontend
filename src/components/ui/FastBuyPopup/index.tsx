@@ -96,12 +96,12 @@ const FastBuyPopup: FC<Props> = ({
       return
     }
 
-    const orderInput = {
-      productId: item.id,
-      productCount: productQuantity,
-      name,
-      phone: `8${phone.replace(/-/g, '')}`,
-    }
+    // const orderInput = {
+    //   productId: item.id,
+    //   productCount: productQuantity,
+    //   name,
+    //   phone: `8${phone.replace(/-/g, '')}`,
+    // }
 
     // sendOrder({
     //   variables: {

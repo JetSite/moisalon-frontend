@@ -48,6 +48,7 @@ export const RenderSalonForm: FC<Props> = ({
   setClickCity,
   fetchLoading,
   setCoordinates,
+  sNetworks,
 }) => {
   const { handleSubmit, form } = formProps
   const { services, activities, servicesM } = useBaseStore(getStoreData)
@@ -107,7 +108,7 @@ export const RenderSalonForm: FC<Props> = ({
         number={5}
         handleClickNextTab={handleClickNextTab}
       />
-      <Socials ref6={ref6} />
+      <Socials sNetworks={sNetworks} ref6={ref6} />
       <MobileHidden>
         <Button
           variant="red"

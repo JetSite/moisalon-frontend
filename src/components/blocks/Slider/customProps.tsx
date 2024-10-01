@@ -97,7 +97,7 @@ export const customProps: ICustomProps = ({
         sliderItem: <MasterSlide city={city.slug} item={item as IMaster} />,
         isAllPage: router.pathname === '/[city]/master',
         slidesCountWhenAllShow: 5,
-        showAllSlide: <AllMastersSlide city={city.slug} />,
+        showAllSlide: <AllMastersSlide />,
         showAllLink: (
           <Link href={`/${city.slug}/master`}>
             <ShowAll bgColor={bgColor}>Показать все</ShowAll>
@@ -219,7 +219,7 @@ export const customProps: ICustomProps = ({
         sliderItem: <RibbonSlide item={item} />,
         // bottom: <RibbonBottomButton />,
       }
-    case 'portfolio':
+    case 'photos':
       return {
         sliderItem: (
           <PortfolioSlide
@@ -229,16 +229,7 @@ export const customProps: ICustomProps = ({
           />
         ),
       }
-    case 'diploms':
-      return {
-        sliderItem: (
-          <PortfolioSlide
-            item={item}
-            isEditing={isEditing}
-            deleteFunction={deleteFunction}
-          />
-        ),
-      }
+
     case 'vacancies':
       return {
         sliderItem: <VacancySlide item={item as IVacancy} />,

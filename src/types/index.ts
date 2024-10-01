@@ -49,15 +49,17 @@ export interface IWorkingHours {
   startTime: string
 }
 
+export interface ISNetwork {
+  id: string
+  logo: IPhoto | null
+  slug: string
+  title: string
+}
+
 export interface ISocialNetworks {
   id: IID
   link: string
-  s_network: {
-    id: string
-    logo: IPhoto | null
-    slug: string
-    title: string
-  }
+  s_network: ISNetwork
   title: string
 }
 
