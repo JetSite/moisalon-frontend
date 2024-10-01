@@ -21,6 +21,7 @@ interface Props extends ISearchResults {
   salonData: ISalon[]
   main?: boolean
   rent?: boolean
+  pageSize: number
 }
 
 export const SalonsSearch: FC<Props> = ({
@@ -31,6 +32,7 @@ export const SalonsSearch: FC<Props> = ({
   rent = false,
   pagination,
   cityData,
+  pageSize,
 }) => {
   const [filters, setFilters] = useState<IFilters | null>(null)
   const [filterOpen, setFilterOpen] = useState<boolean>(false)
@@ -45,7 +47,7 @@ export const SalonsSearch: FC<Props> = ({
     setSortProperty,
     setSortOrder,
     nextPageCount,
-  } = useSalonSearch({ salonData, pagination, cityData, rent })
+  } = useSalonSearch({ salonData, pagination, cityData, rent, pageSize })
 
   const totalCount = pagination?.total || 0
 

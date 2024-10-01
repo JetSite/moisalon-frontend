@@ -18,6 +18,7 @@ export interface IRentsPageProps {
   totalCount: ITotalCount
   cityData: ICity
   pagination: IPagination
+  pageSize: number
 }
 
 const AllRentPage: FC<IRentsPageProps> = ({
@@ -25,6 +26,7 @@ const AllRentPage: FC<IRentsPageProps> = ({
   rentData,
   pagination,
   cityData,
+  pageSize,
 }) => {
   const [view, setView] = useState<IView>('list')
   const [filterOpen, setFilterOpen] = useState(false)
@@ -62,6 +64,7 @@ const AllRentPage: FC<IRentsPageProps> = ({
                 view={view}
                 setView={setView}
                 salonData={rentData}
+                pageSize={pageSize}
               />
             </WrapperResults>
           </MainContainer>

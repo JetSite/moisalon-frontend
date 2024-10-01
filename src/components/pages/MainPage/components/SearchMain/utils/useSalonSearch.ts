@@ -10,12 +10,14 @@ import {
   filtersType,
 } from 'src/components/blocks/FilterSearchResults'
 import { settingsConfig } from 'src/api/authConfig'
+import { GET_RENT_SALONS } from 'src/api/graphql/salon/queries/getRentSalons'
 
 interface IUseSalonSearchParams {
   salonData: ISalon[]
   pagination: IPagination
   cityData: ICity
   rent: boolean
+  pageSize: number
 }
 
 export interface IUseSalonSearchResult {
@@ -37,19 +39,25 @@ export const useSalonSearch: IUseSalonSearch = ({
   pagination,
   cityData,
   rent,
+  pageSize,
 }) => {
   const [updateSalonData, setUpdateSalonData] = useState<ISalon[]>(salonData)
   const [nextPageCount, setNextPageCount] = useState<number>(2)
   const [sortProperty, setSortProperty] = useState<IFiltersType>('по рейтингу')
   const [sortOrder, setSortOrder] = useState<ISortOrder>(':asc')
 
-  const [refetch, { loading }] = useLazyQuery(getSalonsThroughCity, {
-    notifyOnNetworkStatusChange: true,
-    onCompleted: data => {
-      const newSalons = flattenStrapiResponse(data.salons)
-      setUpdateSalonData(prev => prev.concat(newSalons))
+  const [refetch, { loading }] = useLazyQuery(
+    rent ? GET_RENT_SALONS : getSalonsThroughCity,
+    {
+      notifyOnNetworkStatusChange: true,
+      onCompleted: data => {
+        const newSalons = flattenStrapiResponse(data.salons)
+        setUpdateSalonData(prev => prev.concat(newSalons))
+      },
     },
-  })
+  )
+
+  console.log(rent, pageSize)
 
   useEffect(() => {
     setUpdateSalonData(salonData)
@@ -62,7 +70,7 @@ export const useSalonSearch: IUseSalonSearch = ({
         slug: cityData?.slug,
         page: nextPageCount,
         sort,
-        pageSize: 9,
+        pageSize,
       },
     })
 
@@ -92,7 +100,7 @@ export const useSalonSearch: IUseSalonSearch = ({
       setUpdateSalonData([])
       setNextPageCount(2)
       await refetch({
-        variables: { slug: cityData?.slug, sort: [sort], pageSize: 9 },
+        variables: { slug: cityData?.slug, sort: [sort], pageSize },
       })
     },
     [sortOrder, cityData?.slug, refetch, sortProperty],
