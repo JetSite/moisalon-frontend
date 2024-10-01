@@ -17,6 +17,7 @@ import { changeMe } from './graphql/me/mutations/changeMe'
 import useBaseStore from 'src/store/baseStore'
 import { getPrepareUser } from './utils/getPrepareUser'
 import { useShallow } from 'zustand/react/shallow'
+import { IOrder } from 'src/types/orders'
 
 const AuthProvider: FC<{ children: IChildren; pageProps: any }> = ({
   children,
@@ -91,7 +92,7 @@ const AuthProvider: FC<{ children: IChildren; pageProps: any }> = ({
         favorite,
         vacancies: prepareData.vacancies as IVacancy[],
         reviews: prepareData.reviews as IReview[],
-        orders: prepareData.orders as any,
+        orders: prepareData.orders as IOrder[],
       })
       setMe({
         info,

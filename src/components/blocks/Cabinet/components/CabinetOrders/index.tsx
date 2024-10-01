@@ -25,16 +25,9 @@ const CabinetOrders: FC<Props> = ({ user }) => {
 
   const [refetch, { loading }] = useLazyQuery(ORDERS_BY_USER, {
     onCompleted: data => {
-      console.log(data)
-
       if (data?.orders?.data?.length) {
-        console.log(data)
         const ordersData: IOrder[] = flattenStrapiResponse(data?.orders) || []
-        // const sortedOrders = ordersData?.sort((a, b) => {
-        //   return Number(new Date(b.createdAt)) - Number(new Date(a.createdAt))
-        // })
         setOrders(ordersData)
-        // setOrders(sortedOrders)
       }
     },
   })
@@ -58,8 +51,6 @@ const CabinetOrders: FC<Props> = ({ user }) => {
       },
     })
   }, [router])
-
-  console.log('orders', orders)
 
   return (
     <Wrapper>

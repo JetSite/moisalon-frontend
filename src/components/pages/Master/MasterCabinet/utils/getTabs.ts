@@ -26,7 +26,7 @@ export const getTabs: IGetTabs = ({
         title: 'Мои заказы',
         value: 'orders',
         icon: '/icon-orders.svg',
-        quantity: orders.length,
+        quantity: orders.length || 0,
         disable: false,
       },
       {
@@ -85,7 +85,7 @@ export const getTabs: IGetTabs = ({
       {
         title: 'Мои заказы',
         value: 'orders',
-        quantity: orders.length,
+        quantity: orders?.length || 0,
         disable: false,
       },
       {

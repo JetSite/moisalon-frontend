@@ -56,7 +56,7 @@ const MasterCabinet: FC<Props> = ({ user, requests, cities }) => {
 
   const { mobile, desktop } = useMemo(
     () => getTabs({ requests, unreadMessagesCount, orders: user.orders }),
-    [request, unreadMessagesCount],
+    [request, unreadMessagesCount, user.orders],
   )
 
   useEffect(() => {

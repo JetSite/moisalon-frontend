@@ -115,8 +115,6 @@ const CreateSale: FC<Props> = ({
         dateEnd: changetValues.dateEnd,
       }
 
-      console.log(values)
-
       handleCreateOrUpdate({
         setOpenPopup,
         input,
@@ -134,8 +132,6 @@ const CreateSale: FC<Props> = ({
     setOpenPopup(false)
     setCreateSale(false)
   }
-
-  console.log('activeProfile', activeProfile.promotions)
 
   return (
     <>
