@@ -1,6 +1,7 @@
 import { ApolloQueryResult } from '@apollo/client'
 import { ICity } from 'src/types'
 import { IMeInfo, IUser, IUserThings } from 'src/types/me'
+import { IOrder } from 'src/types/orders'
 import { IReview } from 'src/types/reviews'
 import { IVacancy } from 'src/types/vacancies'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
@@ -53,6 +54,7 @@ export const getPrepareUser: IGetPrepareUser = data => {
     favorite,
     vacancies: prepareData.vacancies as IVacancy[],
     reviews: prepareData.reviews as IReview[],
+    orders: prepareData.orders as IOrder[],
     selected_city: prepareData.selected_city,
   }
 

@@ -186,6 +186,8 @@ const Sale: FC<SaleProps> = ({
     ? `${PHOTO_URL}${photo?.url}`
     : ''
 
+  console.log(photo)
+
   return (
     <SaleWrap onClick={handleClick} id={item.id} type={type as string}>
       {!create ? (
@@ -211,11 +213,7 @@ const Sale: FC<SaleProps> = ({
           onMouseLeave={() => setHover(false)}
         >
           {setPhoto && (
-            <PhotoAdd
-              photo={photo || null}
-              setPhoto={setPhoto}
-              hover={hover && !!item?.cover?.id}
-            />
+            <PhotoAdd photo={photo || null} setPhoto={setPhoto} hover={hover} />
           )}
         </SaleTop>
       )}
