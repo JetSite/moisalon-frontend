@@ -19,6 +19,7 @@ export interface ISalonsPageProps {
   totalCount: ITotalCount
   cityData: ICity
   pagination: IPagination
+  pageSize: number
 }
 
 const AllSalonsPage: FC<ISalonsPageProps> = ({
@@ -26,6 +27,7 @@ const AllSalonsPage: FC<ISalonsPageProps> = ({
   salonData,
   pagination,
   cityData,
+  pageSize,
 }) => {
   const [view, setView] = useState<IView>('list')
 
@@ -59,6 +61,7 @@ const AllSalonsPage: FC<ISalonsPageProps> = ({
             view={view}
             setView={setView}
             salonData={salonData}
+            pageSize={pageSize}
           />
         </WrapperResults>
       </MainContainer>
