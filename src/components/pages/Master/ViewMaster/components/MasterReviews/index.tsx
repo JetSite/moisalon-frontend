@@ -29,11 +29,14 @@ const MasterReviews: FC<Props> = ({ reviews, masterId }) => {
     },
   })
 
+  console.log(updatedReviews)
+
   return (
     <Reviews
       type="MASTER"
       id={masterId}
       reviewMutation={reviewMutation}
+      setUpdatedReviews={setUpdatedReviews}
       reviews={updatedReviews}
       loading={loading}
       setLoading={setLoading}

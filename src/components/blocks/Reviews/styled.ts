@@ -60,6 +60,7 @@ export const Content = styled.div`
 `
 
 export const Review = styled.div`
+  position: relative;
   width: 45%;
   margin-bottom: 60px;
   @media (max-width: ${laptopBreakpoint}) {
@@ -96,14 +97,34 @@ export const Form = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 20px;
+  gap: 16px;
 `
 
 export const FormButtons = styled.div`
-  margin-top: 20px;
   @media (max-width: ${laptopBreakpoint}) {
     button {
       margin-bottom: 15px;
       width: 100%;
     }
+  }
+`
+
+export const EditButton = styled.button`
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  font-size: 10px;
+  padding: 4px 6px;
+  border-radius: 8px;
+  opacity: 0.6;
+
+  :disabled {
+    cursor: default;
+    :hover {
+      background: none;
+    }
+  }
+  :hover {
+    background-color: lightgray;
   }
 `

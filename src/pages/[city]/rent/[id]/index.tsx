@@ -174,7 +174,7 @@ export const getServerSideProps: GetServerSideProps<
     }),
     apolloClient.query({
       query: GET_RENT_SALONS,
-      variables: { id, itemsCount: 10, slug: cityData?.slug },
+      variables: { id, pageSize: 10, slug: cityData?.slug },
     }),
     apolloClient.query({
       query: getFeedCategories,

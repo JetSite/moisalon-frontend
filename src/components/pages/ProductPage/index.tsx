@@ -437,11 +437,11 @@ const ProductPage: FC<IProductPageProps> = ({ product, reviews }) => {
           />
         ) : null}
         <Reviews
+          setUpdatedReviews={setReviewsData}
           type="PRODUCT"
           id={newItem?.product?.id || ''}
           reviewMutation={reviewMutation}
           reviews={reviewsData || []}
-          me={me}
           loading={loading}
           setLoading={setLoading}
         />

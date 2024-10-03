@@ -15,7 +15,7 @@ import { cityFragment } from '../../fragments/city'
 import { contactPersonWHFragment } from '../../fragments/contactPersonWH'
 
 export const GET_RENT_SALONS = gql`
-  query salons($slug: String!,$pageSize: Int!, $id: ID, $sort: [String], $page: Int) {
+  query salons($slug: String!,$pageSize: Int, $id: ID, $sort: [String], $page: Int) {
     salons(
       filters: {city:{slug:{eq:$slug }}, and: [{workplacesCount: {gt: 0}}, {rent: {eq: true}}, {id: {ne: $id}}]},
      pagination: { page: $page, pageSize: $pageSize },

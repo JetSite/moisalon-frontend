@@ -1,13 +1,20 @@
 import { gql } from '@apollo/client'
 
 export const ADD_REVIEW_SALON = gql`
-  mutation createReview($user: ID!, $id: ID!, $content: String!) {
+  mutation createReview(
+    $user: ID!
+    $id: ID!
+    $content: String!
+    $rating: ID
+    $publishedAt: DateTime
+  ) {
     createReview(
       data: {
         user: $user
         salon: $id
         content: $content
-        publishedAt: "2024-04-28T12:00:00.000Z"
+        rating: $rating
+        publishedAt: $publishedAt
       }
     ) {
       data {
@@ -26,6 +33,14 @@ export const ADD_REVIEW_SALON = gql`
                     attributes {
                       content
                       title
+                      rating {
+                        data {
+                          id
+                          attributes {
+                            title
+                          }
+                        }
+                      }
                       publishedAt
                     }
                   }
