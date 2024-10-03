@@ -37,6 +37,7 @@ const SalonReviews: FC<Props> = ({ reviews, salonId }) => {
       reviewMutation={reviewMutation}
       reviews={updatedReviews}
       loading={loading}
+      setUpdatedReviews={setUpdatedReviews}
       setLoading={setLoading}
     />
   )

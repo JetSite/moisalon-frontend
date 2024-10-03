@@ -1,29 +1,31 @@
 import { gql } from '@apollo/client'
 
-export const ADD_REVIEW_PRODUCT = gql`
-  mutation createReview(
-    $user: ID!
-    $id: ID!
-    $content: String!
-    $publishedAt: DateTime!
-    $rating: ID
-  ) {
-    createReview(
-      data: {
-        user: $user
-        product: $id
-        content: $content
-        publishedAt: $publishedAt
-        rating: $rating
-      }
-    ) {
+export const UPDATE_REVIEW = gql`
+  mutation updateReview($content: String!, $rating: ID, $itemID: ID!) {
+    updateReview(id: $itemID, data: { content: $content, rating: $rating }) {
       data {
         id
         attributes {
           title
           content
           publishedAt
-          product {
+          rating {
+            data {
+              id
+              attributes {
+                title
+              }
+            }
+          }
+          user {
+            data {
+              id
+              attributes {
+                username
+              }
+            }
+          }
+          salon {
             data {
               id
               attributes {
@@ -33,7 +35,6 @@ export const ADD_REVIEW_PRODUCT = gql`
                     attributes {
                       content
                       title
-                      publishedAt
                       rating {
                         data {
                           id
@@ -42,6 +43,7 @@ export const ADD_REVIEW_PRODUCT = gql`
                           }
                         }
                       }
+                      publishedAt
                     }
                   }
                 }

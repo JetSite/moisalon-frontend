@@ -35,6 +35,7 @@ const BrandReviews: FC<Props> = ({ reviews, brandId }) => {
     <Reviews
       type="BRAND"
       id={brandId}
+      setUpdatedReviews={setUpdatedReviews}
       reviewMutation={reviewMutation}
       reviews={updatedReviews}
       loading={loading}
