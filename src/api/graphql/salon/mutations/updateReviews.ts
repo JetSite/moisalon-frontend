@@ -1,8 +1,16 @@
 import { gql } from '@apollo/client'
 
 export const UPDATE_REVIEW = gql`
-  mutation updateReview($content: String!, $rating: ID, $itemID: ID!) {
-    updateReview(id: $itemID, data: { content: $content, rating: $rating }) {
+  mutation updateReview(
+    $content: String
+    $rating: ID
+    $itemID: ID!
+    $publishedAt: DateTime
+  ) {
+    updateReview(
+      id: $itemID
+      data: { content: $content, rating: $rating, publishedAt: $publishedAt }
+    ) {
       data {
         id
         attributes {

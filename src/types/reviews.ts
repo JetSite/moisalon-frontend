@@ -9,7 +9,7 @@ export interface IReview {
   } | null
   content: string
   title: string
-  title: string
+  publishedAt: string | null
   user: {
     avatar: IPhoto
     id: string
