@@ -5,6 +5,8 @@ data {
       id
       attributes {
         title
+        contactName
+        contactPhone
         cartContent {
           id
           product {
@@ -52,6 +54,14 @@ data {
             id
             attributes {
               title
+            }
+          }
+        }
+        delivery_method {
+          data {
+            id
+            attributes {
+              name
             }
           }
         }

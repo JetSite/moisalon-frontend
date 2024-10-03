@@ -4,6 +4,7 @@ import {
   DefaultContext,
   LazyQueryExecFunction,
   MutationFunctionOptions,
+  MutationResult,
   OperationVariables,
 } from '@apollo/client'
 import { GetServerSidePropsContext, PreviewData } from 'next'
@@ -29,6 +30,8 @@ export type IApolloRefetch = (
 ) => Promise<ApolloQueryResult<any>>
 
 export type IApolloLazyRefetch = LazyQueryExecFunction<any, OperationVariables>
+
+export type IApolloOnCompleted<TData> = (data: TData) => void
 
 export type IAppoloMutationCallback = (variables?: any) => Promise<any>
 

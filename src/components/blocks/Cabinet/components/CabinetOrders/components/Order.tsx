@@ -19,7 +19,7 @@ const Order: FC<IProps> = ({ order }) => {
     ) + ` ₽`
 
   const deliveryTitle =
-    order?.delivery?.title ?? 'Нужно создать на подобии способа оплаты'
+    order?.delivery_method?.name ?? 'Не указан способ доставки'
   const paymentMethodTitle =
     order.payment_method?.title ?? 'Не указан способ оплаты'
   const orderStatusTitle = order.order_status?.title ?? 'Неизвестный статус'
@@ -50,7 +50,7 @@ const Order: FC<IProps> = ({ order }) => {
     // }
   }
 
-  console.log(order.cartContent)
+  console.log(order)
 
   return (
     <Styled.OrderWrapper>
@@ -69,25 +69,18 @@ const Order: FC<IProps> = ({ order }) => {
           <Styled.DetailValue>{orderStatusTitle}</Styled.DetailValue>
         </Styled.OrderDetail>
       )}
+      {order.contactName && order.contactPhone ? (
+        <Styled.OrderDetail>
+          <Styled.DetailName>Сонтактные данные</Styled.DetailName>
+          <Styled.DetailValue>
+            {order.contactName + ' ' + order.contactPhone}
+          </Styled.DetailValue>
+        </Styled.OrderDetail>
+      ) : null}
       {order.address ? (
         <Styled.OrderDetail>
           <Styled.DetailName>Адрес</Styled.DetailName>
           <Styled.DetailValue>{order.address.address}</Styled.DetailValue>
-        </Styled.OrderDetail>
-      ) : null}
-      {!order.address ? (
-        <Styled.OrderDetail>
-          <Styled.DetailName>Адрес</Styled.DetailName>
-          <Styled.DetailsWrapper>
-            {/* {order.?.map(brandId => (
-              <Styled.Details>
-                <Styled.DetailsLeftAddress>
-                  <Styled.BrandName>{brand?.name}</Styled.BrandName>
-                  <Styled.BrandAddress>{brand?.address}</Styled.BrandAddress>
-                </Styled.DetailsLeftAddress>
-              </Styled.Details>
-            ))} */}
-          </Styled.DetailsWrapper>
         </Styled.OrderDetail>
       ) : null}
       <Styled.HiddenMobileOrderDetail>
@@ -96,7 +89,7 @@ const Order: FC<IProps> = ({ order }) => {
       </Styled.HiddenMobileOrderDetail>
       <Styled.OrderDetail>
         <Styled.DetailName>Сумма заказа</Styled.DetailName>
-        <Styled.DetailValue>{totalAmount} ₽</Styled.DetailValue>
+        <Styled.DetailValue>{totalAmount}</Styled.DetailValue>
       </Styled.OrderDetail>
       <Styled.HiddenMobileOrderDetail>
         <Styled.DetailName>Способ оплаты</Styled.DetailName>
@@ -120,7 +113,6 @@ const Order: FC<IProps> = ({ order }) => {
         <Styled.OrderIcon opened={mobileOrderProducts} />
       </Styled.OrderDetailMobile>
       <Styled.BottomButton>
-        {/* Кнопка с общим статусом заказа */}
         <Styled.ButtonStyled
           variant="withRoundBorder"
           size="round218"
@@ -131,9 +123,7 @@ const Order: FC<IProps> = ({ order }) => {
           {orderStatusTitle}
         </Styled.ButtonStyled>
       </Styled.BottomButton>
-
-      {/* Отображаем действия в зависимости от статуса заказа */}
-      {['1', '4'].includes(order.order_status.id) && (
+      {['1', '4'].includes(order.order_status?.id) && (
         <Styled.BottomButton>
           <Styled.ButtonStyled
             variant="withRoundBorder"
@@ -193,14 +183,14 @@ const Order: FC<IProps> = ({ order }) => {
           {orderStatusTitle}
         </Styled.ButtonStyled>
 
-        {['1', '4'].includes(order.order_status.id) && (
+        {['1', '4'].includes(order.order_status?.id) && (
           <Styled.ButtonStyled
             variant="withRoundBorder"
             size="round148"
             font="roundSmall"
             onClick={payHandler}
           >
-            {order.order_status.id === '1'
+            {order.order_status?.id === '1'
               ? 'Оплатить заказ'
               : 'Повторить заказ'}
           </Styled.ButtonStyled>

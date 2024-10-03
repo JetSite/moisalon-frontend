@@ -1,79 +1,53 @@
-import { useState, useEffect, FC } from 'react'
+import { useState, FC } from 'react'
 import * as Styled from './style'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import {
-  favoritesInStorage,
-  inStorage,
-} from '../../../../../utils/favoritesInStorage'
 import { PHOTO_URL } from '../../../../../api/variables'
 import FastBuyPopup from '../../../../ui/FastBuyPopup'
-import HeartFullFill from '../../../MainPage/components/Header/icons/HeartFullFill'
-import { getStoreData } from 'src/store/utils'
-import useAuthStore from 'src/store/authStore'
+import { AddFavoriteButton } from './conponents/AddFavoriteButton'
+import { IProduct, IProductCart } from 'src/types/product'
+import { IUser } from 'src/types/me'
+import { Minus, Plus } from 'src/components/ui/FastBuyPopup/styles'
 
-interface Props {}
+interface Props {
+  item: IProduct
+  cartItem: IProductCart
+  user: IUser | null
+  quantity: number
+  addToCart: (item: IProduct, boolean: boolean) => void
+  deleteFromCart: (item: IProduct, boolean?: boolean) => void
+  loadingItems: boolean
+}
 
 const Product: FC<Props> = ({
   item,
-  cart,
-  me,
+  user,
+  quantity,
+  cartItem,
   addToCart,
   deleteFromCart,
-  catalog,
   loadingItems = false,
-  loadingBottom = false,
-  brand,
 }) => {
   const router = useRouter()
-  const { city } = useAuthStore(getStoreData)
   const [openBuyPopup, setOpenBuyPopup] = useState(false)
 
-  const newItem = cart?.cartContent?.find(el => el?.product?.id === item.id)
-    ? cart?.cartContent?.find(el => el?.product?.id === item.id)
-    : { product: { ...item }, quantity: 0 }
-
-  const [isFavorite, setIsFavorit] = useState(false)
-
-  useEffect(() => {
-    const isInStorage = inStorage('products', {
-      ...item,
-      dontShowPrice: brand?.dontShowPrice,
-    })
-    setIsFavorit(!!isInStorage)
-  }, [])
-
-  const addFavorite = (e, item) => {
-    e.preventDefault()
-    e.stopPropagation()
-    favoritesInStorage('products', {
-      ...item,
-      dontShowPrice: item?.brand?.dontShowPrice,
-    })
-    setIsFavorit(!isFavorite)
-  }
-
-  const productImage = newItem.product?.cover?.url
-    ? `${PHOTO_URL}${newItem.product.cover.url}`
+  const productImage = cartItem.product?.cover?.url
+    ? `${PHOTO_URL}${cartItem.product.cover.url}`
     : ''
 
   return loadingItems ? (
-    <Styled.SkeletonItem variant="rectangular" />
+    <Styled.SkeletonItem variant="rect" />
   ) : (
-    <>
+    <li>
       <FastBuyPopup
         openBuyPopup={openBuyPopup}
         setOpenBuyPopup={setOpenBuyPopup}
-        item={newItem?.product}
-        me={me}
+        item={cartItem?.product}
+        user={user}
       />
       <Link
-        href={{
-          pathname: `/${city.slug}/product/${newItem?.product?.id}`,
-          query: {
-            catalog,
-          },
-        }}
+        shallow
+        href={`/${cartItem.product.brand.city.slug}/product/${cartItem.product.id}`}
       >
         <Styled.Wrapper id={item.id}>
           <Styled.ImageWrapper>
@@ -81,22 +55,17 @@ const Product: FC<Props> = ({
               alt="image"
               src={!!productImage ? productImage : '/cosmetic_placeholder.jpg'}
             />
-            <Styled.Favorite
-              isFavorite={isFavorite}
-              onClick={e => addFavorite(e, item)}
-            >
-              <HeartFullFill fill={isFavorite} />
-            </Styled.Favorite>
+            <AddFavoriteButton item={item} />
           </Styled.ImageWrapper>
           <Styled.Content>
-            <Styled.Name>{newItem?.product?.name}</Styled.Name>
-            <Styled.Available avaible={newItem?.product?.availableInStock > 0}>
-              {newItem?.product?.availableInStock > 0
+            <Styled.Name>{cartItem?.product?.name}</Styled.Name>
+            <Styled.Available avaible={cartItem?.product?.availableInStock > 0}>
+              {cartItem?.product?.availableInStock > 0
                 ? 'В наличии'
                 : 'Нет в наличии'}
             </Styled.Available>
             <Styled.Description>
-              {newItem?.product?.shortDescription}
+              {cartItem?.product?.shortDescription}
             </Styled.Description>
             <Styled.ProductDetails>
               {item?.sku ? (
@@ -108,23 +77,23 @@ const Product: FC<Props> = ({
               {/* {item?.color ? <Detail>Цвет: {item?.color}</Detail> : null}
               {item?.size ? <Detail>Размер: {item?.size}</Detail> : null} */}
             </Styled.ProductDetails>
-            {newItem?.product?.brand?.dontShowPrice && !me?.info ? null : (
+            {cartItem.product?.brand?.dontShowPrice && !user?.info ? null : (
               <Styled.Price>
                 <Styled.NewPrice>
-                  {newItem?.product?.salePrice
+                  {cartItem?.product?.salePrice
                     ? `${
-                        (newItem?.product?.salePrice &&
-                          newItem?.product?.salePrice) ||
-                        newItem?.product?.salePrice
+                        (cartItem?.product?.salePrice &&
+                          cartItem?.product?.salePrice) ||
+                        cartItem?.product?.salePrice
                       } ₽`
                     : 'Цена по запросу'}{' '}
                 </Styled.NewPrice>
-                {newItem?.product?.regularPrice !== 0 ? (
+                {cartItem?.product?.regularPrice !== 0 ? (
                   <Styled.OldPrice>
                     {`${
-                      (newItem?.product?.regularPrice &&
-                        newItem?.product?.regularPrice) ||
-                      newItem?.product?.regularPrice
+                      (cartItem?.product?.regularPrice &&
+                        cartItem?.product?.regularPrice) ||
+                      cartItem?.product?.regularPrice
                     } ₽`}
                   </Styled.OldPrice>
                 ) : null}
@@ -135,70 +104,69 @@ const Product: FC<Props> = ({
             ) : (
               <QuantityInPack></QuantityInPack>
             )} */}
-            {loadingBottom && newItem?.product?.availableInStock ? (
-              <Styled.SkeletonBottom />
-            ) : newItem?.quantity === 0 ? (
-              <Styled.ButtonsWrapper>
-                <Styled.ButtonCart
-                  onClick={e => {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    setOpenBuyPopup(true)
-                  }}
-                  disabled={
-                    !newItem?.product?.availableInStock ||
-                    newItem?.product?.availableInStock === 0
-                  }
-                >
-                  Заказать
-                </Styled.ButtonCart>
-                <Styled.ButtonCart
-                  disabled={
-                    !newItem?.product?.availableInStock ||
-                    newItem?.product?.availableInStock === 0
-                  }
-                  onClick={e => {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    if (!me?.info) {
-                      router.push(
-                        {
-                          pathname: '/login',
-                          query: { error: 'notAuthorized' },
-                        },
-                        '/login',
-                      )
-                    } else {
-                      !loadingBottom ? addToCart(newItem?.product, 1) : {}
+            {
+              // !cartItem.product.availableInStock ? (
+              //   <Styled.SkeletonBottom />
+              // ) :
+              quantity === 0 && cartItem.quantity === 0 ? (
+                <Styled.ButtonsWrapper>
+                  <Styled.ButtonCart
+                    onClick={e => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      setOpenBuyPopup(true)
+                    }}
+                    disabled={
+                      !cartItem?.product?.availableInStock ||
+                      cartItem?.product?.availableInStock === 0
                     }
-                  }}
-                >
-                  В корзину
-                </Styled.ButtonCart>
-              </Styled.ButtonsWrapper>
-            ) : (
-              <Styled.QuantityWrap>
-                <Styled.Minus
-                  onClick={e => {
-                    e.stopPropagation()
-                    e.preventDefault()
-                    !loadingBottom ? deleteFromCart(newItem) : {}
-                  }}
-                />
-                <Styled.Quantity>{`${newItem?.quantity} шт.`}</Styled.Quantity>
-                <Styled.Plus
-                  onClick={e => {
-                    e.stopPropagation()
-                    e.preventDefault()
-                    !loadingBottom ? addToCart(newItem?.product, 1) : {}
-                  }}
-                />
-              </Styled.QuantityWrap>
-            )}
+                  >
+                    Заказать
+                  </Styled.ButtonCart>
+                  <Styled.ButtonCart
+                    disabled={
+                      !cartItem?.product?.availableInStock ||
+                      cartItem?.product?.availableInStock === 0
+                    }
+                    onClick={e => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      if (!user?.info) {
+                        router.push('/login')
+                      } else {
+                        addToCart(cartItem.product, true)
+                      }
+                    }}
+                  >
+                    В корзину
+                  </Styled.ButtonCart>
+                </Styled.ButtonsWrapper>
+              ) : (
+                <Styled.QuantityWrap>
+                  <Minus
+                    disabled={quantity === 0}
+                    onClick={e => {
+                      e.stopPropagation()
+                      e.preventDefault()
+                      deleteFromCart(cartItem.product)
+                    }}
+                  />
+                  <Styled.Quantity>{`${quantity} шт.`}</Styled.Quantity>
+                  <Plus
+                    disabled={quantity === item.availableInStock}
+                    onClick={e => {
+                      e.stopPropagation()
+                      e.preventDefault()
+                      addToCart(cartItem.product, true)
+                    }}
+                  />
+                </Styled.QuantityWrap>
+              )
+            }
           </Styled.Content>
         </Styled.Wrapper>
       </Link>
-    </>
+    </li>
   )
 }
 

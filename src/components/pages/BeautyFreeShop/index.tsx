@@ -1,63 +1,32 @@
-import { FC, useEffect, useMemo, useState } from 'react'
+import { FC, useState } from 'react'
 import Head from 'next/head'
-import { useQuery } from '@apollo/client'
-import { Wrapper, NoProducts } from './styles'
-import FilterCatalog, { IFilterCatalog } from '../../ui/FilterCatalog'
-import { getProducts } from 'src/api/graphql/product/queries/getProducts'
-import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
-import useAuthStore from 'src/store/authStore'
-import { getStoreData, getStoreEvent } from 'src/store/utils'
+import FilterCatalog from '../../ui/FilterCatalog'
 import Catalog from '../Catalog'
 import { IProduct, IProductCategories } from 'src/types/product'
 import { IBrand } from 'src/types/brands'
-import Header from '../Brand/ViewBrand/components/Header'
+import { IPagination } from 'src/types'
+import Button from 'src/components/ui/Button'
+import { Wrapper } from 'src/components/pages/Catalog/styled'
 
 export interface IBeautyFreeShopPageProps {
   brands: IBrand[]
   dataProducts: IProduct[]
   dataProductCategories: IProductCategories[]
+  pageSize: number
+  pagination: IPagination
 }
 
 const BeautyFreeShopPage: FC<IBeautyFreeShopPageProps> = ({
   brands,
   dataProducts,
   dataProductCategories,
+  pageSize,
+  pagination: paginationInit,
 }) => {
-  const { user } = useAuthStore(getStoreData)
-
-  const [selectBrand, setSelectBrand] = useState<IBrand | null>(null)
-  const [filter, setFilter] = useState<string | null>(null)
   const [productsData, setProductsData] = useState<IProduct[]>(dataProducts)
-
-  const { refetch: refectchProducts, loading: refetchLoading } = useQuery(
-    getProducts,
-    {
-      skip: !filter,
-      notifyOnNetworkStatusChange: true,
-      onCompleted: res => {
-        if (res?.products?.data) {
-          const normalisedProducts = flattenStrapiResponse(res.products.data)
-          setProductsData(normalisedProducts)
-        }
-      },
-    },
-  )
-
-  useEffect(() => {
-    if (!filter?.value || filter?.value === 'Все категории') {
-      setProductsData(dataProducts)
-    } else {
-      refectchProducts({
-        filtersInput: {
-          product_categories: {
-            title: {
-              eq: filter?.label,
-            },
-          },
-        },
-      })
-    }
-  }, [filter])
+  const [pagination, setPagination] = useState<IPagination>(paginationInit)
+  const [loading, setLoading] = useState(false)
+  const [nextPage, setNextPage] = useState<number>(1)
 
   return (
     <>
@@ -73,30 +42,25 @@ const BeautyFreeShopPage: FC<IBeautyFreeShopPageProps> = ({
 
       <Wrapper>
         <FilterCatalog
-          setSelectBrand={setSelectBrand}
+          nextPage={nextPage}
+          setNextPage={setNextPage}
+          setLoading={setLoading}
+          pageSize={pageSize}
           brands={brands}
           setProductsData={setProductsData}
           productCategories={dataProductCategories}
-          dataProducts={dataProducts}
-          productsData={productsData}
-          setFilterProduct={setFilter}
-          filterProduct={filter}
+          setPagination={setPagination}
         />
       </Wrapper>
-      {productsData && !!productsData?.length ? (
-        <Catalog
-          user={user}
-          products={productsData}
-          // hasNextPage={goodsData?.connection?.pageInfo?.hasNextPage}
-          // fetchMore={loadMore}
-          loading={refetchLoading}
-          // loadingCart={loadingCart}
-          noTitle
-          brandData={brands}
-        />
-      ) : (
+      <Catalog products={productsData} loading={loading} noTitle />
+      {nextPage !== pagination.pageCount && (
         <Wrapper>
-          <NoProducts>Товары не найдены</NoProducts>
+          <Button
+            onClick={() => setNextPage(prev => prev + 1)}
+            variant={'secondary'}
+          >
+            Ещё
+          </Button>
         </Wrapper>
       )}
     </>

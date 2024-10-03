@@ -1,4 +1,5 @@
 import { imageInfo } from '../../common/imageInfo'
+import { metaInfo } from '../../common/metaInfo'
 import { brandsFragment } from '../../fragments/brands'
 import { ratingsFragment } from '../../fragments/ratings'
 import { reviewsFragment } from '../../fragments/reviews'

@@ -1,72 +1,59 @@
-import { useState, useRef, useEffect, FC } from 'react'
+import {
+  useState,
+  useRef,
+  useEffect,
+  FC,
+  RefObject,
+  ChangeEventHandler,
+  MouseEventHandler,
+} from 'react'
 import { useMutation } from '@apollo/react-hooks'
 import { PHOTO_URL } from '../../../api/variables'
 import { CSSTransition } from 'react-transition-group'
 import { formatMobileNumber } from '../../../utils/formatMobileNumber'
 import { sendOrderOneClick } from '../../../_graphql-legacy/orders/sendOrderOneClick'
-import {
-  PopupWrapper,
-  Wrapper,
-  PopupContent,
-  Left,
-  Image,
-  Right,
-  Title,
-  MinimalOrder,
-  QuantityWrap,
-  QuantityButtons,
-  Description,
-  PopupInput,
-  ButtonPopup,
-  Plus,
-  Minus,
-  Quantity,
-  CloseButton,
-  Success,
-  Error,
-  TitleWrap,
-  ProductDescription,
-  PriceWrap,
-  Price,
-  PhoneInputWrap,
-  PhoneCode,
-} from './styles'
+import * as Styled from './styles'
 import RotatingLoader from '../RotatingLoader'
-import { IMe } from 'src/types/me'
+import { IUser } from 'src/types/me'
+import { IProduct } from 'src/types/product'
+import { ISetState } from 'src/types/common'
+import { CREATE_ORDER } from 'src/api/graphql/order/mutations/createOrder'
 
 interface Props {
-  me: IMe
+  user: IUser | null
+  item: IProduct
+  openBuyPopup: boolean
+  setOpenBuyPopup: ISetState<boolean>
 }
 
 const FastBuyPopup: FC<Props> = ({
   item,
   openBuyPopup,
   setOpenBuyPopup,
-  me,
-  brand,
+  user,
 }) => {
-  const [productQuantity, setProductQuantity] = useState(1)
+  const [quantity, setQuantity] = useState(1)
   const [phone, setPhone] = useState('')
   const [name, setName] = useState('')
   const [success, setSuccess] = useState(false)
-  const [error, setError] = useState(null)
-  const popupRef = useRef(null)
+  const [error, setError] = useState<string | null>(null)
+  const popupRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (!me?.info) return
+    if (!user?.info) return
 
-    if (me.info.username) {
-      setName(me.info.username)
+    if (user.info.username) {
+      setName(user.info.username)
     }
-    if (me.info.phone) {
-      setPhone(formatMobileNumber(me.info.phone))
+    if (user.info.phone) {
+      setPhone(formatMobileNumber(user.info.phone))
     }
-  }, [me])
+  }, [user])
 
-  const useOutsideClick = ref => {
+  const useOutsideClick = (ref: RefObject<HTMLDivElement>) => {
     useEffect(() => {
-      const handleClickOutside = event => {
-        if (ref.current && !ref.current.contains(event.target)) {
+      const handleClickOutside = (event: MouseEvent) => {
+        if (ref.current && !ref.current.contains(event.target as Node)) {
           setOpenBuyPopup(false)
         }
       }
@@ -79,7 +66,7 @@ const FastBuyPopup: FC<Props> = ({
 
   useOutsideClick(popupRef)
 
-  const [sendOrder, { loading }] = useMutation(sendOrderOneClick, {
+  const [createOrder, { loading }] = useMutation(CREATE_ORDER, {
     onCompleted: res => {
       setSuccess(true)
     },
@@ -95,51 +82,51 @@ const FastBuyPopup: FC<Props> = ({
       setError('Некорректный номер телефона')
       return
     }
-
-    // const orderInput = {
-    //   productId: item.id,
-    //   productCount: productQuantity,
-    //   name,
-    //   phone: `8${phone.replace(/-/g, '')}`,
-    // }
-
-    // sendOrder({
-    //   variables: {
-    //     input: orderInput,
-    //   },
-    // })
-    setSuccess(true)
+    createOrder({
+      variables: {
+        data: {
+          title: 'Bay one click',
+          total: item.salePrice
+            ? item.salePrice * quantity
+            : item.regularPrice * quantity,
+          user: user?.info.id || null,
+          contactName: name,
+          contactPhone: phone,
+          order_status: 8,
+          cartContent: [{ product: item.id, quantity }],
+        },
+      },
+    })
   }
 
-  const closePopup = e => {
+  const closePopup: MouseEventHandler<HTMLButtonElement> = e => {
     setOpenBuyPopup(false)
     setSuccess(false)
-    setProductQuantity(1)
+    setQuantity(1)
     setError(null)
-    setName(me?.info?.displayName ? me?.info?.displayName : '')
+    setName(user?.info?.username ? user?.info?.username : '')
     setPhone(
-      me?.info?.phoneNumber
-        ? formatMobileNumber(me.info.phoneNumber.substring(1))
-        : '',
+      user?.info?.phone ? formatMobileNumber(user.info.phone.substring(1)) : '',
     )
   }
 
   const increaseQuantity = () => {
-    setProductQuantity(prevState => prevState + 1)
+    if (item.availableInStock <= quantity) return
+    setQuantity(prevState => prevState + 1)
   }
 
   const decreaseQuantity = () => {
-    if (productQuantity === 1) return
-    setProductQuantity(prevState => prevState - 1)
+    if (quantity === 1) return
+    setQuantity(prevState => prevState - 1)
   }
 
-  const phoneChangeHandler = e => {
+  const phoneChangeHandler: ChangeEventHandler<HTMLInputElement> = e => {
     setError(null)
     const targetValue = formatMobileNumber(e.target.value)
     setPhone(targetValue)
   }
 
-  const nameChangeHandler = e => {
+  const nameChangeHandler: ChangeEventHandler<HTMLInputElement> = e => {
     setError(null)
     setName(e.target.value)
   }
@@ -154,38 +141,40 @@ const FastBuyPopup: FC<Props> = ({
       unmountOnExit
     >
       {() => (
-        <Wrapper>
-          <PopupWrapper ref={popupRef}>
-            <CloseButton onClick={closePopup} />
-            <PopupContent>
-              <Left>
-                <Image
+        <Styled.Wrapper>
+          <Styled.PopupWrapper ref={popupRef}>
+            <Styled.CloseButton onClick={closePopup} />
+            <Styled.PopupContent>
+              <Styled.Left>
+                <Styled.Image
                   src={
                     !!productImage ? productImage : '/cosmetic_placeholder.jpg'
                   }
                 />
-              </Left>
-              <Right>
+              </Styled.Left>
+              <Styled.Right>
                 {loading ? (
                   <RotatingLoader />
                 ) : !success ? (
                   <>
-                    <Title>
+                    <Styled.Title>
                       {`${
-                        me?.info ? 'Проверьте данные формы' : 'Заполните форму'
+                        user?.info
+                          ? 'Проверьте данные формы'
+                          : 'Заполните форму'
                       }, чтобы наш менеджер связался с Вами по
                       поводу заказа`}
-                    </Title>
-                    <PopupInput
+                    </Styled.Title>
+                    <Styled.PopupInput
                       type="text"
                       required
                       placeholder="Имя"
-                      value={name || me?.info?.username || ''}
+                      value={name || user?.info?.username || ''}
                       onChange={nameChangeHandler}
                     />
-                    <PhoneInputWrap>
-                      <PhoneCode>+7</PhoneCode>
-                      <PopupInput
+                    <Styled.PhoneInputWrap>
+                      <Styled.PhoneCode>+7</Styled.PhoneCode>
+                      <Styled.PopupInput
                         type="tel"
                         required
                         placeholder="Номер телефона"
@@ -193,43 +182,49 @@ const FastBuyPopup: FC<Props> = ({
                         onChange={phoneChangeHandler}
                         maxLength={13}
                       />
-                    </PhoneInputWrap>
-                    <TitleWrap>
-                      <ProductDescription>
+                    </Styled.PhoneInputWrap>
+                    <Styled.TitleWrap>
+                      <Styled.ProductDescription>
                         {item?.shortDescription}
-                      </ProductDescription>
-                    </TitleWrap>
-                    <PriceWrap>
-                      <Description>Сумма заказа: </Description>
-                      <Price>{`${
-                        (item?.salePrice &&
-                          item?.salePrice.toLocaleString() * productQuantity) ||
-                        item?.regularPrice?.toLocaleString() * productQuantity
-                      } ₽`}</Price>
-                    </PriceWrap>
-                    <QuantityWrap>
-                      <Description>Количество: </Description>
-                      <QuantityButtons>
-                        <Minus onClick={decreaseQuantity} />
-                        <Quantity>{`${productQuantity} упк.`}</Quantity>
-                        <Plus onClick={increaseQuantity} />
-                      </QuantityButtons>
-                    </QuantityWrap>
-                    <Error>{error ? error : ''}</Error>
-                    <ButtonPopup onClick={buyProduct} variant="red">
+                      </Styled.ProductDescription>
+                    </Styled.TitleWrap>
+                    <Styled.PriceWrap>
+                      <Styled.Description>Сумма заказа: </Styled.Description>
+                      <Styled.Price>{`${
+                        (item.salePrice &&
+                          (item.salePrice * quantity).toLocaleString()) ||
+                        (item.regularPrice * quantity).toLocaleString()
+                      } ₽`}</Styled.Price>
+                    </Styled.PriceWrap>
+                    <Styled.QuantityWrap>
+                      <Styled.Description>Количество: </Styled.Description>
+                      <Styled.QuantityButtons>
+                        <Styled.Minus
+                          disabled={1 === quantity}
+                          onClick={decreaseQuantity}
+                        />
+                        <Styled.Quantity>{`${quantity} упк.`}</Styled.Quantity>
+                        <Styled.Plus
+                          disabled={item.availableInStock <= quantity}
+                          onClick={increaseQuantity}
+                        />
+                      </Styled.QuantityButtons>
+                    </Styled.QuantityWrap>
+                    <Styled.Error>{error ? error : ''}</Styled.Error>
+                    <Styled.ButtonPopup onClick={buyProduct} variant="red">
                       Отправить заказ
-                    </ButtonPopup>
+                    </Styled.ButtonPopup>
                   </>
                 ) : (
-                  <Success>
+                  <Styled.Success>
                     Спасибо за Ваш заказ!
                     <br /> В ближайшее время с Вами свяжется наш менеджер
-                  </Success>
+                  </Styled.Success>
                 )}
-              </Right>
-            </PopupContent>
-          </PopupWrapper>
-        </Wrapper>
+              </Styled.Right>
+            </Styled.PopupContent>
+          </Styled.PopupWrapper>
+        </Styled.Wrapper>
       )}
     </CSSTransition>
   )

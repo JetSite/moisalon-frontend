@@ -4,7 +4,8 @@ import { Skeleton } from '@material-ui/lab'
 import { lighten } from 'polished'
 
 export const Wrapper = styled.div`
-  width: 175px;
+  max-width: 175px;
+  width: 100%;
   height: 490px;
   display: flex;
   cursor: pointer;
@@ -62,7 +63,7 @@ export const Image = styled.img`
   }
 `
 
-export const Favorite = styled.div`
+export const Favorite = styled.button`
   position: absolute;
   width: 16px;
   height: 16px;
@@ -187,7 +188,7 @@ export const Quantity = styled.p`
   line-height: 16px;
 `
 
-export const Minus = styled.div`
+export const Minus = styled.button`
   width: 28px;
   height: 28px;
   border-radius: 100%;

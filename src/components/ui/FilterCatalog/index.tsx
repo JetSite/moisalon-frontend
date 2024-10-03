@@ -5,6 +5,15 @@ import { IID, ISetState } from 'src/types/common'
 import { IBrand } from 'src/types/brands'
 import { ISelectOnChange } from 'src/components/blocks/Form/Select'
 import Header from '../../pages/Brand/ViewBrand/components/Header'
+import {
+  ISuggestHandleChange,
+  SearchBrandAutosuggest,
+} from 'src/components/newUI/Inputs/AutosuggestField/SearchBrand'
+import { SearchProductCategoryAutosuggest } from 'src/components/newUI/Inputs/AutosuggestField/SearchProductCategory'
+import { useLazyQuery } from '@apollo/client'
+import { PRODUCTS } from 'src/api/graphql/product/queries/getProducts'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { IPagination } from 'src/types'
 
 type ISelectValue = 'Все категории' | 'Все бренды' | IID
 
@@ -25,186 +34,185 @@ const brandFilterConfig: IFilterCatalog = {
 
 interface Props {
   productCategories: IProductCategories[]
-  setSelectBrand: ISetState<IBrand | null>
   brands: IBrand[]
   setProductsData: ISetState<IProduct[]>
-  dataProducts: IProduct[]
-  productsData: IProduct[]
+  pageSize: number
+  setLoading: ISetState<boolean>
+  nextPage: number
+  setPagination: ISetState<IPagination>
+  setNextPage: ISetState<number>
 }
 
 const FilterCatalog: FC<Props> = ({
-  setFilterProduct,
   productCategories,
-  selectedBrand,
-  filterProduct,
   brands,
-  setSelectBrand,
   setProductsData,
-  dataProducts,
-  productsData,
+  pageSize,
+  setLoading,
+  nextPage,
+  setPagination,
+  setNextPage,
 }) => {
-  const [selectCategoryFilter, setSelectCategoryFilter] =
-    useState<ISelectValue>(categoryFilterConfig.value)
-  const [selectBrandFilter, setSelectBrandFilter] = useState<ISelectValue>(
-    brandFilterConfig.value,
-  )
+  const [reset, setReset] = useState<'brand' | 'category' | null>(null)
+  const [selectBrand, setSelectBrand] = useState<IBrand | null>(null)
+  const [selectCategory, setSelectCategory] =
+    useState<IProductCategories | null>(null)
+  const [isInitialLoad, setIsInitialLoad] = useState(true)
 
-  const allBOptions: IFilterCatalog[] = useMemo(
-    () => [
-      brandFilterConfig,
-      ...(brands?.map(category => ({
-        label: category.name,
-        value: category.id,
-      })) || []),
-    ],
-    [brands],
-  )
+  const [getProducts] = useLazyQuery(PRODUCTS)
 
-  const allOptions: IFilterCatalog[] = useMemo(
-    () => [
-      categoryFilterConfig,
-      ...(productCategories?.map(category => ({
-        label: category.title,
-        value: category.id,
-      })) || []),
-    ],
-    [brands],
-  )
-  // useEffect(() => {
-  //   if (dataProducts.length > productsData.length) {
-  //     const arr: IFilterCatalog[] = []
-  //     productsData.forEach(e => {
-  //       arr.push(
-  //         ...e.product_categories.map(category => {
-  //           return {
-  //             label: category.title,
-  //             value: category.id,
-  //           }
-  //         }),
-  //       )
-  //     })
-  //     setAllOptions([categoryConfig, ...new Set(arr)])
-  //   } else {
-  //     setAllOptions([
-  //       categoryConfig,
-  //       ...productCategories?.map(category => {
-  //         return {
-  //           label: category.title,
-  //           value: category.id,
-  //         }
-  //       }),
-  //     ])
-  //   }
-  // }, [brands, productsData])
+  useEffect(() => {
+    if (isInitialLoad) {
+      setIsInitialLoad(false)
+      return
+    }
+    setLoading(true)
+    if (selectBrand) {
+      getProducts({
+        variables: {
+          page: nextPage,
+          pageSize,
+          filtersInput: {
+            brand: {
+              name: {
+                contains: selectBrand.name,
+              },
+            },
+          },
+        },
+        onCompleted,
+      })
+    } else if (selectCategory) {
+      getProducts({
+        variables: {
+          page: nextPage,
+          pageSize,
+          filtersInput: {
+            product_categories: {
+              title: {
+                contains: selectCategory.title,
+              },
+            },
+          },
+        },
+        onCompleted,
+      })
+    } else {
+      getProducts({
+        variables: {
+          page: nextPage,
+          pageSize,
+        },
+        onCompleted,
+      })
+    }
+  }, [nextPage])
 
-  const filterProductHandler: ISelectOnChange = event => {
-    console.log('filterProductHandler', event)
-    setSelectCategoryFilter(event.target.value as IID)
+  const onCompleted = (data: any) => {
+    const prepareData: IProduct[] = flattenStrapiResponse(data.products)
+    setPagination(data.products.meta.pagination)
+    if (data.products.meta.pagination.page > 1) {
+      setProductsData(pre => [...pre, ...prepareData])
+    } else {
+      setProductsData(prepareData)
+      setNextPage(1)
+    }
+    setReset(null)
+    setLoading(false)
   }
-  const filterBrandHandler: ISelectOnChange = event => {
-    console.log('filterBrandHandler', event)
-    setSelectBrandFilter(event.target.value as IID)
+
+  const handleChangeCategory: ISuggestHandleChange = data => {
+    setLoading(true)
+    const categoryFilterString = data?.title || null
+    setSelectCategory(data as IProductCategories)
+    setSelectBrand(null)
+    setReset('brand')
+    if (categoryFilterString) {
+      getProducts({
+        variables: {
+          pageSize,
+          filtersInput: {
+            product_categories: {
+              title: {
+                contains: categoryFilterString,
+              },
+            },
+          },
+        },
+        onCompleted,
+      })
+    } else {
+      getProducts({
+        variables: {
+          pageSize,
+        },
+        onCompleted,
+      })
+    }
   }
 
-  // const brandFilterHandler = brand => {
-  //   setBrandActive(brand.id !== brandActive ? brand.id : null)
-  //   setFilterProduct(brand.name)
-  // }
+  const handleChangeBrand: ISuggestHandleChange = data => {
+    setLoading(true)
+    const brandFilterString = data?.name || null
+    setSelectBrand(data as IBrand)
+    setSelectCategory(null)
+    setReset('category')
 
-  // const typeFilterHandler = type => {
-  //   setTypeActive(type.id !== typeActive ? type.id : null)
-  //   setFilterProduct(type.name)
-  // }
-
-  // const filterProductHandler = value => {
-  //   // console.log('value', value.value)
-  //   setSelectedProduct(value)
-  //   setFilterProduct(value)
-  //   if (value === 'Все категории' && brandActive.value === 'Все бренды') {
-  //     setSelectBrand(null)
-  //     return
-  //   }
-  // }
-
-  // const filterBrandHandler = e => {
-  //   const findBrand =
-  //     brands.find(brand => brand.name === e.target.value) || null
-  //   setBrandActive(
-  //     findBrand
-  //       ? { label: findBrand?.name, value: findBrand?.id }
-  //       : categoryConfig,
-  //   )
-  //   setSelectBrand(findBrand)
-  //   findBrand
-  //     ? setProductsData(findBrand.products)
-  //     : setProductsData(dataProducts)
-  //   // setFilterBrand(e.target.value === "Все бренды" ? null : e.target.value);
-
-  //   console.log(e.target.value)
-
-  //   if (
-  //     e.target.value === 'Все бренды' &&
-  //     selectedProduct.value === 'Все категории'
-  //   ) {
-  //     setSelectBrand(null)
-  //     return
-  //   }
-  //   window.scrollTo({
-  //     top: 1600,
-  //     behavior: 'smooth',
-  //   })
-  // }
+    if (brandFilterString) {
+      getProducts({
+        variables: {
+          pageSize,
+          filtersInput: {
+            brand: {
+              name: {
+                contains: brandFilterString,
+              },
+            },
+          },
+        },
+        onCompleted,
+      })
+    } else {
+      getProducts({
+        variables: {
+          pageSize,
+        },
+        onCompleted,
+      })
+    }
+  }
 
   return (
     <>
       <Styled.Wrapper>
-        <Styled.ProductFilter>
-          <Styled.SelectStyled
-            name="productCategories"
+        <Styled.BrandFilter>
+          <SearchProductCategoryAutosuggest
+            initialValues={productCategories}
+            handleChange={handleChangeCategory}
+            defaultValue="Все категории"
+            name="productCategory"
             label="Категории продукции"
-            options={allOptions || []}
-            value={selectCategoryFilter}
-            onChange={filterProductHandler}
-            fullWidth={true}
-            color={'red'}
+            color="red"
+            fullWidth
+            reset={reset === 'category'}
           />
-          {/* {allOptions?.length
-        ? allOptions.map((item, i) => (
-            <Styled.ProductFilterItem
-              active={
-                filterProduct?.label
-                  ? filterProduct?.label === item?.label
-                  : 'Все категории' === item?.label
-              }
-              onClick={() => filterProductHandler(item)}
-              key={i}
-            >
-              {item.label}
-            </Styled.ProductFilterItem>
-          ))
-        : null} */}
-        </Styled.ProductFilter>
+        </Styled.BrandFilter>
 
         <Styled.BrandFilter>
-          <Styled.SelectStyled
-            name="brandCategories"
-            label="Бренды"
-            options={allBOptions || []}
-            value={selectBrandFilter}
-            onChange={filterBrandHandler}
-            fullWidth={true}
-            color={'red'}
+          <SearchBrandAutosuggest
+            initialValues={brands}
+            handleChange={handleChangeBrand}
+            defaultValue="Все бренды"
+            name="brands"
+            color="red"
+            fullWidth
+            reset={reset === 'brand'}
           />
         </Styled.BrandFilter>
       </Styled.Wrapper>
-      {selectBrandFilter !== 'Все бренды' &&
-        brands.find(e => e.id === selectBrandFilter) && (
-          <Header
-            brand={brands.find(e => e.id === selectBrandFilter)}
-            isOwner={false}
-            noBackButton
-          />
-        )}
+      {selectBrand && (
+        <Header brand={selectBrand} isOwner={false} noBackButton />
+      )}
     </>
   )
 }
