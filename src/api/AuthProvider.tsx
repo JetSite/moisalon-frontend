@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import React, { FC, useEffect } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client'
 import { IChildren, IID } from 'src/types/common'
 import useAuthStore from 'src/store/authStore'
@@ -18,6 +18,8 @@ import useBaseStore from 'src/store/baseStore'
 import { getPrepareUser } from './utils/getPrepareUser'
 import { useShallow } from 'zustand/react/shallow'
 import { IOrder } from 'src/types/orders'
+import { Skeleton } from '@material-ui/lab'
+import MainSkeleton from 'src/components/ui/ContentSkeleton/MainSkeleton'
 
 const AuthProvider: FC<{ children: IChildren; pageProps: any }> = ({
   children,
@@ -25,7 +27,6 @@ const AuthProvider: FC<{ children: IChildren; pageProps: any }> = ({
 }) => {
   const router = useRouter()
   const { me, loading, user } = useAuthStore(useShallow(getStoreData))
-
   const { setMe, setLoading, setCity, setUser } = useAuthStore(
     useShallow(getStoreEvent),
   )
@@ -52,8 +53,8 @@ const AuthProvider: FC<{ children: IChildren; pageProps: any }> = ({
     },
   })
 
-  const [getMe, { loading: meLoading }] = useLazyQuery(ME, getMeCB)
-  const [getUser, { loading: userLoading }] = useLazyQuery(USER, {
+  const [getMe] = useLazyQuery(ME, getMeCB)
+  const [getUser] = useLazyQuery(USER, {
     onCompleted: data => {
       const prepareData = flattenStrapiResponse(data.usersPermissionsUser)
 
@@ -105,11 +106,14 @@ const AuthProvider: FC<{ children: IChildren; pageProps: any }> = ({
       if (prepareData.cart) {
         setCart(prepareData.cart)
       }
+      setLoading(false)
     },
-    onError: err => console.log(err),
+    onError: err => {
+      setLoading(false)
+      console.log(err)
+    },
     notifyOnNetworkStatusChange: true,
   })
-
   useEffect(() => {
     // const initializeCity = async () => {
     //   if (cityData?.name) {
@@ -123,7 +127,6 @@ const AuthProvider: FC<{ children: IChildren; pageProps: any }> = ({
   }, [cityCookie])
   useEffect(() => {
     if (!accessToken) return
-    setLoading(meLoading || userLoading)
     if (pageProps.user && !user) {
       const prepareUser = getPrepareUser(pageProps.user)
 
@@ -155,7 +158,7 @@ const AuthProvider: FC<{ children: IChildren; pageProps: any }> = ({
           )
         }
       }
-
+      setLoading(false)
       return
     } else {
       if (router.asPath !== authConfig.notAuthLink) {
@@ -165,13 +168,14 @@ const AuthProvider: FC<{ children: IChildren; pageProps: any }> = ({
         if (me && !user) {
           getUser({ variables: { id: me.info.id } })
         }
+        if (me && user) setLoading(false)
       }
       console.log('AuthProvider me', me)
       console.log('AuthProvider user', user)
     }
   }, [me, router, pageProps])
 
-  return <>{!loading && children}</>
+  return <>{loading ? <MainSkeleton /> : children}</>
 }
 
 export default AuthProvider

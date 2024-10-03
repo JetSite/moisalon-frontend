@@ -11,7 +11,7 @@ import { getSalonsByService } from 'src/api/graphql/salon/queries/getSalonsBySer
 import { IMaster } from 'src/types/masters'
 import { ISalon } from 'src/types/salon'
 import { getMasters } from 'src/api/graphql/master/queries/getMasters'
-import { getBrands } from 'src/api/graphql/brand/queries/getBrands'
+import { BRANDS } from 'src/api/graphql/brand/queries/getBrands'
 import { getSalons } from 'src/api/graphql/salon/queries/getSalons'
 import { IBrand } from 'src/types/brands'
 
@@ -83,7 +83,7 @@ export async function getServerSideProps({ params, query }: any) {
       query: getServiceCategories,
     }),
     apolloClient.query({
-      query: getBrands,
+      query: BRANDS,
       variables: {
         itemsCount: 10,
       },

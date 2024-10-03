@@ -38,7 +38,7 @@ const initialData = {
   me: null,
   user: null,
   city: { slug: defaultValues.citySlug },
-  loading: false,
+  loading: true,
   masterCabinetTabs: null,
 }
 

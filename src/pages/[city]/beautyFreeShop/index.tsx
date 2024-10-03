@@ -1,74 +1,63 @@
-import { useState } from 'react'
 import { addApolloState, initializeApollo } from '../../../api/apollo-client'
-import { brandQuery } from '../../../_graphql-legacy/brand/brandQuery'
-import { useQuery } from '@apollo/client'
-import { goodSearch } from '../../../_graphql-legacy/goodSearch'
 import MainLayout from '../../../layouts/MainLayout'
 import { MainContainer } from '../../../styles/common'
-import { brandSlugQuery } from '../../../_graphql-legacy/brand/brandSlugQuery'
-import { scoreBrand } from '../../../_graphql-legacy/brand/scoreBrand'
-import { citySuggestionsQuery } from '../../../_graphql-legacy/city/citySuggestionsQuery'
-import { getBrand } from 'src/api/graphql/brand/queries/getBrand'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
-import { getStoreData, getStoreEvent } from 'src/store/utils'
-import useAuthStore from 'src/store/authStore'
-import { getProducts } from 'src/api/graphql/product/queries/getProducts'
-import { getProductCategories } from 'src/api/graphql/product/queries/getProductCategories'
-import BeautyFreeShopPage from 'src/components/pages/BeautyFreeShop'
+import { PRODUCTS } from 'src/api/graphql/product/queries/getProducts'
+import { PRODUCT_CATEGORIES } from 'src/api/graphql/product/queries/getProductCategories'
+import BeautyFreeShopPage, {
+  IBeautyFreeShopPageProps,
+} from 'src/components/pages/BeautyFreeShop'
+import { GetServerSideProps, NextPage } from 'next'
+import { Nullable } from 'src/types/common'
+import { BRANDS_TO_SHOP } from 'src/api/graphql/brand/queries/getBrandToShop'
 
-const BeautyFreeShop = ({
-  brandData,
-  dataProducts,
-  dataProductCategories,
-  cityData,
-}) => {
-  const [brand, setBrand] = useState(brandData)
-  const { me } = useAuthStore(getStoreData)
-  const { setMe } = useAuthStore(getStoreEvent)
+interface Props extends IBeautyFreeShopPageProps {}
 
+const BeautyFreeShop: NextPage<Props> = props => {
   return (
     <MainLayout>
       <MainContainer>
-        <BeautyFreeShopPage
-          dataProducts={dataProducts}
-          dataProductCategories={dataProductCategories}
-          me={me}
-          brand={brand}
-        />
+        <BeautyFreeShopPage {...props} />
       </MainContainer>
     </MainLayout>
   )
 }
 
-export async function getServerSideProps(ctx) {
+export const getServerSideProps: GetServerSideProps<
+  Nullable<Props>
+> = async ctx => {
   const apolloClient = initializeApollo()
-
-  const brandQueryRes = await apolloClient.query({
-    query: getBrand,
-    variables: { id: 4 },
-  })
+  const pageSize = 2
 
   const data = await Promise.all([
     apolloClient.query({
-      query: getProducts,
+      query: PRODUCTS,
+      variables: { pageSize },
     }),
     apolloClient.query({
-      query: getProductCategories,
+      query: PRODUCT_CATEGORIES,
+      variables: { itemsCount: 10, isAvailableInStock: 0 },
+    }),
+    apolloClient.query({
+      query: BRANDS_TO_SHOP,
+      variables: { itemsCount: 10 },
     }),
   ])
 
-  const brand = flattenStrapiResponse(brandQueryRes?.data?.brand?.data)
-  const products = flattenStrapiResponse(data[0]?.data?.products?.data)
+  const products = flattenStrapiResponse(data[0].data.products?.data)
   const productCategories = flattenStrapiResponse(
     data[1]?.data?.productCategories?.data,
   )
+  const brands = flattenStrapiResponse(data[2].data.brands.data)
 
   return addApolloState(apolloClient, {
     props: {
-      brandData: brand,
+      brands,
       dataProducts: products,
       dataProductCategories: productCategories,
       cityData: 'Москва',
+      pageSize,
+      pagination: data[0].data.products?.meta.pagination,
     },
   })
 }

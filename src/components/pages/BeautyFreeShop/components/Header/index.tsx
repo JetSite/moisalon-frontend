@@ -1,30 +1,25 @@
-import { useState } from 'react'
+import { FC, useState } from 'react'
 import { MainContainer } from '../../../../../styles/common'
-import {
-  Wrapper,
-  Photo,
-  IContainer,
-  LogoBlock,
-  MinimalSumm,
-  MinimalSummTitle,
-  MinimalSummText,
-  WrapCharacter,
-  Character,
-  OpenCharacter,
-  Terms,
-} from './styled'
+import * as Styled from './styled'
 import Title from '../Title'
 import { useRouter } from 'next/router'
 import { PHOTO_URL } from '../../../../../api/variables'
+import { IBrand } from 'src/types/brands'
+import { IUser } from 'src/types/me'
 
-const Header = ({
+interface Props {
+  brand: IBrand | null
+  user: IUser
+}
+
+const Header: FC<Props> = ({
   brand,
   isOwner,
   scoreBrandCount,
   loadingScore,
-  me,
   refetchBrand,
   refetchScore,
+  user,
 }) => {
   const router = useRouter()
   const [toggleTerms, setToggleTerms] = useState(false)
@@ -34,13 +29,13 @@ const Header = ({
   return (
     <>
       <MainContainer>
-        <Wrapper>
-          <LogoBlock>
-            <Photo>
+        <Styled.Wrapper>
+          <Styled.LogoBlock>
+            <Styled.Photo>
               <img src={imageUrl} alt="Logo" />
-            </Photo>
-          </LogoBlock>
-          <IContainer>
+            </Styled.Photo>
+          </Styled.LogoBlock>
+          <Styled.IContainer>
             <Title
               refetchBrand={refetchBrand}
               me={me}
@@ -53,35 +48,37 @@ const Header = ({
               scoreBrandCount={scoreBrandCount}
               loadingScore={loadingScore}
             />
-          </IContainer>
-          <MinimalSumm>
-            <MinimalSummTitle>Минимальная сумма заказа</MinimalSummTitle>
-            <MinimalSummText>
+          </Styled.IContainer>
+          <Styled.MinimalSumm>
+            <Styled.MinimalSummTitle>
+              Минимальная сумма заказа
+            </Styled.MinimalSummTitle>
+            <Styled.MinimalSummText>
               от {Number(brand?.minimalOrderPrice)?.toLocaleString() || 0} ₽
-            </MinimalSummText>
-          </MinimalSumm>
+            </Styled.MinimalSummText>
+          </Styled.MinimalSumm>
           {brand?.termsDeliveryPrice ? (
             !toggleTerms ? (
-              <WrapCharacter>
-                <Character onClick={() => setToggleTerms(true)}>
+              <Styled.WrapCharacter>
+                <Styled.Character onClick={() => setToggleTerms(true)}>
                   Условия заказа
-                </Character>
-              </WrapCharacter>
+                </Styled.Character>
+              </Styled.WrapCharacter>
             ) : (
-              <WrapCharacter>
-                <OpenCharacter onClick={() => setToggleTerms(false)}>
+              <Styled.WrapCharacter>
+                <Styled.OpenCharacter onClick={() => setToggleTerms(false)}>
                   Условия заказа
-                </OpenCharacter>
-                {/* <Terms>{brand?.termsDeliveryPrice}</Terms> */}
-                <Terms
+                </Styled.OpenCharacter>
+                <Styled.Terms>{brand?.termsDeliveryPrice}</Styled.Terms>
+                <Styled.Terms
                   dangerouslySetInnerHTML={{
                     __html: brand?.termsDeliveryPrice,
                   }}
                 />
-              </WrapCharacter>
+              </Styled.WrapCharacter>
             )
           ) : null}
-        </Wrapper>
+        </Styled.Wrapper>
       </MainContainer>
     </>
   )

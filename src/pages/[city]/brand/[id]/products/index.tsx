@@ -3,19 +3,17 @@ import {
   addApolloState,
   initializeApollo,
 } from '../../../../../api/apollo-client'
-import { brandQuery } from '../../../../../_graphql-legacy/brand/brandQuery'
 import { useQuery } from '@apollo/client'
-import { goodsCatalogQuery } from '../../../../../_graphql-legacy/goodsCatalog'
-import { goodSearch } from '../../../../../_graphql-legacy/goodSearch'
 import MainLayout from '../../../../../layouts/MainLayout'
 import { MainContainer } from '../../../../../styles/common'
 import BrandProductsPage from '../../../../../components/pages/Brand/BrandProducts'
-import { brandSlugQuery } from '../../../../../_graphql-legacy/brand/brandSlugQuery'
-import { getProductCategories } from '../../../../../_graphql-legacy/getProductCategories'
-import { scoreBrand } from '../../../../../_graphql-legacy/brand/scoreBrand'
-import { citySuggestionsQuery } from '../../../../../_graphql-legacy/city/citySuggestionsQuery'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
+import { getBrand } from 'src/api/graphql/brand/queries/getBrand'
+import { getProductCategories } from 'src/_graphql-legacy/getProductCategories'
+import { scoreBrand } from 'src/_graphql-legacy/brand/scoreBrand'
+import { fetchCity } from 'src/api/utils/fetchCity'
+import { defaultValues } from 'src/api/authConfig'
 
 const BrandProducts = ({
   brandData,
@@ -25,9 +23,8 @@ const BrandProducts = ({
 }) => {
   const [brand, setBrand] = useState(brandData)
   const [dataScore, setDataScore] = useState(dataScoreRes)
-  const { me } = useAuthStore(getStoreData)
 
-  const { refetch: refetchBrand } = useQuery(brandQuery, {
+  const { refetch: refetchBrand } = useQuery(getBrand, {
     variables: { id: brand.id },
     skip: true,
     onCompleted: res => {
@@ -44,11 +41,10 @@ const BrandProducts = ({
   })
 
   return (
-    <MainLayout MainLayout me={me}>
+    <MainLayout>
       <MainContainer>
         <BrandProductsPage
           dataProductCategories={dataProductCategories}
-          me={me}
           brand={brand}
           goods={goods}
           dataScore={dataScore}
@@ -60,25 +56,21 @@ const BrandProducts = ({
   )
 }
 
-export async function getServerSideProps({ params, query }) {
+export async function getServerSideProps(ctx) {
   const apolloClient = initializeApollo()
 
   const brandQueryRes = await apolloClient.query({
-    query: brandSlugQuery,
-    variables: { slug: params.id },
+    query: getBrand,
+    variables: { slug: ctx.params.id },
   })
 
-  const city = await apolloClient.query({
-    query: citySuggestionsQuery,
-    variables: {
-      city: query?.city || '',
-      count: 1,
-    },
-  })
+  const cityData = (await fetchCity(ctx.query.city as string)) || {
+    slug: defaultValues.citySlug,
+  }
 
   const brand = brandQueryRes.data.brandSlug
 
-  if (!city?.data?.citySuggestions[0]?.data?.city) {
+  if (!cityData.slug) {
     return {
       notFound: true,
     }
@@ -94,32 +86,32 @@ export async function getServerSideProps({ params, query }) {
     //     first: 12,
     //   },
     // }),
-    apolloClient.query({
-      query: goodSearch,
-      variables: {
-        input: {
-          brandId: [brand.id],
-          query: '',
-          isB2b: true,
-        },
-      },
-    }),
+    // apolloClient.query({
+    //   query: getBrand,
+    //   variables: {
+    //     input: {
+    //       brandId: [brand.id],
+    //       query: '',
+    //       isB2b: true,
+    //     },
+    //   },
+    // }),
     apolloClient.query({
       query: getProductCategories,
     }),
-    apolloClient.query({
-      query: scoreBrand,
-      variables: {
-        id: brand.id,
-      },
-    }),
+    // apolloClient.query({
+    //   query: scoreBrand,
+    //   variables: {
+    //     id: brand.id,
+    //   },
+    // }),
   ])
   return addApolloState(apolloClient, {
     props: {
       brandData: brand,
-      goods: data[0]?.data,
-      dataProductCategories: data[1]?.data?.productsCatagoriesB2b,
-      dataScoreRes: data[2].data,
+      // goods: data[0]?.data,
+      dataProductCategories: data[0]?.data?.productsCatagoriesB2b,
+      // dataScoreRes: data[2].data,
     },
   })
 }

@@ -30,10 +30,10 @@ import {
 interface Props {
   brand: IBrand
   isOwner: boolean
+  noBackButton?: boolean
 }
 
-const Header: FC<Props> = ({ brand, isOwner }) => {
-  const router = useRouter()
+const Header: FC<Props> = ({ brand, isOwner, noBackButton = false }) => {
   const [toggleTerms, setToggleTerms] = useState(false)
   const [myPrice, setMyPrice] = useState<string | null>(
     brand?.minimalOrderPrice?.toString() || null,
@@ -53,17 +53,19 @@ const Header: FC<Props> = ({ brand, isOwner }) => {
     <>
       <MainContainer>
         <Wrapper>
-          <BackButton
-            type="Бренд"
-            name={brand?.name}
-            link={
-              isOwner
-                ? '/brandCabinet'
-                : brand?.city?.slug
-                ? `/${brand?.city?.slug}/brand`
-                : `/moskva/brand`
-            }
-          />
+          {!noBackButton && (
+            <BackButton
+              type="Бренд"
+              name={brand?.name}
+              link={
+                isOwner
+                  ? '/brandCabinet'
+                  : brand?.city?.slug
+                  ? `/${brand?.city?.slug}/brand`
+                  : `/moskva/brand`
+              }
+            />
+          )}
         </Wrapper>
         <Wrapper>
           <LogoBlock>

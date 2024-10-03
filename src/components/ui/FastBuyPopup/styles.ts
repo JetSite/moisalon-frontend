@@ -180,14 +180,24 @@ export const ButtonPopup = styled(Button)`
   }
 `
 
-export const Minus = styled.div`
+export const Minus = styled.button`
   width: 28px;
   height: 28px;
   border-radius: 100%;
   flex-shrink: 0;
   cursor: pointer;
-  background: #f0f0f0 url('/icon-minus.svg') no-repeat center;
   transition: all 0.2s ease-in-out;
+  background: #f0f0f0 url('/icon-minus.svg') no-repeat center;
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.5;
+    background: gray url('/icon-minus.svg') no-repeat center;
+
+    &:hover {
+      background: gray url('/icon-minus.svg') no-repeat center;
+    }
+  }
 
   &:hover {
     background: #ff0033 url('/icon-minus-white.svg') no-repeat center;
@@ -197,6 +207,18 @@ export const Minus = styled.div`
 export const Plus = styled(Minus)`
   background: #f0f0f0 url('/icon-plus.svg') no-repeat center;
   background-size: 13px;
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.5;
+    background: gray url('/icon-plus.svg') no-repeat center;
+    background-size: 13px;
+
+    &:hover {
+      background: gray url('/icon-plus.svg') no-repeat center;
+      background-size: 13px;
+    }
+  }
 
   &:hover {
     background: #ff0033 url('/icon-plus-white.svg') no-repeat center;
@@ -209,7 +231,7 @@ export const Quantity = styled.p`
   line-height: 16px;
 `
 
-export const CloseButton = styled.div`
+export const CloseButton = styled.button`
   width: 32px;
   height: 32px;
   position: absolute;
@@ -247,11 +269,14 @@ export const ProductDescription = styled(Description)`
   font-size: 14px;
   line-height: 20px;
   font-weight: 500;
+  max-height: 80px;
+  overflow-y: auto;
 
   @media (max-width: ${mobileBreakpoint}) {
     margin-top: 0;
     font-size: 12px;
     line-height: 18px;
+    max-height: 200px;
   }
 `
 
@@ -260,7 +285,7 @@ export const PriceWrap = styled.div`
   align-self: flex-start;
 `
 
-export const Price = styled.p`
+export const Price = styled.p<{ lessMinPrice?: boolean }>`
   margin-left: 10px;
   font-size: 14px;
   font-weight: 500;

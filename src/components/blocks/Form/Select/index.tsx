@@ -11,12 +11,20 @@ import { SelectProps as MuiSelectProps } from '@material-ui/core/Select'
 import { FieldRenderProps } from 'react-final-form'
 import { ClassNameMap } from '@material-ui/core/styles/withStyles'
 
+export type ISelectOnChange = (
+  event: React.ChangeEvent<{
+    name?: string | undefined
+    value: unknown
+  }>,
+) => void
+
 export interface ISelectProps
   extends Omit<MuiSelectProps, 'onChange'>,
     Omit<FieldRenderProps<any, HTMLElement, any>, 'input' | 'meta'> {
   showError: boolean
   options: { value: string; label: string }[]
   errorText?: string
+  onChange: ISelectOnChange
 }
 
 const MenuItemStyled = styled(MenuItem)`
@@ -70,13 +78,8 @@ const Select = forwardRef<HTMLDivElement, ISelectProps>((props, ref) => {
     </MenuItemStyled>
   ))
 
-  const handleChange = useCallback(
-    (
-      event: React.ChangeEvent<{
-        name?: string | undefined
-        value: unknown
-      }>,
-    ) => {
+  const handleChange = useCallback<ISelectOnChange>(
+    event => {
       if (value !== event.target.value) {
         onChange(event)
       }
@@ -96,7 +99,7 @@ const Select = forwardRef<HTMLDivElement, ISelectProps>((props, ref) => {
     >
       <InputLabel
         htmlFor={name}
-        style={{ fontSize: '1.6rem' }}
+        style={{ fontSize: '1.6rem', textWrap: 'nowrap' }}
         classes={{
           root: classes.root,
           focused: classes.focused,

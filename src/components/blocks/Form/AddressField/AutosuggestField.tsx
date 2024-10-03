@@ -5,8 +5,6 @@ import {
   useEffect,
   FormEvent,
   forwardRef,
-  ReactElement,
-  ReactNode,
 } from 'react'
 import Autosuggest, { SuggestionSelectedEventData } from 'react-autosuggest'
 import {
@@ -15,45 +13,54 @@ import {
   MenuItem,
   InputAdornment,
   CircularProgress,
-  TextFieldProps,
-  StandardTextFieldProps,
   BaseTextFieldProps,
 } from '@material-ui/core'
-import { makeStyles, withStyles } from '@material-ui/core/styles'
-import {
-  FieldInputProps,
-  FieldMetaState,
-  FieldRenderProps,
-} from 'react-final-form'
-import { ISetState } from 'src/types/common'
+import { Theme, makeStyles, withStyles } from '@material-ui/core/styles'
+import { FieldInputProps, FieldMetaState } from 'react-final-form'
+import { ClassNameMap } from '@material-ui/core/styles/withStyles'
+
+type CustomInputProps = Omit<Partial<FieldInputProps<string>>, 'onChange'> & {
+  onChange: FieldInputProps<string>['onChange']
+}
 
 const handleSuggestionsFetchRequested = () => {}
 
 interface RenderInputProps
-  extends Autosuggest.RenderInputComponentProps,
-    Pick<FieldRenderProps<string, HTMLElement>, 'input' | 'meta'> {
+  extends Pick<AutosuggestFieldProps, 'input' | 'meta'> {
   loading: boolean
   label?: string
+  classes: ClassNameMap<string>
+  fullWidth?: boolean
 }
 
 const InputComponent = forwardRef<HTMLInputElement, RenderInputProps>(
   (props, ref) => {
-    const { meta, loading, label, ...rest } = props
+    const { meta, loading, label, classes, ...rest } = props
 
     const showError =
+      meta &&
       ((meta.submitError && !meta.dirtySinceLastSubmit) || meta.error) &&
       meta.touched
 
     return (
       <TextField
-        fullWidth
         multiline={true}
         maxRows={2}
         label={label}
         error={showError}
         helperText={showError ? meta.error || meta.submitError : undefined}
+        InputLabelProps={{
+          classes: {
+            root: classes.label,
+            focused: classes.label,
+          },
+        }}
         InputProps={{
-          inputRef: ref, // Используем forwardRef для корректной передачи ref
+          classes: {
+            input: classes.input,
+            focused: classes.input,
+          },
+          inputRef: ref,
           endAdornment: loading ? (
             <InputAdornment position="end">
               <CircularProgress size={20} />
@@ -83,14 +90,38 @@ const renderSuggestion = (
 
 const getSuggestionValue = (suggestion: string) => suggestion
 
-const useStyles = makeStyles(theme => ({
-  root: {},
-  container: {
+const useStyles = makeStyles<Theme, { color?: string }>(theme => ({
+  root: ({ color }) => ({
+    color,
+  }),
+  label: ({ color }) => ({
+    color,
+    textWrap: 'nowrap',
+    fontSize: color ? '1.6rem' : '1rem',
+    '&.Mui-focused': {
+      color,
+    },
+  }),
+  input: ({ color }) => ({
+    color,
+    '&::placeholder': {
+      color,
+      fontSize: color ? '1.6rem' : '1rem',
+    },
+    '&.MuiInput-underline:after': {
+      borderBottom: `2px solid ${color}`,
+    },
+    '&.MuiInput-underline:before': {
+      borderBottom: `1px solid ${color}`,
+    },
+  }),
+  container: ({ color }) => ({
     position: 'relative',
-  },
+    fontSize: color ? '1.6rem' : '1rem',
+  }),
   suggestionsContainerOpen: {
     position: 'absolute',
-    zIndex: 1,
+    zIndex: 3,
     marginTop: theme.spacing(1),
     left: 0,
     right: 0,
@@ -108,28 +139,31 @@ const useStyles = makeStyles(theme => ({
   },
   paper: {
     position: 'absolute',
-    zIndex: 1,
+    zIndex: 3,
     width: '100%',
     padding: '0 !important',
+    fontSize: '1.6rem',
   },
 }))
 
 interface AutosuggestFieldProps {
   label: string
-  meta: FieldMetaState<any>
-  input: FieldInputProps<string>
+  meta?: FieldMetaState<any>
+  input: CustomInputProps
   suggestions: string[]
   fullWidth: boolean
   loading: boolean
+  color?: string
 }
 
 const AutosuggestField: FC<AutosuggestFieldProps> = ({
   suggestions,
   loading,
   label,
+  color,
   ...rest
 }) => {
-  const classes = useStyles()
+  const classes = useStyles({ color })
   const [isClearRequested, setIsClearRequested] = useState(false)
 
   useEffect(() => {
@@ -157,8 +191,6 @@ const AutosuggestField: FC<AutosuggestFieldProps> = ({
     },
     [onChange],
   )
-
-  // console.log('first', label)
 
   const handleSelected = useCallback(
     (_: FormEvent<HTMLElement>, data: SuggestionSelectedEventData<string>) => {
@@ -191,6 +223,7 @@ const AutosuggestField: FC<AutosuggestFieldProps> = ({
             meta={rest.meta}
             loading={loading}
             label={label}
+            classes={classes}
           />
         )}
         {...autosuggestProps}
@@ -198,7 +231,6 @@ const AutosuggestField: FC<AutosuggestFieldProps> = ({
           id: name,
           value: value,
           onChange: handleChange,
-
           ...rest,
         }}
         theme={{

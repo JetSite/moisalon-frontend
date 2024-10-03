@@ -8,6 +8,7 @@ export const UPDATE_CART = gql`
         id
         attributes {
           cartContent {
+            id
             product {
               ${productFragment}
             }

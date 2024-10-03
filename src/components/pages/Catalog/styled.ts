@@ -9,7 +9,8 @@ export const Wrapper = styled.div`
   padding: 0 140px;
   margin: 0 auto;
   margin-top: 48px;
-  width: 1440px;
+  max-width: 1440px;
+  width: 100%;
   padding-bottom: 80px;
 
   @media (max-width: ${laptopBreakpoint}) {
@@ -20,7 +21,7 @@ export const Wrapper = styled.div`
   }
 `
 
-export const Title = styled.h2`
+export const Title = styled.h2<{noTitle?: boolean}>`
   display: ${({ noTitle }) => (noTitle ? 'none' : 'block')};
   font-weight: 600;
   font-size: 30px;
@@ -35,12 +36,11 @@ export const Title = styled.h2`
   }
 `
 
-export const Content = styled.div`
-  /* display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr; */
-  display: flex;
-  flex-wrap: wrap;
-  gap: 29px 22px;
+export const Content = styled.ul`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+  column-gap: 14px;
+  row-gap: 20px;
 
   @media (max-width: ${laptopBreakpoint}) {
     display: grid;

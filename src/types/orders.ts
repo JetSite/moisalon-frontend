@@ -12,6 +12,8 @@ export interface IOrder {
   id: IID
   title: string
   user: IUser
+  contactName: string
+  contactPhone: string
   cartContent: IProductCart[]
   order_status: {
     title: string
@@ -20,8 +22,8 @@ export interface IOrder {
   payment_method: {
     title: string
   }
-  delivery: {
-    title: string
+  delivery_method: {
+    name: string
   }
   comment: string
   address: IAddress

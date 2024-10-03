@@ -9,13 +9,13 @@ import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 import { IBrand } from 'src/types/brands'
 import { ICity, IPagination } from 'src/types'
-import { ISearchResults } from './SalonsSearchResults'
 import { MobileHidden, MobileVisible } from 'src/styles/common'
 import { useLazyQuery } from '@apollo/client'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
-import { getBrands } from 'src/api/graphql/brand/queries/getBrands'
+import { BRANDS } from 'src/api/graphql/brand/queries/getBrands'
 import Button from '../../../../ui/Button'
 import { useRouter } from 'next/router'
+import { ISearchResults } from './SalonSearch'
 
 interface Props extends ISearchResults {
   brandData: IBrand[]
@@ -33,7 +33,7 @@ const BrandsSearchResults: FC<Props> = ({
   const { city } = useAuthStore(getStoreData)
   const router = useRouter()
 
-  const [getBrand, { loading }] = useLazyQuery(getBrands, {
+  const [getBrand, { loading }] = useLazyQuery(BRANDS, {
     notifyOnNetworkStatusChange: true,
     onCompleted: data => {
       const prepareData = flattenStrapiResponse(data.brands)
