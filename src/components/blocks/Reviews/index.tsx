@@ -79,6 +79,27 @@ const Reviews: FC<Props> = ({
     setReviewText(e.target.value)
   }
 
+  const handleDelete = () => {
+    updateReview({
+      variables: {
+        itemID: editID,
+        publishedAt: null,
+      },
+      onCompleted: data => {
+        const prepareData = flattenStrapiResponse(data.updateReview) as IReview
+        const findIndex = reviews.findIndex(e => e.id === prepareData.id)
+        setUpdatedReviews(prev => {
+          const [start, end] = splitArray(prev, findIndex, false)
+          return [...start, ...end]
+        })
+      },
+    })
+    setEditID(null)
+    setReviewOpen(false)
+    setReviewText('')
+    setRating(0)
+  }
+
   const sendMessage = () => {
     console.log(rating)
 
@@ -278,6 +299,16 @@ const Reviews: FC<Props> = ({
               >
                 Отмена
               </Button>
+              {editID && (
+                <Button
+                  variant="secondary"
+                  onClick={() => {
+                    handleDelete()
+                  }}
+                >
+                  Удалить
+                </Button>
+              )}
               <Button
                 variant="red"
                 onClick={() => {
