@@ -54,6 +54,8 @@ export const MobileHeader: FC<Props> = ({
     }
   }, [router.query])
 
+  console.log(showSearchPopup)
+
   return (
     <>
       <HamburgerMenu
@@ -80,7 +82,9 @@ export const MobileHeader: FC<Props> = ({
             />
           )}
           <Styled.LinkSearchMobile
-            onClick={() => setShowSearchPopup(!showSearchPopup)}
+            onClick={() => {
+              setShowSearchPopup(true)
+            }}
           >
             <SearchIcon fill={showSearchPopup ? red : '#000'} />
           </Styled.LinkSearchMobile>

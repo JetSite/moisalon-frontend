@@ -2,7 +2,8 @@ import styled from 'styled-components'
 import { red, laptopBreakpoint } from '../../../styles/variables'
 import Link from 'next/link'
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.section`
+  position: relative;
   display: none;
 
   @media (max-width: ${laptopBreakpoint}) {
@@ -46,7 +47,7 @@ export const Subtitle = styled.p`
   overflow: hidden;
 `
 
-export const CardsWrapper = styled.div`
+export const CardsWrapper = styled.nav`
   width: 100%;
   padding: 15px 20px;
   position: relative;
@@ -107,8 +108,10 @@ export const ProfilesButton = styled.div<{ toggle: boolean }>`
   position: relative;
   font-weight: 500;
   font-size: 14px;
-  margin-top: 20px;
-  color: #fff;
+  padding: 10px 0;
+  margin: 10px 0;
+  cursor: pointer;
+  color: white;
   &:before {
     position: absolute;
     content: '';
@@ -117,13 +120,13 @@ export const ProfilesButton = styled.div<{ toggle: boolean }>`
     background: url('/icon-arrow-bottom-white.svg') no-repeat center;
     background-size: contain;
     right: 0px;
-    bottom: 2px;
+    bottom: 13px;
     transform: ${props => (props.toggle ? 'rotate(360deg)' : 'rotate(270deg)')};
     transition: 0.3s;
   }
 `
 
-export const Button = styled.div`
+export const Button = styled.button`
   cursor: pointer;
   height: 55px;
   width: 80%;
@@ -212,4 +215,5 @@ export const Wrap = styled.ul`
   margin: 0 auto;
   top: -29px;
   position: relative;
+  background-color: white;
 `

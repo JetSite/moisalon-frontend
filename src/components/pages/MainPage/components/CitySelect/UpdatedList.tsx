@@ -17,6 +17,7 @@ export interface PropsUpdatedList {
   setShowCitySelect: ISetState<boolean>
   setShowHamburgerMenu?: ISetState<boolean>
   changeCityFunc: IAppoloMutationCallback
+  loading: boolean
 }
 
 export const UpdatedList: FC<PropsUpdatedList> = ({
@@ -25,10 +26,11 @@ export const UpdatedList: FC<PropsUpdatedList> = ({
   setShowCitySelect,
   setShowHamburgerMenu,
   changeCityFunc,
+  loading,
 }) => {
   const { setCity } = useAuthStore(getStoreEvent)
   const { me } = useAuthStore(getStoreData)
-  const { suggestions } = useCitySuggestions(cityInput)
+  const { suggestions, loading: suggestLoad } = useCitySuggestions(cityInput)
   const unicSuggestion = Array.from(new Set(suggestions))
   const router = useRouter()
 
@@ -48,6 +50,10 @@ export const UpdatedList: FC<PropsUpdatedList> = ({
   }
 
   return (
-    <CitiesList cities={unicSuggestion} cityClickHandler={cityClickHandler} />
+    <CitiesList
+      cities={unicSuggestion}
+      cityClickHandler={cityClickHandler}
+      loading={suggestLoad || loading}
+    />
   )
 }

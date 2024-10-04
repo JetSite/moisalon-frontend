@@ -78,19 +78,6 @@ const HamburgerMenu: FC<Props> = ({
   const router = useRouter()
   const isLoggedIn = me?.info !== undefined && me?.info !== null
 
-  const { refetch } = useQuery(currentUserSalonsAndMasterQuery, {
-    skip: true,
-    onCompleted: res => {
-      setMe({
-        info: res?.me?.info,
-        master: res?.me?.master,
-        locationByIp: res?.locationByIp,
-        salons: res?.me?.salons,
-        rentalRequests: res?.me?.rentalRequests,
-      })
-    },
-  })
-
   const navLinksTop: IMainPageHeaderLinks[] = [
     { title: 'Объявления', link: '/sales', target: '_self', disabled: true },
     {
@@ -139,25 +126,11 @@ const HamburgerMenu: FC<Props> = ({
 
   const searchHandler = () => {
     setShowHamburgerMenu(false)
-    router.push(
-      {
-        pathname: `/${city.slug}`,
-        query: { q: 'search' },
-      },
-      `/${city.slug}`,
-    )
   }
 
   const closeMenu = () => {
     setShowHamburgerMenu(false)
   }
-
-  // const handleLogout = async () => {
-  //   deleteCookie(authConfig.tokenKeyName)
-  //   localStorage.removeItem(authConfig.tokenKeyName)
-  //   setMe(null)
-  //   router.push(`/${cyrToTranslit(city)}`)
-  // }
 
   return (
     <>
@@ -168,7 +141,14 @@ const HamburgerMenu: FC<Props> = ({
             <HamburgerMenuIcon onClick={closeMenu}>
               <CloseIcon src="/mobile-close-icon.svg" />
             </HamburgerMenuIcon>
-            <Search onClick={searchHandler}>
+            <Search
+              shallow
+              href={{
+                pathname: `/${city.slug}`,
+                query: { q: 'search' },
+              }}
+              onClick={searchHandler}
+            >
               <SearchIcon />
             </Search>
           </Icons>

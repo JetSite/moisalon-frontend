@@ -2,6 +2,13 @@ import Link from 'next/link'
 import styled from 'styled-components'
 import { red, laptopBreakpoint } from '../../../../../styles/variables'
 
+export const Header = styled.header<{ showSearchPopup?: boolean }>`
+  position: ${({ showSearchPopup }) => (showSearchPopup ? 'fixed' : 'sticky')};
+  background-color: white;
+  top: 0;
+  z-index: 200;
+`
+
 export const LogoWrap = styled(Link)`
   width: 83px;
   height: 100%;
@@ -18,22 +25,17 @@ export const FakeWrapper = styled.div`
   height: 112px;
 `
 
-export const Wrapper = styled.header<{
+export const Wrapper = styled.div<{
   showSearchPopup: boolean
   isAboutPage: boolean
 }>`
-  background: #ffffff;
   padding-bottom: 41px;
   padding-top: 28px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* position: relative; */
   box-sizing: border-box;
-  position: ${({ showSearchPopup }) => (showSearchPopup ? 'fixed' : 'sticky')};
   width: 100%;
-  top: 0px;
-  z-index: 200;
   color: ${({ isAboutPage }) => (isAboutPage ? '#fff' : '#000')};
   background-color: ${({ isAboutPage }) => (isAboutPage ? '#000' : '#fff')};
 
@@ -42,7 +44,7 @@ export const Wrapper = styled.header<{
   }
 `
 
-export const WrappperMobile = styled.header`
+export const WrappperMobile = styled.div`
   display: none;
 
   @media (max-width: ${laptopBreakpoint}) {
@@ -54,7 +56,7 @@ export const WrappperMobile = styled.header`
   }
 `
 
-export const HeaderContent = styled.header`
+export const HeaderContent = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 50px;
@@ -251,7 +253,7 @@ export const LinkSearch = styled.button`
   }
 `
 
-export const LinkSearchMobile = styled.div`
+export const LinkSearchMobile = styled.button`
   display: none;
 
   @media (max-width: ${laptopBreakpoint}) {
@@ -320,7 +322,7 @@ export const MobileLogoLink = styled.div`
   }
 `
 
-export const HamburgerMenuIcon = styled.div`
+export const HamburgerMenuIcon = styled.button`
   display: none;
 
   @media (max-width: ${laptopBreakpoint}) {

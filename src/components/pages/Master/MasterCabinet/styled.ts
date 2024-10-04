@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../styles/variables'
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.section`
   padding: 0 140px;
   margin-top: 40px;
   display: flex;

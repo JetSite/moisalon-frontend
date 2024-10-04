@@ -5,12 +5,13 @@ import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 
 const AllGoodsSlide = () => {
-  const { city, me } = useAuthStore(getStoreData)
+  const { city, user } = useAuthStore(getStoreData)
 
-  const b2bClient = !!me?.master?.id || !!me?.salons?.length
+  const b2bClient =
+    !!user?.owner.masters?.length || !!user?.owner.salons?.length
 
   return (
-    <Link href={`/${cyrToTranslit(city)}/beautyFreeShop`}>
+    <Link href={`/${city.slug}/beautyFreeShop`}>
       <AllGoods>
         <AllIcon />
         <AllText>Показать все товары</AllText>

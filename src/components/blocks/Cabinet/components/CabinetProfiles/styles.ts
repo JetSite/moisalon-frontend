@@ -3,10 +3,11 @@ import { laptopBreakpoint, red } from '../../../../../styles/variables'
 import { IconStiled, TrashIcon } from 'src/components/ui/Icons/Trash'
 import Link from 'next/link'
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.section`
   max-width: 710px;
   width: 100%;
   padding-top: 35px;
+  margin: 0 auto;
   margin-bottom: 200px;
   @media (max-width: ${laptopBreakpoint}) {
     display: none;

@@ -138,12 +138,17 @@ const CitySelect: FC<Props> = ({
   }
 
   let component = (
-    <CitiesList cities={citiesList} cityClickHandler={cityClickHandler} />
+    <CitiesList
+      cities={citiesList}
+      cityClickHandler={cityClickHandler}
+      loading={loading}
+    />
   )
 
   if (cityInput.length >= 2) {
     component = (
       <UpdatedList
+        loading={loading}
         cityInput={cityInput}
         setCityInput={setCityInput}
         changeCityFunc={changeCityFunc}

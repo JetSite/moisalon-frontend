@@ -26,6 +26,7 @@ import Event from 'src/components/blocks/Event'
 import { IEvent } from 'src/types/event'
 import { ISale } from 'src/types/sale'
 import Sale from 'src/components/blocks/Sale'
+import { IPromotions } from 'src/types/promotions'
 
 const customProps: {
   [key: string]: {
@@ -65,18 +66,18 @@ const ListItem = ({ type, item }: { type: string; item: any }) => {
   const renderSwitch = (type: string) => {
     switch (type) {
       case 'sales':
-        const itemSale = item as ISale
+        const itemSale = item as IPromotions
 
         return (
-          <Link href={`/sales/${itemSale.id}`} passHref>
-            <Sale item={itemSale} />
+          <Link shallow href={`/sales/${itemSale.id}`} passHref>
+            <Sale item={itemSale} noHover />
           </Link>
         )
       case 'educations':
         const itemEducation = item as IEducation
 
         return (
-          <Link href={`/educations/${item.id}`} passHref>
+          <Link shallow href={`/educations/${item.id}`} passHref>
             <Education
               id={itemEducation.id}
               title={itemEducation.title}
@@ -93,7 +94,7 @@ const ListItem = ({ type, item }: { type: string; item: any }) => {
         const itemEvent = item as IEvent
 
         return (
-          <Link href={`/events/${itemEvent.id}`} passHref>
+          <Link shallow href={`/events/${itemEvent.id}`} passHref>
             <Event
               title={itemEvent.title}
               address={itemEvent.address}
@@ -105,7 +106,7 @@ const ListItem = ({ type, item }: { type: string; item: any }) => {
         )
       case 'vacancies':
         return (
-          <Link href={`/vacancies/${item.id}`} passHref>
+          <Link shallow href={`/vacancies/${item.id}`} passHref>
             <Vacancy
               id={item.id}
               title={item.title}

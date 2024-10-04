@@ -192,14 +192,7 @@ export const customProps: ICustomProps = ({
         ),
         sliderItem: item ? (
           <GoodSlide
-            href={{
-              pathname: `/${(item as IProduct).brand.city.slug}/product/${
-                item.id
-              }`,
-              query: {
-                catalog: false,
-              },
-            }}
+            href={`/${(item as IProduct).brand.city.slug}/product/${item.id}`}
             item={item as IProduct}
           />
         ) : (

@@ -26,14 +26,6 @@ const CabinetRequests: FC<Props> = ({ requestsData }) => {
   return (
     <Styled.Wrapper>
       <Title>{showDeleted ? 'Удалённые заявки' : 'Мои заявки'}</Title>
-      <Styled.ShowDeletedButton
-        active={showDeleted}
-        onClick={() => {
-          setShowDeleted(!showDeleted)
-        }}
-      >
-        {showDeleted ? 'Назад' : 'Удалённые заявки'}
-      </Styled.ShowDeletedButton>
       <Styled.TabWrapper>
         <Styled.Tab>
           <Styled.TabButton
@@ -51,6 +43,14 @@ const CabinetRequests: FC<Props> = ({ requestsData }) => {
             Исходящие
           </Styled.TabButton>
         </Styled.Tab>
+        <Styled.ShowDeletedButton
+          active={showDeleted}
+          onClick={() => {
+            setShowDeleted(!showDeleted)
+          }}
+        >
+          {showDeleted ? 'Назад' : 'Удалённые заявки'}
+        </Styled.ShowDeletedButton>
       </Styled.TabWrapper>
       {activeTab === 'in' ? (
         <SalonRequests

@@ -49,6 +49,7 @@ button {
 }
 
 ul li,
+nav li,
 ol li {
   list-style: none;
 }

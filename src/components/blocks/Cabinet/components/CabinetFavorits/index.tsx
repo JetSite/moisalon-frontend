@@ -9,14 +9,16 @@ import BrandsFavorites from '../../../../pages/FavoritesPage/BrandsFavorites'
 import { useMedia } from 'use-media'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
-import { IUserThings } from 'src/types/me'
+import { IUser, IUserThings } from 'src/types/me'
 
 const CabinetFavorits: FC = () => {
-  const { user } = useAuthStore(getStoreData)
+  // const { user } = useAuthStore(getStoreData)
   const [activeTab, setActiveTab] = useState<string>('all')
   const mobileMedia = useMedia({ maxWidth: 992 }) // 768
   const [haveFavorites, setHaveFavorites] = useState(false)
   const [favorites, setFavorites] = useState<IUserThings>({})
+
+  const user = {} as IUser
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -28,12 +30,12 @@ const CabinetFavorits: FC = () => {
     let keys = []
 
     if (!user) {
-      keys = (Object.keys(user.favorite) as (keyof IUserThings)[]) || []
-      setHaveFavorites(!!keys.find(key => user.favorite[key].length))
+      // keys = (Object.keys(user.favorite) as (keyof IUserThings)[]) || []
+      // setHaveFavorites(!!keys.find(key => user.favorite[key].length))
     } else {
-      keys =
-        (Object.keys(favorites) as (keyof { [K: string]: Array<any> })[]) || []
-      setHaveFavorites(!!keys.find(key => favorites[key].length))
+      const keys =
+        (Object.keys(favorites) as Array<keyof typeof favorites>) || []
+      setHaveFavorites(keys.some(key => favorites[key].length > 0))
     }
   }, [user, favorites])
 
@@ -117,8 +119,9 @@ const CabinetFavorits: FC = () => {
             <GoodsFavorites handleDeleted={handleDeleted} cabinet />
           ) : null}
           {activeTab === 'educations' && !mobileMedia ? (
-            <EducationsFavorites handleDeleted={handleDeleted} cabinet />
-          ) : null}
+            <></>
+          ) : // <EducationsFavorites handleDeleted={handleDeleted} cabinet />
+          null}
           {activeTab === 'all' && !mobileMedia ? (
             <>
               <SalonsFavorites
@@ -181,7 +184,7 @@ const CabinetFavorits: FC = () => {
                 title="Избранные бренды"
                 cabinet
               />
-              <GoodsFavorites
+              {/* <GoodsFavorites
                 mobile={mobileMedia}
                 title="Избранные продукты"
                 cabinet
@@ -190,7 +193,7 @@ const CabinetFavorits: FC = () => {
                 mobile={mobileMedia}
                 title="Избранные обучения"
                 cabinet
-              />
+              /> */}
             </>
           ) : null}
         </>

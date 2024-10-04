@@ -2,10 +2,11 @@ import { Skeleton } from '@material-ui/lab'
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../../styles/variables'
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.section`
   max-width: 710px;
   width: 100%;
   padding-top: 35px;
+  margin: 0 auto;
   margin-bottom: 200px;
   @media (max-width: ${laptopBreakpoint}) {
     padding-top: 0;
