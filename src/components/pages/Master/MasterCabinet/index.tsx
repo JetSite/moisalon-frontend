@@ -68,70 +68,72 @@ const MasterCabinet: FC<Props> = ({ user, requests, cities }) => {
   return (
     <>
       <Header />
-      <MainContainer>
-        <ProfileCabinetHeaderMobile
-          user={user}
-          tabs={mobile}
-          toggle={toggle}
-          setToggle={setToggle}
-          setActiveTab={setActiveTab}
-        />
-        <Wrapper>
-          <ControlsTabs
-            dirtyForm={dirtyForm}
-            activeTab={activeTab}
-            setPhoto={setPhoto}
+      <main>
+        <MainContainer>
+          <ProfileCabinetHeaderMobile
+            user={user}
+            tabs={mobile}
+            toggle={toggle}
+            setToggle={setToggle}
             setActiveTab={setActiveTab}
-            tabs={desktop}
-            id={null}
-            photoType={'master'}
-            noPhotoError={noPhotoError}
-            setNoPhotoError={setNoPhotoError}
-            photo={
-              photo
-                ? {
-                    url: `${PHOTO_URL}${photo.url}`,
-                  }
-                : { url: '/empty-photo.svg' }
-            }
           />
-          {activeTab === 'about' ? (
-            <CabinetForm
-              user={user}
-              cities={cities}
-              setDirtyForm={setDirtyForm}
+          <Wrapper>
+            <ControlsTabs
               dirtyForm={dirtyForm}
+              activeTab={activeTab}
+              setPhoto={setPhoto}
+              setActiveTab={setActiveTab}
+              tabs={desktop}
+              id={null}
+              photoType={'master'}
+              noPhotoError={noPhotoError}
               setNoPhotoError={setNoPhotoError}
-              photo={photo}
-              auth
+              photo={
+                photo
+                  ? {
+                      url: `${PHOTO_URL}${photo.url}`,
+                    }
+                  : { url: '/empty-photo.svg' }
+              }
             />
-          ) : activeTab === 'orders' ? (
-            <CabinetOrders user={user} />
-          ) : activeTab === 'requests' ? (
-            <CabinetRequests meID={user.info.id} requestsData={requests} />
-          ) : activeTab === 'profiles' ? (
-            <CabinetProfiles />
-          ) : activeTab === 'chat' ? (
-            <CabinetChat />
-          ) : activeTab === 'reviews' ? (
-            <CabinetListReviews />
-          ) : activeTab === 'favorits' ? (
-            <CabinetFavorits />
-          ) : activeTab === 'sales' ? (
-            <CabinetSales user={user} />
-          ) : activeTab === 'educations' ? (
-            <CabinetEducations me={user} />
-          ) : activeTab === 'vacancies' ? (
-            <CabinetVacancies />
-          ) : activeTab === 'events' ? (
-            <CabinetEvents me={user} />
-          ) : activeTab === 'priority' ? (
-            <CabinetPriority me={user} />
-          ) : activeTab === 'banner' ? (
-            <CabinetBanner />
-          ) : null}
-        </Wrapper>
-      </MainContainer>
+            {activeTab === 'about' ? (
+              <CabinetForm
+                user={user}
+                cities={cities}
+                setDirtyForm={setDirtyForm}
+                dirtyForm={dirtyForm}
+                setNoPhotoError={setNoPhotoError}
+                photo={photo}
+                auth
+              />
+            ) : activeTab === 'orders' ? (
+              <CabinetOrders user={user} />
+            ) : activeTab === 'requests' ? (
+              <CabinetRequests meID={user.info.id} requestsData={requests} />
+            ) : activeTab === 'profiles' ? (
+              <CabinetProfiles />
+            ) : activeTab === 'chat' ? (
+              <CabinetChat />
+            ) : activeTab === 'reviews' ? (
+              <CabinetListReviews />
+            ) : activeTab === 'favorits' ? (
+              <CabinetFavorits />
+            ) : activeTab === 'sales' ? (
+              <CabinetSales user={user} />
+            ) : activeTab === 'educations' ? (
+              <CabinetEducations me={user} />
+            ) : activeTab === 'vacancies' ? (
+              <CabinetVacancies />
+            ) : activeTab === 'events' ? (
+              <CabinetEvents me={user} />
+            ) : activeTab === 'priority' ? (
+              <CabinetPriority me={user} />
+            ) : activeTab === 'banner' ? (
+              <CabinetBanner />
+            ) : null}
+          </Wrapper>
+        </MainContainer>
+      </main>
     </>
   )
 }

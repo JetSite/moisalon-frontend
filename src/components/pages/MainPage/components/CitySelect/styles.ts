@@ -42,7 +42,7 @@ export const TitleWrapper = styled.div`
 
 export const Blur = styled.div<{ showCitySelect: boolean }>`
   @media (max-width: ${laptopBreakpoint}) {
-    height: 100%;
+    height: 100vh;
     overflow: hidden;
     width: 100%;
     position: fixed;
@@ -128,7 +128,7 @@ export const CityInput = styled.input`
 
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
-    margin-left: 0;
+    margin: 0;
   }
 `
 
@@ -136,6 +136,10 @@ export const CitiesListWrapper = styled.ul`
   max-height: 400px;
   overflow-y: scroll;
   margin-top: 23px;
+
+  @media (max-width: ${laptopBreakpoint}) {
+    max-height: 283px;
+  }
 `
 
 export const CityItem = styled.li`

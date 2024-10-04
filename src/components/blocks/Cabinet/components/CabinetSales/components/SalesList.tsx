@@ -14,6 +14,7 @@ import { parseToNumber } from 'src/utils/newUtils/common'
 import { IPagination } from 'src/types'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import Popup from 'src/components/ui/Popup'
+import RotatingLoader from 'src/components/ui/RotatingLoader'
 
 interface PropsList {
   sales: IPromotions[]
@@ -61,7 +62,7 @@ export const SalesList: FC<PropsList> = ({
   }
 
   if (loading) {
-    return <Styled.SkeletonWrap variant="rect" />
+    return <RotatingLoader />
   }
 
   return (

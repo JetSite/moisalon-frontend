@@ -1,11 +1,14 @@
 import { Skeleton } from '@material-ui/lab'
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../../styles/variables'
+import Button from 'src/components/ui/Button'
+import { red } from '@material-ui/core/colors'
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.section`
   max-width: 710px;
   width: 100%;
   padding-top: 35px;
+  margin: 0 auto;
   margin-bottom: 200px;
   display: flex;
   flex-direction: column;
@@ -18,9 +21,20 @@ export const Wrapper = styled.div`
 
 export const ButtonWrapper = styled.div`
   display: flex;
+  width: 100%;
   margin-top: 40px;
   @media (max-width: ${laptopBreakpoint}) {
     margin-top: 20px;
+  }
+`
+
+export const SalesTabButton = styled(Button)`
+  border: none !important;
+
+  :disabled,
+  :hover {
+    background: none !important;
+    color: #ff0033 !important;
   }
 `
 
@@ -42,7 +56,7 @@ export const Subtitle = styled.p`
   font-weight: 600;
   font-size: 18px;
   line-height: 25px;
-  margin-bottom: 49px;
+  margin-bottom: 22px;
   @media (max-width: ${laptopBreakpoint}) {
     font-size: 14px;
     font-weight: 600;
@@ -51,7 +65,7 @@ export const Subtitle = styled.p`
   }
 `
 
-export const Item = styled.div`
+export const Item = styled.button<{ active?: boolean }>`
   width: 100%;
   background: #f8f8f8;
   border-radius: 5px;
@@ -60,10 +74,15 @@ export const Item = styled.div`
   margin-bottom: 19px;
   cursor: pointer;
   transition: 0.3s;
+  text-align: start;
+  position: relative;
   border: 1px solid #f8f8f8;
   &:hover {
     border: 1px solid #000000;
     background: #fff;
+    ::before {
+      display: ${({ active }) => (active ? 'flex' : 'none')};
+    }
   }
   @media (max-width: ${laptopBreakpoint}) {
     background: #ffffff;
@@ -71,6 +90,29 @@ export const Item = styled.div`
     border-radius: 5px;
     padding: 25px;
     padding-left: 11px;
+  }
+
+  ::before {
+    display: none;
+    content: '<';
+    font-size: 44px;
+    color: white;
+    position: absolute;
+    left: 21px;
+    top: 40px;
+    justify-content: center;
+    align-items: center;
+    width: 56px;
+    border-radius: 100%;
+    height: 56px;
+    background-color: black;
+    opacity: 0.5;
+    z-index: 2;
+
+    @media (max-width: ${laptopBreakpoint}) {
+      left: 11px;
+      top: 25px;
+    }
   }
 `
 
@@ -109,11 +151,12 @@ export const Avatar = styled.img`
   width: 56px;
   height: 56px;
   border-radius: 100%;
+  position: relative;
 `
 
 export const SkeletonWrap = styled(Skeleton)`
-  width: 375px;
-  height: 340px;
+  width: 100%;
+  height: 440px;
   margin-top: 32px;
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;

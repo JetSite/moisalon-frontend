@@ -64,7 +64,7 @@ const Header = ({ loading = false }) => {
   }
 
   return (
-    <>
+    <Styled.Header>
       <CookiePopup />
       {showSearchPopup ? (
         <SearchPopup
@@ -244,7 +244,7 @@ const Header = ({ loading = false }) => {
         setShowCitySelect={setShowCitySelect}
         setShowHamburgerMenu={setShowHamburgerMenu}
       />
-    </>
+    </Styled.Header>
   )
 }
 

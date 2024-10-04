@@ -29,8 +29,6 @@ const MasterReviews: FC<Props> = ({ reviews, masterId }) => {
     },
   })
 
-  console.log(updatedReviews)
-
   return (
     <Reviews
       type="MASTER"

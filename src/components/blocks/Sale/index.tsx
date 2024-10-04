@@ -162,14 +162,16 @@ export type ISaleDeleteHandler = (
 
 interface SaleProps extends Partial<Omit<IPhotoAddProps, 'hover'>> {
   create?: boolean
-  type: IPromotionsType
+  type?: IPromotionsType
   item: IPromotions
   handleClick?: ISaleHandler
   handleDelete?: ISaleDeleteHandler
+  noHover?: boolean
 }
 
 const Sale: FC<SaleProps> = ({
   create = false,
+  noHover = false,
   type,
   item,
   setPhoto,
@@ -186,15 +188,13 @@ const Sale: FC<SaleProps> = ({
     ? `${PHOTO_URL}${photo?.url}`
     : ''
 
-  console.log(photo)
-
   return (
     <SaleWrap onClick={handleClick} id={item.id} type={type as string}>
       {!create ? (
         <SaleTop
           isDeleted={item.deleted}
           imageHover={imageHover}
-          onMouseOver={() => setImageHover(true)}
+          onMouseOver={() => !noHover && setImageHover(true)}
           onMouseLeave={() => setImageHover(false)}
         >
           <Image alt="photo" src={photoSrc} />

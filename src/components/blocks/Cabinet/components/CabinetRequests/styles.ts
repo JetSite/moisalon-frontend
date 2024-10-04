@@ -8,11 +8,12 @@ export const Text = styled.p`
   line-height: 16px;
 `
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.section`
   position: relative;
   max-width: 710px;
   width: 100%;
   padding-top: 35px;
+  margin: 0 auto;
   margin-bottom: 200px;
   @media (max-width: ${laptopBreakpoint}) {
     padding-top: 0;
@@ -23,6 +24,8 @@ export const Wrapper = styled.div`
 export const TabWrapper = styled.ul`
   display: flex;
   flex-direction: row;
+  position: relative;
+  align-items: center;
   gap: 16px;
   @media (max-width: ${laptopBreakpoint}) {
   }
@@ -52,12 +55,11 @@ export const TabButton = styled.button<{ active?: boolean; disable?: boolean }>`
   }
 `
 
-export const ListWrapper = styled.div`
+export const ListWrapper = styled.ul`
   margin-top: 40px;
   display: flex;
   flex-wrap: wrap;
-  margin-left: -15px;
-  margin-right: -15px;
+  gap: 16px;
   margin-bottom: 23px;
 `
 
@@ -83,19 +85,20 @@ export const Comment = styled(Text)`
   }
 `
 
-export const ItemWrapper = styled.div<{
+export const ItemWrapper = styled.li<{
   noView?: boolean
   myRequests?: boolean
 }>`
   position: relative;
-  width: 330px;
+  max-width: 330px;
+  width: 100%;
+  margin-bottom: 14px;
+  min-width: 270px;
   min-height: ${({ myRequests }) => (myRequests ? '333px' : '433px')};
   padding: 43px 31px 43px 29px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  margin: 0 15px;
-  margin-bottom: 31px;
   border-radius: 5px;
   box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
 
@@ -116,10 +119,10 @@ export const ShowDeletedButton = styled.button<{ active?: boolean }>`
   cursor: pointer;
   border: none;
   padding: 0;
-  position: absolute;
-  top: 48px;
-  right: 17px;
   display: flex;
+  margin-left: auto;
+  position: relative;
+  left: 32px;
   opacity: ${({ active }) => (active ? 1 : 0.6)};
   &:hover {
     opacity: 1;

@@ -1,5 +1,8 @@
 import styled from 'styled-components'
-import { laptopBreakpoint } from '../../../../styles/variables'
+import {
+  laptopBreakpoint,
+  largeLaptopBreakpoint,
+} from '../../../../styles/variables'
 import Avatar from '../Avatar'
 import Tabs from './components/Tabs'
 import { Dispatch, FC, SetStateAction } from 'react'
@@ -7,12 +10,18 @@ import { IID, ISetState } from 'src/types/common'
 import { IMasterCabinetTab } from 'src/components/pages/Master/MasterCabinet'
 import { IPhoto } from 'src/types'
 
-const Wrapper = styled.div`
-  max-width: 395px;
+const Wrapper = styled.section`
   width: 100%;
+  max-width: 182px;
   position: sticky;
-  top: 120px;
+  top: 152px;
+  padding-bottom: 200px;
+  min-width: 182px;
   height: 100%;
+
+  @media (min-width: ${largeLaptopBreakpoint}) {
+    max-width: 395px;
+  }
   @media (max-width: ${laptopBreakpoint}) {
     position: initial;
     top: initial;

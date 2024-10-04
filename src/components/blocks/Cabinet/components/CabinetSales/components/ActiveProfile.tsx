@@ -1,4 +1,4 @@
-import { FC, MouseEvent, useMemo, useState } from 'react'
+import { FC, MouseEvent, useState } from 'react'
 import * as Styled from '../styles'
 import Button from '../../../../../ui/Button'
 import { MobileHidden, MobileVisible } from '../../../../../../styles/common'
@@ -125,19 +125,19 @@ const ActiveProfile: FC<ActiveProfileProps> = ({
 
   return (
     <>
-      <Styled.Back
+      <ProfileItem
         onClick={() => {
           setActiveProfile(null)
           setCreateSale(false)
         }}
-      >
-        Назад
-      </Styled.Back>
-      <ProfileItem profile={profile} type={typeString} />
+        profile={profile}
+        type={typeString}
+        active={!!activeProfile}
+      />
       {!createSale ? (
         <>
           <MobileHidden>
-            <Button
+            <Styled.SalesTabButton
               size="width374WithoutPadding"
               variant="darkTransparent"
               font="medium"
@@ -147,28 +147,28 @@ const ActiveProfile: FC<ActiveProfileProps> = ({
               }}
             >
               Создать акцию
-            </Button>
+            </Styled.SalesTabButton>
             <Styled.ButtonWrapper>
-              <Button
-                size="width374WithoutPadding"
+              <Styled.SalesTabButton
+                size="fullWidth"
                 onClick={handleClick}
-                variant={'red'}
+                variant={'darkTransparentWithoutBorder'}
                 font="medium"
                 name="publish"
                 disabled={view === 'publish'}
               >
                 Активные
-              </Button>
-              <Button
-                size="width374WithoutPadding"
+              </Styled.SalesTabButton>
+              <Styled.SalesTabButton
+                size="fullWidth"
                 onClick={handleClick}
-                variant={'red'}
+                variant={'darkTransparentWithoutBorder'}
                 font="medium"
                 name="draft"
                 disabled={view === 'draft'}
               >
                 Не активные
-              </Button>
+              </Styled.SalesTabButton>
             </Styled.ButtonWrapper>
           </MobileHidden>
           <MobileVisible>
@@ -184,26 +184,26 @@ const ActiveProfile: FC<ActiveProfileProps> = ({
               Создать акцию
             </Button>
             <Styled.ButtonWrapper>
-              <Button
+              <Styled.SalesTabButton
                 size="fullWidth"
                 onClick={handleClick}
-                variant={'red'}
+                variant={'darkTransparent'}
                 font="small"
                 name="publish"
                 disabled={view === 'publish'}
               >
                 Активные
-              </Button>
-              <Button
+              </Styled.SalesTabButton>
+              <Styled.SalesTabButton
                 size="fullWidth"
                 onClick={handleClick}
-                variant={'red'}
+                variant={'darkTransparent'}
                 font="small"
                 name="draft"
                 disabled={view === 'draft'}
               >
                 Не активные
-              </Button>
+              </Styled.SalesTabButton>
             </Styled.ButtonWrapper>
           </MobileVisible>
           <SalesList

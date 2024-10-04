@@ -2,10 +2,13 @@ import styled from 'styled-components'
 import Button from '../../../../ui/Button'
 import { red, laptopBreakpoint } from '../../../../../styles/variables'
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.section`
   max-width: 710px;
   width: 100%;
   padding-top: 35px;
+  position: relative;
+  margin: 0 auto;
+  margin: 0 auto;
   margin-bottom: 200px;
   @media (max-width: ${laptopBreakpoint}) {
     padding-top: 0;

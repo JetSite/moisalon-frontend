@@ -13,6 +13,7 @@ import {
 import Stars from '../../../../ui/Stars'
 import nameRedact from '../../../../../utils/nameRedact'
 import { IReview } from 'src/types/reviews'
+import { parseToNumber } from 'src/utils/newUtils/common'
 
 interface Props {
   loading: boolean
@@ -36,9 +37,13 @@ export const CabinetReviews: FC<Props> = ({ reviews, loading }) => {
                 <Review key={item.id}>
                   <ReviewTop>
                     <ReviewsName>
-                      {nameRedact(item.title || item.content)}
+                      {(item?.user?.username &&
+                        nameRedact(item?.user?.username)) ||
+                        (item?.user?.email && nameRedact(item?.user?.email)) ||
+                        (item?.user?.phone && nameRedact(item?.user?.phone)) ||
+                        ''}
                     </ReviewsName>
-                    <Stars count={0} />
+                    <Stars count={parseToNumber(item.rating?.id) || 0} />
                   </ReviewTop>
                   <ReviewsText>{item.content}</ReviewsText>
                 </Review>

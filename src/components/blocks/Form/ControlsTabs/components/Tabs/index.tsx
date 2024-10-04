@@ -12,24 +12,12 @@ import { ISetState, LazyType } from 'src/types/common'
 import { IMasterCabinetTab } from 'src/components/pages/Master/MasterCabinet'
 import Link from 'next/link'
 
-const Wrapper = styled.div`
+const Wrapper = styled.nav`
   margin-top: 50px;
 
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`
-
-const Back = styled.div`
-  background: url('/icon-back.svg') no-repeat center;
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  background-size: contain;
-  content: '';
-  left: -20px;
-  top: 50%;
-  margin-top: -5px;
 `
 
 const Tab = styled.div`

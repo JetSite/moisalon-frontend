@@ -7,11 +7,12 @@ interface Props {
   profile: IProfile
   type: string
   onClick?: () => void
+  active?: boolean
 }
 
-const ProfileItem: FC<Props> = ({ profile, type, onClick }) => {
+const ProfileItem: FC<Props> = ({ profile, type, onClick, active }) => {
   return (
-    <Style.Item onClick={onClick}>
+    <Style.Item active={active} onClick={onClick}>
       <Style.Container>
         <Style.Avatar
           alt="avatar"

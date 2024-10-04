@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { red } from '../../../styles/variables'
+import Link from 'next/link'
 
 export const Backdrop = styled.div<{ showHamburgerMenu?: boolean }>`
   display: ${({ showHamburgerMenu }) => (showHamburgerMenu ? 'block' : 'none')};
@@ -18,9 +19,10 @@ export const Wrapper = styled.div<{ showHamburgerMenu?: boolean }>`
   left: 0;
   z-index: 500;
   width: 67%;
+  max-width: 360px;
   min-height: 100vh;
   height: 100vh;
-  padding: 27px 22px 85px 22px;
+  padding: 27px 22px 40px 22px;
   overflow: scroll;
   background-color: #fff;
   transform: ${({ showHamburgerMenu }) =>
@@ -31,15 +33,16 @@ export const Wrapper = styled.div<{ showHamburgerMenu?: boolean }>`
   justify-content: flex-start;
 `
 
-export const Header = styled.header`
+export const Header = styled.nav`
   display: flex;
   justify-content: space-between;
 `
 
-export const HamburgerMenuIcon = styled.div`
+export const HamburgerMenuIcon = styled.button`
   display: block;
   height: 19px;
   margin-right: 26px;
+  cursor: pointer;
 `
 
 export const CloseIcon = styled.img`
@@ -51,7 +54,7 @@ export const LogoMobile = styled.div`
   justify-content: center;
 `
 
-export const Search = styled.div``
+export const Search = styled(Link)``
 
 export const MobileLogoLink = styled.div`
   display: flex;
@@ -95,7 +98,7 @@ export const LinkWrap = styled.li<{
     }
   }
   p {
-    color: ${({ active, de }) => (active ? red : '#000')};
+    color: ${({ active }) => (active ? red : '#000')};
     cursor: ${({ disable }) => (disable ? 'default' : 'pointer')};
 
     :hover {
@@ -109,7 +112,7 @@ export const LinkWrapRed = styled(LinkWrap)`
   color: ${red};
 `
 
-export const ChangeCity = styled.div`
+export const ChangeCity = styled.button`
   height: 23px;
   display: flex;
   align-items: center;

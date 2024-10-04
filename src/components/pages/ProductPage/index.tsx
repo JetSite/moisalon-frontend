@@ -227,7 +227,7 @@ const ProductPage: FC<IProductPageProps> = ({ product, reviews }) => {
         setOpenBuyPopup={setOpenBuyPopup}
         item={product}
         // brand={brand}
-        me={me}
+        user={user}
       />
       <Wrapper>
         {/* <BackButton

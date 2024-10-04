@@ -31,7 +31,7 @@ import {
 import CreateProfiles from '../CreateProfiles'
 import { MobileHidden } from '../../../../../styles/common'
 import useAuthStore from 'src/store/authStore'
-import { getStoreData, getStoreEvent } from 'src/store/utils'
+import { getStoreEvent } from 'src/store/utils'
 import { changeMe } from 'src/api/graphql/me/mutations/changeMe'
 import {
   CustomWindow,
@@ -93,14 +93,17 @@ const CabinetForm: FC<CabinetFormProps> = ({
 
   const [updateUser] = useMutation(changeMe, {
     onCompleted: async data => {
-      const prepareData = flattenStrapiResponse(data.updateUsersPermissionsUser)
+      const prepareData = flattenStrapiResponse(
+        data.updateUsersPermissionsUser,
+      ) as IMeInfo
       if (prepareData) {
         console.log(prepareData)
         setMe({ info: prepareData as IMeInfo })
         setUser({
           info: { ...prepareData } as IMeInfo,
-          owner: { ...user?.owner },
-          favorite: { ...user?.favorite },
+          owner: { ...user.owner },
+          favorite: { ...user.favorite },
+          orders: { ...user.orders },
         })
       }
 

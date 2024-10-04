@@ -4,7 +4,8 @@ import { laptopBreakpoint } from '../../../styles/variables'
 export const Wrapper = styled.div`
   padding: 0 140px;
   box-sizing: border-box;
-  width: 1440px;
+  max-width: 1440px;
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
 
@@ -43,7 +44,7 @@ const gridOptions = css`
   row-gap: 20px;
 `
 
-export const List = styled.div<{ type: string }>`
+export const List = styled.ul<{ type: string }>`
   margin-top: 35px;
   display: flex;
   /* justify-content: space-between; */
@@ -53,6 +54,7 @@ export const List = styled.div<{ type: string }>`
 
   a {
     color: #000;
+    max-width: min-content;
   }
 
   @media (max-width: ${laptopBreakpoint}) {
