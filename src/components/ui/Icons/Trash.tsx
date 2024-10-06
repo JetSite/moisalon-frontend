@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { CSSProperties, FC } from 'react'
 import styled from 'styled-components'
 
 export const IconStiled = styled.svg`
@@ -9,11 +9,13 @@ export const IconStiled = styled.svg`
 
 export interface IIconsProps {
   className?: string
+  style?: CSSProperties
 }
 
-export const TrashIcon: FC<IIconsProps> = ({ className }) => {
+export const TrashIcon: FC<IIconsProps> = ({ className, style }) => {
   return (
     <IconStiled
+      style={style}
       className={className}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"

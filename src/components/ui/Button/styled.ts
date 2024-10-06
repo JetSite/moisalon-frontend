@@ -125,9 +125,9 @@ export const styleVariants = {
     backgroundColor: '#fff',
     border: '1px solid #000',
     ':hover': {
-      backgroundColor: '#ff0033',
+      backgroundColor: 'white',
       borderColor: '#ff0033',
-      color: 'white',
+      color: '#ff0033',
     },
   },
   redWithRoundBorder: {

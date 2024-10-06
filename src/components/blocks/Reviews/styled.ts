@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../styles/variables'
+import Button from 'src/components/ui/Button'
 
 export const Wrapper = styled.div`
   padding: 0 140px;
@@ -53,16 +54,22 @@ export const Count = styled.p`
   }
 `
 
-export const Content = styled.div`
+export const Content = styled.ul`
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
 `
 
-export const Review = styled.div`
+export const Review = styled.li<{ active?: boolean }>`
   position: relative;
   width: 45%;
-  margin-bottom: 60px;
+  margin-bottom: 30px;
+  margin-left: -8px;
+  padding: 8px 4px 8px 10px;
+  border-radius: 4px;
+  background-color: ${({ active }) => (active ? '#ececec' : 'white')};
+  opacity: ${({ active }) => (active ? 0.8 : 1)};
+
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
@@ -101,11 +108,35 @@ export const Form = styled.div`
 `
 
 export const FormButtons = styled.div`
+  width: 100%;
+  max-width: 335px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
   @media (max-width: ${laptopBreakpoint}) {
-    button {
-      margin-bottom: 15px;
-      width: 100%;
-    }
+    max-width: none;
+  }
+`
+
+export const FormEditButtons = styled.div<{ editID?: boolean }>`
+  display: ${({ editID }) => (editID ? 'grid' : 'flex')};
+  grid-template-columns: 1fr 80px;
+  gap: 8px;
+  width: 100%;
+`
+
+export const DeleteFormButton = styled(Button)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 40px;
+
+  :hover {
+    background-color: gray;
+  }
+
+  & svg {
+    fill: red;
   }
 `
 

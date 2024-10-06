@@ -26,6 +26,7 @@ import getMainPageHeaderLinks from './config'
 import ym from 'react-yandex-metrika'
 import { authConfig } from 'src/api/authConfig'
 import { getCookie } from 'cookies-next'
+import { position } from 'polished'
 
 const activeLink = (path: string, link?: string[]) => {
   return link?.find(item => item === path)
@@ -64,187 +65,190 @@ const Header = ({ loading = false }) => {
   }
 
   return (
-    <Styled.Header>
-      <CookiePopup />
-      {showSearchPopup ? (
-        <SearchPopup
-          showSearchPopup={showSearchPopup}
-          setShowSearchPopup={setShowSearchPopup}
-          fillProfile={fillProfile}
-          fillFav={fillFav}
-          fillCart={fillCart}
-          setFillSearch={setFillSearch}
-        />
-      ) : null}
-      <Styled.WrappperMobile>
-        <MobileHeader
-          user={user}
-          quantity={quantity}
-          loading={loading}
-          isLoggedIn={!!user?.info}
-          setFillProfile={setFillProfile}
-          setFillCart={setFillCart}
-          setShowCitySelect={setShowCitySelect}
-          defaultCity={city.name || ''}
-          showHamburgerMenu={showHamburgerMenu}
-          setShowHamburgerMenu={setShowHamburgerMenu}
-          showSearchPopup={showSearchPopup}
-          setShowSearchPopup={setShowSearchPopup}
-        />
-      </Styled.WrappperMobile>
-      {showSearchPopup ? <Styled.FakeWrapper /> : null}
-      <Styled.Wrapper
-        showSearchPopup={showSearchPopup}
-        isAboutPage={isAboutPage}
-      >
-        <Styled.HeaderContent>
-          <Styled.HeaderMenu>
-            <Styled.LogoWrap shallow href={`/${city.slug}`}>
-              <Styled.Image
-                alt="logo"
-                src={isAboutPage ? '/logo-white-header.svg' : '/logo.svg'}
-              />
-            </Styled.LogoWrap>
-            <Styled.Nav>
-              <Styled.NavItemWrapper>
-                {getMainPageHeaderLinks(city.slug, !!user?.info).navLinks.map(
-                  (link, i) => (
-                    <Styled.NavItem
-                      key={i}
-                      active={!!activeLink(router.pathname, link.pathArr)}
-                      disable={link.disabled}
-                      isAboutPage={isAboutPage}
-                      // visible={!!link?.visible}
-                    >
-                      {link.disabled ? (
-                        <p>{link.title}</p>
-                      ) : (
-                        <Link href={link.link} target={link.target}>
-                          {link.title}
-                        </Link>
-                      )}
-                    </Styled.NavItem>
-                  ),
-                )}
-                <AdditionalNav
-                  catalog
-                  isAboutPage={isAboutPage}
-                  showAdditionalNav={showCatalogMenu}
-                  setShowAdditionalNav={setShowCatalogMenu}
-                  links={getMainPageHeaderLinks(city.slug).addCatalogLinks}
-                />
-              </Styled.NavItemWrapper>
-            </Styled.Nav>
-            <Styled.AdditionalNavWrapper>
-              <Styled.MoreIconWrap
-                onMouseEnter={() => setFillMoreIcon(red)}
-                onMouseLeave={() =>
-                  setFillMoreIcon(isAboutPage ? '#fff' : '#000')
-                }
-                onClick={() => setShowAdditionalNav(!showAdditionalNav)}
-              >
-                <MoreIcon
-                  fill={fillMoreIcon}
-                  showAdditionalNav={showAdditionalNav}
-                />
-              </Styled.MoreIconWrap>
-              <AdditionalNav
-                isAboutPage={isAboutPage}
-                showAdditionalNav={showAdditionalNav}
-                setShowAdditionalNav={setShowAdditionalNav}
-                links={getMainPageHeaderLinks(city.slug).addNavLinks}
-              />
-            </Styled.AdditionalNavWrapper>
-          </Styled.HeaderMenu>
-          <Styled.Links>
-            <Styled.LinkCitySelect
-              onClick={() => setShowCitySelect(!showCitySelect)}
-            >
-              <CityPingIcon
-                showCitySelect={showCitySelect}
-                isAboutPage={isAboutPage}
-              />
-              <Styled.CitySelectText showCitySelect={showCitySelect}>
-                {city.name}
-              </Styled.CitySelectText>
-            </Styled.LinkCitySelect>
-            <Styled.LinkSearch
-              onClick={searchIconClickHandler}
-              onMouseMove={() => setFillSearch(red)}
-              onMouseLeave={() =>
-                setFillSearch(
-                  isAboutPage ? '#fff' : showSearchPopup ? red : '#000',
-                )
-              }
-            >
-              <SearchIcon fill={fillSearch} />
-            </Styled.LinkSearch>
-            {!!user?.info ? (
-              <Styled.ProfilePhotoWrap href="/masterCabinet">
-                <Styled.ProfilePhoto
-                  src={
-                    user?.info?.avatar
-                      ? `${PHOTO_URL}${user?.info?.avatar.url}`
-                      : '/empty-photo.svg'
-                  }
-                />
-                {/* {unreadMessagesCount > 0 && (
-                  <UnreadMessages>{unreadMessagesCount}</UnreadMessages>
-                )} */}
-              </Styled.ProfilePhotoWrap>
-            ) : (
-              <Styled.LinkProfile
-                href={authConfig.notAuthLink}
-                onMouseMove={() => setFillProfile(red)}
-                onMouseLeave={() =>
-                  setFillProfile(isAboutPage ? '#fff' : '#000')
-                }
-                onClick={() => {
-                  ym('reachGoal', 'click_login_head')
-                  ;(window as any).dataLayer.push({
-                    event: 'event',
-                    eventProps: {
-                      category: 'click',
-                      action: 'login_head',
-                    },
-                  })
-                }}
-              >
-                <ProfileIcon fill={fillProfile} />
-              </Styled.LinkProfile>
-            )}
-
-            <Styled.LinkFavorites
-              // disabled
-              // onClick={e => e.preventDefault()}
-              href="/favorites"
-              onMouseMove={() => setFillFav(red)}
-              onMouseLeave={() => setFillFav(isAboutPage ? '#fff' : '#000')}
-            >
-              <HeartIcon fill={fillFav} />
-            </Styled.LinkFavorites>
-            <Styled.CartIconWrap
-              shallow
-              href={`/cart`}
-              onMouseMove={() => setFillCart(red)}
-              onMouseLeave={() => setFillCart(isAboutPage ? '#fff' : '#000')}
-            >
-              <CartIcon fill={fillCart} />
-              {quantity != 0 ? <Styled.Count>{quantity}</Styled.Count> : null}
-            </Styled.CartIconWrap>
-          </Styled.Links>
-          <ChangeCityPopup
-            openPopup={openPopup && !loading && !!user}
-            setPopupOpen={setPopupOpen}
+    <>
+      <Styled.Header>
+        <CookiePopup />
+        {showSearchPopup ? (
+          <SearchPopup
+            showSearchPopup={showSearchPopup}
+            setShowSearchPopup={setShowSearchPopup}
+            fillProfile={fillProfile}
+            fillFav={fillFav}
+            fillCart={fillCart}
+            setFillSearch={setFillSearch}
           />
-        </Styled.HeaderContent>
-      </Styled.Wrapper>
-      <CitySelect
-        showCitySelect={showCitySelect}
-        setShowCitySelect={setShowCitySelect}
-        setShowHamburgerMenu={setShowHamburgerMenu}
-      />
-    </Styled.Header>
+        ) : null}
+        <Styled.WrappperMobile>
+          <MobileHeader
+            user={user}
+            quantity={quantity}
+            loading={loading}
+            isLoggedIn={!!user?.info}
+            setFillProfile={setFillProfile}
+            setFillCart={setFillCart}
+            setShowCitySelect={setShowCitySelect}
+            defaultCity={city.name || ''}
+            showHamburgerMenu={showHamburgerMenu}
+            setShowHamburgerMenu={setShowHamburgerMenu}
+            showSearchPopup={showSearchPopup}
+            setShowSearchPopup={setShowSearchPopup}
+          />
+        </Styled.WrappperMobile>
+        {showSearchPopup ? <Styled.FakeWrapper /> : null}
+        <Styled.Wrapper
+          showSearchPopup={showSearchPopup}
+          isAboutPage={isAboutPage}
+        >
+          <Styled.HeaderContent>
+            <Styled.HeaderMenu>
+              <Styled.LogoWrap shallow href={`/${city.slug}`}>
+                <Styled.Image
+                  alt="logo"
+                  src={isAboutPage ? '/logo-white-header.svg' : '/logo.svg'}
+                />
+              </Styled.LogoWrap>
+              <Styled.Nav>
+                <Styled.NavItemWrapper>
+                  {getMainPageHeaderLinks(city.slug, !!user?.info).navLinks.map(
+                    (link, i) => (
+                      <Styled.NavItem
+                        key={i}
+                        active={!!activeLink(router.pathname, link.pathArr)}
+                        disable={link.disabled}
+                        isAboutPage={isAboutPage}
+                        // visible={!!link?.visible}
+                      >
+                        {link.disabled ? (
+                          <p>{link.title}</p>
+                        ) : (
+                          <Link href={link.link} target={link.target}>
+                            {link.title}
+                          </Link>
+                        )}
+                      </Styled.NavItem>
+                    ),
+                  )}
+                  <AdditionalNav
+                    catalog
+                    isAboutPage={isAboutPage}
+                    showAdditionalNav={showCatalogMenu}
+                    setShowAdditionalNav={setShowCatalogMenu}
+                    links={getMainPageHeaderLinks(city.slug).addCatalogLinks}
+                  />
+                </Styled.NavItemWrapper>
+              </Styled.Nav>
+              <Styled.AdditionalNavWrapper>
+                <Styled.MoreIconWrap
+                  onMouseEnter={() => setFillMoreIcon(red)}
+                  onMouseLeave={() =>
+                    setFillMoreIcon(isAboutPage ? '#fff' : '#000')
+                  }
+                  onClick={() => setShowAdditionalNav(!showAdditionalNav)}
+                >
+                  <MoreIcon
+                    fill={fillMoreIcon}
+                    showAdditionalNav={showAdditionalNav}
+                  />
+                </Styled.MoreIconWrap>
+                <AdditionalNav
+                  isAboutPage={isAboutPage}
+                  showAdditionalNav={showAdditionalNav}
+                  setShowAdditionalNav={setShowAdditionalNav}
+                  links={getMainPageHeaderLinks(city.slug).addNavLinks}
+                />
+              </Styled.AdditionalNavWrapper>
+            </Styled.HeaderMenu>
+            <Styled.Links>
+              <Styled.LinkCitySelect
+                onClick={() => setShowCitySelect(!showCitySelect)}
+              >
+                <CityPingIcon
+                  showCitySelect={showCitySelect}
+                  isAboutPage={isAboutPage}
+                />
+                <Styled.CitySelectText showCitySelect={showCitySelect}>
+                  {city.name}
+                </Styled.CitySelectText>
+              </Styled.LinkCitySelect>
+              <Styled.LinkSearch
+                onClick={searchIconClickHandler}
+                onMouseMove={() => setFillSearch(red)}
+                onMouseLeave={() =>
+                  setFillSearch(
+                    isAboutPage ? '#fff' : showSearchPopup ? red : '#000',
+                  )
+                }
+              >
+                <SearchIcon fill={fillSearch} />
+              </Styled.LinkSearch>
+              {!!user?.info ? (
+                <Styled.ProfilePhotoWrap href="/masterCabinet">
+                  <Styled.ProfilePhoto
+                    src={
+                      user?.info?.avatar
+                        ? `${PHOTO_URL}${user?.info?.avatar.url}`
+                        : '/empty-photo.svg'
+                    }
+                  />
+                  {/* {unreadMessagesCount > 0 && (
+                <UnreadMessages>{unreadMessagesCount}</UnreadMessages>
+              )} */}
+                </Styled.ProfilePhotoWrap>
+              ) : (
+                <Styled.LinkProfile
+                  href={authConfig.notAuthLink}
+                  onMouseMove={() => setFillProfile(red)}
+                  onMouseLeave={() =>
+                    setFillProfile(isAboutPage ? '#fff' : '#000')
+                  }
+                  onClick={() => {
+                    ym('reachGoal', 'click_login_head')
+                    ;(window as any).dataLayer.push({
+                      event: 'event',
+                      eventProps: {
+                        category: 'click',
+                        action: 'login_head',
+                      },
+                    })
+                  }}
+                >
+                  <ProfileIcon fill={fillProfile} />
+                </Styled.LinkProfile>
+              )}
+
+              <Styled.LinkFavorites
+                // disabled
+                // onClick={e => e.preventDefault()}
+                href="/favorites"
+                onMouseMove={() => setFillFav(red)}
+                onMouseLeave={() => setFillFav(isAboutPage ? '#fff' : '#000')}
+              >
+                <HeartIcon fill={fillFav} />
+              </Styled.LinkFavorites>
+              <Styled.CartIconWrap
+                shallow
+                href={`/cart`}
+                onMouseMove={() => setFillCart(red)}
+                onMouseLeave={() => setFillCart(isAboutPage ? '#fff' : '#000')}
+              >
+                <CartIcon fill={fillCart} />
+                {quantity != 0 ? <Styled.Count>{quantity}</Styled.Count> : null}
+              </Styled.CartIconWrap>
+            </Styled.Links>
+            <ChangeCityPopup
+              openPopup={openPopup && !loading && !!user}
+              setPopupOpen={setPopupOpen}
+            />
+          </Styled.HeaderContent>
+        </Styled.Wrapper>
+        <CitySelect
+          showCitySelect={showCitySelect}
+          setShowCitySelect={setShowCitySelect}
+          setShowHamburgerMenu={setShowHamburgerMenu}
+        />
+      </Styled.Header>
+      <Styled.HeaderPadding />
+    </>
   )
 }
 
