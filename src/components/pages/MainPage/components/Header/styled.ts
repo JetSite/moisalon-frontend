@@ -9,6 +9,20 @@ export const Header = styled.header<{ showSearchPopup?: boolean }>`
   z-index: 200;
 `
 
+export const HeaderPadding = styled.div`
+  height: 30px;
+  width: 100%;
+  position: sticky;
+  top: 81px;
+  z-index: 100;
+  background-color: white;
+  /* box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); */
+  display: inline-block;
+  @media (max-width: ${laptopBreakpoint}) {
+    display: none;
+  }
+`
+
 export const LogoWrap = styled(Link)`
   width: 83px;
   height: 100%;
@@ -29,7 +43,7 @@ export const Wrapper = styled.div<{
   showSearchPopup: boolean
   isAboutPage: boolean
 }>`
-  padding-bottom: 41px;
+  padding-bottom: 10px;
   padding-top: 28px;
   display: flex;
   justify-content: space-between;
@@ -38,6 +52,9 @@ export const Wrapper = styled.div<{
   width: 100%;
   color: ${({ isAboutPage }) => (isAboutPage ? '#fff' : '#000')};
   background-color: ${({ isAboutPage }) => (isAboutPage ? '#000' : '#fff')};
+
+  position: sticky;
+  top: 0;
 
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
@@ -59,7 +76,7 @@ export const WrappperMobile = styled.div`
 export const HeaderContent = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 50px;
+  gap: 20px;
   width: 1440px;
   margin-left: auto;
   margin-right: auto;

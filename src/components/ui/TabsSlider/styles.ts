@@ -7,7 +7,7 @@ export const Wrapper = styled.div<{ isSticky?: boolean }>`
   box-sizing: border-box;
   position: sticky;
   top: 80px;
-  z-index: 300;
+  z-index: 100;
   background-color: #fff;
   box-shadow: ${({ isSticky }) =>
     isSticky
@@ -15,7 +15,7 @@ export const Wrapper = styled.div<{ isSticky?: boolean }>`
       : 'none'};
 
   @media (max-width: ${laptopBreakpoint}) {
-    top: 86px;
+    top: 81px;
     padding: 10px 0;
     z-index: 100;
   }

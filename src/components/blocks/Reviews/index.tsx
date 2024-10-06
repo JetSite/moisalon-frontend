@@ -1,20 +1,6 @@
-import { ChangeEvent, FC, useEffect, useState } from 'react'
+import { ChangeEvent, FC, useState } from 'react'
 import { MainContainer, MobileVisible } from '../../../styles/common'
-import {
-  Wrapper,
-  Top,
-  Title,
-  Count,
-  Content,
-  Review,
-  ReviewTop,
-  Name,
-  Text,
-  Buttons,
-  Form,
-  FormButtons,
-  EditButton,
-} from './styled'
+import * as Styled from './styled'
 import { useRouter } from 'next/router'
 import Stars from '../../ui/Stars'
 import Button from '../../ui/Button'
@@ -33,6 +19,7 @@ import { useMutation } from '@apollo/client'
 import { UPDATE_REVIEW } from 'src/api/graphql/salon/mutations/updateReviews'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import splitArray from 'src/utils/newUtils/common/splitArray'
+import { TrashIcon } from 'src/components/ui/Icons/Trash'
 
 interface Props {
   type: string | 'BRAND' | 'SALON' | 'MASTER'
@@ -94,15 +81,11 @@ const Reviews: FC<Props> = ({
         })
       },
     })
-    setEditID(null)
     setReviewOpen(false)
-    setReviewText('')
-    setRating(0)
+    editingReviewClear()
   }
 
   const sendMessage = () => {
-    console.log(rating)
-
     if (editID) {
       updateReview({
         variables: {
@@ -111,46 +94,11 @@ const Reviews: FC<Props> = ({
           rating: rating > 0 ? rating : null,
         },
       })
-      setEditID(null)
-      setReviewOpen(false)
-      setReviewText('')
-      setRating(0)
-      return
-    }
-    setLoading(true)
-    if (type === 'EDUCATION') {
-      reviewMutation({
-        variables: {
-          user: me?.info.id,
-          id,
-          content: reviewText,
-          rating: rating > 0 ? rating : null,
-          publishedAt: new Date().toISOString(),
-        },
-      })
-      setReviewOpen(false)
-      setReviewText('')
-      setRating(0)
-
-      return
-    }
-    if (type === 'PRODUCT') {
-      reviewMutation({
-        variables: {
-          user: me?.info.id,
-          id,
-          rating: rating > 0 ? rating : null,
-          content: reviewText,
-          publishedAt: new Date().toISOString(),
-        },
-      })
-      setReviewOpen(false)
-      setReviewText('')
-      setRating(0)
-
+      editingReviewClear()
       return
     }
     if (reviewText) {
+      setLoading(true)
       reviewMutation({
         variables: {
           user: me?.info.id,
@@ -160,9 +108,8 @@ const Reviews: FC<Props> = ({
           publishedAt: new Date().toISOString(),
         },
       })
-      setReviewOpen(false)
-      setReviewText('')
-      setRating(0)
+      editingReviewClear()
+      return
     }
   }
 
@@ -174,38 +121,47 @@ const Reviews: FC<Props> = ({
     setReviewText(item.content)
   }
 
+  const editingReviewClear = () => {
+    setEditID(null)
+    setRating(0)
+    setReviewText('')
+  }
+
   return (
     <MainContainer id="reviews">
-      <Wrapper>
-        <Top>
-          <Title>Отзывы</Title>
-          <Count>
+      <Styled.Wrapper>
+        <Styled.Top>
+          <Styled.Title>Отзывы</Styled.Title>
+          <Styled.Count>
             <span>{reviews?.length}</span>
-          </Count>
-        </Top>
-        <Content>
+          </Styled.Count>
+        </Styled.Top>
+        <Styled.Content>
           {reviews?.slice(0, showAll ? undefined : 4).map(item => (
-            <Review key={item?.id}>
-              <ReviewTop>
-                <Name>
+            <Styled.Review active={item.id === editID} key={item?.id}>
+              <Styled.ReviewTop>
+                <Styled.Name>
                   {(item?.user?.username && nameRedact(item?.user?.username)) ||
                     (item?.user?.email && nameRedact(item?.user?.email)) ||
                     (item?.user?.phone && nameRedact(item?.user?.phone)) ||
                     ''}
-                </Name>
+                </Styled.Name>
                 <Stars count={Number(item.rating?.title)} />
-              </ReviewTop>
-              <Text>{item.content}</Text>
+              </Styled.ReviewTop>
+              <Styled.Text>{item.content}</Styled.Text>
               {me?.info.id === item.user.id && (
-                <EditButton onClick={() => handleEdit(item)}>
+                <Styled.EditButton
+                  disabled={item.id === editID}
+                  onClick={() => handleEdit(item)}
+                >
                   редактировать
-                </EditButton>
+                </Styled.EditButton>
               )}
-            </Review>
+            </Styled.Review>
           ))}
           {loading && <ReviewSkeleton />}
-        </Content>
-        <Buttons>
+        </Styled.Content>
+        <Styled.Buttons>
           {!showAll ? (
             reviews?.length > 4 ? (
               <Button
@@ -233,12 +189,13 @@ const Reviews: FC<Props> = ({
                 router.push('/login')
               } else {
                 setReviewOpen(!reviewOpen)
+                reviewOpen && editingReviewClear()
               }
             }}
           >
             {!reviewOpen ? 'Оставить отзыв' : 'Закрыть'}
           </Button>
-        </Buttons>
+        </Styled.Buttons>
         <MobileVisible>
           {!showAll ? (
             reviews?.length > 4 ? (
@@ -253,24 +210,27 @@ const Reviews: FC<Props> = ({
               </Button>
             ) : null
           ) : null}
-          <Button
-            size="fullWidth"
-            variant="gray"
-            font="small"
-            mb="67"
-            onClick={() => {
-              if (!me?.info) {
-                router.push('/login')
-              } else {
-                setReviewOpen(true)
-              }
-            }}
-          >
-            Написать отзыв
-          </Button>
+          {!reviewOpen && (
+            <Button
+              size="fullWidth"
+              variant="gray"
+              font="small"
+              mb="67"
+              onClick={() => {
+                if (!me?.info) {
+                  router.push('/login')
+                } else {
+                  setReviewOpen(true)
+                  editingReviewClear()
+                }
+              }}
+            >
+              Написать отзыв
+            </Button>
+          )}
         </MobileVisible>
         {reviewOpen ? (
-          <Form>
+          <Styled.Form>
             <RatingEdit
               newRating={rating}
               handleChangeRating={e => {
@@ -283,44 +243,47 @@ const Reviews: FC<Props> = ({
               label=""
               multiline
               minRows={4}
-              defaultValue={reviewText}
+              value={reviewText}
               variant="outlined"
               onChange={handleReviews}
             />
-            <FormButtons>
+            <Styled.FormButtons>
               <Button
-                variant="secondary"
-                style={{ marginRight: 24 }}
+                size="fullWidth"
+                variant="withBorder"
                 onClick={() => {
                   setReviewOpen(false)
-                  setReviewText('')
-                  setRating(0)
+                  editingReviewClear()
                 }}
               >
                 Отмена
               </Button>
-              {editID && (
+              <Styled.FormEditButtons editID={!!editID}>
                 <Button
-                  variant="secondary"
+                  size="fullWidth"
+                  variant="red"
                   onClick={() => {
-                    handleDelete()
+                    sendMessage()
                   }}
                 >
-                  Удалить
+                  {editID ? 'Изменить' : 'Отправить'}
                 </Button>
-              )}
-              <Button
-                variant="red"
-                onClick={() => {
-                  sendMessage()
-                }}
-              >
-                {editID ? 'Изменить' : 'Отправить'}
-              </Button>
-            </FormButtons>
-          </Form>
+                {editID && (
+                  <Styled.DeleteFormButton
+                    size="fullWidth"
+                    variant="secondary"
+                    onClick={() => {
+                      handleDelete()
+                    }}
+                  >
+                    <TrashIcon />
+                  </Styled.DeleteFormButton>
+                )}
+              </Styled.FormEditButtons>
+            </Styled.FormButtons>
+          </Styled.Form>
         ) : null}
-      </Wrapper>
+      </Styled.Wrapper>
     </MainContainer>
   )
 }
