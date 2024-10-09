@@ -88,7 +88,7 @@ export const getServerSideProps: GetServerSideProps<
     })
 
     const user = flattenStrapiResponse(userData.data.usersPermissionsUser)
-    const salonIDArr = user.salons.map((e: ISalon) => e.id)
+    const salonsID = user.salons.map((e: ISalon) => e.id)
 
     const queries = [
       apolloClient.query({ query: getCities, variables: { itemsCount: 100 } }),
@@ -103,15 +103,15 @@ export const getServerSideProps: GetServerSideProps<
       }),
     ]
 
-    if (salonIDArr.length > 0) {
+    if (salonsID.length > 0) {
       queries.push(
         apolloClient.query({
           query: RENTAL_REQUESTS_FOR_SALON,
-          variables: { id: salonIDArr },
+          variables: { salonsID },
         }),
         apolloClient.query({
           query: DELETED_RENTAL_REQUESTS_FOR_SALON,
-          variables: { id: salonIDArr },
+          variables: { salonsID },
         }),
       )
     }
