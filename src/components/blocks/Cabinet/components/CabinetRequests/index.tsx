@@ -23,6 +23,8 @@ const CabinetRequests: FC<Props> = ({ requestsData }) => {
   } = requestsData
   const [showDeleted, setShowDeleted] = useState<boolean>(false)
 
+  console.log(requestsData)
+
   return (
     <Styled.Wrapper>
       <Title>{showDeleted ? 'Удалённые заявки' : 'Мои заявки'}</Title>
