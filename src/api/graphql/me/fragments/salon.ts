@@ -97,6 +97,8 @@ export const salonFragment = `data {
       promotions {
         ${promotionFragment}
       }
-
+      photos {
+        ${imageInfo}
+      }
   }
 }`
