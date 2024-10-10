@@ -126,7 +126,10 @@ const AuthProvider: FC<{ children: IChildren; pageProps: any }> = ({
     // initializeCity()
   }, [cityCookie])
   useEffect(() => {
-    if (!accessToken) return
+    if (!accessToken) {
+      setLoading(false)
+      return
+    }
     if (pageProps.user && !user) {
       const prepareUser = getPrepareUser(pageProps.user)
 
