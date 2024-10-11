@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import * as Style from '../styles'
-import ProfileItem from './ProfileItem'
+import ProfileItem, { IProfileItem } from './ProfileItem'
 import { IPhoto } from 'src/types'
 import { IBrand } from 'src/types/brands'
 import { IMaster } from 'src/types/masters'
@@ -11,9 +11,10 @@ export interface IProfile {
   name: string
   photo: IPhoto | null
   rent: boolean
+  quantity?: { active?: number; noActive?: number }
 }
 
-interface IProfileSelectProps {
+interface IProfileSelectProps extends Pick<IProfileItem, 'quantityTitles'> {
   profiles: IProfileWithType[]
   activeProfile: ISalon | IMaster | IBrand | null
   onClickProfile: (profile: IProfileWithType) => void
@@ -28,6 +29,7 @@ const ProfileSelect: FC<IProfileSelectProps> = ({
   profiles,
   activeProfile,
   onClickProfile,
+  quantityTitles,
 }) => {
   return (
     <>
@@ -39,6 +41,7 @@ const ProfileSelect: FC<IProfileSelectProps> = ({
         !activeProfile &&
         profiles.map(profile => (
           <ProfileItem
+            quantityTitles={quantityTitles}
             key={profile.id}
             profile={profile}
             type={profile.type}

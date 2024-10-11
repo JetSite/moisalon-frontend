@@ -1,20 +1,29 @@
 import { FC } from 'react'
-import * as Style from '../styles'
+import * as Styled from '../styles'
 import { PHOTO_URL } from 'src/api/variables'
 import { IProfile } from './ProfileSelect'
 
-interface Props {
+export interface IProfileItem {
   profile: IProfile
   type: string
   onClick?: () => void
   active?: boolean
+  quantityTitles?: string[]
 }
 
-const ProfileItem: FC<Props> = ({ profile, type, onClick, active }) => {
+const ProfileItem: FC<IProfileItem> = ({
+  profile,
+  type,
+  onClick,
+  active,
+  quantityTitles,
+}) => {
+  console.log(quantityTitles)
+
   return (
-    <Style.Item active={active} onClick={onClick}>
-      <Style.Container>
-        <Style.Avatar
+    <Styled.Item active={active} onClick={onClick}>
+      <Styled.Container>
+        <Styled.Avatar
           alt="avatar"
           src={
             profile.photo?.url
@@ -22,12 +31,27 @@ const ProfileItem: FC<Props> = ({ profile, type, onClick, active }) => {
               : 'empty-photo.svg'
           }
         />
-        <Style.Content>
-          <Style.Name>{profile.name}</Style.Name>
-          <Style.Type>Профиль {type}</Style.Type>
-        </Style.Content>
-      </Style.Container>
-    </Style.Item>
+        <Styled.Content>
+          <Styled.Name>{profile.name}</Styled.Name>
+          <Styled.Type>Профиль {type}</Styled.Type>
+        </Styled.Content>
+        {quantityTitles || profile.quantity?.active ? (
+          <Styled.QuantityProfileEntyties
+            title={quantityTitles && quantityTitles[0]}
+          >
+            {profile.quantity?.active}
+          </Styled.QuantityProfileEntyties>
+        ) : null}
+        {quantityTitles ? (
+          <Styled.QuantityProfileEntyties
+            color="gray"
+            title={quantityTitles[1]}
+          >
+            {profile.quantity?.noActive}
+          </Styled.QuantityProfileEntyties>
+        ) : null}
+      </Styled.Container>
+    </Styled.Item>
   )
 }
 

@@ -70,7 +70,7 @@ export const Comment = styled(Text)`
   padding: 4px 8px;
   border-radius: 5px;
   font-size: 12px;
-  margin: 32px 0 14px 0;
+  margin: 14px 0;
   &:before {
     content: '';
     top: -10px;
@@ -196,6 +196,15 @@ export const Phone = styled(Text)`
   line-height: 18px;
   text-decoration: underline;
 `
+export const Сommunication = styled(Text)`
+  margin-top: 8px;
+  font-weight: 500;
+
+  & span {
+    font-weight: 400;
+  }
+`
+
 export const Email = styled(Text)`
   font-weight: 500;
   line-height: 18px;

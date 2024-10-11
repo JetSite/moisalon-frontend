@@ -121,8 +121,6 @@ const ActiveProfile: FC<ActiveProfileProps> = ({
     }
   }
 
-  console.log(activeProfile.promotions)
-
   return (
     <>
       <ProfileItem
@@ -137,7 +135,7 @@ const ActiveProfile: FC<ActiveProfileProps> = ({
       {!createSale ? (
         <>
           <MobileHidden>
-            <Styled.SalesTabButton
+            <Button
               size="width374WithoutPadding"
               variant="darkTransparent"
               font="medium"
@@ -147,7 +145,7 @@ const ActiveProfile: FC<ActiveProfileProps> = ({
               }}
             >
               Создать акцию
-            </Styled.SalesTabButton>
+            </Button>
             <Styled.ButtonWrapper>
               <Styled.SalesTabButton
                 size="fullWidth"

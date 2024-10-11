@@ -25,7 +25,7 @@ const CabinetSales: FC<Props> = ({ user }) => {
   const [createSale, setCreateSale] = useState(false)
 
   const { profiles } = useMemo(
-    () => getPrepareData({ salons, masters, brands }),
+    () => getPrepareData({ salons, masters, brands, entityType: 'sales' }),
     [salons, brands, masters],
   )
 
@@ -61,6 +61,7 @@ const CabinetSales: FC<Props> = ({ user }) => {
         profiles={profiles}
         activeProfile={activeProfile}
         onClickProfile={handleProfileClick}
+        quantityTitles={['Одобренные', 'На рассмотрении']}
       />
       {activeProfile && type && (
         <ActiveProfile

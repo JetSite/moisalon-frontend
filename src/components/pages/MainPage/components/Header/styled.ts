@@ -462,7 +462,7 @@ export const CloseBtn = styled.div<{ show: boolean }>`
 `
 
 export const MobileTitle = styled.h2`
-  margin: 12px 0;
+  padding: 12px 0;
   color: #808080;
   font-size: 10px;
   font-weight: 500;

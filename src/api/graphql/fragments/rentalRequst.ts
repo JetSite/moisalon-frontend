@@ -1,3 +1,4 @@
+import { imageInfo } from '../common/imageInfo'
 import { salonWorkplacesFragment } from '../salon/fragments/salonWorkplaces'
 import { onlyTitleFragment } from './onlyTitle'
 
@@ -21,6 +22,11 @@ data {
         id
         attributes {
           username
+          phone
+          email
+          avatar {
+            ${imageInfo}
+          }
         }
       }
     }
@@ -29,6 +35,14 @@ data {
         id
         attributes {
           name
+        }
+      }
+    }
+    communication_types {
+      data {
+        id
+        attributes {
+          title
         }
       }
     }

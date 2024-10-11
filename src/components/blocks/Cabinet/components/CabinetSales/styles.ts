@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../../styles/variables'
 import Button from 'src/components/ui/Button'
 import { red } from '@material-ui/core/colors'
+import { Quantity } from 'src/components/blocks/Form/Tabs/style'
 
 export const Wrapper = styled.section`
   max-width: 710px;
@@ -116,6 +117,27 @@ export const Item = styled.button<{ active?: boolean }>`
   }
 `
 
+export const QuantityProfileEntyties = styled(Quantity)<{
+  color?: string
+}>`
+  width: 32px;
+  height: 32px;
+  opacity: 0.8;
+  font-size: 14px;
+  margin: 0 20px;
+  background-color: ${({ color }) => (color ? color : red)};
+
+  ::before {
+    content: attr(title);
+    display: flex;
+    position: absolute;
+    bottom: -20px;
+    color: black;
+    font-size: 8px;
+    white-space: nowrap;
+  }
+`
+
 export const Container = styled.div`
   display: flex;
   align-items: center;
@@ -123,6 +145,7 @@ export const Container = styled.div`
 
 export const Content = styled.div`
   margin-left: 41px;
+  margin-right: auto;
   @media (max-width: ${laptopBreakpoint}) {
     margin-left: 11px;
   }

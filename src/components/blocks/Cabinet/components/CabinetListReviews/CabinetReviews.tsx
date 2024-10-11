@@ -14,24 +14,55 @@ import Stars from '../../../../ui/Stars'
 import nameRedact from '../../../../../utils/nameRedact'
 import { IReview } from 'src/types/reviews'
 import { parseToNumber } from 'src/utils/newUtils/common'
+import ProfileItem from '../CabinetSales/components/ProfileItem'
+import { ISetState } from 'src/types/common'
+import { ISalon } from 'src/types/salon'
+import { IMaster } from 'src/types/masters'
+import { IBrand } from 'src/types/brands'
+import { IPromotionsType } from '../CabinetSales'
 
 interface Props {
   loading: boolean
-  reviews: IReview[]
+  setActiveProfile: ISetState<ISalon | IMaster | IBrand | null>
+  activeProfile: ISalon | IMaster | IBrand
+  type: IPromotionsType
 }
 
-export const CabinetReviews: FC<Props> = ({ reviews, loading }) => {
+export const CabinetReviews: FC<Props> = ({
+  activeProfile,
+  loading,
+  type,
+  setActiveProfile,
+}) => {
   const [offset, setOffset] = useState(4)
 
   if (loading) {
     return <SkeletonWrap variant="rect" />
   }
 
+  const profile = {
+    id: activeProfile?.id,
+    name: activeProfile?.name,
+    photo: (activeProfile as ISalon)?.logo || (activeProfile as IMaster)?.photo,
+    rent: (activeProfile as ISalon)?.rent || false,
+  }
+
+  const typeString =
+    type === 'master' ? 'мастера' : type === 'salon' ? 'салона' : 'бренда'
+
   return (
     <ReviewsWrapper>
-      {reviews?.length > 0 ? (
+      <ProfileItem
+        onClick={() => {
+          setActiveProfile(null)
+        }}
+        profile={profile}
+        type={typeString}
+        active={!!activeProfile}
+      />
+      {activeProfile.reviews?.length > 0 ? (
         <>
-          {reviews?.slice(0, offset).map(item => {
+          {activeProfile.reviews?.slice(0, offset).map(item => {
             if (item.title || item.content) {
               return (
                 <Review key={item.id}>
@@ -52,7 +83,7 @@ export const CabinetReviews: FC<Props> = ({ reviews, loading }) => {
               return null
             }
           })}
-          {reviews?.length > offset ? (
+          {activeProfile.reviews?.length > offset ? (
             <ReviewsButton onClick={() => setOffset(offset + 4)}>
               Смотреть раннее
             </ReviewsButton>

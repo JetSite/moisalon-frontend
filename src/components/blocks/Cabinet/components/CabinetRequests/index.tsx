@@ -10,7 +10,6 @@ export type ITabsVariant = 'in' | 'out'
 
 interface Props {
   requestsData: ICabinetRequestsData
-  meID: IID
 }
 
 const CabinetRequests: FC<Props> = ({ requestsData }) => {
@@ -22,8 +21,6 @@ const CabinetRequests: FC<Props> = ({ requestsData }) => {
     deletedRentalRequestsSalons,
   } = requestsData
   const [showDeleted, setShowDeleted] = useState<boolean>(false)
-
-  console.log(requestsData)
 
   return (
     <Styled.Wrapper>
