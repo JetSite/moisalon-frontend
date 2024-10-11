@@ -76,8 +76,6 @@ const MasterCabinet: FC<Props> = ({ user, requests, cities }) => {
     [requests, unreadMessagesCount, user.orders, user.reviews],
   )
 
-  console.log(user)
-
   useEffect(() => {
     if (router?.query?.tab) {
       setActiveTab(router?.query?.tab as string)

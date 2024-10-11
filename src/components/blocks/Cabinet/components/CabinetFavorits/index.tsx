@@ -39,8 +39,6 @@ const CabinetFavorits: FC = () => {
     }
   }, [user, favorites])
 
-  console.log('favorites', favorites)
-
   const handleDeleted = () => {
     console.log('handleDeleted')
 

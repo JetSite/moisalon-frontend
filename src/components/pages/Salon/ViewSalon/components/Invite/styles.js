@@ -1,11 +1,14 @@
 import styled from 'styled-components'
-import { laptopBreakpoint } from '../../../../../../styles/variables'
+import {
+  laptopBreakpoint,
+  largeLaptopBreakpoint,
+} from '../../../../../../styles/variables'
 
 export const Wrapper = styled.div`
   min-height: 674px;
   background-color: #000;
   position: relative;
-  padding: 252px 136px 153px 800px;
+  padding: 252px 136px 153px 600px;
 
   &:before {
     position: absolute;
@@ -20,6 +23,10 @@ export const Wrapper = styled.div`
     @media (max-width: ${laptopBreakpoint}) {
       display: none;
     }
+  }
+
+  @media (max-width: ${laptopBreakpoint}) {
+    padding-left: 800px;
   }
 
   &:after {
@@ -82,6 +89,9 @@ export const Image = styled.div`
 export const Content = styled.div`
   padding: 35px 70px;
   background-color: #fff;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 
   &:after {
     position: absolute;
@@ -100,6 +110,8 @@ export const Content = styled.div`
 
   @media (max-width: ${laptopBreakpoint}) {
     padding: 45px 18px;
+    max-width: none;
+    margin: 0;
   }
 `
 
@@ -129,6 +141,9 @@ export const ButtonWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 
   @media (max-width: ${laptopBreakpoint}) {
     display: none;

@@ -4,8 +4,6 @@ import { localeNumber } from '../newUtils/common'
 type IFormatRentalPricing = (arr: ISalonRentalPeriod[] | null) => string
 
 export const formatRentalPricing: IFormatRentalPricing = arr => {
-  console.log(arr)
-
   const returnedArr: { period: string; rentalCost: number }[] = []
   if (!arr || !arr.length) {
     return 'неизвестна'

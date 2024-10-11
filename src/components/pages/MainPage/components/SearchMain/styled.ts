@@ -220,14 +220,14 @@ export const WrapperItemsSalons = styled.ul`
 export const WrapperItemsMasters = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(5, minmax(135px, 1fr));
   column-gap: 18px;
   row-gap: 35px;
   margin-bottom: 55px;
 
   @media (max-width: ${laptopBreakpoint}) {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, minmax(135px, 1fr));
     column-gap: 10px;
     row-gap: 20px;
   }

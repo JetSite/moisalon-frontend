@@ -53,7 +53,6 @@ const BackButton: FC<Props> = ({
         if (link && !queryLink) {
           router.push(link)
         }
-        router.back()
       }}
     >
       <Icon alt="back" src="/arrow-back.svg" />

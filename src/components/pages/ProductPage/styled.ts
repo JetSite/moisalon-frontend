@@ -60,7 +60,7 @@ export const Right = styled.div`
   width: 100%;
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
-    margin-top: 23px;
+    margin: 23px auto 0 auto;
   }
 `
 
@@ -314,7 +314,7 @@ export const ButtonsWrapper = styled.div`
   display: flex;
   justify-content: space-between;
 
-  @media (max-width: ${mobileBreakpoint}) {
+  @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
     flex-direction: column;
   }

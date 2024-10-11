@@ -18,8 +18,6 @@ const ProfileItem: FC<IProfileItem> = ({
   active,
   quantityTitles,
 }) => {
-  console.log(quantityTitles)
-
   return (
     <Styled.Item active={active} onClick={onClick}>
       <Styled.Container>

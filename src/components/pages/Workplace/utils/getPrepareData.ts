@@ -23,8 +23,14 @@ export const getPrepareData: IGetPrepareData = workplace => {
   })
 
   const technicalsArr: ITechnicalArr[] = [
-    { title: 'Площадь', item: workplace.space + ' м2' },
-    { title: 'Этаж', item: workplace.floor + ' м2' },
+    {
+      title: workplace.space ? 'Площадь' : null,
+      item: workplace.space ? workplace.space + ' м2' : '',
+    },
+    {
+      title: workplace.floor ? 'Этаж' : null,
+      item: workplace.floor ? workplace.floor + ' м2' : '',
+    },
     { title: 'Окна', item: workplace.hasWindows ? 'да' : 'нет' },
     {
       title: 'Мокрые точки',

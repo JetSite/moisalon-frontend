@@ -42,9 +42,6 @@ const RequestItem: FC<Props> = ({
   const specializationsWorkplace = request.workplace.services.map(
     service => service.title,
   )
-
-  console.log(rentalRequest)
-
   const firstButtonText = showDeleted
     ? 'Удалено'
     : request.status.id === '3'
@@ -98,8 +95,6 @@ const RequestItem: FC<Props> = ({
       clearTimeout(updateId)
     }
   }, [])
-
-  console.log(request)
 
   return (
     <Styled.ItemWrapper noView={isNew}>

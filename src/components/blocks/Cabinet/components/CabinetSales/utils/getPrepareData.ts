@@ -28,8 +28,6 @@ export const getPrepareData: IgetPrepareData = ({
     item: IMaster | ISalon | IBrand,
     type?: IPromotionsType,
   ) => {
-    console.log(vacancies?.filter(e => e.id === item.id).length)
-
     let quantity
     switch (entityType) {
       case 'reviews':

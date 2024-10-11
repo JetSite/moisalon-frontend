@@ -54,8 +54,6 @@ export const MobileHeader: FC<Props> = ({
     }
   }, [router.query])
 
-  console.log(showSearchPopup)
-
   return (
     <>
       <HamburgerMenu
