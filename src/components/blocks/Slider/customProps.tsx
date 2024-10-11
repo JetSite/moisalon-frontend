@@ -1,5 +1,5 @@
 import { ReactElement } from 'react'
-import { useRouter } from 'next/router'
+import { NextRouter, useRouter } from 'next/router'
 import {
   ShowAll,
   ButtonWrap,
@@ -65,6 +65,7 @@ interface PropsICustomProps {
   salon?: ISalon | null
   landingMaster?: boolean
   city: ICity
+  router: NextRouter
 }
 
 type ICustomProps = (props: PropsICustomProps) => {
@@ -88,9 +89,8 @@ export const customProps: ICustomProps = ({
   salon,
   landingMaster,
   city,
+  router,
 }) => {
-  const router = useRouter()
-
   switch (type) {
     case 'masters':
       return {

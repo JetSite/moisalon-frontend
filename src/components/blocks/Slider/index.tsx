@@ -1,4 +1,4 @@
-import { Dispatch, FC, SetStateAction, useRef, useState } from 'react'
+import { Dispatch, FC, SetStateAction, useMemo, useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 import { MainContainer, MobileVisible } from '../../../styles/common'
 import {
@@ -119,27 +119,48 @@ const Slider: FC<Props> = ({
   const landingSalon = router.pathname === '/for_salon'
   const landingBrand = router.pathname === '/for_brand'
 
-  const customTypeProps = customProps({
-    type,
-    landingMaster,
-    bgColor,
-    salon,
-    city,
-  })
-
-  const firstSlide = items?.length
-    ? customProps({
+  const customTypeProps = useMemo(
+    () =>
+      customProps({
         type,
-        item: items[0],
-        typeObject,
-        bgColor,
-        isEditing,
-        deleteFunction,
-        salon,
         landingMaster,
+        bgColor,
+        salon,
         city,
-      })
-    : null
+        router,
+      }),
+    [type, landingMaster, bgColor, salon, city, router],
+  )
+
+  const firstSlide = useMemo(() => {
+    const firstSlide = items?.length
+      ? customProps({
+          type,
+          item: items[0],
+          typeObject,
+          bgColor,
+          isEditing,
+          deleteFunction,
+          salon,
+          landingMaster,
+          city,
+          router,
+        })
+      : null
+
+    return firstSlide ? firstSlide.firstSlide : null
+  }, [
+    type,
+    items,
+    typeObject,
+    bgColor,
+    isEditing,
+    deleteFunction,
+    salon,
+    landingMaster,
+    city,
+    router,
+  ])
 
   return (
     <Wrapper id={type} load={loading} type={type} bgColor={bgColor}>
@@ -187,7 +208,7 @@ const Slider: FC<Props> = ({
             </Top>
             {items?.length ? (
               <SliderWrapper>
-                <SwiperWrap pl={items?.length === 1 ? 0 : pl}>
+                <SwiperWrap pl={items?.length > 2 ? 0 : pl}>
                   <Swiper
                     mousewheel={true}
                     pagination={{ clickable: true }}
@@ -208,7 +229,7 @@ const Slider: FC<Props> = ({
                       },
                     }}
                   >
-                    {firstSlide?.firstSlide && !noFirstSlide && (
+                    {firstSlide && !noFirstSlide && (
                       <SwiperSlide
                         style={{
                           minHeight: '100%',
@@ -216,10 +237,10 @@ const Slider: FC<Props> = ({
                           width: 'auto',
                         }}
                       >
-                        {firstSlide.firstSlide}
+                        {firstSlide}
                       </SwiperSlide>
                     )}
-                    {items?.map((item, i) => {
+                    {[...items, ...items]?.map((item, i) => {
                       const slide = customProps({
                         type,
                         item,
@@ -230,6 +251,7 @@ const Slider: FC<Props> = ({
                         salon,
                         landingMaster,
                         city,
+                        router,
                       })
 
                       return (

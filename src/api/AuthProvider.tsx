@@ -115,6 +115,7 @@ const AuthProvider: FC<{ children: IChildren; pageProps: any }> = ({
     notifyOnNetworkStatusChange: true,
   })
   useEffect(() => {
+    if (user) return
     // const initializeCity = async () => {
     //   if (cityData?.name) {
     //     setCity(cityData)
@@ -126,6 +127,8 @@ const AuthProvider: FC<{ children: IChildren; pageProps: any }> = ({
     // initializeCity()
   }, [cityCookie])
   useEffect(() => {
+    if (user) return
+
     if (!accessToken) {
       setLoading(false)
       return

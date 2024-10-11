@@ -42,7 +42,7 @@ const ProfileSelect: FC<IProfileSelectProps> = ({
         profiles.map(profile => (
           <ProfileItem
             quantityTitles={quantityTitles}
-            key={profile.id}
+            key={profile.type + '-' + profile.id}
             profile={profile}
             type={profile.type}
             onClick={() => onClickProfile(profile)}

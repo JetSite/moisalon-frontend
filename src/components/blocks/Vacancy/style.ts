@@ -38,6 +38,10 @@ export const Image = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
+
+  @media (max-width: ${laptopBreakpoint}) {
+    width: 300px;
+  }
 `
 
 export const VacancyContent = styled.div`
@@ -65,6 +69,7 @@ export const VacancyTitle = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     font-size: 14px;
     line-height: 16px;
+    height: auto;
   }
 `
 

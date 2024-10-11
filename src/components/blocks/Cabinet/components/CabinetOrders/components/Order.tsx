@@ -50,8 +50,6 @@ const Order: FC<IProps> = ({ order }) => {
     // }
   }
 
-  console.log(order)
-
   return (
     <Styled.OrderWrapper>
       <Styled.OrderTop>

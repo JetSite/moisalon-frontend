@@ -29,6 +29,8 @@ export const GET_RENT_SALONS = gql`
             rent
             webSiteUrl
             email
+            latitude
+            longitude
             videoReviewUrl
             salonPhones {
               ${phonesFragment}

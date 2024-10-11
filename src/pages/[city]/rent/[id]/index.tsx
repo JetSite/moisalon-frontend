@@ -57,7 +57,7 @@ const Rent: FC<Props> = ({
   const [activeTab, setActiveTab] = useState<number>(0)
   const [salon, setSalon] = useState<ISalonPage>(rentData)
   const { user } = useAuthStore(getStoreData)
-  const { catalogs } = useBaseStore(getStoreData)
+  const isOwner = !!user?.owner?.salons?.find(item => item.id === salon.id)
 
   const [workplaces, setWorkplaces] = useState(salon.workplaces)
 
@@ -68,10 +68,6 @@ const Rent: FC<Props> = ({
       setSalon(flattenStrapiResponse(res.data.salon) as unknown as ISalonPage)
     },
   })
-
-  const isOwner = !!user?.owner?.salons?.find(item => item.id === salon.id)
-
-  console.log('salon', salon)
 
   return (
     <MainLayout>
