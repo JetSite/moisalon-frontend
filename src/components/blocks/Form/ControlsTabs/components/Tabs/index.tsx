@@ -121,7 +121,7 @@ const Tabs: FC<Props> = ({ tabs, setActiveTab, activeTab, dirtyForm }) => {
           </Tab>
         )
       })}
-      {router?.asPath !== '/masterCabinet' ? (
+      {!router?.asPath.includes('/masterCabinet') ? (
         <Tab>
           <TextLink shallow href={'/masterCabinet'}>
             Назад в кабинет пользователя

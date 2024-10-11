@@ -1,27 +1,6 @@
 import { FC, useEffect, useState } from 'react'
 import Button from '../../../../../ui/Button'
-import {
-  ItemWrapper,
-  MasterContent,
-  MasterPhoto,
-  SalonPhoto,
-  Photo,
-  Info,
-  Name,
-  Spec,
-  Phone,
-  Email,
-  Request,
-  RequestInfo,
-  Text,
-  PositionWrap,
-  Position,
-  SalonName,
-  ButtonWrapper,
-  ButtonStyled,
-  CloseButton,
-  Comment,
-} from '../styles'
+import * as Styled from '../styles'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
 import { PHOTO_URL } from 'src/api/variables'
@@ -44,14 +23,15 @@ const RequestItem: FC<Props> = ({
   refetch,
   refetchDeleted,
 }) => {
+  const requestUser = rentalRequest.user
   const [request, setRequest] = useState(rentalRequest)
   const { user, masterCabinetTabs } = useAuthStore(getStoreData)
   const { updateMasterCabinetTabs } = useAuthStore(getStoreEvent)
   const [isNew, setIsNew] = useState<boolean>(request.status.id === '1')
   const [needRefetch, setNeedRefetch] = useState<boolean>(false)
-  const userName = user?.info.username || null
-  const phone = user?.info.phone || null
-  const email = user?.info.email || null
+  const userName = requestUser.username || null
+  const phone = requestUser.phone || null
+  const email = requestUser.email || null
   const workPlaceTitle = request?.workplace?.title || null
   const salonName = request.salon.name || null
   const salonPhoto = PHOTO_URL + request?.workplace?.cover?.url || null
@@ -62,6 +42,8 @@ const RequestItem: FC<Props> = ({
   const specializationsWorkplace = request.workplace.services.map(
     service => service.title,
   )
+
+  console.log(rentalRequest)
 
   const firstButtonText = showDeleted
     ? 'Удалено'
@@ -117,10 +99,12 @@ const RequestItem: FC<Props> = ({
     }
   }, [])
 
+  console.log(request)
+
   return (
-    <ItemWrapper noView={isNew}>
+    <Styled.ItemWrapper noView={isNew}>
       {!showDeleted && (
-        <CloseButton
+        <Styled.CloseButton
           onClick={() => {
             setNeedRefetch(true)
             updateRentalRequest({
@@ -139,45 +123,53 @@ const RequestItem: FC<Props> = ({
       >
         {request.status.id + ' - ' + request.status.title}
       </Button> */}
-      <MasterContent>
-        {user?.info.avatar ? (
-          <MasterPhoto>
-            <Photo src={PHOTO_URL + user?.info.avatar.url} />
-          </MasterPhoto>
+      <Styled.MasterContent>
+        {requestUser.avatar ? (
+          <Styled.MasterPhoto>
+            <Styled.Photo src={PHOTO_URL + requestUser.avatar.url} />
+          </Styled.MasterPhoto>
         ) : null}
-        <Info>
-          <Name>{userName}</Name>
-          <Spec>
+        <Styled.Info>
+          <Styled.Name>{userName}</Styled.Name>
+          <Styled.Spec>
             {specializationsMaster.map((name, i) => (
               <span>
                 {i + 1 === specializationsMaster.length ? name : name + ', '}
               </span>
             ))}
-          </Spec>
-          <Phone>{phone}</Phone>
-          <Email>{email}</Email>
-        </Info>
-      </MasterContent>
-      <Request>
-        <SalonPhoto photo={salonPhoto} />
-        <RequestInfo>
-          <PositionWrap>
-            <Text>Хочет арендовать</Text>
-            <Position>{workPlaceTitle}</Position>
-          </PositionWrap>
-          <Spec>
+          </Styled.Spec>
+          <Styled.Phone>{phone}</Styled.Phone>
+          <Styled.Email>{email}</Styled.Email>
+        </Styled.Info>
+      </Styled.MasterContent>
+      <Styled.Request>
+        <Styled.SalonPhoto photo={salonPhoto} />
+        <Styled.RequestInfo>
+          <Styled.PositionWrap>
+            <Styled.Text>Хочет арендовать</Styled.Text>
+            <Styled.Position>{workPlaceTitle}</Styled.Position>
+          </Styled.PositionWrap>
+          <Styled.Spec>
             {specializationsWorkplace.map((name, i) => (
               <span>
                 {i + 1 === specializationsWorkplace.length ? name : name + ', '}
               </span>
             ))}
-          </Spec>
-          <SalonName>{salonName}</SalonName>
-        </RequestInfo>
-      </Request>
-      {request.comment ? <Comment>{request.comment}</Comment> : null}
-      <ButtonWrapper>
-        <ButtonStyled
+          </Styled.Spec>
+          <Styled.SalonName>{salonName}</Styled.SalonName>
+        </Styled.RequestInfo>
+      </Styled.Request>
+      {request.communication_types?.length && (
+        <Styled.Сommunication>
+          <span>Тип связи: </span>
+          {request.communication_types[0].title}
+        </Styled.Сommunication>
+      )}
+      {request.comment ? (
+        <Styled.Comment>{request.comment}</Styled.Comment>
+      ) : null}
+      <Styled.ButtonWrapper>
+        <Styled.ButtonStyled
           size="roundMedium"
           variant="redWithRoundBorder"
           font="roundMedium"
@@ -192,7 +184,7 @@ const RequestItem: FC<Props> = ({
           }}
         >
           {firstButtonText}
-        </ButtonStyled>
+        </Styled.ButtonStyled>
         <Button
           size="roundMedium"
           variant={showDeleted ? 'redWithRoundBorder' : 'withRoundBorder'}
@@ -230,8 +222,8 @@ const RequestItem: FC<Props> = ({
         >
           {secondButtonText}
         </Button>
-      </ButtonWrapper>
-    </ItemWrapper>
+      </Styled.ButtonWrapper>
+    </Styled.ItemWrapper>
   )
 }
 

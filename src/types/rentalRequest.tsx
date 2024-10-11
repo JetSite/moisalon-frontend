@@ -1,4 +1,5 @@
 import { IID } from './common'
+import { IMeInfo, IUser } from './me'
 import { ISalonWorkplace } from './workplace'
 
 export interface IRentalRequest {
@@ -12,7 +13,8 @@ export interface IRentalRequest {
   status: { id: IID; title: string }
   title: string
   type: { id: IID; title: string }
-  user: { id: IID; userName: string }
+  user: IMeInfo
+  communication_types: { id: IID; title: string }[] | null
   createdAt: string
   workplace: ISalonWorkplace
   publishedAt: string | null

@@ -30,7 +30,7 @@ const RequestsList: FC<Props> = ({
   }
 
   const fetchMoreButton =
-    sliceNumber <= rentalRequests?.length ? (
+    sliceNumber < rentalRequests?.length ? (
       <Button
         size="round218"
         font="roundMedium"

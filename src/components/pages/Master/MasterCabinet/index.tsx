@@ -25,7 +25,6 @@ import { IUser } from 'src/types/me'
 import { IPhoto } from 'src/types'
 import CabinetRequests from 'src/components/blocks/Cabinet/components/CabinetRequests'
 import { ICabinetRequestsData } from 'src/pages/masterCabinet'
-import { request } from 'http'
 import { getTabs } from './utils/getTabs'
 import CabinetOrders from 'src/components/blocks/Cabinet/components/CabinetOrders'
 
@@ -53,11 +52,31 @@ const MasterCabinet: FC<Props> = ({ user, requests, cities }) => {
   const [activeTab, setActiveTab] = useState<string>(
     (router.query.tab as unknown as string) || 'about',
   )
+  let salesQuantity = 0
+  user.owner.salons?.forEach(e => {
+    salesQuantity += e.promotions.length
+  })
+  user.owner.masters?.forEach(e => {
+    salesQuantity += e.promotions.length
+  })
+  user.owner.brands?.forEach(e => {
+    salesQuantity += e.promotions.length
+  })
 
   const { mobile, desktop } = useMemo(
-    () => getTabs({ requests, unreadMessagesCount, orders: user.orders }),
-    [request, unreadMessagesCount, user.orders],
+    () =>
+      getTabs({
+        requests,
+        unreadMessagesCount,
+        orders: user.orders,
+        reviews: user.reviews || null,
+        vacancies: user.vacancies,
+        sales: salesQuantity,
+      }),
+    [requests, unreadMessagesCount, user.orders, user.reviews],
   )
+
+  console.log(user)
 
   useEffect(() => {
     if (router?.query?.tab) {
@@ -109,13 +128,13 @@ const MasterCabinet: FC<Props> = ({ user, requests, cities }) => {
             ) : activeTab === 'orders' ? (
               <CabinetOrders user={user} />
             ) : activeTab === 'requests' ? (
-              <CabinetRequests meID={user.info.id} requestsData={requests} />
+              <CabinetRequests requestsData={requests} />
             ) : activeTab === 'profiles' ? (
               <CabinetProfiles />
             ) : activeTab === 'chat' ? (
               <CabinetChat />
             ) : activeTab === 'reviews' ? (
-              <CabinetListReviews />
+              <CabinetListReviews user={user} />
             ) : activeTab === 'favorits' ? (
               <CabinetFavorits />
             ) : activeTab === 'sales' ? (
@@ -123,7 +142,7 @@ const MasterCabinet: FC<Props> = ({ user, requests, cities }) => {
             ) : activeTab === 'educations' ? (
               <CabinetEducations me={user} />
             ) : activeTab === 'vacancies' ? (
-              <CabinetVacancies />
+              <CabinetVacancies user={user} />
             ) : activeTab === 'events' ? (
               <CabinetEvents me={user} />
             ) : activeTab === 'priority' ? (
