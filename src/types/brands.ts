@@ -39,6 +39,6 @@ export interface IBrand {
   products: IProduct[]
   phones: IPhone[]
   dontShowPrice: boolean
-  promotions: IPromotions[]
+  promotions: IPromotions[] | null
   webSiteUrl: string | null
 }

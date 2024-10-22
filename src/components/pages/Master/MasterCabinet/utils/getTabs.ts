@@ -28,8 +28,6 @@ export const getTabs: IGetTabs = ({
   vacancies,
   sales,
 }) => {
-  console.log(requests)
-
   return {
     mobile: [
       { title: 'Мои данные', value: 'about', icon: '/icon-about.svg' },

@@ -53,5 +53,5 @@ export interface IMaster {
   photosWorks: IPhoto[]
   socialNetworks: ISocialNetworks[]
   city: ICity
-  promotions: IPromotions[]
+  promotions: IPromotions[] | null
 }
