@@ -34,6 +34,7 @@ export const SalonRequests: FC<Props> = ({
     if (data) {
       setRequests(flattenStrapiResponse(data.rentalRequests))
     }
+
     if (dataDeleted) {
       setRequestsDeleted(flattenStrapiResponse(dataDeleted.rentalRequests))
     }

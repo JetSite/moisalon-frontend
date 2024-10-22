@@ -33,6 +33,8 @@ const CabinetProfiles = () => {
     setOpenPopup(true)
   }
 
+  console.log(salons)
+
   return (
     <>
       <Wrapper>

@@ -35,6 +35,7 @@ const RequestItem: FC<Props> = ({
   const workPlaceTitle = request?.workplace?.title || null
   const salonName = request.salon.name || null
   const salonPhoto = PHOTO_URL + request?.workplace?.cover?.url || null
+  const salonsID = user?.owner.salons?.map(e => e.id)
   const specializationsMaster =
     user?.owner.masters && user?.owner.masters?.length
       ? user?.owner.masters[0].services.map(service => service.service?.title)
@@ -70,8 +71,8 @@ const RequestItem: FC<Props> = ({
       updateMasterCabinetTabs('requests', newCount)
 
       if (needRefetch) {
-        refetch({ variables: { id: 4 } })
-        refetchDeleted({ variables: { id: 4 } })
+        refetch({ variables: { salonsID } })
+        refetchDeleted({ variables: { salonsID } })
       }
       setNeedRefetch(false)
     },
