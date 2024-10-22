@@ -42,6 +42,8 @@ const RequestsList: FC<Props> = ({
       </Button>
     ) : null
 
+  console.log(slicedList)
+
   return (
     <>
       {rentalRequests?.length > 0 ? (

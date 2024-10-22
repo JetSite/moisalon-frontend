@@ -95,9 +95,11 @@ const Tabs: FC<Props> = ({ tabs, setActiveTab, activeTab, dirtyForm }) => {
   return (
     <Wrapper>
       {tabs.map(item => {
-        const quantity = masterCabinetTabs
-          ? masterCabinetTabs[item.value]
-          : item.quantity
+        const quantity =
+          //  masterCabinetTabs
+          //   ? masterCabinetTabs[item.value]
+          //   :
+          item.quantity
 
         return (
           <Tab key={item.value}>

@@ -30,8 +30,6 @@ interface Props extends IRentsPageProps {
 const AllRent: FC<Props> = ({ brands, masters, salons, ...props }) => {
   const layout = { brands, masters, salons }
 
-  console.log(props.rentData)
-
   return (
     <>
       <Head>

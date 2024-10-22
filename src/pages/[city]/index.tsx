@@ -7,20 +7,12 @@ import { totalSalons } from 'src/api/graphql/salon/queries/totalSalons'
 import { totalMasters } from 'src/api/graphql/master/queries/totalMasters'
 import { totalBrands } from 'src/api/graphql/brand/queries/totalBrands'
 import {} from 'src/api/graphql/master/queries/masterPage'
-import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { GetServerSideProps } from 'next'
-import { getStoreData, getStoreEvent } from 'src/store/utils'
-import useAuthStore from 'src/store/authStore'
-import { useEffect } from 'react'
-import { authConfig, defaultValues } from 'src/api/authConfig'
+import { defaultValues } from 'src/api/authConfig'
 import { ICity } from 'src/types'
-import { getCookie } from 'cookies-next'
-import { getSearchCity } from 'src/api/graphql/city/getSearchCity'
 import { fetchCity } from 'src/api/utils/fetchCity'
 import { getTotalCount } from 'src/utils/getTotalCount'
 import { ITotalCount } from './salon'
-import { getProductCategories } from 'src/api/graphql/product/queries/getProductCategories'
-import { useQuery } from '@apollo/client'
 import { Nullable } from 'src/types/common'
 
 interface Props {
@@ -38,9 +30,6 @@ export default function Main({
   totalCount,
   cityData,
 }: Props) {
-  const data = useAuthStore(getStoreData)
-  console.log(data)
-
   return (
     <>
       {/* <Head>
