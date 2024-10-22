@@ -54,13 +54,13 @@ const MasterCabinet: FC<Props> = ({ user, requests, cities }) => {
   )
   let salesQuantity = 0
   user.owner.salons?.forEach(e => {
-    salesQuantity += e.promotions.length
+    e.promotions ? (salesQuantity += e.promotions.length) : null
   })
   user.owner.masters?.forEach(e => {
-    salesQuantity += e.promotions.length
+    e.promotions ? (salesQuantity += e.promotions.length) : null
   })
   user.owner.brands?.forEach(e => {
-    salesQuantity += e.promotions.length
+    e.promotions ? (salesQuantity += e.promotions.length) : null
   })
 
   const { mobile, desktop } = useMemo(

@@ -58,7 +58,7 @@ export interface ISalon {
   reviews: IReview[]
   workingHours: IWorkingHours[]
   contactPersonWH: IWorkingHours[]
-  promotions: IPromotions[]
+  promotions: IPromotions[] | null
   videoReviewUrl: string | null
 }
 
