@@ -43,7 +43,7 @@ const VacancyPage = ({ vacancy, beautyCategories, beautyAllContent }) => {
   console.log('vacancy', vacancy)
 
   const photoUrl =
-    vacancy?.cover && vacancy?.cover[0]?.url ? vacancy.cover[0].url : ''
+    vacancy?.cover && vacancy?.cover?.url ? vacancy.cover.url : ''
 
   const originInfo = item => {
     switch (item?.vacancy_type?.title || 'SALON') {

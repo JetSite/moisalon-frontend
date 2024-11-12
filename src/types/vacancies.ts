@@ -19,7 +19,7 @@ export interface IVacancy {
   requirements: string
   amountFrom: number
   amountTo: number
-  cover: IPhoto[]
+  cover: IPhoto
   deleted: boolean
   vacancy_type: IVacancyType
   brand: IBrand | null

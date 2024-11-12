@@ -101,20 +101,20 @@ const CitySelect: FC<Props> = ({
     },
   })
 
-  const outsideClick = (ref: RefObject<HTMLDivElement>) => {
-    useEffect(() => {
-      const clickOutsideHandler = (e: MouseEvent) => {
-        if (ref.current && !ref.current.contains(e.target as Node)) {
-          setShowCitySelect(false)
-        }
+  useEffect(() => {
+    const clickOutsideHandler = (e: MouseEvent) => {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(e.target as Node)
+      ) {
+        setShowCitySelect(false)
       }
-      document.addEventListener('mousedown', clickOutsideHandler)
-      return () => {
-        document.removeEventListener('mousedown', clickOutsideHandler)
-      }
-    }, [ref])
-  }
-  outsideClick(wrapperRef)
+    }
+    document.addEventListener('mousedown', clickOutsideHandler)
+    return () => {
+      document.removeEventListener('mousedown', clickOutsideHandler)
+    }
+  }, [wrapperRef])
 
   const closeHandler = () => {
     setShowCitySelect(false)

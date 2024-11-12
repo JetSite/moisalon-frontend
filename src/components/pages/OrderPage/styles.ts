@@ -162,7 +162,7 @@ export const ItemChecked = styled.div`
   }
 `
 
-export const Image = styled.div`
+export const ImageWrapper = styled.div`
   border: 1px solid #ededed;
   border-radius: 5px;
   height: 88px;

@@ -141,6 +141,7 @@ const Contacts: FC<Props> = ({
                     e =>
                       e.s_network.logo?.url && (
                         <Styled.Social
+                          key={e.id}
                           icon={
                             e.s_network.logo?.url
                               ? PHOTO_URL + e.s_network.logo?.url

@@ -70,8 +70,8 @@ const Salon: FC<Props> = ({
   const [photosArray, setPhotosArray] = useState<IPhoto[]>(salon?.photos || [])
   const { user } = useAuthStore(getStoreData)
   const [isPortfolioEditing, setIsPortfolioEditing] = useState<boolean>(false)
-  const [services, setServices] = useState<IRawService[]>(salon?.services || [])
-  const [servicesM, setServicesM] = useState<IRawService[]>(
+  const [services, setServices] = useState<IServices[]>(salon?.services || [])
+  const [servicesM, setServicesM] = useState<IServices[]>(
     salon?.servicesM || [],
   )
   const servicesData = getServicesByCategory(services)

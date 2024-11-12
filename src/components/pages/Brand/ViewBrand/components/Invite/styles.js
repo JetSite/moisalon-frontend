@@ -29,7 +29,7 @@ export const Wrapper = styled.div`
   }
 `
 
-export const Image = styled.div`
+export const ImageRihgt = styled.div`
   position: absolute;
   left: 0;
   bottom: 0;

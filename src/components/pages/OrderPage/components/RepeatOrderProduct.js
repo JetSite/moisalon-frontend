@@ -3,7 +3,7 @@ import { productSearch } from '../../../../_graphql-legacy/product'
 
 import {
   ItemChecked,
-  Image,
+  ImageWrapper,
   ItemCheckedRight,
   Name,
   Bottom,
@@ -18,7 +18,7 @@ const RepeatOrderProduct = ({ product }) => {
   })
   return (
     <ItemChecked>
-      <Image>
+      <ImageWrapper>
         <img
           src={
             data?.product?.photoIds[0]
@@ -27,7 +27,7 @@ const RepeatOrderProduct = ({ product }) => {
           }
           alt="logo"
         />
-      </Image>
+      </ImageWrapper>
       <ItemCheckedRight>
         <Name>{data?.product?.title}</Name>
         <Bottom>

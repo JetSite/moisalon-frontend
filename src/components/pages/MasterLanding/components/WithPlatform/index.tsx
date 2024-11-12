@@ -148,7 +148,7 @@ const WithPlatform = () => {
       <Content>
         <Left>
           <ImageWrap>
-            <Image src="/master-landing-man.png" />
+            <Image alt="master man" src="/master-landing-man.png" />
           </ImageWrap>
         </Left>
         <Right>

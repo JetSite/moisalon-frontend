@@ -16,7 +16,7 @@ export const Payments: FC<Props> = ({ workplace }) => {
               <Styled.InfoItem>
                 <Styled.InfoItemTitle>Стоимость</Styled.InfoItemTitle>
                 {workplace.rentalPeriod?.map(period => (
-                  <Styled.PriceLine>
+                  <Styled.PriceLine key={period.id}>
                     <Styled.Time>{period.rental_period.title}</Styled.Time>
                     <Styled.Dotted />
                     <Styled.Price>
@@ -30,7 +30,7 @@ export const Payments: FC<Props> = ({ workplace }) => {
               <Styled.InfoItem>
                 <Styled.InfoItemTitle>Способ оплаты</Styled.InfoItemTitle>
                 {workplace.payment_methods.map(method => (
-                  <Styled.Item>
+                  <Styled.Item key={method.id}>
                     <Styled.IconCircle src="/service-rent-icon.svg" />
                     <Styled.Text>{method.title}</Styled.Text>
                   </Styled.Item>

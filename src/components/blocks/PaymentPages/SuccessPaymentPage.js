@@ -111,7 +111,7 @@ const SuccessPaymentPage = () => {
           <Content>
             {mobileMedia ? <Title>СПАСИБО!</Title> : null}
             <Left>
-              <img src="/successPopup.svg" alt="image"></img>
+              <img src="/successPopup.svg" alt="image" />
             </Left>
             <Right>
               {!mobileMedia ? <Title>Спасибо за ваш заказ!</Title> : null}

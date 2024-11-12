@@ -248,5 +248,6 @@ const AutosuggestField: FC<AutosuggestFieldProps> = ({
     </div>
   )
 }
+InputComponent.displayName = 'InputComponent'
 
 export default AutosuggestField

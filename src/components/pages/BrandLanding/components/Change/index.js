@@ -83,7 +83,7 @@ const Change = ({ setOpenPopup }) => {
           </Left>
           <Right>
             <ImageWrap>
-              <Image src="/master-landing-login.jpg" />
+              <Image alt="login" src="/master-landing-login.jpg" />
             </ImageWrap>
           </Right>
         </BottomContent>

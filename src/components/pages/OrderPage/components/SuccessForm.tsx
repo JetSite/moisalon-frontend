@@ -12,7 +12,7 @@ import {
   ItemChecked,
   Text,
   ContentWrap,
-  Image,
+  ImageWrapper,
   ItemCheckedRight,
   Name,
   Bottom,
@@ -121,7 +121,7 @@ const SuccessForm: FC<IProps> = ({
               cart.cartContent.map(cartItem => {
                 return (
                   <ItemChecked key={cartItem.product.id}>
-                    <Image>
+                    <ImageWrapper>
                       <img
                         src={
                           cartItem?.product?.cover?.url
@@ -130,7 +130,7 @@ const SuccessForm: FC<IProps> = ({
                         }
                         alt="logo"
                       />
-                    </Image>
+                    </ImageWrapper>
                     <ItemCheckedRight>
                       <Name>{cartItem.product.name}</Name>
                       <Bottom>

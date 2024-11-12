@@ -27,7 +27,7 @@ interface Props {
   isOwner: boolean
   entries: IMaster | ISalon
   allServices: IServiceCategory[]
-  setServices: Dispatch<SetStateAction<IRawService[]>>
+  setServices: Dispatch<SetStateAction<IServices[]>>
   masterPage?: boolean
   type?: 'master' | 'salon'
   serviceType?: 'default' | 'forMaster'

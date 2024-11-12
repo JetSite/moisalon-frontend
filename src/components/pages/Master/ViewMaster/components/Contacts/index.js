@@ -89,7 +89,7 @@ const Contacts = ({
               {socials &&
                 !!socials.length &&
                 socials.map(social => (
-                  <noindex>
+                  <noindex key={social.s_network.title}>
                     <a
                       href={social.link}
                       target="_blank"

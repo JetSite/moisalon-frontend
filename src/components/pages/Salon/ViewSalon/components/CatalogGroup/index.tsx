@@ -43,6 +43,10 @@ interface Props {
 export const CatalogGroup: FC<Props> = ({ group, withPrice = false }) => {
   const [collapsed, setCollapsed] = useState(false)
 
+  useEffect(() => {
+    setCollapsed(true)
+  }, [])
+
   if (group?.services === undefined) {
     return null
   }
@@ -62,10 +66,6 @@ export const CatalogGroup: FC<Props> = ({ group, withPrice = false }) => {
   const handleChange = () => {
     setCollapsed(!collapsed)
   }
-
-  useEffect(() => {
-    setCollapsed(true)
-  }, [])
 
   return (
     <Wrapper>

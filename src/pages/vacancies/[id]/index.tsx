@@ -4,8 +4,22 @@ import { getVacancyById } from 'src/api/graphql/vacancy/queries/getVacancyById'
 import { getFeedCategories } from 'src/api/graphql/feed/queries/getFeedCategories'
 import { getFeeds } from 'src/api/graphql/feed/queries/getFeeds'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { FC } from 'react'
+import { GetServerSideProps, NextPage } from 'next'
+import { IVacancy } from 'src/types/vacancies'
+import { Nullable } from 'src/types/common'
 
-const VacancyDetailed = ({ vacancy, beautyCategories, beautyAllContent }) => {
+interface Props {
+  vacancy: IVacancy
+  beautyCategories: any
+  beautyAllContent: any
+}
+
+const VacancyDetailed: NextPage<Props> = ({
+  vacancy,
+  beautyCategories,
+  beautyAllContent,
+}) => {
   return (
     <VacancyPage
       vacancy={vacancy}
@@ -15,13 +29,15 @@ const VacancyDetailed = ({ vacancy, beautyCategories, beautyAllContent }) => {
   )
 }
 
-export async function getServerSideProps({ params }) {
+export const getServerSideProps: GetServerSideProps<
+  Nullable<Props>
+> = async ctx => {
   const apolloClient = initializeApollo()
 
   const data = await Promise.all([
     apolloClient.query({
       query: getVacancyById,
-      variables: { id: params.id },
+      variables: { id: ctx.params?.id },
     }),
     apolloClient.query({
       query: getFeedCategories,
@@ -31,11 +47,11 @@ export async function getServerSideProps({ params }) {
     }),
   ])
 
-  const vacancyNormalised = flattenStrapiResponse(data[0]?.data?.vacancy)
+  const vacancy = flattenStrapiResponse(data[0]?.data?.vacancy) as IVacancy
 
   return addApolloState(apolloClient, {
     props: {
-      vacancy: vacancyNormalised,
+      vacancy,
       beautyCategories: data[1]?.data?.feedCategories,
       beautyAllContent: data[2]?.data?.feeds,
     },
