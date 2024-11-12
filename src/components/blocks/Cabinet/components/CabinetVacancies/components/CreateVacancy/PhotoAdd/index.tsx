@@ -13,6 +13,7 @@ import { UPLOAD } from 'src/api/graphql/common/upload'
 import imageCompression from 'browser-image-compression'
 import { IPromotionsType } from '../../../../CabinetSales'
 import { IID } from 'src/types/common'
+import { IPhoto } from 'src/types'
 
 const Photo = styled.div`
   width: 100%;
@@ -62,7 +63,7 @@ const Image = styled.img`
 `
 
 interface IPhotoAdd {
-  onAdd: () => void
+  onAdd?: (data: IPhoto) => void
   type?: IPromotionsType
   hover: boolean
   photoId: IID

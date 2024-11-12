@@ -110,7 +110,7 @@ const RentalPeriod: FC<Props> = ({ rentalPeriods, initialPeriod }) => {
     <Wrapper>
       <TopCheckboxes showRentalPrices={showRentalPrices}>
         {rentalPeriods.map(period => (
-          <FieldsWrapper>
+          <FieldsWrapper key={period.title}>
             <FieldWrapCheckbox>
               <Field
                 tabIndex="-1"

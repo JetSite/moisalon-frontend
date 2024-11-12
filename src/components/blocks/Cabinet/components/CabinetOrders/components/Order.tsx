@@ -99,7 +99,10 @@ const Order: FC<IProps> = ({ order }) => {
           {order.cartContent?.map(
             cart =>
               cart.product.brand.phones.length && (
-                <BrandContacts phone={cart.product.brand.phones[0]} />
+                <BrandContacts
+                  key={cart.product.id}
+                  phone={cart.product.brand.phones[0]}
+                />
               ),
           )}
         </Styled.DetailsWrapper>
@@ -157,7 +160,10 @@ const Order: FC<IProps> = ({ order }) => {
               {order.cartContent?.map(
                 cart =>
                   cart.product.brand.phones.length && (
-                    <BrandContacts phone={cart.product.brand.phones[0]} />
+                    <BrandContacts
+                      key={cart.product.id}
+                      phone={cart.product.brand.phones[0]}
+                    />
                   ),
               )}
             </Styled.DetailsWrapper>

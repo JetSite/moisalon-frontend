@@ -30,7 +30,7 @@ interface Props {
   isOwner: boolean
   entries: IMaster | ISalon
   allServices: IServiceCategory[]
-  setServices: Dispatch<SetStateAction<IRawService[]>>
+  setServices: Dispatch<SetStateAction<IServices[]>>
   type?: 'master' | 'salon'
   serviceType?: 'default' | 'forMaster'
   title?: string

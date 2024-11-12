@@ -1,6 +1,5 @@
 import styled from 'styled-components'
-import { useMutation } from '@apollo/client'
-import { useCallback, useState } from 'react'
+import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import AutoFocusedForm from '../../../../../Form/AutoFocusedForm'
 import { FieldStyled } from '../../../CabinetForm/styled'
 import { TextField } from '../../../../../Form'
@@ -9,12 +8,25 @@ import Error from '../../../../../Form/Error'
 import { laptopBreakpoint } from '../../../../../../../styles/variables'
 import Button from '../../../../../../ui/Button'
 import Vacancy from '../../../../../Vacancy'
-import { createVacancyMutation } from '../../../../../../../_graphql-legacy/vacancies/createVacancyMutation'
 import Popup from '../../../../../../ui/Popup'
 import { IPhoto } from 'src/types'
-import { CREATE_VACANCY } from 'src/api/graphql/vacancy/mutations/createVacancy'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
+import { IPromotionsType } from '../../../CabinetSales'
+import { IBrand } from 'src/types/brands'
+import { IMaster } from 'src/types/masters'
+import { ISalon } from 'src/types/salon'
+import { ISetState } from 'src/types/common'
+import { IUseVacancyMutateResult } from '../../utils/useVacancyMutate'
+import { IVacancy } from 'src/types/vacancies'
+import { parseFieldsToString } from 'src/utils/newUtils/formsHelpers'
+import {
+  IVacancyInitialForm,
+  IVacancyInput,
+  getVacancyInitialValues,
+} from '../../utils/vacancyFormValues'
+import { FormApi } from 'final-form'
+import Checkbox from 'src/components/blocks/Form/Checkbox'
 
 const FieldWrap = styled.div`
   margin-bottom: 14px;
@@ -29,123 +41,104 @@ const ButtonWrap = styled.div`
   }
 `
 
-const CreateVacancy = ({ setCreateVacancy, type, activeProfile, refetch }) => {
+interface Props
+  extends Pick<
+    IUseVacancyMutateResult,
+    'handleCreateOrUpdate' | 'setErrors' | 'errors'
+  > {
+  type?: IPromotionsType
+  activeProfile: ISalon | IMaster | IBrand
+  vacancy: IVacancy | null
+  setVacancy: ISetState<IVacancy | null>
+  loading: boolean
+  setCreateVacancy: ISetState<boolean>
+}
+
+const CreateVacancy: FC<Props> = ({
+  type,
+  activeProfile,
+  errors,
+  setErrors,
+  vacancy,
+  setVacancy,
+  loading,
+  handleCreateOrUpdate,
+  setCreateVacancy,
+}) => {
   const { user } = useAuthStore(getStoreData)
-  const [errors, setErrors] = useState(null)
-  const [loading, setLoading] = useState(false)
-  const [photo, setPhoto] = useState<IPhoto | null>(null)
-  const [published, setPublished] = useState(false)
-  const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
+  const [photo, setPhoto] = useState<IPhoto | null>(vacancy?.cover || null)
   const [openPopup, setOpenPopup] = useState(false)
+  const [publish, setPublish] = useState(false)
+  const formRef = useRef<FormApi<IVacancyInitialForm>>()
+  useEffect(() => {
+    formRef.current && formRef.current.change('cover', photo)
+    formRef.current && formRef.current.change('publish', publish)
+  }, [photo, formRef.current, publish])
 
-  console.log('activeProfile', activeProfile)
-  console.log('type', type)
-
-  const [createVacancy] = useMutation(CREATE_VACANCY, {
-    onError: error => {
-      const errorMessages = error.graphQLErrors.map(e => e.message)
-      setLoading(false)
-      setErrors(errorMessages)
-      setErrorPopupOpen(true)
-    },
-    onCompleted: async data => {
-      setLoading(false)
-      await refetch({
-        variables: {
-          originId: activeProfile.id,
-        },
-      })
-      setOpenPopup(true)
-    },
-  })
+  const initialValues = useMemo(
+    () => getVacancyInitialValues({ vacancy }),
+    [vacancy],
+  )
 
   const onSubmit = useCallback(
-    async values => {
-      if (!photo) {
+    async (values: IVacancyInitialForm) => {
+      const cover = photo?.id || values.cover?.id
+      if (!cover) {
         setErrors(['Необходимо добавить фото'])
-        setErrorPopupOpen(true)
         return
       }
-      setLoading(true)
-      let inputData: any = {
+
+      const input: IVacancyInput = {
         title: values.title,
-        cover: photo.id,
-        fullDescription: values.desc,
-        shortDescription: values.short_desc,
+        cover: cover,
+        fullDescription: values.fullDescription,
+        shortDescription: values.shortDescription,
         user: user?.info.id,
         amountFrom: +values.amountFrom,
         amountTo: +values.amountTo,
+        [type as 'brand' | 'salon']: activeProfile.id,
+        ...{ publishedAt: values.publish ? new Date().toISOString() : null },
       }
-      if (type === 'salon') {
-        inputData = {
-          ...inputData,
-          salon: activeProfile.id,
-        }
-      }
-      if (type === 'master') {
-        inputData = {
-          ...inputData,
-          master: activeProfile.id,
-        }
-      }
-      if (type === 'brand') {
-        inputData = {
-          ...inputData,
-          brand: activeProfile.id,
-        }
-      }
-      createVacancy({
-        variables: {
-          input: {
-            ...inputData
-          },
-        },
-      })
+
+      handleCreateOrUpdate(input, vacancy?.id)
+      !publish && setOpenPopup(true)
+      !publish && setVacancy(null)
+      !publish && setCreateVacancy(false)
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [photo, published],
+    [photo],
   )
-
-  console.log('photoId', photo)
-
-  const onAdd = (photo: IPhoto) => {
-    setPhoto(photo)
-  }
 
   const closePopup = () => {
     setOpenPopup(false)
+    setVacancy(null)
     setCreateVacancy(false)
   }
 
+  console.log(publish)
+
   return (
     <>
-      <AutoFocusedForm
+      <AutoFocusedForm<IVacancyInitialForm>
         onSubmit={onSubmit}
+        initialValues={initialValues}
         subscription={{ values: true }}
-        render={({ handleSubmit, pristine, values }) => {
+        render={({ handleSubmit, pristine, values, form }) => {
+          formRef.current = form
           return (
             <form onSubmit={handleSubmit}>
-              <div style={{ marginBottom: 20 }}>
+              <ul style={{ marginBottom: 20 }}>
                 <Vacancy
-                  photos={photo ? [photo] : null}
-                  onAdd={onAdd}
-                  amountFrom={values.amountFrom}
-                  amountTo={values.amountTo}
+                  photo={photo}
+                  setPhoto={setPhoto}
                   type={type}
                   create
-                  title={values.title}
-                  name={`${type === 'master'
-                    ? 'Мастер'
-                    : type === 'salon'
-                      ? 'Салон'
-                      : type === 'brand'
-                        ? 'Бренд'
-                        : ''
-                    } ${activeProfile?.name}`}
+                  item={values as unknown as IVacancy}
                 />
-              </div>
+              </ul>
               <FieldWrap>
                 <FieldStyled
+                  parse={parseFieldsToString}
                   name="title"
                   component={TextField}
                   label="Название вакансии"
@@ -155,7 +148,8 @@ const CreateVacancy = ({ setCreateVacancy, type, activeProfile, refetch }) => {
               </FieldWrap>
               <FieldWrap>
                 <FieldStyled
-                  name="short_desc"
+                  parse={parseFieldsToString}
+                  name="shortDescription"
                   component={TextField}
                   label="Краткое описание вакансии"
                   validate={required}
@@ -166,7 +160,8 @@ const CreateVacancy = ({ setCreateVacancy, type, activeProfile, refetch }) => {
               </FieldWrap>
               <FieldWrap>
                 <FieldStyled
-                  name="desc"
+                  parse={parseFieldsToString}
+                  name="fullDescription"
                   component={TextField}
                   label="Описание вакансии"
                   validate={required}
@@ -177,6 +172,7 @@ const CreateVacancy = ({ setCreateVacancy, type, activeProfile, refetch }) => {
               </FieldWrap>
               <FieldWrap>
                 <FieldStyled
+                  parse={parseFieldsToString}
                   name="amountFrom"
                   component={TextField}
                   type="number"
@@ -188,6 +184,7 @@ const CreateVacancy = ({ setCreateVacancy, type, activeProfile, refetch }) => {
               </FieldWrap>
               <FieldWrap>
                 <FieldStyled
+                  parse={parseFieldsToString}
                   name="amountTo"
                   component={TextField}
                   type="number"
@@ -197,25 +194,21 @@ const CreateVacancy = ({ setCreateVacancy, type, activeProfile, refetch }) => {
                   maxLength={15}
                 />
               </FieldWrap>
-              {/* <FieldWrap>
+              <FieldWrap>
                 <Checkbox
                   name="isPublished"
                   label="Опубликовать вакансию"
-                  checked={published}
-                  setChecked={setPublished}
+                  checked={publish}
+                  setChecked={setPublish}
                 />
-              </FieldWrap> */}
-              <Error
-                errors={errors}
-                isOpen={isErrorPopupOpen}
-                setOpen={setErrorPopupOpen}
-              />
+              </FieldWrap>
+              <Error errors={errors} isOpen={!!errors} setOpen={setErrors} />
               <ButtonWrap>
                 <Button
                   variant="red"
                   size="width100"
                   type="submit"
-                  disabled={pristine || loading}
+                  disabled={(pristine && !publish) || loading}
                 >
                   {loading ? 'Подождите' : 'Сохранить'}
                 </Button>
@@ -224,7 +217,7 @@ const CreateVacancy = ({ setCreateVacancy, type, activeProfile, refetch }) => {
                   size="width100"
                   type="submit"
                   style={{ marginTop: 20 }}
-                  onClick={() => setCreateVacancy(false)}
+                  onClick={() => setVacancy(null)}
                 >
                   Отменить
                 </Button>

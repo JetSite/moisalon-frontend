@@ -51,7 +51,7 @@ export const Wrapper = styled.div`
   }
 `
 
-export const Image = styled.div`
+export const ImageWoman = styled.div`
   position: absolute;
   left: 80px;
   bottom: -50px;

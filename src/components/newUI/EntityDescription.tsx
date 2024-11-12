@@ -40,7 +40,8 @@ interface Props {
 }
 
 // Функция для обработки переносов строк
-const parseNewLines = (text: string) => {
+const parseNewLines = (text: string | null) => {
+  if (!text) return null
   return text.split('\n').map((str, index) => (
     <span key={index}>
       {str}
@@ -63,11 +64,9 @@ const EntityDescription: FC<Props> = ({ description }) => {
     }
   }, [description])
 
-  if (!description) return null
-
-  const [renderDescription, setRenderDescription] = useState<JSX.Element[]>(
-    parseNewLines(description),
-  )
+  const [renderDescription, setRenderDescription] = useState<
+    JSX.Element[] | null
+  >(parseNewLines(description))
 
   useEffect(() => {
     setRenderDescription(parseNewLines(description))
@@ -76,6 +75,8 @@ const EntityDescription: FC<Props> = ({ description }) => {
   const handleChange = () => {
     setCollapsed(!collapsed)
   }
+
+  if (!description) return null
 
   return (
     <>

@@ -392,7 +392,7 @@ const SalonMap: FC<ISalonMapProps> = ({
               <>
                 <Styled.MapItems>
                   {filteredSalons?.map(salon => (
-                    <Styled.WrapCard>
+                    <Styled.WrapCard key={salon.name}>
                       <Link
                         href={
                           rent
@@ -421,7 +421,7 @@ const SalonMap: FC<ISalonMapProps> = ({
               <>
                 <Styled.MapItems>
                   {salonsList?.map(salon => (
-                    <Styled.WrapCard>
+                    <Styled.WrapCard key={salon.name}>
                       <Link
                         href={
                           rent

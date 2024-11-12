@@ -52,7 +52,7 @@ const Contacts: FC<Props> = ({
             {phones && phones?.length ? (
               openPhone ? (
                 phones.map(phone => (
-                  <Info>
+                  <Info key={phone.id}>
                     <InfoTitle>Телефон:</InfoTitle>
                     <InfoDescription>
                       <a href={`tel:${phone.phoneNumber}`}>

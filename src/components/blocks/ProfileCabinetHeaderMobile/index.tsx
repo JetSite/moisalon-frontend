@@ -8,21 +8,12 @@ import {
   Subtitle,
   ProfilesButton,
   Button,
-  Item,
-  Container,
-  Avatar,
-  Content,
-  Name,
-  Type,
   Wrap,
 } from './styles'
-import Link from 'next/link'
-import { cyrToTranslit } from '../../../utils/translit'
 import { PHOTO_URL } from '../../../api/variables'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
-import { Dispatch, FC, MouseEvent, SetStateAction, useState } from 'react'
-import { ITab } from 'src/components/ui/TabsSlider'
+import { FC, MouseEvent, useState } from 'react'
 import { IMasterCabinetTab } from 'src/components/pages/Master/MasterCabinet'
 import { IUser } from 'src/types/me'
 import { ISetState } from 'src/types/common'
@@ -49,7 +40,6 @@ const CabinetHeaderMobile: FC<Props> = ({
   toggle,
   setToggle,
 }) => {
-  if (!user || !user.owner) return null
   const { salons, masters, brands } = user.owner
   const { city } = useAuthStore(getStoreData)
 
@@ -70,6 +60,8 @@ const CabinetHeaderMobile: FC<Props> = ({
     setDeleteItemType(type)
     setOpenPopup(true)
   }
+
+  if (!user || !user.owner) return null
 
   return (
     <Wrapper>

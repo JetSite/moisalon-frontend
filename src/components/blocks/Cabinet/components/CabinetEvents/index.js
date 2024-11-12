@@ -18,6 +18,7 @@ const CabinetEventsList = ({ events, loading }) => {
         <>
           {events?.map(item => (
             <Event
+              key={item.title}
               title={item.title}
               // name={`${
               //   item?.origin.toLowerCase() === "master"

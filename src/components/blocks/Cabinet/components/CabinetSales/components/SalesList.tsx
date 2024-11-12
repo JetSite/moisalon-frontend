@@ -1,27 +1,21 @@
 import { FC, MouseEvent, useState } from 'react'
 import { IPromotionsType } from '..'
 import { IPromotions } from 'src/types/promotions'
-import Sale, { ISaleDeleteHandler, ISaleHandler } from '../../../../Sale'
+import Sale, { IEntityDeleteHandler, IEntityHandler } from '../../../../Sale'
 import * as Styled from '../styles'
-import {
-  IApolloLazyRefetch,
-  IApolloRefetch,
-  IID,
-  ISetState,
-} from 'src/types/common'
+import { IApolloLazyRefetch, IID, ISetState } from 'src/types/common'
 import Button from 'src/components/ui/Button'
-import { parseToNumber } from 'src/utils/newUtils/common'
 import { IPagination } from 'src/types'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import Popup from 'src/components/ui/Popup'
 import RotatingLoader from 'src/components/ui/RotatingLoader'
 
-interface PropsList {
+export interface SalesListProps {
   sales: IPromotions[]
   type: IPromotionsType
   loading: boolean
-  handleClick?: ISaleHandler
-  handleDelete?: ISaleDeleteHandler
+  handleClick?: IEntityHandler
+  handleDelete?: IEntityDeleteHandler
   refetch: IApolloLazyRefetch
   searchID: IID
   setSales: ISetState<IPromotions[]>
@@ -29,7 +23,7 @@ interface PropsList {
   setPagination: ISetState<IPagination | null>
   popupText?: string
 }
-export const SalesList: FC<PropsList> = ({
+export const SalesList: FC<SalesListProps> = ({
   sales,
   type,
   loading,
@@ -72,7 +66,7 @@ export const SalesList: FC<PropsList> = ({
           <Styled.SalesWrapper as="ul">
             {sales?.map(item => (
               <Sale
-                handleDelete={(e, id) => {
+                handleDelete={id => {
                   setOpenPopup(id)
                 }}
                 handleClick={handleClick}
@@ -113,7 +107,7 @@ export const SalesList: FC<PropsList> = ({
         <Button
           style={{ marginTop: 20 }}
           onClick={e => {
-            openPopup && handleDelete && handleDelete(e, openPopup)
+            openPopup && handleDelete && handleDelete(openPopup)
             setOpenPopup(null)
           }}
           variant="gray"

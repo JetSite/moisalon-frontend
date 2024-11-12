@@ -46,6 +46,8 @@ const PhotoArray: FC<Props> = props => {
     onAdd,
   } = props
 
+  console.log('first')
+
   const photoList = photos?.map(photo => {
     return (
       <Grid item key={photo.id}>

@@ -91,6 +91,7 @@ export const usePromotionMutate: IUseSaleMutate = ({
             id: sale.id,
             input: {
               ...input,
+              status: buttonPublish ? '3' : '2',
               publishedAt: buttonPublish ? new Date().toISOString() : null,
             },
           },
@@ -102,6 +103,7 @@ export const usePromotionMutate: IUseSaleMutate = ({
             input: {
               ...input,
               ...valueType,
+              status: buttonPublish ? '3' : '2',
               publishedAt: buttonPublish ? new Date().toISOString() : null,
             },
             onCompleted,

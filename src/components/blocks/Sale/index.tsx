@@ -153,19 +153,16 @@ const PromoText = styled.p`
   }
 `
 
-export type ISaleHandler = (e: MouseEvent<HTMLLIElement>) => void
+export type IEntityHandler = (e: MouseEvent<HTMLLIElement>) => void
 
-export type ISaleDeleteHandler = (
-  e: MouseEvent<HTMLButtonElement>,
-  id: IID,
-) => void
+export type IEntityDeleteHandler = (id: IID) => void
 
 interface SaleProps extends Partial<Omit<IPhotoAddProps, 'hover'>> {
   create?: boolean
   type?: IPromotionsType
   item: IPromotions
-  handleClick?: ISaleHandler
-  handleDelete?: ISaleDeleteHandler
+  handleClick?: IEntityHandler
+  handleDelete?: IEntityDeleteHandler
   noHover?: boolean
 }
 
@@ -200,9 +197,10 @@ const Sale: FC<SaleProps> = ({
           <Image alt="photo" src={photoSrc} />
           {imageHover ? (
             <DeleteIcon
+              id={item.id}
               onClick={e => {
                 e.stopPropagation()
-                handleDelete && handleDelete(e, item.id)
+                handleDelete && handleDelete(item.id)
               }}
             />
           ) : null}

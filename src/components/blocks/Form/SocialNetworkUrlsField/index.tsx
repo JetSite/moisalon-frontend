@@ -17,7 +17,7 @@ const SocialNetworkUrlsField: FC<Props> = ({ input, arrayFields }) => {
   return (
     <>
       {arrayFields.map(field => (
-        <FieldWrap>
+        <FieldWrap key={field.id}>
           <Field
             name={`${name}.${field.slug}`}
             component={TextField}

@@ -1,7 +1,7 @@
 import { laptopBreakpoint, red } from 'src/styles/variables'
 import styled from 'styled-components'
 
-export const VacancyWrap = styled.div`
+export const VacancyWrap = styled.li`
   width: 218px;
   min-height: 346px;
   padding: 22px 27px 25px 27px;
@@ -98,7 +98,18 @@ export const VacancyAmount = styled.div`
   margin-bottom: 10px;
 `
 
-export const DeleteVacancyBtn = styled(VacancyAmount)`
+export const DeleteVacancyBtn = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 32px;
+  background: ${red};
+  border-radius: 50px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 10px;
   cursor: pointer;
 
   &:hover {

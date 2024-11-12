@@ -129,7 +129,7 @@ const RequestItem: FC<Props> = ({
           <Styled.Name>{userName}</Styled.Name>
           <Styled.Spec>
             {specializationsMaster.map((name, i) => (
-              <span>
+              <span key={name}>
                 {i + 1 === specializationsMaster.length ? name : name + ', '}
               </span>
             ))}
@@ -147,7 +147,7 @@ const RequestItem: FC<Props> = ({
           </Styled.PositionWrap>
           <Styled.Spec>
             {specializationsWorkplace.map((name, i) => (
-              <span>
+              <span key={name}>
                 {i + 1 === specializationsWorkplace.length ? name : name + ', '}
               </span>
             ))}

@@ -73,6 +73,7 @@ const DictionaryItem: FC<Props> = ({ items, group, onChangeDefault }) => {
         <>
           {items?.map((item, i) => (
             <Input
+              key={item.id}
               check={i === 0}
               onClick={() => {
                 onChangeDefault(item, i)

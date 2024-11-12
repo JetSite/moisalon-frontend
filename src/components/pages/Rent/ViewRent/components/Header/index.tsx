@@ -279,7 +279,10 @@ const Header: FC<Props> = ({ isOwner, salon, setActiveTab }) => {
           </Info>
           <ImageContent>
             {salon?.photos[0]?.url && (
-              <Image src={PHOTO_URL + salon?.photos[0]?.url} />
+              <Image
+                alt={salon.photos[0].name}
+                src={PHOTO_URL + salon?.photos[0]?.url}
+              />
             )}
             <noindex>
               <OnlineBookingButton salon={salon}>

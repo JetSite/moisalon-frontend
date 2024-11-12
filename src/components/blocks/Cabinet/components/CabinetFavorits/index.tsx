@@ -44,8 +44,6 @@ const CabinetFavorits: FC = () => {
 
     setFavorites(JSON.parse(localStorage.getItem('favorites') || '{}'))
   }
-  if (!user || !favorites) return null
-
   const { salons, brands, masters, products, educations } =
     favorites as IUserThings
 
@@ -71,6 +69,8 @@ const CabinetFavorits: FC = () => {
       return
     }
   }, [])
+
+  if (!user || !favorites) return null
 
   return (
     <Wrapper>
@@ -114,7 +114,11 @@ const CabinetFavorits: FC = () => {
             />
           ) : null}
           {activeTab === 'products' && !mobileMedia ? (
-            <GoodsFavorites handleDeleted={handleDeleted} cabinet />
+            <GoodsFavorites
+              setActiveTab={setActiveTab}
+              handleDeleted={handleDeleted}
+              cabinet
+            />
           ) : null}
           {activeTab === 'educations' && !mobileMedia ? (
             <></>

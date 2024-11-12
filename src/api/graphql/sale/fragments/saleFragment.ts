@@ -12,6 +12,7 @@ export const saleFragment = `
             shortDescription
             fullDescription
             promoCode
+            publishedAt
             cover {
                 ${imageInfo}
             }

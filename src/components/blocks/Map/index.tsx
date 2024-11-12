@@ -8,7 +8,6 @@ interface Props {
 }
 
 const MapBlock: FC<Props> = ({ address, view }) => {
-  if (!address) return <></>
   const mapRef = useRef<YandexMap | null>(null)
   let center = [55.751267, 37.621226]
   if (
@@ -30,6 +29,8 @@ const MapBlock: FC<Props> = ({ address, view }) => {
       }
     }
   }, [address, view])
+
+  if (!address) return <></>
 
   return (
     <YMaps>

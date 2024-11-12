@@ -1,5 +1,13 @@
 import styled from 'styled-components'
-import { FC, FormEvent, useCallback, useEffect, useMemo, useState } from 'react'
+import {
+  FC,
+  FormEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import AutoFocusedForm from '../../../../Form/AutoFocusedForm'
 import { FieldStyled } from '../../CabinetForm/styled'
 import { TextField } from '../../../../Form'
@@ -23,6 +31,8 @@ import {
 import removeUnchangedFields from 'src/utils/newUtils/removeUnchangedFields'
 import { usePromotionMutate } from '../utils/usePromotionMutate'
 import { parseFieldsToString } from 'src/utils/newUtils/formsHelpers'
+import { useForm } from 'react-final-form'
+import { FormApi } from 'final-form'
 
 const FieldWrap = styled.div`
   margin-bottom: 14px;
@@ -59,7 +69,7 @@ const ButtonWrap = styled.div`
   }
 `
 
-interface Props {
+export interface CreateSaleProps {
   type: IPromotionsType
   activeProfile: ISalon | IBrand | IMaster
   setCreateSale: ISetState<boolean>
@@ -67,7 +77,7 @@ interface Props {
   setSales: ISetState<IPromotions[]>
 }
 
-const CreateSale: FC<Props> = ({
+const CreateSale: FC<CreateSaleProps> = ({
   setCreateSale,
   type,
   activeProfile,
@@ -84,6 +94,11 @@ const CreateSale: FC<Props> = ({
     setErrorPopupOpen,
     setSales,
   })
+  const formRef = useRef<FormApi<IInitialValuesSaleForm>>()
+  useEffect(() => {
+    formRef.current && formRef.current.change('cover', photo)
+  }, [photo, formRef.current])
+
   const initialValues = useMemo(
     () =>
       getInitialValuesSaleForm({
@@ -121,7 +136,7 @@ const CreateSale: FC<Props> = ({
         valueType: { [type as string]: activeProfile.id },
         sale,
         buttonPublish,
-        promotions: activeProfile.promotions,
+        promotions: activeProfile.promotions || [],
       })
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -140,9 +155,7 @@ const CreateSale: FC<Props> = ({
         subscription={{ values: true }}
         initialValues={initialValues}
         render={({ handleSubmit, pristine, values, form }) => {
-          useEffect(() => {
-            form.change('cover', photo)
-          }, [photo])
+          formRef.current = form
           return (
             <form onSubmit={handleSubmit}>
               <ul style={{ marginBottom: 20 }}>
