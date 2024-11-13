@@ -24,7 +24,7 @@ export const MainTitle = styled(Title)`
   font-size: 22px;
 `
 
-export const ListWrapper = styled.div`
+export const ListWrapper = styled.div<{heightLarge?: boolean}>`
   display: flex;
   flex-wrap: wrap;
   min-width: 572px;

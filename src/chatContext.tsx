@@ -45,7 +45,6 @@ const initialChatContext = {
 const ChatContext = createContext<IChatContext>(initialChatContext)
 
 const useChatContext = () => {
-  debugger
   const { user } = useAuthStore(getStoreData)
   const [chats, setChats] = useState<IChat[]>([])
   const [messages, setMessages] = useState<LazyType[]>([])
@@ -60,10 +59,6 @@ const useChatContext = () => {
       setChats(res?.rooms)
     },
   })
-
-  if (!user?.info) return
-  refetchChats()
-
   // useEffect(() => {
   //   if (!me?.info) return
   //   let count = 0
@@ -119,8 +114,6 @@ const useChatContext = () => {
     }
   }, [websocketMessage])
 
-  useEffect(() => {}, [messages])
-
   const chatContext = useMemo(
     () => ({
       messages,
@@ -131,6 +124,10 @@ const useChatContext = () => {
     }),
     [messages, setMessages, chats, unreadMessagesCount, setUnreadMessagesCount],
   )
+
+  if (!user?.info) return
+  refetchChats()
+
   return chatContext
 }
 
@@ -139,9 +136,9 @@ export const useChat = () => {
 }
 
 export const ChatProvider: FC<{ children: IChildren }> = ({ children }) => {
-  const chatContext: IChatContext = useChatContext()
+  const chatContext: IChatContext | undefined = useChatContext()
 
-  return (
+  return chatContext ? (
     <ChatContext.Provider value={chatContext}>{children}</ChatContext.Provider>
-  )
+  ) : null
 }

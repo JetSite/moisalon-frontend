@@ -53,7 +53,7 @@ const CabinetOrders: FC<Props> = ({ user }) => {
       {orders?.length ? (
         <OrdersList>
           {orders.map(order => (
-            <Order order={order} />
+            <Order key={order.id} order={order} />
           ))}
         </OrdersList>
       ) : (

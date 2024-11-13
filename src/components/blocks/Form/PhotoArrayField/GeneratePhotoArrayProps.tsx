@@ -12,7 +12,7 @@ interface Props
       'variant' | 'kind' | 'photoType' | 'description' | 'setPhotosArray'
     > {
   defaultPhotoId: string
-  onSetDefault: (value: any) => void
+  onSetDefault: (value: string) => void
 }
 
 export const GeneratePhotoArrayProps: FC<Props> = ({

@@ -167,7 +167,7 @@ const MyRequestItem: FC<Props> = ({
           </PositionWrap>
           <Spec>
             {specializationsWorkplace.map((name, i) => (
-              <span>
+              <span key={name}>
                 {i + 1 === specializationsWorkplace.length ? name : name + ', '}
               </span>
             ))}

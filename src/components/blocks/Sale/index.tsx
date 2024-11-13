@@ -179,11 +179,7 @@ const Sale: FC<SaleProps> = ({
   const [hover, setHover] = useState(false)
   const [imageHover, setImageHover] = useState(false)
 
-  const photoSrc = item?.cover?.url
-    ? `${PHOTO_URL}${item?.cover?.url}`
-    : photo?.url
-    ? `${PHOTO_URL}${photo?.url}`
-    : ''
+  const photoSrc = `${PHOTO_URL}${item?.cover?.url ?? photo?.url ?? ''}`
 
   return (
     <SaleWrap onClick={handleClick} id={item.id} type={type as string}>

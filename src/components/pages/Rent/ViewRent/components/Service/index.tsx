@@ -4,7 +4,7 @@ import { MainContainer } from '../../../../../../styles/common'
 import { FC } from 'react'
 import { IGroupedCategories } from 'src/utils/getGrupedServices'
 import { IService, IServiceCategories } from 'src/types/services'
-import { IRawService } from 'src/utils/serviceCatalog'
+import { IServices } from 'src/utils/serviceCatalog'
 
 const Wrapper = styled.div`
   padding: 0 140px;
@@ -65,7 +65,7 @@ const Text = styled.p`
 const Icon = styled.img``
 
 interface Props {
-  services: IRawService[]
+  services: IServices[]
   title?: string
 }
 

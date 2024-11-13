@@ -1,4 +1,3 @@
-import { IRawService } from 'src/utils/serviceCatalog'
 import {
   ICity,
   IMetroStations,

@@ -32,6 +32,7 @@ const CabinetEducationsList = ({ educations, loading }) => {
         <>
           {educations?.map(item => (
             <Education
+              key={item.title}
               title={item.title}
               id={item.id}
               name={`${

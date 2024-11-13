@@ -40,8 +40,6 @@ const Vacancy: FC<Props> = ({
   const [hover, setHover] = useState(false)
   const { pathname } = useRouter()
 
-  console.log('vacancy item', item)
-
   const photoSrc = `${PHOTO_URL}${item?.cover?.url ?? photo?.url ?? ''}`
 
   return (

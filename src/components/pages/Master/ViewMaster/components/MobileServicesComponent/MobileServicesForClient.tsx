@@ -20,7 +20,6 @@ import { UPDATE_MASTER } from 'src/api/graphql/master/mutations/updateMaster'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { ISalon } from 'src/types/salon'
 import { UPDATE_SALON } from 'src/api/graphql/salon/mutations/updateSalon'
-import { IRawService } from 'src/utils/serviceCatalog'
 
 interface Props {
   servicesData: IGroupedServices[]

@@ -11,8 +11,8 @@ import { Nullable } from 'src/types/common'
 
 interface Props {
   vacancy: IVacancy
-  beautyCategories: any
-  beautyAllContent: any
+  beautyCategories: any // TODO: add interface
+  beautyAllContent: any // TODO: add interface
 }
 
 const VacancyDetailed: NextPage<Props> = ({

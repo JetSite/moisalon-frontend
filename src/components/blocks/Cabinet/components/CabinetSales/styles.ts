@@ -66,6 +66,10 @@ export const Subtitle = styled.p`
   }
 `
 
+export const AvatarContainer = styled.div`
+  position: relative;
+`
+
 export const Item = styled.button<{ active?: boolean }>`
   width: 100%;
   background: #f8f8f8;
@@ -81,10 +85,11 @@ export const Item = styled.button<{ active?: boolean }>`
   &:hover {
     border: 1px solid #000000;
     background: #fff;
-    ::before {
+    & ${AvatarContainer}::before {
       display: ${({ active }) => (active ? 'flex' : 'none')};
     }
   }
+
   @media (max-width: ${laptopBreakpoint}) {
     background: #ffffff;
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
@@ -93,14 +98,13 @@ export const Item = styled.button<{ active?: boolean }>`
     padding-left: 11px;
   }
 
-  ::before {
+  & ${AvatarContainer}::before {
     display: none;
     content: '<';
     font-size: 44px;
     color: white;
     position: absolute;
-    left: 21px;
-    top: 40px;
+
     justify-content: center;
     align-items: center;
     width: 56px;
@@ -109,11 +113,6 @@ export const Item = styled.button<{ active?: boolean }>`
     background-color: black;
     opacity: 0.5;
     z-index: 2;
-
-    @media (max-width: ${laptopBreakpoint}) {
-      left: 11px;
-      top: 25px;
-    }
   }
 `
 
@@ -188,7 +187,7 @@ export const SkeletonWrap = styled(Skeleton)`
   }
 `
 
-export const SalesWrapper = styled.div`
+export const SalesWrapper = styled.ul`
   width: 100%;
   display: flex;
   flex-wrap: wrap;

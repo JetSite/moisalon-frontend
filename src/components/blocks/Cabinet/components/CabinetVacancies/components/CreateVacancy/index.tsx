@@ -71,8 +71,8 @@ const CreateVacancy: FC<Props> = ({
   const [publishedAt, setPublishedAt] = useState(false)
   const formRef = useRef<FormApi<IVacancyInitialForm>>()
   useEffect(() => {
-    formRef.current && formRef.current.change('cover', photo)
-    formRef.current && formRef.current.change('publishedAt', publishedAt)
+    formRef.current?.change('cover', photo)
+    formRef.current?.change('publishedAt', publishedAt)
   }, [photo, formRef.current, publishedAt])
 
   const initialValues = useMemo(
@@ -108,7 +108,18 @@ const CreateVacancy: FC<Props> = ({
       !publishedAt && setCreateVacancy(false)
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [photo],
+    [
+      photo,
+      type,
+      activeProfile,
+      handleCreateOrUpdate,
+      publishedAt,
+      setOpenPopup,
+      setVacancy,
+      setCreateVacancy,
+      setErrors,
+      user?.info.id,
+    ],
   )
 
   const closePopup = () => {

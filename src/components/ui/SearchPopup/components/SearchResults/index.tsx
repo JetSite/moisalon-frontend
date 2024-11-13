@@ -184,7 +184,7 @@ const SearchResults: FC<Props> = ({ setShowSearchPopup, query }) => {
                 {salonSearchData?.length && !salonLoading ? (
                   salonSearchData.map(salon => (
                     <Link
-                      key={salon.name}
+                      key={salon.id}
                       href={`/${salon.city.slug || city.slug}/salon/${
                         salon.id
                       }`}
@@ -204,7 +204,7 @@ const SearchResults: FC<Props> = ({ setShowSearchPopup, query }) => {
                 {salonRentSearchData?.length && !salonRentLoading ? (
                   salonRentSearchData.map(salon => (
                     <Link
-                      key={salon.name}
+                      key={salon.id}
                       href={`/${salon.city.slug || city.slug}/rent/${salon.id}`}
                       passHref
                     >

@@ -35,8 +35,8 @@ import PhotoArrayField from 'src/components/blocks/Form/PhotoArrayField'
 import { UPDATE_SALON } from 'src/api/graphql/salon/mutations/updateSalon'
 import AutoFocusedForm from 'src/components/blocks/Form/AutoFocusedForm'
 import { getServiceCategories } from 'src/api/graphql/service/queries/getServiceCategories'
-import { IService, IServiceCategory, IServices } from 'src/types/services'
-import { IRawService, getServicesByCategory } from 'src/utils/serviceCatalog'
+import { IServiceCategory, IServices } from 'src/types/services'
+import { getServicesByCategory } from 'src/utils/serviceCatalog'
 import { GET_SERVICES_M_CAT } from 'src/api/graphql/service/queries/getServicesMCat'
 
 const DecktopWrapper = styled.div`

@@ -34,7 +34,7 @@ export const getPrepareData: IgetPrepareData = ({
         quantity = { active: item.reviews?.length || undefined }
         break
       case 'sales':
-        quantity = { active: item.promotions.length, noActive: 0 }
+        quantity = { active: item.promotions?.length, noActive: 0 }
         break
       case 'vacancies':
         quantity = {

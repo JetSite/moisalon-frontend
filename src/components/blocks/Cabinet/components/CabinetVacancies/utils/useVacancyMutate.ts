@@ -1,5 +1,5 @@
 import { ApolloError, useLazyQuery, useMutation } from '@apollo/client'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { UPDATE_VACANCY } from 'src/api/graphql/vacancy/mutations/updateVacancy'
 import { NOT_PUBLISH_VACANCIES } from 'src/api/graphql/vacancy/queries/getNotPublishVacancies'
 import { VACANCIES } from 'src/api/graphql/vacancy/queries/getVacancies'
@@ -11,6 +11,7 @@ import { IID, ISetState } from 'src/types/common'
 import { IEntityDeleteHandler } from 'src/components/blocks/Sale'
 import { IActiveProfilesView } from '../components/ActiveVacanciesProfile'
 import { CREATE_VACANCY } from 'src/api/graphql/vacancy/mutations/createVacancy'
+import { IVacancyInput } from './vacancyFormValues'
 
 export interface IUseVacancyMutateResult {
   loading: boolean
@@ -21,7 +22,7 @@ export interface IUseVacancyMutateResult {
   setErrors: ISetState<string[] | null>
   setUpdate: ISetState<boolean>
   handleDelete: IEntityDeleteHandler
-  handleCreateOrUpdate: (values: any, id?: IID) => void
+  handleCreateOrUpdate: (values: IVacancyInput, id?: IID) => void
   handleMore: () => void
 }
 
@@ -93,14 +94,25 @@ export const useVacancyMutate: IUseVacancyMutate = ({
   }, [update, view])
 
   const handleDelete: IEntityDeleteHandler = id => {
-    mutate({ variables: { id, input: { deleted: true, publishedAt: null } } })
+    try {
+      mutate({ variables: { id, input: { deleted: true, publishedAt: null } } })
+    } catch (error) {
+      console.log('Error delete entity:', error)
+    }
   }
 
-  const handleCreateOrUpdate = (input: any, id?: IID) => {
-    if (id) {
-      mutate({ variables: { id, input } })
-    } else {
-      create({ variables: { input } })
+  const handleCreateOrUpdate = (input: IVacancyInput, id?: IID) => {
+    if (!type || !['brand', 'salon'].includes(type)) {
+      throw new Error(`Invalid type: ${type}`)
+    }
+    try {
+      if (id) {
+        mutate({ variables: { id, input } })
+      } else {
+        create({ variables: { input } })
+      }
+    } catch (error) {
+      console.log('Error update or create entity:', error)
     }
   }
 

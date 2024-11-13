@@ -118,7 +118,7 @@ const CitySelect: FC<Props> = ({
       document.removeEventListener('mousedown', clickOutsideHandler)
       document.removeEventListener('touchstart', clickOutsideHandler)
     }
-  }, [wrapperRef])
+  }, [wrapperRef, setShowCitySelect])
 
   const closeHandler = () => {
     setShowCitySelect(false)
