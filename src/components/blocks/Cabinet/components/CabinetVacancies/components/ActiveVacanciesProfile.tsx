@@ -110,7 +110,7 @@ const ActiveVacanciesProfile: FC<ActiveProfileProps> = ({
           pagination={pagination}
           popupText={
             view === 'publish'
-              ? 'После проверки модератором акция будет удалена безвозвратно. Вы уверены?'
+              ? 'После проверки модератором вакансия будет удалена безвозвратно. Вы уверены?'
               : undefined
           }
         />

@@ -40,8 +40,7 @@ const CabinetFavorits: FC = () => {
   }, [user, favorites])
 
   const handleDeleted = () => {
-    console.log('handleDeleted')
-
+    console.log('handleDeleted') // TODO: add try
     setFavorites(JSON.parse(localStorage.getItem('favorites') || '{}'))
   }
   const { salons, brands, masters, products, educations } =

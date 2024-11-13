@@ -88,14 +88,26 @@ const CreateVacancy: FC<Props> = ({
         return
       }
 
+      const amountFrom = Math.min(
+        Number(values.amountFrom),
+        Number(values.amountTo),
+      )
+      const amountTo = Math.max(
+        Number(values.amountFrom),
+        Number(values.amountTo),
+      )
+      const validTypes = ['brand', 'salon'] as const
+      if (!validTypes.includes(type as (typeof validTypes)[number])) {
+        console.error(`Invalid type: ${type}`)
+      }
       const input: IVacancyInput = {
         title: values.title,
         cover: cover,
         fullDescription: values.fullDescription,
         shortDescription: values.shortDescription,
         user: user?.info.id,
-        amountFrom: +values.amountFrom,
-        amountTo: +values.amountTo,
+        amountFrom,
+        amountTo,
         [type as 'brand' | 'salon']: activeProfile.id,
         ...{
           publishedAt: values.publishedAt ? new Date().toISOString() : null,
@@ -207,7 +219,7 @@ const CreateVacancy: FC<Props> = ({
               </FieldWrap>
               <FieldWrap>
                 <Checkbox
-                  name="isPublished"
+                  name="publishedAt"
                   label="Опубликовать вакансию"
                   checked={publishedAt}
                   setChecked={setPublishedAt}

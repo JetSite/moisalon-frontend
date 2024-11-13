@@ -48,8 +48,6 @@ const CabinetSales: FC<Props> = ({ user }) => {
     }
   }
 
-  console.log(masters)
-
   return (
     <Styled.Wrapper>
       <Styled.TitlePage>Мои акции</Styled.TitlePage>

@@ -5,7 +5,10 @@ import { NOT_PUBLISH_VACANCIES } from 'src/api/graphql/vacancy/queries/getNotPub
 import { VACANCIES } from 'src/api/graphql/vacancy/queries/getVacancies'
 import { IPagination } from 'src/types'
 import { IVacancy } from 'src/types/vacancies'
-import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import {
+  StrapiDataObject,
+  flattenStrapiResponse,
+} from 'src/utils/flattenStrapiResponse'
 import { IPromotionsType } from '../../CabinetSales'
 import { IID, ISetState } from 'src/types/common'
 import { IEntityDeleteHandler } from 'src/components/blocks/Sale'
@@ -46,7 +49,7 @@ export const useVacancyMutate: IUseVacancyMutate = ({
   const [update, setUpdate] = useState(true)
   const [errors, setErrors] = useState<string[] | null>(null)
 
-  const onCompleted = (data: { vacancies: any }) => {
+  const onCompleted = (data: { vacancies: StrapiDataObject }) => {
     const newData = flattenStrapiResponse(data.vacancies)
     if (update) {
       setVacancies(newData)

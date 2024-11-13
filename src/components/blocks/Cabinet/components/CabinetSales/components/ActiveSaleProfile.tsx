@@ -46,7 +46,11 @@ const ActiveSaleProfile: FC<ActiveProfileProps> = ({
     () => ({
       id: activeProfile.id,
       name: activeProfile.name,
-      photo: (activeProfile as ISalon).logo || (activeProfile as IMaster).photo,
+      photo:
+        (activeProfile as ISalon).logo ||
+        (activeProfile as IMaster).photo ||
+        (activeProfile as IBrand).logo ||
+        null,
       rent: (activeProfile as ISalon).rent || false,
     }),
     [activeProfile],
@@ -103,12 +107,10 @@ const ActiveSaleProfile: FC<ActiveProfileProps> = ({
       const index = activeProfile.promotions.findIndex(
         sale => sale.id === deleteID,
       )
-      activeProfile.promotions[index] = {
-        ...activeProfile.promotions[index],
-        deleted: true,
-      }
-
-      setSales(activeProfile.promotions)
+      const updatedPromotions = activeProfile.promotions.map((sale, i) =>
+        i === index ? { ...sale, deleted: true } : sale,
+      )
+      setSales(updatedPromotions)
     } else {
       deleteSale({
         variables: {

@@ -1,4 +1,3 @@
-import { IGroupedServices } from 'src/types'
 import { IService, IServiceCategories } from 'src/types/services'
 
 export function selectedGroupNames(selection, catalog, separator) {

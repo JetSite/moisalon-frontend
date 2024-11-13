@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { BrandsContent, MainTitle, ListWrapper, TextNoBrands } from './styles'
-import BrandItem from './BrandItem'
+import BrandItem, { IHandlePublishBrand } from './BrandItem'
 import { FC } from 'react'
 import { IBrand } from 'src/types/brands'
 import useAuthStore from 'src/store/authStore'
@@ -8,7 +8,7 @@ import { getStoreData } from 'src/store/utils'
 
 interface Props {
   brands: IBrand[]
-  handlePublish: any
+  handlePublish: IHandlePublishBrand
 }
 
 const BrandsList: FC<Props> = ({ brands, handlePublish }) => {

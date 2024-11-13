@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { CREATE_PROMOTION } from 'src/api/graphql/promotion/mutations/createPromotion'
 import { UPDATE_PROMOTION } from 'src/api/graphql/promotion/mutations/updatePromotion'
 import { IID, ISetState } from 'src/types/common'
-import { IPromotions } from 'src/types/promotions'
+import { IPromotionStatus, IPromotions } from 'src/types/promotions'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 
 interface IHandleCreateOrUpdateSaleProps {
@@ -91,7 +91,9 @@ export const usePromotionMutate: IUseSaleMutate = ({
             id: sale.id,
             input: {
               ...input,
-              status: buttonPublish ? '3' : '2',
+              status: buttonPublish
+                ? IPromotionStatus.PUBLISHED
+                : IPromotionStatus.DRAFT,
               publishedAt: buttonPublish ? new Date().toISOString() : null,
             },
           },
@@ -103,7 +105,9 @@ export const usePromotionMutate: IUseSaleMutate = ({
             input: {
               ...input,
               ...valueType,
-              status: buttonPublish ? '3' : '2',
+              status: buttonPublish
+                ? IPromotionStatus.PUBLISHED
+                : IPromotionStatus.DRAFT,
               publishedAt: buttonPublish ? new Date().toISOString() : null,
             },
             onCompleted,

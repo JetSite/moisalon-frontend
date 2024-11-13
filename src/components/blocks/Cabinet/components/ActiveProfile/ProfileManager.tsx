@@ -1,7 +1,4 @@
 import { FC, MouseEventHandler, ReactElement, useState } from 'react'
-import { IBrand } from 'src/types/brands'
-import { IMaster } from 'src/types/masters'
-import { ISalon } from 'src/types/salon'
 import { IPromotionsType } from '../CabinetSales'
 import ProfileItem from '../CabinetSales/components/ProfileItem'
 import { MobileHidden, MobileVisible } from 'src/styles/common'
@@ -9,6 +6,8 @@ import Button from 'src/components/ui/Button'
 import { IProfile } from '../CabinetSales/components/ProfileSelect'
 import { ButtonWrapper, SalesTabButton } from '../CabinetSales/styles'
 import { ISetState } from 'src/types/common'
+import { ProfileTabs } from './ProfileTabs'
+import { IActiveProfilesView } from '../CabinetVacancies/components/ActiveVacanciesProfile'
 
 interface ProfileManagerProps {
   profile: IProfile
@@ -19,12 +18,10 @@ interface ProfileManagerProps {
   onCreateEntity: () => void
   entitiesManagerComponent: ReactElement
   createEntityComponent: ReactElement
-  view: IView
+  view: IActiveProfilesView
   handleViewClick: MouseEventHandler<HTMLButtonElement>
   handleBack: () => void
 }
-
-type IView = 'publish' | 'draft'
 
 const ProfileManager: FC<ProfileManagerProps> = ({
   profile,
@@ -66,28 +63,13 @@ const ProfileManager: FC<ProfileManagerProps> = ({
             >
               {createEntityButton}
             </Button>
-            <ButtonWrapper>
-              <SalesTabButton
-                size="fullWidth"
-                onClick={handleViewClick}
-                variant="darkTransparentWithoutBorder"
-                font="medium"
-                name="publish"
-                disabled={view === 'publish'}
-              >
-                Активные
-              </SalesTabButton>
-              <SalesTabButton
-                size="fullWidth"
-                onClick={handleViewClick}
-                variant="darkTransparentWithoutBorder"
-                font="medium"
-                name="draft"
-                disabled={view === 'draft'}
-              >
-                Не активные
-              </SalesTabButton>
-            </ButtonWrapper>
+            <ProfileTabs
+              size="fullWidth"
+              onClick={handleViewClick}
+              variant="darkTransparentWithoutBorder"
+              font="medium"
+              view={view}
+            />
           </MobileHidden>
           <MobileVisible>
             <Button
@@ -101,28 +83,13 @@ const ProfileManager: FC<ProfileManagerProps> = ({
             >
               {createEntityButton}
             </Button>
-            <ButtonWrapper>
-              <SalesTabButton
-                size="fullWidth"
-                onClick={handleViewClick}
-                variant="darkTransparent"
-                font="small"
-                name="publish"
-                disabled={view === 'publish'}
-              >
-                Активные
-              </SalesTabButton>
-              <SalesTabButton
-                size="fullWidth"
-                onClick={handleViewClick}
-                variant="darkTransparent"
-                font="small"
-                name="draft"
-                disabled={view === 'draft'}
-              >
-                Не активные
-              </SalesTabButton>
-            </ButtonWrapper>
+            <ProfileTabs
+              size="fullWidth"
+              onClick={handleViewClick}
+              variant="darkTransparent"
+              font="small"
+              view={view}
+            />
           </MobileVisible>
           {entitiesManagerComponent}
         </>

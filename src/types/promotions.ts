@@ -1,5 +1,10 @@
 import { IPhoto } from '.'
 
+export enum IPromotionStatus {
+  DRAFT = '2',
+  PUBLISHED = '3',
+}
+
 export interface IPromotions {
   id: string
   title: string
@@ -11,6 +16,11 @@ export interface IPromotions {
   deleted: boolean
   promoCode: string
   publishedAt: string | null
+  status: {
+    id: IPromotionStatus
+    title: string
+    titleRus: string
+  }
   masters?: {
     id: string
     name: string

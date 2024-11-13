@@ -96,7 +96,7 @@ const CreateSale: FC<CreateSaleProps> = ({
   })
   const formRef = useRef<FormApi<IInitialValuesSaleForm>>()
   useEffect(() => {
-    formRef.current && formRef.current.change('cover', photo)
+    formRef.current?.change('cover', photo)
   }, [photo, formRef.current])
 
   const initialValues = useMemo(

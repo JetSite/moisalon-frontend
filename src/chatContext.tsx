@@ -44,7 +44,7 @@ const initialChatContext = {
 
 const ChatContext = createContext<IChatContext>(initialChatContext)
 
-const useChatContext = () => {
+const useChatContext = (): IChatContext | undefined => {
   const { user } = useAuthStore(getStoreData)
   const [chats, setChats] = useState<IChat[]>([])
   const [messages, setMessages] = useState<LazyType[]>([])
@@ -114,19 +114,30 @@ const useChatContext = () => {
     }
   }, [websocketMessage])
 
-  const chatContext = useMemo(
-    () => ({
-      messages,
-      setMessages,
-      chats,
-      unreadMessagesCount,
-      setUnreadMessagesCount,
-    }),
-    [messages, setMessages, chats, unreadMessagesCount, setUnreadMessagesCount],
-  )
+  const chatContext = !user?.info
+    ? undefined
+    : useMemo(
+        () => ({
+          messages,
+          setMessages,
+          chats,
+          unreadMessagesCount,
+          setUnreadMessagesCount,
+        }),
+        [
+          messages,
+          setMessages,
+          chats,
+          unreadMessagesCount,
+          setUnreadMessagesCount,
+        ],
+      )
 
-  if (!user?.info) return
-  refetchChats()
+  useEffect(() => {
+    if (user?.info) {
+      refetchChats()
+    }
+  }, [user?.info, refetchChats])
 
   return chatContext
 }

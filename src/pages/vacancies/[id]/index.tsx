@@ -30,7 +30,7 @@ const VacancyDetailed: NextPage<Props> = ({
 }
 
 export const getServerSideProps: GetServerSideProps<
-  Nullable<Props>
+  Partial<Nullable<Props>>
 > = async ctx => {
   const apolloClient = initializeApollo()
 
@@ -55,7 +55,7 @@ export const getServerSideProps: GetServerSideProps<
       }
     }
 
-    const vacancy = flattenStrapiResponse(data[0]?.data?.vacancy) as IVacancy
+    const vacancy = flattenStrapiResponse(rawVacancy) as IVacancy
 
     return addApolloState(apolloClient, {
       props: {
@@ -66,6 +66,11 @@ export const getServerSideProps: GetServerSideProps<
     })
   } catch (error) {
     console.error('Failed to fetch vacancy data:', error)
+    if (error instanceof Error && 'networkError' in error) {
+      return {
+        props: {},
+      }
+    }
     return {
       notFound: true,
     }

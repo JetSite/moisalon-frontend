@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, SyntheticEvent } from 'react'
 import { useQuery, useMutation } from '@apollo/client/react'
 import Link from 'next/link'
 import ChatBlock from './components/ChatBlock'
@@ -67,7 +67,7 @@ const CabinetChat = () => {
 
   const [newMessage] = useMutation(createMessage)
 
-  const answerMessage = async (e: any, answerInput: any) => {
+  const answerMessage = async (e: SyntheticEvent, answerInput: string) => {
     e.stopPropagation()
     if (answerInput.trim() === '') return
     await newMessage({

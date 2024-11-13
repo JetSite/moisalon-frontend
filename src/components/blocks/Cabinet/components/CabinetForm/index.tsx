@@ -201,7 +201,7 @@ const CabinetForm: FC<CabinetFormProps> = ({
       )
       return unsubscribe
     }
-  }, [formRef.current, photo])
+  }, [formRef.current, photo, setDirtyForm, user.info?.avatar?.id])
 
   return (
     <Wrapper>
