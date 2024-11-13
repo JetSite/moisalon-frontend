@@ -33,7 +33,6 @@ interface Props {
   mobile?: boolean
   handleDeleted: () => void
   setProductEmpty?: ISetState<boolean>
-  setActiveTab: ISetState<string>
 }
 
 const GoodsFavorites: FC<Props> = ({

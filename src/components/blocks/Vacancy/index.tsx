@@ -13,13 +13,10 @@ import {
   VacancyWrap,
   VacancyAmount,
 } from './style'
-import { IApolloRefetch, IID } from 'src/types/common'
-import { IPhoto } from 'src/types'
 import { IPromotionsType } from '../Cabinet/components/CabinetSales'
 import { IVacancy } from 'src/types/vacancies'
 import PhotoAdd, { IPhotoAddProps } from '../CreateBanner/PhotoAdd'
 import { IEntityDeleteHandler, IEntityHandler } from '../Sale'
-import { IVacancyInitialForm } from '../Cabinet/components/CabinetVacancies/utils/vacancyFormValues'
 
 interface Props extends Partial<Omit<IPhotoAddProps, 'hover'>> {
   create?: boolean
@@ -45,12 +42,7 @@ const Vacancy: FC<Props> = ({
 
   console.log('vacancy item', item)
 
-  const photoSrc =
-    item?.cover && item.cover.url
-      ? `${PHOTO_URL}${item.cover.url}`
-      : photo?.url
-      ? `${PHOTO_URL}${photo?.url}`
-      : ''
+  const photoSrc = `${PHOTO_URL}${item?.cover?.url ?? photo?.url ?? ''}`
 
   return (
     <VacancyWrap id={item.id} onClick={handleClick}>

@@ -7,11 +7,11 @@ import RotatingLoader from 'src/components/ui/RotatingLoader'
 import * as Styled from '../../CabinetSales/styles'
 import Button from 'src/components/ui/Button'
 import Popup from 'src/components/ui/Popup'
-import { SalesListProps } from '../../CabinetSales/components/SalesList'
+import { EntityListProps } from '../../CabinetSales/components/SalesList'
 
 interface Props
   extends Omit<
-    SalesListProps,
+    EntityListProps,
     'sales' | 'setSales' | 'refetch' | 'searchID' | 'setPagination'
   > {
   vacancies: IVacancy[]
@@ -81,7 +81,7 @@ export const VacanciesList: FC<Props> = ({
         </Button>
         <Button
           style={{ marginTop: 20 }}
-          onClick={e => {
+          onClick={() => {
             deleteID && handleDelete && handleDelete(deleteID)
             setDeleteID(null)
           }}

@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import {
   Wrapper,
-  ImageRihgt,
+  ImageRight,
   Content,
   ContentWrap,
   Title,
@@ -14,7 +14,7 @@ import Button from '../../../../../ui/Button'
 const InviteBrand = ({ isLoggedIn }) => {
   return (
     <Wrapper>
-      <ImageRihgt />
+      <ImageRight />
       <Content>
         <ContentWrap>
           <Title>вы – представитель бренда?</Title>

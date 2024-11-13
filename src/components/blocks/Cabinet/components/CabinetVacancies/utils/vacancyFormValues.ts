@@ -15,7 +15,7 @@ export interface IVacancyInitialForm
   amountFrom: string
   amountTo: string
   cover: IPhoto | null
-  publish: boolean
+  publishedAt: boolean
 }
 
 export interface IVacancyInput
@@ -35,10 +35,10 @@ export const getVacancyInitialValues: IVacancyFormValues = ({ vacancy }) => {
         title: vacancy.title,
         shortDescription: vacancy.shortDescription,
         fullDescription: vacancy.fullDescription,
-        amountFrom: vacancy.amountFrom.toString(),
-        amountTo: vacancy.amountTo.toString(),
+        amountFrom: Math.abs(vacancy.amountFrom).toString(),
+        amountTo: Math.abs(vacancy.amountTo).toString(),
         cover: vacancy.cover,
-        publish: false,
+        publishedAt: false,
       }
     : {
         title: '',
@@ -47,6 +47,6 @@ export const getVacancyInitialValues: IVacancyFormValues = ({ vacancy }) => {
         amountFrom: '',
         amountTo: '',
         cover: null,
-        publish: false,
+        publishedAt: false,
       }
 }

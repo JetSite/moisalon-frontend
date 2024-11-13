@@ -3,17 +3,13 @@ import PhotoArray from './PhotoArray'
 import { FieldArrayRenderProps } from 'react-final-form-arrays'
 import { PhotoArrayFieldProps } from './PhotoArrayField'
 import usePhotos from './usePhotos'
+import { IPhoto } from 'src/types'
 
 interface Props
-  extends Pick<FieldArrayRenderProps<any, HTMLElement>, 'fields'>,
+  extends Pick<FieldArrayRenderProps<IPhoto, HTMLElement>, 'fields'>,
     Pick<
       PhotoArrayFieldProps,
-      | 'variant'
-      | 'kind'
-      | 'photoType'
-      | 'description'
-      | 'setPhotosArray'
-      | 'variant'
+      'variant' | 'kind' | 'photoType' | 'description' | 'setPhotosArray'
     > {
   defaultPhotoId: string
   onSetDefault: (value: any) => void
@@ -30,7 +26,6 @@ export const GeneratePhotoArrayProps: FC<Props> = ({
   variant,
 }) => {
   const { value, remove, update, insert } = fields
-
   const { onRemove, onChange, onAdd } = usePhotos({
     photos: value,
     photoType,

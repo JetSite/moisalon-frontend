@@ -34,28 +34,42 @@ export const getServerSideProps: GetServerSideProps<
 > = async ctx => {
   const apolloClient = initializeApollo()
 
-  const data = await Promise.all([
-    apolloClient.query({
-      query: getVacancyById,
-      variables: { id: ctx.params?.id },
-    }),
-    apolloClient.query({
-      query: getFeedCategories,
-    }),
-    apolloClient.query({
-      query: getFeeds,
-    }),
-  ])
+  try {
+    const data = await Promise.all([
+      apolloClient.query({
+        query: getVacancyById,
+        variables: { id: ctx.params?.id },
+      }),
+      apolloClient.query({
+        query: getFeedCategories,
+      }),
+      apolloClient.query({
+        query: getFeeds,
+      }),
+    ])
 
-  const vacancy = flattenStrapiResponse(data[0]?.data?.vacancy) as IVacancy
+    const rawVacancy = data[0]?.data?.vacancy
+    if (!rawVacancy) {
+      return {
+        notFound: true,
+      }
+    }
 
-  return addApolloState(apolloClient, {
-    props: {
-      vacancy,
-      beautyCategories: data[1]?.data?.feedCategories,
-      beautyAllContent: data[2]?.data?.feeds,
-    },
-  })
+    const vacancy = flattenStrapiResponse(data[0]?.data?.vacancy) as IVacancy
+
+    return addApolloState(apolloClient, {
+      props: {
+        vacancy,
+        beautyCategories: data[1]?.data?.feedCategories,
+        beautyAllContent: data[2]?.data?.feeds,
+      },
+    })
+  } catch (error) {
+    console.error('Failed to fetch vacancy data:', error)
+    return {
+      notFound: true,
+    }
+  }
 }
 
 export default VacancyDetailed

@@ -101,13 +101,13 @@ const RegistrationForm: FC<Props> = ({
   useEffect(() => {
     const unsubscribe = form.subscribe(
       ({ dirty }) => {
-        const isNewLogo = !!logo && logo.id !== brand?.logo?.id
+        const isNewLogo = !!logo && brand?.logo && logo.id !== brand.logo.id
         isNewLogo ? setDirtyForm(true) : setDirtyForm(dirty)
       },
       { dirty: true },
     )
     return unsubscribe
-  }, [form, logo])
+  }, [form, logo, brand, setDirtyForm])
 
   return (
     <Wrapper>

@@ -70,7 +70,7 @@ const EntityDescription: FC<Props> = ({ description }) => {
 
   useEffect(() => {
     setRenderDescription(parseNewLines(description))
-  }, [collapsed])
+  }, [collapsed, description])
 
   const handleChange = () => {
     setCollapsed(!collapsed)

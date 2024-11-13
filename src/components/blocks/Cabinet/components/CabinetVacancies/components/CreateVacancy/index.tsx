@@ -46,7 +46,7 @@ interface Props
     IUseVacancyMutateResult,
     'handleCreateOrUpdate' | 'setErrors' | 'errors'
   > {
-  type?: IPromotionsType
+  type: IPromotionsType
   activeProfile: ISalon | IMaster | IBrand
   vacancy: IVacancy | null
   setVacancy: ISetState<IVacancy | null>
@@ -68,12 +68,12 @@ const CreateVacancy: FC<Props> = ({
   const { user } = useAuthStore(getStoreData)
   const [photo, setPhoto] = useState<IPhoto | null>(vacancy?.cover || null)
   const [openPopup, setOpenPopup] = useState(false)
-  const [publish, setPublish] = useState(false)
+  const [publishedAt, setPublishedAt] = useState(false)
   const formRef = useRef<FormApi<IVacancyInitialForm>>()
   useEffect(() => {
     formRef.current && formRef.current.change('cover', photo)
-    formRef.current && formRef.current.change('publish', publish)
-  }, [photo, formRef.current, publish])
+    formRef.current && formRef.current.change('publishedAt', publishedAt)
+  }, [photo, formRef.current, publishedAt])
 
   const initialValues = useMemo(
     () => getVacancyInitialValues({ vacancy }),
@@ -97,13 +97,15 @@ const CreateVacancy: FC<Props> = ({
         amountFrom: +values.amountFrom,
         amountTo: +values.amountTo,
         [type as 'brand' | 'salon']: activeProfile.id,
-        ...{ publishedAt: values.publish ? new Date().toISOString() : null },
+        ...{
+          publishedAt: values.publishedAt ? new Date().toISOString() : null,
+        },
       }
 
       handleCreateOrUpdate(input, vacancy?.id)
-      !publish && setOpenPopup(true)
-      !publish && setVacancy(null)
-      !publish && setCreateVacancy(false)
+      !publishedAt && setOpenPopup(true)
+      !publishedAt && setVacancy(null)
+      !publishedAt && setCreateVacancy(false)
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [photo],
@@ -114,8 +116,6 @@ const CreateVacancy: FC<Props> = ({
     setVacancy(null)
     setCreateVacancy(false)
   }
-
-  console.log(publish)
 
   return (
     <>
@@ -198,8 +198,8 @@ const CreateVacancy: FC<Props> = ({
                 <Checkbox
                   name="isPublished"
                   label="Опубликовать вакансию"
-                  checked={publish}
-                  setChecked={setPublish}
+                  checked={publishedAt}
+                  setChecked={setPublishedAt}
                 />
               </FieldWrap>
               <Error errors={errors} isOpen={!!errors} setOpen={setErrors} />
@@ -208,7 +208,7 @@ const CreateVacancy: FC<Props> = ({
                   variant="red"
                   size="width100"
                   type="submit"
-                  disabled={(pristine && !publish) || loading}
+                  disabled={(pristine && !publishedAt) || loading}
                 >
                   {loading ? 'Подождите' : 'Сохранить'}
                 </Button>

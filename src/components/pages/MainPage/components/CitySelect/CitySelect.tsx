@@ -102,17 +102,21 @@ const CitySelect: FC<Props> = ({
   })
 
   useEffect(() => {
-    const clickOutsideHandler = (e: MouseEvent) => {
+    const clickOutsideHandler = (e: MouseEvent | TouchEvent) => {
+      const target = e.target as Node | null
       if (
         wrapperRef.current &&
-        !wrapperRef.current.contains(e.target as Node)
+        target &&
+        !wrapperRef.current.contains(target)
       ) {
         setShowCitySelect(false)
       }
     }
     document.addEventListener('mousedown', clickOutsideHandler)
+    document.addEventListener('touchstart', clickOutsideHandler)
     return () => {
       document.removeEventListener('mousedown', clickOutsideHandler)
+      document.removeEventListener('touchstart', clickOutsideHandler)
     }
   }, [wrapperRef])
 

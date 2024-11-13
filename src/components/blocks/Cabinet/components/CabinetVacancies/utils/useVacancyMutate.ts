@@ -47,7 +47,12 @@ export const useVacancyMutate: IUseVacancyMutate = ({
 
   const onCompleted = (data: { vacancies: any }) => {
     const newData = flattenStrapiResponse(data.vacancies)
-    setVacancies(newData)
+    if (update) {
+      setVacancies(newData)
+      setUpdate(false)
+    } else {
+      setVacancies(pre => [...pre, ...newData])
+    }
     setPagination(data.vacancies.meta.pagination)
   }
 
@@ -55,14 +60,6 @@ export const useVacancyMutate: IUseVacancyMutate = ({
     const errorMessages = error.graphQLErrors.map(e => e.message)
     setErrors(errorMessages)
   }
-
-  useEffect(() => {
-    const query = view === 'publish' ? getPublish : getNoPublish
-    if (update) {
-      query({ variables: { [type as string]: profileID, pageSize: 2 } })
-      setUpdate(false)
-    }
-  }, [update, view])
 
   const [getNoPublish, { loading: noPublishLoading }] = useLazyQuery(
     NOT_PUBLISH_VACANCIES,
@@ -88,6 +85,13 @@ export const useVacancyMutate: IUseVacancyMutate = ({
     },
   })
 
+  useEffect(() => {
+    const query = view === 'publish' ? getPublish : getNoPublish
+    if (update) {
+      query({ variables: { [type as string]: profileID, pageSize: 2 } })
+    }
+  }, [update, view])
+
   const handleDelete: IEntityDeleteHandler = id => {
     mutate({ variables: { id, input: { deleted: true, publishedAt: null } } })
   }
@@ -110,18 +114,13 @@ export const useVacancyMutate: IUseVacancyMutate = ({
           page: pagination.page + 1,
         },
         onError,
-        onCompleted: data => {
-          const newData = flattenStrapiResponse(data.vacancies)
-          setVacancies(pre => [...pre, ...newData])
-          setPagination(data.vacancies.meta.pagination)
-        },
+        onCompleted,
       })
   }
 
   return {
     fetchloading: noPublishLoading || publishLoading,
-    loading: loading,
-    createLoading,
+    loading: loading || createLoading,
     vacancies,
     pagination,
     setUpdate,

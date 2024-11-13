@@ -9,19 +9,6 @@ interface Props {
 
 const MapBlock: FC<Props> = ({ address, view }) => {
   const mapRef = useRef<YandexMap | null>(null)
-  let center = [55.751267, 37.621226]
-  if (
-    typeof Number(address?.latitude) === 'number' ||
-    typeof Number(address.longitude) === 'number'
-  ) {
-    center = [Number(address?.latitude), Number(address?.longitude)]
-  }
-  const mapData = {
-    center,
-    zoom: 15,
-    behaviors: ['default', 'scrollZoom'],
-  }
-
   useEffect(() => {
     if (view) {
       if (mapRef.current && address.latitude && address.longitude) {
@@ -31,6 +18,20 @@ const MapBlock: FC<Props> = ({ address, view }) => {
   }, [address, view])
 
   if (!address) return <></>
+
+  let center = [55.751267, 37.621226]
+  if (
+    typeof Number(address?.latitude) === 'number' ||
+    typeof Number(address.longitude) === 'number'
+  ) {
+    center = [Number(address?.latitude), Number(address?.longitude)]
+  }
+
+  const mapData = {
+    center,
+    zoom: 15,
+    behaviors: ['default', 'scrollZoom'],
+  }
 
   return (
     <YMaps>

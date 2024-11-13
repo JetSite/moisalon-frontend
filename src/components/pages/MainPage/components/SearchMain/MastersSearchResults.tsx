@@ -60,20 +60,28 @@ const MastersSearchResults: FC<Props> = ({
   }, [masterData])
 
   useEffect(() => {
-    let storageSort
-    if (typeof window !== 'undefined') {
-      storageSort =
-        localStorage.getItem(settingsConfig.masterSort) || 'viewsCount:desc'
-      const storageSortProperty = storageSort.includes(
-        filtersType['по отзывам'],
-      )
-        ? 'по отзывам'
-        : 'по рейтингу'
+    try {
+      let storageSort
+      if (typeof window !== 'undefined') {
+        storageSort =
+          localStorage.getItem(settingsConfig.masterSort) || 'viewsCount:desc'
+        const storageSortProperty = storageSort.includes(
+          filtersType['по отзывам'],
+        )
+          ? 'по отзывам'
+          : 'по рейтингу'
 
-      const storageSortOrder = storageSort.includes(':desc') ? ':desc' : ':asc'
+        const storageSortOrder = storageSort.includes(':desc')
+          ? ':desc'
+          : ':asc'
 
-      setSortOrder(storageSortOrder)
-      setSortProperty(storageSortProperty)
+        setSortOrder(storageSortOrder)
+        setSortProperty(storageSortProperty)
+      }
+    } catch (error) {
+      console.error('Error initializing sort preferences:', error)
+      setSortOrder(':desc')
+      setSortProperty('по рейтингу')
     }
   }, [])
 
