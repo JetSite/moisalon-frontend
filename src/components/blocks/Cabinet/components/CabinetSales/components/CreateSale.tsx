@@ -1,13 +1,5 @@
 import styled from 'styled-components'
-import {
-  FC,
-  FormEvent,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import AutoFocusedForm from '../../../../Form/AutoFocusedForm'
 import { FieldStyled } from '../../CabinetForm/styled'
 import { TextField } from '../../../../Form'
@@ -22,7 +14,7 @@ import { ISalon } from 'src/types/salon'
 import { IBrand } from 'src/types/brands'
 import { IMaster } from 'src/types/masters'
 import { IPhoto } from 'src/types'
-import { IID, ISetState } from 'src/types/common'
+import { ISetState } from 'src/types/common'
 import { IPromotions } from 'src/types/promotions'
 import {
   IInitialValuesSaleForm,
@@ -31,8 +23,8 @@ import {
 import removeUnchangedFields from 'src/utils/newUtils/removeUnchangedFields'
 import { usePromotionMutate } from '../utils/usePromotionMutate'
 import { parseFieldsToString } from 'src/utils/newUtils/formsHelpers'
-import { useForm } from 'react-final-form'
 import { FormApi } from 'final-form'
+import { useFormSubscription } from 'src/utils/newUtils/hooks/useFormSubscription'
 
 const FieldWrap = styled.div`
   margin-bottom: 14px;
@@ -94,7 +86,7 @@ const CreateSale: FC<CreateSaleProps> = ({
     setErrorPopupOpen,
     setSales,
   })
-  const formRef = useRef<FormApi<IInitialValuesSaleForm>>()
+  const formRef = useRef<FormApi<IInitialValuesSaleForm>>(null)
   useEffect(() => {
     formRef.current?.change('cover', photo)
   }, [photo, formRef.current])
@@ -108,6 +100,8 @@ const CreateSale: FC<CreateSaleProps> = ({
       }),
     [sale, type, activeProfile],
   )
+
+  console.log(formRef.current)
 
   const onSubmit = useCallback(
     async (values: IInitialValuesSaleForm) => {
@@ -155,7 +149,7 @@ const CreateSale: FC<CreateSaleProps> = ({
         subscription={{ values: true }}
         initialValues={initialValues}
         render={({ handleSubmit, pristine, values, form }) => {
-          formRef.current = form
+          useFormSubscription(form, formRef)
           return (
             <form onSubmit={handleSubmit}>
               <ul style={{ marginBottom: 20 }}>

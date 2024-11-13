@@ -1,5 +1,6 @@
 import { ApolloError, useMutation } from '@apollo/client'
-import { useEffect, useState } from 'react'
+import { formatISO } from 'date-fns'
+import { useState } from 'react'
 import { CREATE_PROMOTION } from 'src/api/graphql/promotion/mutations/createPromotion'
 import { UPDATE_PROMOTION } from 'src/api/graphql/promotion/mutations/updatePromotion'
 import { IID, ISetState } from 'src/types/common'
@@ -85,16 +86,19 @@ export const usePromotionMutate: IUseSaleMutate = ({
       setOpenPopup(true)
     }
     try {
+      const status = buttonPublish
+        ? IPromotionStatus.PUBLISHED
+        : IPromotionStatus.DRAFT
+
+      const publishedAt = buttonPublish ? formatISO(new Date()) : null
       if (sale?.id) {
         updateSale({
           variables: {
             id: sale.id,
             input: {
               ...input,
-              status: buttonPublish
-                ? IPromotionStatus.PUBLISHED
-                : IPromotionStatus.DRAFT,
-              publishedAt: buttonPublish ? new Date().toISOString() : null,
+              status,
+              publishedAt,
             },
           },
           onCompleted,
@@ -105,10 +109,8 @@ export const usePromotionMutate: IUseSaleMutate = ({
             input: {
               ...input,
               ...valueType,
-              status: buttonPublish
-                ? IPromotionStatus.PUBLISHED
-                : IPromotionStatus.DRAFT,
-              publishedAt: buttonPublish ? new Date().toISOString() : null,
+              status,
+              publishedAt,
             },
             onCompleted,
           },

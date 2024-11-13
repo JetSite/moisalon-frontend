@@ -4,7 +4,7 @@ import AutoFocusedForm from '../../../../../Form/AutoFocusedForm'
 import { FieldStyled } from '../../../CabinetForm/styled'
 import { TextField } from '../../../../../Form'
 import { required } from '../../../../../../../utils/validations'
-import Error from '../../../../../Form/Error'
+import ErrorPopup from '../../../../../Form/Error'
 import { laptopBreakpoint } from '../../../../../../../styles/variables'
 import Button from '../../../../../../ui/Button'
 import Vacancy from '../../../../../Vacancy'
@@ -73,7 +73,7 @@ const CreateVacancy: FC<Props> = ({
   useEffect(() => {
     formRef.current?.change('cover', photo)
     formRef.current?.change('publishedAt', publishedAt)
-  }, [photo, formRef.current, publishedAt])
+  }, [photo, publishedAt])
 
   const initialValues = useMemo(
     () => getVacancyInitialValues({ vacancy }),
@@ -98,7 +98,7 @@ const CreateVacancy: FC<Props> = ({
       )
       const validTypes = ['brand', 'salon'] as const
       if (!validTypes.includes(type as (typeof validTypes)[number])) {
-        console.error(`Invalid type: ${type}`)
+        throw new Error(`Invalid type: ${type}`)
       }
       const input: IVacancyInput = {
         title: values.title,
@@ -225,7 +225,11 @@ const CreateVacancy: FC<Props> = ({
                   setChecked={setPublishedAt}
                 />
               </FieldWrap>
-              <Error errors={errors} isOpen={!!errors} setOpen={setErrors} />
+              <ErrorPopup
+                errors={errors}
+                isOpen={!!errors}
+                setOpen={setErrors}
+              />
               <ButtonWrap>
                 <Button
                   variant="red"

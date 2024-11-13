@@ -12,7 +12,7 @@ export type StrapiDataObject = {
   id: string | number
   attributes: AttributesObject
   data: StrapiDataObject | StrapiDataObject[] | null | AttributesObject
-  meta: { pagination: IPagination }
+  meta?: { pagination: IPagination }
 }
 
 type IFlatten = (

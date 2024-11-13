@@ -18,7 +18,7 @@ import { IVacancyInput } from './vacancyFormValues'
 
 export interface IUseVacancyMutateResult {
   loading: boolean
-  fetchloading: boolean
+  fetchLoading: boolean
   vacancies: IVacancy[]
   pagination: IPagination | null
   errors: string[] | null
@@ -57,7 +57,7 @@ export const useVacancyMutate: IUseVacancyMutate = ({
     } else {
       setVacancies(pre => [...pre, ...newData])
     }
-    setPagination(data.vacancies.meta.pagination)
+    setPagination(data.vacancies.meta?.pagination || null)
   }
 
   const onError = (error: ApolloError) => {
@@ -69,10 +69,12 @@ export const useVacancyMutate: IUseVacancyMutate = ({
     NOT_PUBLISH_VACANCIES,
     {
       onCompleted,
+      onError,
     },
   )
   const [getPublish, { loading: publishLoading }] = useLazyQuery(VACANCIES, {
     onCompleted,
+    onError,
   })
 
   const [mutate, { loading }] = useMutation(UPDATE_VACANCY, {
@@ -115,7 +117,11 @@ export const useVacancyMutate: IUseVacancyMutate = ({
         create({ variables: { input } })
       }
     } catch (error) {
-      console.log('Error update or create entity:', error)
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : 'Unknown error occurred while deleting'
+      setErrors([errorMessage])
     }
   }
 
@@ -128,13 +134,11 @@ export const useVacancyMutate: IUseVacancyMutate = ({
           pageSize: 2,
           page: pagination.page + 1,
         },
-        onError,
-        onCompleted,
       })
   }
 
   return {
-    fetchloading: noPublishLoading || publishLoading,
+    fetchLoading: noPublishLoading || publishLoading,
     loading: loading || createLoading,
     vacancies,
     pagination,

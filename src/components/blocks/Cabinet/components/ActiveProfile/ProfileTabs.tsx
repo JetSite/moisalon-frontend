@@ -3,12 +3,11 @@ import { ButtonWrapper, SalesTabButton } from '../CabinetSales/styles'
 import { ButtonProps } from 'src/components/ui/Button'
 import { IActiveProfilesView } from '../CabinetVacancies/components/ActiveVacanciesProfile'
 
-interface Props extends ButtonProps {
+interface ProfileTabsProps extends ButtonProps {
   view: IActiveProfilesView
 }
 
-export const ProfileTabs: FC<Props> = ({
-  disabled,
+export const ProfileTabs: FC<ProfileTabsProps> = ({
   font,
   size,
   onClick,
@@ -39,7 +38,7 @@ export const ProfileTabs: FC<Props> = ({
         disabled={view === 'draft'}
         role="tab"
         aria-selected={view === 'draft'}
-        aria-controls="publish-panel"
+        aria-controls="draft-panel"
       >
         Не активные
       </SalesTabButton>

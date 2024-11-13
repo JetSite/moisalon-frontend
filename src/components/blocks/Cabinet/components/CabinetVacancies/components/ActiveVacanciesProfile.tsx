@@ -35,7 +35,7 @@ const ActiveVacanciesProfile: FC<ActiveProfileProps> = ({
     handleMore,
     loading,
     pagination,
-    fetchloading,
+    fetchLoading,
     errors,
     setErrors,
   } = useVacancyMutate({
@@ -103,7 +103,7 @@ const ActiveVacanciesProfile: FC<ActiveProfileProps> = ({
         <VacanciesList
           handleMore={handleMore}
           handleClick={handleVacancyClick}
-          loading={fetchloading}
+          loading={fetchLoading}
           type={type}
           vacancies={vacancies}
           handleDelete={handleDelete}
