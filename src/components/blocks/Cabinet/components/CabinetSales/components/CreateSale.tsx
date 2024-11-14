@@ -24,7 +24,6 @@ import removeUnchangedFields from 'src/utils/newUtils/removeUnchangedFields'
 import { usePromotionMutate } from '../utils/usePromotionMutate'
 import { parseFieldsToString } from 'src/utils/newUtils/formsHelpers'
 import { FormApi } from 'final-form'
-import { useFormSubscription } from 'src/utils/newUtils/hooks/useFormSubscription'
 
 const FieldWrap = styled.div`
   margin-bottom: 14px;
@@ -86,7 +85,7 @@ const CreateSale: FC<CreateSaleProps> = ({
     setErrorPopupOpen,
     setSales,
   })
-  const formRef = useRef<FormApi<IInitialValuesSaleForm>>(null)
+  const formRef = useRef<FormApi<IInitialValuesSaleForm>>()
   useEffect(() => {
     formRef.current?.change('cover', photo)
   }, [photo, formRef.current])
@@ -100,8 +99,6 @@ const CreateSale: FC<CreateSaleProps> = ({
       }),
     [sale, type, activeProfile],
   )
-
-  console.log(formRef.current)
 
   const onSubmit = useCallback(
     async (values: IInitialValuesSaleForm) => {
@@ -142,6 +139,13 @@ const CreateSale: FC<CreateSaleProps> = ({
     setCreateSale(false)
   }
 
+  const handleFormSubscription = useCallback(
+    (form: FormApi<IInitialValuesSaleForm>) => {
+      formRef.current = form
+    },
+    [],
+  )
+
   return (
     <>
       <AutoFocusedForm<IInitialValuesSaleForm>
@@ -149,7 +153,7 @@ const CreateSale: FC<CreateSaleProps> = ({
         subscription={{ values: true }}
         initialValues={initialValues}
         render={({ handleSubmit, pristine, values, form }) => {
-          useFormSubscription(form, formRef)
+          handleFormSubscription(form)
           return (
             <form onSubmit={handleSubmit}>
               <ul style={{ marginBottom: 20 }}>

@@ -1,5 +1,5 @@
 import { ApolloError, useMutation } from '@apollo/client'
-import { formatISO } from 'date-fns'
+import moment from 'moment'
 import { useState } from 'react'
 import { CREATE_PROMOTION } from 'src/api/graphql/promotion/mutations/createPromotion'
 import { UPDATE_PROMOTION } from 'src/api/graphql/promotion/mutations/updatePromotion'
@@ -90,7 +90,7 @@ export const usePromotionMutate: IUseSaleMutate = ({
         ? IPromotionStatus.PUBLISHED
         : IPromotionStatus.DRAFT
 
-      const publishedAt = buttonPublish ? formatISO(new Date()) : null
+      const publishedAt = buttonPublish ? moment().toISOString() : null
       if (sale?.id) {
         updateSale({
           variables: {
@@ -112,8 +112,8 @@ export const usePromotionMutate: IUseSaleMutate = ({
               status,
               publishedAt,
             },
-            onCompleted,
           },
+          onCompleted,
         })
       }
     } catch (error) {

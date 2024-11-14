@@ -65,8 +65,9 @@ const ActiveVacanciesProfile: FC<ActiveProfileProps> = ({
 
   const handleVacancyClick: IEntityHandler = e => {
     if (view === 'publish') return
-    const findSale =
-      vacancies.find(element => element.id === e.currentTarget.id) || null
+    const targetId = e.currentTarget.id
+    if (!targetId) return
+    const findSale = vacancies.find(element => element.id === targetId) || null
     setVacancy(findSale)
     setCreateVacancy(true)
   }

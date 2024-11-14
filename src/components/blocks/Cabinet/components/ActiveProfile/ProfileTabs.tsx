@@ -15,7 +15,7 @@ export const ProfileTabs: FC<ProfileTabsProps> = ({
   view,
 }) => {
   return (
-    <ButtonWrapper>
+    <ButtonWrapper role="tablist">
       <SalesTabButton
         size={size}
         onClick={onClick}
@@ -25,7 +25,7 @@ export const ProfileTabs: FC<ProfileTabsProps> = ({
         disabled={view === 'publish'}
         role="tab"
         aria-selected={view === 'publish'}
-        aria-controls="publish-panel"
+        tabIndex={view === 'publish' ? 0 : -1}
       >
         Активные
       </SalesTabButton>
@@ -38,7 +38,7 @@ export const ProfileTabs: FC<ProfileTabsProps> = ({
         disabled={view === 'draft'}
         role="tab"
         aria-selected={view === 'draft'}
-        aria-controls="draft-panel"
+        tabIndex={view === 'publish' ? 0 : -1}
       >
         Не активные
       </SalesTabButton>
