@@ -24,7 +24,7 @@ export const MainTitle = styled(Title)`
   font-size: 22px;
 `
 
-export const ListWrapper = styled.div`
+export const ListWrapper = styled.div<{ heightLarge?: boolean }>`
   display: flex;
   flex-wrap: wrap;
   min-width: 572px;
@@ -72,7 +72,7 @@ export const TextNoBrands = styled.p`
   line-height: 30px;
 `
 
-export const RemoveButton = styled.div<{ published: boolean }>`
+export const RemoveButton = styled.button<{ published: boolean }>`
   display: ${({ published }) => (published ? 'block' : 'none')};
   width: 42px;
   height: 42px;

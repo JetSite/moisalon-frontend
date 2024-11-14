@@ -1,22 +1,22 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { CatalogItem } from "../CatalogItem";
+import React, { useState, useEffect } from 'react'
+import styled from 'styled-components'
+import { CatalogItem } from '../CatalogItem'
 
 const Wrapper = styled.div`
   width: 100%;
   margin-bottom: 40px;
   min-height: 165px;
-`;
+`
 
 const Title = styled.h4`
   font-weight: 600;
   font-size: 18px;
   margin-bottom: 20px;
-`;
+`
 
 const Item = styled.div`
   font-size: 18px;
-`;
+`
 
 const ShowMore = styled.span`
   display: block;
@@ -31,34 +31,32 @@ const ShowMore = styled.span`
   &:hover {
     color: #ff0033;
   }
-`;
+`
 
 export function CatalogGroup({ group, entries }) {
-  const [collapsed, setCollapsed] = useState(false);
-
+  const [collapsed, setCollapsed] = useState(false)
+  useEffect(() => {
+    setCollapsed(true)
+  }, [])
   if (group.items === undefined) {
-    return null;
+    return null
   }
 
   const items = group.items
-    .filter((item) => entries.find((entry) => entry.id === item.id))
-    .map((item) => <CatalogItem key={item.id} item={item} />);
+    .filter(item => entries.find(entry => entry.id === item.id))
+    .map(item => <CatalogItem key={item.id} item={item} />)
 
   if (items.length === 0) {
-    return null;
+    return null
   }
 
-  const visibleItems = items?.slice(0, 3);
-  const collapsedItems = items?.slice(3);
-  const collapsedText = collapsed ? "Показать все" : "Скрыть";
+  const visibleItems = items?.slice(0, 3)
+  const collapsedItems = items?.slice(3)
+  const collapsedText = collapsed ? 'Показать все' : 'Скрыть'
 
   const handleChange = () => {
-    setCollapsed(!collapsed);
-  };
-
-  useEffect(() => {
-    setCollapsed(true);
-  }, []);
+    setCollapsed(!collapsed)
+  }
 
   return (
     <Wrapper>
@@ -69,5 +67,5 @@ export function CatalogGroup({ group, entries }) {
         <ShowMore onClick={handleChange}>{collapsedText}</ShowMore>
       )}
     </Wrapper>
-  );
+  )
 }

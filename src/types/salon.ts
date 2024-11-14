@@ -1,4 +1,3 @@
-import { IRawService } from 'src/utils/serviceCatalog'
 import {
   ICity,
   IMetroStations,
@@ -52,7 +51,7 @@ export interface ISalon {
   photos: IPhoto[]
   salonPhones: ISalonPhones[]
   city: ICity
-  services: IRawService[]
+  services: IServices[]
   ratingCount: number
   ratings: IRating[]
   reviews: IReview[]
@@ -64,7 +63,7 @@ export interface ISalon {
 
 export interface ISalonPage extends ISalon {
   metro_stations?: IMetroStations[]
-  servicesM: IRawService[]
+  servicesM: IServices[]
   brands: IBrand[]
   masters: IMaster[]
   user: { id: IID }

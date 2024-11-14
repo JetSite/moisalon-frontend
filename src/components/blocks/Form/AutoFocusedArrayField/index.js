@@ -1,31 +1,31 @@
-import React, { useCallback, useState, useEffect, useRef } from "react";
-import { FieldArray } from "react-final-form-arrays";
-import ArrayItem from "./ArrayItem";
-import Button from "../../../ui/Button";
+import React, { useCallback, useState, useEffect, useRef } from 'react'
+import { FieldArray } from 'react-final-form-arrays'
+import ArrayItem from './ArrayItem'
+import Button from '../../../ui/Button'
 
 const AddComponentWrapper = ({ fields, initialValues, onAdd, title }) => {
-  const [disabled, setDisabled] = useState(false);
+  const [disabled, setDisabled] = useState(false)
   const onChange = useCallback(
-    (ev) => {
-      ev.preventDefault();
+    ev => {
+      ev.preventDefault()
 
       if (!disabled) {
-        onAdd();
-        fields.push(initialValues);
+        onAdd()
+        fields.push(initialValues)
       }
-      setDisabled(true);
+      setDisabled(true)
     },
-    [disabled, fields, onAdd, initialValues]
-  );
+    [disabled, fields, onAdd, initialValues],
+  )
 
   useEffect(() => {
     if (disabled) {
-      const timeout = setTimeout(() => setDisabled(false));
+      const timeout = setTimeout(() => setDisabled(false))
       return () => {
-        clearTimeout(timeout);
-      };
+        clearTimeout(timeout)
+      }
     }
-  }, [disabled, fields, initialValues]);
+  }, [disabled, fields, initialValues])
 
   return (
     <Button
@@ -37,8 +37,8 @@ const AddComponentWrapper = ({ fields, initialValues, onAdd, title }) => {
     >
       Добавить {title}
     </Button>
-  );
-};
+  )
+}
 
 const AutoFocusedArrayField = ({
   name,
@@ -46,10 +46,10 @@ const AutoFocusedArrayField = ({
   initialValues,
   title,
 }) => {
-  const pristine = useRef(true);
+  const pristine = useRef(true)
   const onAdd = useCallback(() => {
-    pristine.current = false;
-  }, []);
+    pristine.current = false
+  }, [])
 
   return (
     <FieldArray name={name}>
@@ -64,9 +64,9 @@ const AutoFocusedArrayField = ({
             isLast: index === fields.length - 1,
             pristine: pristine.current,
             title: title,
-          };
-          return <ArrayItem {...itemProps} />;
-        });
+          }
+          return <ArrayItem key={name} {...itemProps} />
+        })
         return (
           <>
             {itemList}
@@ -77,10 +77,10 @@ const AutoFocusedArrayField = ({
               title={title}
             />
           </>
-        );
+        )
       }}
     </FieldArray>
-  );
-};
+  )
+}
 
-export default AutoFocusedArrayField;
+export default AutoFocusedArrayField

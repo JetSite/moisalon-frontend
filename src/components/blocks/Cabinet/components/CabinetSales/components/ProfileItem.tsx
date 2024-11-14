@@ -21,14 +21,17 @@ const ProfileItem: FC<IProfileItem> = ({
   return (
     <Styled.Item active={active} onClick={onClick}>
       <Styled.Container>
-        <Styled.Avatar
-          alt="avatar"
-          src={
-            profile.photo?.url
-              ? PHOTO_URL + profile.photo.url
-              : 'empty-photo.svg'
-          }
-        />
+        <Styled.AvatarContainer>
+          <Styled.Avatar
+            alt="avatar"
+            src={
+              profile.photo?.url
+                ? PHOTO_URL + profile.photo.url
+                : 'empty-photo.svg'
+            }
+          />
+        </Styled.AvatarContainer>
+
         <Styled.Content>
           <Styled.Name>{profile.name}</Styled.Name>
           <Styled.Type>Профиль {type}</Styled.Type>

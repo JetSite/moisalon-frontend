@@ -50,6 +50,25 @@ const Order: FC<IProps> = ({ order }) => {
     // }
   }
 
+  const brandContact = () => {
+    return (
+      <>
+        <Styled.DetailName>Связаться с менеджером</Styled.DetailName>
+        <Styled.DetailsWrapper>
+          {order.cartContent?.map(
+            cart =>
+              cart.product.brand.phones.length && (
+                <BrandContacts
+                  key={cart.product.id}
+                  phone={cart.product.brand.phones[0]}
+                />
+              ),
+          )}
+        </Styled.DetailsWrapper>
+      </>
+    )
+  }
+
   return (
     <Styled.OrderWrapper>
       <Styled.OrderTop>
@@ -94,15 +113,7 @@ const Order: FC<IProps> = ({ order }) => {
         <Styled.DetailValue>{paymentMethodTitle}</Styled.DetailValue>
       </Styled.HiddenMobileOrderDetail>
       <Styled.HiddenMobileOrderDetail>
-        <Styled.DetailName>Связаться с менеджером</Styled.DetailName>
-        <Styled.DetailsWrapper>
-          {order.cartContent?.map(
-            cart =>
-              cart.product.brand.phones.length && (
-                <BrandContacts phone={cart.product.brand.phones[0]} />
-              ),
-          )}
-        </Styled.DetailsWrapper>
+        {brandContact()}
       </Styled.HiddenMobileOrderDetail>
       <Styled.OrderDetailMobile
         onClick={() => setMobileOrderProducts(!mobileOrderProducts)}
@@ -152,15 +163,7 @@ const Order: FC<IProps> = ({ order }) => {
             <Styled.DetailValue>{paymentMethodTitle}</Styled.DetailValue>
           </Styled.OrderDetailMobileWrap>
           <Styled.OrderDetailMobileWrap>
-            <Styled.DetailName>Связаться с менеджером</Styled.DetailName>
-            <Styled.DetailsWrapper>
-              {order.cartContent?.map(
-                cart =>
-                  cart.product.brand.phones.length && (
-                    <BrandContacts phone={cart.product.brand.phones[0]} />
-                  ),
-              )}
-            </Styled.DetailsWrapper>
+            {brandContact()}
           </Styled.OrderDetailMobileWrap>
 
           <Styled.BottomProductsMobile>

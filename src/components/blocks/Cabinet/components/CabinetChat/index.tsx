@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, SyntheticEvent } from 'react'
 import { useQuery, useMutation } from '@apollo/client/react'
 import Link from 'next/link'
 import ChatBlock from './components/ChatBlock'
@@ -67,7 +67,7 @@ const CabinetChat = () => {
 
   const [newMessage] = useMutation(createMessage)
 
-  const answerMessage = async (e, answerInput) => {
+  const answerMessage = async (e: SyntheticEvent, answerInput: string) => {
     e.stopPropagation()
     if (answerInput.trim() === '') return
     await newMessage({
@@ -130,7 +130,7 @@ const CabinetChat = () => {
           {messages.length ? (
             <>
               <ChatContent ref={messagesListRef}>
-                {messages?.map(message => (
+                {/* {messages?.map(message => (
                   <MessageBlock
                     key={message.id as unknown as IID}
                     chatClicked={chatClicked?.chat}
@@ -139,7 +139,7 @@ const CabinetChat = () => {
                     messagesListRef={messagesListRef}
                     refetchMessages={refetchMessages}
                   />
-                ))}
+                ))} */}
                 <ScrollDiv ref={scrollMessagesRef} />
               </ChatContent>
               <AnswerBlock answerMessage={answerMessage} />

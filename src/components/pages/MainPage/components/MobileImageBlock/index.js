@@ -1,11 +1,11 @@
-import { Wrapper, Image } from "./styles";
+import { Wrapper, Image } from './styles'
 
 const MobileImageBlock = () => {
   return (
     <Wrapper>
-      <Image src="/mobile-main-bg.jpg " />
+      <Image alt="main bg" src="/mobile-main-bg.jpg " />
     </Wrapper>
-  );
-};
+  )
+}
 
-export default MobileImageBlock;
+export default MobileImageBlock

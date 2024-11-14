@@ -128,4 +128,5 @@ const PhoneField = forwardRef<HTMLInputElement, Props>((props, ref) => {
   )
 })
 
+PhoneField.displayName = 'PhoneField'
 export default PhoneField

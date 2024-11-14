@@ -1,8 +1,8 @@
 import React, { FC } from 'react'
 import { Field } from 'react-final-form'
 import { FieldArray } from 'react-final-form-arrays'
-import PhotoArray from './PhotoArray'
 import usePhotos, { IUsePhotoProps } from './usePhotos'
+import { GeneratePhotoArrayProps } from './generatePhotoArrayProps'
 
 export interface PhotoArrayFieldProps
   extends Omit<IUsePhotoProps, 'onRemove' | 'onChange' | 'onAdd' | 'photos'> {
@@ -23,42 +23,20 @@ const PhotoArrayField: FC<PhotoArrayFieldProps> = ({
     <Field name="defaultPhotoId">
       {({ input }) => {
         const { value: defaultPhotoId, onChange: onSetDefault } = input
-
         return (
           <FieldArray name={name}>
-            {({ fields }) => {
-              const { value, remove, update, insert } = fields
-
-              const { onRemove, onChange, onAdd } = usePhotos({
-                photos: value,
-                photoType,
-                kind,
-                onAdd: insert,
-                onRemove: remove,
-                onChange: update,
-                onSetDefault,
-                defaultPhotoId,
-                setPhotosArray,
-              })
-              const photoProps = {
-                kind,
-                photoType,
-                photos: value,
-                defaultPhotoId,
-                onSetDefault,
-                onAdd,
-                onRemove,
-                onChange,
-                setPhotosArray,
-              }
-              return (
-                <PhotoArray
-                  variant={variant}
-                  {...photoProps}
-                  description={description}
-                />
-              )
-            }}
+            {({ fields }) => (
+              <GeneratePhotoArrayProps
+                fields={fields}
+                defaultPhotoId={defaultPhotoId}
+                onSetDefault={onSetDefault}
+                variant={variant}
+                kind={kind}
+                photoType={photoType}
+                description={description}
+                setPhotosArray={setPhotosArray}
+              />
+            )}
           </FieldArray>
         )
       }}

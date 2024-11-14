@@ -7,7 +7,7 @@ import { IMaster } from 'src/types/masters'
 import { IBrand } from 'src/types/brands'
 import ProfileSelect from './components/ProfileSelect'
 import { getPrepareData } from './utils/getPrepareData'
-import ActiveProfile from './components/ActiveProfile'
+import ActiveSaleProfile from './components/ActiveSaleProfile'
 
 export type IPromotionsType = 'salon' | 'master' | 'brand' | null
 
@@ -17,12 +17,10 @@ interface Props {
 
 const CabinetSales: FC<Props> = ({ user }) => {
   const { salons, masters, brands } = user.owner
-  const [id, setId] = useState('')
   const [type, setType] = useState<IPromotionsType>(null)
   const [activeProfile, setActiveProfile] = useState<
     ISalon | IMaster | IBrand | null
   >(null)
-  const [createSale, setCreateSale] = useState(false)
 
   const { profiles } = useMemo(
     () => getPrepareData({ salons, masters, brands, entityType: 'sales' }),
@@ -32,7 +30,6 @@ const CabinetSales: FC<Props> = ({ user }) => {
   // Функция для обработки клика по профилю
   const handleProfileClick = (profile: (typeof profiles)[0]) => {
     setType(profile.profileType as 'master' | 'salon' | 'brand')
-    setId(profile.id)
     switch (profile.profileType) {
       case 'master':
         const foundMaster = masters?.find(master => master.id === profile.id)
@@ -64,11 +61,9 @@ const CabinetSales: FC<Props> = ({ user }) => {
         quantityTitles={['Одобренные', 'На рассмотрении']}
       />
       {activeProfile && type && (
-        <ActiveProfile
+        <ActiveSaleProfile
           activeProfile={activeProfile}
           type={type}
-          createSale={createSale}
-          setCreateSale={setCreateSale}
           setActiveProfile={setActiveProfile}
         />
       )}

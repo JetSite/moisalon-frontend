@@ -1,4 +1,3 @@
-import { IGroupedServices } from 'src/types'
 import { IService, IServiceCategories } from 'src/types/services'
 
 export function selectedGroupNames(selection, catalog, separator) {
@@ -64,7 +63,7 @@ interface ICategory {
   title: string
 }
 
-export interface IRawService {
+export interface IServices {
   service: IService
   service_categories?: IServiceCategories[]
 }
@@ -72,11 +71,11 @@ export interface IRawService {
 // Тип для результата
 export interface IGroupedServices {
   category: string
-  services: IRawService[]
+  services: IServices[]
 }
 
 // Тип функции
-type IServicesByCategory = (services: IRawService[]) => IGroupedServices[]
+type IServicesByCategory = (services: IServices[]) => IGroupedServices[]
 
 // Основная функция
 export const getServicesByCategory: IServicesByCategory = services => {

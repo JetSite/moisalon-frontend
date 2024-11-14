@@ -47,7 +47,7 @@ const Top = styled.div`
   justify-content: flex-start;
 `
 
-const Image = styled.div`
+const ImagePlaceholder = styled.div`
   border: 1px solid #ededed;
   border-radius: 5px;
   height: 88px;
@@ -290,7 +290,7 @@ const Product = ({
     <Wrapper>
       <Top>
         <Link href={`/${city.slug}/product/${item?.product?.id}`}>
-          <Image>
+          <ImagePlaceholder>
             <img
               src={
                 item?.product?.cover?.url
@@ -299,7 +299,7 @@ const Product = ({
               }
               alt="logo"
             />
-          </Image>
+          </ImagePlaceholder>
         </Link>
         <Info>
           <Name>{item?.product?.name}</Name>

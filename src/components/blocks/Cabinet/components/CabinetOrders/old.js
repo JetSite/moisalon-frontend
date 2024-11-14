@@ -69,7 +69,7 @@ const CabinetOrders = ({ user }) => {
         <>
           <OrdersList>
             {ordersSliced?.map(order => (
-              <Order order={order} user={user} />
+              <Order key={order.id} order={order} user={user} />
             ))}
           </OrdersList>
           {fetchMoreButton}

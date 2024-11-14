@@ -90,16 +90,18 @@ const RentCard: FC<Props> = ({ item, salon }) => {
   return (
     <Wrapper>
       <Top>
-        <Image src={PHOTO_URL + item.cover?.url} />
-        <Status>{item?.isAvailableForRent ? 'Свободно' : 'Занято'}</Status>
+        {item.cover ? (
+          <Image alt={item.cover.name} src={PHOTO_URL + item.cover.url} />
+        ) : null}
+        <Status>{item.isAvailableForRent ? 'Свободно' : 'Занято'}</Status>
       </Top>
       <Bottom>
         <Info>
-          <Avatar src={PHOTO_URL + salon?.logo?.url} />
-          <Name>{salon?.name}</Name>
+          {salon.logo ? <Avatar src={PHOTO_URL + salon.logo.url} /> : null}
+          <Name>{salon.name}</Name>
         </Info>
-        <Address>{salon?.address}</Address>
-        <Price>{formatRentalPricing(item?.rentalPeriod)}</Price>
+        <Address>{salon.address}</Address>
+        <Price>{formatRentalPricing(item.rentalPeriod)}</Price>
       </Bottom>
     </Wrapper>
   )

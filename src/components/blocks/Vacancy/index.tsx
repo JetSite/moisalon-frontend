@@ -13,72 +13,65 @@ import {
   VacancyWrap,
   VacancyAmount,
 } from './style'
-import { IApolloRefetch, IID } from 'src/types/common'
-import { IPhoto } from 'src/types'
-import PhotoAdd from '../Cabinet/components/CabinetVacancies/components/CreateVacancy/PhotoAdd'
+import { IPromotionsType } from '../Cabinet/components/CabinetSales'
+import { IVacancy } from 'src/types/vacancies'
+import PhotoAdd, { IPhotoAddProps } from '../CreateBanner/PhotoAdd'
+import { IEntityDeleteHandler, IEntityHandler } from '../Sale'
 
-interface Props {
-  id?: IID
-  name?: string
-  title: string
+interface Props extends Partial<Omit<IPhotoAddProps, 'hover'>> {
   create?: boolean
-  photos: IPhoto[] | null
-  type?: string
-  removeVacancy?: (id: IID) => void
-  onAdd?: (photo: IPhoto) => void
-  amountFrom?: number
-  amountTo?: number
+  type?: IPromotionsType
+  item: IVacancy
+  handleClick?: IEntityHandler
+  handleDelete?: IEntityDeleteHandler
+  noHover?: boolean
 }
 
 const Vacancy: FC<Props> = ({
-  id,
-  name,
-  title,
-  amountFrom,
-  amountTo,
   create = false,
-  onAdd,
-  photos,
+  noHover = false,
   type,
-  removeVacancy,
+  item,
+  setPhoto,
+  photo,
+  handleClick,
+  handleDelete,
 }) => {
   const [hover, setHover] = useState(false)
   const { pathname } = useRouter()
 
-  const photoUrl = photos && photos[0].url ? photos[0].url : ''
-
-  const removeVacancyHandler = (vacancyId: IID) => {
-    removeVacancy && removeVacancy(vacancyId)
-  }
+  const photoSrc = `${PHOTO_URL}${item?.cover?.url ?? photo?.url ?? ''}`
 
   return (
-    <VacancyWrap>
+    <VacancyWrap id={item.id} onClick={handleClick}>
       {!create ? (
         <VacancyTop>
-          <Image alt="photo" src={`${PHOTO_URL}${photoUrl}`} />
+          <Image alt="photo" src={photoSrc} />
         </VacancyTop>
       ) : (
         <VacancyTop
           onMouseOver={() => setHover(true)}
           onMouseLeave={() => setHover(false)}
         >
-          <PhotoAdd
-            photoId={photoUrl}
-            hover={hover && photoUrl}
-            onAdd={onAdd}
-            type={type}
-          />
+          {setPhoto && (
+            <PhotoAdd photo={photo || null} setPhoto={setPhoto} hover={hover} />
+          )}
         </VacancyTop>
       )}
       <VacancyContent>
-        <VacancyTitle>{title}</VacancyTitle>
-        <VacancyOwner>{name}</VacancyOwner>
+        <VacancyTitle>{item.title}</VacancyTitle>
+        <VacancyOwner>{item.salon?.name || item.brand?.name}</VacancyOwner>
         <VacancyBottom>
-          {amountFrom && amountTo ? (
-            <VacancyAmount>от {amountFrom} ₽</VacancyAmount>
+          {item.amountFrom && item.amountTo ? (
+            <VacancyAmount>от {item.amountFrom} ₽</VacancyAmount>
           ) : null}
-          {pathname === '/masterCabinet' && !create && id ? (
-            <DeleteVacancyBtn onClick={() => removeVacancyHandler(id)}>
+          {pathname === '/masterCabinet' && !create && item.id ? (
+            <DeleteVacancyBtn
+              onClick={e => {
+                e.stopPropagation()
+                handleDelete && handleDelete(item.id)
+              }}
+            >
               Удалить вакансию
             </DeleteVacancyBtn>
           ) : null}

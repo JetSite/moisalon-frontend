@@ -162,6 +162,7 @@ const SearchResults: FC<Props> = ({ setShowSearchPopup, query }) => {
                 {masterSearchData?.length ? (
                   masterSearchData.map(master => (
                     <Link
+                      key={master.name}
                       href={`/${master?.city.slug || city.slug}/master/${
                         master.id
                       }`}
@@ -183,6 +184,7 @@ const SearchResults: FC<Props> = ({ setShowSearchPopup, query }) => {
                 {salonSearchData?.length && !salonLoading ? (
                   salonSearchData.map(salon => (
                     <Link
+                      key={salon.id}
                       href={`/${salon.city.slug || city.slug}/salon/${
                         salon.id
                       }`}
@@ -202,6 +204,7 @@ const SearchResults: FC<Props> = ({ setShowSearchPopup, query }) => {
                 {salonRentSearchData?.length && !salonRentLoading ? (
                   salonRentSearchData.map(salon => (
                     <Link
+                      key={salon.id}
                       href={`/${salon.city.slug || city.slug}/rent/${salon.id}`}
                       passHref
                     >
@@ -221,6 +224,7 @@ const SearchResults: FC<Props> = ({ setShowSearchPopup, query }) => {
                 {brandSearchData?.length && !brandLoading ? (
                   brandSearchData.map(brand => (
                     <Link
+                      key={brand.name}
                       href={`/${brand.city.slug || city.slug}/brand/${
                         brand.id
                       }`}

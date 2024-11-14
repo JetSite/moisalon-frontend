@@ -30,6 +30,7 @@ const EducationsFavorites = ({
   cabinet = false,
   mobile = false,
   handleDeleted,
+  setActiveTab,
 }) => {
   const navigationPrevRef = useRef(null)
   const navigationNextRef = useRef(null)

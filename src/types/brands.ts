@@ -27,7 +27,6 @@ export interface IBrand {
   minimalOrderPrice?: number
   termsDeliveryPrice?: string
   socialNetworks: ISocialNetworks[]
-  vacancies: IVacancy[]
   reviews: IReview[]
   ratings: IRating[]
   masters: IMaster[]
@@ -41,4 +40,5 @@ export interface IBrand {
   dontShowPrice: boolean
   promotions: IPromotions[] | null
   webSiteUrl: string | null
+  vacancies: IVacancy[]
 }

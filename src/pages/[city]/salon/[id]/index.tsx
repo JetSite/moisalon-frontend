@@ -35,8 +35,8 @@ import PhotoArrayField from 'src/components/blocks/Form/PhotoArrayField'
 import { UPDATE_SALON } from 'src/api/graphql/salon/mutations/updateSalon'
 import AutoFocusedForm from 'src/components/blocks/Form/AutoFocusedForm'
 import { getServiceCategories } from 'src/api/graphql/service/queries/getServiceCategories'
-import { IService, IServiceCategory, IServices } from 'src/types/services'
-import { IRawService, getServicesByCategory } from 'src/utils/serviceCatalog'
+import { IServiceCategory, IServices } from 'src/types/services'
+import { getServicesByCategory } from 'src/utils/serviceCatalog'
 import { GET_SERVICES_M_CAT } from 'src/api/graphql/service/queries/getServicesMCat'
 
 const DecktopWrapper = styled.div`
@@ -70,8 +70,8 @@ const Salon: FC<Props> = ({
   const [photosArray, setPhotosArray] = useState<IPhoto[]>(salon?.photos || [])
   const { user } = useAuthStore(getStoreData)
   const [isPortfolioEditing, setIsPortfolioEditing] = useState<boolean>(false)
-  const [services, setServices] = useState<IRawService[]>(salon?.services || [])
-  const [servicesM, setServicesM] = useState<IRawService[]>(
+  const [services, setServices] = useState<IServices[]>(salon?.services || [])
+  const [servicesM, setServicesM] = useState<IServices[]>(
     salon?.servicesM || [],
   )
   const servicesData = getServicesByCategory(services)

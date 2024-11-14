@@ -47,6 +47,7 @@ import { parseFieldsToString } from 'src/utils/newUtils/formsHelpers'
 import AddressNoSalonField from 'src/components/blocks/Form/AddressField/AddressNoSalonField'
 import { CREATE_CITY } from 'src/api/graphql/city/mutations/createCity'
 import { FormGuardPopup } from 'src/components/blocks/Form/FormGuardPopup'
+import { FormApi } from 'final-form'
 
 interface ICabinetFormIvitialValues extends InitialValuesForm {
   phone: string
@@ -88,6 +89,7 @@ const CabinetForm: FC<CabinetFormProps> = ({
   const [isErrorPopupOpen, setErrorPopupOpen] = useState<boolean>(false)
   const [citiesArray, setCitiesArray] = useState<ICity[]>(cities)
   const [clickCity, setClickCity] = useState<string | null>(null)
+  const formRef = useRef<FormApi<ICabinetFormIvitialValues>>()
 
   const [addCity] = useMutation(CREATE_CITY)
 
@@ -188,6 +190,19 @@ const CabinetForm: FC<CabinetFormProps> = ({
     birthDate: user.info.birthDate || '',
   }
 
+  useEffect(() => {
+    if (formRef.current) {
+      const unsubscribe = formRef.current.subscribe(
+        ({ dirty }) => {
+          const isNewLogo = !!photo && photo.id !== user.info?.avatar?.id
+          isNewLogo ? setDirtyForm(true) : setDirtyForm(dirty)
+        },
+        { dirty: true },
+      )
+      return unsubscribe
+    }
+  }, [formRef.current, photo, setDirtyForm, user.info?.avatar?.id])
+
   return (
     <Wrapper>
       <Flex>
@@ -198,16 +213,7 @@ const CabinetForm: FC<CabinetFormProps> = ({
         initialValues={initialValues}
         onSubmit={onSubmit}
         render={({ form, handleSubmit }) => {
-          useEffect(() => {
-            const unsubscribe = form.subscribe(
-              ({ dirty }) => {
-                const isNewLogo = !!photo && photo.id !== user.info?.avatar?.id
-                isNewLogo ? setDirtyForm(true) : setDirtyForm(dirty)
-              },
-              { dirty: true },
-            )
-            return unsubscribe
-          }, [form, photo])
+          formRef.current = form
           return (
             <form onSubmit={handleSubmit}>
               <FieldWrap>

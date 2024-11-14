@@ -1,9 +1,10 @@
 import { ApolloError, useMutation } from '@apollo/client'
-import { useEffect, useState } from 'react'
+import moment from 'moment'
+import { useState } from 'react'
 import { CREATE_PROMOTION } from 'src/api/graphql/promotion/mutations/createPromotion'
 import { UPDATE_PROMOTION } from 'src/api/graphql/promotion/mutations/updatePromotion'
 import { IID, ISetState } from 'src/types/common'
-import { IPromotions } from 'src/types/promotions'
+import { IPromotionStatus, IPromotions } from 'src/types/promotions'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 
 interface IHandleCreateOrUpdateSaleProps {
@@ -85,13 +86,19 @@ export const usePromotionMutate: IUseSaleMutate = ({
       setOpenPopup(true)
     }
     try {
+      const status = buttonPublish
+        ? IPromotionStatus.PUBLISHED
+        : IPromotionStatus.DRAFT
+
+      const publishedAt = buttonPublish ? moment().toISOString() : null
       if (sale?.id) {
         updateSale({
           variables: {
             id: sale.id,
             input: {
               ...input,
-              publishedAt: buttonPublish ? new Date().toISOString() : null,
+              status,
+              publishedAt,
             },
           },
           onCompleted,
@@ -102,10 +109,11 @@ export const usePromotionMutate: IUseSaleMutate = ({
             input: {
               ...input,
               ...valueType,
-              publishedAt: buttonPublish ? new Date().toISOString() : null,
+              status,
+              publishedAt,
             },
-            onCompleted,
           },
+          onCompleted,
         })
       }
     } catch (error) {

@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import {
   Wrapper,
-  Image,
+  ImageRight,
   Content,
   ContentWrap,
   Title,
@@ -15,7 +15,7 @@ const InviteMaster = ({ me }) => {
   const isLoggedIn = me?.info !== undefined && me?.info !== null
   return (
     <Wrapper>
-      <Image />
+      <ImageRight />
       <Content>
         <ContentWrap>
           <Title>Вы – мастер?</Title>

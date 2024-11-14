@@ -1,19 +1,26 @@
 import Link from 'next/link'
-import { cyrToTranslit } from '../../../../../../../utils/translit'
 import { BrandsContent, MainTitle, ListWrapper, TextNoBrands } from './styles'
-import BrandItem from './BrandItem'
+import BrandItem, { IHandlePublishBrand } from './BrandItem'
+import { FC } from 'react'
+import { IBrand } from 'src/types/brands'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 
-const BrandsList = ({ brands, handlePublish }) => {
+interface Props {
+  brands: IBrand[]
+  handlePublish: IHandlePublishBrand
+}
+
+const BrandsList: FC<Props> = ({ brands, handlePublish }) => {
   const { city } = useAuthStore(getStoreData)
   return (
     <BrandsContent>
       <MainTitle>Профиль: Бренды, с которыми я работаю</MainTitle>
       {brands.length > 0 ? (
-        <ListWrapper heightLarge={brands.length}>
+        <ListWrapper heightLarge={!!brands.length}>
           {brands.map(brand => (
             <Link
-              href={`/${cyrToTranslit(brand?.addressFull?.city) || city?.slug
-                }/brand/${brand?.seo?.slug || brand.id}`}
+              href={`/${brand.city.slug || city?.slug}/brand/${brand.id}`}
               key={brand.id}
             >
               <BrandItem

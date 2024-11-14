@@ -16,6 +16,7 @@ import {
 import { getPrepareInputBrandForm } from '../utils/getPrepareInputBrandForm'
 import { useBrandMutate } from '../utils/useBrandMutate'
 import { ICoordinate } from 'src/components/blocks/Form/AddressField/AddressNoSalonField'
+import { useForm } from 'react-final-form'
 
 interface Props extends CreateBrandProps {
   allTabs: RefObject<HTMLFormElement>
@@ -48,6 +49,7 @@ const RegistrationForm: FC<Props> = ({
   const [selectCity, setSelectCity] = useState<string | null>(null)
   const [selectCountry, setSelectCountry] = useState<string | null>(null)
   const [coordinate, setCoordinates] = useState<ICoordinate | null>(null)
+  const form = useForm()
 
   const initialValues = useMemo<IInitialValuesBrandForm>(
     () => getInitialValuesBrandForm(brand),
@@ -96,6 +98,17 @@ const RegistrationForm: FC<Props> = ({
     })
   }
 
+  useEffect(() => {
+    const unsubscribe = form.subscribe(
+      ({ dirty }) => {
+        const isNewLogo = !!logo && brand?.logo && logo.id !== brand.logo.id
+        isNewLogo ? setDirtyForm(true) : setDirtyForm(dirty)
+      },
+      { dirty: true },
+    )
+    return unsubscribe
+  }, [form, logo, brand, setDirtyForm])
+
   return (
     <Wrapper>
       <Title>Информация о бренде</Title>
@@ -103,17 +116,7 @@ const RegistrationForm: FC<Props> = ({
         onSubmit={onSubmit}
         initialValues={initialValues}
         keepDirtyOnReinitialize
-        render={({ handleSubmit, form }) => {
-          useEffect(() => {
-            const unsubscribe = form.subscribe(
-              ({ dirty }) => {
-                const isNewLogo = !!logo && logo.id !== brand?.logo?.id
-                isNewLogo ? setDirtyForm(true) : setDirtyForm(dirty)
-              },
-              { dirty: true },
-            )
-            return unsubscribe
-          }, [form, logo])
+        render={({ handleSubmit }) => {
           return (
             <form onSubmit={handleSubmit} ref={allTabs}>
               <About

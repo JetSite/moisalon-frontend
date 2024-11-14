@@ -208,7 +208,7 @@ const Login = () => {
           </Left>
           <Right>
             <ImageWrap>
-              <Image src="/master-landing-login.jpg" />
+              <Image alt="master login" src="/master-landing-login.jpg" />
             </ImageWrap>
           </Right>
         </BottomContent>

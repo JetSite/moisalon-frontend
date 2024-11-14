@@ -107,13 +107,7 @@ const ListItem = ({ type, item }: { type: string; item: any }) => {
       case 'vacancies':
         return (
           <Link shallow href={`/vacancies/${item.id}`} passHref>
-            <Vacancy
-              id={item.id}
-              title={item.title}
-              photos={item.cover}
-              amountFrom={item.amountFrom}
-              amountTo={item.amountTo}
-            />
+            <Vacancy item={item} />
           </Link>
         )
       default:

@@ -27,7 +27,6 @@ import { IMaster } from 'src/types/masters'
 import { IPagination } from 'src/types'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
-import { ISearchResults } from './SalonsSearchResults'
 import { IFilters } from 'src/components/pages/Rent/RentFilter'
 import { useLazyQuery, useQuery } from '@apollo/client'
 import { getMastersTroughCity } from 'src/api/graphql/master/queries/getMastersTroughCity'
@@ -35,6 +34,7 @@ import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { settingsConfig } from 'src/api/authConfig'
 import { getTotalCount } from 'src/utils/getTotalCount'
 import { useRouter } from 'next/router'
+import { ISearchResults } from './SalonSearch'
 
 interface Props extends ISearchResults {
   masterData: IMaster[]
@@ -59,21 +59,31 @@ const MastersSearchResults: FC<Props> = ({
     setUpdateMasterData(masterData)
   }, [masterData])
 
-  let storageSort
-  if (typeof window !== 'undefined') {
-    storageSort =
-      localStorage.getItem(settingsConfig.masterSort) || 'viewsCount:desc'
-    const storageSortProperty = storageSort.includes(filtersType['по отзывам'])
-      ? 'по отзывам'
-      : 'по рейтингу'
+  useEffect(() => {
+    try {
+      let storageSort
+      if (typeof window !== 'undefined') {
+        storageSort =
+          localStorage.getItem(settingsConfig.masterSort) || 'viewsCount:desc'
+        const storageSortProperty = storageSort.includes(
+          filtersType['по отзывам'],
+        )
+          ? 'по отзывам'
+          : 'по рейтингу'
 
-    const storageSortOrder = storageSort.includes(':desc') ? ':desc' : ':asc'
+        const storageSortOrder = storageSort.includes(':desc')
+          ? ':desc'
+          : ':asc'
 
-    useEffect(() => {
-      setSortOrder(storageSortOrder)
-      setSortProperty(storageSortProperty)
-    }, [])
-  }
+        setSortOrder(storageSortOrder)
+        setSortProperty(storageSortProperty)
+      }
+    } catch (error) {
+      console.error('Error initializing sort preferences:', error)
+      setSortOrder(':desc')
+      setSortProperty('по рейтингу')
+    }
+  }, [])
 
   const [sortProperty, setSortProperty] = useState<IFiltersType>(
     Object.keys(filtersType)[1] as IFiltersType,

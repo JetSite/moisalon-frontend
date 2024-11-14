@@ -29,8 +29,6 @@ const DeleteEntityPopup: FC<DeleteEntityPopupProps> = ({
   const { user } = useAuthStore(getStoreData)
   const { setUser } = useAuthStore(getStoreEvent)
 
-  if (!user || !user.owner) return null
-
   const deleteCB = () => {
     onClose()
   }
@@ -47,6 +45,8 @@ const DeleteEntityPopup: FC<DeleteEntityPopupProps> = ({
   const [updateBrand, { loading: brandLoading }] = useMutation(UPDATE_BRAND, {
     onCompleted: deleteCB,
   })
+
+  if (!deleteItem || !deleteItemType || !user || !user.owner) return null
 
   const handleDelete = (id: IID, type: TypeItem) => {
     switch (type) {
@@ -84,8 +84,6 @@ const DeleteEntityPopup: FC<DeleteEntityPopupProps> = ({
         console.error(`Неизвестный тип: ${type}`)
     }
   }
-
-  if (!deleteItem || !deleteItemType) return null
 
   return (
     <Popup
