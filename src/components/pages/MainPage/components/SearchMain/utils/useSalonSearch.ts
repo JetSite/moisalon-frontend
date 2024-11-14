@@ -57,8 +57,6 @@ export const useSalonSearch: IUseSalonSearch = ({
     },
   )
 
-  console.log(rent, pageSize)
-
   useEffect(() => {
     setUpdateSalonData(salonData)
   }, [salonData])

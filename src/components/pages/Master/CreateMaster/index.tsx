@@ -10,7 +10,7 @@ import { IMaster } from 'src/types/masters'
 import { IServiceCategories } from 'src/types/services'
 import { useMutation } from '@apollo/client'
 import { UPDATE_MASTER_PHOTO } from 'src/_graphql-legacy/master/updateMasterPhotoMutation'
-import { ICity, IPhone, IPhoto } from 'src/types'
+import { ICity, IPhone, IPhoto, ISNetwork } from 'src/types'
 import { useElementVisibility } from '../../Salon/CreateSalon/components/RegistrationForm/utils/useElementVisibility'
 import { ITab } from '../../Salon/CreateSalon/config'
 import { useRouter } from 'next/router'
@@ -20,6 +20,7 @@ interface Props {
   master: IMaster | null
   serviceCategories: IServiceCategories[]
   cities: ICity[]
+  sNetworks: ISNetwork[]
 }
 
 const tabs: ITab[] = [
@@ -29,7 +30,12 @@ const tabs: ITab[] = [
   { id: '4', value: 'Дополнительная информация', anchor: 'socials' },
 ]
 
-const CreateMaster: FC<Props> = ({ master, serviceCategories, cities }) => {
+const CreateMaster: FC<Props> = ({
+  master,
+  serviceCategories,
+  cities,
+  sNetworks,
+}) => {
   const allTabs = useRef<HTMLFormElement>(null)
   const ref1 = useRef<HTMLDivElement>(null)
   const ref2 = useRef<HTMLDivElement>(null)
@@ -103,6 +109,7 @@ const CreateMaster: FC<Props> = ({ master, serviceCategories, cities }) => {
             cities={cities}
             dirtyForm={dirtyForm}
             setDirtyForm={setDirtyForm}
+            sNetworks={sNetworks}
           />
         </Wrapper>
         <FormGuardPopup setDirtyForm={setDirtyForm} dirtyForm={dirtyForm} />

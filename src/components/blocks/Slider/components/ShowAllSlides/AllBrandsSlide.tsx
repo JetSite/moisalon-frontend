@@ -11,7 +11,6 @@ const AllBrandsSlide: FC = () => {
 
   const router = useRouter()
   const landingBrand = router.pathname === '/for_brand'
-  const b2bClient = !!me?.master?.id || !!me?.salons?.length
 
   return (
     <Link

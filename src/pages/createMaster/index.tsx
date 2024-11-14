@@ -14,19 +14,22 @@ import { GetServerSideProps } from 'next'
 import { Nullable } from 'src/types/common'
 import { IServiceCategories } from 'src/types/services'
 import { IMaster } from 'src/types/masters'
-import { ICity } from 'src/types'
+import { ICity, ISNetwork } from 'src/types'
 import { getCities } from 'src/api/graphql/city/getCities'
+import { S_NETWORKS } from 'src/api/graphql/common/queries/sNetworks'
 
 interface Props {
   serviceCategories: IServiceCategories[]
   master: IMaster | null
   cities: ICity[]
+  sNetworks: ISNetwork[]
 }
 
 const CreateOrEditMaster: FC<Props> = ({
   serviceCategories,
   master,
   cities,
+  sNetworks,
 }) => {
   const router = useRouter()
   const { user } = useAuthStore(getStoreData)
@@ -43,6 +46,7 @@ const CreateOrEditMaster: FC<Props> = ({
         master={master}
         serviceCategories={serviceCategories}
         cities={cities}
+        sNetworks={sNetworks}
       />
     )
   }
@@ -69,17 +73,20 @@ export const getServerSideProps: GetServerSideProps<
       query: getServiceCategories,
     }),
     apolloClient.query({ query: getCities, variables: { itemsCount: 100 } }),
+    apolloClient.query({ query: S_NETWORKS }),
   ])
 
   const serviceCategories: IServiceCategories[] | null =
     flattenStrapiResponse(data[0].data.serviceCategories) || []
   const cities = flattenStrapiResponse(data[1].data.cities) || []
+  const sNetworks: ISNetwork[] = flattenStrapiResponse(data[2].data.sNetworks)
 
   return {
     props: {
       serviceCategories,
       master,
       cities,
+      sNetworks,
     },
   }
 }

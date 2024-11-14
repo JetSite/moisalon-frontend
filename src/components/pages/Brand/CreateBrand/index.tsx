@@ -6,7 +6,7 @@ import Controls from '../../../blocks/Form/Controls'
 import BackArrow from '../../../ui/BackArrow'
 import { Wrapper } from './styled'
 import RegistrationForm from './components/RegistrationForm'
-import { ICity, ICountry, IPhoto } from 'src/types'
+import { ICity, ICountry, IPhoto, ISNetwork } from 'src/types'
 import { PHOTO_URL } from 'src/api/variables'
 import { IBrand } from 'src/types/brands'
 import { ISetState } from 'src/types/common'
@@ -18,9 +18,15 @@ export interface CreateBrandProps {
   brand: IBrand | null
   cities: ICity[]
   countries: ICountry[]
+  sNetworks: ISNetwork[]
 }
 
-const CreateBrand: FC<CreateBrandProps> = ({ brand, cities, countries }) => {
+const CreateBrand: FC<CreateBrandProps> = ({
+  brand,
+  cities,
+  countries,
+  sNetworks,
+}) => {
   const allTabs = useRef<HTMLFormElement>(null)
   const ref1 = useRef<HTMLDivElement>(null)
   const ref2 = useRef<HTMLDivElement>(null)
@@ -71,6 +77,7 @@ const CreateBrand: FC<CreateBrandProps> = ({ brand, cities, countries }) => {
             setNoPhotoError={setNoPhotoError}
             setDirtyForm={setDirtyForm}
             dirtyForm={dirtyForm}
+            sNetworks={sNetworks}
           />
         </Wrapper>
         <FormGuardPopup setDirtyForm={setDirtyForm} dirtyForm={dirtyForm} />

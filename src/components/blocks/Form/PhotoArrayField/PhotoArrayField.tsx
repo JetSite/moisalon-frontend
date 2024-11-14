@@ -1,8 +1,8 @@
 import React, { FC } from 'react'
 import { Field } from 'react-final-form'
 import { FieldArray } from 'react-final-form-arrays'
-import usePhotos, { IUsePhotoProps } from './usePhotos'
-import { GeneratePhotoArrayProps } from './generatePhotoArrayProps'
+import { IUsePhotoProps } from './usePhotos'
+import { GeneratePhotoArrayProps } from './GeneratePhotoArrayProps'
 
 export interface PhotoArrayFieldProps
   extends Omit<IUsePhotoProps, 'onRemove' | 'onChange' | 'onAdd' | 'photos'> {

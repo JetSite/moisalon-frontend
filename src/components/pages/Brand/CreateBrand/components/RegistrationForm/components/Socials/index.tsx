@@ -7,6 +7,7 @@ import TextFieldAdapter from '../../../../../../../blocks/Form/TextField'
 import { FieldWrap } from '../../styled'
 import { laptopBreakpoint } from '../../../../../../../../styles/variables'
 import { parseFieldsToString } from 'src/utils/newUtils/formsHelpers'
+import { ISNetwork } from 'src/types'
 
 const Wrapper = styled.div`
   margin-top: 120px;
@@ -30,9 +31,10 @@ const Text = styled.p`
 
 interface Props {
   ref2: RefObject<HTMLDivElement>
+  sNetworks: ISNetwork[]
 }
 
-const Socials: FC<Props> = ({ ref2 }) => {
+const Socials: FC<Props> = ({ ref2, sNetworks }) => {
   return (
     <Wrapper id="socials" ref={ref2}>
       <Text>Дополнительные социальные сети</Text>
@@ -46,7 +48,12 @@ const Socials: FC<Props> = ({ ref2 }) => {
           validate={isUrl}
         />
       </FieldWrap>
-      <Field name="socialNetworkUrls" component={SocialNetworkUrlsField} />
+      <Field
+        name="socialNetworkUrls"
+        render={({ input }) => (
+          <SocialNetworkUrlsField input={input} arrayFields={sNetworks} />
+        )}
+      />
     </Wrapper>
   )
 }

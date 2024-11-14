@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, use } from 'react'
+import { useState, useEffect, useCallback, use, FC } from 'react'
 import { useRouter } from 'next/router'
 import { useMutation } from '@apollo/react-hooks'
 import {
@@ -30,12 +30,13 @@ import parseToFloat from '../../../utils/parseToFloat'
 import { removeItemB2cMutation } from '../../../_graphql-legacy/cart/removeItemB2c'
 import CartOrder from './components/CartOrder'
 import BackButton from '../../ui/BackButton'
-import { cyrToTranslit } from '../../../utils/translit'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 import useBaseStore from 'src/store/baseStore'
+import { IBrand } from 'src/types/brands'
+import { IMe } from 'src/types/me'
 
-const CountProduct = items => {
+const CountProduct = (items: any[]) => {
   if (items?.length) {
     let count = 0
     for (let i = 0; i < items?.length; i++) {
@@ -78,7 +79,7 @@ export const useStyles = makeStyles({
   },
 })
 
-const totalSumm = items => {
+const totalSumm = (items: any[]) => {
   if (!items?.length) {
     return 0
   } else {
@@ -92,7 +93,7 @@ const totalSumm = items => {
   }
 }
 
-const checkSumm = (brand, checkedProducts) => {
+const checkSumm = (brand: IBrand, checkedProducts) => {
   if (
     checkedProducts?.find(
       el => el?.product?.brand?.name === brand?.attributes?.name,
@@ -124,7 +125,11 @@ const checkedProductBrands = (checkedArr, productArr) => {
   return newArr
 }
 
-const Cart = ({ me }) => {
+interface Props {
+  me: IMe
+}
+
+const Cart: FC<Props> = ({ me }) => {
   const { cart } = useBaseStore(getStoreData)
   const [open, setOpen] = useState(false)
   const { city } = useAuthStore(getStoreData)

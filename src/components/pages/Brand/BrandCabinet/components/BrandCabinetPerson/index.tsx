@@ -12,8 +12,15 @@ import AddressNoSalonField from '../../../../../blocks/Form/AddressField/Address
 import Avatar from '../../../../../blocks/Form/Avatar'
 import { PhoneField, TextField } from 'src/components/blocks/Form'
 import { parseFieldsToString } from 'src/utils/newUtils/formsHelpers'
+import { FC, RefObject } from 'react'
+import { ISetState } from 'src/types/common'
 
-const BrandCabinetPerson = ({ ref3, setClickCity }) => {
+interface Props {
+  ref3: RefObject<HTMLDivElement>
+  setClickCity: ISetState<string | null>
+}
+
+const BrandCabinetPerson: FC<Props> = ({ ref3, setClickCity }) => {
   const photoArrayProps = {
     photoType: 'salonPhoto',
     kind: 'small',
@@ -53,7 +60,7 @@ const BrandCabinetPerson = ({ ref3, setClickCity }) => {
       </FieldWrap>
       <AvatarWrap>
         <Title>Фото регионального представителя</Title>
-        <Avatar title="фото" red />
+        {/* <Avatar title="фото" red /> */}
       </AvatarWrap>
       <AddPerson>
         <Title>Добавить других региональных представителей</Title>

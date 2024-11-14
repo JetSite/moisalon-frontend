@@ -8,8 +8,17 @@ import {
   ReadMore,
 } from '../../styles'
 import { PHOTO_URL } from '../../../../../api/variables'
+import { FC } from 'react'
+import { IID, ISetState } from 'src/types/common'
 
-const AdviceItem = ({
+export interface AdviceItemProps {
+  item: any
+  adviceClicked: string | null
+  setCategoryClicked: (id: IID) => void
+  setAdviceClicked: ISetState<string | null>
+}
+
+const AdviceItem: FC<AdviceItemProps> = ({
   item,
   adviceClicked,
   setAdviceClicked,
@@ -30,7 +39,7 @@ const AdviceItem = ({
   // };
 
   const clickHandler = () => {
-    if (adviceClicked.length > 0) return
+    if (adviceClicked && adviceClicked.length > 0) return
     setCategoryClicked(item.attributes.feed_category.data[0].id)
     setAdviceClicked(item.id)
     window.scrollTo({ top: 0 })
@@ -41,7 +50,10 @@ const AdviceItem = ({
     : ''
 
   return (
-    <AdvItem onClick={clickHandler} opened={adviceClicked.length > 0}>
+    <AdvItem
+      onClick={clickHandler}
+      opened={!!adviceClicked && adviceClicked.length > 0}
+    >
       <AdvImage photoUrl={photoUrl} />
       {/* <Favorite isFavorite={isFavorite} onClick={(e) => addFavorite(e, item)} /> */}
       <MobileHidden>

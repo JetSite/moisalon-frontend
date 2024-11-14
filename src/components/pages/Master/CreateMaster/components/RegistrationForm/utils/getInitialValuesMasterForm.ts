@@ -1,4 +1,3 @@
-import { workingHoursOptions } from 'src/components/blocks/Form/WorkingTimeField/WorkingTime'
 import { IPhonesInitialValue } from 'src/components/pages/Salon/CreateSalon/components/RegistrationForm/utils/getInitialValuesSalonForm'
 import { IMaster } from 'src/types/masters'
 import { reverseTransformWorkingHours } from 'src/utils/newUtils/reverseTransformWorkingHours'

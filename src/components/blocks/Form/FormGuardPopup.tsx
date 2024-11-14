@@ -65,35 +65,33 @@ export const FormGuardPopup: FC<Props> = ({ dirtyForm, setDirtyForm }) => {
   const handlePopupClose = () => {
     setOpen(false)
   }
-  return (
-    link && (
-      <Popup
-        isOpen={open}
-        onClose={handlePopupClose}
-        title="Вы прерываете заполнение профиля!"
-        description=""
-        content={() => {
-          return <p>Вся несохраненная информация будет утеряна. Вы уверены?</p>
+  return link ? (
+    <Popup
+      isOpen={open}
+      onClose={handlePopupClose}
+      title="Вы прерываете заполнение профиля!"
+      description=""
+      content={() => {
+        return <p>Вся несохраненная информация будет утеряна. Вы уверены?</p>
+      }}
+    >
+      <Button
+        onClick={() => {
+          setDirtyForm(false)
+          router.push(link)
         }}
+        style={{ marginTop: 25 }}
+        variant="gray"
       >
-        <Button
-          onClick={() => {
-            setDirtyForm(false)
-            router.push(link)
-          }}
-          style={{ marginTop: 25 }}
-          variant="gray"
-        >
-          Выйти
-        </Button>
-        <Button
-          onClick={handlePopupClose}
-          style={{ marginTop: 25 }}
-          variant="red"
-        >
-          Остаться
-        </Button>
-      </Popup>
-    )
-  )
+        Выйти
+      </Button>
+      <Button
+        onClick={handlePopupClose}
+        style={{ marginTop: 25 }}
+        variant="red"
+      >
+        Остаться
+      </Button>
+    </Popup>
+  ) : null
 }

@@ -29,7 +29,7 @@ const AdvicesPage = ({
   const [categoryClicked, setCategoryClicked] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [adviceClicked, setAdviceClicked] = useState<string | null>('')
-  const [categoryAdvicesData, setCategoryAdvicesData] = useState(null)
+  const [categoryAdvicesData, setCategoryAdvicesData] = useState<any>(null)
 
   useEffect(() => {
     if (router.query.category && router.query.item) {

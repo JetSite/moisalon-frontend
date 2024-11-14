@@ -9,7 +9,6 @@ type IUseCitySuggestions = (city: string) => {
 }
 
 export const useCitySuggestions: IUseCitySuggestions = (city: string) => {
-  if (!city || city?.length < 2) return { suggestions: [], loading: false }
 
   const { loading, data } = useQuery(getSearchCity, {
     variables: {
@@ -17,6 +16,9 @@ export const useCitySuggestions: IUseCitySuggestions = (city: string) => {
     },
     skip: !city || city?.length < 2,
   })
+
+  if (!city || city?.length < 2) return { suggestions: [], loading: false }
+
 
   if (loading || !data) {
     return { suggestions: [], loading }

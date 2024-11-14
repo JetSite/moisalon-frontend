@@ -44,6 +44,7 @@ export const RenderMasterForm: FC<Props> = ({
   serviceCategories,
   setClickCityResume,
   setCoordinates,
+  sNetworks,
 }) => {
   const { handleSubmit, form } = formProps
 
@@ -80,7 +81,7 @@ export const RenderMasterForm: FC<Props> = ({
         handleClickNextTab={handleClickNextTab}
         number={3}
       />
-      <Socials ref4={ref4} />
+      <Socials ref4={ref4} sNetworks={sNetworks} />
       <MobileHidden>
         <Button
           variant="red"
