@@ -1,6 +1,8 @@
 import styled, { css, keyframes } from 'styled-components'
 import { lighten } from 'polished'
-import { ButtonProps } from './'
+import { ButtonProps } from './Button'
+import Link from 'next/link'
+import { LinkButtonProps } from './LinkButton'
 
 const pulse = keyframes`
   0%, 100% {
@@ -12,6 +14,8 @@ const pulse = keyframes`
 `
 
 export const ButtonCustom = styled.button<ButtonProps>`
+  justify-content: center;
+  align-items: center;
   font-size: 18px;
   font-weight: 500;
   color: white;
@@ -20,7 +24,7 @@ export const ButtonCustom = styled.button<ButtonProps>`
   border: none;
   outline: none;
   cursor: pointer;
-  display: inline-block;
+  display: flex;
   transition: all 0.2s ease-in-out;
   margin-top: ${({ mt }) => mt && mt + 'px'};
   margin-bottom: ${({ mb }) => mb && mb + 'px'};
@@ -36,12 +40,54 @@ export const ButtonCustom = styled.button<ButtonProps>`
       animation: ${pulse} 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
     `}
 
-  :disabled {
-    border: 1px solid transparent;
-    background-color: #d8d8d8;
-    color: white;
-    cursor: default;
-  }
+  ${({ disabled }) =>
+    disabled &&
+    css`
+      border: 1px solid transparent;
+      background-color: #d8d8d8;
+      color: white;
+      cursor: default;
+      opacity: 0.6;
+      &:hover {
+        background-color: #d8d8d8;
+      }
+    `}
+`
+
+export const LinkButtonCustom = styled(Link)<LinkButtonProps>`
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 500;
+  color: white;
+  padding: 16px 68px;
+  min-width: 134px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  display: flex;
+  transition: all 0.2s ease-in-out;
+  margin-top: ${({ mt }) => mt && `${mt}px`};
+  margin-bottom: ${({ mb }) => mb && `${mb}px`};
+  position: relative;
+  z-index: ${props => props.z};
+  ${props => styleVariants[props.variant]}
+  ${props => sizeVariants[props.size || 'fullWidth']}
+  ${props => props.font && fontVariants[props.font]}
+
+  ${({ disabled }) =>
+    disabled &&
+    css`
+      border: 1px solid transparent;
+      background-color: #d8d8d8;
+      color: white;
+      cursor: default;
+      opacity: 0.6;
+      pointer-events: none;
+      &:hover {
+        background-color: #d8d8d8;
+      }
+    `}
 `
 
 export const styleVariants = {

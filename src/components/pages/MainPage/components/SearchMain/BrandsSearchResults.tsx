@@ -33,7 +33,7 @@ const BrandsSearchResults: FC<Props> = ({
   const { city } = useAuthStore(getStoreData)
   const router = useRouter()
 
-  const [getBrand, { loading }] = useLazyQuery(BRANDS, {
+  const [getBrands, { loading }] = useLazyQuery(BRANDS, {
     notifyOnNetworkStatusChange: true,
     onCompleted: data => {
       const prepareData = flattenStrapiResponse(data.brands)
@@ -44,7 +44,7 @@ const BrandsSearchResults: FC<Props> = ({
   })
 
   const onFetchMore = async () => {
-    await getBrand({ variables: { page } })
+    await getBrands({ variables: { page } })
     setPage(page + 1)
   }
 

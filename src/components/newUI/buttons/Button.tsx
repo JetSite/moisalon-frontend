@@ -1,10 +1,10 @@
-import { ButtonHTMLAttributes, FC, ReactNode } from 'react'
+import { ButtonHTMLAttributes, FC } from 'react'
 import {
   ButtonCustom,
   fontVariants,
   sizeVariants,
   styleVariants,
-} from 'src/components/newUI/buttons/styled'
+} from './styled'
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant: keyof typeof styleVariants

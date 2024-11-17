@@ -11,7 +11,7 @@ import BrandReviews from '../../../../components/pages/Brand/ViewBrand/component
 import InviteBrand from '../../../../components/pages/Brand/ViewBrand/components/Invite'
 import Line from '../../../../components/pages/MainPage/components/Line'
 import Slider from '../../../../components/blocks/Slider'
-import { getBrand } from 'src/api/graphql/brand/queries/getBrand'
+import { BRAND } from 'src/api/graphql/brand/queries/getBrand'
 import { BRANDS } from 'src/api/graphql/brand/queries/getBrands'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { getStoreData } from 'src/store/utils'
@@ -186,7 +186,7 @@ export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async ({
 
   const data = await Promise.all([
     apolloClient.query({
-      query: getBrand,
+      query: BRAND,
       variables: { id },
     }),
     apolloClient.query({

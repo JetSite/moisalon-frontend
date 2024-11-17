@@ -2,7 +2,7 @@ import { FC, useState } from 'react'
 import Head from 'next/head'
 import FilterCatalog from '../../ui/FilterCatalog'
 import Catalog from '../Catalog'
-import { IProduct, IProductCategories } from 'src/types/product'
+import { ICart, IProduct, IProductCategories } from 'src/types/product'
 import { IBrand } from 'src/types/brands'
 import { IPagination } from 'src/types'
 import Button from 'src/components/ui/Button'
@@ -14,6 +14,7 @@ export interface IBeautyFreeShopPageProps {
   dataProductCategories: IProductCategories[]
   pageSize: number
   pagination: IPagination
+  cart: ICart | null
 }
 
 const BeautyFreeShopPage: FC<IBeautyFreeShopPageProps> = ({
@@ -22,6 +23,7 @@ const BeautyFreeShopPage: FC<IBeautyFreeShopPageProps> = ({
   dataProductCategories,
   pageSize,
   pagination: paginationInit,
+  cart,
 }) => {
   const [productsData, setProductsData] = useState<IProduct[]>(dataProducts)
   const [pagination, setPagination] = useState<IPagination>(paginationInit)
@@ -52,7 +54,7 @@ const BeautyFreeShopPage: FC<IBeautyFreeShopPageProps> = ({
           setPagination={setPagination}
         />
       </Wrapper>
-      <Catalog products={productsData} loading={loading} noTitle />
+      <Catalog products={productsData} loading={loading} noTitle cart={cart} />
       {nextPage !== pagination.pageCount && (
         <Wrapper>
           <Button

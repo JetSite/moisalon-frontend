@@ -1,8 +1,7 @@
 import { imageInfo } from '../../common/imageInfo'
-import { metaInfo } from '../../common/metaInfo'
-import { brandsFragment } from '../../fragments/brands'
 import { ratingsFragment } from '../../fragments/ratings'
 import { reviewsFragment } from '../../fragments/reviews'
+import { brandForProductFragment } from './brandForProduct'
 import { attributesAttrValueFragment } from './attributesAttrValue'
 import { poductCategoryFragment } from './productCategory'
 
@@ -22,7 +21,7 @@ data {
       ${poductCategoryFragment}
     }
     brand {
-      ${brandsFragment}
+      ${brandForProductFragment}
     }
     cover {
       ${imageInfo}

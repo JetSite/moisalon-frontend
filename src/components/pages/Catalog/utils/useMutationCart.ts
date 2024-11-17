@@ -3,10 +3,17 @@ import { useEffect, useState } from 'react'
 import { useDebounce } from 'use-debounce'
 import { CREATE_CART } from 'src/api/graphql/cart/mutations/createCart'
 import { UPDATE_CART } from 'src/api/graphql/cart/mutations/updateCart'
-import { IApolloOnCompleted, IID, ISetState } from 'src/types/common'
+import {
+  IApolloOnCompleted,
+  IAppoloMutationCallback,
+  IID,
+  ISetState,
+} from 'src/types/common'
 import { ICart } from 'src/types/product'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { isEqual } from 'lodash'
+import { getStoreEvent } from 'src/store/utils'
+import useBaseStore from 'src/store/baseStore'
 
 interface IHandleMutateCartProps {
   itemID: IID
@@ -19,48 +26,52 @@ export interface IQuantityMap {
 
 type IHandleMutateCart = (props: IHandleMutateCartProps) => void
 
-type IUseMutationCart = (props: IUseMutationCartProps) => {
+export interface IUseMutationCartResult {
   loading: boolean
   handleMutate: IHandleMutateCart
   quantityMap: IQuantityMap
+  updateCart: IAppoloMutationCallback
 }
 
+type IUseMutationCart = (props: IUseMutationCartProps) => IUseMutationCartResult
+
 interface IUseMutationCartProps {
-  setCart: (cart: ICart | null) => void
   cart: ICart | null
   userID: IID | null
 }
 
-interface ICartContentInput {
+export interface ICartContentInput {
   product: IID
   quantity: number
 }
 
 export const useMutationCart: IUseMutationCart = ({
-  setCart,
-  cart,
+  cart: dataCart,
   userID,
 }) => {
   const [loading, setLoading] = useState(false)
+  const [cart, setCart] = useState<ICart | null>(dataCart)
   const [quantityMap, setQuantityMap] = useState<IQuantityMap>({})
-
+  const { setCart: setCartStore } = useBaseStore(getStoreEvent)
   const debounceQuantityMap = useDebounce(quantityMap, 4000)
 
   const onCompleted: IApolloOnCompleted<any> = data => {
-    if (data?.createCart?.data) {
-      setCart(flattenStrapiResponse(data.createCart.data))
-    } else {
-      setCart(flattenStrapiResponse(data.updateCart.data))
-    }
+    const newCart =
+      flattenStrapiResponse(data.createCart?.data) ||
+      flattenStrapiResponse(data.updateCart?.data)
+    setCart(newCart)
+    setCartStore(newCart)
     setLoading(false)
   }
+
+  console.log('cart result', cart)
 
   useEffect(() => {
     const resultQuantityMap = debounceQuantityMap[0]
     const arrID = Object.keys(resultQuantityMap)
     const cartContent = arrID
       .map(e =>
-        resultQuantityMap[e] > 0
+        resultQuantityMap[e] >= 0
           ? {
               product: e,
               quantity: resultQuantityMap[e],
@@ -84,7 +95,7 @@ export const useMutationCart: IUseMutationCart = ({
           .map(item => {
             const match = cartContent.find(el => el.product === item.product.id)
             if (match) {
-              return match.quantity > 0 ? match : null
+              return match.quantity >= 0 ? match : null
             }
             return {
               product: item.product.id,
@@ -170,5 +181,5 @@ export const useMutationCart: IUseMutationCart = ({
     }
   }
 
-  return { loading, handleMutate, quantityMap }
+  return { loading, handleMutate, quantityMap, updateCart }
 }

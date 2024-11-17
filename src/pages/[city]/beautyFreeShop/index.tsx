@@ -10,6 +10,11 @@ import BeautyFreeShopPage, {
 import { GetServerSideProps, NextPage } from 'next'
 import { Nullable } from 'src/types/common'
 import { BRANDS_TO_SHOP } from 'src/api/graphql/brand/queries/getBrandToShop'
+import { ME } from 'src/api/graphql/me/queries/getMe'
+import { getCookie } from 'cookies-next'
+import { authConfig } from 'src/api/authConfig'
+import { GET_CART_BY_USER } from 'src/api/graphql/cart/queries/getCartByUser'
+import { ICart } from 'src/types/product'
 
 interface Props extends IBeautyFreeShopPageProps {}
 
@@ -26,10 +31,12 @@ const BeautyFreeShop: NextPage<Props> = props => {
 export const getServerSideProps: GetServerSideProps<
   Nullable<Props>
 > = async ctx => {
-  const apolloClient = initializeApollo()
+  const accessToken = getCookie(authConfig.tokenKeyName, ctx)
+
+  const apolloClient = initializeApollo({ accessToken })
   const pageSize = 2
 
-  const data = await Promise.all([
+  const resArr = [
     apolloClient.query({
       query: PRODUCTS,
       variables: { pageSize },
@@ -42,13 +49,40 @@ export const getServerSideProps: GetServerSideProps<
       query: BRANDS_TO_SHOP,
       variables: { itemsCount: 10 },
     }),
-  ])
+  ]
 
-  const products = flattenStrapiResponse(data[0].data.products?.data)
-  const productCategories = flattenStrapiResponse(
-    data[1]?.data?.productCategories?.data,
-  )
-  const brands = flattenStrapiResponse(data[2].data.brands.data)
+  if (accessToken) {
+    const meData = await apolloClient.query({
+      query: ME,
+    })
+    const id = meData.data?.me.id || null
+
+    resArr.push(
+      apolloClient.query({ query: GET_CART_BY_USER, variables: { id } }),
+    )
+  }
+
+  const data = await Promise.allSettled(resArr)
+
+  const products =
+    data[0].status === 'fulfilled'
+      ? flattenStrapiResponse(data[0].value.data.products?.data)
+      : []
+
+  const productCategories =
+    data[1].status === 'fulfilled'
+      ? flattenStrapiResponse(data[1].value.data.productCategories?.data)
+      : []
+
+  const brands =
+    data[2].status === 'fulfilled'
+      ? flattenStrapiResponse(data[2].value.data.brands?.data)
+      : []
+
+  const cart =
+    data[3] && data[3].status === 'fulfilled'
+      ? (flattenStrapiResponse(data[3].value.data.carts) as ICart[])[0] || null
+      : null
 
   return addApolloState(apolloClient, {
     props: {
@@ -57,7 +91,11 @@ export const getServerSideProps: GetServerSideProps<
       dataProductCategories: productCategories,
       cityData: 'Москва',
       pageSize,
-      pagination: data[0].data.products?.meta.pagination,
+      cart,
+      pagination:
+        data[0].status === 'fulfilled'
+          ? data[0].value.data.products?.meta.pagination
+          : null,
     },
   })
 }

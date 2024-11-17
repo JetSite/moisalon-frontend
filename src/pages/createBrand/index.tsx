@@ -6,12 +6,11 @@ import { getStoreData } from 'src/store/utils'
 import CreateBrand, {
   CreateBrandProps,
 } from 'src/components/pages/Brand/CreateBrand'
-import { getBrand } from 'src/api/graphql/brand/queries/getBrand'
+import { BRAND } from 'src/api/graphql/brand/queries/getBrand'
 import { GetServerSideProps, NextPage } from 'next'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { getCities } from 'src/api/graphql/city/getCities'
 import { Nullable } from 'src/types/common'
-import { useQuery } from '@apollo/client'
 import { COUNTRIES } from 'src/api/graphql/country/queries/getCountries'
 import { ISNetwork } from 'src/types'
 import { S_NETWORKS } from 'src/api/graphql/common/queries/sNetworks'
@@ -52,7 +51,7 @@ export const getServerSideProps: GetServerSideProps<
 
   if (ctx.query?.id) {
     const brandQueryRes = await apolloClient.query({
-      query: getBrand,
+      query: BRAND,
       variables: { id: ctx.query.id },
     })
     brand = brandQueryRes?.data?.brand
