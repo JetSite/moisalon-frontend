@@ -292,14 +292,7 @@ const EducationPage: FC<EducationPageProps> = ({
             </Right>
           </Content>
         </Wrapper>
-        <EducationReviews
-          data={reviews}
-          id={education?.id}
-          refetchReviews={refetchReviews}
-          loadingReview={loadingReview}
-          setLoadingReview={setLoadingReview}
-          setReviews={setReviews}
-        />
+        <EducationReviews educationID={education.id} reviews={reviews} />
       </MainContainer>
       <Ribbon
         title="Бьюти-лента"

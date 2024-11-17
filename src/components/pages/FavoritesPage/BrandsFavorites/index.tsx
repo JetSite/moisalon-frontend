@@ -24,7 +24,6 @@ import { cyrToTranslit } from '../../../../utils/translit'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 import { ThingsProps } from '../SalonsFavorites'
-import { NavigationOptions } from 'swiper/types'
 import { IBrand } from 'src/types/brands'
 SwiperCore.use([Navigation])
 
@@ -41,9 +40,12 @@ const BrandsFavorites: FC<ThingsProps> = ({
 
   const onBeforeInit = (Swiper: SwiperClass) => {
     if (typeof Swiper.params.navigation !== 'boolean') {
-      const navigation = Swiper.params.navigation as NavigationOptions
-      navigation.prevEl = navigationPrevRef.current
-      navigation.nextEl = navigationNextRef.current
+      const navigation = Swiper.params.navigation
+
+      if (navigation) {
+        navigation.prevEl = navigationPrevRef.current
+        navigation.nextEl = navigationNextRef.current
+      }
     }
   }
 

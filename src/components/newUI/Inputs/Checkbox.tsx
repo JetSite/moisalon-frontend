@@ -1,6 +1,5 @@
 import { Checkbox, CheckboxProps } from '@material-ui/core'
 import { FC } from 'react'
-import { useStyles } from 'src/components/pages/Cart'
 import styled from 'styled-components'
 
 export const Wrapper = styled.div`
