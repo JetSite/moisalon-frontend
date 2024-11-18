@@ -1,5 +1,5 @@
 import { Checkbox, CheckboxProps } from '@material-ui/core'
-import { FC } from 'react'
+import { FC, ReactElement } from 'react'
 import styled from 'styled-components'
 
 export const Wrapper = styled.div`
@@ -41,7 +41,7 @@ export const BpCheckedIcon = styled(BpIcon)({
 })
 
 interface Props extends CheckboxProps {
-  label?: string
+  label?: string | ReactElement
 }
 
 const CheckboxStyled: FC<Props> = ({ id, label, checked, ...props }) => {
@@ -51,6 +51,9 @@ const CheckboxStyled: FC<Props> = ({ id, label, checked, ...props }) => {
         id={id}
         icon={<BpIcon />}
         checkedIcon={<BpCheckedIcon />}
+        aria-label={
+          typeof label === 'string' ? label : props['aria-label'] || 'checkbox'
+        }
         checked={checked}
         {...props}
       />

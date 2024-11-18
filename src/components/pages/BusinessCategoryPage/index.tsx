@@ -78,16 +78,7 @@ const ListItem = ({ type, item }: { type: string; item: any }) => {
 
         return (
           <Link shallow href={`/educations/${item.id}`} passHref>
-            <Education
-              id={itemEducation.id}
-              title={itemEducation.title}
-              averageScore={itemEducation.averageScore}
-              numberScore={itemEducation.numberScore}
-              amount={itemEducation.amount}
-              photo={itemEducation.cover}
-              dateStart={itemEducation.dateStart}
-              dateEnd={itemEducation.dateEnd}
-            />
+            <Education item={item} noHover />
           </Link>
         )
       case 'events':
@@ -107,7 +98,7 @@ const ListItem = ({ type, item }: { type: string; item: any }) => {
       case 'vacancies':
         return (
           <Link shallow href={`/vacancies/${item.id}`} passHref>
-            <Vacancy item={item} />
+            <Vacancy item={item} noHover />
           </Link>
         )
       default:

@@ -1,8 +1,7 @@
 import { addApolloState, initializeApollo } from '../../api/apollo-client'
 import BusinessCategoryPageLayout from '../../layouts/BusinessCategoryPageLayout'
 import BusinessCategoryPage from '../../components/pages/BusinessCategoryPage'
-import { educationSearch } from '../../_graphql-legacy/education/educationSearch'
-import { getEducations } from 'src/api/graphql/education/queries/getEducations'
+import { EDUCATIONS } from 'src/api/graphql/education/queries/getEducations'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { IEducation } from 'src/types/education'
 import { FC } from 'react'
@@ -28,7 +27,8 @@ export async function getServerSideProps() {
   const apolloClient = initializeApollo()
 
   const eduRes = await apolloClient.query({
-    query: getEducations,
+    query: EDUCATIONS,
+    variables: { pageSize: 100 },
   })
 
   const educations = flattenStrapiResponse(eduRes?.data?.educations)

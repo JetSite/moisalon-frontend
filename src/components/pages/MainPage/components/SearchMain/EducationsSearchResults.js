@@ -121,16 +121,7 @@ const EducationsSearchResults = () => {
                 key={education.id}
               >
                 <LinkStyled>
-                  <Education
-                    id={education.id}
-                    title={education.title}
-                    amount={education.amount}
-                    photoId={education.photoId}
-                    dateStart={education.dateStart}
-                    dateEnd={education.dateEnd}
-                    averageScore={education.averageScore}
-                    numberScore={education.numberScore}
-                  />
+                  <Education item={item} noHover />
                 </LinkStyled>
               </Link>
             ))}

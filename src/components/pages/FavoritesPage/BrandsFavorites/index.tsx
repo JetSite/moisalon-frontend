@@ -42,7 +42,11 @@ const BrandsFavorites: FC<ThingsProps> = ({
     if (typeof Swiper.params.navigation !== 'boolean') {
       const navigation = Swiper.params.navigation
 
-      if (navigation) {
+      if (
+        navigation &&
+        navigationPrevRef.current &&
+        navigationNextRef.current
+      ) {
         navigation.prevEl = navigationPrevRef.current
         navigation.nextEl = navigationNextRef.current
       }

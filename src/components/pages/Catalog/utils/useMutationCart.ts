@@ -1,4 +1,4 @@
-import { useMutation } from '@apollo/client'
+import { ApolloError, useMutation } from '@apollo/client'
 import { useEffect, useState } from 'react'
 import { useDebounce } from 'use-debounce'
 import { CREATE_CART } from 'src/api/graphql/cart/mutations/createCart'
@@ -31,6 +31,8 @@ export interface IUseMutationCartResult {
   handleMutate: IHandleMutateCart
   quantityMap: IQuantityMap
   updateCart: IAppoloMutationCallback
+  errors: string[] | null
+  setErrors: ISetState<string[] | null>
 }
 
 type IUseMutationCart = (props: IUseMutationCartProps) => IUseMutationCartResult
@@ -54,6 +56,12 @@ export const useMutationCart: IUseMutationCart = ({
   const [quantityMap, setQuantityMap] = useState<IQuantityMap>({})
   const { setCart: setCartStore } = useBaseStore(getStoreEvent)
   const debounceQuantityMap = useDebounce(quantityMap, 4000)
+  const [errors, setErrors] = useState<string[] | null>(null)
+
+  const onError = (error: ApolloError) => {
+    const errorMessages = error.graphQLErrors.map(e => e.message)
+    setErrors(errorMessages)
+  }
 
   const onCompleted: IApolloOnCompleted<any> = data => {
     const newCart =
@@ -63,8 +71,6 @@ export const useMutationCart: IUseMutationCart = ({
     setCartStore(newCart)
     setLoading(false)
   }
-
-  console.log('cart result', cart)
 
   useEffect(() => {
     const resultQuantityMap = debounceQuantityMap[0]
@@ -125,10 +131,12 @@ export const useMutationCart: IUseMutationCart = ({
 
   const [createCart] = useMutation(CREATE_CART, {
     onCompleted,
+    onError,
   })
 
   const [updateCart] = useMutation(UPDATE_CART, {
     onCompleted,
+    onError,
   })
 
   const handleMutate: IHandleMutateCart = ({ mustGrow, itemID }) => {
@@ -181,5 +189,5 @@ export const useMutationCart: IUseMutationCart = ({
     }
   }
 
-  return { loading, handleMutate, quantityMap, updateCart }
+  return { loading, handleMutate, quantityMap, updateCart, errors, setErrors }
 }

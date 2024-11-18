@@ -17,7 +17,6 @@ export const brandForProductFragment = `
           seoDescription
           description
           address
-          name
           history
           rating
           ratingCount

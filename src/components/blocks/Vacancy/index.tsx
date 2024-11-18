@@ -16,7 +16,10 @@ import {
 import { IPromotionsType } from '../Cabinet/components/CabinetSales'
 import { IVacancy } from 'src/types/vacancies'
 import PhotoAdd, { IPhotoAddProps } from '../CreateBanner/PhotoAdd'
-import { IEntityDeleteHandler, IEntityHandler } from '../Sale'
+import {
+  IEntityDeleteHandler,
+  IEntityHandler,
+} from '../Cabinet/components/ActiveProfile/ProfileManager'
 
 interface Props extends Partial<Omit<IPhotoAddProps, 'hover'>> {
   create?: boolean

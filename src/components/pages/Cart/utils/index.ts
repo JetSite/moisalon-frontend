@@ -7,10 +7,12 @@ export const countProduct = (items: IProductCart[]) => {
 }
 
 export const totalSumm = (items: IProductCart[]) => {
+  if (!items) return 0
   return items.reduce(
     (count, item) =>
       count +
-      (item.product.salePrice || item.product.regularPrice) * item.quantity,
+      (item.product.salePrice || item.product.regularPrice || 0) *
+        (item.quantity || 0),
     0,
   )
 }
@@ -30,10 +32,10 @@ export const checkUnderMinOrderBrands: ICheckUnderMinOrderBrands = (
   products,
 ) => {
   return brands
-    .filter(brand => brand.minimalOrderPrice)
+    .filter(brand => typeof brand.minimalOrderPrice === 'number')
     .filter(brand => {
       const filtredProducts = products.filter(
-        item => item.product.brand.name === brand.name,
+        item => item.product.brand.name.trim() === brand.name.trim(),
       )
       if (filtredProducts.length === 0) {
         return false
@@ -43,7 +45,7 @@ export const checkUnderMinOrderBrands: ICheckUnderMinOrderBrands = (
     })
     .map(brand => ({
       name: brand.name.trim(),
-      summ: `${brand.minimalOrderPrice!} ₽`,
+      summ: `${brand.minimalOrderPrice} ₽`,
     }))
 }
 

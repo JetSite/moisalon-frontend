@@ -4,11 +4,9 @@ import BrandCabinet, {
   IBrandCabinetProps,
 } from '../../components/pages/Brand/BrandCabinet'
 import CreatePageSkeleton from '../../components/ui/ContentSkeleton/CreatePageSkeleton'
-import { brandSlugQuery } from '../../_graphql-legacy/brand/brandSlugQuery'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 import { GetServerSideProps, NextPage } from 'next'
-import { IBrand } from 'src/types/brands'
 import { Nullable } from 'src/types/common'
 import { BRAND } from 'src/api/graphql/brand/queries/getBrand'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'

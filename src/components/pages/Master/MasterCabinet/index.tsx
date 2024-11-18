@@ -140,7 +140,7 @@ const MasterCabinet: FC<Props> = ({ user, requests, cities }) => {
             ) : activeTab === 'sales' ? (
               <CabinetSales user={user} />
             ) : activeTab === 'educations' ? (
-              <CabinetEducations me={user} />
+              <CabinetEducations user={user} />
             ) : activeTab === 'vacancies' ? (
               <CabinetVacancies user={user} />
             ) : activeTab === 'events' ? (

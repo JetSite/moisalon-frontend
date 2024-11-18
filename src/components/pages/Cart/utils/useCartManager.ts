@@ -22,7 +22,7 @@ interface IUseCartManagerResult
   extends Omit<IUseMutationCartResult, 'updateCart'> {
   cart: ICart | null
   brands: IBrand[]
-  selectedPropucts: IProductCart[]
+  selectedProducts: IProductCart[]
   setSelectedPropucts: ISetState<IProductCart[]>
   underMinOrderBrands: ICheckUnderMinOrderBrandsResult[]
   handleDeleteChecked: () => void
@@ -35,15 +35,16 @@ interface IUseCartManagerProps {
 
 export const useCartManager: IUseCartManager = ({ data, user }) => {
   const [cart, setCart] = useState<ICart | null>(data)
-  const { handleMutate, quantityMap, loading, updateCart } = useMutationCart({
-    cart,
-    userID: user?.info.id || null,
-  })
+  const { handleMutate, quantityMap, loading, updateCart, errors, setErrors } =
+    useMutationCart({
+      cart,
+      userID: user?.info.id || null,
+    })
   const [brands, setBrands] = useState<IBrand[]>([])
   const [underMinOrderBrands, setUnderMinOrderBrands] = useState<
     ICheckUnderMinOrderBrandsResult[]
   >([])
-  const [selectedPropucts, setSelectedPropucts] = useState<IProductCart[]>(
+  const [selectedProducts, setSelectedPropucts] = useState<IProductCart[]>(
     data?.cartContent || [],
   )
 
@@ -67,16 +68,13 @@ export const useCartManager: IUseCartManager = ({ data, user }) => {
   }, [cart?.cartContent])
 
   useEffect(() => {
-    setUnderMinOrderBrands(checkUnderMinOrderBrands(brands, selectedPropucts))
-  }, [selectedPropucts, brands, cart])
-
-  console.log('cart', underMinOrderBrands)
-  console.log('brands', brands)
+    setUnderMinOrderBrands(checkUnderMinOrderBrands(brands, selectedProducts))
+  }, [selectedProducts, brands, cart])
 
   const handleDeleteChecked = () => {
     const newCartContent: IProductCart[] =
       cart?.cartContent.filter(
-        e => !selectedPropucts.some(item => item.product.id === e.product.id),
+        e => !selectedProducts.some(item => item.product.id === e.product.id),
       ) || []
 
     if (cart) {
@@ -99,12 +97,14 @@ export const useCartManager: IUseCartManager = ({ data, user }) => {
   return {
     cart,
     brands,
-    selectedPropucts,
+    selectedProducts,
     setSelectedPropucts,
     underMinOrderBrands,
     handleMutate,
     quantityMap,
     loading,
     handleDeleteChecked,
+    errors,
+    setErrors,
   }
 }

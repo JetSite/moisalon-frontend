@@ -1,7 +1,6 @@
 import { useState, useEffect, FC } from 'react'
 import * as Styled from './styled'
 import Link from 'next/link'
-import { makeStyles } from '@material-ui/core/styles'
 import { PHOTO_URL } from '../../../../api/variables'
 import { pluralize } from '../../../../utils/pluralize'
 import CheckboxStyled from 'src/components/newUI/Inputs/Checkbox'
@@ -10,9 +9,10 @@ import { IProductCart } from 'src/types/product'
 import { IProductProps } from '../../Catalog/components/Product'
 import { Minus, Plus } from 'src/components/ui/FastBuyPopup/styles'
 import { ICity } from 'src/types'
+import DOMPurify from 'dompurify'
 
 interface Props extends IProductProps {
-  selectedPropucts: IProductCart[]
+  selectedProducts: IProductCart[]
   setSelectedPropucts: ISetState<IProductCart[]>
   city: ICity
 }
@@ -23,27 +23,27 @@ const Product: FC<Props> = ({
   cartItem,
   addToCart,
   deleteFromCart,
-  selectedPropucts,
+  selectedProducts,
   setSelectedPropucts,
   city,
 }) => {
   const [checked, setChecked] = useState(false)
 
   useEffect(() => {
-    if (selectedPropucts?.find(el => el.product.id === item.id)) {
+    if (selectedProducts?.find(el => el.product.id === item.id)) {
       setChecked(true)
     } else {
       setChecked(false)
     }
-  }, [selectedPropucts])
+  }, [selectedProducts])
 
   const handleChecked = () => {
-    if (selectedPropucts?.find(el => el.product.id === item.id)) {
+    if (selectedProducts?.find(el => el.product.id === item.id)) {
       setSelectedPropucts(
-        selectedPropucts.filter(el => el.product.id !== item.id),
+        selectedProducts.filter(el => el.product.id !== item.id),
       )
     } else {
-      setSelectedPropucts([...selectedPropucts, cartItem])
+      setSelectedPropucts([...selectedProducts, cartItem])
     }
   }
 
@@ -66,7 +66,7 @@ const Product: FC<Props> = ({
           <Styled.Name>{item.name}</Styled.Name>
           <Styled.Description
             dangerouslySetInnerHTML={{
-              __html: item.shortDescription || '',
+              __html: DOMPurify.sanitize(item.shortDescription || ''),
             }}
           />
           <Styled.PriceQuantityWrapper>

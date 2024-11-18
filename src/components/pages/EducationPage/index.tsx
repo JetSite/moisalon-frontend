@@ -54,6 +54,7 @@ import { getEducationById } from 'src/api/graphql/education/queries/getEducation
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import EducationReviews from './components/EducationReviews'
 import ReactMarkdown from 'react-markdown'
+import CheckboxStyled from 'src/components/newUI/Inputs/Checkbox'
 
 interface EducationPageProps {
   educationData: IEducation
@@ -69,9 +70,7 @@ const EducationPage: FC<EducationPageProps> = ({
   const [isFavorite, setIsFavorit] = useState(false)
   const { city, me } = useAuthStore(getStoreData)
   const [chatMessagePopup, setChatMessagePopup] = useState(false)
-  const [reviews, setReviews] = useState(educationData.reviews)
   const [education, setEducation] = useState<IEducation>(educationData)
-  const [loadingReview, setLoadingReview] = useState<boolean>(false)
 
   useEffect(() => {
     const isInStorage = inStorage('educations', {
@@ -102,15 +101,6 @@ const EducationPage: FC<EducationPageProps> = ({
     })
     setIsFavorit(!isFavorite)
   }
-
-  const { refetch: refetchReviews } = useQuery(getEducationById, {
-    variables: { id: education?.id },
-    skip: true,
-    onCompleted: res => {
-      const normalisedData = flattenStrapiResponse(res?.data?.education)
-      setReviews(normalisedData.reviews)
-    },
-  })
 
   const { refetch: refetchEducation } = useQuery(getEducationById, {
     variables: { id: education?.id },
@@ -292,7 +282,10 @@ const EducationPage: FC<EducationPageProps> = ({
             </Right>
           </Content>
         </Wrapper>
-        <EducationReviews educationID={education.id} reviews={reviews} />
+        <EducationReviews
+          educationID={education.id}
+          reviews={educationData.reviews}
+        />
       </MainContainer>
       <Ribbon
         title="Бьюти-лента"

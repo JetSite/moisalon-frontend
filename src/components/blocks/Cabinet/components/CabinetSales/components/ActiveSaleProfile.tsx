@@ -10,13 +10,12 @@ import { useLazyQuery, useMutation } from '@apollo/client'
 import { NOT_PUBLISH_SALE } from 'src/api/graphql/sale/queries/getNotPublishSale'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { IPromotions } from 'src/types/promotions'
-import {
-  IEntityDeleteHandler,
-  IEntityHandler,
-} from 'src/components/blocks/Sale'
 import { UPDATE_PROMOTION } from 'src/api/graphql/promotion/mutations/updatePromotion'
 import { IPagination } from 'src/types'
-import ProfileManager from '../../ActiveProfile/ProfileManager'
+import ProfileManager, {
+  IEntityDeleteHandler,
+  IEntityHandler,
+} from '../../ActiveProfile/ProfileManager'
 import { IProfile } from './ProfileSelect'
 
 interface ActiveProfileProps {

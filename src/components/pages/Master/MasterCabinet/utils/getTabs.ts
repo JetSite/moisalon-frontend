@@ -68,7 +68,7 @@ export const getTabs: IGetTabs = ({
       {
         title: 'Обучение',
         value: 'educations',
-        disable: true,
+        disable: false,
       },
       {
         title: 'Вакансии',
@@ -113,7 +113,7 @@ export const getTabs: IGetTabs = ({
         disable: false,
         quantity: sales,
       },
-      { title: 'Обучение', value: 'educations', disable: true },
+      { title: 'Обучение', value: 'educations', disable: false },
       { title: 'Вакансии', value: 'vacancies', quantity: vacancies?.length },
       { title: 'Мероприятия', value: 'events', disable: true },
       { title: 'Размещение', value: 'priority', disable: true },

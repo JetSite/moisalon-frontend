@@ -18,23 +18,23 @@ import { IBrand } from 'src/types/brands'
 import LinkButton from 'src/components/newUI/buttons/LinkButton'
 
 interface Props {
-  selectedPropucts: IProductCart[]
+  selectedProducts: IProductCart[]
   brands: IBrand[]
   isLogin: boolean
   underMinOrderBrands: ICheckUnderMinOrderBrandsResult[]
 }
 
 export const CartManager: FC<Props> = ({
-  selectedPropucts,
+  selectedProducts,
   underMinOrderBrands,
   brands,
   isLogin,
 }) => {
   const disabledButton =
-    !selectedPropucts?.length || underMinOrderBrands.length > 0
+    !selectedProducts?.length || underMinOrderBrands.length > 0
   const totalOrderSumm = useMemo(
-    () => totalSumm(selectedPropucts),
-    [selectedPropucts],
+    () => totalSumm(selectedProducts),
+    [selectedProducts],
   )
 
   return (
@@ -67,8 +67,8 @@ export const CartManager: FC<Props> = ({
             sessionStorage.setItem(
               'cartChecked',
               JSON.stringify({
-                items: [selectedPropucts],
-                brands: [filterCheckedBrands(selectedPropucts, brands)],
+                items: [selectedProducts],
+                brands: [filterCheckedBrands(selectedProducts, brands)],
               }),
             )
           }

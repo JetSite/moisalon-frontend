@@ -112,7 +112,7 @@ export const SkeletonWrap = styled(Skeleton)`
   }
 `
 
-export const SalesWrapper = styled.div`
+export const SalesWrapper = styled.ul`
   width: 100%;
   margin-top: 32px;
   display: flex;
@@ -130,5 +130,45 @@ export const Back = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     color: #f03;
     font-size: 16px;
+  }
+`
+
+export const FieldWrap = styled.div`
+  margin-bottom: 14px;
+`
+
+export const TimeWrap = styled.div`
+  margin-left: 14px;
+  @media (max-width: ${laptopBreakpoint}) {
+    margin-left: 0;
+    margin-bottom: 10px;
+  }
+`
+
+export const TextDate = styled.p`
+  margin-left: 10px;
+  @media (max-width: ${laptopBreakpoint}) {
+    margin-left: 0;
+    margin-bottom: 10px;
+  }
+`
+
+export const FieldWrapDate = styled.div`
+  margin-bottom: 14px;
+  margin-top: 24px;
+  display: flex;
+  align-items: center;
+  @media (max-width: ${laptopBreakpoint}) {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+  }
+`
+
+export const ButtonWrap = styled.div`
+  width: 350px;
+  margin-top: 66px;
+  @media (max-width: ${laptopBreakpoint}) {
+    width: 100%;
+    margin-top: 40px;
   }
 `

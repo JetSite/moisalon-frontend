@@ -57,9 +57,11 @@ export const getServerSideProps: GetServerSideProps<
     })
     const id = meData.data?.me.id || null
 
-    resArr.push(
-      apolloClient.query({ query: GET_CART_BY_USER, variables: { id } }),
-    )
+    if (id) {
+      resArr.push(
+        apolloClient.query({ query: GET_CART_BY_USER, variables: { id } }),
+      )
+    }
   }
 
   const data = await Promise.allSettled(resArr)
@@ -80,7 +82,7 @@ export const getServerSideProps: GetServerSideProps<
       : []
 
   const cart =
-    data[3] && data[3].status === 'fulfilled'
+    data.length >= 3 && data[3].status === 'fulfilled'
       ? (flattenStrapiResponse(data[3].value.data.carts) as ICart[])[0] || null
       : null
 

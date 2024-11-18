@@ -10,10 +10,13 @@ export const educationFragment = `
             averageScore
             dateStart
             dateEnd
+            timeStart
+            timeEnd
             deleted
             shortDescription
             fullDescription
             isPublished
+            publishedAt
             numberScore
             cover {
                 ${imageInfo}

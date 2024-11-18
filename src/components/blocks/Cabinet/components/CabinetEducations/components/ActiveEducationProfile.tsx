@@ -7,28 +7,31 @@ import ProfileManager, {
   IEntityHandler,
 } from '../../ActiveProfile/ProfileManager'
 import { IPromotionsType } from '../../CabinetSales'
-import { VacanciesList } from './VacanciesList'
 import { IVacancy } from 'src/types/vacancies'
-import CreateVacancy from './CreateVacancy'
 import { IProfile } from '../../CabinetSales/components/ProfileSelect'
-import { useVacancyMutate } from '../utils/useVacancyMutate'
+import CreateEducation from 'src/components/blocks/Cabinet/components/CabinetEducations/components/CreateEducation'
+import { VacanciesList } from '../../CabinetVacancies/components/VacanciesList'
+import { useEducationMutate } from '../utils/useEducationMutate'
+import { IEducation } from 'src/types/education'
+import { EducationsList } from './EducationsList'
+import { IMaster } from 'src/types/masters'
 
 interface ActiveProfileProps {
-  activeProfile: ISalon | IBrand
+  activeProfile: ISalon | IBrand | IMaster
   type: IPromotionsType
-  setActiveProfile: ISetState<ISalon | IBrand | null>
+  setActiveProfile: ISetState<ISalon | IBrand | IMaster | null>
 }
 
-const ActiveVacanciesProfile: FC<ActiveProfileProps> = ({
+const ActiveEducationProfile: FC<ActiveProfileProps> = ({
   activeProfile,
   type,
   setActiveProfile,
 }) => {
   const [view, setView] = useState<IActiveProfilesView>('publish')
-  const [vacancy, setVacancy] = useState<IVacancy | null>(null)
-  const [createVacancy, setCreateVacancy] = useState(false)
+  const [education, setEducation] = useState<IEducation | null>(null)
+  const [createEducation, setCreateEducation] = useState(false)
   const {
-    vacancies,
+    educations,
     setUpdate,
     handleDelete,
     handleCreateOrUpdate,
@@ -38,7 +41,7 @@ const ActiveVacanciesProfile: FC<ActiveProfileProps> = ({
     fetchLoading,
     errors,
     setErrors,
-  } = useVacancyMutate({
+  } = useEducationMutate({
     view,
     type,
     profileID: activeProfile.id,
@@ -48,7 +51,11 @@ const ActiveVacanciesProfile: FC<ActiveProfileProps> = ({
     () => ({
       id: activeProfile.id,
       name: activeProfile.name,
-      photo: activeProfile.logo,
+      photo:
+        (activeProfile as ISalon).logo ||
+        (activeProfile as IMaster).photo ||
+        (activeProfile as IBrand).logo ||
+        null,
       rent: (activeProfile as ISalon).rent || false,
     }),
     [activeProfile],
@@ -67,10 +74,12 @@ const ActiveVacanciesProfile: FC<ActiveProfileProps> = ({
     if (view === 'publish') return
     const targetId = e.currentTarget.id
     if (!targetId) return
-    const findSale = vacancies.find(element => element.id === targetId) || null
-    setVacancy(findSale)
-    setCreateVacancy(true)
+    const findSale = educations.find(element => element.id === targetId) || null
+    setEducation(findSale)
+    setCreateEducation(true)
   }
+
+  console.log(createEducation)
 
   return (
     <ProfileManager
@@ -79,39 +88,39 @@ const ActiveVacanciesProfile: FC<ActiveProfileProps> = ({
       handleBack={() => {
         setActiveProfile(null)
       }}
-      createEntity={createVacancy}
-      setCreateEntity={setCreateVacancy}
-      createEntityButton="Создать Вакансию"
+      createEntity={createEducation}
+      setCreateEntity={setCreateEducation}
+      createEntityButton="Создать Обучение"
       view={view}
       handleViewClick={handleClick}
       onCreateEntity={() => {
-        setVacancy(null)
+        setEducation(null)
       }}
       createEntityComponent={
-        <CreateVacancy
+        <CreateEducation
           errors={errors}
           setErrors={setErrors}
           type={type}
           activeProfile={activeProfile}
           handleCreateOrUpdate={handleCreateOrUpdate}
-          vacancy={vacancy}
-          setVacancy={setVacancy}
+          education={education}
+          setEducation={setEducation}
           loading={loading}
-          setCreateVacancy={setCreateVacancy}
+          setCreate={setCreateEducation}
         />
       }
       entitiesManagerComponent={
-        <VacanciesList
+        <EducationsList
           handleMore={handleMore}
           handleClick={handleVacancyClick}
           loading={fetchLoading}
           type={type}
-          vacancies={vacancies}
+          educations={educations}
           handleDelete={handleDelete}
           pagination={pagination}
           popupText={
             view === 'publish'
-              ? 'После проверки модератором вакансия будет удалена безвозвратно. Вы уверены?'
+              ? 'После проверки модератором обучение будет удалена безвозвратно. Вы уверены?'
               : undefined
           }
         />
@@ -120,4 +129,4 @@ const ActiveVacanciesProfile: FC<ActiveProfileProps> = ({
   )
 }
 
-export default ActiveVacanciesProfile
+export default ActiveEducationProfile

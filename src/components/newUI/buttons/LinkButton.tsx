@@ -1,21 +1,12 @@
 import { FC, ReactNode } from 'react'
-import {
-  LinkButtonCustom,
-  fontVariants,
-  sizeVariants,
-  styleVariants,
-} from './styled'
+import { LinkButtonCustom } from './styled'
 import { LinkProps } from 'next/link'
+import { IBaseButtonProps } from './Button'
 
-export interface LinkButtonProps extends Omit<LinkProps, 'as'> {
-  variant: keyof typeof styleVariants
-  size?: keyof typeof sizeVariants
-  font?: keyof typeof fontVariants
-  mb?: string
-  mt?: string
-  z?: string
+export interface LinkButtonProps
+  extends Omit<LinkProps, 'as'>,
+    IBaseButtonProps {
   children: ReactNode
-  disabled?: boolean
 }
 
 const LinkButton: FC<LinkButtonProps> = ({

@@ -22,6 +22,7 @@ import { useCartManager } from './utils/useCartManager'
 import { CartManager } from './components/CartManager'
 import Popup from 'src/components/ui/Popup'
 import Button from 'src/components/newUI/buttons/Button'
+import ErrorPopup from 'src/components/blocks/Form/Error'
 
 export interface ICartProps {
   data: ICart
@@ -32,24 +33,26 @@ const Cart: FC<ICartProps> = ({ data }) => {
   const {
     cart,
     brands,
-    selectedPropucts,
+    selectedProducts,
     setSelectedPropucts,
     underMinOrderBrands,
     handleMutate,
     quantityMap,
     loading,
     handleDeleteChecked,
+    errors,
+    setErrors,
   } = useCartManager({ data, user })
   const [checkAll, setCheckAll] = useState(true)
   const [openPopup, setOpenPopup] = useState(false)
 
   useEffect(() => {
-    if (selectedPropucts?.length === cart?.cartContent?.length) {
+    if (selectedProducts?.length === cart?.cartContent?.length) {
       setCheckAll(true)
     } else {
       setCheckAll(false)
     }
-  }, [selectedPropucts, cart])
+  }, [selectedProducts, cart])
 
   const handleCheckAll = () => {
     if (checkAll) {
@@ -72,8 +75,6 @@ const Cart: FC<ICartProps> = ({ data }) => {
       mustGrow: false,
     })
   }
-
-  console.log('underMinOrderBrands', underMinOrderBrands)
 
   return (
     <Wrapper>
@@ -103,7 +104,7 @@ const Cart: FC<ICartProps> = ({ data }) => {
                     handleCheckAll()
                   }}
                 />
-                {selectedPropucts?.length ? (
+                {selectedProducts?.length ? (
                   <Delete onClick={() => setOpenPopup(true)}>
                     Удалить выбранные
                   </Delete>
@@ -121,7 +122,7 @@ const Cart: FC<ICartProps> = ({ data }) => {
                       cartItem={item}
                       item={item.product}
                       key={item.id}
-                      selectedPropucts={selectedPropucts}
+                      selectedProducts={selectedProducts}
                       setSelectedPropucts={setSelectedPropucts}
                       city={city}
                     />
@@ -133,11 +134,12 @@ const Cart: FC<ICartProps> = ({ data }) => {
               underMinOrderBrands={underMinOrderBrands}
               isLogin={!!user?.info}
               brands={brands}
-              selectedPropucts={selectedPropucts}
+              selectedProducts={selectedProducts}
             />
           </Wrap>
         </>
       )}
+      <ErrorPopup errors={errors} isOpen={!!errors} setOpen={setErrors} />
       <Popup
         isOpen={openPopup}
         onClose={() => setOpenPopup(false)}

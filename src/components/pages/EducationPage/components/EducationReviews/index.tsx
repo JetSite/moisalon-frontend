@@ -21,6 +21,10 @@ const EducationReviews: FC<EducationReviewsProps> = ({
   const [loading, setLoading] = useState<boolean>(false)
   const [reviewMutation] = useMutation(ADD_REVIEW_EDUCATION, {
     onCompleted: () => refetch({ variables: { id: educationID } }),
+    onError: error => {
+      console.error('Failed to add review:', error)
+      setLoading(false)
+    },
   })
   const [refetch] = useLazyQuery(GET_EDUCATION_REVIEWS, {
     onCompleted: data => {

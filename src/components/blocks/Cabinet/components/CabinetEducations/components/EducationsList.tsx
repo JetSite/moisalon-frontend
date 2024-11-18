@@ -1,28 +1,27 @@
-import Vacancy from '../../../../Vacancy'
 import { FC, useState } from 'react'
-import { IID } from 'src/types/common'
-import { IVacancy } from 'src/types/vacancies'
-
 import RotatingLoader from 'src/components/ui/RotatingLoader'
-import * as Styled from '../../CabinetSales/styles'
-import Button from 'src/components/ui/Button'
+import { SalesWrapper, Subtitle } from '../styles'
+import Education from 'src/components/blocks/Education'
+import { IEducation } from 'src/types/education'
+import Button from 'src/components/newUI/buttons/Button'
 import Popup from 'src/components/ui/Popup'
+import { IID } from 'src/types/common'
 import { EntityListProps } from '../../ActiveProfile/ProfileManager'
 
 interface Props extends EntityListProps {
-  vacancies: IVacancy[]
+  educations: IEducation[]
   handleMore: () => void
 }
 
-export const VacanciesList: FC<Props> = ({
+export const EducationsList: FC<Props> = ({
   loading,
-  type,
+  educations,
   pagination,
-  handleDelete,
   popupText,
-  handleClick,
-  vacancies,
+  handleDelete,
   handleMore,
+  handleClick,
+  type,
 }) => {
   const [deleteID, setDeleteID] = useState<IID | null>(null)
 
@@ -31,22 +30,21 @@ export const VacanciesList: FC<Props> = ({
   }
 
   return (
-    <Styled.Wrapper>
-      {vacancies.length > 0 ? (
+    <SalesWrapper>
+      {educations?.length > 0 ? (
         <>
-          <Styled.SalesWrapper>
-            {vacancies?.map(item => (
-              <Vacancy
-                handleDelete={id => {
-                  setDeleteID(id)
-                }}
-                handleClick={handleClick}
-                type={type}
-                item={item}
-                key={item.id}
-              />
-            ))}
-          </Styled.SalesWrapper>
+          {educations?.map(item => (
+            <Education
+              handleDelete={id => {
+                setDeleteID(id)
+              }}
+              handleClick={handleClick}
+              type={type}
+              item={item}
+              key={item.id}
+              cabinet
+            />
+          ))}
           {pagination && pagination.page < pagination.pageCount ? (
             <Button onClick={handleMore} variant="darkBorder">
               Ещё
@@ -54,7 +52,7 @@ export const VacanciesList: FC<Props> = ({
           ) : null}
         </>
       ) : (
-        <Styled.Subtitle>У профиля нет вакансий</Styled.Subtitle>
+        <Subtitle>У профиля нет обучающих программ</Subtitle>
       )}
       <Popup
         isOpen={!!deleteID}
@@ -86,6 +84,6 @@ export const VacanciesList: FC<Props> = ({
           Удалить
         </Button>
       </Popup>
-    </Styled.Wrapper>
+    </SalesWrapper>
   )
 }

@@ -1,12 +1,27 @@
-import { FC, MouseEventHandler, ReactElement, useState } from 'react'
+import { FC, MouseEvent, MouseEventHandler, ReactElement } from 'react'
 import { IPromotionsType } from '../CabinetSales'
 import ProfileItem from '../CabinetSales/components/ProfileItem'
 import { MobileHidden, MobileVisible } from 'src/styles/common'
 import Button from 'src/components/ui/Button'
 import { IProfile } from '../CabinetSales/components/ProfileSelect'
-import { ISetState } from 'src/types/common'
+import { IID, ISetState } from 'src/types/common'
 import { ProfileTabs } from './ProfileTabs'
-import { IActiveProfilesView } from '../CabinetVacancies/components/ActiveVacanciesProfile'
+import { IPagination } from 'src/types'
+
+export type IActiveProfilesView = 'publish' | 'draft'
+
+export type IEntityHandler = (e: MouseEvent<HTMLLIElement>) => void
+
+export type IEntityDeleteHandler = (id: IID, shouldDelete?: boolean) => void
+
+export interface EntityListProps {
+  type: IPromotionsType
+  loading: boolean
+  handleClick?: IEntityHandler
+  handleDelete?: IEntityDeleteHandler
+  pagination: IPagination | null
+  popupText?: string
+}
 
 interface ProfileManagerProps {
   profile: IProfile

@@ -1,65 +1,59 @@
 import { ApolloError, useLazyQuery, useMutation } from '@apollo/client'
 import { useEffect, useState } from 'react'
-import { NOT_PUBLISH_VACANCIES } from 'src/api/graphql/vacancy/queries/getNotPublishVacancies'
-import { VACANCIES } from 'src/api/graphql/vacancy/queries/getVacancies'
 import { IPagination } from 'src/types'
-import { IVacancy } from 'src/types/vacancies'
 import {
   StrapiDataObject,
   flattenStrapiResponse,
 } from 'src/utils/flattenStrapiResponse'
 import { IPromotionsType } from '../../CabinetSales'
-import { IID, ISetState } from 'src/types/common'
-import { CREATE_VACANCY } from 'src/api/graphql/vacancy/mutations/createVacancy'
-import { IVacancyInput } from './vacancyFormValues'
+import { IID } from 'src/types/common'
+import { IEducation } from 'src/types/education'
 import {
   IActiveProfilesView,
   IEntityDeleteHandler,
 } from '../../ActiveProfile/ProfileManager'
-import { UPDATE_VACANCY } from 'src/api/graphql/vacancy/mutations/updateVacancy'
+import { EDUCATIONS } from 'src/api/graphql/education/queries/getEducations'
+import { NOT_PUBLISH_EDUCATIONS } from 'src/api/graphql/education/queries/getNotPublishEducations'
+import { CREATE_EDUCATION } from 'src/api/graphql/education/mutations/createEducation'
+import { IUseVacancyMutateResult } from '../../CabinetVacancies/utils/useVacancyMutate'
+import { UPDATE_EDUCATION } from 'src/api/graphql/education/mutations/updateEducation'
+import { IEducationInput } from './getEducationInitialValues'
 
-export interface IUseVacancyMutateResult {
-  loading: boolean
-  fetchLoading: boolean
-  vacancies: IVacancy[]
-  pagination: IPagination | null
-  errors: string[] | null
-  setErrors: ISetState<string[] | null>
-  setUpdate: ISetState<boolean>
-  handleDelete: IEntityDeleteHandler
-  handleCreateOrUpdate: (values: IVacancyInput, id?: IID) => void
-  handleMore: () => void
+export interface IUseEducationMutateResult
+  extends Omit<IUseVacancyMutateResult, 'vacancies' | 'handleCreateOrUpdate'> {
+  educations: IEducation[]
+  handleCreateOrUpdate: (values: any, id?: IID) => void
 }
 
-type IUseVacancyMutate = (
-  props: IUseVacancyMutateProps,
-) => IUseVacancyMutateResult
+type IUseEducationMutate = (
+  props: IUseEducationMutateProps,
+) => IUseEducationMutateResult
 
-interface IUseVacancyMutateProps {
+interface IUseEducationMutateProps {
   type: IPromotionsType
   profileID: IID
   view: IActiveProfilesView
 }
 
-export const useVacancyMutate: IUseVacancyMutate = ({
+export const useEducationMutate: IUseEducationMutate = ({
   type,
   profileID,
   view,
 }) => {
-  const [vacancies, setVacancies] = useState<IVacancy[]>([])
+  const [educations, setEducations] = useState<IEducation[]>([])
   const [pagination, setPagination] = useState<IPagination | null>(null)
   const [update, setUpdate] = useState(true)
   const [errors, setErrors] = useState<string[] | null>(null)
 
-  const onCompleted = (data: { vacancies: StrapiDataObject }) => {
-    const newData = flattenStrapiResponse(data.vacancies)
+  const onCompleted = (data: { educations: StrapiDataObject }) => {
+    const newData = flattenStrapiResponse(data.educations)
     if (update) {
-      setVacancies(newData)
+      setEducations(newData)
       setUpdate(false)
     } else {
-      setVacancies(pre => [...pre, ...newData])
+      setEducations(pre => [...pre, ...newData])
     }
-    setPagination(data.vacancies.meta?.pagination || null)
+    setPagination(data.educations.meta?.pagination || null)
   }
 
   const onError = (error: ApolloError) => {
@@ -68,25 +62,25 @@ export const useVacancyMutate: IUseVacancyMutate = ({
   }
 
   const [getNoPublish, { loading: noPublishLoading }] = useLazyQuery(
-    NOT_PUBLISH_VACANCIES,
+    NOT_PUBLISH_EDUCATIONS,
     {
       onCompleted,
       onError,
     },
   )
-  const [getPublish, { loading: publishLoading }] = useLazyQuery(VACANCIES, {
+  const [getPublish, { loading: publishLoading }] = useLazyQuery(EDUCATIONS, {
     onCompleted,
     onError,
   })
 
-  const [mutate, { loading }] = useMutation(UPDATE_VACANCY, {
+  const [mutate, { loading }] = useMutation(UPDATE_EDUCATION, {
     onError,
     onCompleted: () => {
       setUpdate(true)
     },
   })
 
-  const [create, { loading: createLoading }] = useMutation(CREATE_VACANCY, {
+  const [create, { loading: createLoading }] = useMutation(CREATE_EDUCATION, {
     onError,
     onCompleted: () => {
       setUpdate(true)
@@ -100,7 +94,7 @@ export const useVacancyMutate: IUseVacancyMutate = ({
     }
   }, [update, view])
 
-  const handleDelete: IEntityDeleteHandler = (id, shouldDelete = true) => {
+  const handleDelete: IEntityDeleteHandler = (id, shouldDelete) => {
     const variables = shouldDelete
       ? { id, input: { deleted: true, publishedAt: null } }
       : { id, input: { deleted: true } }
@@ -111,8 +105,8 @@ export const useVacancyMutate: IUseVacancyMutate = ({
     }
   }
 
-  const handleCreateOrUpdate = (input: IVacancyInput, id?: IID) => {
-    if (!type || !['brand', 'salon'].includes(type)) {
+  const handleCreateOrUpdate = (input: IEducationInput, id?: IID) => {
+    if (!type || !['brand', 'salon', 'master'].includes(type)) {
       throw new Error(`Invalid type: ${type}`)
     }
     try {
@@ -145,7 +139,7 @@ export const useVacancyMutate: IUseVacancyMutate = ({
   return {
     fetchLoading: noPublishLoading || publishLoading,
     loading: loading || createLoading,
-    vacancies,
+    educations,
     pagination,
     setUpdate,
     handleDelete,

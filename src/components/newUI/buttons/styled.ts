@@ -1,6 +1,6 @@
 import styled, { css, keyframes } from 'styled-components'
 import { lighten } from 'polished'
-import { ButtonProps } from './Button'
+import { ButtonProps, IBaseButtonProps } from './Button'
 import Link from 'next/link'
 import { LinkButtonProps } from './LinkButton'
 
@@ -13,7 +13,7 @@ const pulse = keyframes`
   }
 `
 
-export const ButtonCustom = styled.button<ButtonProps>`
+const baseButtonStyles = css<IBaseButtonProps>`
   justify-content: center;
   align-items: center;
   font-size: 18px;
@@ -33,13 +33,7 @@ export const ButtonCustom = styled.button<ButtonProps>`
   ${props => styleVariants[props.variant]}
   ${props => sizeVariants[props.size || 'fullWidth']}
   ${props => props.font && fontVariants[props.font]}
-  ${props =>
-    props.loading &&
-    css`
-      cursor: default;
-      animation: ${pulse} 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    `}
-
+  
   ${({ disabled }) =>
     disabled &&
     css`
@@ -54,40 +48,18 @@ export const ButtonCustom = styled.button<ButtonProps>`
     `}
 `
 
-export const LinkButtonCustom = styled(Link)<LinkButtonProps>`
-  justify-content: center;
-  align-items: center;
-  font-size: 18px;
-  font-weight: 500;
-  color: white;
-  padding: 16px 68px;
-  min-width: 134px;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  display: flex;
-  transition: all 0.2s ease-in-out;
-  margin-top: ${({ mt }) => mt && `${mt}px`};
-  margin-bottom: ${({ mb }) => mb && `${mb}px`};
-  position: relative;
-  z-index: ${props => props.z};
-  ${props => styleVariants[props.variant]}
-  ${props => sizeVariants[props.size || 'fullWidth']}
-  ${props => props.font && fontVariants[props.font]}
-
-  ${({ disabled }) =>
-    disabled &&
+export const ButtonCustom = styled.button<ButtonProps>`
+  ${baseButtonStyles}
+  ${props =>
+    props.loading &&
     css`
-      border: 1px solid transparent;
-      background-color: #d8d8d8;
-      color: white;
       cursor: default;
-      opacity: 0.6;
-      pointer-events: none;
-      &:hover {
-        background-color: #d8d8d8;
-      }
+      animation: ${pulse} 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
     `}
+`
+
+export const LinkButtonCustom = styled(Link)<LinkButtonProps>`
+  ${baseButtonStyles}
 `
 
 export const styleVariants = {
