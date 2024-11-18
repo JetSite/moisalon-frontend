@@ -27,6 +27,7 @@ import { IEvent } from 'src/types/event'
 import { ISale } from 'src/types/sale'
 import Sale from 'src/components/blocks/Sale'
 import { IPromotions } from 'src/types/promotions'
+import { IVacancy } from 'src/types/vacancies'
 
 const customProps: {
   [key: string]: {
@@ -78,7 +79,7 @@ const ListItem = ({ type, item }: { type: string; item: any }) => {
 
         return (
           <Link shallow href={`/educations/${item.id}`} passHref>
-            <Education item={item} noHover />
+            <Education item={itemEducation} noHover />
           </Link>
         )
       case 'events':
@@ -86,19 +87,15 @@ const ListItem = ({ type, item }: { type: string; item: any }) => {
 
         return (
           <Link shallow href={`/events/${itemEvent.id}`} passHref>
-            <Event
-              title={itemEvent.title}
-              address={itemEvent.address}
-              photo={itemEvent.cover}
-              dateStart={itemEvent.dateStart}
-              dateEnd={itemEvent.dateEnd}
-            />
+            <Event item={itemEvent} noHover />
           </Link>
         )
       case 'vacancies':
+        const itemVacancy = item as IVacancy
+
         return (
           <Link shallow href={`/vacancies/${item.id}`} passHref>
-            <Vacancy item={item} noHover />
+            <Vacancy item={itemVacancy} noHover />
           </Link>
         )
       default:

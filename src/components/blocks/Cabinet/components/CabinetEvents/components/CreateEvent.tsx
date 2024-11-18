@@ -1,4 +1,4 @@
-import * as Styled from '../styles'
+import * as Styled from './styled'
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import AutoFocusedForm from '../../../../Form/AutoFocusedForm'
 import { FieldStyled } from '../../CabinetForm/styled'
@@ -6,102 +6,111 @@ import { TextField } from '../../../../Form'
 import { required } from '../../../../../../utils/validations'
 import ErrorPopup from '../../../../Form/Error'
 import Button from '../../../../../ui/Button'
-import Education from '../../../../Education'
+import Event from '../../../../Event'
+import Checkbox from 'src/components/blocks/Form/Checkbox'
 import Popup from '../../../../../ui/Popup'
-import { IEducation } from 'src/types/education'
-import { IPhoto } from 'src/types'
+import moment from 'moment'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
+import { IPhoto } from 'src/types'
+import { FormApi } from 'final-form'
+import {
+  IEventInitialForm,
+  IEventInput,
+  getEventInitialValues,
+} from '../utils/getEventInitialValues'
+import { IEvent } from 'src/types/event'
+import AddressNoSalonField, {
+  ICoordinate,
+} from 'src/components/blocks/Form/AddressField/AddressNoSalonField'
+import { IUseEventMutateResult } from '../utils/useEventMutate'
 import { IPromotionsType } from '../../CabinetSales'
 import { ISalon } from 'src/types/salon'
 import { IMaster } from 'src/types/masters'
 import { IBrand } from 'src/types/brands'
 import { ISetState } from 'src/types/common'
-import { IUseEducationMutateResult } from '../utils/useEducationMutate'
-import {
-  IEducationInitialForm,
-  IEducationInput,
-  getEducationInitialValues,
-} from '../utils/getEducationInitialValues'
-import Checkbox from 'src/components/blocks/Form/Checkbox'
-import moment from 'moment'
-import { FormApi } from 'final-form'
 
 interface Props
   extends Pick<
-    IUseEducationMutateResult,
+    IUseEventMutateResult,
     'handleCreateOrUpdate' | 'setErrors' | 'errors'
   > {
   type: IPromotionsType
   activeProfile: ISalon | IMaster | IBrand
-  education: IEducation | null
-  setEducation: ISetState<IEducation | null>
+  event: IEvent | null
+  setEvent: ISetState<IEvent | null>
   loading: boolean
   setCreate: ISetState<boolean>
 }
 
-const CreateEducation: FC<Props> = ({
+const CreateEvent: FC<Props> = ({
   type,
   activeProfile,
   errors,
   setErrors,
-  education,
-  setEducation,
+  event,
+  setEvent,
   loading,
   handleCreateOrUpdate,
   setCreate,
 }) => {
   const { user } = useAuthStore(getStoreData)
-  const [photo, setPhoto] = useState<IPhoto | null>(education?.cover || null)
+  const [photo, setPhoto] = useState<IPhoto | null>(event?.cover || null)
   const [openPopup, setOpenPopup] = useState(false)
   const [publishedAt, setPublishedAt] = useState(false)
-  const formRef = useRef<FormApi<IEducationInitialForm>>()
+  const formRef = useRef<FormApi<IEventInitialForm>>()
+  const [coordinate, setCoordinates] = useState<ICoordinate | null>(null)
 
-  const initialValues = useMemo(
-    () => getEducationInitialValues({ education }),
-    [education],
-  )
+  const initialValues = useMemo(() => getEventInitialValues({ event }), [event])
 
   useEffect(() => {
-    formRef.current?.change('cover', photo)
-    formRef.current?.change('publishedAt', publishedAt)
-  }, [photo, publishedAt])
+    if (formRef.current) {
+      formRef.current.change('cover', photo)
+      formRef.current.change('publishedAt', publishedAt)
+      coordinate && formRef.current.change('longitude', coordinate.longitude)
+      coordinate && formRef.current.change('latitude', coordinate.latitude)
+    }
+  }, [photo, publishedAt, coordinate])
 
   const onSubmit = useCallback(
-    async (values: IEducationInitialForm) => {
+    async (values: IEventInitialForm) => {
       const cover = photo?.id || values.cover?.id
       if (!cover) {
         setErrors(['Необходимо добавить фото'])
         return
       }
-
-      const amount = Number(values.amount)
+      if (!values.longitude || !values.latitude) {
+        setErrors(['Нужно добавить адрес'])
+        return
+      }
 
       const validTypes = ['brand', 'salon', 'master'] as const
       if (!validTypes.includes(type as (typeof validTypes)[number])) {
         throw new Error(`Invalid type: ${type}`)
       }
 
-      const input: IEducationInput = {
+      const input: IEventInput = {
         title: values.title,
-        cover: cover,
+        cover,
         fullDescription: values.fullDescription,
         shortDescription: values.shortDescription,
-        amount,
         dateStart: values.dateStart,
         dateEnd: values.dateEnd,
         timeStart: moment(values.timeStart, 'HH:mm').format('HH:mm:ss.SSS'),
         timeEnd: moment(values.timeEnd, 'HH:mm').format('HH:mm:ss.SSS'),
+        address: values.address,
         user: user?.info.id,
+        latitude: values.latitude,
+        longitude: values.longitude,
         [type as 'brand' | 'salon' | 'master']: activeProfile.id,
         ...{
           publishedAt: values.publishedAt ? new Date().toISOString() : null,
         },
       }
 
-      handleCreateOrUpdate(input, education?.id)
+      handleCreateOrUpdate(input, event?.id)
       if (values.publishedAt) {
-        setEducation(null)
+        setEvent(null)
         setCreate(false)
       } else {
         setOpenPopup(true)
@@ -113,13 +122,13 @@ const CreateEducation: FC<Props> = ({
 
   const closePopup = () => {
     setOpenPopup(false)
-    setEducation(null)
+    setEvent(null)
     setCreate(false)
   }
 
   return (
     <>
-      <AutoFocusedForm<IEducationInitialForm>
+      <AutoFocusedForm<IEventInitialForm>
         onSubmit={onSubmit}
         initialValues={initialValues}
         subscription={{ values: true }}
@@ -128,19 +137,19 @@ const CreateEducation: FC<Props> = ({
           return (
             <form onSubmit={handleSubmit}>
               <ul style={{ marginBottom: 20 }}>
-                <Education
+                <Event
                   photo={photo}
                   setPhoto={setPhoto}
                   type={type}
                   create
-                  item={values as unknown as IEducation}
+                  item={values as unknown as IEvent}
                 />
               </ul>
               <Styled.FieldWrap>
                 <FieldStyled
                   name="title"
                   component={TextField}
-                  label="Название программы"
+                  label="Название мероприятия"
                   validate={required}
                   requiredField
                 />
@@ -149,7 +158,7 @@ const CreateEducation: FC<Props> = ({
                 <FieldStyled
                   name="shortDescription"
                   component={TextField}
-                  label="Краткое описание программы"
+                  label="Краткое описание мероприятия"
                   validate={required}
                   multiline={true}
                   maxLength={1200}
@@ -160,7 +169,7 @@ const CreateEducation: FC<Props> = ({
                 <FieldStyled
                   name="fullDescription"
                   component={TextField}
-                  label="Описание программы"
+                  label="Описание мероприятия"
                   validate={required}
                   multiline={true}
                   maxLength={40000}
@@ -169,15 +178,23 @@ const CreateEducation: FC<Props> = ({
               </Styled.FieldWrap>
               <Styled.FieldWrap>
                 <FieldStyled
-                  name="amount"
-                  component={TextField}
-                  type="number"
-                  label="Стоимость"
-                  requiredField
+                  name="address"
+                  component={AddressNoSalonField}
+                  setCoordinates={setCoordinates}
+                  label="Адрес мероприятия"
                   validate={required}
-                  maxLength={15}
+                  requiredField
+                  view={true}
                 />
               </Styled.FieldWrap>
+              {/* <FieldWrap>
+                <FieldStyled
+                  name="value"
+                  component={TextField}
+                  label="Промокод"
+                  maxLength={15}
+                />
+              </FieldWrap> */}
               <Styled.FieldWrapDate>
                 <FieldStyled
                   name="dateStart"
@@ -214,8 +231,8 @@ const CreateEducation: FC<Props> = ({
               </Styled.FieldWrapDate>
               <Styled.FieldWrap>
                 <Checkbox
-                  name="publishedAt"
-                  label="Опубликовать вакансию"
+                  name="isPublished"
+                  label="Опубликовать мероприятие"
                   checked={publishedAt}
                   setChecked={setPublishedAt}
                 />
@@ -251,7 +268,7 @@ const CreateEducation: FC<Props> = ({
       <Popup
         isOpen={openPopup}
         onClose={closePopup}
-        title="Ваша обучающуя программа на модерацию, в течение суток/часов вы получите уведомление."
+        title="Ваше мероприятие отправлено на модерацию, в течение суток/часов вы получите уведомление."
       >
         <Button style={{ marginTop: 20 }} onClick={closePopup} variant="red">
           Закрыть
@@ -261,4 +278,4 @@ const CreateEducation: FC<Props> = ({
   )
 }
 
-export default CreateEducation
+export default CreateEvent

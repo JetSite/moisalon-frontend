@@ -65,7 +65,7 @@ const Education: FC<IEducationProps> = ({
     setIsFavorit(!isFavorite)
   }
 
-  const dateStart = `${moment(item.dateStart).format('DD MMMM YYYY')} ${
+  const dateStart = `${moment(item.dateStart).format('DD MMMM ')} ${
     item.timeStart ? moment(item.timeStart, 'HH:mm:ss.SSS').format('HH:mm') : ''
   }`
   const dateEnd = `${moment(item.dateEnd).format('DD MMMM YYYY')} ${

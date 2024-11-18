@@ -7,12 +7,17 @@ export const eventFragment = `
             title
             slug
             address
+            timeStart
+            timeEnd
             dateStart
             dateEnd
+            longitude
+            latitude
             deleted
             shortDescription
             fullDescription
             isPublished
+            publishedAt
             cover {
                 ${imageInfo}
             }

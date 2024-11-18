@@ -78,7 +78,7 @@ export const getTabs: IGetTabs = ({
       {
         title: 'Мероприятия',
         value: 'events',
-        disable: true,
+        disable: false,
       },
       { title: 'Размещение', value: 'priority', disable: true },
       { title: 'Реклама', value: 'banner', disable: true },
@@ -115,7 +115,7 @@ export const getTabs: IGetTabs = ({
       },
       { title: 'Обучение', value: 'educations', disable: false },
       { title: 'Вакансии', value: 'vacancies', quantity: vacancies?.length },
-      { title: 'Мероприятия', value: 'events', disable: true },
+      { title: 'Мероприятия', value: 'events', disable: false },
       { title: 'Размещение', value: 'priority', disable: true },
       { title: 'Реклама', value: 'banner', disable: true },
     ],

@@ -41,11 +41,11 @@ export const checkUnderMinOrderBrands: ICheckUnderMinOrderBrands = (
         return false
       }
       const totalBrandSum = totalSumm(filtredProducts)
-      return totalBrandSum < brand.minimalOrderPrice!
+      return totalBrandSum < (brand.minimalOrderPrice ?? 0)
     })
     .map(brand => ({
       name: brand.name.trim(),
-      summ: `${brand.minimalOrderPrice} ₽`,
+      summ: `${brand.minimalOrderPrice ?? 0} ₽`,
     }))
 }
 

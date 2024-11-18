@@ -55,7 +55,7 @@ export interface IAddressNoSalonFieldProps
   label: string
   noMap?: boolean
   view?: boolean
-  setClickCity: ISetState<string | null>
+  setClickCity?: ISetState<string | null>
   setClickAddress?: ISetState<IAddressSuggestion | null>
   onlyCity?: boolean
   setCoordinates?: ISetState<ICoordinate | null>
@@ -79,7 +79,7 @@ const AddressNoSalonField: FC<IAddressNoSalonFieldProps> = ({
   )
 
   useEffect(() => {
-    setClickCity(coordinates?.city || null)
+    setClickCity && setClickCity(coordinates?.city || null)
     if (setClickAddress) {
       setClickAddress(coordinates)
     }

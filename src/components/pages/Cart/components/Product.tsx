@@ -13,7 +13,7 @@ import DOMPurify from 'dompurify'
 
 interface Props extends IProductProps {
   selectedProducts: IProductCart[]
-  setSelectedPropucts: ISetState<IProductCart[]>
+  setSelectedProducts: ISetState<IProductCart[]>
   city: ICity
 }
 
@@ -24,7 +24,7 @@ const Product: FC<Props> = ({
   addToCart,
   deleteFromCart,
   selectedProducts,
-  setSelectedPropucts,
+  setSelectedProducts,
   city,
 }) => {
   const [checked, setChecked] = useState(false)
@@ -39,11 +39,11 @@ const Product: FC<Props> = ({
 
   const handleChecked = () => {
     if (selectedProducts?.find(el => el.product.id === item.id)) {
-      setSelectedPropucts(
+      setSelectedProducts(
         selectedProducts.filter(el => el.product.id !== item.id),
       )
     } else {
-      setSelectedPropucts([...selectedProducts, cartItem])
+      setSelectedProducts([...selectedProducts, cartItem])
     }
   }
 

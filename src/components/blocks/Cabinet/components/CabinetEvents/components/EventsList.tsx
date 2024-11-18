@@ -1,21 +1,21 @@
 import { FC, useState } from 'react'
 import RotatingLoader from 'src/components/ui/RotatingLoader'
-import { SalesWrapper, Subtitle } from '../styles'
-import Education from 'src/components/blocks/Education'
-import { IEducation } from 'src/types/education'
+import { EventsWrapper, Subtitle } from '../styles'
+import Event from 'src/components/blocks/Event'
+import { IEvent } from 'src/types/event'
 import Button from 'src/components/newUI/buttons/Button'
 import Popup from 'src/components/ui/Popup'
 import { IID } from 'src/types/common'
 import { EntityListProps } from '../../ActiveProfile/ProfileManager'
 
 interface Props extends EntityListProps {
-  educations: IEducation[]
+  events: IEvent[]
   handleMore: () => void
 }
 
-export const EducationsList: FC<Props> = ({
+export const EventsList: FC<Props> = ({
   loading,
-  educations,
+  events,
   pagination,
   popupText,
   handleDelete,
@@ -30,11 +30,11 @@ export const EducationsList: FC<Props> = ({
   }
 
   return (
-    <SalesWrapper>
-      {educations?.length > 0 ? (
+    <EventsWrapper>
+      {events?.length > 0 ? (
         <>
-          {educations?.map(item => (
-            <Education
+          {events?.map(item => (
+            <Event
               handleDelete={id => {
                 setDeleteID(id)
               }}
@@ -52,14 +52,14 @@ export const EducationsList: FC<Props> = ({
           ) : null}
         </>
       ) : (
-        <Subtitle>У профиля нет обучающих программ</Subtitle>
+        <Subtitle>У профиля нет мероприятий</Subtitle>
       )}
       <Popup
         isOpen={!!deleteID}
         onClose={() => {
           setDeleteID(null)
         }}
-        title="Вы собираетесь удалить образовательную программу. "
+        title="Вы собираетесь удалить мероприятие. "
         content={() => {
           return <p>{popupText}</p>
         }}
@@ -84,6 +84,6 @@ export const EducationsList: FC<Props> = ({
           Удалить
         </Button>
       </Popup>
-    </SalesWrapper>
+    </EventsWrapper>
   )
 }

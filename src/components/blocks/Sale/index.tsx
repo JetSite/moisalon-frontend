@@ -73,12 +73,12 @@ const Sale: FC<SaleProps> = ({
         <Styled.SaleBottom>
           {item?.dateStart && item?.dateEnd ? (
             <Styled.SaleData>
-              <Date>
+              <Styled.Date>
                 {moment(item?.dateStart).format('DD MMMM YYYY')} - <br />
-              </Date>
-              <Date>
+              </Styled.Date>
+              <Styled.Date>
                 {moment(item?.dateEnd).format('DD MMMM YYYY')} <br />
-              </Date>
+              </Styled.Date>
             </Styled.SaleData>
           ) : null}
           {item?.promoCode ? (

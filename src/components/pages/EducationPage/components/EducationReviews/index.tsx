@@ -34,6 +34,10 @@ const EducationReviews: FC<EducationReviewsProps> = ({
       setUpdatedReviews(prepareData)
       setLoading(false)
     },
+    onError: error => {
+      console.error('Failed to add review:', error)
+      setLoading(false)
+    },
   })
 
   return (

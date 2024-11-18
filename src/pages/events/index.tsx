@@ -1,8 +1,7 @@
 import { addApolloState, initializeApollo } from '../../api/apollo-client'
 import BusinessCategoryPageLayout from '../../layouts/BusinessCategoryPageLayout'
 import BusinessCategoryPage from '../../components/pages/BusinessCategoryPage'
-import { eventsSearch } from '../../_graphql-legacy/events/eventsSearch'
-import { getEvents } from 'src/api/graphql/event/queries/getEvents'
+import { EVENTS } from 'src/api/graphql/event/queries/getEvents'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { IEvent } from 'yandex-maps'
 import { FC } from 'react'
@@ -28,7 +27,7 @@ export async function getServerSideProps() {
   const apolloClient = initializeApollo()
 
   const eventsRes = await apolloClient.query({
-    query: getEvents,
+    query: EVENTS,
   })
 
   const normalisedEvents = flattenStrapiResponse(eventsRes?.data?.events)

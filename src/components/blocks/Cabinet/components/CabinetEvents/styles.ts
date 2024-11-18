@@ -113,7 +113,7 @@ export const SkeletonWrap = styled(Skeleton)`
   }
 `
 
-export const EventsWrapper = styled.div`
+export const EventsWrapper = styled.ul`
   width: 100%;
   margin-top: 32px;
   display: flex;

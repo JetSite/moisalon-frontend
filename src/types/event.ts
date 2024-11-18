@@ -9,8 +9,8 @@ export interface IEvent {
   id: IID
   title: string
   slug: string
-  dateStart: Date
-  dateEnd: Date
+  dateStart: string
+  dateEnd: string
   address: string
   deleted: boolean
   shortDescription: string
@@ -23,4 +23,9 @@ export interface IEvent {
   cover: IPhoto
   seoTitle: string
   seoDescription: string
+  publishedAt: string | null
+  timeStart: string
+  timeEnd: string
+  longitude: number | null
+  latitude: number | null
 }

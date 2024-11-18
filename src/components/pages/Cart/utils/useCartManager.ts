@@ -23,7 +23,7 @@ interface IUseCartManagerResult
   cart: ICart | null
   brands: IBrand[]
   selectedProducts: IProductCart[]
-  setSelectedPropucts: ISetState<IProductCart[]>
+  setSelectedProducts: ISetState<IProductCart[]>
   underMinOrderBrands: ICheckUnderMinOrderBrandsResult[]
   handleDeleteChecked: () => void
 }
@@ -44,7 +44,7 @@ export const useCartManager: IUseCartManager = ({ data, user }) => {
   const [underMinOrderBrands, setUnderMinOrderBrands] = useState<
     ICheckUnderMinOrderBrandsResult[]
   >([])
-  const [selectedProducts, setSelectedPropucts] = useState<IProductCart[]>(
+  const [selectedProducts, setSelectedProducts] = useState<IProductCart[]>(
     data?.cartContent || [],
   )
 
@@ -56,7 +56,7 @@ export const useCartManager: IUseCartManager = ({ data, user }) => {
         newCartContent.push({ ...content, quantity: quantityMap[productID] })
       } else if (quantityMap[productID] !== 0) newCartContent.push(content)
     })
-    setSelectedPropucts(newCartContent)
+    setSelectedProducts(newCartContent)
     cart && setCart({ ...cart, cartContent: newCartContent })
   }, [quantityMap])
 
@@ -98,7 +98,7 @@ export const useCartManager: IUseCartManager = ({ data, user }) => {
     cart,
     brands,
     selectedProducts,
-    setSelectedPropucts,
+    setSelectedProducts,
     underMinOrderBrands,
     handleMutate,
     quantityMap,

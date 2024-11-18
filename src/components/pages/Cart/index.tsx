@@ -34,7 +34,7 @@ const Cart: FC<ICartProps> = ({ data }) => {
     cart,
     brands,
     selectedProducts,
-    setSelectedPropucts,
+    setSelectedProducts,
     underMinOrderBrands,
     handleMutate,
     quantityMap,
@@ -56,9 +56,9 @@ const Cart: FC<ICartProps> = ({ data }) => {
 
   const handleCheckAll = () => {
     if (checkAll) {
-      setSelectedPropucts([])
+      setSelectedProducts([])
     } else {
-      setSelectedPropucts(cart?.cartContent || [])
+      setSelectedProducts(cart?.cartContent || [])
     }
   }
 
@@ -123,7 +123,7 @@ const Cart: FC<ICartProps> = ({ data }) => {
                       item={item.product}
                       key={item.id}
                       selectedProducts={selectedProducts}
-                      setSelectedPropucts={setSelectedPropucts}
+                      setSelectedProducts={setSelectedProducts}
                       city={city}
                     />
                   )

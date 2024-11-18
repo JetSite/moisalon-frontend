@@ -107,7 +107,11 @@ export const useVacancyMutate: IUseVacancyMutate = ({
     try {
       mutate({ variables })
     } catch (error) {
-      console.log('Error delete entity:', error)
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : 'Unknown error occurred while deleting'
+      setErrors([errorMessage])
     }
   }
 

@@ -14,7 +14,7 @@ interface IgetPrepareDataProps {
   salons?: ISalon[]
   brands?: IBrand[]
   vacancies?: IVacancy[] | null
-  entityType: 'reviews' | 'sales' | 'vacancies'
+  entityType?: 'reviews' | 'sales' | 'vacancies'
 }
 
 export const getPrepareData: IgetPrepareData = ({
@@ -49,6 +49,7 @@ export const getPrepareData: IgetPrepareData = ({
         break
 
       default:
+        quantity = { active: 0, noActive: 0 }
     }
     return quantity
   }

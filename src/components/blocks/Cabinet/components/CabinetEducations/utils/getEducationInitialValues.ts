@@ -2,6 +2,7 @@ import moment from 'moment'
 import { IPhoto } from 'src/types'
 import { IID } from 'src/types/common'
 import { IEducation } from 'src/types/education'
+import formatTime from 'src/utils/newUtils/formatTime'
 
 type IEducationFormValues = (
   props: IEducationFormValuesProps,
@@ -59,8 +60,8 @@ export const getEducationInitialValues: IEducationFormValues = ({
         publishedAt: false,
         dateStart: education.dateStart,
         dateEnd: education.dateEnd,
-        timeStart: moment(education.timeStart, 'HH:mm:ss.SSS').format('HH:mm'),
-        timeEnd: moment(education.timeEnd, 'HH:mm:ss.SSS').format('HH:mm'),
+        timeStart: formatTime(education.timeStart),
+        timeEnd: formatTime(education.timeEnd),
       }
     : {
         title: '',

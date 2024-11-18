@@ -7,13 +7,13 @@ import { IMaster } from 'src/types/masters'
 import { IBrand } from 'src/types/brands'
 import { getPrepareData } from '../CabinetSales/utils/getPrepareData'
 import ProfileSelect from '../CabinetSales/components/ProfileSelect'
-import ActiveEducationProfile from './components/ActiveEducationProfile'
+import ActiveEventProfile from './components/ActiveEventProfile'
 
 interface Props {
   user: IUser
 }
 
-const CabinetEducations: FC<Props> = ({ user }) => {
+const CabinetEvents: FC<Props> = ({ user }) => {
   const { salons, masters, brands } = user.owner
   const [type, setType] = useState<IPromotionsType>(null)
   const [activeProfile, setActiveProfile] = useState<
@@ -48,9 +48,9 @@ const CabinetEducations: FC<Props> = ({ user }) => {
 
   return (
     <Wrapper>
-      <TitlePage>Обучение</TitlePage>
+      <TitlePage>Мероприятия</TitlePage>
       <Subtitle>
-        Нажмите на профиль для просмотра или создания обучений
+        Нажмите на профиль для просмотра или создания мероприятия
       </Subtitle>
       <ProfileSelect
         profiles={profiles}
@@ -59,7 +59,7 @@ const CabinetEducations: FC<Props> = ({ user }) => {
         quantityTitles={['Одобренные', 'На рассмотрении']}
       />
       {activeProfile && type && (
-        <ActiveEducationProfile
+        <ActiveEventProfile
           activeProfile={activeProfile}
           type={type}
           setActiveProfile={setActiveProfile}
@@ -69,4 +69,4 @@ const CabinetEducations: FC<Props> = ({ user }) => {
   )
 }
 
-export default CabinetEducations
+export default CabinetEvents

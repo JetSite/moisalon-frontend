@@ -7,53 +7,47 @@ import {
 } from 'src/utils/flattenStrapiResponse'
 import { IPromotionsType } from '../../CabinetSales'
 import { IID } from 'src/types/common'
-import { IEducation } from 'src/types/education'
+import { IEvent } from 'src/types/event'
 import {
   IActiveProfilesView,
   IEntityDeleteHandler,
 } from '../../ActiveProfile/ProfileManager'
-import { EDUCATIONS } from 'src/api/graphql/education/queries/getEducations'
-import { NOT_PUBLISH_EDUCATIONS } from 'src/api/graphql/education/queries/getNotPublishEducations'
-import { CREATE_EDUCATION } from 'src/api/graphql/education/mutations/createEducation'
+import { EVENTS } from 'src/api/graphql/event/queries/getEvents'
+import { NOT_PUBLISH_EVENTS } from 'src/api/graphql/event/queries/getNotPublishEvents'
+import { CREATE_EVENT } from 'src/api/graphql/event/mutations/createEvent'
 import { IUseVacancyMutateResult } from '../../CabinetVacancies/utils/useVacancyMutate'
-import { UPDATE_EDUCATION } from 'src/api/graphql/education/mutations/updateEducation'
-import { IEducationInput } from './getEducationInitialValues'
+import { UPDATE_EVENT } from 'src/api/graphql/event/mutations/updateEvent'
+import { IEventInput } from './getEventInitialValues'
 
-export interface IUseEducationMutateResult
+export interface IUseEventMutateResult
   extends Omit<IUseVacancyMutateResult, 'vacancies' | 'handleCreateOrUpdate'> {
-  educations: IEducation[]
+  events: IEvent[]
   handleCreateOrUpdate: (values: any, id?: IID) => void
 }
 
-type IUseEducationMutate = (
-  props: IUseEducationMutateProps,
-) => IUseEducationMutateResult
+type IUseEventMutate = (props: IUseEventMutateProps) => IUseEventMutateResult
 
-interface IUseEducationMutateProps {
+interface IUseEventMutateProps {
   type: IPromotionsType
   profileID: IID
   view: IActiveProfilesView
 }
 
-export const useEducationMutate: IUseEducationMutate = ({
-  type,
-  profileID,
-  view,
-}) => {
-  const [educations, setEducations] = useState<IEducation[]>([])
+export const useEventMutate: IUseEventMutate = ({ type, profileID, view }) => {
+  const [events, setEvents] = useState<IEvent[]>([])
   const [pagination, setPagination] = useState<IPagination | null>(null)
   const [update, setUpdate] = useState(true)
   const [errors, setErrors] = useState<string[] | null>(null)
 
-  const onCompleted = (data: { educations: StrapiDataObject }) => {
-    const newData = flattenStrapiResponse(data.educations)
+  const onCompleted = (data: { events: StrapiDataObject }) => {
+    const newData = flattenStrapiResponse(data.events)
     if (update) {
-      setEducations(newData)
+      setEvents(newData)
       setUpdate(false)
     } else {
-      setEducations(pre => [...pre, ...newData])
+      setEvents(pre => [...pre, ...newData])
     }
-    setPagination(data.educations.meta?.pagination || null)
+    setPagination(data.events.meta?.pagination || null)
   }
 
   const onError = (error: ApolloError) => {
@@ -62,25 +56,25 @@ export const useEducationMutate: IUseEducationMutate = ({
   }
 
   const [getNoPublish, { loading: noPublishLoading }] = useLazyQuery(
-    NOT_PUBLISH_EDUCATIONS,
+    NOT_PUBLISH_EVENTS,
     {
       onCompleted,
       onError,
     },
   )
-  const [getPublish, { loading: publishLoading }] = useLazyQuery(EDUCATIONS, {
+  const [getPublish, { loading: publishLoading }] = useLazyQuery(EVENTS, {
     onCompleted,
     onError,
   })
 
-  const [mutate, { loading }] = useMutation(UPDATE_EDUCATION, {
+  const [mutate, { loading }] = useMutation(UPDATE_EVENT, {
     onError,
     onCompleted: () => {
       setUpdate(true)
     },
   })
 
-  const [create, { loading: createLoading }] = useMutation(CREATE_EDUCATION, {
+  const [create, { loading: createLoading }] = useMutation(CREATE_EVENT, {
     onError,
     onCompleted: () => {
       setUpdate(true)
@@ -101,15 +95,11 @@ export const useEducationMutate: IUseEducationMutate = ({
     try {
       mutate({ variables })
     } catch (error) {
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : 'Unknown error occurred while deleting'
-      setErrors([errorMessage])
+      console.log('Error delete entity:', error)
     }
   }
 
-  const handleCreateOrUpdate = (input: IEducationInput, id?: IID) => {
+  const handleCreateOrUpdate = (input: IEventInput, id?: IID) => {
     if (!type || !['brand', 'salon', 'master'].includes(type)) {
       throw new Error(`Invalid type: ${type}`)
     }
@@ -143,7 +133,7 @@ export const useEducationMutate: IUseEducationMutate = ({
   return {
     fetchLoading: noPublishLoading || publishLoading,
     loading: loading || createLoading,
-    educations,
+    events,
     pagination,
     setUpdate,
     handleDelete,

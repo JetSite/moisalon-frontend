@@ -7,14 +7,12 @@ import ProfileManager, {
   IEntityHandler,
 } from '../../ActiveProfile/ProfileManager'
 import { IPromotionsType } from '../../CabinetSales'
-import { IVacancy } from 'src/types/vacancies'
 import { IProfile } from '../../CabinetSales/components/ProfileSelect'
-import CreateEducation from 'src/components/blocks/Cabinet/components/CabinetEducations/components/CreateEducation'
-import { VacanciesList } from '../../CabinetVacancies/components/VacanciesList'
-import { IEducation } from 'src/types/education'
-import { EducationsList } from './EducationsList'
+import CreateEvent from 'src/components/blocks/Cabinet/components/CabinetEvents/components/CreateEvent'
 import { IMaster } from 'src/types/masters'
-import { useEducationMutate } from '../utils/useEducationMutate'
+import { IEvent } from 'src/types/event'
+import { EventsList } from './EventsList'
+import { useEventMutate } from '../utils/useEventMutate'
 
 interface ActiveProfileProps {
   activeProfile: ISalon | IBrand | IMaster
@@ -22,16 +20,16 @@ interface ActiveProfileProps {
   setActiveProfile: ISetState<ISalon | IBrand | IMaster | null>
 }
 
-const ActiveEducationProfile: FC<ActiveProfileProps> = ({
+const ActiveEventProfile: FC<ActiveProfileProps> = ({
   activeProfile,
   type,
   setActiveProfile,
 }) => {
   const [view, setView] = useState<IActiveProfilesView>('publish')
-  const [education, setEducation] = useState<IEducation | null>(null)
-  const [createEducation, setCreateEducation] = useState(false)
+  const [event, setEvent] = useState<IEvent | null>(null)
+  const [createEvent, setCreateEvent] = useState(false)
   const {
-    educations,
+    events,
     setUpdate,
     handleDelete,
     handleCreateOrUpdate,
@@ -41,7 +39,7 @@ const ActiveEducationProfile: FC<ActiveProfileProps> = ({
     fetchLoading,
     errors,
     setErrors,
-  } = useEducationMutate({
+  } = useEventMutate({
     view,
     type,
     profileID: activeProfile.id,
@@ -74,10 +72,12 @@ const ActiveEducationProfile: FC<ActiveProfileProps> = ({
     if (view === 'publish') return
     const targetId = e.currentTarget.id
     if (!targetId) return
-    const findSale = educations.find(element => element.id === targetId) || null
-    setEducation(findSale)
-    setCreateEducation(true)
+    const findSale = events.find(element => element.id === targetId) || null
+    setEvent(findSale)
+    setCreateEvent(true)
   }
+
+  console.log('active event', event)
 
   return (
     <ProfileManager
@@ -86,39 +86,39 @@ const ActiveEducationProfile: FC<ActiveProfileProps> = ({
       handleBack={() => {
         setActiveProfile(null)
       }}
-      createEntity={createEducation}
-      setCreateEntity={setCreateEducation}
-      createEntityButton="Создать Обучение"
+      createEntity={createEvent}
+      setCreateEntity={setCreateEvent}
+      createEntityButton="Создать Мероприятие"
       view={view}
       handleViewClick={handleClick}
       onCreateEntity={() => {
-        setEducation(null)
+        setEvent(null)
       }}
       createEntityComponent={
-        <CreateEducation
+        <CreateEvent
           errors={errors}
           setErrors={setErrors}
           type={type}
           activeProfile={activeProfile}
           handleCreateOrUpdate={handleCreateOrUpdate}
-          education={education}
-          setEducation={setEducation}
+          event={event}
+          setEvent={setEvent}
           loading={loading}
-          setCreate={setCreateEducation}
+          setCreate={setCreateEvent}
         />
       }
       entitiesManagerComponent={
-        <EducationsList
+        <EventsList
           handleMore={handleMore}
           handleClick={handleVacancyClick}
           loading={fetchLoading}
           type={type}
-          educations={educations}
+          events={events}
           handleDelete={handleDelete}
           pagination={pagination}
           popupText={
             view === 'publish'
-              ? 'После проверки модератором обучение будет удалена безвозвратно. Вы уверены?'
+              ? 'После проверки модератором мероприятие будет удалено безвозвратно. Вы уверены?'
               : undefined
           }
         />
@@ -127,4 +127,4 @@ const ActiveEducationProfile: FC<ActiveProfileProps> = ({
   )
 }
 
-export default ActiveEducationProfile
+export default ActiveEventProfile
