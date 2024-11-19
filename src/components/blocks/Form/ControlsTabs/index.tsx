@@ -7,7 +7,7 @@ import Avatar from '../Avatar'
 import Tabs from './components/Tabs'
 import { Dispatch, FC, SetStateAction } from 'react'
 import { IID, ISetState } from 'src/types/common'
-import { IMasterCabinetTab } from 'src/components/pages/Master/MasterCabinet'
+import { IMasterCabinetTab } from 'src/components/pages/MasterCabinet'
 import { IPhoto } from 'src/types'
 
 const Wrapper = styled.section`

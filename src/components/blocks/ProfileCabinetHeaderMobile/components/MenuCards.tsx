@@ -11,7 +11,7 @@ import {
 import { getStoreData, getStoreEvent } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
 import { Dispatch, FC, SetStateAction } from 'react'
-import { IMasterCabinetTab } from 'src/components/pages/Master/MasterCabinet'
+import { IMasterCabinetTab } from 'src/components/pages/MasterCabinet'
 import { ISetState } from 'src/types/common'
 
 interface Props {

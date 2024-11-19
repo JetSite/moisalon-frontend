@@ -29,11 +29,11 @@ const CabinetSales: FC<Props> = ({ user }) => {
 
   // Функция для обработки клика по профилю
   const handleProfileClick = (profile: (typeof profiles)[0]) => {
-    const typedProfileType = profile.profileType as 'master' | 'salon' | 'brand'
-    setType(typedProfileType)
+    const typedRtofileType = profile.profileType as 'master' | 'salon' | 'brand'
+    setType(typedRtofileType)
     const foundProfilePromotions =
       [...(salons || []), ...(masters || []), ...(brands || [])].find(
-        ({ id }) => id === profile.id,
+        ({ id, name }) => id === profile.id && name === profile.name,
       )?.promotions || []
     const foundProfile = profiles.find(({ id }) => id === profile.id)
     if (foundProfile) {

@@ -1,18 +1,10 @@
-import { useState, useCallback, FC } from 'react'
-import { useMutation } from '@apollo/client'
+import { useState, FC } from 'react'
 import Header from '../../pages/MainPage/components/Header'
 import { MainContainer, Wrapper } from './styled'
 import CabinetForm, { CabinetFormProps } from './components/CabinetForm'
 import { PHOTO_URL } from '../../../api/variables'
-import { UPDATE_MASTER_PHOTO } from 'src/_graphql-legacy/master/updateMasterPhotoMutation'
-import useAuthStore from 'src/store/authStore'
-import { getStoreData, getStoreEvent } from 'src/store/utils'
-import { ICity, IPhoto } from 'src/types'
-import { changeMe } from 'src/api/graphql/me/mutations/changeMe'
-import { useShallow } from 'zustand/react/shallow'
-import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { IPhoto } from 'src/types'
 import Controls from './components/Controls'
-import { FormGuardPopup } from '../Form/FormGuardPopup'
 
 interface Props extends Pick<CabinetFormProps, 'cities' | 'user'> {}
 

@@ -34,8 +34,9 @@ const CabinetListReviews: FC<Props> = ({ user }) => {
     setType(typedProfileType)
     const foundProfileReviews =
       [...(salons || []), ...(masters || []), ...(brands || [])].find(
-        ({ id }) => id === profile.id,
+        ({ name, id }) => name === profile.name && id === profile.id,
       )?.reviews || []
+
     const foundProfile = profiles.find(({ id }) => id === profile.id)
     if (foundProfile) {
       const foundProfileWithReviews: IProfileWithReviews = {
