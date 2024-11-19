@@ -11,8 +11,8 @@ import { educationFragment } from '../fragments/educationFragment'
  */
 
 export const EDUCATIONS = gql`
-  query education($salon: ID, $brand: ID, $page: Int, $pageSize: Int) {
-    educations(filters: {salon: {id: {eq: $salon}}, brand: {id: {eq: $brand}}}, pagination: { pageSize: $pageSize, page: $page }) {
+  query education($master: ID, $salon: ID, $brand: ID, $page: Int, $pageSize: Int) {
+    educations(filters: {salon: {id: {eq: $salon}}, master: { id: { eq: $master }}, brand: {id: {eq: $brand}}}, pagination: { pageSize: $pageSize, page: $page }) {
       ${educationFragment}
       meta {
         ${metaInfo}

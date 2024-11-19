@@ -14,7 +14,7 @@ import { PHOTO_URL } from '../../../api/variables'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 import { FC, MouseEvent, useState } from 'react'
-import { IMasterCabinetTab } from 'src/components/pages/Master/MasterCabinet'
+import { IMasterCabinetTab } from 'src/components/pages/MasterCabinet'
 import { IUser } from 'src/types/me'
 import { ISetState } from 'src/types/common'
 import EmptyListItem, {

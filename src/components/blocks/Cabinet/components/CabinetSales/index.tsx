@@ -33,7 +33,7 @@ const CabinetSales: FC<Props> = ({ user }) => {
     setType(typedProfileType)
     const foundProfilePromotions =
       [...(salons || []), ...(masters || []), ...(brands || [])].find(
-        ({ id }) => id === profile.id,
+        ({ id, name }) => id === profile.id && name === profile.name,
       )?.promotions || []
     const foundProfile = profiles.find(({ id }) => id === profile.id)
     if (foundProfile) {

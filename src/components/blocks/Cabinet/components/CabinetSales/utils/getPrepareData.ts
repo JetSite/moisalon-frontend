@@ -28,6 +28,8 @@ export const getPrepareData: IgetPrepareData = ({
     item: IMaster | ISalon | IBrand,
     type?: IProfileType,
   ) => {
+    console.log(item)
+
     let quantity
     switch (entityType) {
       case 'reviews':

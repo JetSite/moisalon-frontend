@@ -11,13 +11,12 @@ import { MobileHidden } from '../../../../styles/common'
 import { IMaster } from 'src/types/masters'
 import { ICity, IPagination } from 'src/types'
 import { ITotalCount } from 'src/pages/[city]/salon'
-import NotFound from '../../404'
 
 export interface IMastersPageProps {
   masterData: IMaster[] | []
   totalCount: ITotalCount
   cityData: ICity
-  pagination: IPagination | null
+  pagination: IPagination
 }
 
 const AllMastersPage: FC<IMastersPageProps> = ({

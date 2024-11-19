@@ -18,6 +18,7 @@ import { getMasters } from 'src/api/graphql/master/queries/getMasters'
 import { getSalons } from 'src/api/graphql/salon/queries/getSalons'
 import { ISalon } from 'src/types/salon'
 import { getRating } from 'src/utils/newUtils/getRating'
+import { Nullable } from 'src/types/common'
 
 interface Props extends IMastersPageProps {
   brands: IBrand[] | null
@@ -35,7 +36,9 @@ const AllMasters: FC<Props> = ({ masters, salons, brands, ...props }) => {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async ctx => {
+export const getServerSideProps: GetServerSideProps<
+  Nullable<Props>
+> = async ctx => {
   const apolloClient = initializeApollo()
 
   const cityData = (await fetchCity(ctx.query.city as string)) || {
@@ -96,22 +99,22 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
     notFound: !cityData?.name,
     props: {
       masterData: masterData.map(e => {
-        const reviewsCount = e.reviews?.length || null
+        const reviewsCount = e.reviews?.length || 0
         const { rating, ratingCount } = getRating(e.ratings)
         return { ...e, rating, ratingCount, reviewsCount }
       }),
       brands: brands.map(e => {
-        const reviewsCount = e.reviews?.length || null
+        const reviewsCount = e.reviews?.length || 0
         const { rating, ratingCount } = getRating(e.ratings)
         return { ...e, rating, ratingCount, reviewsCount }
       }),
       masters: masters.map(e => {
-        const reviewsCount = e.reviews?.length || null
+        const reviewsCount = e.reviews?.length || 0
         const { rating, ratingCount } = getRating(e.ratings)
         return { ...e, rating, ratingCount, reviewsCount }
       }),
       salons: salons.map(e => {
-        const reviewsCount = e.reviews?.length || null
+        const reviewsCount = e.reviews?.length || 0
         const { rating, ratingCount } = getRating(e.ratings)
         return { ...e, rating, ratingCount, reviewsCount }
       }),

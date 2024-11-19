@@ -9,7 +9,7 @@ import { getStoreData, getStoreEvent } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
 import { Dispatch, FC, SetStateAction } from 'react'
 import { ISetState, LazyType } from 'src/types/common'
-import { IMasterCabinetTab } from 'src/components/pages/Master/MasterCabinet'
+import { IMasterCabinetTab } from 'src/components/pages/MasterCabinet'
 import Link from 'next/link'
 
 const Wrapper = styled.nav`
