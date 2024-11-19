@@ -1,12 +1,4 @@
-import {
-  Dispatch,
-  FC,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState,
-} from 'react'
-import catalogOrDefault from '../../../../utils/catalogOrDefault'
+import { FC, useRef, useState } from 'react'
 import { Swiper, SwiperClass, SwiperSlide } from 'swiper/react'
 import SwiperCore from 'swiper'
 import { Navigation } from 'swiper/modules'
@@ -30,11 +22,9 @@ import {
 } from '../../../../styles/sliderBlocks'
 import SalonCard from './components/SalonCard'
 import { MobileVisible, MobileHidden } from '../../../../styles/common'
-import { cyrToTranslit } from '../../../../utils/translit'
 import { getStoreData } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
 import useBaseStore from 'src/store/baseStore'
-import { NavigationOptions } from 'swiper/types'
 import { ISetState } from 'src/types/common'
 import { ISalon } from 'src/types/salon'
 
@@ -61,9 +51,15 @@ const SalonsFavorites: FC<ThingsProps> = ({
 
   const onBeforeInit = (Swiper: SwiperClass) => {
     if (typeof Swiper.params.navigation !== 'boolean') {
-      const navigation = Swiper.params.navigation as NavigationOptions
-      navigation.prevEl = navigationPrevRef.current
-      navigation.nextEl = navigationNextRef.current
+      const navigation = Swiper.params.navigation
+      if (
+        navigation &&
+        navigationPrevRef.current &&
+        navigationNextRef.current
+      ) {
+        navigation.prevEl = navigationPrevRef.current
+        navigation.nextEl = navigationNextRef.current
+      }
     }
   }
 
@@ -81,8 +77,6 @@ const SalonsFavorites: FC<ThingsProps> = ({
   } else return <div />
 
   if (!salons) setActiveTab('all')
-
-  console.log(salons)
 
   return (
     <Wrapper>

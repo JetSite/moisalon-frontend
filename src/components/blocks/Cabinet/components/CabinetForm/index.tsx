@@ -32,7 +32,7 @@ import CreateProfiles from '../CreateProfiles'
 import { MobileHidden } from '../../../../../styles/common'
 import useAuthStore from 'src/store/authStore'
 import { getStoreEvent } from 'src/store/utils'
-import { changeMe } from 'src/api/graphql/me/mutations/changeMe'
+import { CHANGE_ME } from 'src/api/graphql/me/mutations/changeMe'
 import {
   CustomWindow,
   IID,
@@ -93,7 +93,7 @@ const CabinetForm: FC<CabinetFormProps> = ({
 
   const [addCity] = useMutation(CREATE_CITY)
 
-  const [updateUser] = useMutation(changeMe, {
+  const [updateUser] = useMutation(CHANGE_ME, {
     onCompleted: async data => {
       const prepareData = flattenStrapiResponse(
         data.updateUsersPermissionsUser,

@@ -1,6 +1,6 @@
 export const baseUrl = 'https://moisalon-backend.jetsite.ru/graphql'
 
-export const defaultValues = { citySlug: 'moskva' }
+export const defaultValues = { city: { slug: 'moskva' } }
 
 export const defaultcCitiesList = [
   'Москва',

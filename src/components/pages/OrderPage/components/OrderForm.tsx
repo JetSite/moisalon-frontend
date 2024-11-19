@@ -53,13 +53,13 @@ const OrderForm = ({
   shippingMethod,
   formValues,
   productBrands,
-  user,
+  // user,
 }) => {
   const mobileMedia = useMedia({ maxWidth: 768 })
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
-  const { me } = useAuthStore(getStoreData)
+  const { user } = useAuthStore(getStoreData)
 
   console.log('formValues', formValues)
 

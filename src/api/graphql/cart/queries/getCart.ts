@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 import { productFragment } from '../../product/fragment/product'
 
-export const GET_CART = gql`
+export const CART_BY_ID = gql`
   query getCart($id: ID!) {
     cart(id: $id) {
       data {

@@ -1,16 +1,21 @@
 import { useQuery } from '@apollo/client'
-import styled from 'styled-components'
-import { salesSearch } from '../../../../../_graphql-legacy/sales/salesSearch'
-import catalogOrDefault from '../../../../../utils/catalogOrDefault'
 import Slider from '../../../../blocks/Slider'
+import { PROMOTIONS } from 'src/api/graphql/promotion/queries/getPromotions'
+import { FC } from 'react'
+import { ICity } from 'src/types'
 
-const MainAdsSlider = () => {
-  const { data, loading } = useQuery(salesSearch, {
-    variables: { query: '' },
+interface Props {
+  city: ICity
+}
+
+const MainAdsSlider: FC<Props> = ({ city }) => {
+  const { data, loading } = useQuery(PROMOTIONS, {
+    variables: { pageSize: 10 },
   })
 
   return (
     <Slider
+      city={city}
       type="ads"
       loading={loading}
       items={data?.salesSearch?.connection?.nodes || []}

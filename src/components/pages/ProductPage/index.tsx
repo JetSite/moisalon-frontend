@@ -56,7 +56,7 @@ interface IProductPageProps {
 
 const ProductPage: FC<IProductPageProps> = ({ product, reviews }) => {
   const { user } = useAuthStore(getStoreData)
-  const { cart } = useBaseStore(getStoreData)
+  const cart = user?.owner.cart || null
   const { setProducts: setProductsState, setCart } = useBaseStore(getStoreEvent)
   const [reviewsData, setReviewsData] = useState(reviews)
   const { city, me } = useAuthStore(getStoreData)
@@ -217,8 +217,6 @@ const ProductPage: FC<IProductPageProps> = ({ product, reviews }) => {
   const productImage = newItem?.product?.cover?.url
     ? `${PHOTO_URL}${newItem.product.cover.url}`
     : ''
-
-  console.log(product)
 
   return (
     <MainContainer>

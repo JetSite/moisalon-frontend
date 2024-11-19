@@ -2,7 +2,7 @@ import { gql } from '@apollo/client'
 import servicesFragment from '../../fragments/services'
 import { cityInfo } from '../../common/cityInfo'
 
-export const changeMe = gql`
+export const CHANGE_ME = gql`
   mutation changeMe($id: ID!, $data: UsersPermissionsUserInput!) {
     updateUsersPermissionsUser(id: $id, data: $data) {
       data {

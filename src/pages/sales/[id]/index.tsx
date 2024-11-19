@@ -2,7 +2,7 @@ import { addApolloState, initializeApollo } from '../../../api/apollo-client'
 import { getFeedCategories } from 'src/api/graphql/feed/queries/getFeedCategories'
 import { getFeeds } from 'src/api/graphql/feed/queries/getFeeds'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
-import { getSaleById } from 'src/api/graphql/sale/queries/getSaleById'
+import { PROMOTION_BY_ID } from 'src/api/graphql/sale/queries/PROMOTION_BY_ID'
 import { ISale } from 'src/types/sale'
 import { FC } from 'react'
 import SalePage from 'src/components/pages/SalePage'
@@ -31,7 +31,7 @@ export async function getServerSideProps({ params }: any) {
   const apolloClient = initializeApollo()
 
   const saleRes = await apolloClient.query({
-    query: getSaleById,
+    query: PROMOTION_BY_ID,
     variables: { id: params.id },
   })
   const categories = await apolloClient.query({

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, FC } from 'react'
 import { useMutation } from '@apollo/react-hooks'
 import MainLayout from '../../../layouts/MainLayout'
 import { MainContainer } from '../../../styles/common'
@@ -6,7 +6,6 @@ import { useRouter } from 'next/router'
 import BackButton from '../../ui/BackButton'
 import { Wrapper, SuccessOrderWrapper, SuccessOrderText } from './styles'
 import OrderForm from './components/OrderForm'
-import useBaseStore from 'src/store/baseStore'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
 import { CREATE_ORDER } from 'src/api/graphql/order/mutations/createOrder'
@@ -15,6 +14,7 @@ import { IAddressSuggestion } from 'src/components/blocks/Form/AddressField/useA
 import { IOrderInput } from 'src/types/orders'
 import SuccessForm from './components/SuccessForm'
 import { REMOVE_CART } from 'src/api/graphql/cart/mutations/removeCart'
+import { ICart } from 'src/types/product'
 
 const paymentsMethods = {
   1: 'Оплата при доставке',
@@ -24,12 +24,14 @@ const paymentsMethods = {
   5: 'Оплата по номеру карты',
 }
 
-const OrderPage = () => {
-  const { catalogs, cart } = useBaseStore(getStoreData)
-  const { user } = useAuthStore(getStoreData)
-  const { setUser } = useAuthStore(getStoreEvent)
-  const { setCart } = useBaseStore(getStoreEvent)
+export interface IOrderPageProps {
+  cart: ICart
+}
 
+const OrderPage: FC<IOrderPageProps> = ({ cart }) => {
+  // const { catalogs, cart } = useBaseStore(getStoreData)
+  const { user } = useAuthStore(getStoreData)
+  const { setCart } = useAuthStore(getStoreEvent)
   const [successPage, setSuccessPage] = useState(false)
   const [checkOrderPage, setCheckOrderPage] = useState(false)
   const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
@@ -146,7 +148,7 @@ const OrderPage = () => {
       window.scrollTo(0, 0)
       setCheckOrderPage(false)
       setSuccessPage(true)
-      setCart(null)
+      setCart(undefined)
       await removeCart({
         variables: {
           id: cart?.id,

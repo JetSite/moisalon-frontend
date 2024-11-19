@@ -1,5 +1,5 @@
 import { addApolloState, initializeApollo } from '../../api/apollo-client'
-import MainPage from '../../components/pages/MainPage'
+import MainPage, { IMainPageProps } from '../../components/pages/MainPage'
 import { getBannerHooks } from '../../api/graphql/banner/queries/getBannerHooks'
 import { getFeeds } from '../../api/graphql/feed/queries/getFeeds'
 import { getFeedCategories } from 'src/api/graphql/feed/queries/getFeedCategories'
@@ -14,22 +14,17 @@ import { fetchCity } from 'src/api/utils/fetchCity'
 import { getTotalCount } from 'src/utils/getTotalCount'
 import { ITotalCount } from './salon'
 import { Nullable } from 'src/types/common'
+import { FC } from 'react'
 
-interface Props {
-  beautyCategories: any
-  beautyAllContent: any
-  bannerHooks: any
-  totalCount: ITotalCount
-  cityData: ICity
-}
+interface Props extends IMainPageProps {}
 
-export default function Main({
+const Main: FC<Props> = ({
   beautyCategories,
   beautyAllContent,
   bannerHooks,
   totalCount,
   cityData,
-}: Props) {
+}) => {
   return (
     <>
       {/* <Head>
@@ -51,7 +46,7 @@ export default function Main({
         beautyAllContent={beautyAllContent}
         bannerHooks={bannerHooks}
         totalCount={totalCount}
-        cityData={cityData.name}
+        cityData={cityData}
       />
     </>
   )
@@ -85,13 +80,13 @@ export const getServerSideProps: GetServerSideProps<
   const cityCookie = ctx.req.cookies['city']
   const cityData: ICity = (await fetchCity(ctx.query.city as string)) ||
     (await fetchCity(cityCookie)) || {
-      slug: defaultValues.citySlug,
+      slug: defaultValues.city.slug,
     }
 
-  if (!cityCookie && ctx.query.city !== defaultValues.citySlug) {
+  if (!cityCookie && ctx.query.city !== defaultValues.city.slug) {
     return {
       redirect: {
-        destination: defaultValues.citySlug,
+        destination: defaultValues.city.slug,
         permanent: true,
       },
     }
@@ -112,3 +107,5 @@ export const getServerSideProps: GetServerSideProps<
     },
   })
 }
+
+export default Main
