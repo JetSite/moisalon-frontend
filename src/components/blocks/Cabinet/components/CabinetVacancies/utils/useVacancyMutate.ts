@@ -112,20 +112,13 @@ export const useVacancyMutate: IUseVacancyMutate = ({
 
   const handleCreateOrUpdate = (input: IVacancyInput, id?: IID) => {
     if (!type || !['brand', 'salon'].includes(type)) {
-      throw new Error(`Invalid type: ${type}`)
+      throw new Error(`Invalid type: ${type}.`)
     }
-    try {
-      if (id) {
-        mutate({ variables: { id, input } })
-      } else {
-        create({ variables: { input } })
-      }
-    } catch (error) {
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : 'Unknown error occurred while creating or updating'
-      setErrors([errorMessage])
+
+    if (id) {
+      mutate({ variables: { id, input } })
+    } else {
+      create({ variables: { input } })
     }
   }
 

@@ -38,12 +38,18 @@ const Event: FC<IEventProps> = ({
 
   const photoSrc = `${PHOTO_URL}${item?.cover?.url ?? photo?.url ?? ''}`
 
-  const dateStart = `${moment(item.dateStart).format('DD MMMM ')} ${
-    item.timeStart ? moment(item.timeStart, 'HH:mm:ss.SSS').format('HH:mm') : ''
-  }`
-  const dateEnd = `${moment(item.dateEnd).format('DD MMMM YYYY')} ${
-    item.timeEnd ? moment(item.timeEnd, 'HH:mm:ss.SSS').format('HH:mm') : ''
-  }`
+  const dateStart = item.timeStart
+    ? `${moment(item.dateStart).format('DD MMMM ')} ${
+        item.timeStart
+          ? moment(item.timeStart, 'HH:mm:ss.SSS').format('HH:mm')
+          : ''
+      }`
+    : ''
+  const dateEnd = item.dateEnd
+    ? `${moment(item.dateEnd).format('DD MMMM YYYY')} ${
+        item.timeEnd ? moment(item.timeEnd, 'HH:mm:ss.SSS').format('HH:mm') : ''
+      }`
+    : ''
 
   return (
     <Styled.EventWrap

@@ -30,8 +30,8 @@ const CabinetListReviews: FC<Props> = ({ user }) => {
 
   // Функция для обработки клика по профилю
   const handleProfileClick = (profile: (typeof profiles)[0]) => {
-    const typedRtofileType = profile.profileType as 'master' | 'salon' | 'brand'
-    setType(typedRtofileType)
+    const typedProfileType = profile.profileType as 'master' | 'salon' | 'brand'
+    setType(typedProfileType)
     const foundProfileReviews =
       [...(salons || []), ...(masters || []), ...(brands || [])].find(
         ({ id }) => id === profile.id,

@@ -53,7 +53,7 @@ const Education: FC<IEducationProps> = ({
       })
       setIsFavorit(!!isInStorage)
     }
-  }, [])
+  }, [item])
 
   const addFavorite = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
@@ -65,12 +65,18 @@ const Education: FC<IEducationProps> = ({
     setIsFavorit(!isFavorite)
   }
 
-  const dateStart = `${moment(item.dateStart).format('DD MMMM ')} ${
-    item.timeStart ? moment(item.timeStart, 'HH:mm:ss.SSS').format('HH:mm') : ''
-  }`
-  const dateEnd = `${moment(item.dateEnd).format('DD MMMM YYYY')} ${
-    item.timeEnd ? moment(item.timeEnd, 'HH:mm:ss.SSS').format('HH:mm') : ''
-  }`
+  const dateStart = item.dateStart
+    ? `${moment(item.dateStart).format('DD MMMM ')} ${
+        item.timeStart
+          ? moment(item.timeStart, 'HH:mm:ss.SSS').format('HH:mm')
+          : ''
+      }`
+    : ''
+  const dateEnd = item.dateEnd
+    ? `${moment(item.dateEnd).format('DD MMMM YYYY')} ${
+        item.timeEnd ? moment(item.timeEnd, 'HH:mm:ss.SSS').format('HH:mm') : ''
+      }`
+    : ''
 
   return (
     <Styled.EducationWrap

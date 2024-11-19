@@ -80,7 +80,9 @@ const CreateEducation: FC<Props> = ({
 
       const validTypes = ['brand', 'salon', 'master'] as const
       if (!validTypes.includes(type as (typeof validTypes)[number])) {
-        throw new Error(`Invalid type: ${type}`)
+        throw new Error(
+          `Invalid type: ${type}. Expected one of: ${validTypes.join(', ')}`,
+        )
       }
 
       const timeStart = moment(values.timeStart, 'HH:mm').isValid()

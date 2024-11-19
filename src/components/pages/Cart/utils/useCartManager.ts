@@ -49,8 +49,9 @@ export const useCartManager: IUseCartManager = ({ data, user }) => {
   )
 
   useEffect(() => {
+    if (!cart?.cartContent) return
     const newCartContent: IProductCart[] = []
-    cart?.cartContent.forEach(content => {
+    cart.cartContent.forEach(content => {
       const productID = content.product.id
       if (quantityMap[productID] > 0) {
         newCartContent.push({ ...content, quantity: quantityMap[productID] })

@@ -99,7 +99,9 @@ const CreateVacancy: FC<Props> = ({
       )
       const validTypes = ['brand', 'salon'] as const
       if (!validTypes.includes(type as (typeof validTypes)[number])) {
-        throw new Error(`Invalid type: ${type}`)
+        throw new Error(
+          `Invalid type: ${type}. Expected one of: ${validTypes.join(', ')}`,
+        )
       }
       const input: IVacancyInput = {
         title: values.title,
