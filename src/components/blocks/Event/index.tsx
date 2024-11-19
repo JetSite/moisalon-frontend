@@ -1,195 +1,112 @@
 import { FC, useState } from 'react'
-import styled from 'styled-components'
+import * as Styled from './styled'
 import moment from 'moment'
 import 'moment/locale/ru'
-import { laptopBreakpoint, red } from '../../../styles/variables'
 import { PHOTO_URL } from '../../../api/variables'
-import { IPhoto } from 'src/types'
+import PhotoAdd, { IPhotoAddProps } from '../CreateBanner/PhotoAdd'
+import { IProfileType } from '../Cabinet/components/CabinetSales'
+import { IEvent } from 'src/types/event'
+import {
+  IEntityDeleteHandler,
+  IEntityHandler,
+} from '../Cabinet/components/ActiveProfile/ProfileManager'
+import { DeleteIcon } from '../Sale/styled'
 
-const EventWrap = styled.div<{ cabinetVariant: boolean }>`
-  width: ${({ cabinetVariant }) => (cabinetVariant ? '345px' : '375px')};
-  border: 1px solid #f0f0f0;
-  border-radius: 5px;
-  overflow: hidden;
-  flex-shrink: 0;
-  transition: 0.2s;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  &:hover {
-    opacity: 0.9;
-    box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.3);
-  }
-  @media (max-width: ${laptopBreakpoint}) {
-    width: 100%;
-    max-width: 375px;
-    height: 280px;
-  }
-`
-
-const EventTop = styled.div`
-  width: 100%;
-  height: 280px;
-  border-bottom: 0.5px solid #000000;
-  overflow: hidden;
-  position: relative;
-  @media (max-width: ${laptopBreakpoint}) {
-    height: 133px;
-  }
-`
-
-const Image = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-`
-
-const EventContent = styled.div`
-  padding: 24px 21px 17px 21px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  flex-grow: 1;
-  @media (max-width: ${laptopBreakpoint}) {
-    height: 147px;
-  }
-`
-
-// const EventName = styled.p`
-//   font-size: 10px;
-//   line-height: 16px;
-//   text-align: center;
-// `;
-
-const EventTitle = styled.p`
-  display: inline-block;
-  font-weight: 600;
-  font-size: 18px;
-  line-height: 25px;
-  padding-bottom: 8px;
-
-  @media (max-width: ${laptopBreakpoint}) {
-    font-size: 14px;
-    line-height: initial;
-  }
-`
-
-const EventBottom = styled.div`
-  margin-top: 20px;
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  align-items: baseline;
-
-  @media (max-width: ${laptopBreakpoint}) {
-    font-size: 12px;
-    line-height: 14px;
-  }
-`
-
-const EventData = styled.div`
-  border-top: 0.5px solid #000;
-  padding-top: 10px;
-  width: 100%;
-`
-
-const Date = styled.p`
-  display: inline-block;
-  color: ${red};
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 16px;
-
-  @media (max-width: ${laptopBreakpoint}) {
-    font-size: 12px;
-    line-height: 14px;
-  }
-`
-
-const EventAddress = styled.p`
-  color: #727272;
-  font-size: 12px;
-  font-weight: 600;
-
-  @media (max-width: ${laptopBreakpoint}) {
-    font-size: 12px;
-    line-height: 14px;
-  }
-`
-
-const Promo = styled.div`
-  margin-left: auto;
-`
-
-const PromoText = styled.p`
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 16px;
-  @media (max-width: ${laptopBreakpoint}) {
-    font-size: 12px;
-    line-height: 14px;
-  }
-`
-
-interface IEventProps {
-  title: string
-  photo?: IPhoto
-  dateStart?: Date
-  dateEnd?: Date
-  address: string
-  promo?: string
+interface IEventProps extends Partial<Omit<IPhotoAddProps, 'hover'>> {
   create?: boolean
-  onAdd?: (photo: File) => void
-  cabinetVariant?: boolean
+  type?: IProfileType
+  item: IEvent
+  handleClick?: IEntityHandler
+  handleDelete?: IEntityDeleteHandler
+  noHover?: boolean
+  cabinet?: boolean
 }
 
 const Event: FC<IEventProps> = ({
-  title,
-  promo,
   create = false,
-  onAdd,
+  noHover = false,
+  type,
+  item,
+  setPhoto,
   photo,
-  dateStart,
-  dateEnd,
-  address,
-  cabinetVariant = false,
+  handleClick,
+  handleDelete,
+  cabinet,
 }) => {
   const [hover, setHover] = useState(false)
+  const [imageHover, setImageHover] = useState(false)
+
+  const photoSrc = `${PHOTO_URL}${item?.cover?.url ?? photo?.url ?? ''}`
+
+  const dateStart = item.timeStart
+    ? `${moment(item.dateStart).format('DD MMMM ')} ${
+        item.timeStart
+          ? moment(item.timeStart, 'HH:mm:ss.SSS').format('HH:mm')
+          : ''
+      }`
+    : ''
+  const dateEnd = item.dateEnd
+    ? `${moment(item.dateEnd).format('DD MMMM YYYY')} ${
+        item.timeEnd ? moment(item.timeEnd, 'HH:mm:ss.SSS').format('HH:mm') : ''
+      }`
+    : ''
 
   return (
-    <EventWrap cabinetVariant={cabinetVariant}>
+    <Styled.EventWrap
+      cabinetVariant={cabinet}
+      id={item.id}
+      onClick={handleClick}
+      onKeyDown={e => e.key === 'Enter' && handleClick?.(e)}
+      role="article"
+      tabIndex={0}
+    >
       {!create ? (
-        <EventTop>
-          <Image alt="photo" src={`${PHOTO_URL}${photo?.url}`} />
-        </EventTop>
+        <Styled.EventTop
+          isDeleted={item.deleted}
+          imageHover={imageHover}
+          onMouseOver={() => !noHover && setImageHover(true)}
+          onMouseLeave={() => setImageHover(false)}
+        >
+          <Styled.Image alt="photo" src={photoSrc} />
+          <DeleteIcon
+            visible={imageHover}
+            id={item.id}
+            onClick={e => {
+              e.stopPropagation()
+              handleDelete && handleDelete(item.id, !item.publishedAt)
+            }}
+          />
+        </Styled.EventTop>
       ) : (
-        <EventTop
+        <Styled.EventTop
           onMouseOver={() => setHover(true)}
           onMouseLeave={() => setHover(false)}
         >
-          {/* <PhotoAdd photoId={photoId} hover={hover && photoId} onAdd={onAdd} /> */}
-        </EventTop>
+          {setPhoto && (
+            <PhotoAdd photo={photo || null} hover={hover} setPhoto={setPhoto} />
+          )}
+        </Styled.EventTop>
       )}
-      <EventContent>
+      <Styled.EventContent>
         {/* <EventName>{name}</EventName> */}
-        <EventTitle>{title}</EventTitle>
-        <EventBottom>
-          {dateStart && dateEnd ? (
-            <EventData>
-              <Date>{moment(dateStart).format('DD MMMM')} -&nbsp;</Date>
-              <Date>{moment(dateEnd).format('DD MMMM YYYY')}</Date>
-            </EventData>
+        <Styled.EventTitle>{item.title}</Styled.EventTitle>
+        <Styled.EventBottom>
+          {item.dateStart && item.dateEnd ? (
+            <Styled.EventData>
+              <Styled.Date>{dateStart} -&nbsp;</Styled.Date>
+              <Styled.Date>{dateEnd}</Styled.Date>
+            </Styled.EventData>
           ) : null}
-          <EventAddress>{address}</EventAddress>
-          {promo ? (
-            <Promo>
-              <PromoText>Промокод</PromoText>
-              <PromoText>{promo}</PromoText>
-            </Promo>
-          ) : null}
-        </EventBottom>
-      </EventContent>
-    </EventWrap>
+          <Styled.EventAddress>{item.address}</Styled.EventAddress>
+          {/* {item.promo ? (
+            <Styled.Promo>
+              <Styled.PromoText>Промокод</Styled.PromoText>
+              <Styled.PromoText>{item.promo}</Styled.PromoText>
+            </Styled.Promo>
+          ) : null} */}
+        </Styled.EventBottom>
+      </Styled.EventContent>
+    </Styled.EventWrap>
   )
 }
 

@@ -1,8 +1,8 @@
 import styled from 'styled-components'
-import { useRouter } from 'next/router'
 
 import { laptopBreakpoint } from '../../../styles/variables'
 import { FC } from 'react'
+import Link from 'next/link'
 
 const Wrapper = styled.div`
   display: flex;
@@ -13,7 +13,7 @@ const Wrapper = styled.div`
 
 const Icon = styled.img``
 
-const Text = styled.p`
+const Text = styled.span`
   color: #a1a1a1;
   font-size: 14px;
   margin-left: 9px;
@@ -37,24 +37,14 @@ interface Props {
 const BackButton: FC<Props> = ({
   type,
   name,
-  link,
+  link: pathname,
   onlyType = false,
   noLink = false,
-  queryLink,
+  queryLink: query,
 }) => {
-  const router = useRouter()
+  const href = noLink ? undefined : { pathname, query }
   return (
-    <Wrapper
-      onClick={() => {
-        if (noLink) return
-        if (queryLink && link) {
-          router.push({ path: link, query: queryLink })
-        }
-        if (link && !queryLink) {
-          router.push(link)
-        }
-      }}
-    >
+    <Wrapper as={noLink ? 'div' : Link} shallow href={href}>
       <Icon alt="back" src="/arrow-back.svg" />
       <Text>{type}</Text>
       {!onlyType ? <Text>–</Text> : null}

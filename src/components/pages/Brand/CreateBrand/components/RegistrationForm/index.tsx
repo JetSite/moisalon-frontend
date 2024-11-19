@@ -41,6 +41,7 @@ const RegistrationForm: FC<Props> = ({
   setDirtyForm,
   dirtyForm,
   countries,
+  sNetworks,
 }) => {
   const [citiesArray, setCitiesArray] = useState<ICity[]>(cities)
   const [countriesArray, setCountriesArray] = useState<ICountry[]>(countries)
@@ -127,7 +128,7 @@ const RegistrationForm: FC<Props> = ({
                 handleClickNextTab={handleClickNextTab}
                 number={1}
               />
-              <Socials ref2={ref2} />
+              <Socials ref2={ref2} sNetworks={sNetworks} />
               <Error
                 errors={errors}
                 isOpen={isErrorPopupOpen}

@@ -20,8 +20,8 @@ interface Props extends IBrandCabinetProps, BrandCabinetProductsProps {
   ref2: RefObject<HTMLDivElement>
   ref3: RefObject<HTMLDivElement>
   ref4: RefObject<HTMLDivElement>
-  setDirtyForm: ISetState<boolean>
-  dirtyForm: boolean
+  setDirtyForm?: ISetState<boolean>
+  dirtyForm?: boolean
 }
 
 const CabinetForm: FC<Props> = ({

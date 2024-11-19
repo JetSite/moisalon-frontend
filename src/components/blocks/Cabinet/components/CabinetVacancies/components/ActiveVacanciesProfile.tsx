@@ -2,9 +2,12 @@ import { FC, MouseEvent, useMemo, useState } from 'react'
 import { ISalon } from 'src/types/salon'
 import { IBrand } from 'src/types/brands'
 import { ISetState } from 'src/types/common'
-import { IEntityHandler } from 'src/components/blocks/Sale'
-import ProfileManager from '../../ActiveProfile/ProfileManager'
-import { IPromotionsType } from '../../CabinetSales'
+import ProfileManager, {
+  IActiveProfile,
+  IActiveProfilesView,
+  IEntityHandler,
+} from '../../ActiveProfile/ProfileManager'
+import { IProfileType } from '../../CabinetSales'
 import { VacanciesList } from './VacanciesList'
 import { IVacancy } from 'src/types/vacancies'
 import CreateVacancy from './CreateVacancy'
@@ -12,12 +15,10 @@ import { IProfile } from '../../CabinetSales/components/ProfileSelect'
 import { useVacancyMutate } from '../utils/useVacancyMutate'
 
 interface ActiveProfileProps {
-  activeProfile: ISalon | IBrand
-  type: IPromotionsType
-  setActiveProfile: ISetState<ISalon | IBrand | null>
+  activeProfile: NonNullable<IActiveProfile>
+  type: IProfileType
+  setActiveProfile: ISetState<IActiveProfile>
 }
-
-export type IActiveProfilesView = 'publish' | 'draft'
 
 const ActiveVacanciesProfile: FC<ActiveProfileProps> = ({
   activeProfile,
@@ -44,16 +45,6 @@ const ActiveVacanciesProfile: FC<ActiveProfileProps> = ({
     profileID: activeProfile.id,
   })
 
-  const profile: IProfile = useMemo(
-    () => ({
-      id: activeProfile.id,
-      name: activeProfile.name,
-      photo: activeProfile.logo,
-      rent: (activeProfile as ISalon).rent || false,
-    }),
-    [activeProfile],
-  )
-
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
     if (e.currentTarget.name === 'publish') {
       setView('publish')
@@ -75,7 +66,7 @@ const ActiveVacanciesProfile: FC<ActiveProfileProps> = ({
   return (
     <ProfileManager
       type={type}
-      profile={profile}
+      profile={activeProfile}
       handleBack={() => {
         setActiveProfile(null)
       }}

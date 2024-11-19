@@ -17,7 +17,7 @@ export interface IBrandPageProps {
   brandData: IBrand[] | []
   totalCount: ITotalCount
   cityData: ICity
-  pagination: IPagination | null
+  pagination: IPagination
 }
 
 const AllBrandsPage: FC<IBrandPageProps> = ({

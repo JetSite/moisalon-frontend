@@ -1,4 +1,4 @@
-import { IOptions } from 'src/components/blocks/Form/WorkingTimeField/WorkingTime'
+import { IWorkingHoursOptions } from 'src/config/workingTime'
 
 export interface IWorkingHoursInput {
   startDayOfWeek: string
@@ -16,7 +16,7 @@ export interface IWorkingHoursInputResolve {
 }
 
 export type ITransformWorkingHours = (
-  options: IOptions[],
+  options: IWorkingHoursOptions[],
   workingHours: IWorkingHoursInput[],
 ) => IWorkingHoursInputResolve[]
 

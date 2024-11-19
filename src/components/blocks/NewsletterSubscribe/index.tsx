@@ -14,7 +14,7 @@ const NewsletterSubscribe = () => {
   }
 
   const submitHandler = () => {
-    window.dataLayer.push({
+    ;(window as any).dataLayer.push({
       event: 'event',
       eventProps: {
         category: 'click',

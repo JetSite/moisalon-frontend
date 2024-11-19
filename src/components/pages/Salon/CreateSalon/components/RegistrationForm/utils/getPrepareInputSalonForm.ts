@@ -1,6 +1,6 @@
 import { defaultValues } from 'src/api/authConfig'
 import { ICoordinate } from 'src/components/blocks/Form/AddressField/AddressNoSalonField'
-import { workingHoursOptions } from 'src/components/blocks/Form/WorkingTimeField/WorkingTime'
+import { workingHoursOptions } from 'src/config/workingTime'
 import { ICity, IPhoto, ISNetwork } from 'src/types'
 import { IID } from 'src/types/common'
 import {

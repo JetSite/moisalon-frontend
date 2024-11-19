@@ -58,6 +58,7 @@ const BrandCabinet: FC<IBrandCabinetProps> = ({ brand }) => {
             />
           </MobileHidden>
           <CabinetForm
+            setPhotosArray={() => {}}
             allTabs={allTabs}
             ref1={ref1}
             ref2={ref2}

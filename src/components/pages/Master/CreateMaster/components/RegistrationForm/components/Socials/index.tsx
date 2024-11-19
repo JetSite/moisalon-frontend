@@ -31,9 +31,9 @@ const Title = styled.p`
   }
 `
 
-interface Props extends Pick<IMasterFormProps, 'ref4'> {}
+interface Props extends Pick<IMasterFormProps, 'ref4' | 'sNetworks'> {}
 
-const Socials: FC<Props> = ({ ref4 }) => {
+const Socials: FC<Props> = ({ ref4, sNetworks }) => {
   return (
     <Wrapper id="socials" ref={ref4}>
       <Title>Дополнительная информация</Title>
@@ -47,7 +47,12 @@ const Socials: FC<Props> = ({ ref4 }) => {
           validate={isUrl}
         />
       </FieldWrap>
-      <Field name="socialNetworkUrls" component={SocialNetworkUrlsField} />
+      <Field
+        name="socialNetworkUrls"
+        render={({ input }) => (
+          <SocialNetworkUrlsField input={input} arrayFields={sNetworks} />
+        )}
+      />
     </Wrapper>
   )
 }

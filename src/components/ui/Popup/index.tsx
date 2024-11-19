@@ -57,7 +57,6 @@ const Popup: FC<Props> = ({
   children,
   onClose,
 }) => {
-  const theme = useTheme()
   // const fullScreenDialog = useMediaQuery(theme.breakpoints.down("xs"));
   const classes = useStyles()
 

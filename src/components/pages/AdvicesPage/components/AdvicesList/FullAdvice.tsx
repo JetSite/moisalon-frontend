@@ -11,8 +11,14 @@ import BackButton from '../../../../ui/BackButton'
 import { PHOTO_URL } from '../../../../../api/variables'
 import { getFeed } from 'src/api/graphql/feed/queries/getFeed'
 import ReactMarkdown from 'react-markdown'
+import { FC, MouseEventHandler } from 'react'
 
-const FullAdvice = ({ adviceClicked, backHandler }) => {
+interface Props {
+  adviceClicked: string
+  backHandler: MouseEventHandler<HTMLButtonElement>
+}
+
+const FullAdvice: FC<Props> = ({ adviceClicked, backHandler }) => {
   const { data: fullAdviceData, loading } = useQuery(getFeed, {
     variables: { id: adviceClicked },
   })

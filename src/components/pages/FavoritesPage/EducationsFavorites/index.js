@@ -99,19 +99,7 @@ const EducationsFavorites = ({
                         key={i}
                       >
                         <Link href={`/educations/${item.id}`} passHref>
-                          <Education
-                            averageScore={item.averageScore}
-                            numberScore={item.numberScore}
-                            id={item.id}
-                            title={item.title}
-                            amount={item.amount}
-                            photoId={item.photoId}
-                            dateStart={item.dateStart}
-                            dateEnd={item.dateEnd}
-                            deleteItem={deleteItem}
-                            setDeleteItem={setDeleteItem}
-                            handleDeleted={handleDeleted}
-                          />
+                          <Education item={item} noHover />
                         </Link>
                       </SwiperSlide>
                     ))}

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { FC, useState } from 'react'
 import styled from 'styled-components'
 import { lighten } from 'polished'
 import Button from '../../../../../ui/Button'
@@ -6,12 +6,13 @@ import { useMutation } from '@apollo/react-hooks'
 import { TextField } from '../../../../../blocks/Form'
 import { Field } from 'react-final-form'
 import AutoFocusedForm from '../../../../../blocks/Form/AutoFocusedForm'
-import Error from '../../../../../blocks/Form/Error'
+import ErrorPopup from '../../../../../blocks/Form/Error'
 import { addBrandProductsPriceMutation } from '../../../../../../_graphql-legacy/brand/addBrandProductsPrice'
 import Success from '../../../../../blocks/Form/Success'
 import { addBrandProductsFormMutation } from '../../../../../../_graphql-legacy/brand/addBrandProductsForm'
 import { addBrandProductsPhotosMutation } from '../../../../../../_graphql-legacy/brand/addBrandProductsPhotos'
 import { laptopBreakpoint } from '../../../../../../styles/variables'
+import { IID } from 'src/types/common'
 const Wrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     margin-bottom: 20px;
@@ -71,13 +72,13 @@ const TitleText = styled.p`
 
 const dev = process.env.NEXT_PUBLIC_ENV !== 'production'
 
-const uploadFile = async file => {
+const uploadFile = async (file: File) => {
   const uploadUrl = dev
     ? `https://stage-moi.moi.salon/api/file/upload/xlsx`
     : `https://moi.salon/api/file/upload/xlsx`
   const formData = new FormData()
   formData.append('file', file)
-  const options = {
+  const options: RequestInit = {
     method: 'POST',
     body: formData,
     credentials: 'include',
@@ -90,13 +91,13 @@ const uploadFile = async file => {
   })
 }
 
-const uploadFileProducts = async file => {
+const uploadFileProducts = async (file: File) => {
   const uploadUrl = dev
     ? `https://stage-moi.moi.salon/api/file/upload/zip`
     : `https://moi.salon/api/file/upload/zip`
   const formData = new FormData()
   formData.append('file', file)
-  const options = {
+  const options: RequestInit = {
     method: 'POST',
     body: formData,
     credentials: 'include',
@@ -109,9 +110,13 @@ const uploadFileProducts = async file => {
   })
 }
 
-const Files = ({ id }) => {
-  const [fileXsl, setFileXsl] = useState(undefined)
-  const [fileProduct, setFileProduct] = useState(undefined)
+interface Props {
+  id: IID
+}
+
+const Files: FC<Props> = ({ id }) => {
+  const [fileXsl, setFileXsl] = useState<File | null>(null)
+  const [fileProduct, setFileProduct] = useState<File | null>(null)
   const [errors, setErrors] = useState(null)
   const [successText, setSuccessText] = useState<string | null>(null)
   const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
@@ -121,7 +126,7 @@ const Files = ({ id }) => {
 
   const [addProductPrice] = useMutation(addBrandProductsPriceMutation, {
     onCompleted: () => {
-      setFileXsl(undefined)
+      setFileXsl(null)
       !isSuccessPopupOpen && setSuccessText('Файл с ценами успешно загружен')
       setLoadingFile(false)
       !isSuccessPopupOpen && setSuccessPopupOpen(true)
@@ -129,7 +134,7 @@ const Files = ({ id }) => {
   })
   const [addProductPhotos] = useMutation(addBrandProductsPhotosMutation, {
     onCompleted: () => {
-      setFileProduct(undefined)
+      setFileProduct(null)
       !isSuccessPopupOpen && setSuccessText('Архив успешно загружен')
       setLoadingFileProduct(false)
       !isSuccessPopupOpen && setSuccessPopupOpen(true)
@@ -150,7 +155,7 @@ const Files = ({ id }) => {
     },
   })
 
-  const handeSubmitXSLX = async values => {
+  const handeSubmitXSLX = async (values: Record<string, unknown>) => {
     if (values?.fileXlsx) {
       addProductForm({
         variables: {
@@ -181,7 +186,7 @@ const Files = ({ id }) => {
     }
   }
 
-  const handeSubmitFile = async values => {
+  const handeSubmitFile = async (values: Record<string, unknown>) => {
     if (values?.fileProduct) {
       addProductPhotoForm({
         variables: {
@@ -212,11 +217,13 @@ const Files = ({ id }) => {
     }
   }
 
-  const onSelectXSLXHandler = values => {
+  const onSelectXSLXHandler = (values: FileList | null) => {
+    if (!values) return
     setFileXsl(values[0])
   }
 
-  const onSelectFileHandler = values => {
+  const onSelectFileHandler = (values: FileList | null) => {
+    if (!values) return
     setFileProduct(values[0])
   }
 
@@ -234,11 +241,11 @@ const Files = ({ id }) => {
         render={({ handleSubmit, pristine, form }) => {
           return (
             <FormXSLX
-              onSubmit={event =>
-                handleSubmit(event).then(() => {
+              onSubmit={event => {
+                handleSubmit(event)?.then(() => {
                   form.reset()
                 })
-              }
+              }}
             >
               <Title>
                 Загрузите список цен в формате xlsx или добавьте ссылку на файл
@@ -266,7 +273,7 @@ const Files = ({ id }) => {
               >
                 {loadingFile ? 'Подождите...' : 'Отправить'}
               </Button>
-              <Error
+              <ErrorPopup
                 errors={errors}
                 isOpen={isErrorPopupOpen}
                 setOpen={setErrorPopupOpen}
@@ -286,7 +293,7 @@ const Files = ({ id }) => {
           return (
             <FormXSLX
               onSubmit={event =>
-                handleSubmit(event).then(() => {
+                handleSubmit(event)?.then(() => {
                   form.reset()
                 })
               }
@@ -317,7 +324,7 @@ const Files = ({ id }) => {
               >
                 {loadingFileProduct ? 'Подождите...' : 'Отправить'}
               </Button>
-              <Error
+              <ErrorPopup
                 errors={errors}
                 isOpen={isErrorPopupOpen}
                 setOpen={setErrorPopupOpen}

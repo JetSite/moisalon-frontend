@@ -1,10 +1,10 @@
-import { ButtonHTMLAttributes, FC } from 'react'
+import { ButtonHTMLAttributes, FC, ReactNode } from 'react'
 import {
   ButtonCustom,
   fontVariants,
   sizeVariants,
   styleVariants,
-} from './styled'
+} from 'src/components/newUI/buttons/styled'
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant: keyof typeof styleVariants
@@ -16,8 +16,6 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   as?: keyof JSX.IntrinsicElements
   loading?: boolean
 }
-
-// interface Props extends ButtonProps {}
 
 const Button: FC<ButtonProps> = ({
   variant = 'dark',

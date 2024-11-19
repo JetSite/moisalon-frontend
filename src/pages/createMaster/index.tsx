@@ -1,32 +1,33 @@
-import { FC, useCallback } from 'react'
+import { FC } from 'react'
 import { useRouter } from 'next/router'
-import { useMutation } from '@apollo/client'
 import CreatePageSkeleton from '../../components/ui/ContentSkeleton/CreatePageSkeleton'
 import { getStoreData } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
 import CreateMaster from 'src/components/pages/Master/CreateMaster'
-import { UPDATE_MASTER_PHOTO } from 'src/api/graphql/master/mutations/updateMasterPhoto'
 import { getServiceCategories } from 'src/api/graphql/service/queries/getServiceCategories'
-import { addApolloState, initializeApollo } from 'src/api/apollo-client'
+import { initializeApollo } from 'src/api/apollo-client'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { MASTER_PAGE } from 'src/api/graphql/master/queries/masterPage'
 import { GetServerSideProps } from 'next'
 import { Nullable } from 'src/types/common'
 import { IServiceCategories } from 'src/types/services'
 import { IMaster } from 'src/types/masters'
-import { ICity } from 'src/types'
+import { ICity, ISNetwork } from 'src/types'
 import { getCities } from 'src/api/graphql/city/getCities'
+import { S_NETWORKS } from 'src/api/graphql/common/queries/sNetworks'
 
 interface Props {
   serviceCategories: IServiceCategories[]
   master: IMaster | null
   cities: ICity[]
+  sNetworks: ISNetwork[]
 }
 
 const CreateOrEditMaster: FC<Props> = ({
   serviceCategories,
   master,
   cities,
+  sNetworks,
 }) => {
   const router = useRouter()
   const { user } = useAuthStore(getStoreData)
@@ -43,6 +44,7 @@ const CreateOrEditMaster: FC<Props> = ({
         master={master}
         serviceCategories={serviceCategories}
         cities={cities}
+        sNetworks={sNetworks}
       />
     )
   }
@@ -64,22 +66,31 @@ export const getServerSideProps: GetServerSideProps<
     master = flattenStrapiResponse(masterRes.data.master)
   }
 
-  const data = await Promise.all([
-    apolloClient.query({
-      query: getServiceCategories,
-    }),
+  const data = await Promise.allSettled([
+    apolloClient.query({ query: getServiceCategories }),
     apolloClient.query({ query: getCities, variables: { itemsCount: 100 } }),
+    apolloClient.query({ query: S_NETWORKS }),
   ])
 
-  const serviceCategories: IServiceCategories[] | null =
-    flattenStrapiResponse(data[0].data.serviceCategories) || []
-  const cities = flattenStrapiResponse(data[1].data.cities) || []
+  const serviceCategories =
+    data[0].status === 'fulfilled'
+      ? flattenStrapiResponse(data[0].value.data.serviceCategories) || []
+      : []
+  const cities =
+    data[1].status === 'fulfilled'
+      ? flattenStrapiResponse(data[1].value.data.cities) || []
+      : []
+  const sNetworks =
+    data[2].status === 'fulfilled'
+      ? flattenStrapiResponse(data[2].value.data.sNetworks) || []
+      : []
 
   return {
     props: {
       serviceCategories,
       master,
       cities,
+      sNetworks,
     },
   }
 }

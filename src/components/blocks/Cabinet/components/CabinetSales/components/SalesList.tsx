@@ -1,7 +1,7 @@
 import { FC, MouseEvent, useState } from 'react'
-import { IPromotionsType } from '..'
+import { IProfileType } from '..'
 import { IPromotions } from 'src/types/promotions'
-import Sale, { IEntityDeleteHandler, IEntityHandler } from '../../../../Sale'
+import Sale from '../../../../Sale'
 import * as Styled from '../styles'
 import { IApolloLazyRefetch, IID, ISetState } from 'src/types/common'
 import Button from 'src/components/ui/Button'
@@ -9,21 +9,17 @@ import { IPagination } from 'src/types'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import Popup from 'src/components/ui/Popup'
 import RotatingLoader from 'src/components/ui/RotatingLoader'
+import { EntityListProps } from '../../ActiveProfile/ProfileManager'
 
-export interface EntityListProps {
+interface Props extends EntityListProps {
   sales: IPromotions[]
-  type: IPromotionsType
-  loading: boolean
-  handleClick?: IEntityHandler
-  handleDelete?: IEntityDeleteHandler
+  setSales: ISetState<IPromotions[]>
   refetch: IApolloLazyRefetch
   searchID: IID
-  setSales: ISetState<IPromotions[]>
-  pagination: IPagination | null
   setPagination: ISetState<IPagination | null>
-  popupText?: string
 }
-export const SalesList: FC<EntityListProps> = ({
+
+export const SalesList: FC<Props> = ({
   sales,
   type,
   loading,

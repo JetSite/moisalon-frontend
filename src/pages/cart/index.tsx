@@ -1,28 +1,28 @@
-import React from 'react'
+import React, { FC } from 'react'
 import MainLayout from '../../layouts/MainLayout'
 import { getStoreData } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
-import Cart from 'src/components/pages/Cart'
+import Cart, { ICartProps } from 'src/components/pages/Cart'
 import { GetServerSideProps } from 'next'
 import { Nullable } from 'src/types/common'
 import { getCookie } from 'cookies-next'
 import { authConfig } from 'src/api/authConfig'
 import { initializeApollo } from 'src/api/apollo-client'
 import { ME } from 'src/api/graphql/me/queries/getMe'
-import { USER } from 'src/api/graphql/me/queries/getUser'
-import { ProductsWrap } from 'src/components/pages/Cart/styled'
-import { SkeletonCart } from 'src/components/skeletons/cart'
+import { GET_CART_BY_USER } from 'src/api/graphql/cart/queries/getCartByUser'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { ICart } from 'src/types/product'
 
-interface Props {}
-
-const CartPage = () => {
-  const { user } = useAuthStore(getStoreData)
-
-  return <MainLayout>{user ? <Cart me={user} /> : <SkeletonCart />}</MainLayout>
+const CartPage: FC<ICartProps> = ({ data }) => {
+  return (
+    <MainLayout>
+      <Cart data={data} />
+    </MainLayout>
+  )
 }
 
 export const getServerSideProps: GetServerSideProps<
-  Nullable<Props>
+  Nullable<ICartProps>
 > = async context => {
   const accessToken = getCookie(authConfig.tokenKeyName, context)
   const apolloClient = initializeApollo({ accessToken })
@@ -39,30 +39,19 @@ export const getServerSideProps: GetServerSideProps<
   const meData = await apolloClient.query({
     query: ME,
   })
-
   const id = meData.data?.me.id || null
 
-  if (!id) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: true,
-      },
-    }
-  } else {
-    const userData = await apolloClient.query({
-      query: USER,
-      variables: { id },
-    })
+  const data = await Promise.allSettled([
+    apolloClient.query({ query: GET_CART_BY_USER, variables: { id } }),
+  ])
 
-    // const user = flattenStrapiResponse(userData.data.usersPermissionsUser)
+  const cart: ICart | null =
+    data[0].status === 'fulfilled'
+      ? (flattenStrapiResponse(data[0].value.data.carts) as ICart[])[0] || null
+      : null
 
-    return {
-      props: {
-        accessToken,
-        user: userData.data.usersPermissionsUser,
-      },
-    }
+  return {
+    props: { data: cart },
   }
 }
 

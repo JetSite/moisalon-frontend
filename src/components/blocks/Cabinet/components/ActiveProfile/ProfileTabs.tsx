@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { ButtonWrapper, SalesTabButton } from '../CabinetSales/styles'
 import { ButtonProps } from 'src/components/ui/Button'
-import { IActiveProfilesView } from '../CabinetVacancies/components/ActiveVacanciesProfile'
+import { IActiveProfilesView } from './ProfileManager'
 
 interface ProfileTabsProps extends ButtonProps {
   view: IActiveProfilesView

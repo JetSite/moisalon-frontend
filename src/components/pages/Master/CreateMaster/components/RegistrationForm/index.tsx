@@ -5,7 +5,7 @@ import Error from '../../../../../blocks/Form/Error'
 // import ym from "react-yandex-metrika";
 import { ISetState } from 'src/types/common'
 import { IMaster } from 'src/types/masters'
-import { ICity, IPhoto } from 'src/types'
+import { ICity, IPhoto, ISNetwork } from 'src/types'
 import { IHandleClickNextTabInForm } from 'src/components/pages/Salon/CreateSalon'
 import { IServiceCategories } from 'src/types/services'
 import { RenderMasterForm } from './components/RenderMasterForm'
@@ -34,6 +34,7 @@ export interface IMasterFormProps {
   cities: ICity[]
   dirtyForm: boolean
   setDirtyForm: ISetState<boolean>
+  sNetworks: ISNetwork[]
 }
 
 const RegistrationForm: FC<IMasterFormProps> = ({
@@ -50,6 +51,7 @@ const RegistrationForm: FC<IMasterFormProps> = ({
   cities,
   dirtyForm,
   setDirtyForm,
+  sNetworks,
 }) => {
   const [clickCity, setClickCity] = useState<string | null>(null)
   const { user } = useAuthStore(getStoreData)
@@ -128,6 +130,7 @@ const RegistrationForm: FC<IMasterFormProps> = ({
             errors={errors}
             setClickCityResume={setClickCityResume}
             setCoordinates={setCoordinates}
+            sNetworks={sNetworks}
           />
         )}
       />

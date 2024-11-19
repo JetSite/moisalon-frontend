@@ -17,14 +17,16 @@ import { PropsUpdatedList } from 'src/components/pages/MainPage/components/CityS
 import useAuthStore from 'src/store/authStore'
 import { redirectCityRoutes } from 'src/utils/newUtils/redirectCityRoutes'
 
-const ChangeCityPopupCityList: FC<PropsUpdatedList> = ({
+interface Props extends Omit<PropsUpdatedList, 'loading'> {}
+
+const ChangeCityPopupCityList: FC<Props> = ({
   setShowCitySelect,
   setCityInput,
   cityInput,
   changeCityFunc,
 }) => {
   const router = useRouter()
-  const { suggestions } = useCitySuggestions(cityInput)
+  const { suggestions, loading } = useCitySuggestions(cityInput)
   const { setCity } = useAuthStore(getStoreEvent)
   const { me } = useAuthStore(getStoreData)
 
@@ -41,7 +43,13 @@ const ChangeCityPopupCityList: FC<PropsUpdatedList> = ({
     redirectCityRoutes(city.slug, router)
   }
 
-  return <CitiesList cities={suggestions} cityClickHandler={cityClickHandler} />
+  return (
+    <CitiesList
+      cities={suggestions}
+      loading={loading}
+      cityClickHandler={cityClickHandler}
+    />
+  )
 }
 
 export default ChangeCityPopupCityList

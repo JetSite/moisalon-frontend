@@ -14,7 +14,7 @@ export const Wrapper = styled.div`
   }
 `
 
-export const BackWrapper = styled.div`
+export const BackWrapper = styled.button`
   margin-top: 17px;
 
   @media (max-width: ${laptopBreakpoint}) {
@@ -71,7 +71,7 @@ export const NavAdvicesList = styled.div`
   }
 `
 
-export const NavAdviceItem = styled.div`
+export const NavAdviceItem = styled.div<{ active?: boolean }>`
   position: relative;
   display: block;
   margin-bottom: 27px;
@@ -101,7 +101,7 @@ export const Text = styled.p`
   }
 `
 
-export const Icon = styled.div`
+export const Icon = styled.div<{ opened?: boolean }>`
   width: 10px;
   height: 12px;
   background: url('/services-tick.svg') no-repeat center;
@@ -130,7 +130,7 @@ export const AdvList = styled.div`
   }
 `
 
-export const AdvItem = styled.div`
+export const AdvItem = styled.div<{ opened?: boolean }>`
   position: relative;
   cursor: ${({ opened }) => (opened ? 'default' : 'pointer')};
   &:not(:last-child) {
@@ -140,7 +140,7 @@ export const AdvItem = styled.div`
   }
 `
 
-export const AdvImage = styled.div`
+export const AdvImage = styled.div<{ photoUrl: string }>`
   width: 100%;
   min-height: 411px;
   background: ${({ photoUrl }) => `url(${photoUrl})`} no-repeat center;
@@ -153,7 +153,7 @@ export const AdvImage = styled.div`
   }
 `
 
-export const Favorite = styled.div`
+export const Favorite = styled.div<{ isFavorite?: boolean }>`
   width: 20px;
   height: 20px;
   padding: 20px;

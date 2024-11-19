@@ -44,6 +44,7 @@ export interface IProduct {
 }
 
 export interface IProductCart {
+  id: IID
   product: IProduct
   quantity: number
 }

@@ -11,8 +11,8 @@ export interface IEducation {
   title: string
   slug: string
   averageScore: number
-  dateStart: Date
-  dateEnd: Date
+  dateStart: string
+  dateEnd: string
   deleted: boolean
   shortDescription: string
   fullDescription: string
@@ -25,5 +25,8 @@ export interface IEducation {
   user: IUserConnection
   cover: IPhoto
   sumScore: number
-  amount: string
+  amount: number
+  publishedAt: string | null
+  timeStart: string | null
+  timeEnd: string | null
 }

@@ -24,6 +24,7 @@ import { IPagination } from 'src/types'
 import { IBrand } from 'src/types/brands'
 import { IMaster } from 'src/types/masters'
 import { getRating } from 'src/utils/newUtils/getRating'
+import { Nullable } from 'src/types/common'
 
 interface Props extends IBrandPageProps {
   brands: IBrand[] | null
@@ -60,7 +61,7 @@ const AllBrands: FC<Props> = ({
 }
 
 export const getServerSideProps: GetServerSideProps<
-  IBrandPageProps
+  Nullable<IBrandPageProps>
 > = async ctx => {
   const apolloClient = initializeApollo()
   const cityData = (await fetchCity(ctx.query.city as string)) || {

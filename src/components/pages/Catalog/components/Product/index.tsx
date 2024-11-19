@@ -9,7 +9,7 @@ import { IProduct, IProductCart } from 'src/types/product'
 import { IUser } from 'src/types/me'
 import { Minus, Plus } from 'src/components/ui/FastBuyPopup/styles'
 
-interface Props {
+export interface IProductProps {
   item: IProduct
   cartItem: IProductCart
   user: IUser | null
@@ -19,7 +19,7 @@ interface Props {
   loadingItems: boolean
 }
 
-const Product: FC<Props> = ({
+const Product: FC<IProductProps> = ({
   item,
   user,
   quantity,

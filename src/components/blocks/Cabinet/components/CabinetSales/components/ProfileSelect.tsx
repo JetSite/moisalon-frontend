@@ -2,9 +2,7 @@ import { FC } from 'react'
 import * as Style from '../styles'
 import ProfileItem, { IProfileItem } from './ProfileItem'
 import { IPhoto } from 'src/types'
-import { IBrand } from 'src/types/brands'
-import { IMaster } from 'src/types/masters'
-import { ISalon } from 'src/types/salon'
+import { IActiveProfile } from '../../ActiveProfile/ProfileManager'
 
 export interface IProfile {
   id: string
@@ -16,7 +14,7 @@ export interface IProfile {
 
 interface IProfileSelectProps extends Pick<IProfileItem, 'quantityTitles'> {
   profiles: IProfileWithType[]
-  activeProfile: ISalon | IMaster | IBrand | null
+  activeProfile: IActiveProfile
   onClickProfile: (profile: IProfileWithType) => void
 }
 

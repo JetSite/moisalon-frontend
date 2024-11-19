@@ -1,4 +1,4 @@
-import { workingHoursOptions } from 'src/components/blocks/Form/WorkingTimeField/WorkingTime'
+import { workingHoursOptions } from 'src/config/workingTime'
 import { ISocialNetworks } from 'src/types'
 import { ISalonPage } from 'src/types/salon'
 import { reverseTransformWorkingHours } from 'src/utils/newUtils/reverseTransformWorkingHours'

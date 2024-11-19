@@ -114,24 +114,16 @@ const useChatContext = (): IChatContext | undefined => {
     }
   }, [websocketMessage])
 
-  const chatContext = !user?.info
-    ? undefined
-    : useMemo(
-        () => ({
-          messages,
-          setMessages,
-          chats,
-          unreadMessagesCount,
-          setUnreadMessagesCount,
-        }),
-        [
-          messages,
-          setMessages,
-          chats,
-          unreadMessagesCount,
-          setUnreadMessagesCount,
-        ],
-      )
+  const chatContext = useMemo(
+    () => ({
+      messages,
+      setMessages,
+      chats,
+      unreadMessagesCount,
+      setUnreadMessagesCount,
+    }),
+    [messages, setMessages, chats, unreadMessagesCount, setUnreadMessagesCount],
+  )
 
   useEffect(() => {
     if (user?.info) {

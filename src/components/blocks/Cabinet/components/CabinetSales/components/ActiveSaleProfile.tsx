@@ -1,28 +1,23 @@
-import { FC, MouseEvent, useMemo, useState } from 'react'
+import { FC, MouseEvent, useState } from 'react'
 import CreateSale from './CreateSale'
-import { ISalon } from 'src/types/salon'
-import { IMaster } from 'src/types/masters'
-import { IBrand } from 'src/types/brands'
-import { IPromotionsType } from '..'
+import { IProfileWithPromotions, IProfileType } from '..'
 import { SalesList } from './SalesList'
 import { ISetState } from 'src/types/common'
 import { useLazyQuery, useMutation } from '@apollo/client'
 import { NOT_PUBLISH_SALE } from 'src/api/graphql/sale/queries/getNotPublishSale'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { IPromotions } from 'src/types/promotions'
-import {
-  IEntityDeleteHandler,
-  IEntityHandler,
-} from 'src/components/blocks/Sale'
 import { UPDATE_PROMOTION } from 'src/api/graphql/promotion/mutations/updatePromotion'
 import { IPagination } from 'src/types'
-import ProfileManager from '../../ActiveProfile/ProfileManager'
-import { IProfile } from './ProfileSelect'
+import ProfileManager, {
+  IEntityDeleteHandler,
+  IEntityHandler,
+} from '../../ActiveProfile/ProfileManager'
 
 interface ActiveProfileProps {
-  activeProfile: ISalon | IMaster | IBrand
-  type: IPromotionsType
-  setActiveProfile: ISetState<ISalon | IMaster | IBrand | null>
+  activeProfile: IProfileWithPromotions
+  type: IProfileType
+  setActiveProfile: ISetState<IProfileWithPromotions | null>
 }
 
 type IView = 'publish' | 'draft'
@@ -41,20 +36,6 @@ const ActiveSaleProfile: FC<ActiveProfileProps> = ({
   const [createSale, setCreateSale] = useState(false)
 
   const searchID = activeProfile.id
-
-  const profile: IProfile = useMemo(
-    () => ({
-      id: activeProfile.id,
-      name: activeProfile.name,
-      photo:
-        (activeProfile as ISalon).logo ||
-        (activeProfile as IMaster).photo ||
-        (activeProfile as IBrand).logo ||
-        null,
-      rent: (activeProfile as ISalon).rent || false,
-    }),
-    [activeProfile],
-  )
 
   const [deleteSale] = useMutation(UPDATE_PROMOTION, {
     onCompleted: data => {
@@ -126,7 +107,7 @@ const ActiveSaleProfile: FC<ActiveProfileProps> = ({
   return (
     <ProfileManager
       type={type}
-      profile={profile}
+      profile={activeProfile}
       createEntity={createSale}
       setCreateEntity={setCreateSale}
       createEntityButton="Создать Акцию"

@@ -9,7 +9,7 @@ import { MainContainer } from '../../../../../styles/common'
 import BrandProductsPage from '../../../../../components/pages/Brand/BrandProducts'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
-import { getBrand } from 'src/api/graphql/brand/queries/getBrand'
+import { BRAND } from 'src/api/graphql/brand/queries/getBrand'
 import { getProductCategories } from 'src/_graphql-legacy/getProductCategories'
 import { scoreBrand } from 'src/_graphql-legacy/brand/scoreBrand'
 import { fetchCity } from 'src/api/utils/fetchCity'
@@ -24,7 +24,7 @@ const BrandProducts = ({
   const [brand, setBrand] = useState(brandData)
   const [dataScore, setDataScore] = useState(dataScoreRes)
 
-  const { refetch: refetchBrand } = useQuery(getBrand, {
+  const { refetch: refetchBrand } = useQuery(BRAND, {
     variables: { id: brand.id },
     skip: true,
     onCompleted: res => {
@@ -60,7 +60,7 @@ export async function getServerSideProps(ctx) {
   const apolloClient = initializeApollo()
 
   const brandQueryRes = await apolloClient.query({
-    query: getBrand,
+    query: BRAND,
     variables: { slug: ctx.params.id },
   })
 
@@ -87,7 +87,7 @@ export async function getServerSideProps(ctx) {
     //   },
     // }),
     // apolloClient.query({
-    //   query: getBrand,
+    //   query: BRAND,
     //   variables: {
     //     input: {
     //       brandId: [brand.id],

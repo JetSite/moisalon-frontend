@@ -16,16 +16,14 @@ import { IReview } from 'src/types/reviews'
 import { parseToNumber } from 'src/utils/newUtils/common'
 import ProfileItem from '../CabinetSales/components/ProfileItem'
 import { ISetState } from 'src/types/common'
-import { ISalon } from 'src/types/salon'
-import { IMaster } from 'src/types/masters'
-import { IBrand } from 'src/types/brands'
-import { IPromotionsType } from '../CabinetSales'
+import { IProfileType } from '../CabinetSales'
+import { IProfileWithReviews } from '.'
 
 interface Props {
   loading: boolean
-  setActiveProfile: ISetState<ISalon | IMaster | IBrand | null>
-  activeProfile: ISalon | IMaster | IBrand
-  type: IPromotionsType
+  setActiveProfile: ISetState<IProfileWithReviews | null>
+  activeProfile: IProfileWithReviews
+  type: IProfileType
 }
 
 export const CabinetReviews: FC<Props> = ({
@@ -40,13 +38,6 @@ export const CabinetReviews: FC<Props> = ({
     return <SkeletonWrap variant="rect" />
   }
 
-  const profile = {
-    id: activeProfile?.id,
-    name: activeProfile?.name,
-    photo: (activeProfile as ISalon)?.logo || (activeProfile as IMaster)?.photo,
-    rent: (activeProfile as ISalon)?.rent || false,
-  }
-
   const typeString =
     type === 'master' ? 'мастера' : type === 'salon' ? 'салона' : 'бренда'
 
@@ -56,7 +47,7 @@ export const CabinetReviews: FC<Props> = ({
         onClick={() => {
           setActiveProfile(null)
         }}
-        profile={profile}
+        profile={activeProfile}
         type={typeString}
         active={!!activeProfile}
       />

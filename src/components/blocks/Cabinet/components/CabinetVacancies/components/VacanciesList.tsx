@@ -7,13 +7,9 @@ import RotatingLoader from 'src/components/ui/RotatingLoader'
 import * as Styled from '../../CabinetSales/styles'
 import Button from 'src/components/ui/Button'
 import Popup from 'src/components/ui/Popup'
-import { EntityListProps } from '../../CabinetSales/components/SalesList'
+import { EntityListProps } from '../../ActiveProfile/ProfileManager'
 
-interface Props
-  extends Omit<
-    EntityListProps,
-    'sales' | 'setSales' | 'refetch' | 'searchID' | 'setPagination'
-  > {
+interface Props extends EntityListProps {
   vacancies: IVacancy[]
   handleMore: () => void
 }
@@ -36,7 +32,7 @@ export const VacanciesList: FC<Props> = ({
 
   return (
     <Styled.Wrapper>
-      {vacancies?.length > 0 ? (
+      {vacancies.length > 0 ? (
         <>
           <Styled.SalesWrapper>
             {vacancies?.map(item => (

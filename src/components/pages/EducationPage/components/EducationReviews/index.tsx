@@ -1,50 +1,54 @@
-import { useMutation } from '@apollo/client'
+import { useLazyQuery, useMutation } from '@apollo/client'
 import Reviews from '../../../../blocks/Reviews'
 import { createCommentMutation } from '../../../../../_graphql-legacy/createCommentMutation'
-import { FC } from 'react'
-import { ISetState } from 'src/types/common'
+import { FC, useState } from 'react'
+import { IID, ISetState } from 'src/types/common'
 import { ADD_REVIEW_EDUCATION } from 'src/api/graphql/education/mutations/addReviewEducation'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { GET_EDUCATION_REVIEWS } from 'src/api/graphql/education/queries/getEducationsReviews'
+import { IReview } from 'src/types/reviews'
 
 interface EducationReviewsProps {
-  refetchReviews: any
-  data: any
-  id: any
-  loadingReview: boolean
-  setLoadingReview: ISetState<boolean>
-  setReviews: any
+  reviews: IReview[]
+  educationID: IID
 }
 
 const EducationReviews: FC<EducationReviewsProps> = ({
-  refetchReviews,
-  data,
-  id,
-  loadingReview,
-  setLoadingReview,
-  setReviews,
+  educationID,
+  reviews,
 }) => {
+  const [updatedReviews, setUpdatedReviews] = useState<IReview[]>(reviews)
+  const [loading, setLoading] = useState<boolean>(false)
   const [reviewMutation] = useMutation(ADD_REVIEW_EDUCATION, {
-    onCompleted: async () => {
-      const res = await refetchReviews({
-        filters: { educations: { id: { eq: id } } },
-      })
-      if (res?.data?.education?.data?.id) {
-        const newReviews = flattenStrapiResponse(
-          res.data.education.data.attributes.reviews,
-        )
-        setReviews(newReviews)
-        setLoadingReview(false)
-      }
+    onCompleted: () => refetch({ variables: { id: educationID } }),
+    onError: error => {
+      console.error('Failed to add review:', error)
+      setLoading(false)
     },
   })
+  const [refetch] = useLazyQuery(GET_EDUCATION_REVIEWS, {
+    onCompleted: data => {
+      const prepareData: IReview[] = flattenStrapiResponse(
+        data.master.data,
+      ).reviews
+      setUpdatedReviews(prepareData)
+      setLoading(false)
+    },
+    onError: error => {
+      console.error('Failed to add review:', error)
+      setLoading(false)
+    },
+  })
+
   return (
     <Reviews
       type="EDUCATION"
-      id={id}
+      id={educationID}
       reviewMutation={reviewMutation}
-      reviews={data}
-      loading={loadingReview}
-      setLoading={setLoadingReview}
+      setUpdatedReviews={setUpdatedReviews}
+      reviews={updatedReviews}
+      loading={loading}
+      setLoading={setLoading}
     />
   )
 }

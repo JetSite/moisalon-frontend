@@ -4,13 +4,11 @@ import BrandCabinet, {
   IBrandCabinetProps,
 } from '../../components/pages/Brand/BrandCabinet'
 import CreatePageSkeleton from '../../components/ui/ContentSkeleton/CreatePageSkeleton'
-import { brandSlugQuery } from '../../_graphql-legacy/brand/brandSlugQuery'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 import { GetServerSideProps, NextPage } from 'next'
-import { IBrand } from 'src/types/brands'
 import { Nullable } from 'src/types/common'
-import { getBrand } from 'src/api/graphql/brand/queries/getBrand'
+import { BRAND } from 'src/api/graphql/brand/queries/getBrand'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 
 const BrandCabinetPage: NextPage<IBrandCabinetProps> = ({ brand }) => {
@@ -42,7 +40,7 @@ export const getServerSideProps: GetServerSideProps<
   }
 
   const brandData = await apolloClient.query({
-    query: getBrand,
+    query: BRAND,
     variables: {
       id: ctx.query.id,
     },

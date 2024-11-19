@@ -3,26 +3,23 @@ import Product from './components/Product'
 import { Wrapper, Title, Content } from './styled'
 import Button from '../../ui/Button'
 import Popup from '../../ui/Popup'
-import { IProduct } from 'src/types/product'
-import useBaseStore from 'src/store/baseStore'
-import { getStoreData, getStoreEvent } from 'src/store/utils'
-
+import { ICart, IProduct, IProductCart } from 'src/types/product'
+import { getStoreData } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
 import { useMutationCart } from './utils/useMutationCart'
+import ErrorPopup from 'src/components/blocks/Form/Error'
 
 interface ICatalogProps {
   products: IProduct[]
   loading: boolean
   noTitle?: boolean
+  cart: ICart | null
 }
 
-const Catalog: FC<ICatalogProps> = ({ products, loading, noTitle }) => {
+const Catalog: FC<ICatalogProps> = ({ products, loading, noTitle, cart }) => {
   const { user } = useAuthStore(getStoreData)
-  const { cart } = useBaseStore(getStoreData)
-  const { setCart } = useBaseStore(getStoreEvent)
   const [openPopup, setOpenPopup] = useState(false)
-  const { handleMutate, quantityMap } = useMutationCart({
-    setCart,
+  const { handleMutate, quantityMap, errors, setErrors } = useMutationCart({
     cart,
     userID: user?.info.id || null,
   })
@@ -51,10 +48,10 @@ const Catalog: FC<ICatalogProps> = ({ products, loading, noTitle }) => {
       {products?.length ? (
         <>
           <Content>
-            {products?.map(item => {
-              const cartItem = cart?.cartContent?.find(
+            {products?.map((item, i) => {
+              const cartItem: IProductCart = cart?.cartContent?.find(
                 el => el?.product?.id === item.id,
-              ) || { product: { ...item }, quantity: 0 }
+              ) || { product: { ...item }, quantity: 0, id: `temp_${item.id}` }
 
               return (
                 <Product
@@ -83,6 +80,7 @@ const Catalog: FC<ICatalogProps> = ({ products, loading, noTitle }) => {
           Закрыть
         </Button>
       </Popup>
+      <ErrorPopup errors={errors} isOpen={errors} setOpen={setErrors} />
     </Wrapper>
   )
 }
