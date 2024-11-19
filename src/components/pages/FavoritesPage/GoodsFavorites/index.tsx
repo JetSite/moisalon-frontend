@@ -24,16 +24,12 @@ import { getStoreData } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
 import { ISetState } from 'src/types/common'
 import { IProduct } from 'src/types/product'
+import { ThingsProps } from '../SalonsFavorites'
 
 SwiperCore.use([Navigation])
 
-interface Props {
-  title?: string
-  cabinet?: boolean
-  mobile?: boolean
-  handleDeleted: () => void
+interface Props extends ThingsProps {
   setProductEmpty?: ISetState<boolean>
-  setActiveTab: ISetState<string>
 }
 
 const GoodsFavorites: FC<Props> = ({
@@ -132,7 +128,6 @@ const GoodsFavorites: FC<Props> = ({
                           product={product}
                           deleteItem={deleteItem}
                           setDeleteItem={setDeleteItem}
-                          handleDeleted={handleDeleted}
                         />
                       </Link>
                       {/* {!cabinet ? (

@@ -26,7 +26,6 @@ interface Props {
   cabinet: boolean
   deleteItem: boolean
   setDeleteItem: ISetState<boolean>
-  handleDeleted: () => void
 }
 
 const Good: FC<Props> = ({
@@ -34,7 +33,6 @@ const Good: FC<Props> = ({
   deleteItem,
   setDeleteItem,
   cabinet = false,
-  handleDeleted,
 }) => {
   const { me } = useAuthStore(getStoreData)
   const addFavorite = (e: MouseEvent<HTMLDivElement>, product: IProduct) => {
@@ -42,7 +40,6 @@ const Good: FC<Props> = ({
     e.stopPropagation()
     favoritesInStorage('products', product)
     setDeleteItem(!deleteItem)
-    handleDeleted && handleDeleted()
   }
 
   return (
