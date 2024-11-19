@@ -12,7 +12,7 @@ import { IEducation } from 'src/types/education'
 import { IPhoto } from 'src/types'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
-import { IPromotionsType } from '../../CabinetSales'
+import { IProfileType } from '../../CabinetSales'
 import { ISalon } from 'src/types/salon'
 import { IMaster } from 'src/types/masters'
 import { IBrand } from 'src/types/brands'
@@ -26,14 +26,15 @@ import {
 import Checkbox from 'src/components/blocks/Form/Checkbox'
 import moment from 'moment'
 import { FormApi } from 'final-form'
+import { IActiveProfile } from '../../ActiveProfile/ProfileManager'
 
 interface Props
   extends Pick<
     IUseEducationMutateResult,
     'handleCreateOrUpdate' | 'setErrors' | 'errors'
   > {
-  type: IPromotionsType
-  activeProfile: ISalon | IMaster | IBrand
+  type: IProfileType
+  activeProfile: NonNullable<IActiveProfile>
   education: IEducation | null
   setEducation: ISetState<IEducation | null>
   loading: boolean
@@ -82,6 +83,13 @@ const CreateEducation: FC<Props> = ({
         throw new Error(`Invalid type: ${type}`)
       }
 
+      const timeStart = moment(values.timeStart, 'HH:mm').isValid()
+        ? moment(values.timeStart, 'HH:mm').format('HH:mm:ss.SSS')
+        : null
+      const timeEnd = moment(values.timeEnd, 'HH:mm').isValid()
+        ? moment(values.timeEnd, 'HH:mm').format('HH:mm:ss.SSS')
+        : null
+
       const input: IEducationInput = {
         title: values.title,
         cover: cover,
@@ -90,8 +98,8 @@ const CreateEducation: FC<Props> = ({
         amount,
         dateStart: values.dateStart,
         dateEnd: values.dateEnd,
-        timeStart: moment(values.timeStart, 'HH:mm').format('HH:mm:ss.SSS'),
-        timeEnd: moment(values.timeEnd, 'HH:mm').format('HH:mm:ss.SSS'),
+        timeStart,
+        timeEnd,
         user: user?.info.id,
         [type as 'brand' | 'salon' | 'master']: activeProfile.id,
         ...{
@@ -237,7 +245,7 @@ const CreateEducation: FC<Props> = ({
                 <Button
                   variant="darkTransparent"
                   size="width100"
-                  type="submit"
+                  type="button"
                   style={{ marginTop: 20 }}
                   onClick={() => setCreate(false)}
                 >

@@ -3,23 +3,23 @@ import { ISalon } from 'src/types/salon'
 import { IBrand } from 'src/types/brands'
 import { ISetState } from 'src/types/common'
 import ProfileManager, {
+  IActiveProfile,
   IActiveProfilesView,
   IEntityHandler,
 } from '../../ActiveProfile/ProfileManager'
-import { IPromotionsType } from '../../CabinetSales'
-import { IVacancy } from 'src/types/vacancies'
+import { IProfileType } from '../../CabinetSales'
 import { IProfile } from '../../CabinetSales/components/ProfileSelect'
 import CreateEducation from 'src/components/blocks/Cabinet/components/CabinetEducations/components/CreateEducation'
-import { VacanciesList } from '../../CabinetVacancies/components/VacanciesList'
+
 import { IEducation } from 'src/types/education'
 import { EducationsList } from './EducationsList'
 import { IMaster } from 'src/types/masters'
 import { useEducationMutate } from '../utils/useEducationMutate'
 
 interface ActiveProfileProps {
-  activeProfile: ISalon | IBrand | IMaster
-  type: IPromotionsType
-  setActiveProfile: ISetState<ISalon | IBrand | IMaster | null>
+  activeProfile: NonNullable<IActiveProfile>
+  type: IProfileType
+  setActiveProfile: ISetState<IActiveProfile>
 }
 
 const ActiveEducationProfile: FC<ActiveProfileProps> = ({
@@ -47,20 +47,6 @@ const ActiveEducationProfile: FC<ActiveProfileProps> = ({
     profileID: activeProfile.id,
   })
 
-  const profile: IProfile = useMemo(
-    () => ({
-      id: activeProfile.id,
-      name: activeProfile.name,
-      photo:
-        (activeProfile as ISalon).logo ||
-        (activeProfile as IMaster).photo ||
-        (activeProfile as IBrand).logo ||
-        null,
-      rent: (activeProfile as ISalon).rent || false,
-    }),
-    [activeProfile],
-  )
-
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
     if (e.currentTarget.name === 'publish') {
       setView('publish')
@@ -82,7 +68,7 @@ const ActiveEducationProfile: FC<ActiveProfileProps> = ({
   return (
     <ProfileManager
       type={type}
-      profile={profile}
+      profile={activeProfile}
       handleBack={() => {
         setActiveProfile(null)
       }}

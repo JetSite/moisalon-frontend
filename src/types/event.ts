@@ -24,8 +24,24 @@ export interface IEvent {
   seoTitle: string
   seoDescription: string
   publishedAt: string | null
-  timeStart: string
-  timeEnd: string
+  timeStart: string | null
+  timeEnd: string | null
   longitude: number | null
   latitude: number | null
 }
+
+export type IBaseEvent =
+  | 'address'
+  | 'cover'
+  | 'dateEnd'
+  | 'dateStart'
+  | 'deleted'
+  | 'fullDescription'
+  | 'id'
+  | 'latitude'
+  | 'longitude'
+  | 'shortDescription'
+  | 'publishedAt'
+  | 'timeEnd'
+  | 'timeStart'
+  | 'title'

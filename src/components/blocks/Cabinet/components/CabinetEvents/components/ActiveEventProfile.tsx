@@ -1,23 +1,20 @@
 import { FC, MouseEvent, useMemo, useState } from 'react'
-import { ISalon } from 'src/types/salon'
-import { IBrand } from 'src/types/brands'
 import { ISetState } from 'src/types/common'
 import ProfileManager, {
+  IActiveProfile,
   IActiveProfilesView,
   IEntityHandler,
 } from '../../ActiveProfile/ProfileManager'
-import { IPromotionsType } from '../../CabinetSales'
-import { IProfile } from '../../CabinetSales/components/ProfileSelect'
+import { IProfileType } from '../../CabinetSales'
 import CreateEvent from 'src/components/blocks/Cabinet/components/CabinetEvents/components/CreateEvent'
-import { IMaster } from 'src/types/masters'
 import { IEvent } from 'src/types/event'
 import { EventsList } from './EventsList'
 import { useEventMutate } from '../utils/useEventMutate'
 
 interface ActiveProfileProps {
-  activeProfile: ISalon | IBrand | IMaster
-  type: IPromotionsType
-  setActiveProfile: ISetState<ISalon | IBrand | IMaster | null>
+  activeProfile: NonNullable<IActiveProfile>
+  type: IProfileType
+  setActiveProfile: ISetState<IActiveProfile>
 }
 
 const ActiveEventProfile: FC<ActiveProfileProps> = ({
@@ -45,20 +42,6 @@ const ActiveEventProfile: FC<ActiveProfileProps> = ({
     profileID: activeProfile.id,
   })
 
-  const profile: IProfile = useMemo(
-    () => ({
-      id: activeProfile.id,
-      name: activeProfile.name,
-      photo:
-        (activeProfile as ISalon).logo ||
-        (activeProfile as IMaster).photo ||
-        (activeProfile as IBrand).logo ||
-        null,
-      rent: (activeProfile as ISalon).rent || false,
-    }),
-    [activeProfile],
-  )
-
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
     if (e.currentTarget.name === 'publish') {
       setView('publish')
@@ -77,12 +60,10 @@ const ActiveEventProfile: FC<ActiveProfileProps> = ({
     setCreateEvent(true)
   }
 
-  console.log('active event', event)
-
   return (
     <ProfileManager
       type={type}
-      profile={profile}
+      profile={activeProfile}
       handleBack={() => {
         setActiveProfile(null)
       }}

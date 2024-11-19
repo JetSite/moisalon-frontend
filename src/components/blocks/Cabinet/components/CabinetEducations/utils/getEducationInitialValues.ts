@@ -12,34 +12,24 @@ interface IEducationFormValuesProps {
   education: IEducation | null
 }
 
+export type IEducationBaseFields =
+  | 'title'
+  | 'shortDescription'
+  | 'fullDescription'
+  | 'timeStart'
+  | 'timeEnd'
+  | 'dateEnd'
+  | 'dateStart'
+
 export interface IEducationInitialForm
-  extends Pick<
-    IEducation,
-    | 'title'
-    | 'shortDescription'
-    | 'fullDescription'
-    | 'timeStart'
-    | 'timeEnd'
-    | 'dateEnd'
-    | 'dateStart'
-  > {
+  extends Pick<IEducation, IEducationBaseFields> {
   amount: number | null
   cover: IPhoto | null
   publishedAt: boolean
 }
 
 export interface IEducationInput
-  extends Pick<
-    IEducation,
-    | 'amount'
-    | 'fullDescription'
-    | 'title'
-    | 'shortDescription'
-    | 'timeStart'
-    | 'timeEnd'
-    | 'dateEnd'
-    | 'dateStart'
-  > {
+  extends Pick<IEducation, 'amount' | IEducationBaseFields> {
   user?: IID
   cover: IID
   brand?: IID

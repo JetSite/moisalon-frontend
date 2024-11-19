@@ -3,7 +3,7 @@ import { IProfileWithType } from '../components/ProfileSelect'
 import { ISalon } from 'src/types/salon'
 import { IBrand } from 'src/types/brands'
 import { IVacancy } from 'src/types/vacancies'
-import { IPromotionsType } from '..'
+import { IProfileType } from '..'
 
 export type IgetPrepareData = (props: IgetPrepareDataProps) => {
   profiles: IProfileWithType[]
@@ -26,7 +26,7 @@ export const getPrepareData: IgetPrepareData = ({
 }) => {
   const getQuantity = (
     item: IMaster | ISalon | IBrand,
-    type?: IPromotionsType,
+    type?: IProfileType,
   ) => {
     let quantity
     switch (entityType) {

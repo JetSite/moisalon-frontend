@@ -8,7 +8,7 @@ import {
   StrapiDataObject,
   flattenStrapiResponse,
 } from 'src/utils/flattenStrapiResponse'
-import { IPromotionsType } from '../../CabinetSales'
+import { IProfileType } from '../../CabinetSales'
 import { IID, ISetState } from 'src/types/common'
 import { CREATE_VACANCY } from 'src/api/graphql/vacancy/mutations/createVacancy'
 import { IVacancyInput } from './vacancyFormValues'
@@ -18,17 +18,20 @@ import {
 } from '../../ActiveProfile/ProfileManager'
 import { UPDATE_VACANCY } from 'src/api/graphql/vacancy/mutations/updateVacancy'
 
-export interface IUseVacancyMutateResult {
+export interface IBaseUseMutateResult {
   loading: boolean
   fetchLoading: boolean
-  vacancies: IVacancy[]
   pagination: IPagination | null
   errors: string[] | null
   setErrors: ISetState<string[] | null>
   setUpdate: ISetState<boolean>
   handleDelete: IEntityDeleteHandler
-  handleCreateOrUpdate: (values: IVacancyInput, id?: IID) => void
   handleMore: () => void
+}
+
+export interface IUseVacancyMutateResult extends IBaseUseMutateResult {
+  vacancies: IVacancy[]
+  handleCreateOrUpdate: (values: IVacancyInput, id?: IID) => void
 }
 
 type IUseVacancyMutate = (
@@ -36,7 +39,7 @@ type IUseVacancyMutate = (
 ) => IUseVacancyMutateResult
 
 interface IUseVacancyMutateProps {
-  type: IPromotionsType
+  type: IProfileType
   profileID: IID
   view: IActiveProfilesView
 }
@@ -104,15 +107,7 @@ export const useVacancyMutate: IUseVacancyMutate = ({
     const variables = shouldDelete
       ? { id, input: { deleted: true, publishedAt: null } }
       : { id, input: { deleted: true } }
-    try {
-      mutate({ variables })
-    } catch (error) {
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : 'Unknown error occurred while deleting'
-      setErrors([errorMessage])
-    }
+    mutate({ variables })
   }
 
   const handleCreateOrUpdate = (input: IVacancyInput, id?: IID) => {
@@ -129,7 +124,7 @@ export const useVacancyMutate: IUseVacancyMutate = ({
       const errorMessage =
         error instanceof Error
           ? error.message
-          : 'Unknown error occurred while deleting'
+          : 'Unknown error occurred while creating or updating'
       setErrors([errorMessage])
     }
   }

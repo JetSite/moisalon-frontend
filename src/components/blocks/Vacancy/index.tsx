@@ -13,7 +13,7 @@ import {
   VacancyWrap,
   VacancyAmount,
 } from './style'
-import { IPromotionsType } from '../Cabinet/components/CabinetSales'
+import { IProfileType } from '../Cabinet/components/CabinetSales'
 import { IVacancy } from 'src/types/vacancies'
 import PhotoAdd, { IPhotoAddProps } from '../CreateBanner/PhotoAdd'
 import {
@@ -23,7 +23,7 @@ import {
 
 interface Props extends Partial<Omit<IPhotoAddProps, 'hover'>> {
   create?: boolean
-  type?: IPromotionsType
+  type?: IProfileType
   item: IVacancy
   handleClick?: IEntityHandler
   handleDelete?: IEntityDeleteHandler

@@ -24,19 +24,17 @@ import AddressNoSalonField, {
   ICoordinate,
 } from 'src/components/blocks/Form/AddressField/AddressNoSalonField'
 import { IUseEventMutateResult } from '../utils/useEventMutate'
-import { IPromotionsType } from '../../CabinetSales'
-import { ISalon } from 'src/types/salon'
-import { IMaster } from 'src/types/masters'
-import { IBrand } from 'src/types/brands'
+import { IProfileType } from '../../CabinetSales'
 import { ISetState } from 'src/types/common'
+import { IActiveProfile } from '../../ActiveProfile/ProfileManager'
 
 interface Props
   extends Pick<
     IUseEventMutateResult,
     'handleCreateOrUpdate' | 'setErrors' | 'errors'
   > {
-  type: IPromotionsType
-  activeProfile: ISalon | IMaster | IBrand
+  type: IProfileType
+  activeProfile: NonNullable<IActiveProfile>
   event: IEvent | null
   setEvent: ISetState<IEvent | null>
   loading: boolean
@@ -89,6 +87,13 @@ const CreateEvent: FC<Props> = ({
         throw new Error(`Invalid type: ${type}`)
       }
 
+      const timeStart = moment(values.timeStart, 'HH:mm').isValid()
+        ? moment(values.timeStart, 'HH:mm').format('HH:mm:ss.SSS')
+        : null
+      const timeEnd = moment(values.timeEnd, 'HH:mm').isValid()
+        ? moment(values.timeEnd, 'HH:mm').format('HH:mm:ss.SSS')
+        : null
+
       const input: IEventInput = {
         title: values.title,
         cover,
@@ -96,8 +101,8 @@ const CreateEvent: FC<Props> = ({
         shortDescription: values.shortDescription,
         dateStart: values.dateStart,
         dateEnd: values.dateEnd,
-        timeStart: moment(values.timeStart, 'HH:mm').format('HH:mm:ss.SSS'),
-        timeEnd: moment(values.timeEnd, 'HH:mm').format('HH:mm:ss.SSS'),
+        timeStart,
+        timeEnd,
         address: values.address,
         user: user?.info.id,
         latitude: values.latitude,
@@ -231,7 +236,7 @@ const CreateEvent: FC<Props> = ({
               </Styled.FieldWrapDate>
               <Styled.FieldWrap>
                 <Checkbox
-                  name="isPublished"
+                  name="publishedAt"
                   label="Опубликовать мероприятие"
                   checked={publishedAt}
                   setChecked={setPublishedAt}
@@ -254,7 +259,7 @@ const CreateEvent: FC<Props> = ({
                 <Button
                   variant="darkTransparent"
                   size="width100"
-                  type="submit"
+                  type="button"
                   style={{ marginTop: 20 }}
                   onClick={() => setCreate(false)}
                 >

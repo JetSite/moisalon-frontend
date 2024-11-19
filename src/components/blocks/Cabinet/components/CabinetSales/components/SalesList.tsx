@@ -1,5 +1,5 @@
 import { FC, MouseEvent, useState } from 'react'
-import { IPromotionsType } from '..'
+import { IProfileType } from '..'
 import { IPromotions } from 'src/types/promotions'
 import Sale from '../../../../Sale'
 import * as Styled from '../styles'

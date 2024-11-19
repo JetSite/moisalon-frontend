@@ -10,7 +10,7 @@ import {
 } from '../../../utils/favoritesInStorage.js'
 import { PHOTO_URL } from '../../../api/variables'
 import HeartFullFill from '../../pages/MainPage/components/Header/icons/HeartFullFill'
-import { IPromotionsType } from '../Cabinet/components/CabinetSales'
+import { IProfileType } from '../Cabinet/components/CabinetSales'
 import { IEducation } from 'src/types/education'
 import {
   IEntityDeleteHandler,
@@ -20,7 +20,7 @@ import { DeleteIcon } from '../Sale/styled'
 
 interface IEducationProps extends Partial<Omit<IPhotoAddProps, 'hover'>> {
   create?: boolean
-  type?: IPromotionsType
+  type?: IProfileType
   item: IEducation
   handleClick?: IEntityHandler
   handleDelete?: IEntityDeleteHandler
@@ -73,7 +73,13 @@ const Education: FC<IEducationProps> = ({
   }`
 
   return (
-    <Styled.EducationWrap id={item.id} onClick={handleClick}>
+    <Styled.EducationWrap
+      id={item.id}
+      onClick={handleClick}
+      onKeyDown={e => e.key === 'Enter' && handleClick?.(e)}
+      role="article"
+      tabIndex={0}
+    >
       {!create ? (
         <Styled.EducationTop
           isDeleted={item.deleted}

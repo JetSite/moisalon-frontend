@@ -12,7 +12,7 @@ import Popup from '../../../../../../ui/Popup'
 import { IPhoto } from 'src/types'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
-import { IPromotionsType } from '../../../CabinetSales'
+import { IProfileType } from '../../../CabinetSales'
 import { IBrand } from 'src/types/brands'
 import { IMaster } from 'src/types/masters'
 import { ISalon } from 'src/types/salon'
@@ -27,6 +27,7 @@ import {
 } from '../../utils/vacancyFormValues'
 import { FormApi } from 'final-form'
 import Checkbox from 'src/components/blocks/Form/Checkbox'
+import { IActiveProfile } from '../../../ActiveProfile/ProfileManager'
 
 const FieldWrap = styled.div`
   margin-bottom: 14px;
@@ -46,8 +47,8 @@ interface Props
     IUseVacancyMutateResult,
     'handleCreateOrUpdate' | 'setErrors' | 'errors'
   > {
-  type: IPromotionsType
-  activeProfile: ISalon | IMaster | IBrand
+  type: IProfileType
+  activeProfile: NonNullable<IActiveProfile>
   vacancy: IVacancy | null
   setVacancy: ISetState<IVacancy | null>
   loading: boolean

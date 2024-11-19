@@ -9,10 +9,7 @@ import { laptopBreakpoint } from '../../../../../../styles/variables'
 import Button from '../../../../../ui/Button'
 import Sale from '../../../../Sale'
 import Popup from '../../../../../ui/Popup'
-import { IPromotionsType } from '..'
-import { ISalon } from 'src/types/salon'
-import { IBrand } from 'src/types/brands'
-import { IMaster } from 'src/types/masters'
+import { IProfileWithPromotions, IProfileType } from '..'
 import { IPhoto } from 'src/types'
 import { ISetState } from 'src/types/common'
 import { IPromotions } from 'src/types/promotions'
@@ -61,8 +58,8 @@ const ButtonWrap = styled.div`
 `
 
 export interface CreateSaleProps {
-  type: IPromotionsType
-  activeProfile: ISalon | IBrand | IMaster
+  type: IProfileType
+  activeProfile: IProfileWithPromotions
   setCreateSale: ISetState<boolean>
   sale: IPromotions | null
   setSales: ISetState<IPromotions[]>

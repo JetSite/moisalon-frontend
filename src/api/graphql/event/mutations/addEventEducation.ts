@@ -2,7 +2,7 @@ import { gql } from '@apollo/client'
 
 // TODO: пока нет у мероприятий отзывов
 
-export const ADD_REVIEW_EVENT = gql`
+export const CREATE_REVIEW = gql`
   mutation createReview(
     $user: ID!
     $id: ID!

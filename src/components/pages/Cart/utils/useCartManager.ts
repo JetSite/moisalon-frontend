@@ -57,7 +57,8 @@ export const useCartManager: IUseCartManager = ({ data, user }) => {
       } else if (quantityMap[productID] !== 0) newCartContent.push(content)
     })
     setSelectedProducts(newCartContent)
-    cart && setCart({ ...cart, cartContent: newCartContent })
+    cart &&
+      setCart(prev => (prev ? { ...prev, cartContent: newCartContent } : null))
   }, [quantityMap])
 
   useEffect(() => {

@@ -1,35 +1,27 @@
-import { useState, useEffect, FC, useMemo } from 'react'
-import { useQuery } from '@apollo/client'
-import { reviewsForBrand } from '../../../../../_graphql-legacy/brand/reviewsForBrand'
-import { reviewsForMaster } from '../../../../../_graphql-legacy/master/reviewsForMaster'
-import { reviewsForSalon } from '../../../../../_graphql-legacy/salon/reviewsForSalon'
+import { useState, FC, useMemo } from 'react'
 import * as Styled from './styles'
-import { PHOTO_URL } from '../../../../../api/variables'
-import useAuthStore from 'src/store/authStore'
-import { getStoreData } from 'src/store/utils'
-import { IMaster } from 'src/types/masters'
-import { ISalon } from 'src/types/salon'
-import { IBrand } from 'src/types/brands'
-import { IID } from 'src/types/common'
 import { CabinetReviews } from './CabinetReviews'
-import ProfileSelect from '../CabinetSales/components/ProfileSelect'
-import ActiveProfile from '../CabinetSales/components/ActiveSaleProfile'
+import ProfileSelect, {
+  IProfileWithType,
+} from '../CabinetSales/components/ProfileSelect'
 import { IUser } from 'src/types/me'
-import { IPromotionsType } from '../CabinetSales'
+import { IProfileType } from '../CabinetSales'
 import { getPrepareData } from '../CabinetSales/utils/getPrepareData'
-import ProfileItem from '../CabinetSales/components/ProfileItem'
+import { IReview } from 'src/types/reviews'
 
 interface Props {
   user: IUser
 }
 
+export interface IProfileWithReviews extends IProfileWithType {
+  reviews: IReview[]
+}
+
 const CabinetListReviews: FC<Props> = ({ user }) => {
   const { salons, masters, brands } = user.owner
-  const [id, setId] = useState('')
-  const [type, setType] = useState<IPromotionsType>(null)
-  const [activeProfile, setActiveProfile] = useState<
-    ISalon | IMaster | IBrand | null
-  >(null)
+  const [type, setType] = useState<IProfileType>(null)
+  const [activeProfile, setActiveProfile] =
+    useState<IProfileWithReviews | null>(null)
 
   const { profiles } = useMemo(
     () => getPrepareData({ salons, masters, brands, entityType: 'reviews' }),
@@ -38,23 +30,21 @@ const CabinetListReviews: FC<Props> = ({ user }) => {
 
   // Функция для обработки клика по профилю
   const handleProfileClick = (profile: (typeof profiles)[0]) => {
-    setType(profile.profileType as 'master' | 'salon' | 'brand')
-    setId(profile.id)
-    switch (profile.profileType) {
-      case 'master':
-        const foundMaster = masters?.find(master => master.id === profile.id)
-        setActiveProfile(foundMaster || null)
-        break
-      case 'salon':
-        const foundSalon = salons?.find(salon => salon.id === profile.id)
-        setActiveProfile(foundSalon || null)
-        break
-      case 'brand':
-        const foundBrand = brands?.find(brand => brand.id === profile.id)
-        setActiveProfile(foundBrand || null)
-        break
-      default:
-        setActiveProfile(null)
+    const typedRtofileType = profile.profileType as 'master' | 'salon' | 'brand'
+    setType(typedRtofileType)
+    const foundProfileReviews =
+      [...(salons || []), ...(masters || []), ...(brands || [])].find(
+        ({ id }) => id === profile.id,
+      )?.reviews || []
+    const foundProfile = profiles.find(({ id }) => id === profile.id)
+    if (foundProfile) {
+      const foundProfileWithReviews: IProfileWithReviews = {
+        ...foundProfile,
+        reviews: foundProfileReviews,
+      }
+      setActiveProfile(foundProfileWithReviews)
+    } else {
+      setActiveProfile(null)
     }
   }
 

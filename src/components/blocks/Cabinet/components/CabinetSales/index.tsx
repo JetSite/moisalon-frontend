@@ -1,15 +1,16 @@
 import { useState, FC, useMemo } from 'react'
 import * as Styled from './styles'
-
 import { IUser } from 'src/types/me'
-import { ISalon } from 'src/types/salon'
-import { IMaster } from 'src/types/masters'
-import { IBrand } from 'src/types/brands'
-import ProfileSelect from './components/ProfileSelect'
+import ProfileSelect, { IProfileWithType } from './components/ProfileSelect'
 import { getPrepareData } from './utils/getPrepareData'
 import ActiveSaleProfile from './components/ActiveSaleProfile'
+import { IPromotions } from 'src/types/promotions'
 
-export type IPromotionsType = 'salon' | 'master' | 'brand' | null
+export type IProfileType = 'salon' | 'master' | 'brand' | null
+
+export interface IProfileWithPromotions extends IProfileWithType {
+  promotions: IPromotions[]
+}
 
 interface Props {
   user: IUser
@@ -17,10 +18,9 @@ interface Props {
 
 const CabinetSales: FC<Props> = ({ user }) => {
   const { salons, masters, brands } = user.owner
-  const [type, setType] = useState<IPromotionsType>(null)
-  const [activeProfile, setActiveProfile] = useState<
-    ISalon | IMaster | IBrand | null
-  >(null)
+  const [type, setType] = useState<IProfileType>(null)
+  const [activeProfile, setActiveProfile] =
+    useState<IProfileWithPromotions | null>(null)
 
   const { profiles } = useMemo(
     () => getPrepareData({ salons, masters, brands, entityType: 'sales' }),
@@ -29,22 +29,21 @@ const CabinetSales: FC<Props> = ({ user }) => {
 
   // Функция для обработки клика по профилю
   const handleProfileClick = (profile: (typeof profiles)[0]) => {
-    setType(profile.profileType as 'master' | 'salon' | 'brand')
-    switch (profile.profileType) {
-      case 'master':
-        const foundMaster = masters?.find(master => master.id === profile.id)
-        setActiveProfile(foundMaster || null)
-        break
-      case 'salon':
-        const foundSalon = salons?.find(salon => salon.id === profile.id)
-        setActiveProfile(foundSalon || null)
-        break
-      case 'brand':
-        const foundBrand = brands?.find(brand => brand.id === profile.id)
-        setActiveProfile(foundBrand || null)
-        break
-      default:
-        setActiveProfile(null)
+    const typedRtofileType = profile.profileType as 'master' | 'salon' | 'brand'
+    setType(typedRtofileType)
+    const foundProfilePromotions =
+      [...(salons || []), ...(masters || []), ...(brands || [])].find(
+        ({ id }) => id === profile.id,
+      )?.promotions || []
+    const foundProfile = profiles.find(({ id }) => id === profile.id)
+    if (foundProfile) {
+      const foundProfileWithReviews: IProfileWithPromotions = {
+        ...foundProfile,
+        promotions: foundProfilePromotions,
+      }
+      setActiveProfile(foundProfileWithReviews)
+    } else {
+      setActiveProfile(null)
     }
   }
 

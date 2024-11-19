@@ -4,7 +4,7 @@ import moment from 'moment'
 import 'moment/locale/ru'
 import { PHOTO_URL } from '../../../api/variables'
 import PhotoAdd, { IPhotoAddProps } from '../CreateBanner/PhotoAdd'
-import { IPromotionsType } from '../Cabinet/components/CabinetSales'
+import { IProfileType } from '../Cabinet/components/CabinetSales'
 import { IEvent } from 'src/types/event'
 import {
   IEntityDeleteHandler,
@@ -14,7 +14,7 @@ import { DeleteIcon } from '../Sale/styled'
 
 interface IEventProps extends Partial<Omit<IPhotoAddProps, 'hover'>> {
   create?: boolean
-  type?: IPromotionsType
+  type?: IProfileType
   item: IEvent
   handleClick?: IEntityHandler
   handleDelete?: IEntityDeleteHandler
@@ -50,6 +50,9 @@ const Event: FC<IEventProps> = ({
       cabinetVariant={cabinet}
       id={item.id}
       onClick={handleClick}
+      onKeyDown={e => e.key === 'Enter' && handleClick?.(e)}
+      role="article"
+      tabIndex={0}
     >
       {!create ? (
         <Styled.EventTop

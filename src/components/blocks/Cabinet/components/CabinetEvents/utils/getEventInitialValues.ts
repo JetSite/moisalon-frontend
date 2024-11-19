@@ -10,38 +10,24 @@ interface IEventFormValuesProps {
   event: IEvent | null
 }
 
-export interface IEventInitialForm
-  extends Pick<
-    IEvent,
-    | 'title'
-    | 'shortDescription'
-    | 'fullDescription'
-    | 'timeStart'
-    | 'timeEnd'
-    | 'dateEnd'
-    | 'dateStart'
-    | 'address'
-    | 'longitude'
-    | 'latitude'
-  > {
+export type IEventBaseFields =
+  | 'title'
+  | 'shortDescription'
+  | 'fullDescription'
+  | 'timeStart'
+  | 'timeEnd'
+  | 'dateEnd'
+  | 'dateStart'
+  | 'address'
+  | 'longitude'
+  | 'latitude'
+
+export interface IEventInitialForm extends Pick<IEvent, IEventBaseFields> {
   cover: IPhoto | null
   publishedAt: boolean
 }
 
-export interface IEventInput
-  extends Pick<
-    IEvent,
-    | 'fullDescription'
-    | 'title'
-    | 'shortDescription'
-    | 'timeStart'
-    | 'timeEnd'
-    | 'dateEnd'
-    | 'dateStart'
-    | 'address'
-    | 'longitude'
-    | 'latitude'
-  > {
+export interface IEventInput extends Pick<IEvent, IEventBaseFields> {
   user?: IID
   cover: IID
   brand?: IID

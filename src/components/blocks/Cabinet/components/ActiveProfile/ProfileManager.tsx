@@ -1,21 +1,34 @@
-import { FC, MouseEvent, MouseEventHandler, ReactElement } from 'react'
-import { IPromotionsType } from '../CabinetSales'
+import {
+  FC,
+  KeyboardEvent,
+  MouseEvent,
+  MouseEventHandler,
+  ReactElement,
+} from 'react'
+import { IProfileType } from '../CabinetSales'
 import ProfileItem from '../CabinetSales/components/ProfileItem'
 import { MobileHidden, MobileVisible } from 'src/styles/common'
 import Button from 'src/components/ui/Button'
-import { IProfile } from '../CabinetSales/components/ProfileSelect'
+import {
+  IProfile,
+  IProfileWithType,
+} from '../CabinetSales/components/ProfileSelect'
 import { IID, ISetState } from 'src/types/common'
 import { ProfileTabs } from './ProfileTabs'
 import { IPagination } from 'src/types'
 
 export type IActiveProfilesView = 'publish' | 'draft'
 
-export type IEntityHandler = (e: MouseEvent<HTMLLIElement>) => void
+export type IEntityHandler = (
+  e: MouseEvent<HTMLLIElement> | KeyboardEvent<HTMLLIElement>,
+) => void
 
 export type IEntityDeleteHandler = (id: IID, shouldDelete?: boolean) => void
 
+export type IActiveProfile = IProfileWithType | null
+
 export interface EntityListProps {
-  type: IPromotionsType
+  type: IProfileType
   loading: boolean
   handleClick?: IEntityHandler
   handleDelete?: IEntityDeleteHandler
@@ -25,7 +38,7 @@ export interface EntityListProps {
 
 interface ProfileManagerProps {
   profile: IProfile
-  type: IPromotionsType
+  type: IProfileType
   createEntity: boolean
   setCreateEntity: ISetState<boolean>
   createEntityButton: string

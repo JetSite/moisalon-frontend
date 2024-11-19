@@ -5,7 +5,7 @@ import {
   StrapiDataObject,
   flattenStrapiResponse,
 } from 'src/utils/flattenStrapiResponse'
-import { IPromotionsType } from '../../CabinetSales'
+import { IProfileType } from '../../CabinetSales'
 import { IID } from 'src/types/common'
 import { IEducation } from 'src/types/education'
 import {
@@ -15,12 +15,11 @@ import {
 import { EDUCATIONS } from 'src/api/graphql/education/queries/getEducations'
 import { NOT_PUBLISH_EDUCATIONS } from 'src/api/graphql/education/queries/getNotPublishEducations'
 import { CREATE_EDUCATION } from 'src/api/graphql/education/mutations/createEducation'
-import { IUseVacancyMutateResult } from '../../CabinetVacancies/utils/useVacancyMutate'
+import { IBaseUseMutateResult } from '../../CabinetVacancies/utils/useVacancyMutate'
 import { UPDATE_EDUCATION } from 'src/api/graphql/education/mutations/updateEducation'
 import { IEducationInput } from './getEducationInitialValues'
 
-export interface IUseEducationMutateResult
-  extends Omit<IUseVacancyMutateResult, 'vacancies' | 'handleCreateOrUpdate'> {
+export interface IUseEducationMutateResult extends IBaseUseMutateResult {
   educations: IEducation[]
   handleCreateOrUpdate: (values: any, id?: IID) => void
 }
@@ -30,7 +29,7 @@ type IUseEducationMutate = (
 ) => IUseEducationMutateResult
 
 interface IUseEducationMutateProps {
-  type: IPromotionsType
+  type: IProfileType
   profileID: IID
   view: IActiveProfilesView
 }
@@ -98,15 +97,8 @@ export const useEducationMutate: IUseEducationMutate = ({
     const variables = shouldDelete
       ? { id, input: { deleted: true, publishedAt: null } }
       : { id, input: { deleted: true } }
-    try {
-      mutate({ variables })
-    } catch (error) {
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : 'Unknown error occurred while deleting'
-      setErrors([errorMessage])
-    }
+
+    mutate({ variables })
   }
 
   const handleCreateOrUpdate = (input: IEducationInput, id?: IID) => {
@@ -123,7 +115,7 @@ export const useEducationMutate: IUseEducationMutate = ({
       const errorMessage =
         error instanceof Error
           ? error.message
-          : 'Unknown error occurred while deleting'
+          : 'Unknown error occurred while creating or updating'
       setErrors([errorMessage])
     }
   }

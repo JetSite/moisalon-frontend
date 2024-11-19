@@ -3,7 +3,7 @@ import * as Styled from './styled'
 import moment from 'moment'
 import 'moment/locale/ru'
 import { PHOTO_URL } from '../../../api/variables'
-import { IPromotionsType } from '../Cabinet/components/CabinetSales'
+import { IProfileType } from '../Cabinet/components/CabinetSales'
 import PhotoAdd, { IPhotoAddProps } from '../CreateBanner/PhotoAdd'
 import { IPromotions } from 'src/types/promotions'
 import {
@@ -13,7 +13,7 @@ import {
 
 interface SaleProps extends Partial<Omit<IPhotoAddProps, 'hover'>> {
   create?: boolean
-  type?: IPromotionsType
+  type?: IProfileType
   item: IPromotions
   handleClick?: IEntityHandler
   handleDelete?: IEntityDeleteHandler
@@ -36,7 +36,14 @@ const Sale: FC<SaleProps> = ({
   const photoSrc = `${PHOTO_URL}${item?.cover?.url ?? photo?.url ?? ''}`
 
   return (
-    <Styled.SaleWrap onClick={handleClick} id={item.id} type={type as string}>
+    <Styled.SaleWrap
+      onClick={handleClick}
+      id={item.id}
+      type={type as string}
+      onKeyDown={e => e.key === 'Enter' && handleClick?.(e)}
+      role="article"
+      tabIndex={0}
+    >
       {!create ? (
         <Styled.SaleTop
           isDeleted={item.deleted}

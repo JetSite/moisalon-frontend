@@ -1,18 +1,11 @@
 import { useState, FC, useMemo } from 'react'
-import { useMutation } from '@apollo/client'
 import * as Styled from './styles'
-
-import useAuthStore from 'src/store/authStore'
-import { getStoreEvent } from 'src/store/utils'
-import { IID } from 'src/types/common'
-import { ISalon } from 'src/types/salon'
-import { IBrand } from 'src/types/brands'
 import ProfileSelect from '../CabinetSales/components/ProfileSelect'
-import { IPromotionsType } from '../CabinetSales'
+import { IProfileType } from '../CabinetSales'
 import { IUser } from 'src/types/me'
 import { getPrepareData } from '../CabinetSales/utils/getPrepareData'
-import { IVacancy } from 'src/types/vacancies'
 import ActiveVacanciesProfile from './components/ActiveVacanciesProfile'
+import { IActiveProfile } from '../ActiveProfile/ProfileManager'
 
 interface Props {
   user: IUser
@@ -20,10 +13,8 @@ interface Props {
 const CabinetVacancies: FC<Props> = ({ user }) => {
   const vacanciesUser = user?.vacancies
   const { salons, brands } = user.owner
-  const [type, setType] = useState<IPromotionsType>(null)
-  const [activeProfile, setActiveProfile] = useState<ISalon | IBrand | null>(
-    null,
-  )
+  const [type, setType] = useState<IProfileType>(null)
+  const [activeProfile, setActiveProfile] = useState<IActiveProfile>(null)
 
   const { profiles } = useMemo(
     () =>
@@ -38,18 +29,12 @@ const CabinetVacancies: FC<Props> = ({ user }) => {
 
   // Функция для обработки клика по профилю
   const handleProfileClick = (profile: (typeof profiles)[0]) => {
-    setType(profile.profileType as 'salon' | 'brand')
-    switch (profile.profileType) {
-      case 'salon':
-        const foundSalon = salons?.find(salon => salon.id === profile.id)
-        setActiveProfile(foundSalon || null)
-        break
-      case 'brand':
-        const foundBrand = brands?.find(brand => brand.id === profile.id)
-        setActiveProfile(foundBrand || null)
-        break
-      default:
-        setActiveProfile(null)
+    setType(profile.profileType as 'master' | 'salon')
+    const foundProfile = profiles.find(({ id }) => id === profile.id)
+    if (foundProfile) {
+      setActiveProfile(foundProfile)
+    } else {
+      setActiveProfile(null)
     }
   }
 

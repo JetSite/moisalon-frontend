@@ -1,5 +1,5 @@
 import { IPromotions } from 'src/types/promotions'
-import { IPromotionsType } from '..'
+import { IProfileType } from '..'
 import { IID } from 'src/types/common'
 import { IPhoto } from 'src/types'
 
@@ -26,7 +26,7 @@ export interface IInitialValuesSaleForm
 
 interface IGetInitialValuesSaleFormProps {
   sale: IPromotions | null
-  type: IPromotionsType
+  type: IProfileType
   profileID: IID
 }
 
