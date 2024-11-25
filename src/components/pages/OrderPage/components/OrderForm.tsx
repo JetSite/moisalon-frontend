@@ -85,7 +85,7 @@ const OrderForm: FC<IOrderForm> = ({
       formRef.current?.change('city', fullAddress.city)
       formRef.current?.change('address', fullAddress.value)
     }
-  }, [formRef.current, paymentType, deliveryType, fullAddress])
+  }, [paymentType, deliveryType, fullAddress])
 
   return (
     <>
@@ -175,7 +175,7 @@ const OrderForm: FC<IOrderForm> = ({
                           deliveryMethods.map(method => (
                             <ShippingItem
                               key={method.id}
-                              active={deliveryType == method.id}
+                              active={deliveryType === method.id}
                               onClick={() => setDeliveryType(method.id)}
                             >
                               {method.name}

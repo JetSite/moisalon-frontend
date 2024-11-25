@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import { laptopBreakpoint } from '../../../styles/variables'
-import { FC } from 'react'
+import { FC, MouseEvent } from 'react'
 import Link from 'next/link'
 
 const Wrapper = styled.div`
@@ -48,9 +48,14 @@ const BackButton: FC<Props> = ({
   return (
     <Wrapper
       as={noLink ? 'button' : Link}
-      shallow
+      {...(!noLink ? { shallow: true } : {})}
       href={href}
-      onClick={handleClick}
+      onClick={(e: MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
+        if (href && handleClick) {
+          e.preventDefault()
+        }
+        handleClick?.()
+      }}
     >
       <Icon alt="back" src="/arrow-back.svg" />
       <Text>{type}</Text>

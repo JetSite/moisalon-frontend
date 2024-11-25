@@ -44,6 +44,7 @@ export const getServerUser: IGetServerUser = async ctx => {
   const apolloClient = initializeApollo({ accessToken })
 
   let id: string | null = null
+  let user: StrapiDataObject | null = null
 
   const redirect = {
     destination: '/login',
@@ -84,12 +85,16 @@ export const getServerUser: IGetServerUser = async ctx => {
       redirect,
     }
   }
-  const userData = await apolloClient.query({
-    query: USER,
-    variables: { id },
-  })
-
-  const user: StrapiDataObject = userData.data.usersPermissionsUser
+  try {
+    const userData = await apolloClient.query({
+      query: USER,
+      variables: { id },
+    })
+    user = userData.data.usersPermissionsUser
+  } catch (error) {
+    console.error('Failed to fetch user details:', error)
+    return { redirect }
+  }
 
   return {
     apolloClient,

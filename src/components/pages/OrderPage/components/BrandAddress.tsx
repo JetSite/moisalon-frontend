@@ -33,9 +33,16 @@ const BrandAddress: FC<Props> = ({ brands }) => {
             width="100%"
             defaultState={mapData}
             onLoad={() => setLoading(false)}
+            onError={error => {
+              setLoading(false)
+              console.error('Map loading failed:', error)
+            }}
           >
             {coordinates.map((coordinate, i) => (
-              <Placemark key={i} geometry={coordinate} />
+              <Placemark
+                key={`${coordinate[0]}-${coordinate[1]}`}
+                geometry={coordinate}
+              />
             ))}
           </Map>
         </YMaps>

@@ -41,6 +41,15 @@ export const getServerSideProps: GetServerSideProps<
 
   const id: IID | null = ((user.data as StrapiDataObject) || null)?.id
 
+  if (!id) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  }
+
   const data = await Promise.allSettled([
     apolloClient.query({ query: GET_CART_BY_USER, variables: { id } }),
   ])

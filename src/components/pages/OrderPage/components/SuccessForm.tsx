@@ -56,8 +56,7 @@ const SuccessForm: FC<IProps> = ({
     window.scrollTo(0, 0)
   }, [])
 
-  const { cartContent, total, userInfo, address, comment, payment_method } =
-    successOrderValues
+  const { cartContent, total, userInfo, address, comment } = successOrderValues
 
   return (
     <>
@@ -110,8 +109,8 @@ const SuccessForm: FC<IProps> = ({
                   <ImageWrapper>
                     <img
                       src={
-                        cartItem?.product?.cover?.url
-                          ? ` ${PHOTO_URL}${cartItem.product.cover.url}`
+                        cartItem.product.cover?.url
+                          ? `${PHOTO_URL}${cartItem.product.cover.url}`
                           : '/cosmetic_placeholder.jpg'
                       }
                       alt="logo"

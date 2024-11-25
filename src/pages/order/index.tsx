@@ -57,6 +57,8 @@ export const getServerSideProps: GetServerSideProps<
   const cartData = await apolloClient.query({
     query: GET_CART_BY_USER,
     variables: { id: userID },
+    fetchPolicy: 'network-only',
+    errorPolicy: 'all',
   })
 
   if (cartData.error || cartData.errors) {

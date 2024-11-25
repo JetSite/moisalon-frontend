@@ -16,7 +16,7 @@ import {
   StrapiDataObject,
   flattenStrapiResponse,
 } from 'src/utils/flattenStrapiResponse'
-import { Nullable } from 'src/types/common'
+import { IID, Nullable } from 'src/types/common'
 import { IRentalRequest } from 'src/types/rentalRequest'
 import { DELETED_RENTAL_REQUESTS_FOR_USER } from 'src/api/graphql/rentalRequest/queries/getDeletedRequestsForUser'
 import { RENTAL_REQUESTS_FOR_SALON } from 'src/api/graphql/rentalRequest/queries/getRequestsForSalon'
@@ -74,7 +74,8 @@ export const getServerSideProps: GetServerSideProps<
 
   const prepareUser = flattenStrapiResponse(user)
   const id = user.id
-  const salonsID = prepareUser.salons.map((e: ISalon) => e.id)
+  const salonsID =
+    (prepareUser.salons?.map((e: ISalon) => e.id) as IID[] | null) || []
 
   const queries = [
     apolloClient.query({ query: getCities, variables: { itemsCount: 100 } }),
