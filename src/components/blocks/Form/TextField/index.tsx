@@ -60,7 +60,11 @@ const TextFieldAdapter = forwardRef<HTMLDivElement, Props>((props, ref) => {
   return (
     <TextFieldStyled
       inputRef={ref}
-      onWheel={e => (e.target as HTMLInputElement).blur()}
+      onWheel={e => {
+        if (type === 'number') {
+          ;(e.target as HTMLInputElement).blur()
+        }
+      }}
       fullWidth={fullWidth}
       InputLabelProps={{ shrink: type === 'date' || undefined }}
       value={value}
