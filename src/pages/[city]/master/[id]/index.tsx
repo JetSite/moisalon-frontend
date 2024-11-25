@@ -19,7 +19,10 @@ import { NoItemsText } from '../../../../styles/common'
 import { MASTER_PAGE } from 'src/api/graphql/master/queries/masterPage'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { getMasters } from 'src/api/graphql/master/queries/getMasters'
-import { getServicesByCategory } from 'src/utils/serviceCatalog'
+import {
+  IGroupedServices,
+  getServicesByCategory,
+} from 'src/utils/serviceCatalog'
 import useBaseStore from 'src/store/baseStore'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
@@ -70,7 +73,7 @@ const Master: FC<Props> = ({
   const [services, setServices] = useState<IServices[]>(master?.services || [])
 
   const isOwner = !!user?.owner?.masters?.find(e => e.id === master?.id)
-  const servicesData = getServicesByCategory(services)
+  const servicesData: IGroupedServices[] = getServicesByCategory(services)
 
   const [updateMaster] = useMutation(UPDATE_MASTER)
 
@@ -221,6 +224,7 @@ const Master: FC<Props> = ({
         {works?.length || isOwner ? (
           <>
             <Slider
+              id="portfolio"
               city={city}
               type="photos"
               items={works}
@@ -260,6 +264,7 @@ const Master: FC<Props> = ({
         ) : null}
         {diplomas?.length || isOwner ? (
           <Slider
+            id="diploms"
             city={city}
             type="photos"
             items={diplomas}

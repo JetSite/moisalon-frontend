@@ -14,12 +14,12 @@ import { useMutation } from '@apollo/client'
 import EditIcons from '../../../../../ui/EditIcons'
 import EditSalonServicesForClient from '../../../../Salon/EditSalonServicesForClient'
 import { IMaster } from 'src/types/masters'
-import { IGroupedServices } from 'src/types'
 import { IService, IServiceCategory, IServices } from 'src/types/services'
 import { UPDATE_MASTER } from 'src/api/graphql/master/mutations/updateMaster'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { ISalon } from 'src/types/salon'
 import { UPDATE_SALON } from 'src/api/graphql/salon/mutations/updateSalon'
+import { IGroupedServices } from 'src/utils/serviceCatalog'
 
 interface Props {
   servicesData: IGroupedServices[]
