@@ -133,7 +133,10 @@ export const useOrderCreate: UseOrderCreate = ({
   }
 
   const handleCreateOrder = async () => {
-    if (!successOrderValues || !addressID) return
+    if (!successOrderValues || !addressID) {
+      setErrors(['Необходимые данные для создания заказа отсутствуют'])
+      return
+    }
     setLoading(true)
     const { userInfo, cartContent, address, zipCode, city, ...orderValues } =
       successOrderValues
