@@ -94,7 +94,6 @@ export const getServerSideProps: GetServerSideProps<
 
   return addApolloState(apolloClient, {
     props: {
-      data,
       beautyCategories: data[0]?.data?.feedCategories,
       beautyAllContent: data[1]?.data?.feeds,
       bannerHooks: data[2]?.data?.bannerHooks,

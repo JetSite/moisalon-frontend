@@ -8,7 +8,7 @@ import {
 import RenderWorkplaceForm, {
   RenderWorkplaceFormProps,
 } from './Form/RenderWorkplaceForm'
-import Error from '../../../../../blocks/Form/Error'
+import ErrorPopup from '../../../../../blocks/Form/Error'
 import { FormGuardPopup } from 'src/components/blocks/Form/FormGuardPopup'
 import { useWorkplaceMutate } from '../../utils/useWorkplaceMutation'
 import removeUnchangedFields from 'src/utils/newUtils/removeUnchangedFields'
@@ -138,11 +138,7 @@ export const CreateWorkplace: FC<ICreateWorkplaceProps> = ({
           />
         )}
       />
-      <Error
-        errors={errors}
-        isOpen={isErrorPopupOpen}
-        setOpen={setErrorPopupOpen}
-      />
+      <ErrorPopup errors={errors} setErrors={setErrors} />
       <FormGuardPopup setDirtyForm={setDirtyForm} dirtyForm={dirtyForm} />
     </>
   )

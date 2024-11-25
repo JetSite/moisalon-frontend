@@ -18,7 +18,7 @@ const BrandAddress: FC<Props> = ({ brands }) => {
       {brands.length ? (
         <BrandsAddresses>
           {brands?.map(brand => (
-            <BrandsAddressWrap>
+            <BrandsAddressWrap key={brand.id}>
               {brand.name}
               <br />
               {brand.address}

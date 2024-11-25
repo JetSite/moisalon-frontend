@@ -29,13 +29,12 @@ const progress = new ProgressBar({
 
 export interface IAppProps {
   user?: StrapiDataObject
-  city?: ICity
+  cityData?: ICity
 }
 
-function MyApp({ Component, pageProps }: AppProps<PageProps<AppProps>>) {
+function MyApp({ Component, pageProps }: AppProps<IAppProps>) {
   const mobileMedia = useMedia({ maxWidth: 768 })
-  const apolloClient = useApollo(pageProps)
-
+  const apolloClient = useApollo({ props: pageProps })
   const router = useRouter()
 
   useEffect(() => {

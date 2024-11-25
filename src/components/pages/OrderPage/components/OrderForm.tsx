@@ -19,8 +19,8 @@ import {
   Right,
   Desc,
   FieldWrap,
-  ShipingWrap,
-  ShipingItem,
+  ShippingWrap,
+  ShippingItem,
   RadioWrap,
   RadioItem,
   TextAreaWrap,
@@ -47,7 +47,7 @@ export interface IOrderForm extends IErrorProps {
   setPaymentType: ISetState<IPaymentMethods['id']>
   brands: IBrand[]
   loading: boolean
-  intialValues: IInitialValuesOrderForm
+  initialValues: IInitialValuesOrderForm
   fullAddress: IAddressSuggestion | null
   setFullAddress: ISetState<IAddressSuggestion | null>
   onSubmit: (values: IInitialValuesOrderForm) => Promise<void>
@@ -65,7 +65,7 @@ const OrderForm: FC<IOrderForm> = ({
   errors,
   loading,
   setErrors,
-  intialValues,
+  initialValues,
   fullAddress,
   setFullAddress,
 }) => {
@@ -94,7 +94,7 @@ const OrderForm: FC<IOrderForm> = ({
         <Title>Оформление заказа</Title>
         {mobileMedia ? <Steps active={1} /> : null}
         <AutoFocusedForm<IInitialValuesOrderForm>
-          initialValues={intialValues}
+          initialValues={initialValues}
           onSubmit={onSubmit}
           subscription={{ values: true }}
           render={({ handleSubmit, form, pristine }) => {
@@ -145,6 +145,7 @@ const OrderForm: FC<IOrderForm> = ({
                         {paymentMethods ? (
                           paymentMethods.map(method => (
                             <RadioItem
+                              key={method.id}
                               active={method.id === paymentType}
                               onClick={() => setPaymentType(method.id)}
                             >
@@ -169,22 +170,23 @@ const OrderForm: FC<IOrderForm> = ({
                     </Left>
                     <Right>
                       <Desc>Способ доставки</Desc>
-                      <ShipingWrap>
+                      <ShippingWrap>
                         {deliveryMethods ? (
                           deliveryMethods.map(method => (
-                            <ShipingItem
+                            <ShippingItem
+                              key={method.id}
                               active={deliveryType == method.id}
                               onClick={() => setDeliveryType(method.id)}
                             >
                               {method.name}
-                            </ShipingItem>
+                            </ShippingItem>
                           ))
                         ) : (
-                          <ShipingItem active={deliveryType === '1'}>
+                          <ShippingItem active={deliveryType === '1'}>
                             {configOrderForm.defoultDeliveryTitle}
-                          </ShipingItem>
+                          </ShippingItem>
                         )}
-                      </ShipingWrap>
+                      </ShippingWrap>
                       {deliveryType !== '4' ? (
                         <Field
                           name="address"

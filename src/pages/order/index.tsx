@@ -10,15 +10,24 @@ import { IID, Nullable } from 'src/types/common'
 import { IAppProps } from '../_app'
 import { ICart } from 'src/types/product'
 import {
-  AttributesObject,
+  StrapiDataObject,
   flattenStrapiResponse,
 } from 'src/utils/flattenStrapiResponse'
-import { CART_BY_ID } from 'src/api/graphql/cart/queries/getCart'
+import { PAYMENT_METHODS } from 'src/api/graphql/paymentMethods/getPaymentMethods'
+import { IDeliveryMethods, IPaymentMethods } from 'src/types'
+import { ORDERS_DELIVERY_METHODS } from 'src/api/graphql/order/queries/orderDeliveryMethods'
+import { GET_CART_BY_USER } from 'src/api/graphql/cart/queries/getCartByUser'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 
-interface Props extends IOrderPageProps, IAppProps {}
+interface Props extends Omit<IOrderPageProps, 'user'>, IAppProps {}
 
-const Order: FC<Props> = props => {
-  return <OrderPage {...props} />
+const Order: FC<Props> = ({ user: userData, ...props }) => {
+  const { user } = useAuthStore(getStoreData)
+
+  if (!user) return null
+
+  return <OrderPage user={user} {...props} />
 }
 
 export const getServerSideProps: GetServerSideProps<
@@ -28,7 +37,7 @@ export const getServerSideProps: GetServerSideProps<
 
   const redirect = {
     destination: '/cart',
-    permanent: true,
+    permanent: false,
   }
 
   if ('redirect' in result) {
@@ -39,27 +48,49 @@ export const getServerSideProps: GetServerSideProps<
 
   const { user, apolloClient } = result as IGetServerUserSuccess
 
-  const cartID: IID = (user.data as AttributesObject)?.attributes?.cart?.id
+  const userID: IID | null = ((user.data as StrapiDataObject) || null)?.id
 
-  if (!cartID) {
+  if (!userID) {
     return { redirect }
   }
 
   const cartData = await apolloClient.query({
-    query: CART_BY_ID,
-    variables: { id: cartID },
+    query: GET_CART_BY_USER,
+    variables: { id: userID },
   })
 
   if (cartData.error || cartData.errors) {
     return { redirect }
   }
 
-  const cart: ICart = flattenStrapiResponse(cartData.data.cart)
+  const data = await Promise.allSettled([
+    apolloClient.query({ query: PAYMENT_METHODS }),
+    apolloClient.query({ query: ORDERS_DELIVERY_METHODS }),
+  ])
+
+  const paymentMethods: IPaymentMethods[] | null =
+    data[0].status === 'fulfilled'
+      ? flattenStrapiResponse(data[0].value.data.paymentMethods)
+      : null
+
+  const deliveryMethods: IDeliveryMethods[] | null =
+    data[1].status === 'fulfilled'
+      ? flattenStrapiResponse(data[1].value.data.orderDeliveryMethods)
+      : null
+
+  const cart: ICart | null =
+    flattenStrapiResponse(cartData.data.carts)?.[0] ?? null
+
+  if (!cart) {
+    return { redirect }
+  }
 
   return addApolloState<Nullable<Props>>(apolloClient, {
     props: {
       cart,
       user,
+      paymentMethods,
+      deliveryMethods,
     },
   })
 }

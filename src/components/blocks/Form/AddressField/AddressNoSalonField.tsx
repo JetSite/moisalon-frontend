@@ -83,7 +83,7 @@ const AddressNoSalonField: FC<IAddressNoSalonFieldProps> = ({
 
   useEffect(() => {
     if (!fullAddress) return
-    setClickCity && setClickCity(fullAddress.city || null)
+    setClickCity && setClickCity(fullAddress.city ?? null)
 
     if (onlyFull) {
       if (fullAddress.house) {
@@ -96,14 +96,18 @@ const AddressNoSalonField: FC<IAddressNoSalonFieldProps> = ({
       setFullAddress && setFullAddress(fullAddress)
     }
 
-    if (setCoordinates && fullAddress.geoLon && fullAddress.geoLat) {
+    if (
+      setCoordinates &&
+      typeof fullAddress.geoLon === 'number' &&
+      typeof fullAddress.geoLat === 'number'
+    ) {
       setMapCoordinate({
-        longitude: fullAddress.geoLon || 0,
-        latitude: fullAddress.geoLat || 0,
+        longitude: fullAddress.geoLon,
+        latitude: fullAddress.geoLat,
       })
       setCoordinates({
-        longitude: fullAddress.geoLon || 0,
-        latitude: fullAddress.geoLat || 0,
+        longitude: fullAddress.geoLon,
+        latitude: fullAddress.geoLat,
       })
     }
   }, [fullAddress, setCoordinates, setClickCity, setFullAddress])

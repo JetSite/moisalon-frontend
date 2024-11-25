@@ -30,10 +30,7 @@ export type IGetServerUserResult =
   | IGetServerUserSuccess
   | IGetServerUserRedirect
 
-type IGetServerUser = (
-  props: INextContext,
-  onlyMe?: boolean,
-) => Promise<IGetServerUserResult>
+type IGetServerUser = (props: INextContext) => Promise<IGetServerUserResult>
 
 type RedirectResult = {
   redirect: {
@@ -46,26 +43,45 @@ export const getServerUser: IGetServerUser = async ctx => {
   const accessToken = getCookie(authConfig.tokenKeyName, ctx)
   const apolloClient = initializeApollo({ accessToken })
 
-  if (!accessToken) {
+  let id: string | null = null
+
+  const redirect = {
+    destination: '/login',
+    permanent: false,
+  }
+
+  if (accessToken && typeof accessToken === 'string') {
+    try {
+      // Basic JWT format validation
+      const [header, payload, signature] = accessToken.split('.')
+      if (!header || !payload || !signature) {
+        throw new Error('Invalid token format')
+      }
+    } catch (error) {
+      console.error('Invalid token:', error)
+      return {
+        redirect,
+      }
+    }
+  } else {
     return {
-      redirect: {
-        destination: '/login',
-        permanent: true,
-      },
+      redirect,
     }
   }
 
-  const meData = await apolloClient.query({
-    query: ME,
-  })
-  const id = meData.data?.me.id || null
+  try {
+    const meData = await apolloClient.query({
+      query: ME,
+    })
+    id = meData.data?.me.id || null
+  } catch (error) {
+    console.error('Failed to fetch user data:', error)
+    return { redirect }
+  }
 
   if (!id) {
     return {
-      redirect: {
-        destination: '/login',
-        permanent: true,
-      },
+      redirect,
     }
   }
   const userData = await apolloClient.query({

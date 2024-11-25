@@ -82,9 +82,9 @@ export const RadioWrap = styled.ul`
   margin-bottom: 50px;
 `
 
-export const ShipingWrap = styled(RadioWrap)``
+export const ShippingWrap = styled(RadioWrap)``
 
-export const ShipingItem = styled.li<{ active?: boolean }>`
+export const ShippingItem = styled.li<{ active?: boolean }>`
   border: ${props => (props.active ? `1px solid ${red}` : '1px solid #000000')};
   border-radius: 50px;
   background: ${props => (props.active ? red : '#fff')};
@@ -112,7 +112,7 @@ export const MapWrapper = styled.div<{ loading: boolean }>`
       : 'none'};
 `
 
-export const RadioItem = styled(ShipingItem)``
+export const RadioItem = styled(ShippingItem)``
 
 export const TextAreaWrap = styled.div`
   width: 100%;

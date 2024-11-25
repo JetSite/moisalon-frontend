@@ -5,7 +5,7 @@ import CreatePageSkeleton from '../../components/ui/ContentSkeleton/CreatePageSk
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 import { getSalonPage } from 'src/api/graphql/salon/queries/getSalon'
-import { PAYMENT_METHODS } from 'src/api/graphql/salon/queries/getPaymentMethods'
+import { PAYMENT_METHODS } from 'src/api/graphql/paymentMethods/getPaymentMethods'
 import { RENTAL_PERIODS } from 'src/api/graphql/salon/queries/getRentalPeriods'
 import { GetServerSideProps, NextPage } from 'next'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'

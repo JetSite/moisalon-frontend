@@ -1,19 +1,24 @@
 import React, { FC } from 'react'
 import MainLayout from '../../layouts/MainLayout'
-import { getStoreData } from 'src/store/utils'
-import useAuthStore from 'src/store/authStore'
 import Cart, { ICartProps } from 'src/components/pages/Cart'
 import { GetServerSideProps } from 'next'
-import { Nullable } from 'src/types/common'
-import { getCookie } from 'cookies-next'
-import { authConfig } from 'src/api/authConfig'
-import { initializeApollo } from 'src/api/apollo-client'
-import { ME } from 'src/api/graphql/me/queries/getMe'
+import { IID, Nullable } from 'src/types/common'
 import { GET_CART_BY_USER } from 'src/api/graphql/cart/queries/getCartByUser'
-import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import {
+  StrapiDataObject,
+  flattenStrapiResponse,
+} from 'src/utils/flattenStrapiResponse'
 import { ICart } from 'src/types/product'
+import {
+  IGetServerUserSuccess,
+  getServerUser,
+} from 'src/api/utils/getServerUser'
+import { addApolloState } from 'src/api/apollo-client'
+import { IAppProps } from '../_app'
 
-const CartPage: FC<ICartProps> = ({ data }) => {
+interface Props extends IAppProps, ICartProps {}
+
+const CartPage: FC<Props> = ({ data }) => {
   return (
     <MainLayout>
       <Cart data={data} />
@@ -23,23 +28,18 @@ const CartPage: FC<ICartProps> = ({ data }) => {
 
 export const getServerSideProps: GetServerSideProps<
   Nullable<ICartProps>
-> = async context => {
-  const accessToken = getCookie(authConfig.tokenKeyName, context)
-  const apolloClient = initializeApollo({ accessToken })
+> = async ctx => {
+  const result = await getServerUser(ctx)
 
-  if (!accessToken) {
+  if ('redirect' in result) {
     return {
-      redirect: {
-        destination: '/login',
-        permanent: true,
-      },
+      redirect: result.redirect,
     }
   }
 
-  const meData = await apolloClient.query({
-    query: ME,
-  })
-  const id = meData.data?.me.id || null
+  const { user, apolloClient } = result as IGetServerUserSuccess
+
+  const id: IID | null = ((user.data as StrapiDataObject) || null)?.id
 
   const data = await Promise.allSettled([
     apolloClient.query({ query: GET_CART_BY_USER, variables: { id } }),
@@ -50,9 +50,9 @@ export const getServerSideProps: GetServerSideProps<
       ? (flattenStrapiResponse(data[0].value.data.carts) as ICart[])[0] || null
       : null
 
-  return {
-    props: { data: cart },
-  }
+  return addApolloState<Nullable<Props>>(apolloClient, {
+    props: { data: cart, user },
+  })
 }
 
 export default CartPage

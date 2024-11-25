@@ -26,7 +26,7 @@ import {
 } from './styles'
 import Button from '../../../../ui/Button'
 import { useRouter } from 'next/router'
-import Error from '../../../../blocks/Form/Error'
+import ErrorPopup from '../../../../blocks/Form/Error'
 import scrollIntoView from 'scroll-into-view'
 import { MobileVisible, MobileHidden } from '../../../../../styles/common'
 import useAuthStore from 'src/store/authStore'
@@ -130,11 +130,7 @@ const Login = () => {
                 </Form>
               </FormWrapper>
             </Content>
-            <Error
-              errors={errors}
-              isOpen={isErrorPopupOpen}
-              setOpen={setErrorPopupOpen}
-            />
+            <ErrorPopup errors={errors} setErrors={setErrors} />
           </Container>
         </Wrapper>
       )}

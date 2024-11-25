@@ -52,7 +52,7 @@ const OrderPage: FC<IOrderPageProps> = ({
     loading,
     brands,
     successPage,
-    intialValues,
+    initialValues,
     deliveryType,
     setDeliveryType,
     paymentType,
@@ -122,7 +122,7 @@ const OrderPage: FC<IOrderPageProps> = ({
             />
           ) : (
             <OrderForm
-              intialValues={intialValues}
+              initialValues={initialValues}
               deliveryMethods={deliveryMethods}
               brands={brands}
               paymentMethods={paymentMethods}
