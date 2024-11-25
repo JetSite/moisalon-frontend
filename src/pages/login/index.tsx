@@ -4,9 +4,7 @@ import { GetServerSideProps, NextPage } from 'next'
 import { getCookie } from 'cookies-next'
 import { authConfig } from 'src/api/authConfig'
 
-interface Props {}
-
-const Login: NextPage<Props> = () => {
+const Login: NextPage = () => {
   return <LoginPage />
 }
 

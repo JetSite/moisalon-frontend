@@ -13,7 +13,7 @@ export const getMapCoordinates: IGetMapCoordinates = brands => {
     zoom: 5,
     behaviors: ['default', 'scrollZoom'],
   }
-  if (!isArray(brands) && brands.length) return [[], mapData]
+  if (!isArray(brands) && !brands.length) return [[], mapData]
   const coordinates = brands
     .filter(
       brand =>
@@ -26,10 +26,12 @@ export const getMapCoordinates: IGetMapCoordinates = brands => {
     )
     .map(brand => [brand.latitude, brand.longitude] as ICoordinate)
 
-  mapData = {
-    center: coordinates[0],
-    zoom: 10,
-    behaviors: ['default', 'scrollZoom'],
+  if (coordinates.length) {
+    mapData = {
+      center: coordinates[0],
+      zoom: 10,
+      behaviors: ['default', 'scrollZoom'],
+    }
   }
   return [coordinates, mapData]
 }

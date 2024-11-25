@@ -1,7 +1,7 @@
 import { FC, useRef, useState } from 'react'
 import { BrandsAddressWrap, BrandsAddresses, MapWrapper } from '../styles'
 import { IBrand } from 'src/types/brands'
-import { YMaps, Map, Placemark } from '@pbe/react-yandex-maps'
+import { YMaps, Map as YMapsMap, Placemark } from '@pbe/react-yandex-maps'
 import { getMapCoordinates } from 'src/utils/newUtils/getMapCoordinates'
 
 interface Props {
@@ -18,7 +18,7 @@ const BrandAddress: FC<Props> = ({ brands }) => {
       {brands.length ? (
         <BrandsAddresses>
           {brands?.map(brand => (
-            <BrandsAddressWrap>
+            <BrandsAddressWrap key={brand.id}>
               {brand.name}
               <br />
               {brand.address}
@@ -28,16 +28,23 @@ const BrandAddress: FC<Props> = ({ brands }) => {
       ) : null}
       <MapWrapper loading={loading}>
         <YMaps>
-          <Map
+          <YMapsMap
             instanceRef={mapRef}
             width="100%"
             defaultState={mapData}
             onLoad={() => setLoading(false)}
+            onError={error => {
+              setLoading(false)
+              console.error('Map loading failed:', error)
+            }}
           >
             {coordinates.map((coordinate, i) => (
-              <Placemark key={i} geometry={coordinate} />
+              <Placemark
+                key={`${coordinate[0]}-${coordinate[1]}`}
+                geometry={coordinate}
+              />
             ))}
-          </Map>
+          </YMapsMap>
         </YMaps>
       </MapWrapper>
     </>

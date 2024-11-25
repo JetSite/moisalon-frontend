@@ -44,7 +44,6 @@ const Login = () => {
   const [valuePassword, setValuePassword] = useState<string>('')
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const [errors, setErrors] = useState<string[] | null>(null)
-  const [isErrorPopupOpen, setErrorPopupOpen] = useState<boolean>(false)
 
   const [Login] = useMutation(login, {
     onCompleted: data => {
@@ -55,7 +54,6 @@ const Login = () => {
     },
     onError: error => {
       setErrors([error.message])
-      setErrorPopupOpen(true)
     },
   })
 

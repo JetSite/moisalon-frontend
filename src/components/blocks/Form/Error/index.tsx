@@ -23,7 +23,7 @@ interface Props extends IErrorProps {
   title?: IChildren
 }
 
-const Error: FC<Props> = ({
+const ErrorPopup: FC<Props> = ({
   errors,
   setErrors,
   title = 'Что-то пошло не так!',
@@ -66,4 +66,4 @@ const Error: FC<Props> = ({
   )
 }
 
-export default Error
+export default ErrorPopup

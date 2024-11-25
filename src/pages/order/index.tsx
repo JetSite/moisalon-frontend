@@ -37,7 +37,7 @@ export const getServerSideProps: GetServerSideProps<
 
   const redirect = {
     destination: '/cart',
-    permanent: true,
+    permanent: false,
   }
 
   if ('redirect' in result) {
@@ -48,15 +48,17 @@ export const getServerSideProps: GetServerSideProps<
 
   const { user, apolloClient } = result as IGetServerUserSuccess
 
-  const cartID: IID | null = ((user.data as StrapiDataObject) || null)?.id
+  const userID: IID | null = ((user.data as StrapiDataObject) || null)?.id
 
-  if (!cartID) {
+  if (!userID) {
     return { redirect }
   }
 
   const cartData = await apolloClient.query({
     query: GET_CART_BY_USER,
-    variables: { id: cartID },
+    variables: { id: userID },
+    fetchPolicy: 'network-only',
+    errorPolicy: 'all',
   })
 
   if (cartData.error || cartData.errors) {

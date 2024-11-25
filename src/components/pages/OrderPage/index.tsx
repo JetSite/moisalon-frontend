@@ -44,7 +44,7 @@ const OrderPage: FC<IOrderPageProps> = ({
   user,
 }) => {
   const {
-    handleCreateOrderAdress,
+    handleCreateOrderAddress,
     handleCreateOrder,
     successOrderValues,
     errors,
@@ -52,7 +52,7 @@ const OrderPage: FC<IOrderPageProps> = ({
     loading,
     brands,
     successPage,
-    intialValues,
+    initialValues,
     deliveryType,
     setDeliveryType,
     paymentType,
@@ -90,7 +90,7 @@ const OrderPage: FC<IOrderPageProps> = ({
       return
     }
 
-    handleCreateOrderAdress(values)
+    handleCreateOrderAddress(values)
   }
 
   const onSuccess = () => {
@@ -122,7 +122,7 @@ const OrderPage: FC<IOrderPageProps> = ({
             />
           ) : (
             <OrderForm
-              intialValues={intialValues}
+              initialValues={initialValues}
               deliveryMethods={deliveryMethods}
               brands={brands}
               paymentMethods={paymentMethods}

@@ -23,7 +23,7 @@ import { UPDATE_ORDER_ADDRESS } from 'src/api/graphql/order/mutations/updateOrde
 
 export interface IUseOrderCreate
   extends Pick<IErrorProps, 'errors' | 'setErrors'> {
-  handleCreateOrderAdress: HandleCreateOrderAdress
+  handleCreateOrderAddress: HandleCreateOrderAddress
   loading: boolean
   handleCreateOrder: () => void
   brands: IBrand[]
@@ -31,7 +31,7 @@ export interface IUseOrderCreate
   setOrderForm: ISetState<boolean>
   orderForm: boolean
   successPage: boolean
-  intialValues: IInitialValuesOrderForm
+  initialValues: IInitialValuesOrderForm
   deliveryType: IDeliveryMethods['id']
   setDeliveryType: ISetState<IDeliveryMethods['id']>
   paymentType: IPaymentMethods['id']
@@ -40,7 +40,7 @@ export interface IUseOrderCreate
   setFullAddress: ISetState<IAddressSuggestion | null>
 }
 
-type HandleCreateOrderAdress = (values: IInitialValuesOrderForm) => void
+type HandleCreateOrderAddress = (values: IInitialValuesOrderForm) => void
 
 interface IUseOrderCreateProps {
   cart: ICart
@@ -77,7 +77,7 @@ export const useOrderCreate: UseOrderCreate = ({
   useEffect(() => {
     const allBrands = cart.cartContent.map(item => item.product.brand)
     setBrands(filterCheckedBrands(cart.cartContent, allBrands))
-  }, [])
+  }, [cart.cartContent])
 
   const onError = (error: ApolloError) => {
     setErrors(['Ошибка: ' + error.message])
@@ -98,7 +98,7 @@ export const useOrderCreate: UseOrderCreate = ({
   const [updateOrderAddress] = useMutation(UPDATE_ORDER_ADDRESS, { onError })
   const [removeCart] = useMutation(REMOVE_CART, { onError })
 
-  const intialValues = useMemo(
+  const initialValues = useMemo(
     () =>
       getInitialValues({
         user,
@@ -107,7 +107,7 @@ export const useOrderCreate: UseOrderCreate = ({
     [user, successOrderValues],
   )
 
-  const handleCreateOrderAdress: HandleCreateOrderAdress = values => {
+  const handleCreateOrderAddress: HandleCreateOrderAddress = values => {
     const { successOrderValues, input } = getPrepareOrder({
       values,
       cart,
@@ -133,7 +133,10 @@ export const useOrderCreate: UseOrderCreate = ({
   }
 
   const handleCreateOrder = async () => {
-    if (!successOrderValues || !addressID) return
+    if (!successOrderValues || !addressID) {
+      setErrors(['Необходимые данные для создания заказа отсутствуют'])
+      return
+    }
     setLoading(true)
     const { userInfo, cartContent, address, zipCode, city, ...orderValues } =
       successOrderValues
@@ -177,7 +180,7 @@ export const useOrderCreate: UseOrderCreate = ({
   }
 
   return {
-    handleCreateOrderAdress,
+    handleCreateOrderAddress,
     handleCreateOrder,
     successOrderValues,
     errors,
@@ -186,7 +189,7 @@ export const useOrderCreate: UseOrderCreate = ({
     brands,
     successPage,
     setOrderForm,
-    intialValues,
+    initialValues,
     deliveryType,
     setDeliveryType,
     paymentType,

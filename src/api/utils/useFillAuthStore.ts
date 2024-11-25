@@ -28,8 +28,10 @@ export const useFillAuthStore: IUseCollectAuth = ({ pageCity }) => {
       ).selected_city
       setCity(newCity)
     },
-    onError: () => {
-      new Error('Error in collect Auth Store, change select city')
+    onError: error => {
+      const errorMessage = `Failed to update selected city: ${error.message}`
+      console.error(errorMessage)
+      throw new Error(errorMessage)
     },
   })
 
