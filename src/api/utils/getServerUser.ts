@@ -30,10 +30,7 @@ export type IGetServerUserResult =
   | IGetServerUserSuccess
   | IGetServerUserRedirect
 
-type IGetServerUser = (
-  props: INextContext,
-  onlyMe?: boolean,
-) => Promise<IGetServerUserResult>
+type IGetServerUser = (props: INextContext) => Promise<IGetServerUserResult>
 
 type RedirectResult = {
   redirect: {
@@ -97,6 +94,12 @@ export const getServerUser: IGetServerUser = async ctx => {
   } catch (error) {
     console.error('Failed to fetch user details:', error)
     return { redirect }
+  }
+
+  if (!user) {
+    return {
+      redirect,
+    }
   }
 
   return {

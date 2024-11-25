@@ -424,7 +424,7 @@ export const MasterInfo = styled.div`
 `
 
 export const SalonCardWrapper = styled.li`
-  width: 373px;
+  width: 372px;
   height: 100%;
   cursor: pointer;
 

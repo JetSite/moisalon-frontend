@@ -180,7 +180,7 @@ export const FavoriteIcon = styled.button<{ isFavorite: boolean }>`
 `
 
 export const SkeletonSalonItem = styled(Skeleton)`
-  width: 373px;
+  width: 372px;
   height: 360px;
   @media (max-width: ${laptopBreakpoint}) {
     width: 280px;
