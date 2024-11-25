@@ -69,11 +69,6 @@ export interface IRating {
   rating_value: { id: IID }
 }
 
-export interface IGroupedServices {
-  category: string
-  services: IServices[]
-}
-
 export interface ICountry {
   id: IID
   name: string

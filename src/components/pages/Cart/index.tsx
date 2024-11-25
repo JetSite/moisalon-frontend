@@ -131,6 +131,7 @@ const Cart: FC<ICartProps> = ({ data }) => {
               </Content>
             </ProductsWrap>
             <CartManager
+              loading={loading}
               underMinOrderBrands={underMinOrderBrands}
               isLogin={!!user?.info}
               brands={brands}

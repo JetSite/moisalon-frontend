@@ -73,6 +73,7 @@ interface Props {
   noPadding?: boolean
   noAllPadding?: boolean
   city: ICity
+  id?: string
 }
 
 const Slider: FC<Props> = ({
@@ -100,6 +101,7 @@ const Slider: FC<Props> = ({
   noPadding = false,
   noAllPadding = false,
   city,
+  id,
 }) => {
   const navigationPrevRef = useRef(null)
   const navigationNextRef = useRef(null)
@@ -163,7 +165,7 @@ const Slider: FC<Props> = ({
   ])
 
   return (
-    <Wrapper id={type} load={loading} type={type} bgColor={bgColor}>
+    <Wrapper id={id ?? type} load={loading} type={type} bgColor={bgColor}>
       <MainContainer>
         {!loading ? (
           <Content
@@ -234,7 +236,7 @@ const Slider: FC<Props> = ({
                         style={{
                           minHeight: '100%',
                           height: 'auto',
-                          width: 'auto',
+                          width: '100%',
                         }}
                       >
                         {firstSlide}

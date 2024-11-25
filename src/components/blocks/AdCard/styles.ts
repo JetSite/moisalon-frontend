@@ -5,7 +5,7 @@ import { laptopBreakpoint, red } from '../../../styles/variables'
 export const Wrapper = styled.div`
   position: relative;
   width: 100%;
-  width: 372.5px;
+  width: 372px;
   border-radius: 5px;
   background: #ffffff;
   overflow: hidden;
@@ -26,7 +26,7 @@ export const Wrapper = styled.div`
   }
 `
 
-export const ImageWrap = styled.div<{background: string}>`
+export const ImageWrap = styled.div<{ background: string }>`
   background: ${props => props.background};
   height: 195px;
   background-size: cover;
@@ -180,7 +180,7 @@ export const FavoriteIcon = styled.div`
 `
 
 export const SkeletonSalonItem = styled(Skeleton)`
-  width: 373px;
+  width: 372px;
   height: 360px;
   @media (max-width: ${laptopBreakpoint}) {
     width: 280px;

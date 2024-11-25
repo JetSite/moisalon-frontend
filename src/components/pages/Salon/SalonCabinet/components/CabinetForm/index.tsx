@@ -15,7 +15,7 @@ import { getStoreData } from 'src/store/utils'
 
 const CabinetForm = ({ allTabs, ref1, ref2, ref3, salonData, salonId }) => {
   const { catalogs } = useBaseStore(getStoreData)
-  const [errors, setErrors] = useState(null)
+  const [errors, setErrors] = useState<string[] | null>(null)
   const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
 
   const salonActivitiesCatalog = catalogOrDefault(
@@ -48,7 +48,6 @@ const CabinetForm = ({ allTabs, ref1, ref2, ref3, salonData, salonId }) => {
             <form onSubmit={handleSubmit} ref={allTabs}>
               <TitleServicesMobile>Услуги</TitleServicesMobile>
               <ServicesList
-                ref1={ref1}
                 specializations={salonSpecializations}
                 serviceCatalog={salonActivitiesCatalog}
               />

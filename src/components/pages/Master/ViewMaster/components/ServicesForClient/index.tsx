@@ -15,7 +15,6 @@ import {
 } from './styled'
 import EditIcons from '../../../../../ui/EditIcons'
 import { updateServiceMasterMutation } from '../../../../../../_graphql-legacy/master/updateServiceMasterMutation'
-import { IGroupedServices } from 'src/types'
 import { IMaster } from 'src/types/masters'
 import EditSalonServicesForClient from '../../../../Salon/EditSalonServicesForClient'
 import { IService, IServiceCategory, IServices } from 'src/types/services'
@@ -23,6 +22,7 @@ import { UPDATE_MASTER } from 'src/api/graphql/master/mutations/updateMaster'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { ISalon } from 'src/types/salon'
 import { UPDATE_SALON } from 'src/api/graphql/salon/mutations/updateSalon'
+import { IGroupedServices } from 'src/utils/serviceCatalog'
 
 interface Props {
   servicesData: IGroupedServices[]

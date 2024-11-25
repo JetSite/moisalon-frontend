@@ -96,6 +96,12 @@ export const getServerUser: IGetServerUser = async ctx => {
     return { redirect }
   }
 
+  if (!user) {
+    return {
+      redirect,
+    }
+  }
+
   return {
     apolloClient,
     user,

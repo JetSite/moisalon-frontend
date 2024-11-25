@@ -4,8 +4,7 @@ import { laptopBreakpoint } from '../../../styles/variables'
 
 export const Wrapper = styled.div`
   position: relative;
-  width: 100%;
-  max-width: 372.5px;
+  width: 372px;
   border-radius: 5px;
   background: #ffffff;
   overflow: hidden;
@@ -181,7 +180,7 @@ export const FavoriteIcon = styled.button<{ isFavorite: boolean }>`
 `
 
 export const SkeletonSalonItem = styled(Skeleton)`
-  width: 373px;
+  width: 372px;
   height: 360px;
   @media (max-width: ${laptopBreakpoint}) {
     width: 280px;
