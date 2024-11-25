@@ -51,49 +51,62 @@ export interface ICoordinate {
 export interface IAddressNoSalonFieldProps
   extends Pick<FieldRenderProps<any, HTMLElement>, 'input' | 'meta'> {
   fullWidth?: boolean
-  salonId?: string | null
   label: string
   noMap?: boolean
   view?: boolean
   setClickCity?: ISetState<string | null>
-  setClickAddress?: ISetState<IAddressSuggestion | null>
+  setFullAddress?: ISetState<IAddressSuggestion | null>
   onlyCity?: boolean
   setCoordinates?: ISetState<ICoordinate | null>
+  helperText?: string
+  onlyFull?: boolean
 }
 
 const AddressNoSalonField: FC<IAddressNoSalonFieldProps> = ({
   label = 'Адрес',
   fullWidth = true,
-  salonId = null,
   view,
   onlyCity,
   setCoordinates,
   setClickCity,
-  setClickAddress,
+  setFullAddress,
+  helperText,
+  onlyFull,
   ...rest
 }) => {
-  const [address, setAddres] = useState<ICoordinate | null>(null)
-  const { suggestions, coordinates, loading } = useAddressSuggestions(
+  const [mapCoordinate, setMapCoordinate] = useState<ICoordinate | null>(null)
+  const [isError, setIsError] = useState(false)
+  const { suggestions, fullAddress, loading } = useAddressSuggestions(
     rest.input.value,
     onlyCity,
   )
 
   useEffect(() => {
-    setClickCity && setClickCity(coordinates?.city || null)
-    if (setClickAddress) {
-      setClickAddress(coordinates)
+    if (!fullAddress) return
+    setClickCity && setClickCity(fullAddress.city || null)
+
+    if (onlyFull) {
+      if (fullAddress.house) {
+        setIsError(false)
+        setFullAddress && setFullAddress(fullAddress)
+      } else {
+        setIsError(true)
+      }
+    } else {
+      setFullAddress && setFullAddress(fullAddress)
     }
-    if (setCoordinates && coordinates?.geoLon && coordinates?.geoLat) {
-      setAddres({
-        longitude: coordinates?.geoLon || 0,
-        latitude: coordinates?.geoLat || 0,
+
+    if (setCoordinates && fullAddress.geoLon && fullAddress.geoLat) {
+      setMapCoordinate({
+        longitude: fullAddress.geoLon || 0,
+        latitude: fullAddress.geoLat || 0,
       })
       setCoordinates({
-        longitude: coordinates?.geoLon || 0,
-        latitude: coordinates?.geoLat || 0,
+        longitude: fullAddress.geoLon || 0,
+        latitude: fullAddress.geoLat || 0,
       })
     }
-  }, [coordinates, setCoordinates, setClickCity, setClickAddress, setAddres])
+  }, [fullAddress, setCoordinates, setClickCity, setFullAddress])
 
   return (
     <AddressWrap noMap={!rest.noMap}>
@@ -103,10 +116,12 @@ const AddressNoSalonField: FC<IAddressNoSalonFieldProps> = ({
         label={label}
         suggestions={suggestions}
         loading={loading}
+        meta={{ ...rest.meta, error: isError }}
+        helperText={helperText}
       />
-      {!rest.noMap && address ? (
+      {!rest.noMap && mapCoordinate ? (
         <MapWrap>
-          <Map view={view} address={address} />
+          <Map view={view} address={mapCoordinate} />
         </MapWrap>
       ) : null}
     </AddressWrap>

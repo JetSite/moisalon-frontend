@@ -30,6 +30,7 @@ export const getDadataAddress: IGetDadataAddress = async query => {
         value: e.value,
         city: e.data.city || null,
         zipcode: e.data.postal_code || null,
+        house: e.data.house,
       }))
     }
   } catch (error) {

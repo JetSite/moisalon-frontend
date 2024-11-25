@@ -13,18 +13,20 @@ import { getPrepareUser } from './utils/getPrepareUser'
 import { useShallow } from 'zustand/react/shallow'
 import MainSkeleton from 'src/components/ui/ContentSkeleton/MainSkeleton'
 import { PageProps } from './apollo-client'
+import { useFillAuthStore } from './utils/useFillAuthStore'
 import { IAppProps } from 'src/pages/_app'
-import { useCollectAuth } from './utils/useCollectAuth'
 
 const AuthProvider: FC<{
   children: IChildren
-  pageProps: PageProps<IAppProps>
+  pageProps: IAppProps
 }> = ({ children, pageProps }) => {
-  const pageCity = pageProps.props.city ?? null
+  const pageCity = pageProps.cityData ?? null
   const router = useRouter()
   const accessToken = getCookie(authConfig.tokenKeyName)
   const { me, loading, user } = useAuthStore(useShallow(getStoreData))
   const { setMe, setLoading, logout } = useAuthStore(useShallow(getStoreEvent))
+
+  const fillAuthStore = useFillAuthStore({ pageCity })
 
   const onError = () => {
     logout(router, '/login')
@@ -44,10 +46,8 @@ const AuthProvider: FC<{
       const prepareUser = getPrepareUser(
         flattenStrapiResponse(data.usersPermissionsUser),
       )
-
       if (prepareUser && !user) {
-        debugger
-        useCollectAuth({ prepareUser, pageCity })
+        fillAuthStore(prepareUser)
       }
     },
     onError,
@@ -55,15 +55,16 @@ const AuthProvider: FC<{
   })
 
   useEffect(() => {
-    if (user || !accessToken) return
+    if (user || !accessToken) {
+      setLoading(false)
+      return
+    }
 
-    // const pageUser = pageProps.user
-    const pageUser = pageProps.props.user || null
+    const pageUser = pageProps.user || null
     const prepareUser = getPrepareUser(pageUser)
 
     if (prepareUser) {
-      debugger
-      useCollectAuth({ prepareUser, pageCity })
+      fillAuthStore(prepareUser)
       return
     }
     if (router.asPath !== authConfig.notAuthLink) {

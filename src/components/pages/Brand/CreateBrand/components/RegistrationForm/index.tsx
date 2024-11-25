@@ -1,8 +1,8 @@
-import { useState, FC, RefObject, useEffect, useMemo } from 'react'
+import { useState, FC, RefObject, useEffect, useMemo, useRef } from 'react'
 import { Wrapper, Title } from './styled'
 import { MobileVisible, MobileHidden } from '../../../../../../styles/common'
 import AutoFocusedForm from '../../../../../blocks/Form/AutoFocusedForm'
-import Error from '../../../../../blocks/Form/Error'
+import ErrorPopup from '../../../../../blocks/Form/Error'
 import Button from '../../../../../ui/Button'
 import About from './components/About'
 import Socials from './components/Socials'
@@ -17,6 +17,7 @@ import { getPrepareInputBrandForm } from '../utils/getPrepareInputBrandForm'
 import { useBrandMutate } from '../utils/useBrandMutate'
 import { ICoordinate } from 'src/components/blocks/Form/AddressField/AddressNoSalonField'
 import { useForm } from 'react-final-form'
+import { FormApi } from 'final-form'
 
 interface Props extends CreateBrandProps {
   allTabs: RefObject<HTMLFormElement>
@@ -46,11 +47,10 @@ const RegistrationForm: FC<Props> = ({
   const [citiesArray, setCitiesArray] = useState<ICity[]>(cities)
   const [countriesArray, setCountriesArray] = useState<ICountry[]>(countries)
   const [errors, setErrors] = useState<string[] | null>(null)
-  const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
   const [selectCity, setSelectCity] = useState<string | null>(null)
   const [selectCountry, setSelectCountry] = useState<string | null>(null)
   const [coordinate, setCoordinates] = useState<ICoordinate | null>(null)
-  const form = useForm()
+  const formRef = useRef<FormApi<IInitialValuesBrandForm>>()
 
   const initialValues = useMemo<IInitialValuesBrandForm>(
     () => getInitialValuesBrandForm(brand),
@@ -59,7 +59,6 @@ const RegistrationForm: FC<Props> = ({
 
   const { loading: fetchLoading, handleCreateOrUpdateBrand } = useBrandMutate({
     setErrors,
-    setErrorPopupOpen,
   })
 
   const onSubmit = (values: IInitialValuesBrandForm) => {
@@ -67,13 +66,11 @@ const RegistrationForm: FC<Props> = ({
       setErrors([
         'Выберите адрес представительства бренда из выпадающего списка',
       ])
-      setErrorPopupOpen(true)
       handleClickNextTab(0)
       return
     }
     if (!selectCountry) {
       setErrors(['Выберите страну производства бренда из выпадающего списка'])
-      setErrorPopupOpen(true)
       handleClickNextTab(0)
 
       return
@@ -81,7 +78,6 @@ const RegistrationForm: FC<Props> = ({
     if (!logo) {
       setNoPhotoError(true)
       setErrors(['Необходимо добавить логотип бренда'])
-      setErrorPopupOpen(true)
       return
     }
 
@@ -100,7 +96,8 @@ const RegistrationForm: FC<Props> = ({
   }
 
   useEffect(() => {
-    const unsubscribe = form.subscribe(
+    if (!formRef.current) return
+    const unsubscribe = formRef.current.subscribe(
       ({ dirty }) => {
         const isNewLogo = !!logo && brand?.logo && logo.id !== brand.logo.id
         isNewLogo ? setDirtyForm(true) : setDirtyForm(dirty)
@@ -108,7 +105,7 @@ const RegistrationForm: FC<Props> = ({
       { dirty: true },
     )
     return unsubscribe
-  }, [form, logo, brand, setDirtyForm])
+  }, [formRef, logo, brand, setDirtyForm])
 
   return (
     <Wrapper>
@@ -117,7 +114,8 @@ const RegistrationForm: FC<Props> = ({
         onSubmit={onSubmit}
         initialValues={initialValues}
         keepDirtyOnReinitialize
-        render={({ handleSubmit }) => {
+        render={({ handleSubmit, form }) => {
+          formRef.current = form
           return (
             <form onSubmit={handleSubmit} ref={allTabs}>
               <About
@@ -129,11 +127,7 @@ const RegistrationForm: FC<Props> = ({
                 number={1}
               />
               <Socials ref2={ref2} sNetworks={sNetworks} />
-              <Error
-                errors={errors}
-                isOpen={isErrorPopupOpen}
-                setOpen={setErrorPopupOpen}
-              />
+              <ErrorPopup errors={errors} setErrors={setErrors} />
               <MobileHidden>
                 <Button
                   variant="red"

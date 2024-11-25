@@ -59,7 +59,7 @@ const MainPage: FC<IMainPageProps> = ({
         <MobileHidden>
           <SearchBlock title="Найти салон / мастер / бренд" />
         </MobileHidden>
-        <Title>{`Лучшие салоны красоты  и spa (спа) в городе ${cityData}`}</Title>
+        <Title>{`Лучшие салоны красоты  и spa (спа) в городе ${cityData.name}`}</Title>
         <CSSTransition
           in={!query?.query}
           timeout={500}

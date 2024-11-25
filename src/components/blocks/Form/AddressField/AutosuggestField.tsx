@@ -27,6 +27,7 @@ const handleSuggestionsFetchRequested = () => {}
 
 interface RenderInputProps
   extends Pick<AutosuggestFieldProps, 'input' | 'meta'> {
+  helperText?: string
   loading: boolean
   label?: string
   classes: ClassNameMap<string>
@@ -35,20 +36,15 @@ interface RenderInputProps
 
 const InputComponent = forwardRef<HTMLInputElement, RenderInputProps>(
   (props, ref) => {
-    const { meta, loading, label, classes, ...rest } = props
-
-    const showError =
-      meta &&
-      ((meta.submitError && !meta.dirtySinceLastSubmit) || meta.error) &&
-      meta.touched
+    const { meta, loading, label, classes, helperText, ...rest } = props
 
     return (
       <TextField
         multiline={true}
         maxRows={2}
         label={label}
-        error={showError}
-        helperText={showError ? meta.error || meta.submitError : undefined}
+        error={meta?.error}
+        helperText={(helperText || meta?.submitError) ?? undefined}
         InputLabelProps={{
           classes: {
             root: classes.label,
@@ -154,6 +150,7 @@ interface AutosuggestFieldProps {
   fullWidth: boolean
   loading: boolean
   color?: string
+  helperText?: string
 }
 
 const AutosuggestField: FC<AutosuggestFieldProps> = ({
@@ -161,6 +158,7 @@ const AutosuggestField: FC<AutosuggestFieldProps> = ({
   loading,
   label,
   color,
+  helperText,
   ...rest
 }) => {
   const classes = useStyles({ color })
@@ -224,6 +222,7 @@ const AutosuggestField: FC<AutosuggestFieldProps> = ({
             loading={loading}
             label={label}
             classes={classes}
+            helperText={helperText}
           />
         )}
         {...autosuggestProps}

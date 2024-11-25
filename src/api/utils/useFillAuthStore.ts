@@ -10,13 +10,14 @@ import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { CHANGE_ME } from '../graphql/me/mutations/changeMe'
 
 interface IUseCollectAuthProps {
-  prepareUser: IPrepareUser
   pageCity: ICity | null
 }
 
-type IUseCollectAuth = (props: IUseCollectAuthProps) => void
+export type IFillAuthStore = (prepareUser: IPrepareUser) => void
 
-export const useCollectAuth: IUseCollectAuth = ({ prepareUser, pageCity }) => {
+type IUseCollectAuth = (props: IUseCollectAuthProps) => IFillAuthStore
+
+export const useFillAuthStore: IUseCollectAuth = ({ pageCity }) => {
   const cityCookie = getCookie(authConfig.cityKeyName)
   const { setMe, setCity, setUser } = useAuthStore(useShallow(getStoreEvent))
 
@@ -32,24 +33,29 @@ export const useCollectAuth: IUseCollectAuth = ({ prepareUser, pageCity }) => {
     },
   })
 
-  const { selectedCity, ownersID, ...user } = prepareUser
+  const fillAuthStore: IFillAuthStore = prepareUser => {
+    const { selectedCity, ownersID, ...user } = prepareUser
 
-  setUser(user)
-  setMe({ info: user.info, owner: ownersID })
-  setCity(selectedCity)
+    setUser(user)
+    setMe({ info: user.info, owner: ownersID })
+    setCity(selectedCity)
 
-  const city = selectedCity || pageCity || user.info.city || defaultValues.city
+    const city =
+      selectedCity || pageCity || user.info.city || defaultValues.city
 
-  if (!cityCookie) {
-    setCookie(authConfig.cityKeyName, city.slug)
+    if (!cityCookie) {
+      setCookie(authConfig.cityKeyName, city.slug)
+    }
+
+    if (!selectedCity) {
+      changeCityFunc({
+        variables: {
+          id: user.info.id,
+          data: { selected_city: city.id || 1 },
+        },
+      })
+    }
   }
 
-  if (!selectedCity) {
-    changeCityFunc({
-      variables: {
-        id: user.info.id,
-        data: { selected_city: city.id || 1 },
-      },
-    })
-  }
+  return fillAuthStore
 }

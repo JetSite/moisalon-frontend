@@ -13,6 +13,7 @@ export interface IAddressSuggestion {
   value: string
   city: string
   zipcode: string
+  house: string | null
 }
 
 type IUseAddressSuggestions = (
@@ -21,7 +22,7 @@ type IUseAddressSuggestions = (
   debounce?: number,
 ) => {
   suggestions: string[]
-  coordinates: IAddressSuggestion | null
+  fullAddress: IAddressSuggestion | null
   loading: boolean
 }
 
@@ -54,16 +55,16 @@ export const useAddressSuggestions: IUseAddressSuggestions = (
   }, [debouncedAddress])
 
   if (!data) {
-    return { suggestions: [], coordinates: null, loading }
+    return { suggestions: [], fullAddress: null, loading }
   }
 
   let prepareSuggestions = data.length
     ? data.filter(a => a.value !== null && a.value !== undefined)
     : []
 
-  const coordinates =
+  const fullAddress =
     prepareSuggestions.length >= 1 ? prepareSuggestions[0] : null
   const suggestions = prepareSuggestions.map(e => e.value)
 
-  return { suggestions, coordinates, loading }
+  return { suggestions, fullAddress, loading }
 }

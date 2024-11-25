@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 import Popup from '../../../ui/Popup'
 import Button from '../../../ui/Button'
+import { FC } from 'react'
+import { IChildren, ISetState } from 'src/types/common'
 
 const ErrorWrap = styled.div`
   font-size: 16px;
@@ -12,13 +14,26 @@ const ErrorWrap = styled.div`
   color: #f03;
 `
 
-const Error = ({ errors, isOpen, setOpen }) => {
+export interface IErrorProps {
+  errors: string[] | null
+  setErrors: ISetState<string[] | null>
+}
+
+interface Props extends IErrorProps {
+  title?: IChildren
+}
+
+const Error: FC<Props> = ({
+  errors,
+  setErrors,
+  title = 'Что-то пошло не так!',
+}) => {
   if (errors === null) {
     return null
   }
 
   const handlePopupClose = () => {
-    setOpen(null)
+    setErrors(null)
   }
   const errorList = errors
     .filter(e => e !== 'Cannot return null for non-nullable field.')
@@ -32,9 +47,9 @@ const Error = ({ errors, isOpen, setOpen }) => {
 
   return (
     <Popup
-      isOpen={isOpen}
+      isOpen={!!errors}
       onClose={handlePopupClose}
-      title="Что-то пошло не так!"
+      title={title}
       description=""
       content={() => {
         return <>{errorList}</>
