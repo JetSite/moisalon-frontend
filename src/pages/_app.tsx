@@ -5,7 +5,7 @@ import { ApolloProvider, useLazyQuery } from '@apollo/client'
 import ProgressBar from '@badrap/bar-of-progress'
 import globalStyle from '../styles/global'
 import normalizeStyle from '../styles/normalize'
-import { useApollo } from '../api/apollo-client'
+import { PageProps, useApollo } from '../api/apollo-client'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import theme from '../theme'
@@ -17,6 +17,8 @@ import { red } from '../styles/variables'
 import { AppProps } from 'next/app'
 import { MainHead } from './MainHead'
 import AuthProvider from 'src/api/AuthProvider'
+import { StrapiDataObject } from 'src/utils/flattenStrapiResponse'
+import { ICity } from 'src/types'
 
 const progress = new ProgressBar({
   size: 2,
@@ -25,10 +27,14 @@ const progress = new ProgressBar({
   delay: 100,
 })
 
-function MyApp({ Component, pageProps }: AppProps) {
-  const mobileMedia = useMedia({ maxWidth: 768 })
-  const apolloClient = useApollo(pageProps)
+export interface IAppProps {
+  user?: StrapiDataObject
+  cityData?: ICity
+}
 
+function MyApp({ Component, pageProps }: AppProps<IAppProps>) {
+  const mobileMedia = useMedia({ maxWidth: 768 })
+  const apolloClient = useApollo({ props: pageProps })
   const router = useRouter()
 
   useEffect(() => {

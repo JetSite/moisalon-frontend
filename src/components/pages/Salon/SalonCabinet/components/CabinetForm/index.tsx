@@ -6,7 +6,7 @@ import {
   TitleServicesMobile,
 } from './styled'
 import AutoFocusedForm from '../../../../../blocks/Form/AutoFocusedForm'
-import Error from '../../../../../blocks/Form/Error'
+import ErrorPopup from '../../../../../blocks/Form/Error'
 import ServicesList from '../../../../../blocks/Form/ServicesList'
 import SalonCabinetReviews from '../SalonCabinetReviews'
 import catalogOrDefault from '../../../../../../utils/catalogOrDefault'
@@ -54,11 +54,8 @@ const CabinetForm = ({ allTabs, ref1, ref2, ref3, salonData, salonId }) => {
               />
               <SalonCabinetReviews salonId={salonId} ref2={ref2} />
               {/* <SalonCabinetProfiles ref3={ref3} me={me} /> */}
-              <Error
-                errors={errors}
-                isOpen={isErrorPopupOpen}
-                setOpen={setErrorPopupOpen}
-              />
+              <ErrorPopup errors={errors} setErrors={setErrors} />
+
               {/* <Button
                 variant="red"
                 size="noWidth"

@@ -13,7 +13,7 @@ import { IMe } from 'src/types/me'
 import ChangeCityPopupCityList from './ChangeCityPopupCityList'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { ICity } from 'src/types'
-import { changeMe } from 'src/api/graphql/me/mutations/changeMe'
+import { CHANGE_ME } from 'src/api/graphql/me/mutations/changeMe'
 import { setCookie } from 'cookies-next'
 import { authConfig } from 'src/api/authConfig'
 import { redirectCityRoutes } from 'src/utils/newUtils/redirectCityRoutes'
@@ -30,7 +30,7 @@ const ChangeCityPopup: FC<Props> = ({ openPopup, setPopupOpen }) => {
   const { city } = useAuthStore(getStoreData)
   const { setCity } = useAuthStore(getStoreEvent)
 
-  const [changeCityFunc] = useMutation(changeMe, {
+  const [changeCityFunc] = useMutation(CHANGE_ME, {
     onCompleted: res => {
       const newCity: ICity = flattenStrapiResponse(
         res.updateUsersPermissionsUser,

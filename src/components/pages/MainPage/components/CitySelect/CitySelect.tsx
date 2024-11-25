@@ -28,7 +28,7 @@ import { ICity } from 'src/types'
 import { getCities } from 'src/api/graphql/city/getCities'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { UpdatedList } from './UpdatedList'
-import { changeMe } from 'src/api/graphql/me/mutations/changeMe'
+import { CHANGE_ME } from 'src/api/graphql/me/mutations/changeMe'
 import { setCookie } from 'cookies-next'
 import { redirectCityRoutes } from 'src/utils/newUtils/redirectCityRoutes'
 import { useRouter } from 'next/router'
@@ -92,7 +92,7 @@ const CitySelect: FC<Props> = ({
   const [cityInput, setCityInput] = useState('')
   const wrapperRef = useRef<HTMLDivElement>(null)
 
-  const [changeCityFunc] = useMutation(changeMe, {
+  const [changeCityFunc] = useMutation(CHANGE_ME, {
     onCompleted: res => {
       const newCity: ICity = flattenStrapiResponse(
         res.updateUsersPermissionsUser,

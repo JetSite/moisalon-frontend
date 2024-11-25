@@ -158,7 +158,6 @@ const CabinetFavorits: FC = () => {
               <Wrap>
                 <EducationsFavorites
                   title="Избранные обучения"
-                  setActiveTab={setActiveTab}
                   handleDeleted={handleDeleted}
                   cabinet
                 />

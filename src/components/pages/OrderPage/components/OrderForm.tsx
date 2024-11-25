@@ -1,5 +1,5 @@
 import { Field } from 'react-final-form'
-import { useEffect } from 'react'
+import { FC, useEffect, useRef } from 'react'
 import {
   phone,
   required,
@@ -10,8 +10,7 @@ import Button from '../../../ui/Button'
 import { TextField } from '../../../blocks/Form'
 import AddressNoSalonField from '../../../blocks/Form/AddressField/AddressNoSalonField'
 import AutoFocusedForm from '../../../blocks/Form/AutoFocusedForm'
-import Error from '../../../blocks/Form/Error'
-import { YMaps, Map, Placemark } from '@pbe/react-yandex-maps'
+import ErrorPopup, { IErrorProps } from '../../../blocks/Form/Error'
 import {
   Content,
   Title,
@@ -20,112 +19,120 @@ import {
   Right,
   Desc,
   FieldWrap,
-  ShipingWrap,
-  ShipingItem,
+  ShippingWrap,
+  ShippingItem,
   RadioWrap,
   RadioItem,
   TextAreaWrap,
   ButtonWrap,
-  BrandsAddresses,
 } from '../styles'
 import { useMedia } from 'use-media'
-import { selectedGroupNamesMax } from '../../../../utils/serviceCatalog'
 import Steps from './Steps'
 import BrandAddress from './BrandAddress'
-import useAuthStore from 'src/store/authStore'
-import { getStoreData } from 'src/store/utils'
+import { IDeliveryMethods, IPaymentMethods } from 'src/types'
+import { IAddressSuggestion } from 'src/components/blocks/Form/AddressField/useAddressSuggestions'
+import { FormApi } from 'final-form'
+import { IBrand } from 'src/types/brands'
+import { ISetState } from 'src/types/common'
+import { IInitialValuesOrderForm } from '../utils/getOrderData'
+import { configOrderForm } from '..'
+import BackButton from '../../../ui/BackButton'
 
-const OrderForm = ({
-  onSubmit,
-  errors,
-  isErrorPopupOpen,
-  setErrorPopupOpen,
-  clickAddress,
-  setClickAddress,
-  setClickCity,
-  mapRef,
-  mapData,
-  coordinates,
-  masterSpecializationsCatalog,
-  setShippingMethod,
+export interface IOrderForm extends IErrorProps {
+  paymentMethods: IPaymentMethods[] | null
+  deliveryMethods: IDeliveryMethods[] | null
+  paymentType: IPaymentMethods['id']
+  deliveryType: IDeliveryMethods['id']
+  setDeliveryType: ISetState<IDeliveryMethods['id']>
+  setPaymentType: ISetState<IPaymentMethods['id']>
+  brands: IBrand[]
+  loading: boolean
+  initialValues: IInitialValuesOrderForm
+  fullAddress: IAddressSuggestion | null
+  setFullAddress: ISetState<IAddressSuggestion | null>
+  onSubmit: (values: IInitialValuesOrderForm) => Promise<void>
+}
+
+const OrderForm: FC<IOrderForm> = ({
+  paymentMethods,
+  deliveryMethods,
+  brands,
+  setDeliveryType,
   setPaymentType,
   paymentType,
-  shippingMethod,
-  formValues,
-  productBrands,
-  user,
+  deliveryType,
+  onSubmit,
+  errors,
+  loading,
+  setErrors,
+  initialValues,
+  fullAddress,
+  setFullAddress,
 }) => {
   const mobileMedia = useMedia({ maxWidth: 768 })
+  const formRef = useRef<FormApi<IInitialValuesOrderForm>>()
+
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
-  const { me } = useAuthStore(getStoreData)
 
-  console.log('formValues', formValues)
+  useEffect(() => {
+    formRef.current?.change('payment_method', paymentType)
+    formRef.current?.change('delivery_method', deliveryType)
+
+    if (fullAddress) {
+      formRef.current?.change('zipCode', fullAddress.zipcode)
+      formRef.current?.change('city', fullAddress.city)
+      formRef.current?.change('address', fullAddress.value)
+    }
+  }, [paymentType, deliveryType, fullAddress])
 
   return (
-    <Content>
-      <Title>Оформление заказа</Title>
-      {mobileMedia ? <Steps active={1} /> : null}
-      <AutoFocusedForm
-        initialValues={
-          formValues
-            ? {
-                name: user?.info?.username,
-                address: clickAddress?.value || '',
-                email: user?.info?.email,
-                phone: user?.info?.phone,
-                comment: formValues?.comment,
-              }
-            : {
-                name: user?.info?.username || '',
-                address: clickAddress?.value || '',
-                email: user?.info?.email || '',
-                phone: user?.info?.phone || '',
-              }
-        }
-        onSubmit={onSubmit}
-        subscription={{ values: true }}
-        render={({ handleSubmit, values }) => {
-          return (
-            <>
-              <form onSubmit={handleSubmit}>
-                <Error
-                  errors={errors}
-                  isOpen={isErrorPopupOpen}
-                  setOpen={setErrorPopupOpen}
-                />
-                <ContentForm>
-                  <Left>
-                    <Desc>Данные получателя</Desc>
-                    <FieldWrap>
-                      <Field
-                        name="name"
-                        component={TextField}
-                        label="Имя, фамилия *"
-                        validate={required}
-                        requiredfield="true"
-                      />
-                    </FieldWrap>
-                    <FieldWrap>
-                      <Field
-                        name="phone"
-                        type="phone"
-                        component={TextField}
-                        label="Телефон *"
-                        validate={composeValidators(required, phone)}
-                      />
-                    </FieldWrap>
-                    <FieldWrap>
-                      <Field
-                        name="email"
-                        inputMode="email"
-                        component={TextField}
-                        label="E-mail *"
-                        validate={composeValidators(required, email)}
-                      />
-                    </FieldWrap>
-                    {/* <FieldWrap>
+    <>
+      <BackButton type="Вернуться в корзину" link={`/cart`} onlyType />
+      <Content>
+        <Title>Оформление заказа</Title>
+        {mobileMedia ? <Steps active={1} /> : null}
+        <AutoFocusedForm<IInitialValuesOrderForm>
+          initialValues={initialValues}
+          onSubmit={onSubmit}
+          subscription={{ values: true }}
+          render={({ handleSubmit, form, pristine }) => {
+            formRef.current = form
+            return (
+              <>
+                <form onSubmit={handleSubmit}>
+                  <ContentForm>
+                    <Left>
+                      <Desc>Данные получателя</Desc>
+                      <FieldWrap>
+                        <Field
+                          name="name"
+                          component={TextField}
+                          label="Имя, фамилия *"
+                          validate={required}
+                          requiredfield="true"
+                        />
+                      </FieldWrap>
+                      <FieldWrap>
+                        <Field
+                          name="phone"
+                          type="phone"
+                          component={TextField}
+                          label="Телефон *"
+                          validate={composeValidators(required, phone)}
+                        />
+                      </FieldWrap>
+                      <FieldWrap>
+                        <Field
+                          name="email"
+                          inputMode="email"
+                          component={TextField}
+                          label="E-mail *"
+                          validate={composeValidators(required, email)}
+                        />
+                      </FieldWrap>
+                      {/* <FieldWrap>
                       <Field
                         name="specialization"
                         component={TextField}
@@ -133,97 +140,88 @@ const OrderForm = ({
                         validate={required}
                       />
                     </FieldWrap> */}
-                    <Desc>Способ оплаты</Desc>
-                    <RadioWrap>
-                      <RadioItem
-                        active={paymentType === '1'}
-                        onClick={() => setPaymentType('1')}
-                      >
-                        Оплата при доставке
-                      </RadioItem>
-                    </RadioWrap>
-                    <Desc>Комментарий к заказу</Desc>
-                    <TextAreaWrap>
-                      <Field
-                        name="comment"
-                        multiple={true}
-                        component={TextField}
-                        label=""
-                      />
-                    </TextAreaWrap>
-                  </Left>
-                  <Right>
-                    <Desc>Способ доставки</Desc>
-                    <ShipingWrap>
-                      {/* <ShipingItem
-                        active={shippingMethod === "self"}
-                        onClick={() => setShippingMethod("self")}
-                      >
-                        Самовывоз
-                      </ShipingItem> */}
-                      <ShipingItem
-                        active={shippingMethod === 'courier'}
-                        onClick={() => setShippingMethod('courier')}
-                      >
-                        Курьер
-                      </ShipingItem>
-                    </ShipingWrap>
-                    {shippingMethod === 'courier' ? (
-                      <Field
-                        name="address"
-                        fullWidth={true}
-                        component={AddressNoSalonField}
-                        setClickAddress={setClickAddress}
-                        setClickCity={setClickCity}
-                        label="Адрес доставки *"
-                      />
-                    ) : (
-                      <>
-                        {shippingMethod === 'self' &&
-                        formValues?.brandsIds?.length ? (
-                          <BrandsAddresses>
-                            {formValues?.brandsIds?.map(brandId => (
-                              <BrandAddress brandId={brandId} key={brandId} />
-                            ))}
-                          </BrandsAddresses>
-                        ) : null}
-                        {shippingMethod === 'self' && productBrands?.length ? (
-                          <BrandsAddresses>
-                            {productBrands?.map(brand => (
-                              <BrandAddress
-                                brandId={brand?.id}
-                                key={brand?.id}
-                              />
-                            ))}
-                          </BrandsAddresses>
-                        ) : null}
-                        <YMaps>
-                          <Map
-                            instanceRef={mapRef}
-                            width="100%"
-                            defaultState={mapData}
-                          >
-                            {coordinates.map((coordinate, i) => (
-                              <Placemark key={i} geometry={coordinate} />
-                            ))}
-                          </Map>
-                        </YMaps>
-                      </>
-                    )}
-                  </Right>
-                </ContentForm>
-
-                <ButtonWrap>
-                  <Button variant="red" size="medium" autoFocus type="submit">
-                    Подтвердить заказ
-                  </Button>
-                </ButtonWrap>
-              </form>
-            </>
-          )
-        }}
-      />
-    </Content>
+                      <Desc>Способ оплаты</Desc>
+                      <RadioWrap>
+                        {paymentMethods ? (
+                          paymentMethods.map(method => (
+                            <RadioItem
+                              key={method.id}
+                              active={method.id === paymentType}
+                              onClick={() => setPaymentType(method.id)}
+                            >
+                              {method.title}
+                            </RadioItem>
+                          ))
+                        ) : (
+                          <RadioItem active={paymentType === '1'}>
+                            {configOrderForm.defoultPaymentTitle}
+                          </RadioItem>
+                        )}
+                      </RadioWrap>
+                      <Desc>Комментарий к заказу</Desc>
+                      <TextAreaWrap>
+                        <Field
+                          name="comment"
+                          multiple={true}
+                          component={TextField}
+                          label=""
+                        />
+                      </TextAreaWrap>
+                    </Left>
+                    <Right>
+                      <Desc>Способ доставки</Desc>
+                      <ShippingWrap>
+                        {deliveryMethods ? (
+                          deliveryMethods.map(method => (
+                            <ShippingItem
+                              key={method.id}
+                              active={deliveryType === method.id}
+                              onClick={() => setDeliveryType(method.id)}
+                            >
+                              {method.name}
+                            </ShippingItem>
+                          ))
+                        ) : (
+                          <ShippingItem active={deliveryType === '1'}>
+                            {configOrderForm.defoultDeliveryTitle}
+                          </ShippingItem>
+                        )}
+                      </ShippingWrap>
+                      {deliveryType !== '4' ? (
+                        <Field
+                          name="address"
+                          component={AddressNoSalonField}
+                          setFullAddress={setFullAddress}
+                          label="Адрес доставки *"
+                          helperText="Введите полный адресс"
+                          onlyFull
+                          requiredField
+                        />
+                      ) : (
+                        <BrandAddress brands={brands} />
+                      )}
+                    </Right>
+                  </ContentForm>
+                  <ErrorPopup errors={errors} setErrors={setErrors} />
+                  <ButtonWrap>
+                    <Button
+                      disabled={loading}
+                      loading={loading}
+                      variant="red"
+                      size="medium"
+                      autoFocus
+                      type="submit"
+                    >
+                      Подтвердить заказ
+                    </Button>
+                  </ButtonWrap>
+                </form>
+              </>
+            )
+          }}
+        />
+      </Content>
+    </>
   )
 }
 

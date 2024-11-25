@@ -10,6 +10,7 @@ interface IProps {
 
 const Order: FC<IProps> = ({ order }) => {
   const [mobileOrderProducts, setMobileOrderProducts] = useState(false)
+
   const totalAmount =
     order.cartContent?.reduce(
       (acc, item) =>
@@ -88,7 +89,7 @@ const Order: FC<IProps> = ({ order }) => {
       )}
       {order.contactName && order.contactPhone ? (
         <Styled.OrderDetail>
-          <Styled.DetailName>Сонтактные данные</Styled.DetailName>
+          <Styled.DetailName>Контактные данные</Styled.DetailName>
           <Styled.DetailValue>
             {order.contactName + ' ' + order.contactPhone}
           </Styled.DetailValue>

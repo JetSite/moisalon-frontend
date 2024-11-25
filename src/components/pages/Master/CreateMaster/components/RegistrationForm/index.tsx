@@ -1,7 +1,7 @@
 import { useState, useCallback, FC, RefObject, useMemo } from 'react'
 import { Wrapper, Title } from './styled'
 import AutoFocusedForm from '../../../../../blocks/Form/AutoFocusedForm'
-import Error from '../../../../../blocks/Form/Error'
+import ErrorPopup from '../../../../../blocks/Form/Error'
 // import ym from "react-yandex-metrika";
 import { ISetState } from 'src/types/common'
 import { IMaster } from 'src/types/masters'
@@ -134,11 +134,7 @@ const RegistrationForm: FC<IMasterFormProps> = ({
           />
         )}
       />
-      <Error
-        errors={errors}
-        isOpen={isErrorPopupOpen}
-        setOpen={setErrorPopupOpen}
-      />
+      <ErrorPopup errors={errors} setErrors={setErrors} />
     </Wrapper>
   )
 }

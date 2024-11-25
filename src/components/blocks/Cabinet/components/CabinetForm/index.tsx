@@ -18,7 +18,7 @@ import {
 import Button from '../../../../ui/Button'
 import { TextField } from '../../../Form'
 import AutoFocusedForm from '../../../Form/AutoFocusedForm'
-import Error from '../../../Form/Error'
+import ErrorPopup from '../../../Form/Error'
 import {
   Wrapper,
   Title,
@@ -32,7 +32,7 @@ import CreateProfiles from '../CreateProfiles'
 import { MobileHidden } from '../../../../../styles/common'
 import useAuthStore from 'src/store/authStore'
 import { getStoreEvent } from 'src/store/utils'
-import { changeMe } from 'src/api/graphql/me/mutations/changeMe'
+import { CHANGE_ME } from 'src/api/graphql/me/mutations/changeMe'
 import {
   CustomWindow,
   IID,
@@ -84,7 +84,7 @@ const CabinetForm: FC<CabinetFormProps> = ({
   user,
 }) => {
   const { setMe, setUser, setCity } = useAuthStore(getStoreEvent)
-  const [errors, setErrors] = useState<string[]>([])
+  const [errors, setErrors] = useState<string[] | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
   const [isErrorPopupOpen, setErrorPopupOpen] = useState<boolean>(false)
   const [citiesArray, setCitiesArray] = useState<ICity[]>(cities)
@@ -93,7 +93,7 @@ const CabinetForm: FC<CabinetFormProps> = ({
 
   const [addCity] = useMutation(CREATE_CITY)
 
-  const [updateUser] = useMutation(changeMe, {
+  const [updateUser] = useMutation(CHANGE_ME, {
     onCompleted: async data => {
       const prepareData = flattenStrapiResponse(
         data.updateUsersPermissionsUser,
@@ -265,11 +265,7 @@ const CabinetForm: FC<CabinetFormProps> = ({
                   required
                 />
               </FieldWrap>
-              <Error
-                errors={errors}
-                isOpen={isErrorPopupOpen}
-                setOpen={setErrorPopupOpen}
-              />
+              <ErrorPopup errors={errors} setErrors={setErrors} />
               <ButtonWrap>
                 <Button
                   loading={loading}

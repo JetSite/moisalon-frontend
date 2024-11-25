@@ -4,7 +4,7 @@ import { IProfileWithPromotions, IProfileType } from '..'
 import { SalesList } from './SalesList'
 import { ISetState } from 'src/types/common'
 import { useLazyQuery, useMutation } from '@apollo/client'
-import { NOT_PUBLISH_SALE } from 'src/api/graphql/sale/queries/getNotPublishSale'
+import { NOT_PUBLISH_PROMOTIONS } from 'src/api/graphql/promotion/queries/getNotPublishPromotions'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { IPromotions } from 'src/types/promotions'
 import { UPDATE_PROMOTION } from 'src/api/graphql/promotion/mutations/updatePromotion'
@@ -52,7 +52,7 @@ const ActiveSaleProfile: FC<ActiveProfileProps> = ({
     },
   })
 
-  const [refetch, { loading }] = useLazyQuery(NOT_PUBLISH_SALE)
+  const [refetch, { loading }] = useLazyQuery(NOT_PUBLISH_PROMOTIONS)
 
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
     if (e.currentTarget.name === 'publish') {

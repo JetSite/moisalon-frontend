@@ -1,7 +1,5 @@
-import parseToFloat from '../../../../utils/parseToFloat'
 import Button from '../../../ui/Button'
 import { FC, useEffect } from 'react'
-import { useRouter } from 'next/router'
 import {
   SuccessWrapper,
   Content,
@@ -26,61 +24,51 @@ import {
 import { useMedia } from 'use-media'
 import PopupOrder from './PopupOrder'
 import Steps from './Steps'
-import RepeatOrderProduct from './RepeatOrderProduct'
 import { PHOTO_URL } from '../../../../api/variables'
-import { ICart } from 'src/types/product'
-import { IUser } from 'src/types/me'
-import { IOrderInput } from 'src/types/orders'
+import { ISuccessOrderValues } from '../utils/getOrderData'
+import { IDeliveryMethods, IPaymentMethods } from 'src/types'
+import BackButton from '../../../ui/BackButton'
+import { ISetState } from 'src/types/common'
 
 interface IProps {
-  formValues: Partial<IOrderInput> | null
-  user: IUser | null
-  cart: ICart | null
-  addressFull?: string
+  successOrderValues: ISuccessOrderValues
   onSuccess: () => void
   open: boolean
+  loading: boolean
   handleClose: () => void
-  setSuccessPage: (value: boolean) => void
+  paymentTitle: IPaymentMethods['title']
+  deliveryTitle: IDeliveryMethods['name']
+  setOrderForm: ISetState<boolean>
 }
 
 const SuccessForm: FC<IProps> = ({
-  formValues,
-  user,
-  cart,
-  addressFull,
+  successOrderValues,
   onSuccess,
   open,
+  loading,
   handleClose,
-  setSuccessPage,
+  paymentTitle,
+  deliveryTitle,
+  setOrderForm,
 }) => {
-  const router = useRouter()
   const mobileMedia = useMedia({ maxWidth: 768 })
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
 
-  useEffect(() => {
-    router.beforePopState(({ url }) => {
-      if (url === '/order') {
-        setSuccessPage(false)
-        return false
-      }
-      return true
-    })
-
-    return () => {
-      router.beforePopState(() => true)
-    }
-  }, [router])
-
-  const amount =
-    cart?.cartContent?.reduce((acc, item) => {
-      const price = item.product.salePrice || item.product.regularPrice
-      return acc + price * item.quantity
-    }, 0) || 0
+  const { cartContent, total, userInfo, address, comment } = successOrderValues
 
   return (
     <>
+      <BackButton
+        type="Редактировать заказ"
+        noLink
+        onlyType
+        handleClick={() => {
+          setOrderForm(true)
+          window.scrollTo(0, 0)
+        }}
+      />
       <Content>
         <Title>Подтверждение заказа</Title>
         {mobileMedia ? <Steps active={2} /> : null}
@@ -88,63 +76,60 @@ const SuccessForm: FC<IProps> = ({
           <SuccessLeft>
             <ContentWrap>
               <Desc>Данные получателя</Desc>
-              <Text>{user?.info?.username}</Text>
-              <Text>{user?.info?.phone}</Text>
-              <Text>{user?.info?.email}</Text>
+              <Text>{userInfo.username}</Text>
+              <Text>{userInfo.phone}</Text>
+              <Text>{userInfo.email}</Text>
             </ContentWrap>
-            {formValues?.address ? (
+            {address ? (
               <ContentWrap>
                 <Desc>Адрес доставки</Desc>
-                <Text>{addressFull}</Text>
+                <Text>{address}</Text>
               </ContentWrap>
             ) : null}
             <ContentWrap>
               <Desc>Способ оплаты</Desc>
-              <Text>
-                {formValues?.payment_method === '1'
-                  ? 'Оплата при доставке'
-                  : formValues?.payment_method === '5'
-                  ? 'Оплата по номеру карты'
-                  : ''}
-              </Text>
+              <Text>{paymentTitle}</Text>
             </ContentWrap>
-            {formValues?.comment ? (
+            <ContentWrap>
+              <Desc>Способ доставки</Desc>
+              <Text>{deliveryTitle}</Text>
+            </ContentWrap>
+            {comment.length ? (
               <ContentWrap>
                 <Desc>Комментарий к заказу</Desc>
-                <Text>{formValues?.comment}</Text>
+                <Text>{comment}</Text>
               </ContentWrap>
             ) : null}
           </SuccessLeft>
           <SuccessRight>
             <Desc>Состав заказа</Desc>
-            {cart &&
-              cart.cartContent.map(cartItem => {
-                return (
-                  <ItemChecked key={cartItem.product.id}>
-                    <ImageWrapper>
-                      <img
-                        src={
-                          cartItem?.product?.cover?.url
-                            ? ` ${PHOTO_URL}${cartItem.product.cover.url}`
-                            : '/cosmetic_placeholder.jpg'
-                        }
-                        alt="logo"
-                      />
-                    </ImageWrapper>
-                    <ItemCheckedRight>
-                      <Name>{cartItem.product.name}</Name>
-                      <Bottom>
-                        <Price>{`${
-                          cartItem.product.salePrice
-                            ? cartItem.product.salePrice * cartItem.quantity
-                            : cartItem.product.regularPrice * cartItem.quantity
-                        } ₽`}</Price>
-                        <Quantity>{cartItem.quantity} шт.</Quantity>
-                      </Bottom>
-                    </ItemCheckedRight>
-                  </ItemChecked>
-                )
-              })}
+            {cartContent.map(cartItem => {
+              return (
+                <ItemChecked key={cartItem.product.id}>
+                  <ImageWrapper>
+                    <img
+                      src={
+                        cartItem.product.cover?.url
+                          ? `${PHOTO_URL}${cartItem.product.cover.url}`
+                          : '/cosmetic_placeholder.jpg'
+                      }
+                      alt="logo"
+                    />
+                  </ImageWrapper>
+                  <ItemCheckedRight>
+                    <Name>{cartItem.product.name}</Name>
+                    <Bottom>
+                      <Price>{`${
+                        cartItem.product.salePrice
+                          ? cartItem.product.salePrice * cartItem.quantity
+                          : cartItem.product.regularPrice * cartItem.quantity
+                      } ₽`}</Price>
+                      <Quantity>{cartItem.quantity} шт.</Quantity>
+                    </Bottom>
+                  </ItemCheckedRight>
+                </ItemChecked>
+              )
+            })}
             {/* {formValues?.product
               ? formValues?.product.map(product => (
                   <RepeatOrderProduct product={product} key={product.id} />
@@ -152,12 +137,14 @@ const SuccessForm: FC<IProps> = ({
               : null} */}
             <Total>
               <TextSumm>Сумма заказа:</TextSumm>
-              <TextTotal>{`${amount} ₽`}</TextTotal>
+              <TextTotal>{`${total} ₽`}</TextTotal>
             </Total>
             <ButtonWrap>
               <Button
                 variant="red"
                 size="medium"
+                disabled={loading}
+                loading={loading}
                 autoFocus
                 onClick={() => onSuccess()}
               >

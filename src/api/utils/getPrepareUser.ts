@@ -1,17 +1,20 @@
-import { ApolloQueryResult } from '@apollo/client'
 import { ICity } from 'src/types'
-import { IMeInfo, IUser, IUserThings } from 'src/types/me'
+import { IID } from 'src/types/common'
+import { IMeInfo, IOwnersIds, IUser, IUserThings } from 'src/types/me'
 import { IOrder } from 'src/types/orders'
 import { IReview } from 'src/types/reviews'
 import { IVacancy } from 'src/types/vacancies'
-import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import {
+  StrapiDataObject,
+  flattenStrapiResponse,
+  isArray,
+} from 'src/utils/flattenStrapiResponse'
 
-export type IGetPrepareUser = (
-  data: ApolloQueryResult<any>,
-) => IPrepareUser | null
+type IGetPrepareUser = (data: StrapiDataObject | null) => IPrepareUser | null
 
-interface IPrepareUser extends IUser {
-  selected_city: ICity
+export interface IPrepareUser extends IUser {
+  selectedCity: ICity
+  ownersID: IOwnersIds
 }
 
 export const getPrepareUser: IGetPrepareUser = data => {
@@ -40,6 +43,7 @@ export const getPrepareUser: IGetPrepareUser = data => {
     salons: prepareData.salons,
     masters: prepareData.masters,
     brands: prepareData.brands,
+    cart: prepareData.cart,
   }
 
   const favorite: IUserThings = {
@@ -48,6 +52,17 @@ export const getPrepareUser: IGetPrepareUser = data => {
     brands: prepareData.favorited_brands,
   }
 
+  const ownerKeys = Object.keys(owner) as Array<keyof IUserThings>
+  const ownersID = {} as IOwnersIds
+  ownerKeys.forEach(key => {
+    const ownerThings = owner[key]
+    if (isArray(ownerThings)) {
+      ownersID[key] = ownerThings.map((e: { id: IID }) => ({
+        id: e.id,
+      }))
+    }
+  })
+
   user = {
     info,
     owner,
@@ -55,7 +70,8 @@ export const getPrepareUser: IGetPrepareUser = data => {
     vacancies: prepareData.vacancies as IVacancy[],
     reviews: prepareData.reviews as IReview[],
     orders: prepareData.orders as IOrder[],
-    selected_city: prepareData.selected_city,
+    selectedCity: prepareData.selected_city,
+    ownersID,
   }
 
   return user

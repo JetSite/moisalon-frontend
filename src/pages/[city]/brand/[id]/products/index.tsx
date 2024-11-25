@@ -65,7 +65,7 @@ export async function getServerSideProps(ctx) {
   })
 
   const cityData = (await fetchCity(ctx.query.city as string)) || {
-    slug: defaultValues.citySlug,
+    slug: defaultValues.city.slug,
   }
 
   const brand = brandQueryRes.data.brandSlug

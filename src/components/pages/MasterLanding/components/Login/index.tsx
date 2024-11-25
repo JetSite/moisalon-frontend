@@ -25,7 +25,7 @@ import {
 } from './styles'
 import Button from '../../../../ui/Button'
 import { useRouter } from 'next/router'
-import Error from '../../../../blocks/Form/Error'
+import ErrorPopup from '../../../../blocks/Form/Error'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
 import { useMutation } from '@apollo/client'
@@ -128,11 +128,7 @@ const Login = () => {
               </Form>
             </FormWrapper>
           </Content>
-          <Error
-            errors={errors}
-            isOpen={isErrorPopupOpen}
-            setOpen={setErrorPopupOpen}
-          />
+          <ErrorPopup errors={errors} setErrors={setErrors} />
         </Wrapper>
       )}
       <BottomWrapper>

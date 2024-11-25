@@ -4,7 +4,7 @@ import { ButtonProps, IBaseButtonProps } from './Button'
 import Link from 'next/link'
 import { LinkButtonProps } from './LinkButton'
 
-const pulse = keyframes`
+export const pulse = keyframes`
   0%, 100% {
     opacity: 1;
   }

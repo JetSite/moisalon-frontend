@@ -1,11 +1,10 @@
 import { addApolloState, initializeApollo } from '../../api/apollo-client'
 import BusinessCategoryPageLayout from '../../layouts/BusinessCategoryPageLayout'
 import BusinessCategoryPage from '../../components/pages/BusinessCategoryPage'
-import { getSales } from 'src/api/graphql/sale/queries/getSales'
+import { PROMOTIONS } from 'src/api/graphql/promotion/queries/getPromotions'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { ISale } from 'src/types/sale'
 import { FC } from 'react'
-import { useQuery } from '@apollo/client'
 
 interface SalesProps {
   sales: ISale[]
@@ -28,7 +27,7 @@ export async function getServerSideProps() {
   const apolloClient = initializeApollo()
 
   const salesRes = await apolloClient.query({
-    query: getSales,
+    query: PROMOTIONS,
   })
 
   const normalisedSales = flattenStrapiResponse(salesRes?.data?.promotions)

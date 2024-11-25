@@ -20,7 +20,7 @@ export const fetchCity: IFetchCity = async (citySlug = null, ctx) => {
   }
   const apolloClient = initializeApollo()
 
-  let slug = cityCookie || defaultValues.citySlug
+  let slug = cityCookie || defaultValues.city.slug
 
   if (citySlug && citySlug !== 'null') {
     slug = citySlug
@@ -39,5 +39,5 @@ export const fetchCity: IFetchCity = async (citySlug = null, ctx) => {
     return response[0]
   }
 
-  return { slug: defaultValues.citySlug, id: '1' }
+  return { slug: defaultValues.city.slug, id: '1' }
 }

@@ -51,7 +51,7 @@ export const getServerSideProps: GetServerSideProps<
 > = async ctx => {
   const apolloClient = initializeApollo()
   const cityData = (await fetchCity(ctx.query.city as string, ctx)) || {
-    slug: defaultValues.citySlug,
+    slug: defaultValues.city.slug,
   }
 
   const pageSize = 9

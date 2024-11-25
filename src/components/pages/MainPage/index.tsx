@@ -15,6 +15,11 @@ import Banners from '../Catalog/components/Banners'
 import { CSSTransition } from 'react-transition-group'
 import { WrapBanner } from '../Brand/AllBrands/styles'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import MainAdsSlider from './components/MainAdsSlider'
+import { FC } from 'react'
+import { ITotalCount } from 'src/pages/[city]/salon'
+import { ICity } from 'src/types'
+import MainRentSlider from './components/MainRentSlider'
 
 const Title = styled.h1`
   max-width: 1440px;
@@ -31,7 +36,15 @@ const Title = styled.h1`
   }
 `
 
-const MainPage = ({
+export interface IMainPageProps {
+  beautyCategories: any
+  beautyAllContent: any
+  bannerHooks: any
+  totalCount: ITotalCount
+  cityData: ICity
+}
+
+const MainPage: FC<IMainPageProps> = ({
   beautyCategories,
   beautyAllContent,
   bannerHooks,
@@ -46,7 +59,7 @@ const MainPage = ({
         <MobileHidden>
           <SearchBlock title="Найти салон / мастер / бренд" />
         </MobileHidden>
-        <Title>{`Лучшие салоны красоты  и spa (спа) в городе ${cityData}`}</Title>
+        <Title>{`Лучшие салоны красоты  и spa (спа) в городе ${cityData.name}`}</Title>
         <CSSTransition
           in={!query?.query}
           timeout={500}
@@ -81,9 +94,9 @@ const MainPage = ({
           ) : null}
         </MobileVisible>
         {/* {query?.query?.length ? <SearchResults me={me} /> : null} */}
-        {/* <MainAdsSlider me={me} /> */}
+        <MainAdsSlider city={city} />
         {/* <MainGoodsSlider me={me} /> */}
-        {/* <MainRentSlider me={me} /> */}
+        <MainRentSlider city={city} />
         {/* <MainWorkplacesSlider me={me} /> */}
         <MainMasterSlider city={city} />
         <MainSalonsSlider city={city} />

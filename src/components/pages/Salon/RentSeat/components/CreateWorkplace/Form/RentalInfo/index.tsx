@@ -3,7 +3,6 @@ import {
   MobileHidden,
   MobileVisible,
 } from '../../../../../../../../styles/common'
-import Error from '../../../../../../../blocks/Form/Error'
 import {
   Desc,
   Subdesc,

@@ -139,7 +139,7 @@ const Cart: FC<ICartProps> = ({ data }) => {
           </Wrap>
         </>
       )}
-      <ErrorPopup errors={errors} isOpen={!!errors} setOpen={setErrors} />
+      <ErrorPopup errors={errors} setErrors={setErrors} />
       <Popup
         isOpen={openPopup}
         onClose={() => setOpenPopup(false)}

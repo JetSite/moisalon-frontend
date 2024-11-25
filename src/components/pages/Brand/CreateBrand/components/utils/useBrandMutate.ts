@@ -35,7 +35,6 @@ export type IUseBrandMutate = (props: IUseBrandMutateProps) => {
 }
 interface IUseBrandMutateProps {
   setErrors: ISetState<string[] | null>
-  setErrorPopupOpen: ISetState<boolean>
 }
 
 interface MutateBrandProps {
@@ -45,10 +44,7 @@ interface MutateBrandProps {
   country: IID
 }
 
-export const useBrandMutate: IUseBrandMutate = ({
-  setErrors,
-  setErrorPopupOpen,
-}) => {
+export const useBrandMutate: IUseBrandMutate = ({ setErrors }) => {
   const [addCity] = useMutation(CREATE_CITY)
   const [addCountry] = useMutation(CREATE_COUNTRY)
   const { setUser } = useAuthStore(getStoreEvent)
@@ -59,7 +55,6 @@ export const useBrandMutate: IUseBrandMutate = ({
   const onError = (error: ApolloError) => {
     const errorMessages = error.graphQLErrors?.map(e => e.message) || []
     setErrors(errorMessages)
-    setErrorPopupOpen(true)
   }
 
   const onCompleted = (data: any) => {

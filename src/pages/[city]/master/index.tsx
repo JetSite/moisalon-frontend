@@ -42,7 +42,7 @@ export const getServerSideProps: GetServerSideProps<
   const apolloClient = initializeApollo()
 
   const cityData = (await fetchCity(ctx.query.city as string)) || {
-    slug: defaultValues.citySlug,
+    slug: defaultValues.city.slug,
   }
 
   // const masterData = []

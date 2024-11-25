@@ -4,8 +4,11 @@ import { salonQuery } from '../../../../../_graphql-legacy/salon/salonQuery'
 import catalogOrDefault from '../../../../../utils/catalogOrDefault'
 import Slider from '../../../../blocks/Slider'
 import { ISalon } from 'src/types/salon'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 
 const MainWorkplacesSlider = () => {
+  const { city } = useAuthStore(getStoreData)
   const { data, loading } = useQuery(salonQuery, {
     variables: { id: '60d1ec4b10f3540001a9d723', filterDefinition: '' },
   })
@@ -14,6 +17,7 @@ const MainWorkplacesSlider = () => {
 
   return (
     <Slider
+      city={city}
       type="rentWorkplaces"
       loading={loading}
       items={allRooms || []}

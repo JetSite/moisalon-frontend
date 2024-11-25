@@ -1,25 +1,24 @@
 import { useQuery } from '@apollo/client'
 
 import Slider from '../../../../blocks/Slider'
+import { ICity } from 'src/types'
+import { FC } from 'react'
+import { GET_RENT_SALONS } from 'src/api/graphql/salon/queries/getRentSalons'
 
-const MainRentSlider = () => {
-  let cityInStorage
-  if (typeof window !== 'undefined') {
-    cityInStorage = localStorage.getItem('citySalon')
-  }
+interface Props {
+  city: ICity
+}
 
-  const { data, loading } = useQuery(searchQuery, {
+const MainRentSlider: FC<Props> = ({ city }) => {
+  const { data, loading } = useQuery(GET_RENT_SALONS, {
     variables: {
-      input: {
-        city: cityInStorage || '',
-        lessor: true,
-        query: '',
-      },
+      slug: city.slug,
     },
   })
 
   return (
     <Slider
+      city={city}
       type="rentSalons"
       loading={loading}
       items={data?.salonSearch?.salonsConnection?.nodes || []}

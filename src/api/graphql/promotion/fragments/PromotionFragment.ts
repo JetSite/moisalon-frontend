@@ -1,6 +1,6 @@
 import { imageInfo } from 'src/api/graphql/common/imageInfo'
 
-export const saleFragment = `
+export const promotionFragment = `
       data {
         id
         attributes {

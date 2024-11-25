@@ -9,11 +9,14 @@ import CreatePageSkeleton from 'src/components/ui/ContentSkeleton/CreatePageSkel
 import Cabinet from 'src/components/blocks/Cabinet'
 import MasterCabinet from 'src/components/pages/MasterCabinet'
 import { GetServerSideProps, NextPage } from 'next'
-import { initializeApollo } from 'src/api/apollo-client'
+import { addApolloState, initializeApollo } from 'src/api/apollo-client'
 import { RENTAL_REQUESTS_FOR_USER } from 'src/api/graphql/rentalRequest/queries/getRequestsForUser'
 import { ME } from 'src/api/graphql/me/queries/getMe'
-import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
-import { Nullable } from 'src/types/common'
+import {
+  StrapiDataObject,
+  flattenStrapiResponse,
+} from 'src/utils/flattenStrapiResponse'
+import { IID, Nullable } from 'src/types/common'
 import { IRentalRequest } from 'src/types/rentalRequest'
 import { DELETED_RENTAL_REQUESTS_FOR_USER } from 'src/api/graphql/rentalRequest/queries/getDeletedRequestsForUser'
 import { RENTAL_REQUESTS_FOR_SALON } from 'src/api/graphql/rentalRequest/queries/getRequestsForSalon'
@@ -22,6 +25,11 @@ import { ISalon } from 'src/types/salon'
 import { DELETED_RENTAL_REQUESTS_FOR_SALON } from 'src/api/graphql/rentalRequest/queries/getDeletedRequestsForSalon'
 import { getCities } from 'src/api/graphql/city/getCities'
 import { ICity } from 'src/types'
+import {
+  IGetServerUserSuccess,
+  getServerUser,
+} from 'src/api/utils/getServerUser'
+import { IAppProps } from '../_app'
 
 export interface ICabinetRequestsData {
   rentalRequests: IRentalRequest[]
@@ -30,10 +38,8 @@ export interface ICabinetRequestsData {
   deletedRentalRequestsSalons: IRentalRequest[]
 }
 
-interface Props {
-  accessToken?: string
+interface Props extends IAppProps {
   requests: ICabinetRequestsData
-  user: ApolloQueryResult<any>
   cities: ICity[]
 }
 
@@ -55,94 +61,86 @@ const CabinetPage: NextPage<Props> = ({ requests, cities }) => {
 
 export const getServerSideProps: GetServerSideProps<
   Nullable<Props>
-> = async context => {
-  const accessToken = getCookie(authConfig.tokenKeyName, context)
-  const apolloClient = initializeApollo({ accessToken })
+> = async ctx => {
+  const result = await getServerUser(ctx)
 
-  if (!accessToken) {
+  if ('redirect' in result) {
     return {
-      redirect: {
-        destination: '/login',
-        permanent: true,
-      },
+      redirect: result.redirect,
     }
   }
 
-  const meData = await apolloClient.query({
-    query: ME,
-  })
+  const { user, apolloClient } = result as IGetServerUserSuccess
 
-  const id = meData.data?.me.id || null
+  const prepareUser = flattenStrapiResponse(user)
+  const id = user.id
+  const salonsID =
+    (prepareUser.salons?.map((e: ISalon) => e.id) as IID[] | null) || []
 
-  if (!id) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: true,
-      },
-    }
-  } else {
-    const userData = await apolloClient.query({
-      query: USER,
+  const queries = [
+    apolloClient.query({ query: getCities, variables: { itemsCount: 100 } }),
+
+    apolloClient.query({
+      query: RENTAL_REQUESTS_FOR_USER,
       variables: { id },
-    })
+    }),
+    apolloClient.query({
+      query: DELETED_RENTAL_REQUESTS_FOR_USER,
+      variables: { id },
+    }),
+  ]
 
-    const user = flattenStrapiResponse(userData.data.usersPermissionsUser)
-    const salonsID = user.salons.map((e: ISalon) => e.id)
-
-    const queries = [
-      apolloClient.query({ query: getCities, variables: { itemsCount: 100 } }),
-
+  if (salonsID.length > 0) {
+    queries.push(
       apolloClient.query({
-        query: RENTAL_REQUESTS_FOR_USER,
-        variables: { id },
+        query: RENTAL_REQUESTS_FOR_SALON,
+        variables: { salonsID },
       }),
       apolloClient.query({
-        query: DELETED_RENTAL_REQUESTS_FOR_USER,
-        variables: { id },
+        query: DELETED_RENTAL_REQUESTS_FOR_SALON,
+        variables: { salonsID },
       }),
-    ]
-
-    if (salonsID.length > 0) {
-      queries.push(
-        apolloClient.query({
-          query: RENTAL_REQUESTS_FOR_SALON,
-          variables: { salonsID },
-        }),
-        apolloClient.query({
-          query: DELETED_RENTAL_REQUESTS_FOR_SALON,
-          variables: { salonsID },
-        }),
-      )
-    }
-
-    const data = await Promise.all(queries)
-
-    const cities = flattenStrapiResponse(data[0].data.cities) as ICity[]
-
-    const rentalRequests = flattenStrapiResponse(data[1].data?.rentalRequests)
-    const deletedRentalRequests = flattenStrapiResponse(
-      data[2].data?.rentalRequests,
     )
-    const rentalRequestsSalons =
-      flattenStrapiResponse(data[3]?.data.rentalRequests) || []
-    const deletedRentalRequestsSalons =
-      flattenStrapiResponse(data[4]?.data.rentalRequests) || []
-
-    return {
-      props: {
-        accessToken,
-        cities,
-        requests: {
-          rentalRequests,
-          deletedRentalRequests,
-          rentalRequestsSalons,
-          deletedRentalRequestsSalons,
-        },
-        user: userData.data.usersPermissionsUser,
-      },
-    }
   }
+
+  const data = await Promise.allSettled(queries)
+
+  const cities =
+    data[0].status === 'fulfilled'
+      ? (flattenStrapiResponse(data[0].value.data.cities) as ICity[])
+      : []
+
+  const rentalRequests =
+    data[1].status === 'fulfilled'
+      ? flattenStrapiResponse(data[1].value.data?.rentalRequests)
+      : []
+
+  const deletedRentalRequests =
+    data[2].status === 'fulfilled'
+      ? flattenStrapiResponse(data[2].value.data?.rentalRequests)
+      : []
+
+  const rentalRequestsSalons =
+    data[3]?.status === 'fulfilled'
+      ? flattenStrapiResponse(data[3].value.data.rentalRequests)
+      : []
+  const deletedRentalRequestsSalons =
+    data[4]?.status === 'fulfilled'
+      ? flattenStrapiResponse(data[4].value.data.rentalRequests)
+      : []
+
+  return addApolloState<Nullable<Props>>(apolloClient, {
+    props: {
+      cities,
+      requests: {
+        rentalRequests,
+        deletedRentalRequests,
+        rentalRequestsSalons,
+        deletedRentalRequestsSalons,
+      },
+      user,
+    },
+  })
 }
 
 export default CabinetPage

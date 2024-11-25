@@ -13,7 +13,7 @@ import { ICart } from 'src/types/product'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { isEqual } from 'lodash'
 import { getStoreEvent } from 'src/store/utils'
-import useBaseStore from 'src/store/baseStore'
+import useAuthStore from 'src/store/authStore'
 
 interface IHandleMutateCartProps {
   itemID: IID
@@ -54,7 +54,7 @@ export const useMutationCart: IUseMutationCart = ({
   const [loading, setLoading] = useState(false)
   const [cart, setCart] = useState<ICart | null>(dataCart)
   const [quantityMap, setQuantityMap] = useState<IQuantityMap>({})
-  const { setCart: setCartStore } = useBaseStore(getStoreEvent)
+  const { setCart: setCartStore } = useAuthStore(getStoreEvent)
   const debounceQuantityMap = useDebounce(quantityMap, 4000)
   const [errors, setErrors] = useState<string[] | null>(null)
 

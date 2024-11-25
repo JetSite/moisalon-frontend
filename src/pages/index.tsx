@@ -12,7 +12,7 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
   const cityCookie = ctx.req.cookies['city']
   return {
     redirect: {
-      destination: cityCookie || defaultValues.citySlug,
+      destination: cityCookie || defaultValues.city.slug,
       permanent: true,
     },
   }

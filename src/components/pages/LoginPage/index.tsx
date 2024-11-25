@@ -20,7 +20,7 @@ import {
   SwitchButton,
 } from './styles'
 import Button from '../../ui/Button'
-import Error from '../../blocks/Form/Error'
+import ErrorPopup from '../../blocks/Form/Error'
 import { login } from 'src/api/graphql/me/mutations/login'
 import { getStoreEvent } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
@@ -42,7 +42,6 @@ const LoginPage: FC = () => {
 
   const [errors, setErrors] = useState<string[] | null>(null)
   const [openCode, setOpenCode] = useState<boolean>(false)
-  const [isErrorPopupOpen, setErrorPopupOpen] = useState<boolean>(false)
   const dev = process.env.NEXT_PUBLIC_ENV !== 'production'
   const [Login] = useMutation(login, {
     onCompleted: data => {
@@ -55,7 +54,6 @@ const LoginPage: FC = () => {
 
       setLoading(false)
       setErrors(['Проверьте ваши учетные данные'])
-      setErrorPopupOpen(true)
     },
   })
 
@@ -70,7 +68,6 @@ const LoginPage: FC = () => {
     onError: error => {
       setLoading(false)
       setErrors([error.message])
-      setErrorPopupOpen(true)
     },
   })
 
@@ -176,11 +173,7 @@ const LoginPage: FC = () => {
               </Form>
             </FormWrapper>
           </Content>
-          <Error
-            errors={errors}
-            isOpen={isErrorPopupOpen}
-            setOpen={setErrorPopupOpen}
-          />
+          <ErrorPopup errors={errors} setErrors={setErrors} />
         </Wrapper>
       </MainContainer>
     </MainLayout>

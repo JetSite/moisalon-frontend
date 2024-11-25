@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import * as Styled from './styled'
 import { red } from '../../../../../styles/variables'
@@ -14,19 +14,14 @@ import CookiePopup from '../../../../blocks/CookiePopup'
 import SearchPopup from '../../../../ui/SearchPopup'
 import MoreIcon from './icons/MoreIcon'
 import AdditionalNav from './components/AdditionalNav'
-import { cyrToTranslit } from '../../../../../utils/translit'
 import { PHOTO_URL } from '../../../../../api/variables'
-import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import useAuthStore from 'src/store/authStore'
-import { getStoreData, getStoreEvent } from 'src/store/utils'
-import useBaseStore from 'src/store/baseStore'
-import { ICity } from 'src/types'
+import { getStoreData } from 'src/store/utils'
 import { MobileHeader } from './components/MobileHeader'
 import getMainPageHeaderLinks from './config'
 import ym from 'react-yandex-metrika'
 import { authConfig } from 'src/api/authConfig'
 import { getCookie } from 'cookies-next'
-import { position } from 'polished'
 
 const activeLink = (path: string, link?: string[]) => {
   return link?.find(item => item === path)
@@ -35,7 +30,6 @@ const activeLink = (path: string, link?: string[]) => {
 const Header = ({ loading = false }) => {
   const cityCookie = getCookie(authConfig.cityKeyName)
   const { user, city } = useAuthStore(getStoreData)
-  const { cart } = useBaseStore(getStoreData)
   const b2bClient =
     !!user?.owner?.masters?.length || !!user?.owner?.salons?.length
   const router = useRouter()
@@ -55,9 +49,10 @@ const Header = ({ loading = false }) => {
   const [showSearchPopup, setShowSearchPopup] = useState(false)
   // const { unreadMessagesCount } = useChat();
   const quantity =
-    cart?.cartContent?.reduce((acc, item) => acc + item.quantity, 0) || 0
-
-  const logoClickHandler = () => {}
+    user?.owner.cart?.cartContent?.reduce(
+      (acc, item) => acc + item.quantity,
+      0,
+    ) || 0
 
   const searchIconClickHandler = () => {
     setShowSearchPopup(!showSearchPopup)

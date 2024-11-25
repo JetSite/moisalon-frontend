@@ -1,17 +1,16 @@
-import { useState } from "react";
-import { useRouter } from "next/router";
-import Button from "../../../../ui/Button";
-import Error from "../../../../blocks/Form/Error";
+import { useState } from 'react'
+import { useRouter } from 'next/router'
+import Button from '../../../../ui/Button'
+import ErrorPopup from '../../../../blocks/Form/Error'
 
-import { FormWrapper, ButtonWrapper, ButtonMobileWrapper } from "./styles";
+import { FormWrapper, ButtonWrapper, ButtonMobileWrapper } from './styles'
 
 const Form = () => {
-  const [errors] = useState(null);
-  const [isErrorPopupOpen, setErrorPopupOpen] = useState(false);
-  const router = useRouter();
+  const [errors] = useState(null)
+  const router = useRouter()
 
-  const handleClick = async (e) => {
-    e.preventDefault();
+  const handleClick = async e => {
+    e.preventDefault()
     // if (name.length < 2) {
     //   setErrors(["Введите корректное имя"]);
     //   setErrorPopupOpen(true);
@@ -33,8 +32,8 @@ const Form = () => {
     // setContact("");
     // setBrand("");
     // setComment("");
-    router.push("/login");
-  };
+    router.push('/login')
+  }
   return (
     <>
       <FormWrapper>
@@ -110,13 +109,9 @@ const Form = () => {
           Отправить заявку
         </Button>
       </ButtonMobileWrapper>
-      <Error
-        errors={errors}
-        isOpen={isErrorPopupOpen}
-        setOpen={setErrorPopupOpen}
-      />
+      <ErrorPopup errors={errors} setErrors={setErrors} />
     </>
-  );
-};
+  )
+}
 
-export default Form;
+export default Form
