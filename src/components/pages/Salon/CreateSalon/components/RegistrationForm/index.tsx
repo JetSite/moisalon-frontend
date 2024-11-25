@@ -1,7 +1,7 @@
 import { useState, useMemo, FC, RefObject, useEffect } from 'react'
 import { Wrapper, Title } from './styled'
 import AutoFocusedForm from '../../../../../blocks/Form/AutoFocusedForm'
-import Error from '../../../../../blocks/Form/Error'
+import ErrorPopup from '../../../../../blocks/Form/Error'
 import { ISalonPage } from 'src/types/salon'
 import { IHandleClickNextTabInForm } from '../..'
 import { ICity, IPhoto, ISNetwork } from 'src/types'
@@ -150,11 +150,7 @@ const RegistrationForm: FC<ISalonFormProps> = ({
           )}
         />
       )}
-      <Error
-        errors={errors}
-        isOpen={isErrorPopupOpen}
-        setOpen={setErrorPopupOpen}
-      />
+      <ErrorPopup errors={errors} setErrors={setErrors} />
     </Wrapper>
   )
 }

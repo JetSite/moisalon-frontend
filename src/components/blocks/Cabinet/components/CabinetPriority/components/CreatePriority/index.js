@@ -4,7 +4,7 @@ import AutoFocusedForm from '../../../../../Form/AutoFocusedForm'
 import { FieldStyled } from '../../../CabinetForm/styled'
 import { TextField } from '../../../../../Form'
 import { required } from '../../../../../../../utils/validations'
-import Error from '../../../../../Form/Error'
+import ErrorPopup from '../../../../../Form/Error'
 import { laptopBreakpoint } from '../../../../../../../styles/variables'
 import Button from '../../../../../../ui/Button'
 import { createPriorityMutation } from '../../../../../../../_graphql-legacy/priority/createPriorityMutation'
@@ -85,11 +85,7 @@ const CreatePriority = ({
                   requiredField
                 />
               </FieldWrap>
-              <Error
-                errors={errors}
-                isOpen={isErrorPopupOpen}
-                setOpen={setErrorPopupOpen}
-              />
+              <ErrorPopup errors={errors} setErrors={setErrors} />
               <ButtonWrap>
                 <Button
                   variant="red"

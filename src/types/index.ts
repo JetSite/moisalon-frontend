@@ -111,3 +111,8 @@ export interface IPaymentMethods {
   id: IID
   title: string
 }
+
+export interface IDeliveryMethods {
+  id: IID
+  name: string
+}

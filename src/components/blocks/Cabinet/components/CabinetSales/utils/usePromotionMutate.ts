@@ -27,20 +27,14 @@ export type IUseSaleMutate = (props: IUseSaleMutateProps) => {
 
 interface IUseSaleMutateProps {
   setErrors: ISetState<string[] | null>
-  setErrorPopupOpen: ISetState<boolean>
   setSales: ISetState<IPromotions[]>
 }
 
-export const usePromotionMutate: IUseSaleMutate = ({
-  setErrors,
-  setErrorPopupOpen,
-  setSales,
-}) => {
+export const usePromotionMutate: IUseSaleMutate = ({ setErrors, setSales }) => {
   const [loading, setLoading] = useState<boolean>(false)
   const onError = (error: ApolloError) => {
     const errorMessages = error.graphQLErrors.map(e => e.message)
     setErrors(errorMessages)
-    setErrorPopupOpen(true)
   }
 
   const [createSale] = useMutation(CREATE_PROMOTION, {

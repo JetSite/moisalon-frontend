@@ -1,5 +1,7 @@
-import styled from 'styled-components'
-import { laptopBreakpoint } from '../../../styles/variables'
+import styled, { css } from 'styled-components'
+import { laptopBreakpoint, red } from '../../../styles/variables'
+import { pulse } from 'src/components/newUI/buttons/styled'
+import Link from 'next/link'
 
 export const Wrapper = styled.div`
   padding: 0 140px;
@@ -39,6 +41,7 @@ export const Desc = styled.p`
 
 export const ContentForm = styled.div`
   display: flex;
+  gap: 12px;
   justify-content: space-between;
   margin-bottom: 30px;
   @media (max-width: ${laptopBreakpoint}) {
@@ -72,24 +75,19 @@ export const FieldWrap = styled.div`
   }
 `
 
-export const ShipingWrap = styled.div`
+export const RadioWrap = styled.ul`
   display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
   margin-bottom: 50px;
 `
 
-export const RadioWrap = styled.div`
-  display: flex;
-  margin-bottom: 50px;
-  @media (max-width: ${laptopBreakpoint}) {
-    flex-wrap: wrap;
-  }
-`
+export const ShipingWrap = styled(RadioWrap)``
 
-export const ShipingItem = styled.div<{ active?: boolean }>`
-  width: 173px;
-  border: ${props => (props.active ? '1px solid #f03' : '1px solid #000000')};
+export const ShipingItem = styled.li<{ active?: boolean }>`
+  border: ${props => (props.active ? `1px solid ${red}` : '1px solid #000000')};
   border-radius: 50px;
-  background: ${props => (props.active ? '#f03' : '#fff')};
+  background: ${props => (props.active ? red : '#fff')};
   color: ${props => (props.active ? '#fff' : '#000')};
   font-weight: 500;
   font-size: 14px;
@@ -97,16 +95,24 @@ export const ShipingItem = styled.div<{ active?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 4px 8px;
   cursor: pointer;
-  margin-right: 16px;
-  @media (max-width: ${laptopBreakpoint}) {
-    margin-bottom: 15px;
+  :hover {
+    background: ${({ active }) => (active ? red : `${red}1A`)};
   }
 `
 
-export const RadioItem = styled(ShipingItem)`
-  width: 217px;
+export const MapWrapper = styled.div<{ loading: boolean }>`
+  background-color: lightgray;
+  animation: ${({ loading }) =>
+    loading
+      ? css`
+          ${pulse} 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite
+        `
+      : 'none'};
 `
+
+export const RadioItem = styled(ShipingItem)``
 
 export const TextAreaWrap = styled.div`
   width: 100%;
@@ -239,12 +245,12 @@ export const ButtonWrap = styled.div`
   }
 `
 
-export const BrandsAddresses = styled.div`
+export const BrandsAddresses = styled.ul`
   @media (max-width: ${laptopBreakpoint}) {
   }
 `
 
-export const BrandsAddressWrap = styled.div`
+export const BrandsAddressWrap = styled.li`
   margin-bottom: 20px;
   @media (max-width: ${laptopBreakpoint}) {
   }
@@ -252,13 +258,23 @@ export const BrandsAddressWrap = styled.div`
 
 export const SuccessOrderWrapper = styled.div`
   width: 100%;
+  min-height: 300px;
+  gap: 10px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 50px 0 300px 0;
+  padding: 50px 0 0 0;
 `
 
 export const SuccessOrderText = styled.p`
   font-weight: 600;
   font-size: 24px;
+`
+
+export const SuccessOrderLink = styled(Link)`
+  color: blue;
+  &:hover {
+    text-decoration: underline;
+  }
 `

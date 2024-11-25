@@ -7,6 +7,7 @@ import { IVacancy } from 'src/types/vacancies'
 import {
   StrapiDataObject,
   flattenStrapiResponse,
+  isArray,
 } from 'src/utils/flattenStrapiResponse'
 
 type IGetPrepareUser = (data: StrapiDataObject | null) => IPrepareUser | null
@@ -54,9 +55,12 @@ export const getPrepareUser: IGetPrepareUser = data => {
   const ownerKeys = Object.keys(owner) as Array<keyof IUserThings>
   const ownersID = {} as IOwnersIds
   ownerKeys.forEach(key => {
-    ownersID[key] = owner[key].map((e: { id: IID }) => ({
-      id: e.id,
-    }))
+    const ownerThings = owner[key]
+    if (isArray(ownerThings)) {
+      ownersID[key] = ownerThings.map((e: { id: IID }) => ({
+        id: e.id,
+      }))
+    }
   })
 
   user = {

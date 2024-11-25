@@ -8,6 +8,7 @@ export const GET_CART_BY_USER = gql`
         id
         attributes {
           cartContent {
+            id
             product {
               ${productFragment}
             }

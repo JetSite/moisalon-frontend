@@ -158,7 +158,7 @@ export function initializeApollo(data?: IApolloClientProps) {
 
 export interface PageProps<T> {
   props: Nullable<T> & {
-    __APOLLO_STATE__?: NormalizedCacheObject
+    [APOLLO_STATE_PROP_NAME]?: NormalizedCacheObject
   }
 }
 

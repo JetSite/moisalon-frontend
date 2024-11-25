@@ -5,7 +5,7 @@ import AutoFocusedForm from '../Form/AutoFocusedForm'
 import { FieldStyled } from '../../blocks/Cabinet/components/CabinetForm/styled'
 import { TextField } from '../Form'
 import { required } from '../../../utils/validations'
-import Error from '../Form/Error'
+import ErrorPopup from '../Form/Error'
 import { laptopBreakpoint } from '../../../styles/variables'
 import Button from '../../ui/Button'
 import PhotoAdd from './PhotoAdd'
@@ -138,11 +138,8 @@ const CreateBanner = ({ setCreateBanner, refetch }) => {
                   requiredField
                 />
               </FieldWrap>
-              <Error
-                errors={errors}
-                isOpen={isErrorPopupOpen}
-                setOpen={setErrorPopupOpen}
-              />
+              <ErrorPopup errors={errors} setErrors={setErrors} />
+
               <ButtonWrap>
                 <Button
                   variant="red"

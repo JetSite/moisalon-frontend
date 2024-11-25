@@ -30,7 +30,10 @@ export type IGetServerUserResult =
   | IGetServerUserSuccess
   | IGetServerUserRedirect
 
-type IGetServerUser = (props: INextContext) => Promise<IGetServerUserResult>
+type IGetServerUser = (
+  props: INextContext,
+  onlyMe?: boolean,
+) => Promise<IGetServerUserResult>
 
 type RedirectResult = {
   redirect: {

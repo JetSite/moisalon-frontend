@@ -4,7 +4,7 @@ import AutoFocusedForm from '../../../../Form/AutoFocusedForm'
 import { FieldStyled } from '../../CabinetForm/styled'
 import { TextField } from '../../../../Form'
 import { required } from '../../../../../../utils/validations'
-import Error from '../../../../Form/Error'
+import ErrorPopup from '../../../../Form/Error'
 import { laptopBreakpoint } from '../../../../../../styles/variables'
 import Button from '../../../../../ui/Button'
 import Sale from '../../../../Sale'
@@ -73,13 +73,11 @@ const CreateSale: FC<CreateSaleProps> = ({
   setSales,
 }) => {
   const [errors, setErrors] = useState<string[] | null>(null)
-  const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
   const [openPopup, setOpenPopup] = useState(false)
   const [photo, setPhoto] = useState<IPhoto | null>(sale?.cover || null)
   const [buttonPublish, setButtonPublish] = useState(false)
   const { loading, handleCreateOrUpdate } = usePromotionMutate({
     setErrors,
-    setErrorPopupOpen,
     setSales,
   })
   const formRef = useRef<FormApi<IInitialValuesSaleForm>>()
@@ -101,7 +99,6 @@ const CreateSale: FC<CreateSaleProps> = ({
     async (values: IInitialValuesSaleForm) => {
       if (!photo) {
         setErrors(['Необходимо добавить фото'])
-        setErrorPopupOpen(true)
         return
       }
       const changetValues = removeUnchangedFields(values, initialValues, [
@@ -225,11 +222,8 @@ const CreateSale: FC<CreateSaleProps> = ({
                 />
                 <TextDate>Дата окончания акции</TextDate>
               </FieldWrapDate>
-              <Error
-                errors={errors}
-                isOpen={isErrorPopupOpen}
-                setOpen={setErrorPopupOpen}
-              />
+              <ErrorPopup errors={errors} setErrors={setErrors} />
+
               <ButtonWrap>
                 <Button
                   variant="red"

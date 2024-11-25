@@ -9,7 +9,7 @@ import CreatePageSkeleton from 'src/components/ui/ContentSkeleton/CreatePageSkel
 import Cabinet from 'src/components/blocks/Cabinet'
 import MasterCabinet from 'src/components/pages/MasterCabinet'
 import { GetServerSideProps, NextPage } from 'next'
-import { initializeApollo } from 'src/api/apollo-client'
+import { addApolloState, initializeApollo } from 'src/api/apollo-client'
 import { RENTAL_REQUESTS_FOR_USER } from 'src/api/graphql/rentalRequest/queries/getRequestsForUser'
 import { ME } from 'src/api/graphql/me/queries/getMe'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
@@ -129,7 +129,7 @@ export const getServerSideProps: GetServerSideProps<
     const deletedRentalRequestsSalons =
       flattenStrapiResponse(data[4]?.data.rentalRequests) || []
 
-    return {
+    return addApolloState<Nullable<Props>>(apolloClient, {
       props: {
         accessToken,
         cities,
@@ -141,7 +141,7 @@ export const getServerSideProps: GetServerSideProps<
         },
         user: userData.data.usersPermissionsUser,
       },
-    }
+    })
   }
 }
 

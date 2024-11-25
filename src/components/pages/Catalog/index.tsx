@@ -80,7 +80,7 @@ const Catalog: FC<ICatalogProps> = ({ products, loading, noTitle, cart }) => {
           Закрыть
         </Button>
       </Popup>
-      <ErrorPopup errors={errors} isOpen={errors} setOpen={setErrors} />
+      <ErrorPopup errors={errors} setErrors={setErrors} />
     </Wrapper>
   )
 }

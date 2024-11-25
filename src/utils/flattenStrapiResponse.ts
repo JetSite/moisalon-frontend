@@ -1,4 +1,5 @@
 import { IPagination } from 'src/types'
+import { IID } from 'src/types/common'
 
 type IFlattenStrapiResponse = (
   data: StrapiDataObject | StrapiDataObject[] | AttributesObject | null,
@@ -9,7 +10,7 @@ export type AttributesObject = {
 }
 
 export type StrapiDataObject = {
-  id: string | number
+  id: IID
   attributes: AttributesObject
   data: StrapiDataObject | StrapiDataObject[] | null | AttributesObject
   meta?: { pagination: IPagination }
