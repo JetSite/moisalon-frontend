@@ -23,7 +23,7 @@ import { UPDATE_ORDER_ADDRESS } from 'src/api/graphql/order/mutations/updateOrde
 
 export interface IUseOrderCreate
   extends Pick<IErrorProps, 'errors' | 'setErrors'> {
-  handleCreateOrderAdress: HandleCreateOrderAddress
+  handleCreateOrderAddress: HandleCreateOrderAddress
   loading: boolean
   handleCreateOrder: () => void
   brands: IBrand[]
@@ -107,7 +107,7 @@ export const useOrderCreate: UseOrderCreate = ({
     [user, successOrderValues],
   )
 
-  const handleCreateOrderAdress: HandleCreateOrderAddress = values => {
+  const handleCreateOrderAddress: HandleCreateOrderAddress = values => {
     const { successOrderValues, input } = getPrepareOrder({
       values,
       cart,
@@ -177,7 +177,7 @@ export const useOrderCreate: UseOrderCreate = ({
   }
 
   return {
-    handleCreateOrderAdress,
+    handleCreateOrderAddress,
     handleCreateOrder,
     successOrderValues,
     errors,

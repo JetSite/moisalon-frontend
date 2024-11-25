@@ -27,7 +27,7 @@ const CartPage: FC<Props> = ({ data }) => {
 }
 
 export const getServerSideProps: GetServerSideProps<
-  Nullable<ICartProps>
+  Nullable<Props>
 > = async ctx => {
   const result = await getServerUser(ctx)
 

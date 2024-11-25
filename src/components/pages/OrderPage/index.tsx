@@ -44,7 +44,7 @@ const OrderPage: FC<IOrderPageProps> = ({
   user,
 }) => {
   const {
-    handleCreateOrderAdress,
+    handleCreateOrderAddress,
     handleCreateOrder,
     successOrderValues,
     errors,
@@ -90,7 +90,7 @@ const OrderPage: FC<IOrderPageProps> = ({
       return
     }
 
-    handleCreateOrderAdress(values)
+    handleCreateOrderAddress(values)
   }
 
   const onSuccess = () => {
