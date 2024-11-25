@@ -223,16 +223,12 @@ const CreateVacancy: FC<Props> = ({
               <FieldWrap>
                 <Checkbox
                   name="publishedAt"
-                  label="Опубликовать вакансию"
+                  label="Опубликовать"
                   checked={publishedAt}
                   setChecked={setPublishedAt}
                 />
               </FieldWrap>
-              <ErrorPopup
-                errors={errors}
-                isOpen={!!errors}
-                setOpen={setErrors}
-              />
+              <ErrorPopup errors={errors} setErrors={setErrors} />
               <ButtonWrap>
                 <Button
                   variant="red"

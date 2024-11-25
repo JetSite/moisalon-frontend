@@ -225,16 +225,12 @@ const CreateEducation: FC<Props> = ({
               <Styled.FieldWrap>
                 <Checkbox
                   name="publishedAt"
-                  label="Опубликовать вакансию"
+                  label="Опубликовать"
                   checked={publishedAt}
                   setChecked={setPublishedAt}
                 />
               </Styled.FieldWrap>
-              <ErrorPopup
-                errors={errors}
-                isOpen={!!errors}
-                setOpen={setErrors}
-              />
+              <ErrorPopup errors={errors} setErrors={setErrors} />
               <Styled.ButtonWrap>
                 <Button
                   variant="red"

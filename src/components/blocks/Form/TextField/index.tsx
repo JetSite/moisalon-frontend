@@ -1,9 +1,8 @@
-import React, { FunctionComponent, forwardRef } from 'react'
+import React, { forwardRef } from 'react'
 import TextField, { TextFieldProps } from '@material-ui/core/TextField'
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../styles/variables'
 import { FieldInputProps, FieldMetaState } from 'react-final-form'
-import { SelectProps } from '@material-ui/core'
 
 const TextFieldStyled = styled(TextField)`
   .MuiInputBase-input {
@@ -61,6 +60,7 @@ const TextFieldAdapter = forwardRef<HTMLDivElement, Props>((props, ref) => {
   return (
     <TextFieldStyled
       inputRef={ref}
+      onWheel={e => (e.target as HTMLInputElement).blur()}
       fullWidth={fullWidth}
       InputLabelProps={{ shrink: type === 'date' || undefined }}
       value={value}

@@ -21,6 +21,7 @@ interface Props {
   selectedProducts: IProductCart[]
   brands: IBrand[]
   isLogin: boolean
+  loading: boolean
   underMinOrderBrands: ICheckUnderMinOrderBrandsResult[]
 }
 
@@ -29,6 +30,7 @@ export const CartManager: FC<Props> = ({
   underMinOrderBrands,
   brands,
   isLogin,
+  loading,
 }) => {
   const disabledButton =
     !selectedProducts?.length || underMinOrderBrands.length > 0
@@ -61,7 +63,8 @@ export const CartManager: FC<Props> = ({
         href={!isLogin ? '/login' : `/order`}
         size="fullWidth"
         variant="red"
-        disabled={disabledButton}
+        loading={loading}
+        disabled={loading || disabledButton}
         onClick={() => {
           if (isLogin) {
             sessionStorage.setItem(
@@ -74,7 +77,7 @@ export const CartManager: FC<Props> = ({
           }
         }}
       >
-        Перейти к оформлению
+        {loading ? 'Подождите' : ' Перейти к оформлению'}
       </LinkButton>
     </OrderWrap>
   )

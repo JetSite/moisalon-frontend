@@ -117,7 +117,7 @@ interface Props {
 const Files: FC<Props> = ({ id }) => {
   const [fileXsl, setFileXsl] = useState<File | null>(null)
   const [fileProduct, setFileProduct] = useState<File | null>(null)
-  const [errors, setErrors] = useState(null)
+  const [errors, setErrors] = useState<string[] | null>(null)
   const [successText, setSuccessText] = useState<string | null>(null)
   const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
   const [isSuccessPopupOpen, setSuccessPopupOpen] = useState(false)
@@ -273,11 +273,7 @@ const Files: FC<Props> = ({ id }) => {
               >
                 {loadingFile ? 'Подождите...' : 'Отправить'}
               </Button>
-              <ErrorPopup
-                errors={errors}
-                isOpen={isErrorPopupOpen}
-                setOpen={setErrorPopupOpen}
-              />
+              <ErrorPopup errors={errors} setErrors={setErrors} />
               <Success
                 text={successText}
                 isOpen={isSuccessPopupOpen}
@@ -324,11 +320,7 @@ const Files: FC<Props> = ({ id }) => {
               >
                 {loadingFileProduct ? 'Подождите...' : 'Отправить'}
               </Button>
-              <ErrorPopup
-                errors={errors}
-                isOpen={isErrorPopupOpen}
-                setOpen={setErrorPopupOpen}
-              />
+              <ErrorPopup errors={errors} setErrors={setErrors} />
               <Success
                 text={successText}
                 isOpen={isSuccessPopupOpen}

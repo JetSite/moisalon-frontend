@@ -55,7 +55,7 @@ export const useMutationCart: IUseMutationCart = ({
   const [cart, setCart] = useState<ICart | null>(dataCart)
   const [quantityMap, setQuantityMap] = useState<IQuantityMap>({})
   const { setCart: setCartStore } = useAuthStore(getStoreEvent)
-  const debounceQuantityMap = useDebounce(quantityMap, 4000)
+  const debounceQuantityMap = useDebounce(quantityMap, 1000)
   const [errors, setErrors] = useState<string[] | null>(null)
 
   const onError = (error: ApolloError) => {
@@ -86,7 +86,6 @@ export const useMutationCart: IUseMutationCart = ({
       )
       .filter(Boolean) as ICartContentInput[]
     if (isEqual(quantityMap, resultQuantityMap) && arrID.length) {
-      setLoading(true)
       if (!cart) {
         createCart({
           variables: {
@@ -142,6 +141,7 @@ export const useMutationCart: IUseMutationCart = ({
   const handleMutate: IHandleMutateCart = ({ mustGrow, itemID }) => {
     const itemInCart =
       cart?.cartContent.find(el => el.product.id === itemID) || null
+    setLoading(true)
 
     if (itemInCart) {
       if (!mustGrow) {
