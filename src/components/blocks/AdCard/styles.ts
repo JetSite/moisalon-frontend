@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { Skeleton } from '@material-ui/lab'
 import { laptopBreakpoint, red } from '../../../styles/variables'
+import Link from 'next/link'
 
 export const Wrapper = styled.div`
   position: relative;
@@ -90,14 +91,14 @@ export const Name = styled.p`
   }
 `
 
-export const PhoneLink = styled.div`
+export const PhoneLink = styled(Link)`
   width: 14.5px;
   height: 14.5px;
   background: url('/phone-icon.svg') no-repeat center;
   background-size: contain;
 `
 
-export const EmailLink = styled.div`
+export const EmailLink = styled(Link)`
   width: 16.7px;
   height: 12.2px;
   background: url('/mail-icon.svg') no-repeat center;

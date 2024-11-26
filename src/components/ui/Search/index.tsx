@@ -6,7 +6,6 @@ import {
   ChangeEventHandler,
 } from 'react'
 import { useRouter } from 'next/router'
-import { cyrToTranslit } from '../../../utils/translit'
 import { Input, Wrapper, InputWrap, ClearIcon } from './styled'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'

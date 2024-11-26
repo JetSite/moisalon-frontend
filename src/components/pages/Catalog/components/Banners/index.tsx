@@ -4,6 +4,9 @@ import {
   laptopBreakpoint,
 } from '../../../../../styles/variables'
 import { PHOTO_URL } from 'src/api/variables'
+import { FC } from 'react'
+import { IBannerHook } from 'src/types/banners'
+import Link from 'next/link'
 
 const Wrapper = styled.div`
   display: flex;
@@ -22,14 +25,14 @@ const Wrapper = styled.div`
   }
 `
 
-const Big = styled.a`
+const Big = styled(Link)`
   display: flex;
   justify-content: space-between;
   color: #000;
   width: 100%;
 `
 
-const WrapBig = styled.div`
+const WrapBig = styled.div<{ image: string }>`
   width: 785px;
   height: 275px;
   background: ${props => `url(${props.image}) no-repeat center`};
@@ -58,7 +61,7 @@ const WrapBig = styled.div`
   }
 `
 
-const WrapSmall = styled.div`
+const WrapSmall = styled.div<{ image: string }>`
   width: 357px;
   height: 125px;
   color: #000;
@@ -80,7 +83,7 @@ const WrapSmall = styled.div`
   }
 `
 
-const Small = styled.a`
+const Small = styled(Link)`
   color: #000;
   display: flex;
   justify-content: space-between;
@@ -177,7 +180,7 @@ const TitleSmall = styled.p`
   }
 `
 
-const Link = styled.a`
+const LinkStyled = styled(Link)`
   font-weight: 600;
   font-size: 18px;
   color: #ff0033;
@@ -197,42 +200,44 @@ const Image = styled.img`
   height: 100%;
 `
 
-const Banners = ({
-  bannersByHookWide,
-  bannersByHookSmall1,
-  bannersByHookSmall2,
+interface Props {
+  bannerLarge: IBannerHook | null
+  bannerSmallLeft: IBannerHook | null
+  bannerSmallRight: IBannerHook | null
+}
+
+const Banners: FC<Props> = ({
+  bannerLarge,
+  bannerSmallLeft,
+  bannerSmallRight,
 }) => {
-  const bannerWide = bannersByHookWide?.attributes?.banners?.data[0]?.attributes
-  const bannerWideImage = bannerWide?.bannerImage?.data?.attributes?.url
-    ? `${PHOTO_URL}${bannerWide?.bannerImage?.data?.attributes?.url}`
+  const banner = bannerLarge?.banners ? bannerLarge.banners[0] : null
+  const bannerImage = banner ? `${PHOTO_URL}${banner.bannerImage?.url}` : ''
+
+  const bannerlLeft = bannerSmallLeft?.banners
+    ? bannerSmallLeft?.banners[0]
+    : null
+  const bannerlLeftImage = bannerlLeft
+    ? `${PHOTO_URL}${bannerlLeft.bannerImage.url}`
     : ''
 
-  const bannerSmall1 =
-    bannersByHookSmall1?.attributes?.banners?.data[0]?.attributes
-  const bannerSmall1Image = bannerSmall1?.bannerImage?.data?.attributes?.url
-    ? `${PHOTO_URL}${bannerSmall1?.bannerImage?.data?.attributes?.url}`
-    : ''
-
-  const bannerSmall2 =
-    bannersByHookSmall2?.attributes?.banners?.data[0]?.attributes
-  const bannerSmall2Image = bannerSmall2?.bannerImage?.data?.attributes?.url
-    ? `${PHOTO_URL}${bannerSmall2?.bannerImage?.data?.attributes?.url}`
+  const bannerRight = bannerSmallRight?.banners
+    ? bannerSmallRight.banners[0]
+    : null
+  const bannerRightImage = bannerRight
+    ? `${PHOTO_URL}${bannerRight.bannerImage?.url}`
     : ''
 
   return (
     <Wrapper>
-      {bannersByHookWide?.attributes?.banners?.data?.length ? (
+      {banner ? (
         <noindex>
-          <WrapBig image={bannerWideImage}>
-            <Big
-              href={bannerWide?.linkUrl ? bannerWide.linkUrl : '#'}
-              rel="nofollow"
-              target="_blank"
-            >
+          <WrapBig image={bannerImage}>
+            <Big href={banner.linkUrl ?? '#'} rel="nofollow" target="_blank">
               <LeftBig>
-                {bannerWide?.title ? (
+                {banner.linkText ? (
                   <div>
-                    <Title>{bannerWide.title}</Title>
+                    <Title>{banner.linkText}</Title>
                   </div>
                 ) : null}
               </LeftBig>
@@ -240,36 +245,36 @@ const Banners = ({
           </WrapBig>
         </noindex>
       ) : null}
-      {bannersByHookSmall1?.attributes?.banners?.data?.length ? (
+      {bannerlLeft ? (
         <Right>
-          {bannerSmall1 ? (
+          {bannerlLeft ? (
             <noindex>
-              <WrapSmall image={bannerSmall1Image}>
+              <WrapSmall image={bannerlLeftImage}>
                 <Small
-                  href={bannerSmall1?.linkUrl ? bannerSmall1.linkUrl : '#'}
+                  href={bannerlLeft?.linkUrl ? bannerlLeft.linkUrl : '#'}
                   target="_blank"
                   rel="nofollow"
                 >
                   <LeftSmall>
-                    {bannerSmall1?.title ? (
-                      <TitleSmall>{bannerSmall1.title}</TitleSmall>
+                    {bannerlLeft.linkText ? (
+                      <TitleSmall>{bannerlLeft.linkText}</TitleSmall>
                     ) : null}
                   </LeftSmall>
                 </Small>
               </WrapSmall>
             </noindex>
           ) : null}
-          {bannerSmall2 ? (
+          {bannerRight ? (
             <noindex>
-              <WrapSmall image={bannerSmall2Image}>
+              <WrapSmall image={bannerRightImage}>
                 <Small
-                  href={bannerSmall2?.linkUrl ? bannerSmall2.linkUrl : '#'}
+                  href={bannerRight.linkUrl ? bannerRight.linkUrl : '#'}
                   target="_blank"
                   rel="nofollow"
                 >
                   <LeftSmall>
-                    {bannerSmall2?.title ? (
-                      <TitleSmall>{bannerSmall2.title}</TitleSmall>
+                    {bannerRight.linkText ? (
+                      <TitleSmall>{bannerRight.linkText}</TitleSmall>
                     ) : null}
                   </LeftSmall>
                 </Small>

@@ -27,6 +27,6 @@ export interface IEducation {
   sumScore: number
   amount: number
   publishedAt: string | null
-  timeStart: string | null
-  timeEnd: string | null
+  timeStart: string
+  timeEnd: string
 }

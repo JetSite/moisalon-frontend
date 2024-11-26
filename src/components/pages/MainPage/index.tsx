@@ -20,6 +20,7 @@ import { FC } from 'react'
 import { ITotalCount } from 'src/pages/[city]/salon'
 import { ICity } from 'src/types'
 import MainRentSlider from './components/MainRentSlider'
+import { IBannerHook } from 'src/types/banners'
 
 const Title = styled.h1`
   max-width: 1440px;
@@ -39,7 +40,7 @@ const Title = styled.h1`
 export interface IMainPageProps {
   beautyCategories: any
   beautyAllContent: any
-  bannerHooks: any
+  bannerHooks: IBannerHook[]
   totalCount: ITotalCount
   cityData: ICity
 }
@@ -51,8 +52,14 @@ const MainPage: FC<IMainPageProps> = ({
   totalCount,
   cityData,
 }) => {
-  const { me, city } = useAuthStore(getStoreData)
+  const { me } = useAuthStore(getStoreData)
   const query = { query: '' } //TODO: query
+
+  const bannerTopLarge = bannerHooks.find(e => e.id === '1') ?? null
+  const bannerTopSmallLeft = bannerHooks.find(e => e.id === '2') ?? null
+  const bannerTopSmallRight = bannerHooks.find(e => e.id === '3') ?? null
+  console.log(beautyAllContent)
+
   return (
     <MainLayout>
       <>
@@ -68,12 +75,11 @@ const MainPage: FC<IMainPageProps> = ({
         >
           <WrapBanner>
             <MobileHidden>
-              {bannerHooks?.data[0]?.attributes?.banners?.data?.length ||
-              bannerHooks?.data[1]?.attributes?.banners?.data?.length ? (
+              {bannerHooks ? (
                 <Banners
-                  bannersByHookWide={bannerHooks?.data[1]}
-                  bannersByHookSmall1={bannerHooks?.data[2]}
-                  bannersByHookSmall2={bannerHooks?.data[3]}
+                  bannerLarge={bannerTopLarge}
+                  bannerSmallLeft={bannerTopSmallLeft}
+                  bannerSmallRight={bannerTopSmallRight}
                 />
               ) : null}
             </MobileHidden>
@@ -84,23 +90,22 @@ const MainPage: FC<IMainPageProps> = ({
           // totalSales={sales?.salesSearch?.connection?.nodes?.length}
         />
         <MobileVisible>
-          {bannerHooks?.data[0]?.attributes?.banners?.data?.length ||
-          bannerHooks?.data[1]?.attributes?.banners?.data?.length ? (
+          {bannerHooks?.length ? (
             <Banners
-              bannersByHookWide={bannerHooks?.data[0]}
-              bannersByHookSmall1={bannerHooks?.data[1]}
-              bannersByHookSmall2={bannerHooks?.data[2]}
+              bannerLarge={bannerTopLarge}
+              bannerSmallLeft={bannerTopSmallLeft}
+              bannerSmallRight={bannerTopSmallRight}
             />
           ) : null}
         </MobileVisible>
         {/* {query?.query?.length ? <SearchResults me={me} /> : null} */}
-        <MainAdsSlider city={city} />
+        <MainAdsSlider city={cityData} />
         {/* <MainGoodsSlider me={me} /> */}
-        <MainRentSlider city={city} />
+        <MainRentSlider city={cityData} />
         {/* <MainWorkplacesSlider me={me} /> */}
-        <MainMasterSlider city={city} />
-        <MainSalonsSlider city={city} />
-        <MainBrandsSlider city={city} />
+        <MainMasterSlider city={cityData} />
+        <MainSalonsSlider city={cityData} />
+        <MainBrandsSlider city={cityData} />
         <About />
         <Ribbon
           title="Бьюти-лента"

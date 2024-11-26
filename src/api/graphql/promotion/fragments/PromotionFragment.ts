@@ -21,6 +21,9 @@ export const promotionFragment = `
                 id
                 attributes {
                   name
+                  phone
+                  address
+                  email
                 }
               }
             }
@@ -29,6 +32,12 @@ export const promotionFragment = `
                 id
                 attributes {
                   name
+                  address
+                  email
+                  salonPhones {
+                      id
+                        phoneNumber
+                  }
                 }
               }
             }
@@ -37,6 +46,12 @@ export const promotionFragment = `
                 id
                 attributes {
                   name
+                  address
+                  email
+                  phones {
+                      id
+                      phoneNumber
+                    }
                 }
               }
             }
