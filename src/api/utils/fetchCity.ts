@@ -43,7 +43,11 @@ export const fetchCity: IFetchCity = async (citySlug = null, ctx) => {
       return response[0]
     }
   } catch (error) {
-    console.error('error to fetch city: ', error)
-    return { slug: defaultValues.city.slug, id: '1' }
+    console.error('error to fetch city: ', {
+      error,
+      providedSlug: citySlug,
+      fallbackSlug: defaultValues.city.slug,
+    })
+    return defaultValues.city
   }
 }

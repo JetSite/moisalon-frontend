@@ -214,18 +214,18 @@ const Banners: FC<Props> = ({
   const banner = bannerLarge?.banners ? bannerLarge.banners[0] : null
   const bannerImage = banner ? `${PHOTO_URL}${banner.bannerImage?.url}` : ''
 
-  const bannerlLeft = bannerSmallLeft?.banners
+  const bannerLeft = bannerSmallLeft?.banners
     ? bannerSmallLeft?.banners[0]
     : null
-  const bannerlLeftImage = bannerlLeft
-    ? `${PHOTO_URL}${bannerlLeft.bannerImage.url}`
+  const bannerLeftImage = bannerLeft?.bannerImage?.url
+    ? `${PHOTO_URL}${bannerLeft.bannerImage.url}`
     : ''
 
   const bannerRight = bannerSmallRight?.banners
     ? bannerSmallRight.banners[0]
     : null
-  const bannerRightImage = bannerRight
-    ? `${PHOTO_URL}${bannerRight.bannerImage?.url}`
+  const bannerRightImage = bannerRight?.bannerImage?.url
+    ? `${PHOTO_URL}${bannerRight.bannerImage.url}`
     : ''
 
   return (
@@ -245,19 +245,19 @@ const Banners: FC<Props> = ({
           </WrapBig>
         </noindex>
       ) : null}
-      {bannerlLeft ? (
+      {bannerLeft ? (
         <Right>
-          {bannerlLeft ? (
+          {bannerLeft ? (
             <noindex>
-              <WrapSmall image={bannerlLeftImage}>
+              <WrapSmall image={bannerLeftImage}>
                 <Small
-                  href={bannerlLeft?.linkUrl ? bannerlLeft.linkUrl : '#'}
+                  href={bannerLeft?.linkUrl ? bannerLeft.linkUrl : '#'}
                   target="_blank"
                   rel="nofollow"
                 >
                   <LeftSmall>
-                    {bannerlLeft.linkText ? (
-                      <TitleSmall>{bannerlLeft.linkText}</TitleSmall>
+                    {bannerLeft.linkText ? (
+                      <TitleSmall>{bannerLeft.linkText}</TitleSmall>
                     ) : null}
                   </LeftSmall>
                 </Small>

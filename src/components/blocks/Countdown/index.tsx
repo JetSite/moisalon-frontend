@@ -2,7 +2,14 @@ import { FC, useEffect, useState } from 'react'
 import { pluralize } from '../../../utils/pluralize'
 import { Wrapper, Title, CountWrapper, Value, Days, Dots, End } from './styles'
 import moment from 'moment'
-import { CustomAlign } from 'src/styles/variables'
+import { FlexAlign } from 'src/styles/variables'
+
+export interface ITimeLift {
+  days: number
+  hours: number
+  minutes: number
+  seconds: number
+}
 
 interface Props {
   dateStart: string
@@ -12,7 +19,7 @@ interface Props {
   titleStart?: string
   titleEnd?: string
   text: string
-  align: keyof typeof CustomAlign
+  align: keyof typeof FlexAlign
 }
 
 const Countdown: FC<Props> = ({
@@ -25,10 +32,12 @@ const Countdown: FC<Props> = ({
   text,
   align,
 }) => {
-  const [days, setDays] = useState(0)
-  const [hours, setHours] = useState(0)
-  const [minutes, setMinutes] = useState(0)
-  const [seconds, setSeconds] = useState(0)
+  const [timeLeft, setTimeLeft] = useState<ITimeLift>({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  })
   const [isStarted, setIsStarted] = useState(false)
 
   const calculateDistance = () => {
@@ -54,10 +63,12 @@ const Countdown: FC<Props> = ({
   const updateTime = (distance: number) => {
     if (distance > 0) {
       const duration = moment.duration(distance)
-      setDays(duration.days())
-      setHours(duration.hours())
-      setMinutes(duration.minutes())
-      setSeconds(duration.seconds())
+      setTimeLeft({
+        days: duration.days(),
+        hours: duration.hours(),
+        minutes: duration.minutes(),
+        seconds: duration.seconds(),
+      })
     }
   }
   useEffect(() => {
@@ -79,38 +90,29 @@ const Countdown: FC<Props> = ({
   }, [dateStart, dateEnd, timeStart, timeEnd])
 
   return (
-    <>
-      {seconds != null ? (
-        <Wrapper>
-          {seconds != null && (
-            <>
-              {days + hours + minutes + seconds > 0 ? (
-                <>
-                  <Title align={align}>
-                    {!isStarted ? titleStart : titleEnd}
-                  </Title>
-                  <CountWrapper align={align}>
-                    <Days>{`${days} ${pluralize(
-                      days,
-                      'день',
-                      'дня',
-                      'дней',
-                    )}`}</Days>
-                    <Value>{String(hours).padStart(2, '0')}</Value>
-                    <Dots>:</Dots>
-                    <Value>{String(minutes).padStart(2, '0')}</Value>
-                    <Dots>:</Dots>
-                    <Value>{String(seconds).padStart(2, '0')}</Value>
-                  </CountWrapper>
-                </>
-              ) : (
-                <End>{text}</End>
-              )}
-            </>
-          )}
-        </Wrapper>
-      ) : null}
-    </>
+    <Wrapper>
+      {timeLeft.days + timeLeft.hours + timeLeft.minutes + timeLeft.seconds >
+      0 ? (
+        <>
+          <Title align={align}>{!isStarted ? titleStart : titleEnd}</Title>
+          <CountWrapper align={align}>
+            <Days>{`${timeLeft.days} ${pluralize(
+              timeLeft.days,
+              'день',
+              'дня',
+              'дней',
+            )}`}</Days>
+            <Value>{String(timeLeft.hours).padStart(2, '0')}</Value>
+            <Dots>:</Dots>
+            <Value>{String(timeLeft.minutes).padStart(2, '0')}</Value>
+            <Dots>:</Dots>
+            <Value>{String(timeLeft.seconds).padStart(2, '0')}</Value>
+          </CountWrapper>
+        </>
+      ) : (
+        <End>{text}</End>
+      )}
+    </Wrapper>
   )
 }
 

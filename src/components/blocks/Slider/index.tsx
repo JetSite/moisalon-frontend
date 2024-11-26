@@ -61,7 +61,7 @@ interface Props {
     | IVacancy[]
     | IPromotions[]
   title?: string
-  typeObject?: IMaster | IBrand | ISalon | IPhoto | null
+  typeObject?: IMaster | IBrand | ISalon | IPhoto | IPromotions | null
   noBottom?: boolean
   noAll?: boolean
   noAllButton?: boolean

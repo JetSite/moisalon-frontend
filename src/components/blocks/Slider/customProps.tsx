@@ -67,7 +67,15 @@ interface PropsICustomProps {
     | IVacancy
     | IPromotions
     | null
-  typeObject?: IMaster | IBrand | ISalon | IPhoto | IProduct | IVacancy | null
+  typeObject?:
+    | IMaster
+    | IBrand
+    | ISalon
+    | IPhoto
+    | IProduct
+    | IVacancy
+    | IPromotions
+    | null
   bgColor?: string
   isEditing?: boolean
   deleteFunction?: IDeleteFunction

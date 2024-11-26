@@ -10,6 +10,7 @@ import { Input, Wrapper, InputWrap, ClearIcon } from './styled'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 import Tags from '../Tags'
+import { searchEntity } from 'src/api/utils/searchEntity'
 
 const tagsSwitch = (url: string) => {
   const splitUrl = url.split('/')
@@ -70,30 +71,30 @@ const Search: FC<Props> = ({ title, noFilters }) => {
 
   const queryTag = (item: string) => {
     setInputValue(item)
-    if (
-      router.pathname === '/[city]/master' ||
-      router.pathname === '/[city]/salon' ||
-      router.pathname === '/[city]/brand' ||
-      router.pathname === '/catalogB2cAll' ||
-      router.pathname === '/catalogB2c'
-    ) {
-    }
-    if (
-      router.pathname === '/catalogB2c' ||
-      router.pathname === '/catalogB2cAll'
-    ) {
-      router.push({
-        pathname: '/catalogB2cAll',
-        query: { query: item, type: 'query' },
-      })
-      return
-    }
-    if (router?.query?.id?.length || router?.query?.slug?.length) {
-      router.push(
-        { pathname: `/${city.slug}`, query: { q: item } },
-        `/${city.slug}`,
-      )
-    }
+    // if (
+    //   router.pathname === '/[city]/master' ||
+    //   router.pathname === '/[city]/salon' ||
+    //   router.pathname === '/[city]/brand' ||
+    //   router.pathname === '/catalogB2cAll' ||
+    //   router.pathname === '/catalogB2c'
+    // ) {
+    // }
+    // if (
+    //   router.pathname === '/catalogB2c' ||
+    //   router.pathname === '/catalogB2cAll'
+    // ) {
+    //   router.push({
+    //     pathname: '/catalogB2cAll',
+    //     query: { query: item, type: 'query' },
+    //   })
+    //   return
+    // }
+    // if (router?.query?.id?.length || router?.query?.slug?.length) {
+    //   router.push(
+    //     { pathname: `/${city.slug}`, query: { q: item } },
+    //     `/${city.slug}`,
+    //   )
+    // }
   }
 
   const inputSubmitHandler: KeyboardEventHandler<HTMLInputElement> = e => {
@@ -124,13 +125,26 @@ const Search: FC<Props> = ({ title, noFilters }) => {
         } else if (router.pathname === '/catalogB2b') {
           return
         }
-        router.push(
-          { pathname: `/${city.slug}`, query: { q: inputValue } },
-          `/${city.slug}`,
-        )
+        // router.push(
+        //   { pathname: `/${city.slug}`, query: { q: inputValue } },
+        // )
       }
     }
   }
+
+  const [data, setData] = useState(null)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await searchEntity(inputValue)
+
+      setData(data)
+    }
+
+    fetchData()
+  }, [inputValue])
+
+  console.log(data)
 
   useEffect(() => {
     // if (
@@ -148,9 +162,9 @@ const Search: FC<Props> = ({ title, noFilters }) => {
     // ) {
     //   setInputValue("");
     // }
-    if (router?.pathname !== '/' && router?.pathname !== '/[city]') {
-      setInputValue('')
-    }
+    // if (router?.pathname !== '/' && router?.pathname !== '/[city]') {
+    //   setInputValue('')
+    // }
   }, [router.pathname])
 
   return (

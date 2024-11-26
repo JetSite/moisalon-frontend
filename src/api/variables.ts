@@ -20,3 +20,5 @@ export const UPLOAD_PHOTO_OPTIONS = {
   maxWidthOrHeight: 1200,
   useWebWorker: true,
 }
+
+export const SEARCH_URL = `${PHOTO_URL}/api/fuzzy-search/search`

@@ -14,11 +14,10 @@ interface Props {
 }
 
 const AdSlide: FC<Props> = ({ item }) => {
+  const link = `/sales/${item?.id}`
   return (
-    <Link href={`/sales/${item?.id}`}>
-      <LinkStyled>
-        <AdCard item={item} shareLink={`/sales/${item?.id}`} />
-      </LinkStyled>
+    <Link href={link}>
+      <AdCard item={item} shareLink={link} />
     </Link>
   )
 }

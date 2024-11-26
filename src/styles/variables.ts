@@ -4,7 +4,7 @@ export const tabletBreakpoint = '768px'
 export const laptopBreakpoint = '992px'
 export const largeLaptopBreakpoint = '1200px'
 
-export enum CustomAlign {
+export enum FlexAlign {
   left = 'flex-start',
   center = 'space-between',
   right = 'flex-end',

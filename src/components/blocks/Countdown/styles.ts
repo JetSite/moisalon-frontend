@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { CustomAlign, laptopBreakpoint } from '../../../styles/variables'
+import { FlexAlign, laptopBreakpoint } from '../../../styles/variables'
 
 export const Wrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
   }
 `
 
-export const Title = styled.h4<{ align: string }>`
+export const Title = styled.h4<{ align: keyof typeof FlexAlign }>`
   font-size: 18px;
   font-weight: 600;
   text-align: ${({ align }) => align};
@@ -21,10 +21,10 @@ export const Title = styled.h4<{ align: string }>`
   }
 `
 
-export const CountWrapper = styled.div<{ align: keyof typeof CustomAlign }>`
+export const CountWrapper = styled.div<{ align: keyof typeof FlexAlign }>`
   margin-top: 14px;
   display: flex;
-  justify-content: ${({ align }) => CustomAlign[align]};
+  justify-content: ${({ align }) => FlexAlign[align]};
   @media (max-width: ${laptopBreakpoint}) {
     display: inline-flex;
   }

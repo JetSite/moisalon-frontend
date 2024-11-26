@@ -87,12 +87,12 @@ export const getServerSideProps: GetServerSideProps<
       bannerHooks,
       totalCount: {
         brands:
-          data[1].status === 'fulfilled'
-            ? getTotalCount(data[1].value.data.brands)
+          data[5].status === 'fulfilled'
+            ? getTotalCount(data[5].value.data.brands)
             : null,
         masters:
-          data[2].status === 'fulfilled'
-            ? getTotalCount(data[2].value.data.masters)
+          data[4].status === 'fulfilled'
+            ? getTotalCount(data[4].value.data.masters)
             : null,
         salons:
           data[3].status === 'fulfilled'
