@@ -59,9 +59,7 @@ export const SalonsSearch: FC<Props> = ({
   })
 
   const prepareTitle = rent
-    ? `Аренда кабинета, рабочего места в салонах красоты в городе ${
-        cityData.name
-      } ${pluralize(
+    ? `Аренда кабинета, рабочего места в салонах красоты ${pluralize(
         totalCount,
         'найден',
         'найдено',
@@ -94,7 +92,7 @@ export const SalonsSearch: FC<Props> = ({
             prepareTitle={prepareTitle}
             prepareSubTitle={prepareSubTitle}
             totalCount={totalCount}
-            noFoundText="Салонов не найдено"
+            noFoundText="Салоны не найдены"
             main={main}
             search={search}
           />

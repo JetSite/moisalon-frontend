@@ -172,7 +172,7 @@ const MastersSearchResults: FC<Props> = ({
       <SearchResultsTitle
         prepareTitle={prepareTitle}
         totalCount={totalCount}
-        noFoundText="Мастеров не найдено"
+        noFoundText="Мастера не найдены"
         main={main}
         search={search}
       />

@@ -76,7 +76,7 @@ const AllMastersPage: FC<IMastersPageProps> = ({
               search={!!searchValue}
             />
           ) : (
-            <Title>{loading ? 'Загрузка' : 'Салоны не найдены'}</Title>
+            <Title>{loading ? 'Загрузка' : 'Мастера не найдены'}</Title>
           )}
         </WrapperResults>
       </MainContainer>

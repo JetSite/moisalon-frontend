@@ -40,7 +40,7 @@ const AllBrandsPage: FC<IBrandPageProps> = ({
     ? searchParam[0]
     : searchParam || ''
   const { loading, data, pagination: pagi } = useSearch(searchValue)
-  const searchMaster = useMemo(() => data?.brands ?? null, [data?.brands])
+  const searchBrand = useMemo(() => data?.brands ?? null, [data?.brands])
 
   useEffect(() => {
     if (!searchValue && !brandData) {
@@ -48,8 +48,6 @@ const AllBrandsPage: FC<IBrandPageProps> = ({
       router.reload()
     }
   }, [searchValue, brandData])
-
-  console.log(data)
 
   return (
     <>
@@ -65,20 +63,20 @@ const AllBrandsPage: FC<IBrandPageProps> = ({
       </CSSTransition>
       <MainContainer>
         <WrapperResults>
-          {!loading && (brandData?.length || searchMaster) ? (
+          {!loading && (brandData?.length || searchBrand) ? (
             <BrandsSearchResults
-              key={brandData?.length || searchMaster?.length}
+              key={brandData?.length || searchBrand?.length}
               cityData={cityData}
               pagination={
                 pagination && !searchValue
                   ? pagination
-                  : { ...pagi, total: searchMaster?.length ?? 0 }
+                  : { ...pagi, total: searchBrand?.length ?? 0 }
               }
               brandData={data?.brands || brandData || []}
               search={!!searchValue}
             />
           ) : (
-            <Title>{loading ? 'Загрузка' : 'Салоны не найдены'}</Title>
+            <Title>{loading ? 'Загрузка' : 'Бренды не найдены'}</Title>
           )}
         </WrapperResults>
       </MainContainer>

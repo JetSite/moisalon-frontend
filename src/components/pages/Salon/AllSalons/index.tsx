@@ -57,8 +57,6 @@ const AllSalonsPage: FC<ISalonsPageProps> = ({
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }, [view])
 
-  console.log(salonData)
-
   return (
     <>
       <MobileViewCards totalCount={totalCount} />
