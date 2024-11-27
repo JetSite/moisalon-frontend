@@ -1,8 +1,10 @@
 import { FC, useEffect, useState } from 'react'
 import { pluralize } from '../../../utils/pluralize'
 import { Wrapper, Title, CountWrapper, Value, Days, Dots, End } from './styles'
-import moment from 'moment'
 import { FlexAlign } from 'src/styles/variables'
+import moment from 'moment-timezone'
+
+const TIME_ZONE = 'Europe/Moscow'
 
 export interface ITimeLift {
   days: number
@@ -41,13 +43,13 @@ const Countdown: FC<Props> = ({
   const [isStarted, setIsStarted] = useState(false)
 
   const calculateDistance = () => {
-    const now = moment().valueOf()
+    const now = moment.tz(TIME_ZONE).valueOf()
     const start = timeStart
-      ? moment(`${dateStart}T${timeStart}`).valueOf()
-      : moment(`${dateStart}`).valueOf()
+      ? moment.tz(`${dateStart}T${timeStart}`, TIME_ZONE).valueOf()
+      : moment.tz(`${dateStart}`, TIME_ZONE).valueOf()
     const end = timeEnd
-      ? moment(`${dateEnd}T${timeEnd}`).valueOf()
-      : moment(`${dateEnd}`).valueOf()
+      ? moment.tz(`${dateEnd}T${timeEnd}`, TIME_ZONE).valueOf()
+      : moment.tz(`${dateEnd}`, TIME_ZONE).valueOf()
 
     if (now < start) {
       setIsStarted(false)

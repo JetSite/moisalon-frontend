@@ -38,12 +38,16 @@ import { ISearchResults } from './SalonSearch'
 
 interface Props extends ISearchResults {
   masterData: IMaster[]
+  search?: boolean
+  noFilters?: boolean
 }
 
 const MastersSearchResults: FC<Props> = ({
   masterData,
   pagination,
   cityData,
+  search,
+  noFilters,
 }) => {
   const [page, setPage] = useState<number>(2)
   const hasNextPage = pagination && pagination.pageCount + 1 !== page
@@ -158,25 +162,32 @@ const MastersSearchResults: FC<Props> = ({
   return (
     <>
       <>
-        <Title>
-          {`${pluralize(
-            totalCount,
-            'Найден',
-            'Найдено',
-            'Найдено',
-          )} ${totalCount} ${pluralize(
-            totalCount,
-            'мастер',
-            'мастера',
-            'мастеров',
-          )}`}
-        </Title>
-        <FilterSearchResults
-          handleFilter={handleFilter}
-          sortProperty={sortProperty}
-          sortOrder={sortOrder}
-          master
-        />
+        {!search ? (
+          <>
+            <Title>
+              {`${pluralize(
+                totalCount,
+                'Найден',
+                'Найдено',
+                'Найдено',
+              )} ${totalCount} ${pluralize(
+                totalCount,
+                'мастер',
+                'мастера',
+                'мастеров',
+              )}`}
+            </Title>
+            {!noFilters ? (
+              <FilterSearchResults
+                handleFilter={handleFilter}
+                sortProperty={sortProperty}
+                sortOrder={sortOrder}
+                master
+              />
+            ) : null}
+          </>
+        ) : null}
+
         {user?.owner?.salons && user?.owner?.salons?.length > 0 ? (
           <>
             <Checkbox
@@ -216,7 +227,7 @@ const MastersSearchResults: FC<Props> = ({
                 <div
                   onClick={() => {
                     router.push(
-                      `/${master.city.slug || city.slug}/master/${master.id}`,
+                      `/${master.city?.slug || city.slug}/master/${master.id}`,
                     )
                   }}
                   key={master.id}
@@ -226,7 +237,7 @@ const MastersSearchResults: FC<Props> = ({
                       loading={false}
                       master={master}
                       shareLink={`https://moi.salon/${
-                        master.city.slug || city.slug
+                        master.city?.slug || city.slug
                       }/master/${master.id}`}
                       type="search-page"
                     />

@@ -52,7 +52,7 @@ const SalonCard: FC<Props> = ({
   const logoUrl = item?.logo?.url ? `${PHOTO_URL}${item.logo.url}` : ''
   const imageUrl = item?.cover?.url
     ? `${PHOTO_URL}${item.cover.url}`
-    : item.photos.length
+    : item.photos?.length
     ? `${PHOTO_URL}${item.photos[0].url}`
     : ''
 
@@ -109,7 +109,7 @@ const SalonCard: FC<Props> = ({
           <Info>
             <SalonInfo>
               <Activities>
-                {item.services.slice(0, 3).map(servis => (
+                {item.services?.slice(0, 3).map(servis => (
                   <Activity key={servis.service.id}>
                     {servis.service.title}
                   </Activity>

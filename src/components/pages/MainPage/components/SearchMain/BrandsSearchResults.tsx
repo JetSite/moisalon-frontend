@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { WrapperItemsBrands, Title, LinkStyled } from './styled'
 import { pluralize } from '../../../../../utils/pluralize'
@@ -37,11 +37,14 @@ const BrandsSearchResults: FC<Props> = ({
     notifyOnNetworkStatusChange: true,
     onCompleted: data => {
       const prepareData = flattenStrapiResponse(data.brands)
-      console.log(prepareData)
 
       setUpdateBrandData(prev => prev.concat(prepareData))
     },
   })
+
+  useEffect(() => {
+    setUpdateBrandData(brandData)
+  }, [brandData])
 
   const onFetchMore = async () => {
     await getBrands({ variables: { page } })

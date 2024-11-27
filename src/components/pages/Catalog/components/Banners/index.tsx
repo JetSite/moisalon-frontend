@@ -33,7 +33,8 @@ const Big = styled(Link)`
 `
 
 const WrapBig = styled.div<{ image: string }>`
-  width: 785px;
+  width: 67%;
+  max-width: 785px;
   height: 275px;
   background: ${props => `url(${props.image}) no-repeat center`};
   background-size: cover;
@@ -62,7 +63,7 @@ const WrapBig = styled.div<{ image: string }>`
 `
 
 const WrapSmall = styled.div<{ image: string }>`
-  width: 357px;
+  width: 100%;
   height: 125px;
   color: #000;
   background: ${props => `url(${props.image}) no-repeat center`};
@@ -91,13 +92,16 @@ const Small = styled(Link)`
 `
 
 const Right = styled.div`
+  width: 27%;
+  max-width: 357px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  row-gap: 25px;
+  gap: 25px;
 
-  @media (max-width: ${tabletBreakpoint}) {
+  @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
+    max-width: 785px;
     flex-direction: row;
     margin-top: 10px;
 
@@ -211,19 +215,18 @@ const Banners: FC<Props> = ({
   bannerSmallLeft,
   bannerSmallRight,
 }) => {
-  const banner = bannerLarge?.banners ? bannerLarge.banners[0] : null
-  const bannerImage = banner ? `${PHOTO_URL}${banner.bannerImage?.url}` : ''
+  const banner = bannerLarge?.banners?.[0] ?? null
+  const bannerImage = banner?.bannerImage?.url
+    ? `${PHOTO_URL}${banner.bannerImage.url}`
+    : ''
 
-  const bannerLeft = bannerSmallLeft?.banners
-    ? bannerSmallLeft?.banners[0]
-    : null
+  const bannerLeft = bannerSmallLeft?.banners?.[0] ?? null
+
   const bannerLeftImage = bannerLeft?.bannerImage?.url
     ? `${PHOTO_URL}${bannerLeft.bannerImage.url}`
     : ''
 
-  const bannerRight = bannerSmallRight?.banners
-    ? bannerSmallRight.banners[0]
-    : null
+  const bannerRight = bannerSmallRight?.banners?.[0] ?? null
   const bannerRightImage = bannerRight?.bannerImage?.url
     ? `${PHOTO_URL}${bannerRight.bannerImage.url}`
     : ''
@@ -231,8 +234,8 @@ const Banners: FC<Props> = ({
   return (
     <Wrapper>
       {banner ? (
-        <noindex>
-          <WrapBig image={bannerImage}>
+        <WrapBig image={bannerImage}>
+          <noindex>
             <Big href={banner.linkUrl ?? '#'} rel="nofollow" target="_blank">
               <LeftBig>
                 {banner.linkText ? (
@@ -242,47 +245,45 @@ const Banners: FC<Props> = ({
                 ) : null}
               </LeftBig>
             </Big>
-          </WrapBig>
-        </noindex>
+          </noindex>
+        </WrapBig>
       ) : null}
-      {bannerLeft ? (
-        <Right>
-          {bannerLeft ? (
-            <noindex>
-              <WrapSmall image={bannerLeftImage}>
-                <Small
-                  href={bannerLeft?.linkUrl ? bannerLeft.linkUrl : '#'}
-                  target="_blank"
-                  rel="nofollow"
-                >
-                  <LeftSmall>
-                    {bannerLeft.linkText ? (
-                      <TitleSmall>{bannerLeft.linkText}</TitleSmall>
-                    ) : null}
-                  </LeftSmall>
-                </Small>
-              </WrapSmall>
-            </noindex>
-          ) : null}
-          {bannerRight ? (
-            <noindex>
-              <WrapSmall image={bannerRightImage}>
-                <Small
-                  href={bannerRight.linkUrl ? bannerRight.linkUrl : '#'}
-                  target="_blank"
-                  rel="nofollow"
-                >
-                  <LeftSmall>
-                    {bannerRight.linkText ? (
-                      <TitleSmall>{bannerRight.linkText}</TitleSmall>
-                    ) : null}
-                  </LeftSmall>
-                </Small>
-              </WrapSmall>
-            </noindex>
-          ) : null}
-        </Right>
-      ) : null}
+      <Right>
+        {bannerLeft ? (
+          <noindex>
+            <WrapSmall image={bannerLeftImage}>
+              <Small
+                href={bannerLeft?.linkUrl ? bannerLeft.linkUrl : '#'}
+                target="_blank"
+                rel="nofollow"
+              >
+                <LeftSmall>
+                  {bannerLeft.linkText ? (
+                    <TitleSmall>{bannerLeft.linkText}</TitleSmall>
+                  ) : null}
+                </LeftSmall>
+              </Small>
+            </WrapSmall>
+          </noindex>
+        ) : null}
+        {bannerRight ? (
+          <noindex>
+            <WrapSmall image={bannerRightImage}>
+              <Small
+                href={bannerRight.linkUrl ? bannerRight.linkUrl : '#'}
+                target="_blank"
+                rel="nofollow"
+              >
+                <LeftSmall>
+                  {bannerRight.linkText ? (
+                    <TitleSmall>{bannerRight.linkText}</TitleSmall>
+                  ) : null}
+                </LeftSmall>
+              </Small>
+            </WrapSmall>
+          </noindex>
+        ) : null}
+      </Right>
     </Wrapper>
   )
 }

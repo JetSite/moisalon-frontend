@@ -76,7 +76,7 @@ const MasterItem: FC<Props> = ({
           <Specializations>
             {master &&
               master.services
-                .slice(0, 3)
+                ?.slice(0, 3)
                 .map(service => (
                   <Activity key={service.id}>{service.service.title}</Activity>
                 ))}

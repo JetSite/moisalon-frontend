@@ -11,7 +11,7 @@ import { getSalonsThroughCity } from 'src/api/graphql/salon/queries/getSalonsThr
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { fetchCity } from 'src/api/utils/fetchCity'
 import { defaultValues } from 'src/api/authConfig'
-import { ISalon } from 'src/types/salon'
+import { ISalon, ISalonPage } from 'src/types/salon'
 import { IPagination } from 'src/types'
 import { BRANDS } from 'src/api/graphql/brand/queries/getBrands'
 import { IBrand } from 'src/types/brands'
@@ -20,6 +20,7 @@ import { IMaster } from 'src/types/masters'
 import { getSalons } from 'src/api/graphql/salon/queries/getSalons'
 import { getRating } from 'src/utils/newUtils/getRating'
 import { Nullable } from 'src/types/common'
+import { getPrepareData } from 'src/utils/newUtils/getPrepareData'
 
 export interface ITotalCount {
   brands: number | null
@@ -62,11 +63,9 @@ export const getServerSideProps: GetServerSideProps<
 
   const pageSize = 9
 
-  const data = await Promise.all([
-    apolloClient.query({
-      query: getSalonsThroughCity,
-      variables: { slug: ctx.query.city, pageSize, sort: ['rating:asc'] },
-    }),
+  const search = ctx.query.search?.length > 3
+
+  const queries = [
     apolloClient.query({
       query: BRANDS,
       variables: {
@@ -87,42 +86,72 @@ export const getServerSideProps: GetServerSideProps<
         itemsCount: 10,
       },
     }),
-  ])
+  ]
 
-  const cityData = (await fetchCity(ctx.query.city as string, ctx)) || {
-    slug: defaultValues.city.slug,
+  if (!search) {
+    queries.push(
+      apolloClient.query({
+        query: getSalonsThroughCity,
+        variables: { slug: ctx.query.city, pageSize, sort: ['rating:asc'] },
+      }),
+    )
   }
+  let salonData: ISalon[] | null = null
+  let pagination: IPagination | null = null
 
-  const salonData: ISalon[] = flattenStrapiResponse(data[0].data.salons) || []
-  const pagination: IPagination | null =
-    data[0].data.salons.meta.pagination || null
-  const brands: IBrand[] = flattenStrapiResponse(data[1].data.brands)
-  const masters: IMaster[] = flattenStrapiResponse(data[2].data.masters)
-  const salons: ISalon[] = flattenStrapiResponse(data[3]?.data.salons)
+  const data = await Promise.allSettled(queries)
 
+  const cityData = await fetchCity(ctx.query.city as string, ctx)
+
+  const brands = getPrepareData<IBrand[]>(data[0], 'brands')
+  const masters = getPrepareData<IMaster[]>(data[1], 'masters')
+  const salons = getPrepareData<ISalon[]>(data[2], 'salons')
+
+  if (data.length >= 4) {
+    salonData = getPrepareData<ISalon[]>(data[3], 'salons')
+    pagination =
+      data[3].status === 'fulfilled'
+        ? data[3].value.data.salons.meta.pagination
+        : null
+  }
   return {
     notFound: !cityData?.name,
     props: {
-      salonData: salonData.map(e => {
-        const reviewsCount = e.reviews.length
-        const { rating, ratingCount } = getRating(e.ratings)
-        return { ...e, rating, ratingCount, reviewsCount }
-      }),
+      salonData: !salonData
+        ? null
+        : salonData.map(e => {
+            const reviewsCount = e.reviews.length
+            const { rating, ratingCount } = getRating(e.ratings)
+            return { ...e, rating, ratingCount, reviewsCount }
+          }),
       brands,
-      masters: masters.map(e => {
-        const reviewsCount = e.reviews.length
-        const { rating, ratingCount } = getRating(e.ratings)
-        return { ...e, rating, ratingCount, reviewsCount }
-      }),
-      salons: salons.map(e => {
-        const reviewsCount = e.reviews.length
-        const { rating, ratingCount } = getRating(e.ratings)
-        return { ...e, rating, ratingCount, reviewsCount }
-      }),
+      masters: !masters
+        ? null
+        : masters?.map(e => {
+            const reviewsCount = e.reviews.length
+            const { rating, ratingCount } = getRating(e.ratings)
+            return { ...e, rating, ratingCount, reviewsCount }
+          }),
+      salons: !salons
+        ? null
+        : salons?.map(e => {
+            const reviewsCount = e.reviews.length
+            const { rating, ratingCount } = getRating(e.ratings)
+            return { ...e, rating, ratingCount, reviewsCount }
+          }),
       totalCount: {
-        brands: getTotalCount(data[1].data.brands),
-        masters: getTotalCount(data[2].data.masters),
-        salons: getTotalCount(data[3]?.data.salons),
+        brands:
+          data[0].status === 'fulfilled'
+            ? getTotalCount(data[0].value.data.brands)
+            : null,
+        masters:
+          data[1].status === 'fulfilled'
+            ? getTotalCount(data[1].value.data.masters)
+            : null,
+        salons:
+          data[2].status === 'fulfilled'
+            ? getTotalCount(data[2].value.data.salons)
+            : null,
       },
       cityData,
       pagination,

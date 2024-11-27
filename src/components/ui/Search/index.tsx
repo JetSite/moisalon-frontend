@@ -4,33 +4,15 @@ import {
   FC,
   KeyboardEventHandler,
   ChangeEventHandler,
+  useMemo,
 } from 'react'
 import { useRouter } from 'next/router'
 import { Input, Wrapper, InputWrap, ClearIcon } from './styled'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 import Tags from '../Tags'
-import { searchEntity } from 'src/api/utils/searchEntity'
-
-const tagsSwitch = (url: string) => {
-  const splitUrl = url.split('/')
-  switch (splitUrl[1]) {
-    case 'master':
-      return ['Колорист', 'Бровист', 'Макияж', 'Пилинг', 'Татуаж']
-    case 'salon':
-      return ['Хаммам', 'Солярий', 'Окрашивание', 'Тату', 'Массаж']
-    case 'brand':
-      return ['ESTEL', 'Волосы', 'Бальзам', 'Краска', 'Лак']
-    case 'brand':
-      return ['ESTEL', 'Волосы', 'Бальзам', 'Краска', 'Лак']
-    case 'catalog':
-      return ['Лечение', 'Шампунь', 'Краска', 'Ногти', 'Кожа']
-    case 'catalogB2c':
-      return ['Лечение', 'Шампунь', 'Краска', 'Ногти', 'Кожа']
-    default:
-      return ['Стрижка', 'Маникюр', 'Колорист', 'Массаж', 'Бровист']
-  }
-}
+import { tagsSwitch } from './utils'
+import { useQuerySearch } from './utils/useQuerySearch'
 
 interface Props {
   title?: string
@@ -38,134 +20,67 @@ interface Props {
 }
 
 const Search: FC<Props> = ({ title, noFilters }) => {
-  const router = useRouter()
+  const { query, pathname } = useRouter()
   const [inputValue, setInputValue] = useState<string>('')
   const { city } = useAuthStore(getStoreData)
+  const {
+    isSearchablePath,
+    updateSearchParam,
+    redirectToMainPathSearch,
+    clearSearchQuery,
+  } = useQuerySearch(city)
 
   const queryHandler: ChangeEventHandler<HTMLInputElement> = e => {
-    setInputValue(e.target.value)
-    if (
-      router.pathname === '/[city]/master' ||
-      router.pathname === '/[city]/salon' ||
-      router.pathname === '/[city]/brand' ||
-      router.pathname === '/catalogB2cAll' ||
-      router.pathname === '/catalogB2c' ||
-      router.pathname === '/catalogB2b'
-    ) {
+    const search = e.target.value
+    setInputValue(search)
+    if (isSearchablePath) {
+      updateSearchParam(search)
     }
-    if (
-      (router.pathname === '/catalogB2c' ||
-        router.pathname === '/catalogB2cAll') &&
-      e.target.value === ''
-    ) {
-      router.push({
-        pathname: '/catalogB2cAll',
-        query: { query: '', type: 'query' },
-      })
-      return
-    }
-    if (router.pathname === '/catalogB2b' && e.target.value === '') {
-      return
-    }
+    return
   }
 
   const queryTag = (item: string) => {
     setInputValue(item)
-    // if (
-    //   router.pathname === '/[city]/master' ||
-    //   router.pathname === '/[city]/salon' ||
-    //   router.pathname === '/[city]/brand' ||
-    //   router.pathname === '/catalogB2cAll' ||
-    //   router.pathname === '/catalogB2c'
-    // ) {
-    // }
-    // if (
-    //   router.pathname === '/catalogB2c' ||
-    //   router.pathname === '/catalogB2cAll'
-    // ) {
-    //   router.push({
-    //     pathname: '/catalogB2cAll',
-    //     query: { query: item, type: 'query' },
-    //   })
-    //   return
-    // }
-    // if (router?.query?.id?.length || router?.query?.slug?.length) {
-    //   router.push(
-    //     { pathname: `/${city.slug}`, query: { q: item } },
-    //     `/${city.slug}`,
-    //   )
-    // }
+    if (isSearchablePath) {
+      updateSearchParam(item)
+    } else {
+      redirectToMainPathSearch(item)
+    }
   }
 
   const inputSubmitHandler: KeyboardEventHandler<HTMLInputElement> = e => {
-    if (
-      (router.pathname == '/[city]/master' ||
-        router.pathname == '/[city]/salon' ||
-        router.pathname == '/[city]/brand' ||
-        router.pathname == '/[city]/rent') &&
-      e.key === 'Enter' &&
-      inputValue != ''
-    ) {
-      ;(e.target as HTMLInputElement).blur()
+    const target = e.target as HTMLInputElement
+    if (e.key !== 'Enter') return
+
+    if (isSearchablePath) {
+      target.blur()
       window.scrollTo({
-        top: 300,
+        top: 500,
         behavior: 'smooth',
       })
-    } else {
-      if (e.key === 'Enter' && inputValue != '') {
-        if (
-          router.pathname === '/catalogB2c' ||
-          router.pathname === '/catalogB2cAll'
-        ) {
-          router.push({
-            pathname: '/catalogB2cAll',
-            query: { query: '', type: 'query' },
-          })
-          return
-        } else if (router.pathname === '/catalogB2b') {
-          return
-        }
-        // router.push(
-        //   { pathname: `/${city.slug}`, query: { q: inputValue } },
-        // )
+
+      if (inputValue === '') {
+        clearSearchQuery()
+      } else {
+        updateSearchParam(inputValue)
       }
+    } else {
+      redirectToMainPathSearch(inputValue)
     }
   }
 
-  const [data, setData] = useState(null)
-
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await searchEntity(inputValue)
+    if (isSearchablePath) {
+      setInputValue(query.search as string)
 
-      setData(data)
+      if (query.search) {
+        window.scrollTo({
+          top: 500,
+          behavior: 'smooth',
+        })
+      }
     }
-
-    fetchData()
-  }, [inputValue])
-
-  console.log(data)
-
-  useEffect(() => {
-    // if (
-    //   (router.pathname == "/[city]/master" ||
-    //     router.pathname == "/[city]/salon" ||
-    //     router.pathname == "/[city]/brand") &&
-    //   categoryPageQuery?.query?.length
-    // ) {
-    //   setInputValue("");
-    // } else if (router?.query?.id?.length || router?.query?.slug?.length) {
-    //   setInputValue("");
-    // } else if (
-    //   router?.pathname === "/catalogB2b" ||
-    //   router?.pathname === "/catalogB2c"
-    // ) {
-    //   setInputValue("");
-    // }
-    // if (router?.pathname !== '/' && router?.pathname !== '/[city]') {
-    //   setInputValue('')
-    // }
-  }, [router.pathname])
+  }, [pathname])
 
   return (
     <Wrapper>
@@ -180,11 +95,12 @@ const Search: FC<Props> = ({ title, noFilters }) => {
         <ClearIcon
           onClick={() => {
             setInputValue('')
+            clearSearchQuery()
           }}
         />
       </InputWrap>
       {!noFilters ? (
-        <Tags tags={tagsSwitch(router.pathname)} queryTag={queryTag} />
+        <Tags tags={tagsSwitch(pathname)} queryTag={queryTag} />
       ) : null}
     </Wrapper>
   )

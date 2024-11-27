@@ -1,7 +1,7 @@
 import FilterSearchResults from 'src/components/blocks/FilterSearchResults'
 import { SalonList } from 'src/components/pages/Salon/SalonList'
 import SalonMap from 'src/components/pages/Salon/SalonMap'
-import SearchResultsTitle from './SearchSalonResultsTitle'
+import SearchResultsTitle from './SearchResultsTitle'
 import { useSalonSearch } from './utils/useSalonSearch'
 import { FC, useState } from 'react'
 import { IView } from 'src/components/pages/Salon/AllSalons'
@@ -9,6 +9,7 @@ import { ISetState } from 'src/types/common'
 import { ISalon } from 'src/types/salon'
 import { ICity, IPagination } from 'src/types'
 import RentFilter, { IFilters } from 'src/components/pages/Rent/RentFilter'
+import { pluralize } from 'src/utils/pluralize'
 
 export interface ISearchResults {
   pagination: IPagination
@@ -17,11 +18,12 @@ export interface ISearchResults {
 
 interface Props extends ISearchResults {
   view: IView
-  setView: ISetState<IView>
+  setView?: ISetState<IView>
   salonData: ISalon[]
   main?: boolean
   rent?: boolean
   pageSize: number
+  search?: boolean
 }
 
 export const SalonsSearch: FC<Props> = ({
@@ -33,10 +35,11 @@ export const SalonsSearch: FC<Props> = ({
   pagination,
   cityData,
   pageSize,
+  search,
 }) => {
   const [filters, setFilters] = useState<IFilters | null>(null)
   const [filterOpen, setFilterOpen] = useState<boolean>(false)
-
+  const totalCount = pagination?.total || 0
   const {
     updateSalonData,
     loading,
@@ -47,21 +50,55 @@ export const SalonsSearch: FC<Props> = ({
     setSortProperty,
     setSortOrder,
     nextPageCount,
-  } = useSalonSearch({ salonData, pagination, cityData, rent, pageSize })
+  } = useSalonSearch({
+    salonData,
+    pagination,
+    cityData,
+    rent,
+    pageSize,
+  })
 
-  const totalCount = pagination?.total || 0
+  const prepareTitle = rent
+    ? `Аренда кабинета, рабочего места в салонах красоты в городе ${
+        cityData.name
+      } ${pluralize(
+        totalCount,
+        'найден',
+        'найдено',
+        'найдено',
+      )} ${totalCount} ${pluralize(totalCount, 'салон', 'салона', 'салонов')}`
+    : `${pluralize(
+        totalCount,
+        'Найден',
+        'Найдено',
+        'Найдено',
+      )} ${totalCount} ${pluralize(totalCount, 'салон', 'салона', 'салонов')}`
+
+  const prepareSubTitle = `${pluralize(
+    updateSalonData.length,
+    'Показан',
+    'Показаны',
+    'Показано',
+  )} ${updateSalonData.length} из ${totalCount} ${pluralize(
+    totalCount,
+    'салон',
+    'салона',
+    'салонов',
+  )}`
 
   return (
     <div id="result">
-      {view === 'list' && (
+      {view === 'list' ? (
         <>
           <SearchResultsTitle
-            viewCount={updateSalonData.length}
+            prepareTitle={prepareTitle}
+            prepareSubTitle={prepareSubTitle}
             totalCount={totalCount}
-            rent={rent}
-            cityData={cityData}
+            noFoundText="Салонов не найдено"
+            main={main}
+            search={search}
           />
-          {!main && rent ? (
+          {rent && !search && main ? (
             <RentFilter
               setFilterOpen={setFilterOpen}
               filterOpen={filterOpen}
@@ -70,15 +107,17 @@ export const SalonsSearch: FC<Props> = ({
             />
           ) : null}
         </>
-      )}
-      <FilterSearchResults
-        handleFilter={handleFilter}
-        sortProperty={sortProperty}
-        sortOrder={sortOrder}
-        salon
-        view={view}
-        setView={setView}
-      />
+      ) : null}
+      {setView && !search ? (
+        <FilterSearchResults
+          handleFilter={handleFilter}
+          sortProperty={sortProperty}
+          sortOrder={sortOrder}
+          salon
+          view={view}
+          setView={setView}
+        />
+      ) : null}
       {view === 'list' ? (
         <>
           <SalonList

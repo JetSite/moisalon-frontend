@@ -9,8 +9,8 @@ interface Props {
 const Tags: FC<Props> = ({ tags, queryTag }) => {
   return (
     <Wrapper>
-      {tags?.map((item, i) => (
-        <Tag key={i} onClick={() => queryTag(item)}>
+      {tags?.map(item => (
+        <Tag key={item} onClick={() => queryTag(item)}>
           {item}
         </Tag>
       ))}

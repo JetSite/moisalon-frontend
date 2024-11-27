@@ -12,7 +12,6 @@ import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { getPrepareUser } from './utils/getPrepareUser'
 import { useShallow } from 'zustand/react/shallow'
 import MainSkeleton from 'src/components/ui/ContentSkeleton/MainSkeleton'
-import { PageProps } from './apollo-client'
 import { useFillAuthStore } from './utils/useFillAuthStore'
 import { IAppProps } from 'src/pages/_app'
 
@@ -78,7 +77,7 @@ const AuthProvider: FC<{
     }
     console.log('AuthProvider me', me)
     console.log('AuthProvider user', user)
-  }, [me, router, pageProps])
+  }, [me, router.pathname, pageProps])
 
   return <>{loading ? <MainSkeleton /> : children}</>
 }
