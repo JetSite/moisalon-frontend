@@ -2,6 +2,7 @@ import { useRouter } from 'next/router'
 import { useCallback, useMemo } from 'react'
 import { searchablePathnames } from './'
 import { ICity } from 'src/types'
+import { MIN_SEARCH_LENGTH } from 'src/components/pages/MainPage/components/SearchMain/utils/useSearch'
 
 interface IUseQuerySearch {
   isSearchablePath: boolean
@@ -35,6 +36,7 @@ export const useQuerySearch: UseQuerySearch = city => {
 
   const redirectToMainPathSearch = (search: string) => {
     const sanitizedSearch = getSanitizedSearch(search)
+    if (search.length < MIN_SEARCH_LENGTH) return
     push(
       { pathname: mainPath, query: { ...query, search: sanitizedSearch } },
       undefined,
