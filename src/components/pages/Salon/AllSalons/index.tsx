@@ -43,7 +43,7 @@ const AllSalonsPage: FC<ISalonsPageProps> = ({
   const searchValue = Array.isArray(searchParam)
     ? searchParam[0]
     : searchParam || ''
-  const { loading, data, pagination: pagi } = useSearch(searchValue)
+  const { loading, data, pagination: pagi } = useSearch(searchValue, false)
   const searchSalons = useMemo(() => data?.salons ?? null, [data?.salons])
 
   useEffect(() => {
@@ -56,6 +56,8 @@ const AllSalonsPage: FC<ISalonsPageProps> = ({
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }, [view])
+
+  console.log(salonData)
 
   return (
     <>
@@ -77,7 +79,7 @@ const AllSalonsPage: FC<ISalonsPageProps> = ({
       </CSSTransition>
       <MainContainer>
         <WrapperResults>
-          {salonData || searchSalons ? (
+          {!loading && (salonData?.length || searchSalons) ? (
             <SalonsSearch
               key={salonData?.length || searchSalons?.length}
               cityData={cityData}

@@ -28,6 +28,9 @@ export const tagsSwitch = (url: string): string[] => {
     return DEFAULT_TAGS
   }
   const splitUrl = splitString(url, '/')
+  if (splitUrl.length < 2) {
+    return DEFAULT_TAGS
+  }
   const serviceType = splitUrl[1] as ServiceType
   return tagsConfig[serviceType] || DEFAULT_TAGS
 }
