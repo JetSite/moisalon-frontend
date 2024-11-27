@@ -17,27 +17,14 @@ export const getTitle: GetTitle = ({
   prepareSubTitle,
   noFoundText,
 }) => {
-  let title: string | null = null
-  let subTitle: string | null = null
-
-  if (main) {
-    if (totalCount > 0) {
-      title = prepareTitle
-    } else {
-      title = null
+  const title = (() => {
+    if (totalCount === 0) {
+      return main ? null : noFoundText
     }
-    return [title, subTitle]
-  }
+    return prepareTitle
+  })()
 
-  if (totalCount > 0) {
-    title = prepareTitle
-  } else {
-    title = noFoundText
-  }
-
-  if (!main && !search && totalCount > 0) {
-    subTitle = prepareSubTitle
-  }
+  const subTitle = !main && !search && totalCount > 0 ? prepareSubTitle : null
 
   return [title, subTitle]
 }

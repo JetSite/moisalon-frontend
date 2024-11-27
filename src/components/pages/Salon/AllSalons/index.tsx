@@ -39,7 +39,10 @@ const AllSalonsPage: FC<ISalonsPageProps> = ({
   const [view, setView] = useState<IView>('list')
   const router = useRouter()
   const { setLoading } = useAuthStore(getStoreEvent)
-  const searchValue = (router.query.search as string) || ''
+  const searchParam = router.query.search
+  const searchValue = Array.isArray(searchParam)
+    ? searchParam[0]
+    : searchParam || ''
   const { loading, data, pagination: pagi } = useSearch(searchValue)
   const searchSalons = useMemo(() => data?.salons ?? null, [data?.salons])
 

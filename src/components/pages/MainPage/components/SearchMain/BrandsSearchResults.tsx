@@ -16,6 +16,7 @@ import { BRANDS } from 'src/api/graphql/brand/queries/getBrands'
 import Button from '../../../../ui/Button'
 import { useRouter } from 'next/router'
 import { ISearchResults } from './SalonSearch'
+import { defaultValues } from 'src/api/authConfig'
 
 interface Props extends ISearchResults {
   brandData: IBrand[]
@@ -37,8 +38,10 @@ const BrandsSearchResults: FC<Props> = ({
     notifyOnNetworkStatusChange: true,
     onCompleted: data => {
       const prepareData = flattenStrapiResponse(data.brands)
-
       setUpdateBrandData(prev => prev.concat(prepareData))
+    },
+    onError: error => {
+      console.error('Failed to fetch brands:', error)
     },
   })
 
@@ -74,7 +77,9 @@ const BrandsSearchResults: FC<Props> = ({
                 onClick={() => {
                   console.log(brand)
                   router.push(
-                    `/${brand.city.slug || city.slug}/brand/${brand.id}`,
+                    `/${
+                      brand.city?.slug || city.slug || defaultValues.city.slug
+                    }/brand/${brand.id}`,
                   )
                 }}
                 key={brand.id}
@@ -84,7 +89,7 @@ const BrandsSearchResults: FC<Props> = ({
                     loading={loading}
                     brand={brand}
                     shareLink={`https://moi.salon/${
-                      brand.city?.slug || city?.slug
+                      brand.city?.slug || city.slug || defaultValues.city.slug
                     }/brand/${brand.id}`}
                     type="search-page"
                   />

@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { searchablePathnames } from './'
 import { ICity } from 'src/types'
 
@@ -16,20 +16,32 @@ export const useQuerySearch: UseQuerySearch = city => {
   const { pathname, query, replace, push, asPath, ...router } = useRouter()
   const mainPath = `/${city.slug}`
 
+  const getSanitizedSearch = (search: string) => search.trim().toLowerCase()
+
   const isSearchablePath = useMemo(
     () => searchablePathnames.includes(pathname) || pathname === '/[city]',
     [pathname],
   )
   const updateSearchParam = (search: string) => {
-    replace({ pathname, query: { ...query, search } }, undefined, {
-      shallow: true,
-    })
+    const sanitizedSearch = getSanitizedSearch(search)
+    replace(
+      { pathname, query: { ...query, search: sanitizedSearch } },
+      undefined,
+      {
+        shallow: true,
+      },
+    )
   }
 
   const redirectToMainPathSearch = (search: string) => {
-    push({ pathname: mainPath, query: { ...query, search } }, undefined, {
-      shallow: true,
-    })
+    const sanitizedSearch = getSanitizedSearch(search)
+    push(
+      { pathname: mainPath, query: { ...query, search: sanitizedSearch } },
+      undefined,
+      {
+        shallow: true,
+      },
+    )
   }
 
   const clearSearchQuery = () => {

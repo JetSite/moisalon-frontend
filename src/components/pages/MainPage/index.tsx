@@ -23,6 +23,7 @@ import MainRentSlider from './components/MainRentSlider'
 import { IBannerHook } from 'src/types/banners'
 import { useRouter } from 'next/router'
 import SearchResults from './components/SearchMain/SearchResults'
+import { MIN_SEARCH_LENGTH } from './components/SearchMain/utils/useSearch'
 
 const Title = styled.h1`
   max-width: 1440px;
@@ -99,7 +100,8 @@ const MainPage: FC<IMainPageProps> = ({
             />
           ) : null}
         </MobileVisible>
-        {query.search?.length > 3 ? (
+        {typeof query.search === 'string' &&
+        query.search.length >= MIN_SEARCH_LENGTH ? (
           <SearchResults searchValue={query?.search as string} />
         ) : null}
         <MainAdsSlider city={cityData} />

@@ -53,7 +53,7 @@ const SalonCard: FC<Props> = ({
   const imageUrl = item?.cover?.url
     ? `${PHOTO_URL}${item.cover.url}`
     : item.photos?.length
-    ? `${PHOTO_URL}${item.photos[0].url}`
+    ? `${PHOTO_URL}${item.photos[0]?.url}`
     : ''
 
   const [isFavorite, setIsFavorit] = useState<boolean>(false)

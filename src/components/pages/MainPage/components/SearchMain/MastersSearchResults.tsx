@@ -31,7 +31,7 @@ import { IFilters } from 'src/components/pages/Rent/RentFilter'
 import { useLazyQuery, useQuery } from '@apollo/client'
 import { getMastersTroughCity } from 'src/api/graphql/master/queries/getMastersTroughCity'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
-import { settingsConfig } from 'src/api/authConfig'
+import { defaultValues, settingsConfig } from 'src/api/authConfig'
 import { getTotalCount } from 'src/utils/getTotalCount'
 import { useRouter } from 'next/router'
 import { ISearchResults } from './SalonSearch'
@@ -227,7 +227,11 @@ const MastersSearchResults: FC<Props> = ({
                 <div
                   onClick={() => {
                     router.push(
-                      `/${master.city?.slug || city.slug}/master/${master.id}`,
+                      `/${
+                        master.city?.slug ||
+                        city.slug ||
+                        defaultValues.city.slug
+                      }/master/${master.id}`,
                     )
                   }}
                   key={master.id}
@@ -237,7 +241,9 @@ const MastersSearchResults: FC<Props> = ({
                       loading={false}
                       master={master}
                       shareLink={`https://moi.salon/${
-                        master.city?.slug || city.slug
+                        master.city?.slug ||
+                        city.slug ||
+                        defaultValues.city.slug
                       }/master/${master.id}`}
                       type="search-page"
                     />

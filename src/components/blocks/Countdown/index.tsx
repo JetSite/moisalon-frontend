@@ -43,21 +43,26 @@ const Countdown: FC<Props> = ({
   const [isStarted, setIsStarted] = useState(false)
 
   const calculateDistance = () => {
-    const now = moment.tz(TIME_ZONE).valueOf()
-    const start = timeStart
-      ? moment.tz(`${dateStart}T${timeStart}`, TIME_ZONE).valueOf()
-      : moment.tz(`${dateStart}`, TIME_ZONE).valueOf()
-    const end = timeEnd
-      ? moment.tz(`${dateEnd}T${timeEnd}`, TIME_ZONE).valueOf()
-      : moment.tz(`${dateEnd}`, TIME_ZONE).valueOf()
+    try {
+      const now = moment.tz(TIME_ZONE).valueOf()
+      const start = moment
+        .tz(timeStart ? `${dateStart}T${timeStart}` : dateStart, TIME_ZONE)
+        .valueOf()
+      const end = moment
+        .tz(timeEnd ? `${dateEnd}T${timeEnd}` : dateEnd, TIME_ZONE)
+        .valueOf()
 
-    if (now < start) {
-      setIsStarted(false)
-      return start - now
-    } else if (now >= start && now <= end) {
-      setIsStarted(true)
-      return end - now
-    } else {
+      if (now < start) {
+        setIsStarted(false)
+        return start - now
+      } else if (now >= start && now <= end) {
+        setIsStarted(true)
+        return end - now
+      } else {
+        return 0
+      }
+    } catch (error) {
+      console.error('Invalid date format:', error)
       return 0
     }
   }
@@ -76,6 +81,10 @@ const Countdown: FC<Props> = ({
   useEffect(() => {
     const initialDistance = calculateDistance()
     updateTime(initialDistance)
+
+    if (initialDistance <= 0) {
+      return
+    }
 
     const interval = setInterval(() => {
       const updatedDistance = calculateDistance()

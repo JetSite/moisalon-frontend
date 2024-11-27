@@ -76,11 +76,10 @@ export const getServerSideProps: GetServerSideProps<
   )
 
   const brands = getPrepareData<IBrand[]>(data[2], 'brands')
-
-  const cart =
-    data.length > 3
-      ? getPrepareData<ICart[]>(data[3], 'carts')?.[0] ?? null
-      : null
+  const cartQueryResult = accessToken ? data[3] : null
+  const cart = cartQueryResult
+    ? getPrepareData<ICart[]>(cartQueryResult, 'carts')?.[0] ?? null
+    : null
 
   return addApolloState(apolloClient, {
     props: {

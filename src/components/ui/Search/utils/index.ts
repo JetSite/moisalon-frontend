@@ -8,18 +8,26 @@ export const searchablePathnames = [
   '/[city]/rent',
 ]
 
-export const tagsSwitch = (url: string) => {
-  const splitUrl = splitString(url, '/')
-  switch (splitUrl[1]) {
-    case 'master':
-      return ['Колорист', 'Бровист', 'Макияж', 'Пилинг', 'Татуаж']
-    case 'salon':
-      return ['Хаммам', 'Солярий', 'Окрашивание', 'Тату', 'Массаж']
-    case 'brand':
-      return ['ESTEL', 'Волосы', 'Бальзам', 'Краска', 'Лак']
-    case 'beautyFreeShop':
-      return ['Лечение', 'Шампунь', 'Краска', 'Ногти', 'Кожа']
-    default:
-      return ['Стрижка', 'Маникюр', 'Колорист', 'Массаж', 'Бровист']
+type ServiceType = 'master' | 'salon' | 'brand' | 'beautyFreeShop'
+
+type TagsConfig = {
+  [key in ServiceType]: string[]
+}
+
+const tagsConfig: TagsConfig = {
+  master: ['Колорист', 'Бровист', 'Макияж', 'Пилинг', 'Татуаж'],
+  salon: ['Хаммам', 'Солярий', 'Окрашивание', 'Тату', 'Массаж'],
+  brand: ['ESTEL', 'Волосы', 'Бальзам', 'Краска', 'Лак'],
+  beautyFreeShop: ['Лечение', 'Шампунь', 'Краска', 'Ногти', 'Кожа'],
+}
+
+const DEFAULT_TAGS = ['Стрижка', 'Маникюр', 'Колорист', 'Массаж', 'Бровист']
+
+export const tagsSwitch = (url: string): string[] => {
+  if (!url || typeof url !== 'string') {
+    return DEFAULT_TAGS
   }
+  const splitUrl = splitString(url, '/')
+  const serviceType = splitUrl[1] as ServiceType
+  return tagsConfig[serviceType] || DEFAULT_TAGS
 }

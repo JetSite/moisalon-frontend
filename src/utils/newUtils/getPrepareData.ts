@@ -15,6 +15,11 @@ export const getPrepareData = <T>(
 ): T | null => {
   let response: T | null = null
 
+  if (data.status === 'rejected') {
+    console.error('Failed to fetch products:', data.reason)
+    return null
+  }
+
   if (data.status === 'fulfilled') {
     try {
       const rawData = data.value.data[objectName]
