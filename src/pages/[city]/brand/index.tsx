@@ -25,6 +25,8 @@ import { IBrand } from 'src/types/brands'
 import { IMaster } from 'src/types/masters'
 import { getRating } from 'src/utils/newUtils/getRating'
 import { Nullable } from 'src/types/common'
+import { MIN_SEARCH_LENGTH } from 'src/components/pages/MainPage/components/SearchMain/utils/useSearch'
+import { getPrepareData } from 'src/utils/newUtils/getPrepareData'
 
 interface Props extends IBrandPageProps {
   brands: IBrand[] | null
@@ -64,16 +66,11 @@ export const getServerSideProps: GetServerSideProps<
   Nullable<IBrandPageProps>
 > = async ctx => {
   const apolloClient = initializeApollo()
-  const cityData = (await fetchCity(ctx.query.city as string)) || {
-    slug: defaultValues.city.slug,
-  }
-  const data = await Promise.all([
-    apolloClient.query({
-      query: BRANDS,
-      variables: {
-        itemsCount: 100,
-      },
-    }),
+  const cityData = await fetchCity(ctx.query.city as string, ctx)
+
+  const search = ctx.query.search?.length >= MIN_SEARCH_LENGTH
+
+  const queries = [
     apolloClient.query({
       query: BRANDS,
       variables: {
@@ -94,16 +91,35 @@ export const getServerSideProps: GetServerSideProps<
         itemsCount: 10,
       },
     }),
-  ])
+  ]
 
-  checkErr(data, ctx.res)
+  if (!search) {
+    queries.push(
+      apolloClient.query({
+        query: BRANDS,
+        variables: {
+          itemsCount: 100,
+        },
+      }),
+    )
+  }
 
-  const brandData: IBrand[] = flattenStrapiResponse(data[0].data.brands) || []
-  const pagination: IPagination | null =
-    data[0].data.brands.meta.pagination || null
-  const brands: IBrand[] = flattenStrapiResponse(data[1].data.brands) || null
-  const masters: IMaster[] = flattenStrapiResponse(data[2].data.masters) || null
-  const salons: ISalon[] = flattenStrapiResponse(data[3]?.data.salons) || null
+  let brandData: IBrand[] | null = null
+  let pagination: IPagination | null = null
+
+  const data = await Promise.allSettled(queries)
+
+  const brands = getPrepareData<IBrand[]>(data[0], 'brands')
+  const masters = getPrepareData<IMaster[]>(data[1], 'masters')
+  const salons = getPrepareData<ISalon[]>(data[2], 'salons')
+
+  if (data.length >= 4) {
+    brandData = getPrepareData<IBrand[]>(data[3], 'brands')
+    pagination =
+      data[3].status === 'fulfilled'
+        ? data[3].value.data.brands.meta.pagination
+        : null
+  }
 
   return {
     notFound: !cityData?.name,
@@ -114,9 +130,18 @@ export const getServerSideProps: GetServerSideProps<
       masters,
       salons,
       totalCount: {
-        brands: getTotalCount(data[1].data.brands),
-        masters: getTotalCount(data[2].data.masters),
-        salons: getTotalCount(data[3]?.data.salons),
+        brands:
+          data[0].status === 'fulfilled'
+            ? getTotalCount(data[0].value.data.brands)
+            : null,
+        masters:
+          data[1].status === 'fulfilled'
+            ? getTotalCount(data[1].value.data.masters)
+            : null,
+        salons:
+          data[2].status === 'fulfilled'
+            ? getTotalCount(data[2].value.data.salons)
+            : null,
       },
       cityData,
       pagination,

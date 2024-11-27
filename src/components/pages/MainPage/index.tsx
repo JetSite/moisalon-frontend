@@ -20,6 +20,10 @@ import { FC } from 'react'
 import { ITotalCount } from 'src/pages/[city]/salon'
 import { ICity } from 'src/types'
 import MainRentSlider from './components/MainRentSlider'
+import { IBannerHook } from 'src/types/banners'
+import { useRouter } from 'next/router'
+import SearchResults from './components/SearchMain/SearchResults'
+import { MIN_SEARCH_LENGTH } from './components/SearchMain/utils/useSearch'
 
 const Title = styled.h1`
   max-width: 1440px;
@@ -39,7 +43,7 @@ const Title = styled.h1`
 export interface IMainPageProps {
   beautyCategories: any
   beautyAllContent: any
-  bannerHooks: any
+  bannerHooks: IBannerHook[]
   totalCount: ITotalCount
   cityData: ICity
 }
@@ -51,8 +55,13 @@ const MainPage: FC<IMainPageProps> = ({
   totalCount,
   cityData,
 }) => {
-  const { me, city } = useAuthStore(getStoreData)
-  const query = { query: '' } //TODO: query
+  const { query } = useRouter()
+
+  const bannerTopLarge = bannerHooks.find(e => e.id === '1') ?? null
+  const bannerTopSmallLeft = bannerHooks.find(e => e.id === '2') ?? null
+  const bannerTopSmallRight = bannerHooks.find(e => e.id === '3') ?? null
+  console.log(query.search)
+
   return (
     <MainLayout>
       <>
@@ -61,19 +70,18 @@ const MainPage: FC<IMainPageProps> = ({
         </MobileHidden>
         <Title>{`Лучшие салоны красоты  и spa (спа) в городе ${cityData.name}`}</Title>
         <CSSTransition
-          in={!query?.query}
+          in={true}
           timeout={500}
           classNames="banner"
           unmountOnExit
         >
           <WrapBanner>
             <MobileHidden>
-              {bannerHooks?.data[0]?.attributes?.banners?.data?.length ||
-              bannerHooks?.data[1]?.attributes?.banners?.data?.length ? (
+              {bannerHooks ? (
                 <Banners
-                  bannersByHookWide={bannerHooks?.data[1]}
-                  bannersByHookSmall1={bannerHooks?.data[2]}
-                  bannersByHookSmall2={bannerHooks?.data[3]}
+                  bannerLarge={bannerTopLarge}
+                  bannerSmallLeft={bannerTopSmallLeft}
+                  bannerSmallRight={bannerTopSmallRight}
                 />
               ) : null}
             </MobileHidden>
@@ -84,23 +92,25 @@ const MainPage: FC<IMainPageProps> = ({
           // totalSales={sales?.salesSearch?.connection?.nodes?.length}
         />
         <MobileVisible>
-          {bannerHooks?.data[0]?.attributes?.banners?.data?.length ||
-          bannerHooks?.data[1]?.attributes?.banners?.data?.length ? (
+          {bannerHooks?.length ? (
             <Banners
-              bannersByHookWide={bannerHooks?.data[0]}
-              bannersByHookSmall1={bannerHooks?.data[1]}
-              bannersByHookSmall2={bannerHooks?.data[2]}
+              bannerLarge={bannerTopLarge}
+              bannerSmallLeft={bannerTopSmallLeft}
+              bannerSmallRight={bannerTopSmallRight}
             />
           ) : null}
         </MobileVisible>
-        {/* {query?.query?.length ? <SearchResults me={me} /> : null} */}
-        <MainAdsSlider city={city} />
+        {typeof query.search === 'string' &&
+        query.search.length >= MIN_SEARCH_LENGTH ? (
+          <SearchResults searchValue={query?.search as string} />
+        ) : null}
+        <MainAdsSlider city={cityData} />
         {/* <MainGoodsSlider me={me} /> */}
-        <MainRentSlider city={city} />
+        <MainRentSlider city={cityData} />
         {/* <MainWorkplacesSlider me={me} /> */}
-        <MainMasterSlider city={city} />
-        <MainSalonsSlider city={city} />
-        <MainBrandsSlider city={city} />
+        <MainMasterSlider city={cityData} />
+        <MainSalonsSlider city={cityData} />
+        <MainBrandsSlider city={cityData} />
         <About />
         <Ribbon
           title="Бьюти-лента"

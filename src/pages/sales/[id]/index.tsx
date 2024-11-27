@@ -2,10 +2,10 @@ import { addApolloState, initializeApollo } from '../../../api/apollo-client'
 import { getFeedCategories } from 'src/api/graphql/feed/queries/getFeedCategories'
 import { getFeeds } from 'src/api/graphql/feed/queries/getFeeds'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
-import { PROMOTION_BY_ID } from 'src/api/graphql/sale/queries/PROMOTION_BY_ID'
 import { ISale } from 'src/types/sale'
 import { FC } from 'react'
 import SalePage from 'src/components/pages/SalePage'
+import { PROMOTION_BY_ID } from 'src/api/graphql/promotion/queries/getPromotionById'
 
 interface SaleDetailedProps {
   sale: ISale

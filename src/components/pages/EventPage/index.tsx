@@ -37,6 +37,7 @@ import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 import { IEvent } from 'src/types/event'
 import ReactMarkdown from 'react-markdown'
+import formatTime from 'src/utils/newUtils/formatTime'
 
 interface IEventPageProps {
   event: IEvent
@@ -97,6 +98,8 @@ const EventPage: FC<IEventPageProps> = ({
     setChatMessagePopup(true)
   }
 
+  console.log(event)
+
   return (
     <MainLayout>
       <ChatMessagePopup
@@ -124,21 +127,20 @@ const EventPage: FC<IEventPageProps> = ({
               </ImageWrap>
               <CountdownWrap>
                 <Countdown
+                  timeEnd={event.timeEnd}
+                  timeStart={event.timeStart}
                   titleStart="До начала мероприятия"
                   titleEnd="До окончания мероприятия"
                   text="Мероприятие завершено"
-                  dateStart={event?.dateStart}
-                  dateEnd={event?.dateEnd}
+                  dateStart={event.dateStart}
+                  dateEnd={event.dateEnd}
                   align="right"
                 />
               </CountdownWrap>
             </Left>
             <Right>
               <MobileHidden>
-                <Title>
-                  {event?.title}
-                  {/* {originInfo(event).customTitle} */}
-                </Title>
+                <Title>{event?.title}</Title>
                 {/* <Subtitle>
                   {originInfo(event).originType} {originInfo(event).originName}
                 </Subtitle> */}
@@ -156,11 +158,15 @@ const EventPage: FC<IEventPageProps> = ({
                 <DateWrap>
                   <Date>
                     Дата начала:&nbsp;
-                    {moment(event?.dateStart).format('DD MMMM YYYY HH:MM')}
+                    {moment(event?.dateStart).format('DD MMMM YYYY') +
+                      ' ' +
+                      formatTime(event.timeStart)}
                   </Date>
                   <Date>
                     Дата окончания:&nbsp;
-                    {moment(event?.dateEnd).format('DD MMMM YYYY HH:MM')}
+                    {moment(event?.dateEnd).format('DD MMMM YYYY') +
+                      ' ' +
+                      formatTime(event.timeEnd)}
                   </Date>
                 </DateWrap>
                 {/* {event?.promo ? (

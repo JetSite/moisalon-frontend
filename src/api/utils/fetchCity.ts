@@ -1,11 +1,10 @@
-import { getCookie } from 'cookies-next'
+import { getCookie, setCookie } from 'cookies-next'
 import { initializeApollo } from 'src/api/apollo-client'
 import { authConfig, defaultValues } from 'src/api/authConfig'
 import { ICity } from 'src/types'
 import { getCities } from 'src/api/graphql/city/getCities'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { INextContext } from 'src/types/common'
-import Cookies from 'cookies'
 
 export type IFetchCity = (
   slug?: string | null,
@@ -13,31 +12,42 @@ export type IFetchCity = (
 ) => Promise<ICity>
 
 export const fetchCity: IFetchCity = async (citySlug = null, ctx) => {
-  let cityCookie = getCookie(authConfig.cityKeyName) || null
-  if (ctx) {
-    const cookies = new Cookies(ctx.req, ctx.res)
-    cityCookie = cookies.get(authConfig.cityKeyName) || null
-  }
+  const cityCookie = getCookie(authConfig.cityKeyName, ctx) || null
   const apolloClient = initializeApollo()
 
   let slug = cityCookie || defaultValues.city.slug
 
-  if (citySlug && citySlug !== 'null') {
+  if (citySlug) {
     slug = citySlug
   }
 
-  const city = await apolloClient.query({
-    query: getCities,
-    variables: {
-      slug,
-    },
-  })
-
-  const response: ICity[] = flattenStrapiResponse(city.data.cities)
-
-  if (response.length) {
-    return response[0]
+  try {
+    const city = await apolloClient.query({
+      query: getCities,
+      variables: {
+        slug,
+      },
+    })
+    const response: ICity[] = flattenStrapiResponse(city.data.cities)
+    if (response.length) {
+      setCookie(authConfig.cityKeyName, response[0].slug, ctx)
+      return response[0]
+    } else {
+      const city = await apolloClient.query({
+        query: getCities,
+        variables: {
+          slug: cityCookie || defaultValues.city.slug,
+        },
+      })
+      const response: ICity[] = flattenStrapiResponse(city.data.cities)
+      return response[0]
+    }
+  } catch (error) {
+    console.error('error to fetch city: ', {
+      error,
+      providedSlug: citySlug,
+      fallbackSlug: defaultValues.city.slug,
+    })
+    return defaultValues.city
   }
-
-  return { slug: defaultValues.city.slug, id: '1' }
 }

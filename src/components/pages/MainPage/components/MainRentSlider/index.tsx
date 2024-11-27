@@ -4,6 +4,7 @@ import Slider from '../../../../blocks/Slider'
 import { ICity } from 'src/types'
 import { FC } from 'react'
 import { GET_RENT_SALONS } from 'src/api/graphql/salon/queries/getRentSalons'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 
 interface Props {
   city: ICity
@@ -21,7 +22,7 @@ const MainRentSlider: FC<Props> = ({ city }) => {
       city={city}
       type="rentSalons"
       loading={loading}
-      items={data?.salonSearch?.salonsConnection?.nodes || []}
+      items={flattenStrapiResponse(data?.salons) || []}
       title="АРЕНДА"
       bgColor="#000"
       pt={80}

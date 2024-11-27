@@ -54,11 +54,28 @@ import { SlideType } from '.'
 import { ICity, IPhoto } from 'src/types'
 import { IProduct } from 'src/types/product'
 import { IVacancy } from 'src/types/vacancies'
+import { IPromotions } from 'src/types/promotions'
 
 interface PropsICustomProps {
   type: SlideType
-  item?: IMaster | IBrand | ISalon | IPhoto | IProduct | IVacancy | null
-  typeObject?: IMaster | IBrand | ISalon | IPhoto | IProduct | IVacancy | null
+  item?:
+    | IMaster
+    | IBrand
+    | ISalon
+    | IPhoto
+    | IProduct
+    | IVacancy
+    | IPromotions
+    | null
+  typeObject?:
+    | IMaster
+    | IBrand
+    | ISalon
+    | IPhoto
+    | IProduct
+    | IVacancy
+    | IPromotions
+    | null
   bgColor?: string
   isEditing?: boolean
   deleteFunction?: IDeleteFunction
@@ -229,7 +246,7 @@ export const customProps: ICustomProps = ({
       }
     case 'ads':
       return {
-        sliderItem: <AdSlide item={item} />,
+        sliderItem: <AdSlide item={item as IPromotions} />,
         bottom: <AdBottomButton bgColor={bgColor} />,
         slidesCountWhenAllShow: 3,
         showAllSlide: <AllAdsSlide />,

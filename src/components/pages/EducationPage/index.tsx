@@ -189,6 +189,8 @@ const EducationPage: FC<EducationPageProps> = ({
               </ImageWrap>
               <CountdownWrap>
                 <Countdown
+                  timeEnd={education.timeEnd}
+                  timeStart={education.timeStart}
                   titleStart="До начала обучения"
                   titleEnd="До окончания обучения"
                   text="Обучение закончилось"

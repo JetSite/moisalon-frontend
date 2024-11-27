@@ -8,23 +8,17 @@ import { totalMasters } from 'src/api/graphql/master/queries/totalMasters'
 import { totalBrands } from 'src/api/graphql/brand/queries/totalBrands'
 import {} from 'src/api/graphql/master/queries/masterPage'
 import { GetServerSideProps } from 'next'
-import { defaultValues } from 'src/api/authConfig'
 import { ICity } from 'src/types'
 import { fetchCity } from 'src/api/utils/fetchCity'
 import { getTotalCount } from 'src/utils/getTotalCount'
-import { ITotalCount } from './salon'
 import { Nullable } from 'src/types/common'
 import { FC } from 'react'
+import { getPrepareData } from 'src/utils/newUtils/getPrepareData'
+import { IBannerHook } from 'src/types/banners'
 
 interface Props extends IMainPageProps {}
 
-const Main: FC<Props> = ({
-  beautyCategories,
-  beautyAllContent,
-  bannerHooks,
-  totalCount,
-  cityData,
-}) => {
+const Main: FC<Props> = props => {
   return (
     <>
       {/* <Head>
@@ -41,13 +35,7 @@ const Main: FC<Props> = ({
           )} в городе ${cityData}. ✅ Делайте правильный выбор с помощью сервиса moi.salon.`}
         />
       </Head> */}
-      <MainPage
-        beautyCategories={beautyCategories}
-        beautyAllContent={beautyAllContent}
-        bannerHooks={bannerHooks}
-        totalCount={totalCount}
-        cityData={cityData}
-      />
+      <MainPage {...props} />
     </>
   )
 }
@@ -56,7 +44,7 @@ export const getServerSideProps: GetServerSideProps<
   Nullable<Props>
 > = async ctx => {
   const apolloClient = initializeApollo()
-  const data = await Promise.all([
+  const data = await Promise.allSettled([
     apolloClient.query({
       query: getFeedCategories,
     }),
@@ -77,30 +65,39 @@ export const getServerSideProps: GetServerSideProps<
     }),
   ])
 
-  const cityCookie = ctx.req.cookies['city']
-  const cityData: ICity = (await fetchCity(ctx.query.city as string)) ||
-    (await fetchCity(cityCookie)) || {
-      slug: defaultValues.city.slug,
-    }
+  const cityData: ICity = await fetchCity(ctx.query.city as string, ctx)
 
-  if (!cityCookie && ctx.query.city !== defaultValues.city.slug) {
+  if (ctx.query.city !== cityData.slug) {
     return {
       redirect: {
-        destination: defaultValues.city.slug,
-        permanent: true,
+        destination: cityData.slug,
+        permanent: false,
       },
     }
   }
 
+  const beautyCategories = getPrepareData(data[0], 'feedCategories')
+  const beautyAllContent = getPrepareData(data[1], 'feeds')
+  const bannerHooks = getPrepareData<IBannerHook[]>(data[2], 'bannerHooks')
+
   return addApolloState(apolloClient, {
     props: {
-      beautyCategories: data[0]?.data?.feedCategories,
-      beautyAllContent: data[1]?.data?.feeds,
-      bannerHooks: data[2]?.data?.bannerHooks,
+      beautyCategories,
+      beautyAllContent,
+      bannerHooks,
       totalCount: {
-        brands: getTotalCount(data[1].data.brands),
-        masters: getTotalCount(data[2].data.masters),
-        salons: getTotalCount(data[3].data.salons),
+        brands:
+          data[5].status === 'fulfilled'
+            ? getTotalCount(data[5].value.data.brands)
+            : null,
+        masters:
+          data[4].status === 'fulfilled'
+            ? getTotalCount(data[4].value.data.masters)
+            : null,
+        salons:
+          data[3].status === 'fulfilled'
+            ? getTotalCount(data[3].value.data.salons)
+            : null,
       },
       cityData,
     },

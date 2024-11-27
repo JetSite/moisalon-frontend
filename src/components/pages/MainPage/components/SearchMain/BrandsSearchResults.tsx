@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { WrapperItemsBrands, Title, LinkStyled } from './styled'
 import { pluralize } from '../../../../../utils/pluralize'
@@ -16,6 +16,8 @@ import { BRANDS } from 'src/api/graphql/brand/queries/getBrands'
 import Button from '../../../../ui/Button'
 import { useRouter } from 'next/router'
 import { ISearchResults } from './SalonSearch'
+import { defaultValues } from 'src/api/authConfig'
+import SearchResultsTitle from './SearchResultsTitle'
 
 interface Props extends ISearchResults {
   brandData: IBrand[]
@@ -25,6 +27,8 @@ const BrandsSearchResults: FC<Props> = ({
   brandData,
   pagination,
   cityData,
+  search,
+  main,
 }) => {
   const [updateBrandData, setUpdateBrandData] = useState<IBrand[]>(brandData)
   const [page, setPage] = useState<number>(2)
@@ -37,85 +41,89 @@ const BrandsSearchResults: FC<Props> = ({
     notifyOnNetworkStatusChange: true,
     onCompleted: data => {
       const prepareData = flattenStrapiResponse(data.brands)
-      console.log(prepareData)
-
       setUpdateBrandData(prev => prev.concat(prepareData))
     },
+    onError: error => {
+      console.error('Failed to fetch brands:', error)
+    },
   })
+
+  useEffect(() => {
+    setUpdateBrandData(brandData)
+  }, [brandData])
 
   const onFetchMore = async () => {
     await getBrands({ variables: { page } })
     setPage(page + 1)
   }
 
+  const prepareTitle = `${pluralize(
+    totalCount,
+    'Найден',
+    'Найдено',
+    'Найдено',
+  )} ${totalCount} ${pluralize(totalCount, 'бренд', 'бренда', 'брендов')}`
+
   return (
     <>
-      {updateBrandData?.length ? (
+      <SearchResultsTitle
+        prepareTitle={prepareTitle}
+        totalCount={totalCount}
+        noFoundText="Бренды не найдены"
+        main={main}
+        search={search}
+      />
+      <WrapperItemsBrands>
+        {updateBrandData?.map(brand => (
+          <div
+            onClick={() => {
+              console.log(brand)
+              router.push(
+                `/${
+                  brand.city?.slug || city.slug || defaultValues.city.slug
+                }/brand/${brand.id}`,
+              )
+            }}
+            key={brand.id}
+          >
+            <LinkStyled>
+              <BrandItem
+                loading={loading}
+                brand={brand}
+                shareLink={`https://moi.salon/${
+                  brand.city?.slug || city.slug || defaultValues.city.slug
+                }/brand/${brand.id}`}
+                type="search-page"
+              />
+            </LinkStyled>
+          </div>
+        ))}
+      </WrapperItemsBrands>
+      {hasNextPage ? (
         <>
-          <Title>
-            {`${pluralize(
-              totalCount,
-              'Найден',
-              'Найдено',
-              'Найдено',
-            )} ${totalCount} ${pluralize(
-              totalCount,
-              'бренд',
-              'бренда',
-              'брендов',
-            )}`}
-          </Title>
-          <WrapperItemsBrands>
-            {updateBrandData?.map(brand => (
-              <div
-                onClick={() => {
-                  console.log(brand)
-                  router.push(
-                    `/${brand.city.slug || city.slug}/brand/${brand.id}`,
-                  )
-                }}
-                key={brand.id}
-              >
-                <LinkStyled>
-                  <BrandItem
-                    loading={loading}
-                    brand={brand}
-                    shareLink={`https://moi.salon/${
-                      brand.city?.slug || city?.slug
-                    }/brand/${brand.id}`}
-                    type="search-page"
-                  />
-                </LinkStyled>
-              </div>
-            ))}
-          </WrapperItemsBrands>
-          {hasNextPage ? (
-            <>
-              <MobileHidden>
-                <Button
-                  onClick={onFetchMore}
-                  size="medium"
-                  variant="darkTransparent"
-                  mb="55"
-                  disabled={loading}
-                >
-                  Показать еще
-                </Button>
-              </MobileHidden>
-              <MobileVisible>
-                <Button
-                  size="roundSmall"
-                  variant="withRoundBorder"
-                  font="roundSmall"
-                  mb="56"
-                  onClick={onFetchMore}
-                  disabled={loading}
-                >
-                  Показать еще бренды
-                </Button>
-              </MobileVisible>
-            </>
-          ) : null}
+          <MobileHidden>
+            <Button
+              onClick={onFetchMore}
+              size="medium"
+              variant="darkTransparent"
+              mb="55"
+              disabled={loading}
+            >
+              Показать еще
+            </Button>
+          </MobileHidden>
+          <MobileVisible>
+            <Button
+              size="roundSmall"
+              variant="withRoundBorder"
+              font="roundSmall"
+              mb="56"
+              onClick={onFetchMore}
+              disabled={loading}
+            >
+              Показать еще бренды
+            </Button>
+          </MobileVisible>
         </>
       ) : null}
     </>

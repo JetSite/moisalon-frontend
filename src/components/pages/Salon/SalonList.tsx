@@ -6,6 +6,7 @@ import SalonCard from 'src/components/blocks/SalonCard'
 import Button from 'src/components/ui/Button'
 import { MobileHidden, MobileVisible } from 'src/styles/common'
 import { IUseSalonSearchResult } from '../MainPage/components/SearchMain/utils/useSalonSearch'
+import { defaultValues } from 'src/api/authConfig'
 
 interface Props extends Pick<IUseSalonSearchResult, 'onFetchMore' | 'loading'> {
   updateSalonData: ISalon[]
@@ -30,8 +31,12 @@ export const SalonList: FC<Props> = ({
             onClick={() =>
               router.push(
                 rent
-                  ? `/${salon.city.slug}/rent/${salon.id}`
-                  : `/${salon.city.slug}/salon/${salon.id}`,
+                  ? `/${salon.city?.slug || defaultValues.city.slug}/rent/${
+                      salon.id
+                    }`
+                  : `/${salon.city?.slug || defaultValues.city.slug}/salon/${
+                      salon.id
+                    }`,
               )
             }
             id={salon.id.toString()}

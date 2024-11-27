@@ -14,7 +14,9 @@ import { ME } from 'src/api/graphql/me/queries/getMe'
 import { getCookie } from 'cookies-next'
 import { authConfig } from 'src/api/authConfig'
 import { GET_CART_BY_USER } from 'src/api/graphql/cart/queries/getCartByUser'
-import { ICart } from 'src/types/product'
+import { ICart, IProduct, IProductCategories } from 'src/types/product'
+import { getPrepareData } from 'src/utils/newUtils/getPrepareData'
+import { IBrand } from 'src/types/brands'
 
 interface Props extends IBeautyFreeShopPageProps {}
 
@@ -66,25 +68,18 @@ export const getServerSideProps: GetServerSideProps<
 
   const data = await Promise.allSettled(resArr)
 
-  const products =
-    data[0].status === 'fulfilled'
-      ? flattenStrapiResponse(data[0].value.data.products?.data)
-      : []
+  const products = getPrepareData<IProduct[]>(data[0], 'products')
 
-  const productCategories =
-    data[1].status === 'fulfilled'
-      ? flattenStrapiResponse(data[1].value.data.productCategories?.data)
-      : []
+  const productCategories = getPrepareData<IProductCategories[]>(
+    data[1],
+    'productCategories',
+  )
 
-  const brands =
-    data[2].status === 'fulfilled'
-      ? flattenStrapiResponse(data[2].value.data.brands?.data)
-      : []
-
-  const cart =
-    data.length >= 3 && data[3].status === 'fulfilled'
-      ? (flattenStrapiResponse(data[3].value.data.carts) as ICart[])[0] || null
-      : null
+  const brands = getPrepareData<IBrand[]>(data[2], 'brands')
+  const cartQueryResult = accessToken ? data[3] : null
+  const cart = cartQueryResult
+    ? getPrepareData<ICart[]>(cartQueryResult, 'carts')?.[0] ?? null
+    : null
 
   return addApolloState(apolloClient, {
     props: {

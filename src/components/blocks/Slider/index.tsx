@@ -34,6 +34,7 @@ import { customProps } from './customProps'
 import { ICity, IPhoto } from 'src/types'
 import { IProduct } from 'src/types/product'
 import { IVacancy } from 'src/types/vacancies'
+import { IPromotions } from 'src/types/promotions'
 
 SwiperCore.use([Navigation])
 export type SlideType =
@@ -51,9 +52,16 @@ export type SlideType =
 interface Props {
   children?: IChildren
   type: SlideType
-  items: IMaster[] | IBrand[] | ISalon[] | IPhoto[] | IProduct[] | IVacancy[]
+  items:
+    | IMaster[]
+    | IBrand[]
+    | ISalon[]
+    | IPhoto[]
+    | IProduct[]
+    | IVacancy[]
+    | IPromotions[]
   title?: string
-  typeObject?: IMaster | IBrand | ISalon | IPhoto | null
+  typeObject?: IMaster | IBrand | ISalon | IPhoto | IPromotions | null
   noBottom?: boolean
   noAll?: boolean
   noAllButton?: boolean

@@ -24,8 +24,8 @@ export interface IEvent {
   seoTitle: string
   seoDescription: string
   publishedAt: string | null
-  timeStart: string | null
-  timeEnd: string | null
+  timeStart: string
+  timeEnd: string
   longitude: number | null
   latitude: number | null
 }

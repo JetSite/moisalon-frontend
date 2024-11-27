@@ -1,8 +1,32 @@
 import { IPhoto } from '.'
+import { IID } from './common'
 
 export enum IPromotionStatus {
   DRAFT = '2',
   PUBLISHED = '3',
+}
+
+interface IBasePromoOvner {
+  id: string
+  name: string
+  address: string
+  email: string
+}
+
+export interface IPromoMaster extends IBasePromoOvner {
+  phone: string
+}
+export interface IPromoSalon extends IBasePromoOvner {
+  salonPhones: {
+    id: IID
+    phoneNumber: string
+  }[]
+}
+export interface IPromoBrand extends IBasePromoOvner {
+  phones: {
+    id: IID
+    phoneNumber: string
+  }[]
 }
 
 export interface IPromotions {
@@ -21,16 +45,7 @@ export interface IPromotions {
     title: string
     titleRus: string
   }
-  masters?: {
-    id: string
-    name: string
-  }
-  brands?: {
-    id: string
-    name: string
-  }
-  salons?: {
-    id: string
-    name: string
-  }
+  master?: IPromoMaster
+  brand?: IPromoBrand
+  salon?: IPromoSalon
 }

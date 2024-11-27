@@ -3,13 +3,15 @@ import Slider from '../../../../blocks/Slider'
 import { PROMOTIONS } from 'src/api/graphql/promotion/queries/getPromotions'
 import { FC } from 'react'
 import { ICity } from 'src/types'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { IPromotions } from 'src/types/promotions'
 
 interface Props {
   city: ICity
 }
 
 const MainAdsSlider: FC<Props> = ({ city }) => {
-  const { data, loading } = useQuery(PROMOTIONS, {
+  const { data: queryData, loading } = useQuery(PROMOTIONS, {
     variables: { pageSize: 10 },
   })
 
@@ -18,7 +20,9 @@ const MainAdsSlider: FC<Props> = ({ city }) => {
       city={city}
       type="ads"
       loading={loading}
-      items={data?.salesSearch?.connection?.nodes || []}
+      items={
+        (flattenStrapiResponse(queryData?.promotions) as IPromotions[]) || []
+      }
       title="BEAUTY-ОБЪЯВЛЕНИЯ"
       bgColor="#000"
       pt={70}
