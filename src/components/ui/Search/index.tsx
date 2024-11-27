@@ -80,7 +80,7 @@ const Search: FC<Props> = ({ title, noFilters }) => {
         })
       }
     }
-  }, [pathname])
+  }, [pathname, query])
 
   return (
     <Wrapper>

@@ -38,7 +38,7 @@ const AllSalonsPage: FC<ISalonsPageProps> = ({
 }) => {
   const [view, setView] = useState<IView>('list')
   const router = useRouter()
-  const { setLoading } = useAuthStore(getStoreEvent)
+  const [reload, setReload] = useState(false)
   const searchParam = router.query.search
   const searchValue = Array.isArray(searchParam)
     ? searchParam[0]
@@ -48,7 +48,7 @@ const AllSalonsPage: FC<ISalonsPageProps> = ({
 
   useEffect(() => {
     if (!searchValue && !salonData) {
-      setLoading(true)
+      setReload(true)
       router.reload()
     }
   }, [searchValue, salonData])
@@ -77,7 +77,7 @@ const AllSalonsPage: FC<ISalonsPageProps> = ({
       </CSSTransition>
       <MainContainer>
         <WrapperResults>
-          {!loading && (salonData?.length || searchSalons) ? (
+          {(!loading || !reload) && (salonData?.length || searchSalons) ? (
             <SalonsSearch
               key={salonData?.length || searchSalons?.length}
               cityData={cityData}
@@ -93,7 +93,9 @@ const AllSalonsPage: FC<ISalonsPageProps> = ({
               search={!!searchValue}
             />
           ) : (
-            <Title>{loading ? 'Загрузка' : 'Салоны не найдены'}</Title>
+            <Title>
+              {loading || reload ? 'Загрузка' : 'Салоны не найдены'}
+            </Title>
           )}
         </WrapperResults>
       </MainContainer>
