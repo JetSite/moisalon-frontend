@@ -35,8 +35,8 @@ export const useQuerySearch: UseQuerySearch = city => {
   }
 
   const redirectToMainPathSearch = (search: string) => {
-    if (search.length < MIN_SEARCH_LENGTH) return
     const sanitizedSearch = getSanitizedSearch(search)
+    if (search.length < MIN_SEARCH_LENGTH) return
     push(
       { pathname: mainPath, query: { ...query, search: sanitizedSearch } },
       undefined,
