@@ -15,7 +15,6 @@ export interface IInitialBaseData {
   activities: ISalonActivity[] | []
   products: LazyType[] | null
   cities: ICity[]
-  city: string | null
 }
 
 interface IUseBaseStore {
@@ -29,7 +28,6 @@ interface IUseBaseStore {
   setSalonActivities: (activities: ISalonActivity[]) => void
   setProducts: (products: LazyType[]) => void
   setCities: (cities: ICity[]) => void
-  setCity: (city: string) => void
 }
 
 const initialData = {
@@ -42,7 +40,6 @@ const initialData = {
   activities: [],
   products: null,
   cities: [],
-  city: null,
   cart: null,
 }
 
@@ -62,6 +59,5 @@ const useBaseStore = create<IUseBaseStore>((set, get) => ({
   setProducts: products =>
     set(state => ({ data: { ...state.data, products } })),
   setCities: cities => set(state => ({ data: { ...state.data, cities } })),
-  setCity: city => set(state => ({ data: { ...state.data, city } })),
 }))
 export default useBaseStore

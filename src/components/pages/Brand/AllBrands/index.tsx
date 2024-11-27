@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo } from 'react'
+import React, { FC, useEffect, useMemo, useState } from 'react'
 import { MainContainer } from '../../../../styles/common'
 import BrandsSearchResults from '../../MainPage/components/SearchMain/BrandsSearchResults'
 import SearchBlock from '../../../blocks/SearchBlock'
@@ -11,13 +11,11 @@ import {
 } from '../../MainPage/components/SearchMain/styled'
 import { CSSTransition } from 'react-transition-group'
 import { MobileHidden } from '../../../../styles/common'
-import { ISalon } from 'src/types/salon'
+import {} from 'src/types/salon'
 import { ITotalCount } from 'src/pages/[city]/salon'
 import { ICity, IPagination } from 'src/types'
 import { IBrand } from 'src/types/brands'
 import { useRouter } from 'next/router'
-import useAuthStore from 'src/store/authStore'
-import { getStoreEvent } from 'src/store/utils'
 import { useSearch } from '../../MainPage/components/SearchMain/utils/useSearch'
 
 export interface IBrandPageProps {
@@ -34,7 +32,7 @@ const AllBrandsPage: FC<IBrandPageProps> = ({
   cityData,
 }) => {
   const router = useRouter()
-  const { setLoading } = useAuthStore(getStoreEvent)
+  const [reload, setReload] = useState(false)
   const searchParam = router.query.search
   const searchValue = Array.isArray(searchParam)
     ? searchParam[0]
@@ -44,7 +42,7 @@ const AllBrandsPage: FC<IBrandPageProps> = ({
 
   useEffect(() => {
     if (!searchValue && !brandData) {
-      setLoading(true)
+      setReload(true)
       router.reload()
     }
   }, [searchValue, brandData])
@@ -55,15 +53,22 @@ const AllBrandsPage: FC<IBrandPageProps> = ({
       <MobileHidden>
         <SearchBlock title="Найти свой бренд" />
       </MobileHidden>
-      <CSSTransition in={true} timeout={500} classNames="banner" unmountOnExit>
-        <WrapBanner>
-          <Line text="Вы – профессионал? Присоединяйтесь, чтобы воспользоваться привилегиями." />
-          <CategoryImage />
-        </WrapBanner>
-      </CSSTransition>
+      {!searchValue.length ? (
+        <CSSTransition
+          in={true}
+          timeout={500}
+          classNames="banner"
+          unmountOnExit
+        >
+          <WrapBanner>
+            <Line text="Вы – профессионал? Присоединяйтесь, чтобы воспользоваться привилегиями." />
+            <CategoryImage />
+          </WrapBanner>
+        </CSSTransition>
+      ) : null}
       <MainContainer>
         <WrapperResults>
-          {!loading && (brandData?.length || searchBrand) ? (
+          {(!loading || !reload) && (brandData?.length || searchBrand) ? (
             <BrandsSearchResults
               key={brandData?.length || searchBrand?.length}
               cityData={cityData}
@@ -76,7 +81,9 @@ const AllBrandsPage: FC<IBrandPageProps> = ({
               search={!!searchValue}
             />
           ) : (
-            <Title>{loading ? 'Загрузка' : 'Бренды не найдены'}</Title>
+            <Title>
+              {loading || reload ? 'Загрузка' : 'Бренды не найдены'}
+            </Title>
           )}
         </WrapperResults>
       </MainContainer>

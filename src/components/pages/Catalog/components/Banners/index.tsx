@@ -13,7 +13,7 @@ const Wrapper = styled.div`
   max-width: 1440px;
   margin: 0 auto;
   padding: 0 140px 45px 140px;
-  justify-content: space-between;
+  gap: 24px;
   @media (max-width: ${tabletBreakpoint}) {
     flex-direction: column;
   }
@@ -33,7 +33,7 @@ const Big = styled(Link)`
 `
 
 const WrapBig = styled.div<{ image: string }>`
-  width: 67%;
+  width: 70%;
   max-width: 785px;
   height: 275px;
   background: ${props => `url(${props.image}) no-repeat center`};
@@ -92,18 +92,17 @@ const Small = styled(Link)`
 `
 
 const Right = styled.div`
-  width: 27%;
+  width: 30%;
   max-width: 357px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 25px;
+  gap: 24px;
 
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
     max-width: 785px;
     flex-direction: row;
-    margin-top: 10px;
 
     noindex {
       width: 49%;

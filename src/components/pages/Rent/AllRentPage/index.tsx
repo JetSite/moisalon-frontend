@@ -16,8 +16,6 @@ import { ICity, IPagination } from 'src/types'
 import { IView } from '../../Salon/AllSalons'
 import { SalonsSearch } from '../../MainPage/components/SearchMain/SalonSearch'
 import { useRouter } from 'next/router'
-import useAuthStore from 'src/store/authStore'
-import { getStoreEvent } from 'src/store/utils'
 import { useSearch } from '../../MainPage/components/SearchMain/utils/useSearch'
 
 export interface IRentsPageProps {
@@ -37,8 +35,8 @@ const AllRentPage: FC<IRentsPageProps> = ({
 }) => {
   const [filterOpen, setFilterOpen] = useState(false)
   const [view, setView] = useState<IView>('list')
+  const [reload, setReload] = useState(false)
   const router = useRouter()
-  const { setLoading } = useAuthStore(getStoreEvent)
   const searchParam = router.query.search
   const searchValue = Array.isArray(searchParam)
     ? searchParam[0]
@@ -48,7 +46,7 @@ const AllRentPage: FC<IRentsPageProps> = ({
 
   useEffect(() => {
     if (!searchValue && !rentData) {
-      setLoading(true)
+      setReload(true)
       router.reload()
     }
   }, [searchValue, rentData])
@@ -65,20 +63,22 @@ const AllRentPage: FC<IRentsPageProps> = ({
       </MobileHidden>
 
       <MobileHidden>
-        <CSSTransition
-          in={view === 'list' || filterOpen}
-          timeout={500}
-          classNames="banner"
-          unmountOnExit
-        >
-          <WrapBanner>
-            <Banner />
-          </WrapBanner>
-        </CSSTransition>
+        {!searchValue.length ? (
+          <CSSTransition
+            in={view === 'list' || filterOpen}
+            timeout={500}
+            classNames="banner"
+            unmountOnExit
+          >
+            <WrapBanner>
+              <Banner />
+            </WrapBanner>
+          </CSSTransition>
+        ) : null}
       </MobileHidden>
       <MainContainer>
         <WrapperResults>
-          {!loading && (rentData?.length || searchSalons) ? (
+          {(!loading || !reload) && (rentData?.length || searchSalons) ? (
             <SalonsSearch
               key={rentData?.length || searchSalons?.length}
               cityData={cityData}
@@ -95,7 +95,9 @@ const AllRentPage: FC<IRentsPageProps> = ({
               rent
             />
           ) : (
-            <Title>{loading ? 'Загрузка' : 'Салоны не найдены'}</Title>
+            <Title>
+              {loading || reload ? 'Загрузка' : 'Салоны не найдены'}
+            </Title>
           )}
         </WrapperResults>
       </MainContainer>

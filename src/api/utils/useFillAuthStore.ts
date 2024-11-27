@@ -37,7 +37,6 @@ export const useFillAuthStore: IUseCollectAuth = ({ pageCity }) => {
 
   const fillAuthStore: IFillAuthStore = prepareUser => {
     const { selectedCity, ownersID, ...user } = prepareUser
-
     setUser(user)
     setMe({ info: user.info, owner: ownersID })
     setCity(selectedCity)

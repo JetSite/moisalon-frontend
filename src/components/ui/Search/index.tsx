@@ -21,7 +21,9 @@ interface Props {
 
 const Search: FC<Props> = ({ title, noFilters }) => {
   const { query, pathname } = useRouter()
-  const [inputValue, setInputValue] = useState<string>('')
+  const [inputValue, setInputValue] = useState<string>(
+    (query.search as string) || '',
+  )
   const { city } = useAuthStore(getStoreData)
   const {
     isSearchablePath,
@@ -55,7 +57,7 @@ const Search: FC<Props> = ({ title, noFilters }) => {
     if (isSearchablePath) {
       target.blur()
       window.scrollTo({
-        top: 500,
+        top: 300,
         behavior: 'smooth',
       })
 
@@ -75,7 +77,7 @@ const Search: FC<Props> = ({ title, noFilters }) => {
 
       if (query.search) {
         window.scrollTo({
-          top: 500,
+          top: 300,
           behavior: 'smooth',
         })
       }

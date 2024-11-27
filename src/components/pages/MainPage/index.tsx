@@ -56,11 +56,11 @@ const MainPage: FC<IMainPageProps> = ({
   cityData,
 }) => {
   const { query } = useRouter()
+  const isSearch = query.search?.length >= MIN_SEARCH_LENGTH
 
   const bannerTopLarge = bannerHooks.find(e => e.id === '1') ?? null
   const bannerTopSmallLeft = bannerHooks.find(e => e.id === '2') ?? null
   const bannerTopSmallRight = bannerHooks.find(e => e.id === '3') ?? null
-  console.log(query.search)
 
   return (
     <MainLayout>
@@ -69,39 +69,40 @@ const MainPage: FC<IMainPageProps> = ({
           <SearchBlock title="Найти салон / мастер / бренд" />
         </MobileHidden>
         <Title>{`Лучшие салоны красоты  и spa (спа) в городе ${cityData.name}`}</Title>
-        <CSSTransition
-          in={true}
-          timeout={500}
-          classNames="banner"
-          unmountOnExit
-        >
-          <WrapBanner>
-            <MobileHidden>
-              {bannerHooks ? (
-                <Banners
-                  bannerLarge={bannerTopLarge}
-                  bannerSmallLeft={bannerTopSmallLeft}
-                  bannerSmallRight={bannerTopSmallRight}
-                />
-              ) : null}
-            </MobileHidden>
-          </WrapBanner>
-        </CSSTransition>
+        {!isSearch ? (
+          <CSSTransition
+            in={true}
+            timeout={500}
+            classNames="banner"
+            unmountOnExit
+          >
+            <WrapBanner>
+              <MobileHidden>
+                {bannerHooks ? (
+                  <Banners
+                    bannerLarge={bannerTopLarge}
+                    bannerSmallLeft={bannerTopSmallLeft}
+                    bannerSmallRight={bannerTopSmallRight}
+                  />
+                ) : null}
+              </MobileHidden>
+            </WrapBanner>
+          </CSSTransition>
+        ) : null}
         <MobileViewCards
           totalCount={totalCount}
           // totalSales={sales?.salesSearch?.connection?.nodes?.length}
         />
-        <MobileVisible>
-          {bannerHooks?.length ? (
+        {!isSearch && bannerHooks?.length ? (
+          <MobileVisible>
             <Banners
               bannerLarge={bannerTopLarge}
               bannerSmallLeft={bannerTopSmallLeft}
               bannerSmallRight={bannerTopSmallRight}
             />
-          ) : null}
-        </MobileVisible>
-        {typeof query.search === 'string' &&
-        query.search.length >= MIN_SEARCH_LENGTH ? (
+          </MobileVisible>
+        ) : null}
+        {typeof query.search === 'string' && isSearch ? (
           <SearchResults searchValue={query?.search as string} />
         ) : null}
         <MainAdsSlider city={cityData} />

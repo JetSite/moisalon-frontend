@@ -6,6 +6,8 @@ import { IPagination } from 'src/types'
 import { useLazyQuery } from '@apollo/client'
 import { SEARCH } from 'src/api/graphql/search'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData } from 'src/store/utils'
 
 export const MIN_SEARCH_LENGTH = 3
 
@@ -25,6 +27,7 @@ type UseSearch = (
 }
 export const useSearch: UseSearch = (searchValue, rent) => {
   const [data, setData] = useState<ISearchData | null>(null)
+  const { city } = useAuthStore(getStoreData)
   const [loading, setLoading] = useState(false)
 
   const [search] = useLazyQuery(SEARCH, {
@@ -73,7 +76,7 @@ export const useSearch: UseSearch = (searchValue, rent) => {
       }
       setLoading(true)
       if (isActive) {
-        search({ variables: { searchValue, rent } })
+        search({ variables: { searchValue, rent, slug: city.slug } })
       }
     }, 300)
 
@@ -81,7 +84,7 @@ export const useSearch: UseSearch = (searchValue, rent) => {
       isActive = false
       clearTimeout(debounceTimeout)
     }
-  }, [searchValue])
+  }, [searchValue, city])
 
   return {
     loading,

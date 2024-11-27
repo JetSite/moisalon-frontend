@@ -4,7 +4,7 @@ import SearchBlock from '../../../blocks/SearchBlock'
 import Line from '../../MainPage/components/Line'
 import MobileViewCards from '../../MainPage/components/MobileViewCards'
 import { CategoryImage, WrapBanner } from './styles'
-import { FC, useEffect, useMemo } from 'react'
+import { FC, useEffect, useMemo, useState } from 'react'
 import { CSSTransition } from 'react-transition-group'
 import { MobileHidden } from '../../../../styles/common'
 import { IMaster } from 'src/types/masters'
@@ -15,9 +15,10 @@ import {
   WrapperResults,
 } from '../../MainPage/components/SearchMain/styled'
 import { useRouter } from 'next/router'
-import useAuthStore from 'src/store/authStore'
-import { getStoreEvent } from 'src/store/utils'
-import { useSearch } from '../../MainPage/components/SearchMain/utils/useSearch'
+import {
+  MIN_SEARCH_LENGTH,
+  useSearch,
+} from '../../MainPage/components/SearchMain/utils/useSearch'
 
 export interface IMastersPageProps {
   masterData: IMaster[] | null
@@ -33,7 +34,7 @@ const AllMastersPage: FC<IMastersPageProps> = ({
   pagination,
 }) => {
   const router = useRouter()
-  const { setLoading } = useAuthStore(getStoreEvent)
+  const [reload, setReload] = useState(false)
   const searchParam = router.query.search
   const searchValue = Array.isArray(searchParam)
     ? searchParam[0]
@@ -43,7 +44,7 @@ const AllMastersPage: FC<IMastersPageProps> = ({
 
   useEffect(() => {
     if (!searchValue && !masterData) {
-      setLoading(true)
+      setReload(true)
       router.reload()
     }
   }, [searchValue, masterData])
@@ -55,15 +56,22 @@ const AllMastersPage: FC<IMastersPageProps> = ({
         <SearchBlock title="Найти своего мастера" />
       </MobileHidden>
 
-      <CSSTransition in={true} timeout={500} classNames="banner" unmountOnExit>
-        <WrapBanner>
-          <Line text="Вы – профессионал? Присоединяйтесь, чтобы воспользоваться привилегиями." />
-          <CategoryImage />
-        </WrapBanner>
-      </CSSTransition>
+      {!searchValue.length ? (
+        <CSSTransition
+          in={true}
+          timeout={500}
+          classNames="banner"
+          unmountOnExit
+        >
+          <WrapBanner>
+            <Line text="Вы – профессионал? Присоединяйтесь, чтобы воспользоваться привилегиями." />
+            <CategoryImage />
+          </WrapBanner>
+        </CSSTransition>
+      ) : null}
       <MainContainer>
         <WrapperResults>
-          {!loading && (masterData?.length || searchMaster) ? (
+          {(!loading || !reload) && (masterData?.length || searchMaster) ? (
             <MastersSearchResults
               key={masterData?.length || searchMaster?.length}
               cityData={cityData}
@@ -76,7 +84,9 @@ const AllMastersPage: FC<IMastersPageProps> = ({
               search={!!searchValue}
             />
           ) : (
-            <Title>{loading ? 'Загрузка' : 'Мастера не найдены'}</Title>
+            <Title>
+              {loading || reload ? 'Загрузка' : 'Мастера не найдены'}
+            </Title>
           )}
         </WrapperResults>
       </MainContainer>

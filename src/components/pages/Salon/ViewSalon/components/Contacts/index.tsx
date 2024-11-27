@@ -139,7 +139,7 @@ const Contacts: FC<Props> = ({
                 <Styled.Socials>
                   {socialNetworkUrls.map(
                     e =>
-                      e.s_network.logo?.url && (
+                      e.s_network?.logo?.url && (
                         <Styled.Social
                           key={e.id}
                           icon={
