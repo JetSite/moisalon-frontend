@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
-import { searchSalonFragment } from './fragments/serch/salon'
-import { searchMasterFragment } from './fragments/serch/master'
-import { searchBrandFragment } from './fragments/serch/brand'
+import { searchSalonFragment } from './fragments/search/salon'
+import { searchMasterFragment } from './fragments/search/master'
+import { searchBrandFragment } from './fragments/search/brand'
 
 export const SEARCH = gql`
   query search($searchValue: String!, $rent: Boolean) {

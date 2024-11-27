@@ -35,11 +35,13 @@ import { defaultValues, settingsConfig } from 'src/api/authConfig'
 import { getTotalCount } from 'src/utils/getTotalCount'
 import { useRouter } from 'next/router'
 import { ISearchResults } from './SalonSearch'
+import SearchResultsTitle from './SearchResultsTitle'
 
 interface Props extends ISearchResults {
   masterData: IMaster[]
   search?: boolean
   noFilters?: boolean
+  main?: boolean
 }
 
 const MastersSearchResults: FC<Props> = ({
@@ -48,6 +50,7 @@ const MastersSearchResults: FC<Props> = ({
   cityData,
   search,
   noFilters,
+  main,
 }) => {
   const [page, setPage] = useState<number>(2)
   const hasNextPage = pagination && pagination.pageCount + 1 !== page
@@ -159,33 +162,30 @@ const MastersSearchResults: FC<Props> = ({
     setPage(2)
   }
 
+  const prepareTitle = `${pluralize(
+    totalCount,
+    'Найден',
+    'Найдено',
+    'Найдено',
+  )} ${totalCount} ${pluralize(totalCount, 'мастер', 'мастера', 'мастеров')}`
+
   return (
     <>
       <>
-        {!search ? (
-          <>
-            <Title>
-              {`${pluralize(
-                totalCount,
-                'Найден',
-                'Найдено',
-                'Найдено',
-              )} ${totalCount} ${pluralize(
-                totalCount,
-                'мастер',
-                'мастера',
-                'мастеров',
-              )}`}
-            </Title>
-            {!noFilters ? (
-              <FilterSearchResults
-                handleFilter={handleFilter}
-                sortProperty={sortProperty}
-                sortOrder={sortOrder}
-                master
-              />
-            ) : null}
-          </>
+        <SearchResultsTitle
+          prepareTitle={prepareTitle}
+          totalCount={totalCount}
+          noFoundText="Мастеров не найдено"
+          main={main}
+          search={search}
+        />
+        {!search && !noFilters ? (
+          <FilterSearchResults
+            handleFilter={handleFilter}
+            sortProperty={sortProperty}
+            sortOrder={sortOrder}
+            master
+          />
         ) : null}
 
         {user?.owner?.salons && user?.owner?.salons?.length > 0 ? (

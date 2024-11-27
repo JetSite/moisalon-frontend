@@ -25,7 +25,7 @@ const SearchResults: FC<Props> = ({ searchValue }) => {
               pagination={{ ...pagination, total: data?.masters?.length }}
               cityData={city}
               masterData={data?.masters || []}
-              search={!data}
+              main
               noFilters
             />
             <BrandsSearchResults

@@ -1,5 +1,5 @@
 import { imageInfo } from '../../common/imageInfo'
-import { cityFragment } from '../../fragments/city'
+import { cityFragment } from '../city'
 import { salonServicesFragment } from '../../salon/fragments'
 
 export const searchSalonFragment = `data {

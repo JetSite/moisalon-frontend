@@ -1,6 +1,6 @@
 interface IGetTitleProps {
   prepareTitle: string
-  prepareSubTitle: string
+  prepareSubTitle: string | null
   main?: boolean
   search?: boolean
   totalCount: number

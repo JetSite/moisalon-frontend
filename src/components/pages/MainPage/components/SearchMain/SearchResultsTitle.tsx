@@ -6,7 +6,7 @@ interface SearchResultsTitleProps {
   totalCount: number
   noFoundText: string
   prepareTitle: string
-  prepareSubTitle: string
+  prepareSubTitle?: string
   main?: boolean
   search?: boolean
 }
@@ -21,7 +21,7 @@ const SearchResultsTitle: FC<SearchResultsTitleProps> = ({
 }) => {
   const [title, subTitle] = getTitle({
     prepareTitle,
-    prepareSubTitle,
+    prepareSubTitle: prepareSubTitle ?? null,
     search,
     totalCount,
     main,

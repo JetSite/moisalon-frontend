@@ -1,8 +1,8 @@
 import { cityInfo } from '../../common/cityInfo'
 import { imageInfo } from '../../common/imageInfo'
-import { ratingsFragment } from '../../fragments/ratings'
-import { reviewsFragment } from '../../fragments/reviews'
-import servicesFragment from '../../fragments/services'
+import { ratingsFragment } from '../ratings'
+import { reviewsFragment } from '../reviews'
+import servicesFragment from '../services'
 
 export const searchMasterFragment = `data {
   id

@@ -55,13 +55,23 @@ export const useSearch: UseSearch = (searchValue, rent) => {
   }
 
   useEffect(() => {
-    if (!searchValue.length || searchValue.length <= MIN_SEARCH_LENGTH) {
-      setData(null)
-      setLoading(false)
-      return
+    let isActive = true
+    const debounceTimeout = setTimeout(() => {
+      if (!searchValue.length || searchValue.length <= MIN_SEARCH_LENGTH) {
+        setData(null)
+        setLoading(false)
+        return
+      }
+      setLoading(true)
+      if (isActive) {
+        search({ variables: { searchValue, rent } })
+      }
+    }, 300)
+
+    return () => {
+      isActive = false
+      clearTimeout(debounceTimeout)
     }
-    setLoading(true)
-    search({ variables: { searchValue, rent } })
   }, [searchValue])
 
   return {
