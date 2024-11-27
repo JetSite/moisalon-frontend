@@ -32,6 +32,7 @@ const SearchResults: FC<Props> = ({ searchValue }) => {
               cityData={city}
               brandData={data.brands || []}
               pagination={{ ...pagination, total: data.brands?.length }}
+              main
             />
             <SalonsSearch
               salonData={data?.salons || []}

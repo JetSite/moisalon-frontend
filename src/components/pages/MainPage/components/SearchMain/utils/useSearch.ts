@@ -37,7 +37,16 @@ export const useSearch: UseSearch = (searchValue, rent) => {
           resultSearch[key] = res
         }
       })
-      if (keys.some(key => resultSearch[key].length > 0)) setData(resultSearch)
+
+      if (
+        keys.some(
+          key =>
+            Array.isArray(resultSearch[key]) && resultSearch[key].length > 0,
+        )
+      ) {
+        setData(resultSearch)
+      } else setData(null)
+
       setLoading(false)
     },
     onError: error => {

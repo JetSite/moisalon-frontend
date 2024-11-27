@@ -13,7 +13,6 @@ export const searchBrandFragment = `
           seoDescription
           description
           address
-          name
           rating
           ratingCount
           reviewsCount

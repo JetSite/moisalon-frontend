@@ -17,6 +17,7 @@ import Button from '../../../../ui/Button'
 import { useRouter } from 'next/router'
 import { ISearchResults } from './SalonSearch'
 import { defaultValues } from 'src/api/authConfig'
+import SearchResultsTitle from './SearchResultsTitle'
 
 interface Props extends ISearchResults {
   brandData: IBrand[]
@@ -26,6 +27,8 @@ const BrandsSearchResults: FC<Props> = ({
   brandData,
   pagination,
   cityData,
+  search,
+  main,
 }) => {
   const [updateBrandData, setUpdateBrandData] = useState<IBrand[]>(brandData)
   const [page, setPage] = useState<number>(2)
@@ -54,23 +57,24 @@ const BrandsSearchResults: FC<Props> = ({
     setPage(page + 1)
   }
 
+  const prepareTitle = `${pluralize(
+    totalCount,
+    'Найден',
+    'Найдено',
+    'Найдено',
+  )} ${totalCount} ${pluralize(totalCount, 'бренд', 'бренда', 'брендов')}`
+
   return (
     <>
       {updateBrandData?.length ? (
         <>
-          <Title>
-            {`${pluralize(
-              totalCount,
-              'Найден',
-              'Найдено',
-              'Найдено',
-            )} ${totalCount} ${pluralize(
-              totalCount,
-              'бренд',
-              'бренда',
-              'брендов',
-            )}`}
-          </Title>
+          <SearchResultsTitle
+            prepareTitle={prepareTitle}
+            totalCount={totalCount}
+            noFoundText="Бренды не найдены"
+            main={main}
+            search={search}
+          />
           <WrapperItemsBrands>
             {updateBrandData?.map(brand => (
               <div

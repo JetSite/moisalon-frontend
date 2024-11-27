@@ -14,16 +14,16 @@ import { pluralize } from 'src/utils/pluralize'
 export interface ISearchResults {
   pagination: IPagination
   cityData: ICity
+  main?: boolean
+  search?: boolean
 }
 
 interface Props extends ISearchResults {
   view: IView
   setView?: ISetState<IView>
   salonData: ISalon[]
-  main?: boolean
   rent?: boolean
   pageSize: number
-  search?: boolean
 }
 
 export const SalonsSearch: FC<Props> = ({

@@ -39,9 +39,7 @@ import SearchResultsTitle from './SearchResultsTitle'
 
 interface Props extends ISearchResults {
   masterData: IMaster[]
-  search?: boolean
   noFilters?: boolean
-  main?: boolean
 }
 
 const MastersSearchResults: FC<Props> = ({
