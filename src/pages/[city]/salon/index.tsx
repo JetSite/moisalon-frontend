@@ -21,6 +21,7 @@ import { getSalons } from 'src/api/graphql/salon/queries/getSalons'
 import { getRating } from 'src/utils/newUtils/getRating'
 import { Nullable } from 'src/types/common'
 import { getPrepareData } from 'src/utils/newUtils/getPrepareData'
+import { MIN_SEARCH_LENGTH } from 'src/components/pages/MainPage/components/SearchMain/utils/useSearch'
 
 export interface ITotalCount {
   brands: number | null
@@ -49,21 +50,9 @@ export const getServerSideProps: GetServerSideProps<
 > = async ctx => {
   const apolloClient = initializeApollo()
 
-  // const salonData = []
-  // const brands = null
-  // const masters = null
-  // const salons = null
-  // const totalCount = {
-  //   brands: 0,
-  //   masters: 0,
-  //   salons: 0,
-  // }
-  // const cityData = []
-  // const pagination = []
-
   const pageSize = 9
 
-  const search = ctx.query.search?.length > 3
+  const search = ctx.query.search?.length >= MIN_SEARCH_LENGTH
 
   const queries = [
     apolloClient.query({
@@ -127,14 +116,14 @@ export const getServerSideProps: GetServerSideProps<
       brands,
       masters: !masters
         ? null
-        : masters?.map(e => {
+        : masters.map(e => {
             const reviewsCount = e.reviews.length
             const { rating, ratingCount } = getRating(e.ratings)
             return { ...e, rating, ratingCount, reviewsCount }
           }),
       salons: !salons
         ? null
-        : salons?.map(e => {
+        : salons.map(e => {
             const reviewsCount = e.reviews.length
             const { rating, ratingCount } = getRating(e.ratings)
             return { ...e, rating, ratingCount, reviewsCount }

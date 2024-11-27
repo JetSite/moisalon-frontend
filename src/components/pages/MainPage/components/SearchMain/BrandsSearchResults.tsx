@@ -66,68 +66,64 @@ const BrandsSearchResults: FC<Props> = ({
 
   return (
     <>
-      {updateBrandData?.length ? (
+      <SearchResultsTitle
+        prepareTitle={prepareTitle}
+        totalCount={totalCount}
+        noFoundText="Бренды не найдены"
+        main={main}
+        search={search}
+      />
+      <WrapperItemsBrands>
+        {updateBrandData?.map(brand => (
+          <div
+            onClick={() => {
+              console.log(brand)
+              router.push(
+                `/${
+                  brand.city?.slug || city.slug || defaultValues.city.slug
+                }/brand/${brand.id}`,
+              )
+            }}
+            key={brand.id}
+          >
+            <LinkStyled>
+              <BrandItem
+                loading={loading}
+                brand={brand}
+                shareLink={`https://moi.salon/${
+                  brand.city?.slug || city.slug || defaultValues.city.slug
+                }/brand/${brand.id}`}
+                type="search-page"
+              />
+            </LinkStyled>
+          </div>
+        ))}
+      </WrapperItemsBrands>
+      {hasNextPage ? (
         <>
-          <SearchResultsTitle
-            prepareTitle={prepareTitle}
-            totalCount={totalCount}
-            noFoundText="Бренды не найдены"
-            main={main}
-            search={search}
-          />
-          <WrapperItemsBrands>
-            {updateBrandData?.map(brand => (
-              <div
-                onClick={() => {
-                  console.log(brand)
-                  router.push(
-                    `/${
-                      brand.city?.slug || city.slug || defaultValues.city.slug
-                    }/brand/${brand.id}`,
-                  )
-                }}
-                key={brand.id}
-              >
-                <LinkStyled>
-                  <BrandItem
-                    loading={loading}
-                    brand={brand}
-                    shareLink={`https://moi.salon/${
-                      brand.city?.slug || city.slug || defaultValues.city.slug
-                    }/brand/${brand.id}`}
-                    type="search-page"
-                  />
-                </LinkStyled>
-              </div>
-            ))}
-          </WrapperItemsBrands>
-          {hasNextPage ? (
-            <>
-              <MobileHidden>
-                <Button
-                  onClick={onFetchMore}
-                  size="medium"
-                  variant="darkTransparent"
-                  mb="55"
-                  disabled={loading}
-                >
-                  Показать еще
-                </Button>
-              </MobileHidden>
-              <MobileVisible>
-                <Button
-                  size="roundSmall"
-                  variant="withRoundBorder"
-                  font="roundSmall"
-                  mb="56"
-                  onClick={onFetchMore}
-                  disabled={loading}
-                >
-                  Показать еще бренды
-                </Button>
-              </MobileVisible>
-            </>
-          ) : null}
+          <MobileHidden>
+            <Button
+              onClick={onFetchMore}
+              size="medium"
+              variant="darkTransparent"
+              mb="55"
+              disabled={loading}
+            >
+              Показать еще
+            </Button>
+          </MobileHidden>
+          <MobileVisible>
+            <Button
+              size="roundSmall"
+              variant="withRoundBorder"
+              font="roundSmall"
+              mb="56"
+              onClick={onFetchMore}
+              disabled={loading}
+            >
+              Показать еще бренды
+            </Button>
+          </MobileVisible>
         </>
       ) : null}
     </>

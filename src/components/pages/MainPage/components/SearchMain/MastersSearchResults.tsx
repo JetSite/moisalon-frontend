@@ -169,115 +169,109 @@ const MastersSearchResults: FC<Props> = ({
 
   return (
     <>
-      <>
-        <SearchResultsTitle
-          prepareTitle={prepareTitle}
-          totalCount={totalCount}
-          noFoundText="Мастеров не найдено"
-          main={main}
-          search={search}
+      <SearchResultsTitle
+        prepareTitle={prepareTitle}
+        totalCount={totalCount}
+        noFoundText="Мастеров не найдено"
+        main={main}
+        search={search}
+      />
+      {!search && !noFilters ? (
+        <FilterSearchResults
+          handleFilter={handleFilter}
+          sortProperty={sortProperty}
+          sortOrder={sortOrder}
+          master
         />
-        {!search && !noFilters ? (
-          <FilterSearchResults
-            handleFilter={handleFilter}
-            sortProperty={sortProperty}
-            sortOrder={sortOrder}
-            master
-          />
-        ) : null}
+      ) : null}
 
-        {user?.owner?.salons && user?.owner?.salons?.length > 0 ? (
-          <>
-            <Checkbox
-              checked={!!resumeFilter}
-              id="resume"
-              onClick={async () => {
+      {user?.owner?.salons && user?.owner?.salons?.length > 0 ? (
+        <>
+          <Checkbox
+            checked={!!resumeFilter}
+            id="resume"
+            onClick={async () => {
+              setUpdateMasterData([])
+              setResumeFilter(prevResumeFilter => {
+                const newResumeFilter = !prevResumeFilter
                 setUpdateMasterData([])
-                setResumeFilter(prevResumeFilter => {
-                  const newResumeFilter = !prevResumeFilter
-                  setUpdateMasterData([])
-                  if (newResumeFilter) {
-                    refetch({
-                      variables: {
-                        searchWork: true,
-                        slug: cityData?.slug,
-                      },
-                    })
-                  } else {
-                    // setUpdateMasterData(masterData)
-                    // setTotalCount(pagination?.total || 0)
-                    refetch({
-                      variables: {
-                        slug: cityData?.slug,
-                      },
-                    })
-                  }
-                  return newResumeFilter
-                })
-              }}
-            />
-            <Label htmlFor="resume">Найти резюме</Label>
-          </>
-        ) : null}
-        <WrapperItemsMasters>
-          {updateMasterData && updateMasterData.length
-            ? updateMasterData.map(master => (
-                <div
-                  onClick={() => {
-                    router.push(
-                      `/${
-                        master.city?.slug ||
-                        city.slug ||
-                        defaultValues.city.slug
-                      }/master/${master.id}`,
-                    )
-                  }}
-                  key={master.id}
-                >
-                  <LinkStyled>
-                    <MasterItem
-                      loading={false}
-                      master={master}
-                      shareLink={`https://moi.salon/${
-                        master.city?.slug ||
-                        city.slug ||
-                        defaultValues.city.slug
-                      }/master/${master.id}`}
-                      type="search-page"
-                    />
-                  </LinkStyled>
-                </div>
-              ))
-            : null}
-        </WrapperItemsMasters>
-        {hasNextPage && updateMasterData.length > 9 ? (
-          <>
-            <MobileHidden>
-              <Button
-                onClick={onFetchMore}
-                size="medium"
-                variant="darkTransparent"
-                mb="55"
-                disabled={loading}
+                if (newResumeFilter) {
+                  refetch({
+                    variables: {
+                      searchWork: true,
+                      slug: cityData?.slug,
+                    },
+                  })
+                } else {
+                  // setUpdateMasterData(masterData)
+                  // setTotalCount(pagination?.total || 0)
+                  refetch({
+                    variables: {
+                      slug: cityData?.slug,
+                    },
+                  })
+                }
+                return newResumeFilter
+              })
+            }}
+          />
+          <Label htmlFor="resume">Найти резюме</Label>
+        </>
+      ) : null}
+      <WrapperItemsMasters>
+        {updateMasterData && updateMasterData.length
+          ? updateMasterData.map(master => (
+              <div
+                onClick={() => {
+                  router.push(
+                    `/${
+                      master.city?.slug || city.slug || defaultValues.city.slug
+                    }/master/${master.id}`,
+                  )
+                }}
+                key={master.id}
               >
-                Показать еще
-              </Button>
-            </MobileHidden>
-            <MobileVisible>
-              <Button
-                size="roundSmall"
-                variant="withRoundBorder"
-                font="roundSmall"
-                mb="56"
-                onClick={onFetchMore}
-                disabled={loading}
-              >
-                Показать еще мастеров
-              </Button>
-            </MobileVisible>
-          </>
-        ) : null}
-      </>
+                <LinkStyled>
+                  <MasterItem
+                    loading={false}
+                    master={master}
+                    shareLink={`https://moi.salon/${
+                      master.city?.slug || city.slug || defaultValues.city.slug
+                    }/master/${master.id}`}
+                    type="search-page"
+                  />
+                </LinkStyled>
+              </div>
+            ))
+          : null}
+      </WrapperItemsMasters>
+      {hasNextPage && updateMasterData.length > 9 ? (
+        <>
+          <MobileHidden>
+            <Button
+              onClick={onFetchMore}
+              size="medium"
+              variant="darkTransparent"
+              mb="55"
+              disabled={loading}
+            >
+              Показать еще
+            </Button>
+          </MobileHidden>
+          <MobileVisible>
+            <Button
+              size="roundSmall"
+              variant="withRoundBorder"
+              font="roundSmall"
+              mb="56"
+              onClick={onFetchMore}
+              disabled={loading}
+            >
+              Показать еще мастеров
+            </Button>
+          </MobileVisible>
+        </>
+      ) : null}
     </>
   )
 }
