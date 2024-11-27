@@ -53,12 +53,19 @@ const AllBrandsPage: FC<IBrandPageProps> = ({
       <MobileHidden>
         <SearchBlock title="Найти свой бренд" />
       </MobileHidden>
-      <CSSTransition in={true} timeout={500} classNames="banner" unmountOnExit>
-        <WrapBanner>
-          <Line text="Вы – профессионал? Присоединяйтесь, чтобы воспользоваться привилегиями." />
-          <CategoryImage />
-        </WrapBanner>
-      </CSSTransition>
+      {!searchValue.length ? (
+        <CSSTransition
+          in={true}
+          timeout={500}
+          classNames="banner"
+          unmountOnExit
+        >
+          <WrapBanner>
+            <Line text="Вы – профессионал? Присоединяйтесь, чтобы воспользоваться привилегиями." />
+            <CategoryImage />
+          </WrapBanner>
+        </CSSTransition>
+      ) : null}
       <MainContainer>
         <WrapperResults>
           {(!loading || !reload) && (brandData?.length || searchBrand) ? (

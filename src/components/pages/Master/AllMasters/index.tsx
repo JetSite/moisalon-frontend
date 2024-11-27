@@ -15,7 +15,10 @@ import {
   WrapperResults,
 } from '../../MainPage/components/SearchMain/styled'
 import { useRouter } from 'next/router'
-import { useSearch } from '../../MainPage/components/SearchMain/utils/useSearch'
+import {
+  MIN_SEARCH_LENGTH,
+  useSearch,
+} from '../../MainPage/components/SearchMain/utils/useSearch'
 
 export interface IMastersPageProps {
   masterData: IMaster[] | null
@@ -53,12 +56,19 @@ const AllMastersPage: FC<IMastersPageProps> = ({
         <SearchBlock title="Найти своего мастера" />
       </MobileHidden>
 
-      <CSSTransition in={true} timeout={500} classNames="banner" unmountOnExit>
-        <WrapBanner>
-          <Line text="Вы – профессионал? Присоединяйтесь, чтобы воспользоваться привилегиями." />
-          <CategoryImage />
-        </WrapBanner>
-      </CSSTransition>
+      {!searchValue.length ? (
+        <CSSTransition
+          in={true}
+          timeout={500}
+          classNames="banner"
+          unmountOnExit
+        >
+          <WrapBanner>
+            <Line text="Вы – профессионал? Присоединяйтесь, чтобы воспользоваться привилегиями." />
+            <CategoryImage />
+          </WrapBanner>
+        </CSSTransition>
+      ) : null}
       <MainContainer>
         <WrapperResults>
           {(!loading || !reload) && (masterData?.length || searchMaster) ? (

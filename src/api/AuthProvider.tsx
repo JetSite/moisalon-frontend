@@ -23,7 +23,13 @@ const AuthProvider: FC<{
   const router = useRouter()
   const accessToken = getCookie(authConfig.tokenKeyName)
   const { me, loading, user } = useAuthStore(useShallow(getStoreData))
-  const { setMe, setLoading, logout } = useAuthStore(useShallow(getStoreEvent))
+  const { setMe, setLoading, logout, setCity } = useAuthStore(
+    useShallow(getStoreEvent),
+  )
+
+  useEffect(() => {
+    if (pageCity) setCity(pageCity)
+  }, [pageCity])
 
   const fillAuthStore = useFillAuthStore({ pageCity })
 

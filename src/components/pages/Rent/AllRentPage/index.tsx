@@ -63,16 +63,18 @@ const AllRentPage: FC<IRentsPageProps> = ({
       </MobileHidden>
 
       <MobileHidden>
-        <CSSTransition
-          in={view === 'list' || filterOpen}
-          timeout={500}
-          classNames="banner"
-          unmountOnExit
-        >
-          <WrapBanner>
-            <Banner />
-          </WrapBanner>
-        </CSSTransition>
+        {!searchValue.length ? (
+          <CSSTransition
+            in={view === 'list' || filterOpen}
+            timeout={500}
+            classNames="banner"
+            unmountOnExit
+          >
+            <WrapBanner>
+              <Banner />
+            </WrapBanner>
+          </CSSTransition>
+        ) : null}
       </MobileHidden>
       <MainContainer>
         <WrapperResults>
