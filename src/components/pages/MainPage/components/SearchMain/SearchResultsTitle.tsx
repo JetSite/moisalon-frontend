@@ -28,12 +28,12 @@ const SearchResultsTitle: FC<SearchResultsTitleProps> = ({
     noFoundText,
   })
 
-  return (
+  return title || subTitle ? (
     <div role="region" aria-label="Search Results Summary">
       {title ? <Title>{title}</Title> : null}
       {subTitle ? <Title as="h2">{subTitle}</Title> : null}
     </div>
-  )
+  ) : null
 }
 
 export default SearchResultsTitle

@@ -56,7 +56,9 @@ const MainPage: FC<IMainPageProps> = ({
   cityData,
 }) => {
   const { query } = useRouter()
-  const isSearch = query.search?.length >= MIN_SEARCH_LENGTH
+  const isSearch =
+    typeof query.search === 'string' &&
+    query.search?.length >= MIN_SEARCH_LENGTH
 
   const bannerTopLarge = bannerHooks.find(e => e.id === '1') ?? null
   const bannerTopSmallLeft = bannerHooks.find(e => e.id === '2') ?? null
@@ -68,26 +70,28 @@ const MainPage: FC<IMainPageProps> = ({
         <MobileHidden>
           <SearchBlock title="Найти салон / мастер / бренд" />
         </MobileHidden>
-        <Title>{`Лучшие салоны красоты  и spa (спа) в городе ${cityData.name}`}</Title>
         {!isSearch ? (
-          <CSSTransition
-            in={true}
-            timeout={500}
-            classNames="banner"
-            unmountOnExit
-          >
-            <WrapBanner>
-              <MobileHidden>
-                {bannerHooks ? (
-                  <Banners
-                    bannerLarge={bannerTopLarge}
-                    bannerSmallLeft={bannerTopSmallLeft}
-                    bannerSmallRight={bannerTopSmallRight}
-                  />
-                ) : null}
-              </MobileHidden>
-            </WrapBanner>
-          </CSSTransition>
+          <>
+            <Title>{`Лучшие салоны красоты  и spa (спа) в городе ${cityData.name}`}</Title>
+            <CSSTransition
+              in={true}
+              timeout={500}
+              classNames="banner"
+              unmountOnExit
+            >
+              <WrapBanner>
+                <MobileHidden>
+                  {bannerHooks ? (
+                    <Banners
+                      bannerLarge={bannerTopLarge}
+                      bannerSmallLeft={bannerTopSmallLeft}
+                      bannerSmallRight={bannerTopSmallRight}
+                    />
+                  ) : null}
+                </MobileHidden>
+              </WrapBanner>
+            </CSSTransition>
+          </>
         ) : null}
         <MobileViewCards
           totalCount={totalCount}
@@ -102,7 +106,7 @@ const MainPage: FC<IMainPageProps> = ({
             />
           </MobileVisible>
         ) : null}
-        {typeof query.search === 'string' && isSearch ? (
+        {isSearch ? (
           <SearchResults searchValue={query?.search as string} />
         ) : null}
         <MainAdsSlider city={cityData} />

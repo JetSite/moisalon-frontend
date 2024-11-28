@@ -12,7 +12,7 @@ export const SEARCH = gql`
       masters(filters: { city:{slug:{eq:$slug }} }) {
           ${searchMasterFragment}
       }
-      brands(filters: { city:{slug:{eq:$slug }} }) {
+      brands {
           ${searchBrandFragment}
       }
     }
