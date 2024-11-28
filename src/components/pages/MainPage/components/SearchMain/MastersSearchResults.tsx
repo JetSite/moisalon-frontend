@@ -218,33 +218,33 @@ const MastersSearchResults: FC<Props> = ({
           <Label htmlFor="resume">Найти резюме</Label>
         </>
       ) : null}
-      <WrapperItemsMasters>
-        {updateMasterData && updateMasterData.length
-          ? updateMasterData.map(master => (
-              <div
-                onClick={() => {
-                  router.push(
-                    `/${
-                      master.city?.slug || city.slug || defaultValues.city.slug
-                    }/master/${master.id}`,
-                  )
-                }}
-                key={master.id}
-              >
-                <LinkStyled>
-                  <MasterItem
-                    loading={false}
-                    master={master}
-                    shareLink={`https://moi.salon/${
-                      master.city?.slug || city.slug || defaultValues.city.slug
-                    }/master/${master.id}`}
-                    type="search-page"
-                  />
-                </LinkStyled>
-              </div>
-            ))
-          : null}
-      </WrapperItemsMasters>
+      {updateMasterData && updateMasterData.length ? (
+        <WrapperItemsMasters>
+          {updateMasterData.map(master => (
+            <div
+              onClick={() => {
+                router.push(
+                  `/${
+                    master.city?.slug || city.slug || defaultValues.city.slug
+                  }/master/${master.id}`,
+                )
+              }}
+              key={master.id}
+            >
+              <LinkStyled>
+                <MasterItem
+                  loading={false}
+                  master={master}
+                  shareLink={`https://moi.salon/${
+                    master.city?.slug || city.slug || defaultValues.city.slug
+                  }/master/${master.id}`}
+                  type="search-page"
+                />
+              </LinkStyled>
+            </div>
+          ))}
+        </WrapperItemsMasters>
+      ) : null}
       {hasNextPage && updateMasterData.length > 9 ? (
         <>
           <MobileHidden>

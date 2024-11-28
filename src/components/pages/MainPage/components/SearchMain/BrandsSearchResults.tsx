@@ -73,32 +73,34 @@ const BrandsSearchResults: FC<Props> = ({
         main={main}
         search={search}
       />
-      <WrapperItemsBrands>
-        {updateBrandData?.map(brand => (
-          <div
-            onClick={() => {
-              console.log(brand)
-              router.push(
-                `/${
-                  brand.city?.slug || city.slug || defaultValues.city.slug
-                }/brand/${brand.id}`,
-              )
-            }}
-            key={brand.id}
-          >
-            <LinkStyled>
-              <BrandItem
-                loading={loading}
-                brand={brand}
-                shareLink={`https://moi.salon/${
-                  brand.city?.slug || city.slug || defaultValues.city.slug
-                }/brand/${brand.id}`}
-                type="search-page"
-              />
-            </LinkStyled>
-          </div>
-        ))}
-      </WrapperItemsBrands>
+      {updateBrandData && updateBrandData.length ? (
+        <WrapperItemsBrands>
+          {updateBrandData.map(brand => (
+            <div
+              onClick={() => {
+                console.log(brand)
+                router.push(
+                  `/${
+                    brand.city?.slug || city.slug || defaultValues.city.slug
+                  }/brand/${brand.id}`,
+                )
+              }}
+              key={brand.id}
+            >
+              <LinkStyled>
+                <BrandItem
+                  loading={loading}
+                  brand={brand}
+                  shareLink={`https://moi.salon/${
+                    brand.city?.slug || city.slug || defaultValues.city.slug
+                  }/brand/${brand.id}`}
+                  type="search-page"
+                />
+              </LinkStyled>
+            </div>
+          ))}
+        </WrapperItemsBrands>
+      ) : null}
       {hasNextPage ? (
         <>
           <MobileHidden>

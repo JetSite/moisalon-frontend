@@ -57,7 +57,6 @@ export const WrapperResults = styled.div`
   width: 100%;
   margin-left: auto;
   margin-right: auto;
-  padding: 0 40px;
 
   @media (max-width: ${laptopBreakpoint}) {
     padding: 0 20px;
@@ -203,7 +202,7 @@ export const WrapperItemsSalons = styled.ul`
   flex-wrap: wrap;
   column-gap: 18px;
   row-gap: 55px;
-  margin-bottom: 55px;
+  margin-bottom: 64px;
 
   a {
     color: #000;
@@ -223,7 +222,7 @@ export const WrapperItemsMasters = styled.div`
   grid-template-columns: repeat(5, minmax(135px, 1fr));
   column-gap: 18px;
   row-gap: 35px;
-  margin-bottom: 55px;
+  margin-bottom: 64px;
 
   @media (max-width: ${laptopBreakpoint}) {
     display: grid;
@@ -259,7 +258,7 @@ export const WrapperItemsBrands = styled(WrapperItems)`
   grid-template-columns: repeat(6, 1fr);
   column-gap: 18px;
   row-gap: 35px;
-  margin-bottom: 55px;
+  margin-bottom: 64px;
 
   @media (max-width: ${laptopBreakpoint}) {
     display: grid;
@@ -396,8 +395,8 @@ export const Specializations = styled.p`
 `
 
 export const Title = styled.h1`
-  margin-top: 64px;
-  margin-bottom: 55px;
+  margin-top: 24px;
+  margin-bottom: 24px;
   font-size: 30px;
   font-weight: 600;
   line-height: 48px;
