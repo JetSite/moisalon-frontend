@@ -42,28 +42,19 @@ export const getServerSideProps: GetServerSideProps<
 > = async ctx => {
   const accessToken = getCookie(authConfig.tokenKeyName, ctx)
   const apolloClient = initializeApollo({ accessToken })
-  let cart: ICart | null = null
 
-  if (accessToken) {
-    const me = await apolloClient.query({
-      query: ME,
-    })
-    const id: IID | null = me.data.me.id
-
-    if (!id) {
-      return {
-        redirect: {
-          destination: '/login',
-          permanent: false,
-        },
-      }
-    }
-    const cartData = await apolloClient.query({
-      query: GET_CART_BY_USER,
-      variables: { id },
-    })
-    cart = (flattenStrapiResponse(cartData.data.carts) as ICart[])[0] || null
-  }
+  const id = accessToken
+    ? (await apolloClient.query({ query: ME })).data.me.id
+    : null
+  const cartData = id
+    ? await apolloClient.query({
+        query: GET_CART_BY_USER,
+        variables: { id },
+      })
+    : null
+  const cart = cartData
+    ? (flattenStrapiResponse(cartData.data.carts) as ICart[])[0] || null
+    : null
 
   const product = await apolloClient.query({
     query: PRODUCT_BY_ID,

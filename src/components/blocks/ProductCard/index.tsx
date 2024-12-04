@@ -38,6 +38,7 @@ const ProductCard: FC<Props> = ({ item, loading }) => {
     e.preventDefault()
     e.stopPropagation()
     setIsFavorit(!isFavorite)
+    favoritesInStorage('products', item)
   }
 
   const imageLink = item?.cover?.url ? `${PHOTO_URL}${item.cover.url}` : ''

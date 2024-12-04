@@ -134,14 +134,10 @@ const FilterCatalog: FC<Props> = ({
     setReset('brand')
 
     const filtersInput = {
-      brand: brand ? { id: { eq: brand?.id } } : null,
-      and: {
-        product_categories: {
-          title: {
-            contains: categoryFilterString,
-          },
-        },
-      },
+      ...(brand && { brand: { id: { eq: brand.id } } }),
+      ...(categoryFilterString && {
+        product_categories: { title: { contains: categoryFilterString } },
+      }),
     }
     if (categoryFilterString) {
       getProducts({
@@ -155,7 +151,7 @@ const FilterCatalog: FC<Props> = ({
       getProducts({
         variables: {
           pageSize,
-          filtersInput: { brand: brand ? { id: { eq: brand?.id } } : null },
+          filtersInput: { ...(brand && { brand: { id: { eq: brand.id } } }) },
         },
         onCompleted,
       })
