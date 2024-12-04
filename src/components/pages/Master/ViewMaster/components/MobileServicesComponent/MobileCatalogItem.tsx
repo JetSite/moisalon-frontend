@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../../../styles/variables'
-import { IService, IServices } from 'src/types/services'
 import { FC } from 'react'
+import { IServices } from 'src/types/services'
 
 const Wrapper = styled.div<{ masterPage?: boolean }>`
   width: 100%;
@@ -51,4 +51,4 @@ const MobileCatalogItem: FC<IMobileCatalogItem> = ({ item, masterPage }) => {
   )
 }
 
-export default MobileCatalogItem;
+export default MobileCatalogItem

@@ -20,13 +20,13 @@ import {
   ButtonPrev,
   NavigationWrapper,
 } from '../../../../styles/sliderBlocks'
-import SalonCard from './components/SalonCard'
 import { MobileVisible, MobileHidden } from '../../../../styles/common'
 import { getStoreData } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
 import useBaseStore from 'src/store/baseStore'
 import { ISetState } from 'src/types/common'
 import { ISalon } from 'src/types/salon'
+import SalonCard from 'src/components/blocks/SalonCard'
 
 SwiperCore.use([Navigation])
 
@@ -36,7 +36,7 @@ export interface ThingsProps {
   title?: string
   setActiveTab?: ISetState<string>
   mobile?: boolean
-  handleDeleted?: ISetState<boolean>
+  handleDeleted?: () => void
 }
 
 const SalonsFavorites: FC<ThingsProps> = ({
@@ -143,10 +143,8 @@ const SalonsFavorites: FC<ThingsProps> = ({
                           }
                         >
                           <SalonCard
-                            salon={salon}
-                            deleteItem={deleteItem}
-                            setDeleteItem={setDeleteItem}
                             handleDeleted={handleDeleted}
+                            item={salon}
                           />
                         </Link>
                         {salon.salonPhones.length && !cabinet ? (

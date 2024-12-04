@@ -12,8 +12,7 @@ export const Wrapper = styled.div`
   }
 `
 
-export const NoProducts = styled.div`
-  margin: 110px 0;
-  font-size: 18px;
-  line-height: 30px;
+export const MoreButtonWrapper = styled(Wrapper)`
+  margin-top: 24px;
+  margin-bottom: 64px;
 `

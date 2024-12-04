@@ -34,7 +34,8 @@ const brandFilterConfig: IFilterCatalog = {
 
 interface Props {
   productCategories: IProductCategories[]
-  brands: IBrand[]
+  brands?: IBrand[]
+  brand?: IBrand
   setProductsData: ISetState<IProduct[]>
   pageSize: number
   setLoading: ISetState<boolean>
@@ -45,16 +46,19 @@ interface Props {
 
 const FilterCatalog: FC<Props> = ({
   productCategories,
-  brands,
   setProductsData,
   pageSize,
   setLoading,
   nextPage,
   setPagination,
   setNextPage,
+  brands,
+  brand,
 }) => {
   const [reset, setReset] = useState<'brand' | 'category' | null>(null)
-  const [selectBrand, setSelectBrand] = useState<IBrand | null>(null)
+  const [selectBrand, setSelectBrand] = useState<IBrand | null>(
+    brands ? null : brand ?? null,
+  )
   const [selectCategory, setSelectCategory] =
     useState<IProductCategories | null>(null)
   const [isInitialLoad, setIsInitialLoad] = useState(true)
@@ -123,21 +127,27 @@ const FilterCatalog: FC<Props> = ({
 
   const handleChangeCategory: ISuggestHandleChange = data => {
     setLoading(true)
+
     const categoryFilterString = data?.title || null
     setSelectCategory(data as IProductCategories)
     setSelectBrand(null)
     setReset('brand')
+
+    const filtersInput = {
+      brand: brand ? { id: { eq: brand?.id } } : null,
+      and: {
+        product_categories: {
+          title: {
+            contains: categoryFilterString,
+          },
+        },
+      },
+    }
     if (categoryFilterString) {
       getProducts({
         variables: {
           pageSize,
-          filtersInput: {
-            product_categories: {
-              title: {
-                contains: categoryFilterString,
-              },
-            },
-          },
+          filtersInput,
         },
         onCompleted,
       })
@@ -145,6 +155,7 @@ const FilterCatalog: FC<Props> = ({
       getProducts({
         variables: {
           pageSize,
+          filtersInput: { brand: brand ? { id: { eq: brand?.id } } : null },
         },
         onCompleted,
       })
@@ -198,19 +209,21 @@ const FilterCatalog: FC<Props> = ({
           />
         </Styled.BrandFilter>
 
-        <Styled.BrandFilter>
-          <SearchBrandAutosuggest
-            initialValues={brands}
-            handleChange={handleChangeBrand}
-            defaultValue="Все бренды"
-            name="brands"
-            color="red"
-            fullWidth
-            reset={reset === 'brand'}
-          />
-        </Styled.BrandFilter>
+        {brands ? (
+          <Styled.BrandFilter>
+            <SearchBrandAutosuggest
+              initialValues={brands}
+              handleChange={handleChangeBrand}
+              defaultValue="Все бренды"
+              name="brands"
+              color="red"
+              fullWidth
+              reset={reset === 'brand'}
+            />
+          </Styled.BrandFilter>
+        ) : null}
       </Styled.Wrapper>
-      {selectBrand && (
+      {brands && selectBrand && (
         <Header brand={selectBrand} isOwner={false} noBackButton />
       )}
     </>

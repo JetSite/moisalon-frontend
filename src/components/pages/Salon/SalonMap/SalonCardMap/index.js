@@ -17,7 +17,6 @@ import {
   SkeletonSalonItem,
 } from './styles'
 import { Skeleton } from '@material-ui/lab'
-import { selectedGroupNames } from '../../../../../utils/serviceCatalog'
 import catalogOrDefault from '../../../../../utils/catalogOrDefault'
 import {
   favoritesInStorage,
@@ -82,13 +81,7 @@ const SalonCardMap = ({ item, loading }) => {
           </Top>
           <Info>
             <SalonInfo>
-              <Activities>
-                {/* {selectedGroupNames(
-                  item?.activities?.length ? item.activities[0] : [],
-                  salonActivitiesCatalog,
-                  ', ',
-                )} */}
-              </Activities>
+              <Activities></Activities>
             </SalonInfo>
             {item?.address?.full ? (
               <Address>{item?.address?.full}</Address>

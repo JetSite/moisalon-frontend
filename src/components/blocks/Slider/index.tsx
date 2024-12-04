@@ -244,13 +244,13 @@ const Slider: FC<Props> = ({
                         style={{
                           minHeight: '100%',
                           height: 'auto',
-                          width: '100%',
+                          width: 'auto',
                         }}
                       >
                         {firstSlide}
                       </SwiperSlide>
                     )}
-                    {[...items, ...items]?.map((item, i) => {
+                    {items?.map((item, i) => {
                       const slide = customProps({
                         type,
                         item,

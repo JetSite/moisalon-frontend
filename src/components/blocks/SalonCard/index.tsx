@@ -38,6 +38,7 @@ interface Props {
   rent?: boolean
   seatCount?: number
   shareLink?: string
+  handleDeleted?: () => void
 }
 
 const SalonCard: FC<Props> = ({
@@ -46,6 +47,7 @@ const SalonCard: FC<Props> = ({
   rent = false,
   seatCount,
   shareLink,
+  handleDeleted,
 }) => {
   const mobileMedia = useMedia({ maxWidth: 768 })
 
@@ -66,6 +68,7 @@ const SalonCard: FC<Props> = ({
   const addFavorite = (e: MouseEvent<HTMLButtonElement>, item: any) => {
     e.preventDefault()
     e.stopPropagation()
+    handleDeleted && handleDeleted()
     favoritesInStorage('salons', item)
     setIsFavorit(!isFavorite)
   }

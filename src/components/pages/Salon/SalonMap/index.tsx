@@ -132,8 +132,6 @@ const SalonMap: FC<ISalonMapProps> = ({
     }
   }, [ids])
 
-  console.log(salonsList)
-
   const fetchMoreButtonMap = hasNextPage ? (
     <div style={{ position: 'relative' }}>
       <MobileHidden>

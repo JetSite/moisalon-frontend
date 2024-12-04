@@ -6,7 +6,6 @@ import {
   useMutation,
 } from '@apollo/client'
 import { MainContainer } from '../../../../../../styles/common'
-import { selectedGroupNames } from '../../../../../../utils/serviceCatalog'
 import BackButton from '../../../../../ui/BackButton'
 import RatingEdit from '../../../../../ui/RatingEdit'
 import {
@@ -100,6 +99,8 @@ const Header: FC<Props> = ({ salon, isOwner }) => {
       },
     })
   }
+
+  console.log(salon)
 
   return (
     <>

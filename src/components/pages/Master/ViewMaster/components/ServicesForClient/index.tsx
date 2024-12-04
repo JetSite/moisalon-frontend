@@ -127,8 +127,6 @@ const Services: FC<Props> = ({
     )
   })
 
-  console.log(servicesData)
-
   const secondColumnStart = Math.round(groups?.length / 2)
 
   const phone =

@@ -20,13 +20,13 @@ import {
   NavigationWrapper,
 } from '../../../../styles/sliderBlocks'
 import catalogOrDefault from '../../../../utils/catalogOrDefault'
-import MasterItem from './components/MasterItem'
 import { cyrToTranslit } from '../../../../utils/translit'
 import { getStoreData } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
 import useBaseStore from 'src/store/baseStore'
 import { ThingsProps } from '../SalonsFavorites'
 import { IMaster } from 'src/types/masters'
+import MasterItem from 'src/components/blocks/MasterCard'
 
 SwiperCore.use([Navigation])
 
@@ -137,10 +137,8 @@ const MastersFavorites: FC<ThingsProps> = ({
                         >
                           <MasterItem
                             master={master}
-                            catalog={catalogs}
-                            deleteItem={deleteItem}
-                            setDeleteItem={setDeleteItem}
                             handleDeleted={handleDeleted}
+                            shareLink={`https://moisalon-frontend.jetsite.ru/${city.slug}/master/${master?.id}`}
                           />
                         </Link>
                         {master?.phone && !cabinet ? (

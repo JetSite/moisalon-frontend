@@ -46,6 +46,8 @@ const MobileServicesComponent: FC<Props> = ({
     },
   })
 
+  console.log(entries)
+
   const handleEditConfirm = () => {
     var services = entriesItems?.filter(s => s.value !== 0)?.map(s => s.id)
   }

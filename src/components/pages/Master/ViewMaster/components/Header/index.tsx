@@ -1,6 +1,5 @@
 import { useState, useEffect, FC, MouseEvent } from 'react'
 import { useMutation } from '@apollo/client'
-import { getServicesCategories } from '../../../../../../utils/serviceCatalog'
 import { MainContainer } from '../../../../../../styles/common'
 import BackButton from '../../../../../ui/BackButton'
 import RatingEdit from '../../../../../ui/RatingEdit'
@@ -50,9 +49,10 @@ import { RATE_MASTER } from 'src/api/graphql/master/mutations/rateMaster'
 interface Props {
   master: IMaster | null
   isOwner: boolean
+  categoriesName?: string
 }
 
-const Header: FC<Props> = ({ master, isOwner }) => {
+const Header: FC<Props> = ({ master, isOwner, categoriesName }) => {
   const router = useRouter()
   const { city, me } = useAuthStore(getStoreData)
   const isRateBefore = master?.ratings.find(e => e.user.id === me?.info.id)
@@ -198,11 +198,7 @@ const Header: FC<Props> = ({ master, isOwner }) => {
               </EditButton>
             ) : null}
           </NameWrapper>
-          {master?.services && !!master?.services?.length ? (
-            <Activities>
-              {getServicesCategories(master.services).join(', ')}
-            </Activities>
-          ) : null}
+          {categoriesName ? <Activities>{categoriesName}</Activities> : null}
           <Rating>
             <RatingEdit
               handleChangeRating={handleChangeRating}

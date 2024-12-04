@@ -65,8 +65,9 @@ const AuthProvider: FC<{
       return
     }
 
-    const pageUser = pageProps.user || null
-    const prepareUser = getPrepareUser(pageUser)
+    console.log('pageProps', pageProps)
+
+    const prepareUser = pageProps.user ? getPrepareUser(pageProps.user) : null
 
     if (prepareUser) {
       fillAuthStore(prepareUser)

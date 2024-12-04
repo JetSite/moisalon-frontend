@@ -1,117 +1,80 @@
-import { useState } from 'react'
 import {
   addApolloState,
   initializeApollo,
 } from '../../../../../api/apollo-client'
-import { useQuery } from '@apollo/client'
 import MainLayout from '../../../../../layouts/MainLayout'
 import { MainContainer } from '../../../../../styles/common'
-import BrandProductsPage from '../../../../../components/pages/Brand/BrandProducts'
-import useAuthStore from 'src/store/authStore'
-import { getStoreData } from 'src/store/utils'
+import BrandProductsPage, {
+  IBrandProductsPageProps,
+} from '../../../../../components/pages/Brand/BrandProducts'
 import { BRAND } from 'src/api/graphql/brand/queries/getBrand'
-import { getProductCategories } from 'src/_graphql-legacy/getProductCategories'
-import { scoreBrand } from 'src/_graphql-legacy/brand/scoreBrand'
-import { fetchCity } from 'src/api/utils/fetchCity'
-import { defaultValues } from 'src/api/authConfig'
+import { GetServerSideProps, NextPage } from 'next'
+import { Nullable } from 'src/types/common'
+import { IBrand } from 'src/types/brands'
+import { getPrepareData } from 'src/utils/newUtils/getPrepareData'
+import { PRODUCTS } from 'src/api/graphql/product/queries/getProducts'
+import { IProduct, IProductCategories } from 'src/types/product'
+import { PRODUCT_CATEGORIES } from 'src/api/graphql/product/queries/getProductCategories'
 
-const BrandProducts = ({
-  brandData,
-  dataProductCategories,
-  dataScoreRes,
-  goods,
-}) => {
-  const [brand, setBrand] = useState(brandData)
-  const [dataScore, setDataScore] = useState(dataScoreRes)
+interface Props extends IBrandProductsPageProps {}
 
-  const { refetch: refetchBrand } = useQuery(BRAND, {
-    variables: { id: brand.id },
-    skip: true,
-    onCompleted: res => {
-      setBrand(res.brand)
-    },
-  })
-
-  const { refetch: refetchScore } = useQuery(scoreBrand, {
-    variables: { id: brand.id },
-    skip: true,
-    onCompleted: res => {
-      setDataScore(res.scoreBrand)
-    },
-  })
-
+const BrandProducts: NextPage<Props> = props => {
   return (
     <MainLayout>
       <MainContainer>
-        <BrandProductsPage
-          dataProductCategories={dataProductCategories}
-          brand={brand}
-          goods={goods}
-          dataScore={dataScore}
-          refetchBrand={refetchBrand}
-          refetchScore={refetchScore}
-        />
+        <BrandProductsPage {...props} />
       </MainContainer>
     </MainLayout>
   )
 }
 
-export async function getServerSideProps(ctx) {
+export const getServerSideProps: GetServerSideProps<
+  Nullable<Props>
+> = async ctx => {
   const apolloClient = initializeApollo()
 
-  const brandQueryRes = await apolloClient.query({
-    query: BRAND,
-    variables: { slug: ctx.params.id },
-  })
+  const pageSize = 2
 
-  const cityData = (await fetchCity(ctx.query.city as string)) || {
-    slug: defaultValues.city.slug,
-  }
-
-  const brand = brandQueryRes.data.brandSlug
-
-  if (!cityData.slug) {
+  const brandID = ctx.query.id
+  if (!brandID) {
     return {
       notFound: true,
     }
   }
 
-  const data = await Promise.all([
-    // apolloClient.query({
-    //   query: goodsCatalogQuery,
-    //   context: { clientName: "goods" },
-    //   variables: {
-    //     category: brand.name,
-    //     categoryId: null,
-    //     first: 12,
-    //   },
-    // }),
-    // apolloClient.query({
-    //   query: BRAND,
-    //   variables: {
-    //     input: {
-    //       brandId: [brand.id],
-    //       query: '',
-    //       isB2b: true,
-    //     },
-    //   },
-    // }),
+  const data = await Promise.allSettled([
     apolloClient.query({
-      query: getProductCategories,
+      query: PRODUCTS,
+      variables: {
+        filtersInput: { brand: { id: { eq: brandID } } },
+        pageSize,
+      },
     }),
-    // apolloClient.query({
-    //   query: scoreBrand,
-    //   variables: {
-    //     id: brand.id,
-    //   },
-    // }),
+    apolloClient.query({
+      query: PRODUCT_CATEGORIES,
+      variables: { itemsCount: 10, isAvailableInStock: 0 },
+    }),
   ])
-  return addApolloState(apolloClient, {
+
+  const products = getPrepareData<IProduct[]>(data[0], 'products')
+  const productCategories = getPrepareData<IProductCategories[]>(
+    data[1],
+    'productCategories',
+  )
+
+  const brand: IBrand | null =
+    products?.find(product => product.brand.id === brandID)?.brand ?? null
+
+  return addApolloState<Nullable<Props>>(apolloClient, {
     props: {
-      brandData: brand,
-      // goods: data[0]?.data,
-      dataProductCategories: data[0]?.data?.productsCatagoriesB2b,
-      // dataScoreRes: data[2].data,
+      products,
+      brand,
+      pageSize,
+      productCategories,
+      pagination:
+        data[0].status === 'fulfilled'
+          ? data[0].value.data.products?.meta.pagination
+          : null,
     },
   })
 }

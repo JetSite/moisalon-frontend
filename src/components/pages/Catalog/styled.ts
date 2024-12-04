@@ -21,7 +21,7 @@ export const Wrapper = styled.div`
   }
 `
 
-export const Title = styled.h2<{noTitle?: boolean}>`
+export const Title = styled.h2<{ noTitle?: boolean }>`
   display: ${({ noTitle }) => (noTitle ? 'none' : 'block')};
   font-weight: 600;
   font-size: 30px;
@@ -38,7 +38,7 @@ export const Title = styled.h2<{noTitle?: boolean}>`
 
 export const Content = styled.ul`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
   column-gap: 14px;
   row-gap: 20px;
 

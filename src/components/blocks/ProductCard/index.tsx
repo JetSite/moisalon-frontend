@@ -37,27 +37,16 @@ const ProductCard: FC<Props> = ({ item, loading }) => {
   const addFavorite = (e: MouseEvent<HTMLButtonElement>, item: IProduct) => {
     e.preventDefault()
     e.stopPropagation()
-    // favoritesInStorage('products', {
-    //   ...item,
-    //   dontShowPrice: item?.brand?.dontShowPrice,
-    // })
     setIsFavorit(!isFavorite)
   }
 
   const imageLink = item?.cover?.url ? `${PHOTO_URL}${item.cover.url}` : ''
 
-  return loading ? (
-    <SkeletonItem
-    // variant="rectangular"
-    />
-  ) : (
+  return (
     <Wrapper>
       <TopGoodWrapper>
         <Image alt="image" src={imageLink || '/cosmetic_placeholder.jpg'} />
-        <Favorite
-          // isFavorite={isFavorite} TODO: div cange to button
-          onClick={e => addFavorite(e, item)}
-        >
+        <Favorite onClick={e => addFavorite(e, item)}>
           <HeartFullFill fill={isFavorite} />
         </Favorite>
       </TopGoodWrapper>

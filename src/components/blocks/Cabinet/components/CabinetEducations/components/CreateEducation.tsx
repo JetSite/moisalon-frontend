@@ -76,6 +76,18 @@ const CreateEducation: FC<Props> = ({
         return
       }
 
+      const timeStart = moment(values.timeStart, 'HH:mm').isValid()
+        ? moment(values.timeStart, 'HH:mm').format('HH:mm:ss.SSS')
+        : null
+      const timeEnd = moment(values.timeEnd, 'HH:mm').isValid()
+        ? moment(values.timeEnd, 'HH:mm').format('HH:mm:ss.SSS')
+        : null
+
+      if (!timeEnd || !timeStart) {
+        setErrors(['Необходимо ввести время начала и конца обучения'])
+        return
+      }
+
       const amount = Number(values.amount)
 
       const validTypes = ['brand', 'salon', 'master'] as const
@@ -84,13 +96,6 @@ const CreateEducation: FC<Props> = ({
           `Invalid type: ${type}. Expected one of: ${validTypes.join(', ')}`,
         )
       }
-
-      const timeStart = moment(values.timeStart, 'HH:mm').isValid()
-        ? moment(values.timeStart, 'HH:mm').format('HH:mm:ss.SSS')
-        : null
-      const timeEnd = moment(values.timeEnd, 'HH:mm').isValid()
-        ? moment(values.timeEnd, 'HH:mm').format('HH:mm:ss.SSS')
-        : null
 
       const input: IEducationInput = {
         title: values.title,

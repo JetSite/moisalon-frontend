@@ -30,8 +30,8 @@ interface Props {
 }
 
 const Brand: FC<Props> = ({ brandData, othersBrands }) => {
-  const [brand, setBrand] = useState(brandData)
-  const { user, city } = useAuthStore(getStoreData)
+  const [brand] = useState(brandData)
+  const { user } = useAuthStore(getStoreData)
   const [activeTab, setActiveTab] = useState<number>(0)
   const isOwner = !!user?.owner?.brands?.find(e => e.id === brand.id)
 

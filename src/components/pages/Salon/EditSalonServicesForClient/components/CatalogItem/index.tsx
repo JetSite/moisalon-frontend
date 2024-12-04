@@ -9,6 +9,7 @@ import TextField from '@material-ui/core/TextField'
 import { makeStyles } from '@material-ui/core/styles'
 import { laptopBreakpoint } from '../../../../../../styles/variables'
 import { IService, IServiceCategory } from 'src/types/services'
+import { ISetState } from 'src/types/common'
 
 export const BpIcon = styledMaterial('span')(() => ({
   borderRadius: 3,
@@ -79,7 +80,7 @@ const Title = styled.h4`
 interface ICatalogItem {
   item: IService
   entriesItems: IService[]
-  setEntriesItems: any
+  setEntriesItems: ISetState<IService[]>
   allServices: IServiceCategory[]
 }
 
@@ -104,15 +105,15 @@ const CatalogItem: FC<ICatalogItem> = ({
     if (entriesItems?.find(el => el?.id === item?.id)) {
       setEntriesItems(entriesItems?.filter(entry => entry?.id !== item?.id))
     } else {
-      let foundService;
+      let foundService: null | IService = null
       allServices?.map(category => {
         category.services.forEach(el => {
           if (el?.id === item?.id) {
-            foundService = el
+            foundService = { id: el.id, title: el.title }
           }
         })
       })
-      setEntriesItems([...entriesItems, foundService])
+      foundService && setEntriesItems([...entriesItems, foundService])
     }
   }
 
@@ -166,4 +167,4 @@ const CatalogItem: FC<ICatalogItem> = ({
   )
 }
 
-export default CatalogItem;
+export default CatalogItem
