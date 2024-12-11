@@ -6,7 +6,7 @@ import { Wrapper, MoreButtonWrapper } from './styles'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
 import { IBrand } from 'src/types/brands'
 import useAuthStore from 'src/store/authStore'
-import { ICart, IProduct, IProductCategories } from 'src/types/product'
+import { ICart, IProduct } from 'src/types/product'
 import FilterCatalog from 'src/components/ui/FilterCatalog'
 import { IPagination } from 'src/types'
 import Button from 'src/components/newUI/buttons/Button'
@@ -16,7 +16,6 @@ export interface IBrandProductsPageProps {
   brand: IBrand
   pageSize: number
   pagination: IPagination
-  productCategories: IProductCategories[]
   cart: ICart | null
 }
 
@@ -25,7 +24,6 @@ const BrandProductsPage: FC<IBrandProductsPageProps> = ({
   pageSize,
   brand,
   pagination: paginationInit,
-  productCategories,
   cart,
 }) => {
   const { user } = useAuthStore(getStoreData)
@@ -55,8 +53,8 @@ const BrandProductsPage: FC<IBrandProductsPageProps> = ({
           pageSize={pageSize}
           brand={brand}
           setProductsData={setProductsData}
-          productCategories={productCategories}
           setPagination={setPagination}
+          noBrands
         />
       </Wrapper>
       <Catalog cart={cart} products={productsData} loading={loading} noTitle />

@@ -1,8 +1,4 @@
 import AutosuggestField from './AutosuggestField'
-import {
-  IAddressSuggestion,
-  useAddressSuggestions,
-} from './useAddressSuggestions'
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../styles/variables'
 import { FC, useEffect } from 'react'

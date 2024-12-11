@@ -1,82 +1,55 @@
-import { FC, useEffect, useState } from 'react'
-import AutosuggestField from 'src/components/blocks/Form/AddressField/AutosuggestField'
-import { useProductCategorysSuggest } from 'src/hooks/inputs/useProductCategorysSuggest'
-import { ISuggestHandleChange } from './SearchBrand'
+import { FC } from 'react'
+import { useAutoSuggest } from 'src/components/newUI/Inputs/utils/useAutoSuggest'
+import NewAutosuggestField from 'src/components/newUI/Inputs/AutosuggestField/NewAutosuggestField'
+import { BaseTextFieldProps } from '@material-ui/core'
+import { ISetState } from 'src/types/common'
+import { useLazyQuery, useQuery } from '@apollo/client'
+import { PRODUCT_CATEGORIES_BY_TITLE } from 'src/api/graphql/product/queries/getProductCategoriesByTitle'
+import { PRODUCT_CATEGORIES } from 'src/api/graphql/product/queries/getProductCategories'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { IProductCategories } from 'src/types/product'
 
-interface Props {
-  handleChange?: ISuggestHandleChange
-  initialValues: IProductCategories[]
+export interface ISearchProductCategoryAutosuggest
+  extends Pick<BaseTextFieldProps, 'label' | 'fullWidth'> {
+  clearFilterTitle: string
   name: string
-  fullWidth?: boolean
-  defaultValue?: string
-  label?: string
   color?: string
-  noSearch?: boolean
-  reset?: boolean
+  setSelectValue: ISetState<string | null>
 }
 
-export const SearchProductCategoryAutosuggest: FC<Props> = ({
-  handleChange,
-  defaultValue,
-  initialValues,
-  fullWidth = false,
-  label = 'Категории продукции',
-  name,
-  color,
-  noSearch,
-  reset,
-}) => {
-  const initialStringArr = initialValues.map(e => e.title)
-  let prepareInitialValues = initialStringArr
+export const SearchProductCategoryAutosuggest: FC<
+  ISearchProductCategoryAutosuggest
+> = ({ setSelectValue, clearFilterTitle: defaultValue, name, ...props }) => {
+  const [getNewValues] = useLazyQuery(PRODUCT_CATEGORIES_BY_TITLE)
 
-  const [value, setValue] = useState<string>(
-    defaultValue || initialStringArr[0],
+  const { data: dataInitial, loading: initialLoading } = useQuery(
+    PRODUCT_CATEGORIES,
+    {
+      variables: { itemsCount: 10, isAvailableInStock: 0 },
+    },
   )
 
-  useEffect(() => {
-    if (reset) {
-      setValue(defaultValue || initialStringArr[0])
-    }
-  }, [reset])
-
-  if (defaultValue) {
-    if (initialStringArr.find(e => e === defaultValue)) {
-      const filtredValues = initialStringArr.filter(e => e !== defaultValue)
-      prepareInitialValues = [defaultValue, ...filtredValues]
-    } else {
-      prepareInitialValues = [defaultValue, ...initialStringArr]
-    }
-  }
-
-  const { suggestions, loading, data } = useProductCategorysSuggest(
-    value,
-    prepareInitialValues,
-  )
+  const { suggestions, loading, handleFetch, inputProps } =
+    useAutoSuggest<IProductCategories>({
+      name,
+      searchKey: 'title',
+      defaultValue,
+      dataInitial: flattenStrapiResponse(dataInitial?.productCategories),
+      initialLoading,
+      getNewValues,
+    })
 
   return (
-    <AutosuggestField
-      label={label}
-      suggestions={noSearch ? prepareInitialValues : suggestions}
-      color={color}
-      input={{
-        onChange: e => {
-          setValue(e)
-          const findInitialsData =
-            initialValues.find(el => el.title === e) || null
-
-          const findData = data && data.find(el => el.title === e)
-          handleChange &&
-            handleChange(
-              findInitialsData ? findInitialsData : findData ? findData : null,
-              loading,
-            )
-        },
-        name,
-        value,
+    <NewAutosuggestField
+      disabled={initialLoading}
+      {...props}
+      handleFetch={handleFetch}
+      handleSelected={(_, { suggestion }) => {
+        setSelectValue(suggestion !== defaultValue ? suggestion : null)
       }}
-      loading={noSearch ? false : loading}
-      fullWidth={fullWidth}
+      suggestions={suggestions}
+      loading={loading || initialLoading}
+      input={inputProps}
     />
   )
 }

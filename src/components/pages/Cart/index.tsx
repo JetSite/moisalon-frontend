@@ -76,6 +76,8 @@ const Cart: FC<ICartProps> = ({ data }) => {
     })
   }
 
+  console.log(cart)
+
   return (
     <Wrapper>
       <BackButton

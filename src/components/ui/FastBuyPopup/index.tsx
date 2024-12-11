@@ -187,6 +187,11 @@ const FastBuyPopup: FC<Props> = ({
                       <Styled.ProductDescription>
                         {item?.shortDescription}
                       </Styled.ProductDescription>
+                      {item?.availableInStock ? (
+                        <Styled.ProductDescription>
+                          {`Количество доступно для заказа: ${item?.availableInStock} упк.`}
+                        </Styled.ProductDescription>
+                      ) : null}
                     </Styled.TitleWrap>
                     <Styled.PriceWrap>
                       <Styled.Description>Сумма заказа: </Styled.Description>

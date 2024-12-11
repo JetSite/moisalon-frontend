@@ -38,13 +38,13 @@ export const Title = styled.h2<{ noTitle?: boolean }>`
 
 export const Content = styled.ul`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
   column-gap: 14px;
   row-gap: 20px;
 
   @media (max-width: ${laptopBreakpoint}) {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
     column-gap: 14px;
     row-gap: 20px;
   }

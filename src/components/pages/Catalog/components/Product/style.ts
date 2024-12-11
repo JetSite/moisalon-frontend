@@ -1,10 +1,11 @@
 import { laptopBreakpoint, red } from '../../../../../styles/variables'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { Skeleton } from '@material-ui/lab'
 import { lighten } from 'polished'
+import { IQuantityControlsType } from './conponents/QuantityControls'
 
 export const Wrapper = styled.div`
-  max-width: 275px;
+  max-width: 375px;
   width: 100%;
   height: 490px;
   display: flex;
@@ -32,7 +33,8 @@ export const Wrapper = styled.div`
 `
 
 export const SkeletonItem = styled(Skeleton)`
-  width: 175px;
+  max-width: 275px;
+  width: 100%;
   height: 365px;
 `
 
@@ -212,14 +214,20 @@ export const Plus = styled(Minus)`
   }
 `
 
-export const ButtonsWrapper = styled.div`
+export const ButtonsWrapper = styled.div<{ type: IQuantityControlsType }>`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  gap: 16px;
-  @media (max-width: ${laptopBreakpoint}) {
-    flex-wrap: wrap;
-  }
+
+  ${({ type }) =>
+    type === 'page' &&
+    css`
+      gap: 16px;
+
+      @media (max-width: ${laptopBreakpoint}) {
+        flex-wrap: wrap;
+      }
+    `}
 `
 
 export const Available = styled.div<{ avaible?: boolean }>`

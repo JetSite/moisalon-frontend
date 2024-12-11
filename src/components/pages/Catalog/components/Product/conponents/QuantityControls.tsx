@@ -12,6 +12,8 @@ const ComponentsMap = {
   page: Button,
 }
 
+export type IQuantityControlsType = 'card' | 'page'
+
 export interface IQuantityControlsProps {
   quantity: number
   addToCart: (item: IProduct, boolean: boolean) => void
@@ -20,7 +22,7 @@ export interface IQuantityControlsProps {
   cartItem: IProductCart
   user: IUser | null
   setOpenBuyPopup: ISetState<boolean>
-  type?: 'card' | 'page'
+  type?: IQuantityControlsType
 }
 
 export const QuantityControls: FC<IQuantityControlsProps> = ({
@@ -38,7 +40,7 @@ export const QuantityControls: FC<IQuantityControlsProps> = ({
   const ButtonComponent = ComponentsMap[type] || Styled.ButtonCart
 
   return quantity === 0 && cartItem.quantity === 0 ? (
-    <Styled.ButtonsWrapper>
+    <Styled.ButtonsWrapper type={type}>
       <ButtonComponent
         variant="red"
         size="fullWidth"

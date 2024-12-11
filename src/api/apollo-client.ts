@@ -57,11 +57,14 @@ export const getAuthLink = (accessToken?: string) => {
   const authLink = new ApolloLink((operation, forward) => {
     const token = getCookie(authConfig.tokenKeyName) || accessToken
 
+    const isSearchOperation = operation.operationName === 'search'
+
     operation.setContext(({ headers = {} }) => {
       return {
         headers: {
           ...headers,
-          authorization: token ? `Bearer ${token}` : '',
+          // Добавляем токен, только если это не "search"
+          authorization: !isSearchOperation && token ? `Bearer ${token}` : '',
         },
       }
     })
