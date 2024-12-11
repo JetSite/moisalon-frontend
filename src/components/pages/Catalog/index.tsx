@@ -53,9 +53,6 @@ const Catalog: FC<ICatalogProps> = ({ products, loading, noTitle, cart }) => {
                 el => el?.product?.id === item.id,
               ) || { product: { ...item }, quantity: 0, id: `temp_${item.id}` }
 
-              console.log('cart', cart?.cartContent)
-              console.log('item.id', item.id)
-
               return (
                 <Product
                   quantity={quantityMap[item.id] ?? cartItem.quantity}

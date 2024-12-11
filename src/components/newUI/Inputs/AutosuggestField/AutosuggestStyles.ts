@@ -11,7 +11,7 @@ export const StyledMenuItem = withStyles({
 export const getAutosuggestStyles = makeStyles<Theme, { color?: string }>(
   theme => ({
     root: ({ color }) => ({
-      color,
+      color: color || theme.palette.text.primary,
     }),
     label: ({ color }) => ({
       color,
@@ -22,16 +22,16 @@ export const getAutosuggestStyles = makeStyles<Theme, { color?: string }>(
       },
     }),
     input: ({ color }) => ({
-      color,
+      color: color || theme.palette.text.primary,
       '&::placeholder': {
-        color,
+        color: color || theme.palette.text.secondary,
         fontSize: color ? '1.6rem' : '1rem',
       },
       '&.MuiInput-underline:after': {
-        borderBottom: `2px solid ${color}`,
+        borderBottom: `2px solid ${color || theme.palette.primary.main}`,
       },
       '&.MuiInput-underline:before': {
-        borderBottom: `1px solid ${color}`,
+        borderBottom: `1px solid ${color || theme.palette.divider}`,
       },
     }),
     container: ({ color }) => ({

@@ -87,7 +87,13 @@ const NewAutosuggestField: FC<AutosuggestFieldProps> = ({
           )
         }}
         renderSuggestion={(suggestion, { isHighlighted }) => (
-          <StyledMenuItem selected={isHighlighted}>{suggestion}</StyledMenuItem>
+          <StyledMenuItem
+            role="option"
+            aria-selected={isHighlighted}
+            selected={isHighlighted}
+          >
+            {suggestion}
+          </StyledMenuItem>
         )}
         renderSuggestionsContainer={({ containerProps, children }) => (
           <Paper {...containerProps} square className={classes.paper}>

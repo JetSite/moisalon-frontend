@@ -61,10 +61,11 @@ const BrandProductsPage: FC<IBrandProductsPageProps> = ({
       {nextPage !== pagination.pageCount && pagination.pageCount !== 0 && (
         <MoreButtonWrapper>
           <Button
+            disabled={loading}
             onClick={() => setNextPage(prev => prev + 1)}
             variant={'secondary'}
           >
-            Ещё
+            {loading ? 'Загрузка...' : 'Ещё'}
           </Button>
         </MoreButtonWrapper>
       )}

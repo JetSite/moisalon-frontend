@@ -67,7 +67,10 @@ export const QuantityControls: FC<IQuantityControlsProps> = ({
           e.preventDefault()
           e.stopPropagation()
           if (!user?.info) {
-            router.push('/login')
+            router.replace({
+              pathname: '/login',
+              query: { next: router.asPath },
+            })
           } else {
             addToCart(cartItem.product, true)
           }

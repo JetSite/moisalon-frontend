@@ -19,17 +19,27 @@ export const useFetchCartByUser: UseFetchCartByUser = () => {
   const { setCart } = useAuthStore(getStoreEvent)
   const [dataCart, setDataCart] = useState<ICart | null>(null)
 
-  const { data, loading } = useQuery(GET_CART_BY_USER, {
+  const { data, loading, error } = useQuery(GET_CART_BY_USER, {
     variables: { id: user?.info.id },
     skip: !user?.info.id,
   })
 
+  if (error) {
+    console.error('Failed to fetch cart:', error)
+  }
+
   useEffect(() => {
-    const prepareCart: ICart | null =
-      flattenStrapiResponse(data?.carts)?.[0] ?? null
-    setDataCart(prepareCart)
-    prepareCart && setCart(prepareCart)
-  }, [loading, data])
+    let mounted = true
+    if (mounted) {
+      const prepareCart: ICart | null =
+        flattenStrapiResponse(data?.carts)?.[0] ?? null
+      setDataCart(prepareCart)
+      prepareCart && setCart(prepareCart)
+    }
+    return () => {
+      mounted = false
+    }
+  }, [data, setCart])
 
   return { dataCart, user, storeCart: user?.owner.cart ?? null }
 }

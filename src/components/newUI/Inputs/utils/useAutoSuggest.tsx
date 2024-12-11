@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 import { SuggestionsFetchRequested } from 'react-autosuggest'
 import { FieldInputProps } from 'react-final-form'
-import { IApolloLazyRefetch, ISetState } from 'src/types/common'
-import { IProductCategories } from 'src/types/product'
+import { IApolloLazyRefetch } from 'src/types/common'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 
 interface IUseAutoSuggestResult<T> {

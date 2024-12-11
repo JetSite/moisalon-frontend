@@ -46,7 +46,7 @@ const FilterCatalog: FC<Props> = ({
         <SearchBrandAutosuggest
           name="brands"
           clearFilterTitle="Все бренды"
-          label="Категории продукции"
+          label="Бренды"
           fullWidth
           color="red"
           setSelectBrand={setSelectBrand}

@@ -47,7 +47,14 @@ const LoginPage: FC = () => {
     onCompleted: data => {
       setCookie(authConfig.tokenKeyName, data.login.jwt)
       setMe({ info: { ...data.login.user } })
-      router.push('/masterCabinet')
+      const nextUrl =
+        typeof router.query.next === 'string' ? router.query.next : null
+      if (nextUrl) {
+        const { next: _, ...newQuery } = router.query
+        router.replace({ pathname: nextUrl, query: newQuery })
+      } else {
+        router.push('/masterCabinet')
+      }
     },
     onError: error => {
       console.log(error)

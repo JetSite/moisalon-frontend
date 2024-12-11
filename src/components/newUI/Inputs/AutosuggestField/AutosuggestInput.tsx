@@ -17,8 +17,6 @@ export interface AutosuggestInputProps
 
 const AutosuggestInput = forwardRef<HTMLInputElement, AutosuggestInputProps>(
   ({ meta, loading, label, classes, helperText, ...rest }, ref) => {
-    console.log(rest.fullWidth)
-
     return (
       <TextField
         multiline={false}
@@ -39,14 +37,15 @@ const AutosuggestInput = forwardRef<HTMLInputElement, AutosuggestInputProps>(
           inputRef: ref,
           endAdornment: loading && (
             <InputAdornment position="end">
-              <CircularProgress size={20} />
+              <CircularProgress size={20} aria-label="Loading suggestions..." />
             </InputAdornment>
           ),
         }}
-        {...(rest as BaseTextFieldProps)}
+        {...rest}
       />
     )
   },
 )
+AutosuggestInput.displayName = 'AutosuggestInput'
 
 export default AutosuggestInput

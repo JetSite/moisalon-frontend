@@ -51,10 +51,11 @@ const BeautyFreeShopPage: FC<IBeautyFreeShopPageProps> = ({
       {nextPage !== pagination.pageCount && (
         <Wrapper>
           <Button
+            disabled={loading}
             onClick={() => setNextPage(prev => prev + 1)}
             variant={'secondary'}
           >
-            Ещё
+            {loading ? 'Загрузка...' : 'Ещё'}
           </Button>
         </Wrapper>
       )}

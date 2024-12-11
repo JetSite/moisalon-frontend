@@ -37,7 +37,7 @@ export const SearchBrandAutosuggest: FC<ISearchBrandAutosuggest> = ({
       searchKey: 'name',
       name,
       defaultValue,
-      dataInitial: flattenStrapiResponse(dataInitial?.[name]),
+      dataInitial: flattenStrapiResponse(dataInitial?.brands),
       initialLoading,
       getNewValues,
     })
