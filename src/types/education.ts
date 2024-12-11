@@ -11,8 +11,8 @@ export interface IEducation {
   title: string
   slug: string
   averageScore: number
-  dateStart: string
-  dateEnd: string
+  dateStart: Date
+  dateEnd: Date
   deleted: boolean
   shortDescription: string
   fullDescription: string

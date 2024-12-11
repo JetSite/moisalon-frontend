@@ -1,3 +1,4 @@
+import { FC } from 'react'
 import {
   ListItemWrapper,
   ImageWrapper,
@@ -9,9 +10,24 @@ import {
   Quantity,
 } from './styles'
 
-const ServicesListItem = ({ popularService, popularServiceHandler }) => {
+interface Props {
+  popularService: {
+    id: string
+    [K: string]: any
+  }
+  popularServiceHandler?: (id: string) => void
+}
+
+const ServicesListItem: FC<Props> = ({
+  popularService,
+  popularServiceHandler,
+}) => {
   return (
-    <ListItemWrapper onClick={() => popularServiceHandler(popularService)}>
+    <ListItemWrapper
+      onClick={() =>
+        popularServiceHandler && popularServiceHandler(popularService.id)
+      }
+    >
       <ImageWrapper>
         <Image src={popularService.photo} alt="service-card-image" />
       </ImageWrapper>

@@ -23,9 +23,7 @@ import {
   DateWrap,
   DatePromoWrap,
   Date,
-  Promo,
   EducationInfo,
-  EducationConditions,
   EducationPrice,
   CountdownWrap,
   Rating,
@@ -35,17 +33,13 @@ import {
 import moment from 'moment'
 import 'moment/locale/ru'
 import Countdown from '../../blocks/Countdown'
-import { cyrToTranslit } from '../../../utils/translit'
 import {
   favoritesInStorage,
   inStorage,
 } from '../../../utils/favoritesInStorage'
 import ChatMessagePopup from '../../ui/ChatMessagePopup'
-import { educationReviews } from '../../../_graphql-legacy/education/educationReviews'
 import { useMutation, useQuery } from '@apollo/client'
-import { scoreEducation } from '../../../_graphql-legacy/education/scoreEducation'
 import { createScopesEducation } from '../../../_graphql-legacy/education/createScoreEducation'
-import { educationSearchById } from '../../../_graphql-legacy/education/educationSearchById'
 import { PHOTO_URL } from '../../../api/variables'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
@@ -54,7 +48,6 @@ import { getEducationById } from 'src/api/graphql/education/queries/getEducation
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import EducationReviews from './components/EducationReviews'
 import ReactMarkdown from 'react-markdown'
-import CheckboxStyled from 'src/components/newUI/Inputs/Checkbox'
 
 interface EducationPageProps {
   educationData: IEducation

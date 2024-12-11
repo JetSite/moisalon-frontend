@@ -26,7 +26,7 @@ export const useLocationSuggestions = ({
   setLocationName,
   onlyCity,
 }: Props) => {
-  const { suggestions, coordinates, loading } = useAddressSuggestions(
+  const { suggestions, fullAddress, loading } = useAddressSuggestions(
     input,
     onlyCity,
   ) // получаем город или адрес
@@ -73,7 +73,7 @@ export const useLocationSuggestions = ({
   return {
     suggestions,
     locationClickHandler,
-    coordinates,
+    fullAddress,
     loading,
   }
 }

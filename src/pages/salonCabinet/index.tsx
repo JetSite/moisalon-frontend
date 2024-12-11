@@ -1,21 +1,19 @@
 import { useRouter } from 'next/router'
 import { addApolloState, initializeApollo } from '../../api/apollo-client'
-import SalonCabinet from '../../components/pages/Salon/SalonCabinet'
-import { salonQuery } from '../../_graphql-legacy/salon/salonQuery'
+import SalonCabinet, {
+  ISalonCabinetProps,
+} from '../../components/pages/Salon/SalonCabinet'
 import CreatePageSkeleton from '../../components/ui/ContentSkeleton/CreatePageSkeleton'
 import { getStoreData } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
 import { getSalonPage } from 'src/api/graphql/salon/queries/getSalon'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { Nullable } from 'src/types/common'
-import { GetServerSideProps } from 'next'
-import { ISalonPage } from 'src/types/salon'
+import { GetServerSideProps, NextPage } from 'next'
 
-interface Props {
-  salonData: ISalonPage
-}
+interface Props extends ISalonCabinetProps {}
 
-const SalonCabinetPage = ({ salonData }) => {
+const SalonCabinetPage: NextPage<Props> = ({ salonData }) => {
   const router = useRouter()
   const { me } = useAuthStore(getStoreData)
 

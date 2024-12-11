@@ -4,13 +4,16 @@ import {
   tabletBreakpoint,
 } from '../../../../../styles/variables'
 
-const move = lengthValue => keyframes`
+const move = (lengthValue: string) => keyframes`
   100% { 
     transform: translateX(-${lengthValue}px);  
   }
 `
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{
+  border: string
+  bg: string
+}>`
   width: 100%;
   height: 80px;
   display: flex;
@@ -35,7 +38,9 @@ export const Wrapper = styled.div`
   }
 `
 
-export const TextWrapper = styled.div`
+export const TextWrapper = styled.div<{
+  length: string
+}>`
   height: 100%;
   width: 100000px;
   position: absolute;
@@ -52,7 +57,9 @@ export const TextWrapper = styled.div`
   }
 `
 
-export const Text = styled.p`
+export const Text = styled.p<{
+  length: string
+}>`
   width: ${({ length }) => `${length}px`};
   display: inline-block;
   font-size: 40px;

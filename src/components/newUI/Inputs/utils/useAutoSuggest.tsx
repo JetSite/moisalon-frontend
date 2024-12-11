@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { SuggestionsFetchRequested } from 'react-autosuggest'
 import { FieldInputProps } from 'react-final-form'
 import { IApolloLazyRefetch } from 'src/types/common'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { debounce as _debounce } from 'lodash'
 
 interface IUseAutoSuggestResult<T> {
   loading: boolean
@@ -45,6 +46,38 @@ export const useAutoSuggest = <T,>(
   const [suggestions, setSuggestions] = useState<string[]>([])
   const [data, setData] = useState<T[]>([])
 
+  const debouncedFetch = useMemo(
+    () =>
+      _debounce((value: string) => {
+        if (value.length > 2 && value !== defaultValue) {
+          setLoading(true)
+          getNewValues({
+            variables: { [searchKey]: value },
+            onCompleted: data => {
+              const prepareData = flattenStrapiResponse(data[name]) as T[]
+              setData(prepareData as T[])
+              const newSuggestions = prepareData
+                .map(e => {
+                  const string = e[searchKey]
+                  if (typeof string === 'string') {
+                    return string.trim()
+                  }
+                })
+                .filter((value): value is string => Boolean(value))
+              setSuggestions(filterSuggestions(value, newSuggestions))
+
+              setLoading(false)
+            },
+            onError: error => {
+              setLoading(false)
+              console.error('The error or update state ' + name + ': ', error)
+            },
+          })
+        }
+      }, debounce),
+    [defaultValue, getNewValues, searchKey],
+  )
+
   useEffect(() => {
     if (dataInitial && initialSuggestions.length === 1) {
       const prepareInitialValues = dataInitial
@@ -81,28 +114,7 @@ export const useAutoSuggest = <T,>(
   const handleFetch: SuggestionsFetchRequested = ({ value }) => {
     if (value.length > 2 && value !== defaultValue) {
       setLoading(true)
-      getNewValues({
-        variables: { [searchKey]: value },
-        onCompleted: data => {
-          const prepareData = flattenStrapiResponse(data[name]) as T[]
-          setData(prepareData as T[])
-          const newSuggestions = prepareData
-            .map(e => {
-              const string = e[searchKey]
-              if (typeof string === 'string') {
-                return string.trim()
-              }
-            })
-            .filter((value): value is string => Boolean(value))
-          setSuggestions(filterSuggestions(value, newSuggestions))
-
-          setLoading(false)
-        },
-        onError: error => {
-          setLoading(false)
-          console.error('The error or update state ' + name + ': ', error)
-        },
-      })
+      debouncedFetch(value)
     } else setSuggestions(filterSuggestions(value, initialSuggestions))
   }
 

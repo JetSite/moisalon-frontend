@@ -68,72 +68,69 @@ const Success: FC<ISuccessProps> = ({
     editButtonHandler()
   }
 
-  return (
-    !!workplace && (
-      <Wrapper>
-        <TopBlock>
-          <TopTitle>Рабочее место успешно опубликовано!</TopTitle>
-          <Subtitle>
-            Теперь мастера смогут отправлять вам заявки на аренду.
-          </Subtitle>
-          <Link
-            href={`/${salon?.city?.slug || city.slug}/rent/${
-              salon?.id
-            }/workplace/${workplace?.id}`}
-            passHref
-          >
-            <TopLink target="_blank">Просмотр на платформе</TopLink>
-          </Link>
-        </TopBlock>
-        <MediumBlock>
-          <MediumTitle>
-            Посмотрите как ваше рабочее место выглядит на платформе
-          </MediumTitle>
-          {workplace?.cover?.url ? (
-            <WorkplacePreview url={PHOTO_URL + workplace?.cover?.url}>
-              {seatActivity[0]?.title ? (
-                <Name>{seatActivity[0]?.title}</Name>
-              ) : null}
-              <EditButton onClick={editButtonHandler}>
-                Редактировать рабочее место в <br /> личном кабинете
-              </EditButton>
-              {rentalPeriod ? (
-                <Price>
-                  {rentalPeriod.rentalCost} Р /{' '}
-                  {rentalPeriod.rental_period.title}
-                </Price>
-              ) : null}
-            </WorkplacePreview>
-          ) : null}
-          <AddButton
-            variant="red"
-            size="noWidth"
-            font="popUp"
-            onClick={addButtonHandler}
-          >
-            Дополнить
-          </AddButton>
-        </MediumBlock>
-        <BottomBlock>
-          <AddWorkplaceButton
-            variant="red"
-            size="noWidth"
-            font="popUp"
-            onClick={addNewWorkplaceButtonHandler}
-          >
-            Добавить другое рабочее место
-          </AddWorkplaceButton>
-          <BottomText>
-            Чтобы удалить, отредактировать или временно снять рабочее место с
-            публикации, зайдите в личный кабинет
-          </BottomText>
-          <BackLink shallow href={'/masterCabinet'}>
-            Вернуться в личный кабинет
-          </BackLink>
-        </BottomBlock>
-      </Wrapper>
-    )
-  )
+  return !!workplace ? (
+    <Wrapper>
+      <TopBlock>
+        <TopTitle>Рабочее место успешно опубликовано!</TopTitle>
+        <Subtitle>
+          Теперь мастера смогут отправлять вам заявки на аренду.
+        </Subtitle>
+        <Link
+          href={`/${salon?.city?.slug || city.slug}/rent/${
+            salon?.id
+          }/workplace/${workplace?.id}`}
+          passHref
+        >
+          <TopLink target="_blank">Просмотр на платформе</TopLink>
+        </Link>
+      </TopBlock>
+      <MediumBlock>
+        <MediumTitle>
+          Посмотрите как ваше рабочее место выглядит на платформе
+        </MediumTitle>
+        {workplace?.cover?.url ? (
+          <WorkplacePreview url={PHOTO_URL + workplace?.cover?.url}>
+            {seatActivity[0]?.title ? (
+              <Name>{seatActivity[0]?.title}</Name>
+            ) : null}
+            <EditButton onClick={editButtonHandler}>
+              Редактировать рабочее место в <br /> личном кабинете
+            </EditButton>
+            {rentalPeriod ? (
+              <Price>
+                {rentalPeriod.rentalCost} Р / {rentalPeriod.rental_period.title}
+              </Price>
+            ) : null}
+          </WorkplacePreview>
+        ) : null}
+        <AddButton
+          variant="red"
+          size="noWidth"
+          font="popUp"
+          onClick={addButtonHandler}
+        >
+          Дополнить
+        </AddButton>
+      </MediumBlock>
+      <BottomBlock>
+        <AddWorkplaceButton
+          variant="red"
+          size="noWidth"
+          font="popUp"
+          onClick={addNewWorkplaceButtonHandler}
+        >
+          Добавить другое рабочее место
+        </AddWorkplaceButton>
+        <BottomText>
+          Чтобы удалить, отредактировать или временно снять рабочее место с
+          публикации, зайдите в личный кабинет
+        </BottomText>
+        <BackLink shallow href={'/masterCabinet'}>
+          Вернуться в личный кабинет
+        </BackLink>
+      </BottomBlock>
+    </Wrapper>
+  ) : null
 }
 
 export default Success

@@ -1,4 +1,3 @@
-import moment from 'moment'
 import { IPhoto } from 'src/types'
 import { IID } from 'src/types/common'
 import { IEducation } from 'src/types/education'
@@ -18,14 +17,14 @@ export type IEducationBaseFields =
   | 'fullDescription'
   | 'timeStart'
   | 'timeEnd'
-  | 'dateEnd'
-  | 'dateStart'
 
 export interface IEducationInitialForm
   extends Pick<IEducation, IEducationBaseFields> {
   amount: number | null
   cover: IPhoto | null
   publishedAt: boolean
+  dateEnd: string
+  dateStart: string
 }
 
 export interface IEducationInput
@@ -35,6 +34,8 @@ export interface IEducationInput
   brand?: IID
   salon?: IID
   master?: IID
+  dateEnd: string
+  dateStart: string
 }
 
 export const getEducationInitialValues: IEducationFormValues = ({
@@ -48,8 +49,8 @@ export const getEducationInitialValues: IEducationFormValues = ({
         amount: education.amount,
         cover: education.cover,
         publishedAt: false,
-        dateStart: education.dateStart,
-        dateEnd: education.dateEnd,
+        dateStart: education.dateStart.toString(),
+        dateEnd: education.dateEnd.toString(),
         timeStart: formatTime(education.timeStart),
         timeEnd: formatTime(education.timeEnd),
       }

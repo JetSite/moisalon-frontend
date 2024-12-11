@@ -16,8 +16,6 @@ export type IEventBaseFields =
   | 'fullDescription'
   | 'timeStart'
   | 'timeEnd'
-  | 'dateEnd'
-  | 'dateStart'
   | 'address'
   | 'longitude'
   | 'latitude'
@@ -25,6 +23,8 @@ export type IEventBaseFields =
 export interface IEventInitialForm extends Pick<IEvent, IEventBaseFields> {
   cover: IPhoto | null
   publishedAt: boolean
+  dateEnd: string
+  dateStart: string
 }
 
 export interface IEventInput extends Pick<IEvent, IEventBaseFields> {
@@ -33,6 +33,8 @@ export interface IEventInput extends Pick<IEvent, IEventBaseFields> {
   brand?: IID
   salon?: IID
   master?: IID
+  dateEnd: string
+  dateStart: string
 }
 
 export const getEventInitialValues: IEventFormValues = ({ event }) => {
@@ -44,8 +46,8 @@ export const getEventInitialValues: IEventFormValues = ({ event }) => {
         address: event.address,
         cover: event.cover,
         publishedAt: false,
-        dateStart: event.dateStart,
-        dateEnd: event.dateEnd,
+        dateStart: event.dateStart.toString(),
+        dateEnd: event.dateEnd.toString(),
         timeStart: formatTime(event.timeStart),
         timeEnd: formatTime(event.timeEnd),
         longitude: event.longitude,

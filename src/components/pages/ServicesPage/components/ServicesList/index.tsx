@@ -5,7 +5,8 @@ import ServicesListItem from './ServicesListItem'
 import { Wrapper } from './styles'
 import { IMaster } from 'src/types/masters'
 import { ISalon } from 'src/types/salon'
-import { IServiceInCategory } from 'src/types/services'
+import { IServiceCategory, IServiceInCategory } from 'src/types/services'
+import { ISetState } from 'src/types/common'
 
 const popularServices = [
   {
@@ -83,7 +84,7 @@ const popularServices = [
 interface IServicesListProps {
   masters?: IMaster[]
   salons?: ISalon[]
-  setClickedService?: (service: IServiceInCategory) => void
+  setClickedService?: ISetState<IServiceInCategory | null>
   popularServiceHandler?: (id: string) => void
 }
 

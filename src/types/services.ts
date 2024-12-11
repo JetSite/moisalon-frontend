@@ -40,6 +40,7 @@ export interface IServiceInCategory {
   id: IID
   servicName: string
   title: string
+  count?: number
 }
 
 export interface IServiceCategory {
@@ -47,4 +48,5 @@ export interface IServiceCategory {
   serviceCategoryName: string
   services: IServiceInCategory[]
   title: string
+  count?: number
 }
