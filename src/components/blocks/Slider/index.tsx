@@ -35,6 +35,7 @@ import { ICity, IPhoto } from 'src/types'
 import { IProduct } from 'src/types/product'
 import { IVacancy } from 'src/types/vacancies'
 import { IPromotions } from 'src/types/promotions'
+import { useBeforeInit } from './useBeforeInit'
 
 SwiperCore.use([Navigation])
 export type SlideType =
@@ -111,17 +112,7 @@ const Slider: FC<Props> = ({
   city,
   id,
 }) => {
-  const navigationPrevRef = useRef(null)
-  const navigationNextRef = useRef(null)
-  const onBeforeInit = (Swiper: SwiperCore) => {
-    if (typeof Swiper.params.navigation !== 'boolean') {
-      const navigation = Swiper.params.navigation
-      if (navigation) {
-        navigation.prevEl = navigationPrevRef.current
-        navigation.nextEl = navigationNextRef.current
-      }
-    }
-  }
+  const { onBeforeInit, navigationPrevRef, navigationNextRef } = useBeforeInit()
 
   const [showCitySelect, setShowCitySelect] = useState(false)
   const router = useRouter()

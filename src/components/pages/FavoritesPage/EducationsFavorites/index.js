@@ -21,6 +21,7 @@ import {
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 import Education from '../../../blocks/Education'
+import { useBeforeInit } from 'src/components/blocks/Slider/useBeforeInit'
 
 SwiperCore.use([Navigation])
 
@@ -31,17 +32,7 @@ const EducationsFavorites = ({
   mobile = false,
   handleDeleted,
 }) => {
-  const navigationPrevRef = useRef(null)
-  const navigationNextRef = useRef(null)
-
-  const onBeforeInit = Swiper => {
-    if (typeof Swiper.params.navigation !== 'boolean') {
-      const navigation = Swiper.params.navigation
-      navigation.prevEl = navigationPrevRef.current
-      navigation.nextEl = navigationNextRef.current
-    }
-  }
-
+  const { onBeforeInit, navigationPrevRef, navigationNextRef } = useBeforeInit()
   const [toggle, setToggle] = useState(mobile && cabinet && true)
   const [deleteItem, setDeleteItem] = useState(false)
 

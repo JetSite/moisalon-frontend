@@ -2,9 +2,7 @@ import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../../../styles/variables'
 import { MainContainer } from '../../../../../../styles/common'
 import { FC } from 'react'
-import { IGroupedCategories } from 'src/utils/getGrupedServices'
-import { IService, IServiceCategories } from 'src/types/services'
-import { IServices } from 'src/utils/serviceCatalog'
+import { IServices } from 'src/types/services'
 
 const Wrapper = styled.div`
   padding: 0 140px;

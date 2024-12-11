@@ -27,6 +27,7 @@ import useBaseStore from 'src/store/baseStore'
 import { ISetState } from 'src/types/common'
 import { ISalon } from 'src/types/salon'
 import SalonCard from 'src/components/blocks/SalonCard'
+import { useBeforeInit } from 'src/components/blocks/Slider/useBeforeInit'
 
 SwiperCore.use([Navigation])
 
@@ -46,22 +47,7 @@ const SalonsFavorites: FC<ThingsProps> = ({
   mobile = false,
   handleDeleted,
 }) => {
-  const navigationPrevRef = useRef(null)
-  const navigationNextRef = useRef(null)
-
-  const onBeforeInit = (Swiper: SwiperClass) => {
-    if (typeof Swiper.params.navigation !== 'boolean') {
-      const navigation = Swiper.params.navigation
-      if (
-        navigation &&
-        navigationPrevRef.current &&
-        navigationNextRef.current
-      ) {
-        navigation.prevEl = navigationPrevRef.current
-        navigation.nextEl = navigationNextRef.current
-      }
-    }
-  }
+  const { onBeforeInit, navigationPrevRef, navigationNextRef } = useBeforeInit()
 
   const { city, user } = useAuthStore(getStoreData)
   const { catalogs } = useBaseStore(getStoreData)

@@ -32,22 +32,14 @@ import {
   SliderWpapper,
 } from '../../../styles/sliderBlocks'
 import { cyrToTranslit } from '../../../utils/translit'
+import { useBeforeInit } from '../Slider/useBeforeInit'
 
 SwiperCore.use([Navigation])
 
 const Goods = ({ items, title }) => {
-  const navigationPrevRef = useRef(null)
-  const navigationNextRef = useRef(null)
   const { city, me } = useAuthStore(getStoreData)
   const b2bClient = !!me?.master?.id || !!me?.salons?.length
-
-  const onBeforeInit = Swiper => {
-    if (typeof Swiper.params.navigation !== 'boolean') {
-      const navigation = Swiper.params.navigation
-      navigation.prevEl = navigationPrevRef.current
-      navigation.nextEl = navigationNextRef.current
-    }
-  }
+  const { onBeforeInit, navigationPrevRef, navigationNextRef } = useBeforeInit()
 
   const addFavorite = e => {
     e.preventDefault()

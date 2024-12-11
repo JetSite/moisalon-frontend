@@ -26,6 +26,9 @@ export const SearchProductCategoryAutosuggest: FC<
     PRODUCT_CATEGORIES,
     {
       variables: { itemsCount: 10, isAvailableInStock: 0 },
+      onError: error => {
+        console.error('Failed to fetch initial product categories:', error)
+      },
     },
   )
 

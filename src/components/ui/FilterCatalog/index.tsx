@@ -8,7 +8,7 @@ import {
   useFiltredProducts,
 } from './useFiltredProducts'
 
-interface Props extends Omit<IUseFiltredProductsProps, ''> {}
+interface Props extends IUseFiltredProductsProps {}
 
 const FilterCatalog: FC<Props> = ({
   setProductsData,

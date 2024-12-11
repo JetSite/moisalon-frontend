@@ -98,6 +98,10 @@ export const useAutoSuggest = <T,>(
 
           setLoading(false)
         },
+        onError: error => {
+          setLoading(false)
+          console.error('The error or update state ' + name + ': ', error)
+        },
       })
     } else setSuggestions(filterSuggestions(value, initialSuggestions))
   }

@@ -1,5 +1,5 @@
-import { useRef, useState } from "react";
-import { MainContainer } from "../../../../styles/common";
+import { useRef, useState } from 'react'
+import { MainContainer } from '../../../../styles/common'
 import {
   Title,
   Wrapper,
@@ -7,37 +7,28 @@ import {
   Content,
   SwiperWrap,
   SliderWrapper,
-} from "./styled";
-import { Swiper, SwiperSlide } from "swiper/react";
-import SwiperCore, { Navigation } from "swiper/core";
+} from './styled'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import SwiperCore, { Navigation } from 'swiper/core'
 import {
   ButtonNext,
   ButtonPrev,
   NavigationWrapper,
-} from "../../../../styles/sliderBlocks";
-import AdviceItem from "./components/AdviceItem";
+} from '../../../../styles/sliderBlocks'
+import AdviceItem from './components/AdviceItem'
+import { useBeforeInit } from 'src/components/blocks/Slider/useBeforeInit'
 
-SwiperCore.use([Navigation]);
+SwiperCore.use([Navigation])
 
 const AdvicesFavorites = ({ title, setAdviceEmpty }) => {
-  const navigationPrevRef = useRef(null);
-  const navigationNextRef = useRef(null);
+  const { onBeforeInit, navigationPrevRef, navigationNextRef } = useBeforeInit()
+  const [deleteItem, setDeleteItem] = useState(false)
 
-  const onBeforeInit = (Swiper) => {
-    if (typeof Swiper.params.navigation !== "boolean") {
-      const navigation = Swiper.params.navigation;
-      navigation.prevEl = navigationPrevRef.current;
-      navigation.nextEl = navigationNextRef.current;
-    }
-  };
-
-  const [deleteItem, setDeleteItem] = useState(false);
-
-  let advices;
-  if (typeof window !== "undefined") {
-    advices = JSON.parse(localStorage.getItem("favorites"))?.advices || [];
+  let advices
+  if (typeof window !== 'undefined') {
+    advices = JSON.parse(localStorage.getItem('favorites'))?.advices || []
     if (!advices.length) {
-      setAdviceEmpty(true);
+      setAdviceEmpty(true)
     }
   }
 
@@ -56,7 +47,7 @@ const AdvicesFavorites = ({ title, setAdviceEmpty }) => {
             <SliderWrapper>
               <SwiperWrap>
                 <Swiper
-                  style={{ padding: "5px", marginLeft: "-5px" }}
+                  style={{ padding: '5px', marginLeft: '-5px' }}
                   mousewheel={true}
                   pagination={{ clickable: true }}
                   slidesPerView={6}
@@ -83,8 +74,8 @@ const AdvicesFavorites = ({ title, setAdviceEmpty }) => {
                     advices.map((advice, i) => (
                       <SwiperSlide
                         style={{
-                          minHeight: "100%",
-                          height: "auto",
+                          minHeight: '100%',
+                          height: 'auto',
                         }}
                         key={i}
                       >
@@ -102,7 +93,7 @@ const AdvicesFavorites = ({ title, setAdviceEmpty }) => {
         ) : null}
       </MainContainer>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default AdvicesFavorites;
+export default AdvicesFavorites

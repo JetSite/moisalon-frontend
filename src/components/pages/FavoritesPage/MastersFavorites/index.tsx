@@ -27,6 +27,7 @@ import useBaseStore from 'src/store/baseStore'
 import { ThingsProps } from '../SalonsFavorites'
 import { IMaster } from 'src/types/masters'
 import MasterItem from 'src/components/blocks/MasterCard'
+import { useBeforeInit } from 'src/components/blocks/Slider/useBeforeInit'
 
 SwiperCore.use([Navigation])
 
@@ -38,24 +39,9 @@ const MastersFavorites: FC<ThingsProps> = ({
   setActiveTab = () => {},
   handleDeleted,
 }) => {
-  const navigationPrevRef = useRef(null)
-  const navigationNextRef = useRef(null)
+  const { onBeforeInit, navigationPrevRef, navigationNextRef } = useBeforeInit()
   const { city, user } = useAuthStore(getStoreData)
   const { catalogs } = useBaseStore(getStoreData)
-
-  const onBeforeInit = (Swiper: SwiperClass) => {
-    if (typeof Swiper.params.navigation !== 'boolean') {
-      const navigation = Swiper.params.navigation
-      if (
-        navigation &&
-        navigationPrevRef.current &&
-        navigationNextRef.current
-      ) {
-        navigation.prevEl = navigationPrevRef.current
-        navigation.nextEl = navigationNextRef.current
-      }
-    }
-  }
 
   const [deleteItem, setDeleteItem] = useState(false)
   const [toggle, setToggle] = useState(mobile && cabinet && true)

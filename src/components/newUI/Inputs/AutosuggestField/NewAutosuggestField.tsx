@@ -52,7 +52,7 @@ const NewAutosuggestField: FC<AutosuggestFieldProps> = ({
         handleSelected && handleSelected(_, data)
       }
     },
-    [input.onChange],
+    [input.onChange, handleSelected],
   )
 
   const autosuggestProps = {

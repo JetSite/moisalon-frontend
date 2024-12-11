@@ -30,9 +30,9 @@ export const useFetchCartByUser: UseFetchCartByUser = () => {
 
   useEffect(() => {
     let mounted = true
+    const prepareCart: ICart | null =
+      flattenStrapiResponse(data?.carts)?.[0] ?? null
     if (mounted) {
-      const prepareCart: ICart | null =
-        flattenStrapiResponse(data?.carts)?.[0] ?? null
       setDataCart(prepareCart)
       prepareCart && setCart(prepareCart)
     }

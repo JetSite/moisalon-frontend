@@ -48,7 +48,10 @@ const LoginPage: FC = () => {
       setCookie(authConfig.tokenKeyName, data.login.jwt)
       setMe({ info: { ...data.login.user } })
       const nextUrl =
-        typeof router.query.next === 'string' ? router.query.next : null
+        typeof router.query.next === 'string' &&
+        router.query.next.startsWith('/')
+          ? router.query.next
+          : null
       if (nextUrl) {
         const { next: _, ...newQuery } = router.query
         router.replace({ pathname: nextUrl, query: newQuery })

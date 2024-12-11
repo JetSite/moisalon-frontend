@@ -1,5 +1,5 @@
 import { FC, useRef } from 'react'
-import { Swiper, SwiperSlide, SwiperClass } from 'swiper/react'
+import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCore from 'swiper'
 import { Navigation } from 'swiper/modules'
 
@@ -14,10 +14,9 @@ import {
 } from '../../../../../../styles/sliderBlocks'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
-import { cyrToTranslit } from '../../../../../../utils/translit'
 import RentCard from '../../../../../blocks/RentCard'
 import { ISalonPage } from 'src/types/salon'
-import { NavigationOptions } from 'swiper/types'
+import { useBeforeInit } from 'src/components/blocks/Slider/useBeforeInit'
 
 SwiperCore.use([Navigation])
 
@@ -27,17 +26,8 @@ interface Props {
 }
 
 const RentSlider: FC<Props> = ({ salon, title }) => {
-  const navigationPrevRef = useRef(null)
-  const navigationNextRef = useRef(null)
   const { city } = useAuthStore(getStoreData)
-
-  const onBeforeInit = (Swiper: SwiperClass) => {
-    if (typeof Swiper.params.navigation !== 'boolean') {
-      const navigation = Swiper.params.navigation as NavigationOptions
-      navigation.prevEl = navigationPrevRef.current
-      navigation.nextEl = navigationNextRef.current
-    }
-  }
+  const { onBeforeInit, navigationPrevRef, navigationNextRef } = useBeforeInit()
 
   return (
     <Wrapper id="rent">

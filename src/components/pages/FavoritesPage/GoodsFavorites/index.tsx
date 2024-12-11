@@ -25,6 +25,7 @@ import useAuthStore from 'src/store/authStore'
 import { ISetState } from 'src/types/common'
 import { IProduct } from 'src/types/product'
 import { ThingsProps } from '../SalonsFavorites'
+import { useBeforeInit } from 'src/components/blocks/Slider/useBeforeInit'
 
 SwiperCore.use([Navigation])
 
@@ -39,20 +40,8 @@ const GoodsFavorites: FC<Props> = ({
   mobile = false,
   handleDeleted,
 }) => {
-  const navigationPrevRef = useRef(null)
+  const { onBeforeInit, navigationPrevRef, navigationNextRef } = useBeforeInit()
   const { city } = useAuthStore(getStoreData)
-  const navigationNextRef = useRef(null)
-
-  const onBeforeInit = (Swiper: SwiperClass) => {
-    if (typeof Swiper.params.navigation !== 'boolean') {
-      const navigation = Swiper.params.navigation
-      if (navigation) {
-        navigation.prevEl = navigationPrevRef.current
-        navigation.nextEl = navigationNextRef.current
-      }
-    }
-  }
-
   const [deleteItem, setDeleteItem] = useState(false)
   const [toggle, setToggle] = useState(mobile && cabinet && true)
 
