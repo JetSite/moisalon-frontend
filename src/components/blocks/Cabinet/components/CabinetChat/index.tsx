@@ -6,8 +6,7 @@ import MessageBlock from './components/MessageBlock'
 import AnswerBlock from './components/AnswerBlock'
 import { Wrapper, BackBtn, ChatContent, Error, ScrollDiv } from './styles'
 import { ChatBlockOrigin } from './components/styles'
-import { getRoomMessages } from '../../../../../_graphql-legacy/chat/getRoomMessages'
-import { createMessage } from '../../../../../_graphql-legacy/chat/createMessage'
+
 import RotatingLoader from '../../../../ui/RotatingLoader'
 import { cyrToTranslit } from '../../../../../utils/translit'
 import { IChat, useChat } from '../../../../../chatContext'
@@ -42,47 +41,37 @@ const CabinetChat = () => {
     }
   }, [])
 
-  const { data, refetch: refetchMessages } = useQuery(getRoomMessages, {
-    skip: true,
-    variables: {
-      roomId: chatClicked?.chat?.id,
-    },
-    onCompleted: res => {
-      setMessages(res?.massages)
-      setLoading(false)
-    },
-  })
+ 
 
-  useEffect(() => {
-    if (chatClicked) {
-      setLoading(true)
-      setMessages([])
-      refetchMessages({
-        variables: {
-          roomId: chatClicked?.id,
-        },
-      })
-    }
-  }, [chatClicked])
+  // useEffect(() => {
+  //   if (chatClicked) {
+  //     setLoading(true)
+  //     setMessages([])
+  //     refetchMessages({
+  //       variables: {
+  //         roomId: chatClicked?.id,
+  //       },
+  //     })
+  //   }
+  // }, [chatClicked])
 
-  const [newMessage] = useMutation(createMessage)
 
   const answerMessage = async (e: SyntheticEvent, answerInput: string) => {
     e.stopPropagation()
     if (answerInput.trim() === '') return
-    await newMessage({
-      variables: {
-        input: {
-          roomId: chatClicked?.chat?.id,
-          message: answerInput,
-        },
-      },
-    })
-    await refetchMessages({
-      variables: {
-        roomId: chatClicked?.chat?.id,
-      },
-    })
+    // await newMessage({
+    //   variables: {
+    //     input: {
+    //       roomId: chatClicked?.chat?.id,
+    //       message: answerInput,
+    //     },
+    //   },
+    // })
+    // await refetchMessages({
+    //   variables: {
+    //     roomId: chatClicked?.chat?.id,
+    //   },
+    // })
   }
 
   const chatClickHandler = (chatData: IChat) => {

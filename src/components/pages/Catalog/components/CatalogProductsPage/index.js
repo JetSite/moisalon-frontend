@@ -2,8 +2,6 @@ import { useState, useEffect, useCallback } from 'react'
 import Head from 'next/head'
 import { useQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
-import { getCart } from '../../../../../_graphql-legacy/cart/getCart'
-import { goodSearch } from '../../../../../_graphql-legacy/goodSearch'
 import Catalog from '../..'
 import { Wrapper, NoProducts, Title } from './styles'
 import FilterCatalog from '../../../../ui/FilterCatalog'
@@ -56,76 +54,76 @@ const CatalogProductsPage = ({
   //   },
   // });
 
-  const { fetchMore, refetch } = useQuery(goodSearch, {
-    variables: {
-      input: {
-        brandId: [brand.id],
-        query: '',
-        isB2b: true,
-        categoryId:
-          !filter?.value || filter?.value === 'Все категории'
-            ? null
-            : [filter?.value],
-      },
-    },
-    skip: true,
-    notifyOnNetworkStatusChange: true,
-    onCompleted: res => {
-      if (res) {
-        setRefetchLoading(false)
-        setGoods(res.goodsSearch)
-      }
-    },
-  })
+  // const { fetchMore, refetch } = useQuery(goodSearch, {
+  //   variables: {
+  //     input: {
+  //       brandId: [brand.id],
+  //       query: '',
+  //       isB2b: true,
+  //       categoryId:
+  //         !filter?.value || filter?.value === 'Все категории'
+  //           ? null
+  //           : [filter?.value],
+  //     },
+  //   },
+  //   skip: true,
+  //   notifyOnNetworkStatusChange: true,
+  //   onCompleted: res => {
+  //     if (res) {
+  //       setRefetchLoading(false)
+  //       setGoods(res.goodsSearch)
+  //     }
+  //   },
+  // })
 
   useEffect(() => {
     if (!filter?.value || filter?.value === 'Все категории') {
       setGoods(goods)
     } else {
       setRefetchLoading(true)
-      refetch()
+      // refetch()
     }
   }, [filter])
 
-  const {
-    data: dataCart,
-    refetch: refetchCart,
-    loading: loadingCart,
-  } = useQuery(getCart, {
-    onCompleted: res => {
-      setProductsState(res?.getCartB2b?.contents || [])
-    },
-  })
+  // const {
+  //   data: dataCart,
+  //   refetch: refetchCart,
+  //   loading: loadingCart,
+  // } = useQuery(getCart, {
+  //   onCompleted: res => {
+  //     setProductsState(res?.getCartB2b?.contents || [])
+  //   },
+  // })
 
-  const cart = dataCart?.getCartB2b?.contents || []
+  const cart = []
 
   const loadMore = useCallback(() => {
     setFetchMoreLoading(true)
-    fetchMore({
-      variables: {
-        cursor: goods?.connection?.pageInfo?.endCursor,
-        input: {
-          query: '',
-          brandId: [brand.id],
-          isB2b: true,
-          // categoryId:
-          //   !filter?.value || filter?.value === "Все категории"
-          //     ? null
-          //     : [filter?.value],
-        },
-      },
-      updateQuery(previousResult, { fetchMoreResult }) {
-        const newNodes = fetchMoreResult?.goodsSearch?.connection?.nodes
-        setFetchMoreLoading(false)
-        setGoods({
-          connection: {
-            ...fetchMoreResult?.goodsSearch?.connection,
-            nodes: [...goods.connection.nodes, ...newNodes],
-          },
-          filterDefinition: fetchMoreResult?.goodsSearch?.filterDefinition,
-        })
-      },
-    })
+    // fetchMore({
+    //   variables: {
+    //     cursor: goods?.connection?.pageInfo?.endCursor,
+    //     input: {
+    //       query: '',
+    //       brandId: [brand.id],
+    //       isB2b: true,
+    //       // categoryId:
+    //       //   !filter?.value || filter?.value === "Все категории"
+    //       //     ? null
+    //       //     : [filter?.value],
+    //     },
+    //   },
+    //   updateQuery(previousResult, { fetchMoreResult }) {
+    //     const newNodes = fetchMoreResult?.goodsSearch?.connection?.nodes
+    //     setFetchMoreLoading(false)
+    //     setGoods({
+    //       connection: {
+    //         ...fetchMoreResult?.goodsSearch?.connection,
+    //         nodes: [...goods.connection.nodes, ...newNodes],
+    //       },
+    //       filterDefinition: fetchMoreResult?.goodsSearch?.filterDefinition,
+    //     })
+    //   },
+    // })
   })
 
   const renderGoods = goods?.connection?.nodes
@@ -164,11 +162,9 @@ const CatalogProductsPage = ({
           cart={cart}
           products={renderGoods}
           hasNextPage={goodsData?.connection?.pageInfo?.hasNextPage}
-          fetchMore={loadMore}
-          refetchCart={refetchCart}
-          loading={fetchMoreLoading}
-          loadingCart={loadingCart}
-          refetchLoading={refetchLoading}
+          // fetchMore={loadMore}
+          // loading={fetchMoreLoading}
+          // loadingCart={loadingCart}
           noTitle
           me={me}
           catalog={catalog}

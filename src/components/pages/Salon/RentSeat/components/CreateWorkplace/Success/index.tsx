@@ -42,7 +42,6 @@ const Success: FC<ISuccessProps> = ({
   setSuccess,
   setWorkplace,
 }) => {
-  const router = useRouter()
   const { city } = useAuthStore(getStoreData)
 
   const seatActivity = salon.services.map(e => e.service)
@@ -68,7 +67,7 @@ const Success: FC<ISuccessProps> = ({
     editButtonHandler()
   }
 
-  return !!workplace ? (
+  return workplace ? (
     <Wrapper>
       <TopBlock>
         <TopTitle>Рабочее место успешно опубликовано!</TopTitle>
@@ -76,9 +75,9 @@ const Success: FC<ISuccessProps> = ({
           Теперь мастера смогут отправлять вам заявки на аренду.
         </Subtitle>
         <Link
-          href={`/${salon?.city?.slug || city.slug}/rent/${
-            salon?.id
-          }/workplace/${workplace?.id}`}
+          href={`/${salon.city?.slug || city.slug}/rent/${salon.id}/workplace/${
+            workplace.id
+          }`}
           passHref
         >
           <TopLink target="_blank">Просмотр на платформе</TopLink>

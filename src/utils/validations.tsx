@@ -50,7 +50,7 @@ export const number: Validator<string | number> = value => {
     value === null ||
     value === undefined ||
     value === '' ||
-    !isNaN(Number(value))
+    !Number.isNaN(Number(value))
   ) {
     return undefined
   }

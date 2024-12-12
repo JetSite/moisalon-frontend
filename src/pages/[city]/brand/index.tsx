@@ -1,11 +1,9 @@
 import React, { FC } from 'react'
 import { addApolloState, initializeApollo } from '../../../api/apollo-client'
-import { brandSearchQuery } from '../../../_graphql-legacy/search/brandSearch'
 import CategoryPageLayout from '../../../layouts/CategoryPageLayout'
 import AllBrandsPage, {
   IBrandPageProps,
 } from '../../../components/pages/Brand/AllBrands'
-import { citySuggestionsQuery } from '../../../_graphql-legacy/city/citySuggestionsQuery'
 import { BRANDS } from 'src/api/graphql/brand/queries/getBrands'
 import { totalBrands } from 'src/api/graphql/brand/queries/totalBrands'
 import { totalSalons } from 'src/api/graphql/salon/queries/totalSalons'

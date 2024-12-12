@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Script from 'next/script'
 import React from 'react'
 
-export const MainHead = () => {
+const MainHead = () => {
   return (
     <>
       <Head>
@@ -55,3 +55,5 @@ export const MainHead = () => {
     </>
   )
 }
+
+export default MainHead

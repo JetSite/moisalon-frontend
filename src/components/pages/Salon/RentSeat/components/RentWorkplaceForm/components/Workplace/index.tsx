@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 import Button from '../../../../../../../ui/Button'
-import { deleteSeatMutation } from '../../../../../../../../_graphql-legacy/salon/deleteSeatMutation'
 import { useMutation } from '@apollo/client'
 import { laptopBreakpoint } from '../../../../../../../../styles/variables'
 import { FC, MouseEvent } from 'react'

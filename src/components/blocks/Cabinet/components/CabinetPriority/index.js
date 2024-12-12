@@ -17,8 +17,6 @@ import {
 import Button from '../../../../ui/Button'
 import CreatePriority from './components/CreatePriority'
 import { MobileHidden, MobileVisible } from '../../../../../styles/common'
-import { currentRequestPriority } from '../../../../../_graphql-legacy/priority/currentRequestPriority'
-import { deletePriorityMutation } from '../../../../../_graphql-legacy/priority/deletePriorityMutation'
 import { PHOTO_URL } from '../../../../../api/variables'
 import Priority from '../../../../ui/Priority'
 
@@ -59,45 +57,45 @@ const CabinetPriority = ({ me }) => {
   const [loading, setLoading] = useState(false)
   const [createPriority, setCreatePriority] = useState(false)
 
-  const { data, refetch: refetchPriority } = useQuery(currentRequestPriority, {
-    skip: true,
-    variables: {
-      originId: id,
-    },
-    onCompleted: res => {
-      setPriority(res?.currentRequestPriority)
-      setLoading(false)
-    },
-  })
+  // const { data, refetch: refetchPriority } = useQuery(currentRequestPriority, {
+  //   skip: true,
+  //   variables: {
+  //     originId: id,
+  //   },
+  //   onCompleted: res => {
+  //     setPriority(res?.currentRequestPriority)
+  //     setLoading(false)
+  //   },
+  // })
 
   useEffect(() => {
     if (id) {
       setLoading(true)
       setPriority([])
-      refetchPriority({
-        variables: {
-          originId: id,
-        },
-      })
+      // refetchPriority({
+      //   variables: {
+      //     originId: id,
+      //   },
+      // })
     }
   }, [type, id])
 
-  const [deletePriority] = useMutation(deletePriorityMutation, {
-    onCompleted: async () => {
-      await refetchPriority({
-        variables: {
-          originId: activeProfile.id,
-        },
-      })
-    },
-  })
+  // const [deletePriority] = useMutation(deletePriorityMutation, {
+  //   onCompleted: async () => {
+  //     await refetchPriority({
+  //       variables: {
+  //         originId: activeProfile.id,
+  //       },
+  //     })
+  //   },
+  // })
 
   const handleDelete = item => {
-    deletePriority({
-      variables: {
-        id: item.id,
-      },
-    })
+    // deletePriority({
+    //   variables: {
+    //     id: item.id,
+    //   },
+    // })
   }
 
   return (
@@ -242,7 +240,7 @@ const CabinetPriority = ({ me }) => {
             </>
           ) : (
             <CreatePriority
-              refetch={refetchPriority}
+              // refetch={refetchPriority}
               type={type}
               activeProfile={activeProfile}
               setCreatePriority={setCreatePriority}
@@ -306,7 +304,7 @@ const CabinetPriority = ({ me }) => {
             </>
           ) : (
             <CreatePriority
-              refetch={refetchPriority}
+              // refetch={refetchPriority}
               type={type}
               activeProfile={activeProfile}
               setCreatePriority={setCreatePriority}
@@ -374,7 +372,7 @@ const CabinetPriority = ({ me }) => {
             </>
           ) : (
             <CreatePriority
-              refetch={refetchPriority}
+              // refetch={refetchPriority}
               type={type}
               activeProfile={activeProfile}
               setCreatePriority={setCreatePriority}

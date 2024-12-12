@@ -3,7 +3,6 @@ import { useMutation } from '@apollo/client'
 import { MainContainer } from '../../../../../../styles/common'
 import BackButton from '../../../../../ui/BackButton'
 import RatingEdit from '../../../../../ui/RatingEdit'
-import { createScopesMaster } from '../../../../../../_graphql-legacy/master/createScopesMaster'
 import {
   Wrapper,
   Socials,

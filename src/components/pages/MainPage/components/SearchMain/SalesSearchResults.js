@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useQuery } from '@apollo/client'
 import Link from 'next/link'
-import { salesSearch } from '../../../../../_graphql-legacy/sales/salesSearch'
 import { MobileVisible, MobileHidden } from '../../../../../styles/common'
 import { WrapperItems, Title, LinkStyled } from './styled'
 import Button from '../../../../ui/Button'
@@ -14,19 +13,19 @@ const SalesSearchResults = () => {
   const [loading, setLoading] = useState(false)
   const [fetchMoreLoading, setFetchMoreLoading] = useState(false)
 
-  const { fetchMore, refetch } = useQuery(salesSearch, {
-    variables: {
-      query: (query && query.query) || '',
-    },
-    skip: true,
-    notifyOnNetworkStatusChange: true,
-    onCompleted: res => {
-      setLoading(false)
-      if (res) {
-        setSalesSearchData(res.salesSearch)
-      }
-    },
-  })
+  // const { fetchMore, refetch } = useQuery(salesSearch, {
+  //   variables: {
+  //     query: (query && query.query) || '',
+  //   },
+  //   skip: true,
+  //   notifyOnNetworkStatusChange: true,
+  //   onCompleted: res => {
+  //     setLoading(false)
+  //     if (res) {
+  //       setSalesSearchData(res.salesSearch)
+  //     }
+  //   },
+  // })
 
   const salesSearchResult = salesSearchData?.connection.nodes || []
   const hasNextPage = salesSearchData?.connection?.pageInfo?.hasNextPage
@@ -35,37 +34,37 @@ const SalesSearchResults = () => {
   useEffect(() => {
     if (query?.query && query.query !== '') {
       setLoading(true)
-      refetch({
-        variables: {
-          query: (query && query.query) || '',
-          cursor: null,
-        },
-      })
+      // refetch({
+      //   variables: {
+      //     query: (query && query.query) || '',
+      //     cursor: null,
+      //   },
+      // })
     } else {
-      setSalesSearchData(salesSearch)
+      // setSalesSearchData(salesSearch)
     }
   }, [query])
 
   const onFetchMore = useCallback(() => {
     setFetchMoreLoading(true)
-    fetchMore({
-      variables: {
-        query: (query && query.query) || '',
-        cursor: salesSearchData?.connection?.pageInfo?.endCursor,
-      },
+    // fetchMore({
+    //   variables: {
+    //     query: (query && query.query) || '',
+    //     cursor: salesSearchData?.connection?.pageInfo?.endCursor,
+    //   },
 
-      updateQuery(previousResult, { fetchMoreResult }) {
-        const newNodes = fetchMoreResult.salesSearch.connection.nodes
-        setFetchMoreLoading(false)
-        setSalesSearchData({
-          connection: {
-            ...fetchMoreResult.salesSearch.connection,
-            nodes: [...salesSearchData.connection.nodes, ...newNodes],
-          },
-          filterDefinition: fetchMoreResult.salesSearch.filterDefinition,
-        })
-      },
-    })
+    //   updateQuery(previousResult, { fetchMoreResult }) {
+    //     const newNodes = fetchMoreResult.salesSearch.connection.nodes
+    //     setFetchMoreLoading(false)
+    //     setSalesSearchData({
+    //       connection: {
+    //         ...fetchMoreResult.salesSearch.connection,
+    //         nodes: [...salesSearchData.connection.nodes, ...newNodes],
+    //       },
+    //       filterDefinition: fetchMoreResult.salesSearch.filterDefinition,
+    //     })
+    //   },
+    // })
   })
 
   const fetchMoreButton = hasNextPage ? (

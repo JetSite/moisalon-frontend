@@ -24,7 +24,6 @@ import {
   favoritesInStorage,
   inStorage,
 } from '../../../../../../utils/favoritesInStorage'
-import { createScopesBrand } from '../../../../../../_graphql-legacy/brand/createScopesBrand'
 import { getRating } from 'src/utils/newUtils/getRating'
 import { IBrand } from 'src/types/brands'
 import useAuthStore from 'src/store/authStore'

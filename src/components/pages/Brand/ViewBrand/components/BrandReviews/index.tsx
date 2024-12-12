@@ -1,5 +1,4 @@
 import { useLazyQuery, useMutation } from '@apollo/client'
-import { createReviewMutation } from '../../../../../../_graphql-legacy/createReviewMutation'
 import Reviews from '../../../../../blocks/Reviews'
 import { FC, useState } from 'react'
 import { IReview } from 'src/types/reviews'

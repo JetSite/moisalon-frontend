@@ -13,7 +13,6 @@ import {
 import { useMutation } from '@apollo/client'
 import catalogOrDefault from '../../../../../../utils/catalogOrDefault'
 import EditIcons from '../../../../../ui/EditIcons'
-import { updateSalonServiceMasterMutation } from '../../../../../../_graphql-legacy/salon/updateSalonMasterServiceMutation'
 import EditSalonServicesForClient from '../../../EditSalonServicesForClient'
 import { IGroupedCategories } from 'src/utils/getGrupedServices'
 import { ISalonPage } from 'src/types/salon'
@@ -33,12 +32,6 @@ const MobileServicesComponent: FC<Props> = ({
   refetchSalon,
 }) => {
   const [isEditing, setIsEditing] = useState(false)
-
-  const [updateServices] = useMutation(updateSalonServiceMasterMutation, {
-    onCompleted: () => {
-      refetchSalon()
-    },
-  })
 
   const handleEditConfirm = () => {}
 

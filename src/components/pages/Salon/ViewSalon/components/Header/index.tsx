@@ -37,8 +37,6 @@ import {
   ActiveSocials,
   ChatIcon,
 } from './styled'
-import { createScopesSalon } from '../../../../../../_graphql-legacy/salon/createScopesSalon'
-import { cyrToTranslit } from '../../../../../../utils/translit'
 import ChatMessagePopup from '../../../../../ui/ChatMessagePopup'
 import {
   urlPatternHttps,

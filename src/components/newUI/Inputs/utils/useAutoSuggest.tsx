@@ -12,6 +12,7 @@ interface IUseAutoSuggestResult<T> {
   handleFetch: SuggestionsFetchRequested
   inputProps: FieldInputProps<string>
   data: T[]
+  error: Error | null
 }
 
 interface Props<T> {
@@ -45,6 +46,7 @@ export const useAutoSuggest = <T,>(
   const [loading, setLoading] = useState(false)
   const [suggestions, setSuggestions] = useState<string[]>([])
   const [data, setData] = useState<T[]>([])
+  const [error, setError] = useState<Error | null>(null)
 
   const debouncedFetch = useMemo(
     () =>
@@ -71,6 +73,7 @@ export const useAutoSuggest = <T,>(
             onError: error => {
               setLoading(false)
               console.error('The error or update state ' + name + ': ', error)
+              setError(error)
             },
           })
         }
@@ -147,6 +150,7 @@ export const useAutoSuggest = <T,>(
     handleFetch,
     initialLoading,
     data,
+    error,
     inputProps: {
       onChange,
       onBlur,

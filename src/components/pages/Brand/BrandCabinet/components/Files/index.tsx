@@ -7,10 +7,8 @@ import { TextField } from '../../../../../blocks/Form'
 import { Field } from 'react-final-form'
 import AutoFocusedForm from '../../../../../blocks/Form/AutoFocusedForm'
 import ErrorPopup from '../../../../../blocks/Form/Error'
-import { addBrandProductsPriceMutation } from '../../../../../../_graphql-legacy/brand/addBrandProductsPrice'
 import Success from '../../../../../blocks/Form/Success'
-import { addBrandProductsFormMutation } from '../../../../../../_graphql-legacy/brand/addBrandProductsForm'
-import { addBrandProductsPhotosMutation } from '../../../../../../_graphql-legacy/brand/addBrandProductsPhotos'
+
 import { laptopBreakpoint } from '../../../../../../styles/variables'
 import { IID } from 'src/types/common'
 const Wrapper = styled.div`
@@ -124,97 +122,97 @@ const Files: FC<Props> = ({ id }) => {
   const [loadingFile, setLoadingFile] = useState(false)
   const [loadingFileProduct, setLoadingFileProduct] = useState(false)
 
-  const [addProductPrice] = useMutation(addBrandProductsPriceMutation, {
-    onCompleted: () => {
-      setFileXsl(null)
-      !isSuccessPopupOpen && setSuccessText('Файл с ценами успешно загружен')
-      setLoadingFile(false)
-      !isSuccessPopupOpen && setSuccessPopupOpen(true)
-    },
-  })
-  const [addProductPhotos] = useMutation(addBrandProductsPhotosMutation, {
-    onCompleted: () => {
-      setFileProduct(null)
-      !isSuccessPopupOpen && setSuccessText('Архив успешно загружен')
-      setLoadingFileProduct(false)
-      !isSuccessPopupOpen && setSuccessPopupOpen(true)
-    },
-  })
-  const [addProductForm] = useMutation(addBrandProductsFormMutation, {
-    onCompleted: () => {
-      !isSuccessPopupOpen && setSuccessText('Ссылка на цены отправлена')
-      setLoadingFileProduct(false)
-      !isSuccessPopupOpen && setSuccessPopupOpen(true)
-    },
-  })
-  const [addProductPhotoForm] = useMutation(addBrandProductsFormMutation, {
-    onCompleted: () => {
-      !isSuccessPopupOpen && setSuccessText('Ссылка на облако отправлена')
-      setLoadingFileProduct(false)
-      !isSuccessPopupOpen && setSuccessPopupOpen(true)
-    },
-  })
+  // const [addProductPrice] = useMutation(addBrandProductsPriceMutation, {
+  //   onCompleted: () => {
+  //     setFileXsl(null)
+  //     !isSuccessPopupOpen && setSuccessText('Файл с ценами успешно загружен')
+  //     setLoadingFile(false)
+  //     !isSuccessPopupOpen && setSuccessPopupOpen(true)
+  //   },
+  // })
+  // const [addProductPhotos] = useMutation(addBrandProductsPhotosMutation, {
+  //   onCompleted: () => {
+  //     setFileProduct(null)
+  //     !isSuccessPopupOpen && setSuccessText('Архив успешно загружен')
+  //     setLoadingFileProduct(false)
+  //     !isSuccessPopupOpen && setSuccessPopupOpen(true)
+  //   },
+  // })
+  // const [addProductForm] = useMutation(addBrandProductsFormMutation, {
+  //   onCompleted: () => {
+  //     !isSuccessPopupOpen && setSuccessText('Ссылка на цены отправлена')
+  //     setLoadingFileProduct(false)
+  //     !isSuccessPopupOpen && setSuccessPopupOpen(true)
+  //   },
+  // })
+  // const [addProductPhotoForm] = useMutation(addBrandProductsFormMutation, {
+  //   onCompleted: () => {
+  //     !isSuccessPopupOpen && setSuccessText('Ссылка на облако отправлена')
+  //     setLoadingFileProduct(false)
+  //     !isSuccessPopupOpen && setSuccessPopupOpen(true)
+  //   },
+  // })
 
   const handeSubmitXSLX = async (values: Record<string, unknown>) => {
-    if (values?.fileXlsx) {
-      addProductForm({
-        variables: {
-          input: {
-            id,
-            priceProductsFileExternal: values?.fileXlsx,
-          },
-        },
-      })
-    }
-    if (fileXsl) {
-      setLoadingFile(true)
-      await uploadFile(fileXsl)
-        .then(res => {
-          addProductPrice({
-            variables: {
-              input: {
-                id,
-                priceProductsFile: res,
-              },
-            },
-          })
-        })
-        .catch(error => {
-          setErrors(error)
-          setLoadingFile(false)
-        })
-    }
+    // if (values?.fileXlsx) {
+    //   addProductForm({
+    //     variables: {
+    //       input: {
+    //         id,
+    //         priceProductsFileExternal: values?.fileXlsx,
+    //       },
+    //     },
+    //   })
+    // }
+    // if (fileXsl) {
+    //   setLoadingFile(true)
+    //   await uploadFile(fileXsl)
+    //     .then(res => {
+    //       addProductPrice({
+    //         variables: {
+    //           input: {
+    //             id,
+    //             priceProductsFile: res,
+    //           },
+    //         },
+    //       })
+    //     })
+    //     .catch(error => {
+    //       setErrors(error)
+    //       setLoadingFile(false)
+    //     })
+    // }
   }
 
   const handeSubmitFile = async (values: Record<string, unknown>) => {
-    if (values?.fileProduct) {
-      addProductPhotoForm({
-        variables: {
-          input: {
-            id,
-            photosProductsFilesExternal: values?.fileProduct,
-          },
-        },
-      })
-    }
-    if (fileProduct) {
-      setLoadingFileProduct(true)
-      await uploadFileProducts(fileProduct)
-        .then(res => {
-          addProductPhotos({
-            variables: {
-              input: {
-                id,
-                photosProductsFile: res,
-              },
-            },
-          })
-        })
-        .catch(error => {
-          setErrors(error)
-          setLoadingFileProduct(false)
-        })
-    }
+    // if (values?.fileProduct) {
+    //   addProductPhotoForm({
+    //     variables: {
+    //       input: {
+    //         id,
+    //         photosProductsFilesExternal: values?.fileProduct,
+    //       },
+    //     },
+    //   })
+    // }
+    // if (fileProduct) {
+    //   setLoadingFileProduct(true)
+    //   await uploadFileProducts(fileProduct)
+    //     .then(res => {
+    //       addProductPhotos({
+    //         variables: {
+    //           input: {
+    //             id,
+    //             photosProductsFile: res,
+    //           },
+    //         },
+    //       })
+    //     })
+    //     .catch(error => {
+    //       setErrors(error)
+    //       setLoadingFileProduct(false)
+    //     })
+    // }
   }
 
   const onSelectXSLXHandler = (values: FileList | null) => {

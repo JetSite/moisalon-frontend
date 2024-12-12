@@ -2,6 +2,7 @@ import moment from 'moment'
 import { IPhoto } from 'src/types'
 import { IID } from 'src/types/common'
 import { IEvent } from 'src/types/event'
+import formatDate from 'src/utils/newUtils/formatDate'
 import formatTime from 'src/utils/newUtils/formatTime'
 
 type IEventFormValues = (props: IEventFormValuesProps) => IEventInitialForm
@@ -46,8 +47,8 @@ export const getEventInitialValues: IEventFormValues = ({ event }) => {
         address: event.address,
         cover: event.cover,
         publishedAt: false,
-        dateStart: event.dateStart.toString(),
-        dateEnd: event.dateEnd.toString(),
+        dateStart: formatDate(event.dateStart),
+        dateEnd: formatDate(event.dateEnd),
         timeStart: formatTime(event.timeStart),
         timeEnd: formatTime(event.timeEnd),
         longitude: event.longitude,

@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router'
 import { useQuery } from '@apollo/client'
 import scrollIntoView from 'scroll-into-view'
-import { currentUserSalonsAndMasterQuery } from '../../../../../../_graphql-legacy/master/currentUserSalonsAndMasterQuery'
 import { cyrToTranslit } from '../../../../../../utils/translit'
 import {
   CardsWrapper,

@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useQuery } from '@apollo/client'
 import Link from 'next/link'
 
-import { educationSearch } from '../../../../../_graphql-legacy/education/educationSearch'
 import { MobileVisible, MobileHidden } from '../../../../../styles/common'
 import { WrapperItems, Title, LinkStyled } from './styled'
 import Button from '../../../../ui/Button'
@@ -15,19 +14,19 @@ const EducationsSearchResults = () => {
   const [loading, setLoading] = useState(false)
   const [fetchMoreLoading, setFetchMoreLoading] = useState(false)
 
-  const { fetchMore, refetch } = useQuery(educationSearch, {
-    variables: {
-      query: (query && query.query) || '',
-    },
-    skip: true,
-    notifyOnNetworkStatusChange: true,
-    onCompleted: res => {
-      setLoading(false)
-      if (res) {
-        setEducationsSearchData(res.educationSearch)
-      }
-    },
-  })
+  // const { fetchMore, refetch } = useQuery(educationSearch, {
+  //   variables: {
+  //     query: (query && query.query) || '',
+  //   },
+  //   skip: true,
+  //   notifyOnNetworkStatusChange: true,
+  //   onCompleted: res => {
+  //     setLoading(false)
+  //     if (res) {
+  //       setEducationsSearchData(res.educationSearch)
+  //     }
+  //   },
+  // })
 
   const educationsSearchResult = educationsSearchData?.connection.nodes || []
   const hasNextPage = educationsSearchData?.connection?.pageInfo?.hasNextPage
@@ -36,37 +35,37 @@ const EducationsSearchResults = () => {
   useEffect(() => {
     if (query?.query && query.query !== '') {
       setLoading(true)
-      refetch({
-        variables: {
-          query: (query && query.query) || '',
-          cursor: null,
-        },
-      })
+      // refetch({
+      //   variables: {
+      //     query: (query && query.query) || '',
+      //     cursor: null,
+      //   },
+      // })
     } else {
-      setEducationsSearchData(educationSearch)
+      // setEducationsSearchData(educationSearch)
     }
   }, [query])
 
   const onFetchMore = useCallback(() => {
     setFetchMoreLoading(true)
-    fetchMore({
-      variables: {
-        query: (query && query.query) || '',
-        cursor: educationsSearchData?.connection?.pageInfo?.endCursor,
-      },
+    // fetchMore({
+    //   variables: {
+    //     query: (query && query.query) || '',
+    //     cursor: educationsSearchData?.connection?.pageInfo?.endCursor,
+    //   },
 
-      updateQuery(previousResult, { fetchMoreResult }) {
-        const newNodes = fetchMoreResult.educationSearch.connection.nodes
-        setFetchMoreLoading(false)
-        setEducationsSearchData({
-          connection: {
-            ...fetchMoreResult.educationSearch.connection,
-            nodes: [...educationsSearchData.connection.nodes, ...newNodes],
-          },
-          filterDefinition: fetchMoreResult.educationSearch.filterDefinition,
-        })
-      },
-    })
+    //   updateQuery(previousResult, { fetchMoreResult }) {
+    //     const newNodes = fetchMoreResult.educationSearch.connection.nodes
+    //     setFetchMoreLoading(false)
+    //     setEducationsSearchData({
+    //       connection: {
+    //         ...fetchMoreResult.educationSearch.connection,
+    //         nodes: [...educationsSearchData.connection.nodes, ...newNodes],
+    //       },
+    //       filterDefinition: fetchMoreResult.educationSearch.filterDefinition,
+    //     })
+    //   },
+    // })
   })
 
   const fetchMoreButton = hasNextPage ? (

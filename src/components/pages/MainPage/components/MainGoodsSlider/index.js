@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useQuery } from '@apollo/client'
 import styled from 'styled-components'
-import { goodSearch } from '../../../../../_graphql-legacy/goodSearch'
 import Slider from '../../../../blocks/Slider'
 import FastBuyPopup from '../../../../ui/FastBuyPopup'
 
@@ -17,14 +16,14 @@ const MainGoodsSlider = ({ me }) => {
   const [openBuyPopup, setOpenBuyPopup] = useState(false)
   const [product, setProduct] = useState(null)
 
-  const { data, loading } = useQuery(goodSearch, {
-    variables: {
-      input: {
-        brandId: ['62fb9f7884fe720001f6771c'],
-        query: '',
-      },
-    },
-  })
+  // const { data, loading } = useQuery(goodSearch, {
+  //   variables: {
+  //     input: {
+  //       brandId: ['62fb9f7884fe720001f6771c'],
+  //       query: '',
+  //     },
+  //   },
+  // })
 
   const chooseProductOneClick = item => {
     setProduct(item)
@@ -40,7 +39,7 @@ const MainGoodsSlider = ({ me }) => {
         me={me}
       />
       <Wrapper>
-        <Slider
+        {/* <Slider
           type="goods"
           noScroll
           loading={loading}
@@ -54,7 +53,7 @@ const MainGoodsSlider = ({ me }) => {
           noPadding
           pl={20}
           chooseProductOneClick={chooseProductOneClick}
-        />
+        /> */}
       </Wrapper>
     </>
   )

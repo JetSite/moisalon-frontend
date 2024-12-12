@@ -9,7 +9,6 @@ import ErrorPopup from '../Form/Error'
 import { laptopBreakpoint } from '../../../styles/variables'
 import Button from '../../ui/Button'
 import PhotoAdd from './PhotoAdd'
-import { createBannerMutation } from '../../../_graphql-legacy/baners/createBannerMutation'
 
 const FieldWrap = styled.div`
   margin-bottom: 14px;
@@ -50,19 +49,19 @@ const CreateBanner = ({ setCreateBanner, refetch }) => {
   const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
   const [hover, setHover] = useState(false)
 
-  const [createBanner] = useMutation(createBannerMutation, {
-    onError: error => {
-      const errorMessages = error.graphQLErrors.map(e => e.message)
-      setLoading(false)
-      setErrors(errorMessages)
-      setErrorPopupOpen(true)
-    },
-    onCompleted: async () => {
-      setLoading(false)
-      await refetch()
-      setCreateBanner(false)
-    },
-  })
+  // const [createBanner] = useMutation(createBannerMutation, {
+  //   onError: error => {
+  //     const errorMessages = error.graphQLErrors.map(e => e.message)
+  //     setLoading(false)
+  //     setErrors(errorMessages)
+  //     setErrorPopupOpen(true)
+  //   },
+  //   onCompleted: async () => {
+  //     setLoading(false)
+  //     // await refetch()
+  //     setCreateBanner(false)
+  //   },
+  // })
 
   const onSubmit = useCallback(
     async values => {
@@ -71,17 +70,17 @@ const CreateBanner = ({ setCreateBanner, refetch }) => {
         setErrorPopupOpen(true)
         return
       }
-      setLoading(true)
-      createBanner({
-        variables: {
-          input: {
-            requestComment: values.requestComment,
-            adHeader: values.adHeader,
-            adText: values.adText,
-            adImage: photoId,
-          },
-        },
-      })
+      // setLoading(true)
+      // createBanner({
+      //   variables: {
+      //     input: {
+      //       requestComment: values.requestComment,
+      //       adHeader: values.adHeader,
+      //       adText: values.adText,
+      //       adImage: photoId,
+      //     },
+      //   },
+      // })
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [photoId],

@@ -15,7 +15,6 @@ import {
 } from './styled'
 import EditIcons from '../../../../../ui/EditIcons'
 import EditSalonServicesForClient from '../../../EditSalonServicesForClient'
-import { updateSalonServiceMasterMutation } from '../../../../../../_graphql-legacy/salon/updateSalonMasterServiceMutation'
 import {
   IGroupedCategories,
   IGroupedService,
@@ -43,12 +42,6 @@ const Services: FC<Props> = ({
   refetchSalon,
 }) => {
   const [isEditing, setIsEditing] = useState<boolean>(false)
-
-  const [updateServices] = useMutation(updateSalonServiceMasterMutation, {
-    onCompleted: () => {
-      refetchSalon()
-    },
-  })
 
   const handleEditConfirm = () => {}
 

@@ -1,6 +1,7 @@
 import { IPhoto } from 'src/types'
 import { IID } from 'src/types/common'
 import { IEducation } from 'src/types/education'
+import formatDate from 'src/utils/newUtils/formatDate'
 import formatTime from 'src/utils/newUtils/formatTime'
 
 type IEducationFormValues = (
@@ -49,8 +50,8 @@ export const getEducationInitialValues: IEducationFormValues = ({
         amount: education.amount,
         cover: education.cover,
         publishedAt: false,
-        dateStart: education.dateStart.toString(),
-        dateEnd: education.dateEnd.toString(),
+        dateStart: formatDate(education.dateStart),
+        dateEnd: formatDate(education.dateEnd),
         timeStart: formatTime(education.timeStart),
         timeEnd: formatTime(education.timeEnd),
       }

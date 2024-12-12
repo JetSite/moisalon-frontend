@@ -39,7 +39,6 @@ import {
 } from '../../../utils/favoritesInStorage'
 import ChatMessagePopup from '../../ui/ChatMessagePopup'
 import { useMutation, useQuery } from '@apollo/client'
-import { createScopesEducation } from '../../../_graphql-legacy/education/createScoreEducation'
 import { PHOTO_URL } from '../../../api/variables'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
@@ -104,11 +103,11 @@ const EducationPage: FC<EducationPageProps> = ({
     },
   })
 
-  const [createScore] = useMutation(createScopesEducation, {
-    onCompleted: () => {
-      refetchEducation()
-    },
-  })
+  // const [createScore] = useMutation(createScopesEducation, {
+  //   onCompleted: () => {
+  //     refetchEducation()
+  //   },
+  // })
 
   const originInfo = (item: IEducation) => {
     if (item.master) {
@@ -144,12 +143,12 @@ const EducationPage: FC<EducationPageProps> = ({
   }
 
   const handleChangeRating = (num: any) => {
-    createScore({
-      variables: {
-        value: num,
-        id: education?.id,
-      },
-    })
+    // createScore({
+    //   variables: {
+    //     value: num,
+    //     id: education?.id,
+    //   },
+    // })
   }
 
   return (

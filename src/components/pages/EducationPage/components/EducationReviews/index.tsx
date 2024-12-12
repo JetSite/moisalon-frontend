@@ -1,6 +1,5 @@
 import { useLazyQuery, useMutation } from '@apollo/client'
 import Reviews from '../../../../blocks/Reviews'
-import { createCommentMutation } from '../../../../../_graphql-legacy/createCommentMutation'
 import { FC, useState } from 'react'
 import { IID, ISetState } from 'src/types/common'
 import { ADD_REVIEW_EDUCATION } from 'src/api/graphql/education/mutations/addReviewEducation'

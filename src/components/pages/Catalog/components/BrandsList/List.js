@@ -1,7 +1,6 @@
 import { useCallback, useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useQuery } from '@apollo/client'
-import { brandSearchQuery } from '../../../../../_graphql-legacy/search/brandSearch'
 import BrandItem from './BrandItem'
 import Button from '../../../../ui/Button'
 import { MobileVisible, MobileHidden } from '../../../../../styles/common'
@@ -11,32 +10,17 @@ const List = ({ filterProduct, brandSearchData }) => {
   const [brandsSearchList, setBrandsSearchList] = useState(brandSearchData)
   const [fetchMoreLoading, setFetchMoreLoading] = useState(false)
 
-  const { fetchMore, refetch } = useQuery(brandSearchQuery, {
-    variables: {
-      query: '',
-      categoryId:
-        filterProduct?.value !== 'Все категории' ? filterProduct?.value : null,
-    },
-    skip: true,
-    notifyOnNetworkStatusChange: true,
-    onCompleted: res => {
-      if (res) {
-        setBrandsSearchList(res.brandsSearch)
-      }
-    },
-  })
-
   useEffect(() => {
     if (filterProduct?.value && filterProduct?.value !== 'Все категории') {
-      refetch({
-        variables: {
-          query: '',
-          categoryId:
-            filterProduct?.value !== 'Все категории'
-              ? filterProduct?.value
-              : null,
-        },
-      })
+      // refetch({
+      //   variables: {
+      //     query: '',
+      //     categoryId:
+      //       filterProduct?.value !== 'Все категории'
+      //         ? filterProduct?.value
+      //         : null,
+      //   },
+      // })
     } else {
       setBrandsSearchList(brandSearchData)
     }
@@ -47,28 +31,28 @@ const List = ({ filterProduct, brandSearchData }) => {
 
   const onFetchMore = useCallback(() => {
     setFetchMoreLoading(true)
-    fetchMore({
-      variables: {
-        query: '',
-        categoryId:
-          filterProduct?.value !== 'Все категории'
-            ? filterProduct?.value
-            : null,
-        cursor: brandsSearchList?.connection?.pageInfo?.endCursor,
-      },
+    // fetchMore({
+    //   variables: {
+    //     query: '',
+    //     categoryId:
+    //       filterProduct?.value !== 'Все категории'
+    //         ? filterProduct?.value
+    //         : null,
+    //     cursor: brandsSearchList?.connection?.pageInfo?.endCursor,
+    //   },
 
-      updateQuery(previousResult, { fetchMoreResult }) {
-        const newNodes = fetchMoreResult.brandsSearch.connection.nodes
-        setFetchMoreLoading(false)
-        setBrandsSearchList({
-          connection: {
-            ...fetchMoreResult.brandsSearch.connection,
-            nodes: [...brandsSearchList?.connection.nodes, ...newNodes],
-          },
-          filterDefinition: fetchMoreResult.brandsSearch.filterDefinition,
-        })
-      },
-    })
+    //   updateQuery(previousResult, { fetchMoreResult }) {
+    //     const newNodes = fetchMoreResult.brandsSearch.connection.nodes
+    //     setFetchMoreLoading(false)
+    //     setBrandsSearchList({
+    //       connection: {
+    //         ...fetchMoreResult.brandsSearch.connection,
+    //         nodes: [...brandsSearchList?.connection.nodes, ...newNodes],
+    //       },
+    //       filterDefinition: fetchMoreResult.brandsSearch.filterDefinition,
+    //     })
+    //   },
+    // })
   })
 
   const fetchMoreButton = hasNextPage ? (

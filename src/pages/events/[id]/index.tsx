@@ -1,7 +1,4 @@
 import { addApolloState, initializeApollo } from '../../../api/apollo-client'
-import { eventSearchById } from '../../../_graphql-legacy/events/eventSearchById'
-import { getAll } from '../../../_graphql-legacy/advices/getAll'
-import { getCategories } from '../../../_graphql-legacy/advices/getCategories'
 import { getFeedCategories } from 'src/api/graphql/feed/queries/getFeedCategories'
 import { getFeeds } from 'src/api/graphql/feed/queries/getFeeds'
 import { getEventById } from 'src/api/graphql/event/queries/getEventById'
