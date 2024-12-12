@@ -13,7 +13,7 @@ import { IMaster } from 'src/types/masters'
 import Search from '../AddSalons/components/Search'
 import RotatingLoader from 'src/components/ui/RotatingLoader'
 import SearchResults from '../AddSalons/components/SearchResults'
-import { getBrandsByName } from 'src/api/graphql/brand/queries/getBrandsByName'
+import { BRANDS_BY_NAME } from 'src/api/graphql/brand/queries/getBrandsByName'
 import { ISalon } from 'src/types/salon'
 
 interface Props {
@@ -27,7 +27,7 @@ const AddBrands: FC<Props> = ({ entries, brands, setBrands }) => {
   const [inputValue, setInputValue] = useState('')
   const [debouncedInputValue, setDebouncedInputValue] = useState('')
 
-  const { loading } = useQuery(getBrandsByName, {
+  const { loading } = useQuery(BRANDS_BY_NAME, {
     skip: !debouncedInputValue,
     variables: { name: debouncedInputValue },
     onCompleted: data => {
@@ -61,8 +61,6 @@ const AddBrands: FC<Props> = ({ entries, brands, setBrands }) => {
     },
     [entries],
   )
-
-  console.log('dataSearch', dataSearch)
 
   const brandsListSearch = dataSearch?.map(item => {
     return (

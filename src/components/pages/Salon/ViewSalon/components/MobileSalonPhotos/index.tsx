@@ -6,6 +6,7 @@ import { laptopBreakpoint } from '../../../../../../styles/variables'
 import { Navigation } from 'swiper/modules'
 import { PHOTO_URL } from 'src/api/variables'
 import { ISalonPage } from 'src/types/salon'
+import { useBeforeInit } from 'src/components/blocks/Slider/useBeforeInit'
 
 SwiperCore.use([Navigation])
 
@@ -41,18 +42,7 @@ const Item = styled.div<{ background: string }>`
 `
 
 const MobileSalonPhotos: FC<{ salon: ISalonPage }> = ({ salon }) => {
-  const navigationPrevRef = useRef(null)
-  const navigationNextRef = useRef(null)
-
-  const onBeforeInit = (Swiper: SwiperCore) => {
-    if (typeof Swiper.params.navigation !== 'boolean') {
-      const navigation = Swiper.params.navigation
-      if (navigation) {
-        navigation.prevEl = navigationPrevRef.current
-        navigation.nextEl = navigationNextRef.current
-      }
-    }
-  }
+  const { onBeforeInit, navigationPrevRef, navigationNextRef } = useBeforeInit()
 
   return (
     <Wrapper>

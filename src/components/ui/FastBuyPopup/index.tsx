@@ -11,7 +11,6 @@ import { useMutation } from '@apollo/react-hooks'
 import { PHOTO_URL } from '../../../api/variables'
 import { CSSTransition } from 'react-transition-group'
 import { formatMobileNumber } from '../../../utils/formatMobileNumber'
-import { sendOrderOneClick } from '../../../_graphql-legacy/orders/sendOrderOneClick'
 import * as Styled from './styles'
 import RotatingLoader from '../RotatingLoader'
 import { IUser } from 'src/types/me'
@@ -187,6 +186,11 @@ const FastBuyPopup: FC<Props> = ({
                       <Styled.ProductDescription>
                         {item?.shortDescription}
                       </Styled.ProductDescription>
+                      {item?.availableInStock ? (
+                        <Styled.ProductDescription>
+                          {`Количество доступно для заказа: ${item?.availableInStock} упк.`}
+                        </Styled.ProductDescription>
+                      ) : null}
                     </Styled.TitleWrap>
                     <Styled.PriceWrap>
                       <Styled.Description>Сумма заказа: </Styled.Description>

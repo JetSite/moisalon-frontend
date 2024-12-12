@@ -3,6 +3,12 @@ import { useQuery } from '@apollo/client'
 import { useMutation } from '@apollo/react-hooks'
 import { useRouter } from 'next/router'
 import {
+  Minus,
+  Plus,
+  Quantity,
+  QuantityWrap,
+} from 'src/components/pages/Catalog/components/Product/style'
+import {
   MainContainer,
   MobileHidden,
   MobileVisible,
@@ -20,10 +26,6 @@ import {
   CustomButton,
   TopCustomButton,
   BottomCustomButton,
-  QuantityWrap,
-  Minus,
-  Plus,
-  Quantity,
   Description,
   AvailableQuantity,
   ButtonsWrapper,
@@ -39,7 +41,7 @@ import FastBuyPopup from '../../ui/FastBuyPopup'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
 import useBaseStore from 'src/store/baseStore'
-import { IProduct } from 'src/types/product'
+import { ICart, IProduct, IProductCart } from 'src/types/product'
 import { IReview } from 'src/types/reviews'
 import { UPDATE_CART } from 'src/api/graphql/cart/mutations/updateCart'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
@@ -48,24 +50,46 @@ import { ADD_REVIEW_PRODUCT } from 'src/api/graphql/product/mutations/addReviewP
 import { GET_PRODUCT_REVIEWS } from 'src/api/graphql/product/queries/getProductReviews'
 import EntityDescription from 'src/components/newUI/EntityDescription'
 import Slider from 'src/components/blocks/Slider'
+import { useMutationCart } from '../Catalog/utils/useMutationCart'
+import { QuantityControls } from '../Catalog/components/Product/conponents/QuantityControls'
+import BackButton from 'src/components/ui/BackButton'
 
-interface IProductPageProps {
+export interface IProductPageProps {
   product: IProduct
   reviews: IReview[]
+  cart: ICart | null
 }
 
-const ProductPage: FC<IProductPageProps> = ({ product, reviews }) => {
+const ProductPage: FC<IProductPageProps> = ({ product, reviews, cart }) => {
   const { user } = useAuthStore(getStoreData)
-  const cart = user?.owner.cart || null
-  const { setProducts: setProductsState, setCart } = useBaseStore(getStoreEvent)
   const [reviewsData, setReviewsData] = useState(reviews)
-  const { city, me } = useAuthStore(getStoreData)
+  const { city } = useAuthStore(getStoreData)
   const [toggleCharacter, setToggleCharacter] = useState(false)
   const [openPopup, setOpenPopup] = useState(false)
   const [openBuyPopup, setOpenBuyPopup] = useState(false)
   const [loading, setLoading] = useState<boolean>(false)
+  const { handleMutate, quantityMap, errors, setErrors } = useMutationCart({
+    cart,
+    userID: user?.info.id || null,
+  })
 
-  const router = useRouter()
+  const [cartItem, setCartItem] = useState<IProductCart>(
+    cart?.cartContent?.find(el => el?.product?.id === product.id) || {
+      product: { ...product },
+      quantity: 0,
+      id: `temp_${product.id}`,
+    },
+  )
+
+  useEffect(() => {
+    setCartItem(
+      cart?.cartContent?.find(el => el?.product?.id === product.id) || {
+        product: { ...product },
+        quantity: 0,
+        id: `temp_${product.id}`,
+      },
+    )
+  }, [cart?.cartContent])
 
   const closePopup = () => {
     setOpenPopup(false)
@@ -95,128 +119,25 @@ const ProductPage: FC<IProductPageProps> = ({ product, reviews }) => {
     },
   })
 
-  const [createCart, { loading: createCartLoading }] = useMutation(
-    CREATE_CART,
-    {
-      onCompleted: res => {
-        if (res?.createCart?.data) {
-          setCart(flattenStrapiResponse(res.createCart.data))
-        }
-      },
-    },
-  )
-
-  const [updateCart, { loading: updateCartLoading }] = useMutation(
-    UPDATE_CART,
-    {
-      onCompleted: res => {
-        if (res?.updateCart?.data) {
-          setCart(flattenStrapiResponse(res.updateCart.data))
-        }
-      },
-    },
-  )
-
-  const addToCart = (item, quantity) => {
-    if (!cart) {
-      createCart({
-        variables: {
-          data: {
-            user: user?.info?.id,
-            cartContent: [{ product: item.id, quantity }],
-          },
-        },
-      })
-    } else {
-      const itemInCart = cart?.cartContent?.find(
-        el => el?.product?.id === item.id,
-      )
-      if (!itemInCart) {
-        updateCart({
-          variables: {
-            data: {
-              cartContent: [
-                ...cart?.cartContent.map(el => ({
-                  product: el?.product?.id,
-                  quantity: el?.quantity,
-                })),
-                { product: item.id, quantity },
-              ],
-            },
-            id: cart?.id,
-          },
-        })
-      } else {
-        updateCart({
-          variables: {
-            data: {
-              cartContent: cart?.cartContent?.map(el => {
-                if (el?.product?.id === item.id) {
-                  return {
-                    product: el?.product?.id,
-                    quantity: el?.quantity + quantity,
-                  }
-                }
-                return {
-                  product: el?.product?.id,
-                  quantity: el?.quantity,
-                }
-              }),
-            },
-            id: cart?.id,
-          },
-        })
-      }
-    }
+  const addToCart = (item: IProduct, mustGrow: boolean) => {
+    handleMutate({
+      itemID: item.id,
+      mustGrow,
+    })
   }
 
-  const deleteFromCart = item => {
-    const itemInCart = cart?.cartContent?.find(
-      el => el?.product?.id === item.product.id,
-    )
-    if (itemInCart?.quantity === 1) {
-      updateCart({
-        variables: {
-          data: {
-            cartContent: cart?.cartContent
-              ?.filter(el => el?.product?.id !== item.product.id)
-              .map(el => ({
-                product: el?.product?.id,
-                quantity: el?.quantity,
-              })),
-          },
-          id: cart?.id,
-        },
-      })
-    } else {
-      updateCart({
-        variables: {
-          data: {
-            cartContent: cart?.cartContent?.map(el => {
-              if (el?.product?.id === item.product.id) {
-                return {
-                  product: el?.product?.id,
-                  quantity: el?.quantity - 1,
-                }
-              }
-              return {
-                product: el?.product?.id,
-                quantity: el?.quantity,
-              }
-            }),
-          },
-          id: cart?.id,
-        },
-      })
-    }
+  const deleteFromCart = (item: IProduct) => {
+    handleMutate({
+      itemID: item.id,
+      mustGrow: false,
+    })
   }
 
-  const newItem = cart?.cartContent?.find(el => el?.product?.id === product.id)
-    ? cart?.cartContent?.find(el => el?.product?.id === product.id)
-    : { product: { ...product }, quantity: 0 }
-  const productImage = newItem?.product?.cover?.url
-    ? `${PHOTO_URL}${newItem.product.cover.url}`
+  const productImage = cartItem.product?.cover?.url
+    ? `${PHOTO_URL}${cartItem.product.cover.url}`
     : ''
+
+  const router = useRouter()
 
   return (
     <MainContainer>
@@ -224,17 +145,16 @@ const ProductPage: FC<IProductPageProps> = ({ product, reviews }) => {
         openBuyPopup={openBuyPopup}
         setOpenBuyPopup={setOpenBuyPopup}
         item={product}
-        // brand={brand}
         user={user}
       />
       <Wrapper>
-        {/* <BackButton
+        <BackButton
           type={router?.query?.catalog ? 'Магазин' : 'Бренд'}
           name={product?.brand?.name}
-          link={`/${
-            cyrToTranslit(product?.brand?.addressFull?.city) || city.slug
-          }/brand/${product?.brand?.seo?.slug || product?.brand?.id}/products`}
-        /> */}
+          link={`/${product.brand.city.slug || city.slug}/brand/${
+            product?.brand.id || product?.brand?.id
+          }/products`}
+        />
         <Wrap>
           <Left>
             <ImageBrand>
@@ -251,23 +171,24 @@ const ProductPage: FC<IProductPageProps> = ({ product, reviews }) => {
             </Rating> */}
           </Left>
           <Right>
-            <Title>{newItem?.product?.name}</Title>
+            <Title>{cartItem?.product?.name}</Title>
             {product?.brand?.dontShowPrice ? null : (
               <>
-                {newItem?.product?.salePrice ? (
-                  <OldPrice>{`${newItem?.product?.regularPrice?.toLocaleString()} ₽`}</OldPrice>
+                {cartItem?.product?.salePrice ? (
+                  <OldPrice>{`${cartItem?.product?.regularPrice?.toLocaleString()} ₽`}</OldPrice>
                 ) : null}
                 <Price>{`${
-                  (newItem?.product?.salePrice &&
-                    newItem?.product?.salePrice?.toLocaleString()) ||
-                  newItem?.product?.regularPrice?.toLocaleString()
+                  (cartItem?.product?.salePrice &&
+                    cartItem?.product?.salePrice?.toLocaleString()) ||
+                  cartItem?.product?.regularPrice?.toLocaleString()
                 } ₽`}</Price>
               </>
             )}
             <AvailableQuantity
               isWrongQuantity={
-                newItem?.quantity &&
-                newItem.quantity > product?.availableInStock
+                cartItem?.quantity
+                  ? cartItem.quantity > product?.availableInStock
+                  : true
               }
             >
               {`${product?.availableInStock ?? 0} ${pluralize(
@@ -286,158 +207,35 @@ const ProductPage: FC<IProductPageProps> = ({ product, reviews }) => {
             {product?.quantityInPac ? (
               <Detail>Количество: {product?.quantityInPac}</Detail>
             ) : null} */}
-            {newItem?.quantity === 0 ? (
-              <>
-                <MobileHidden>
-                  <ButtonsWrapper>
-                    <Button
-                      size="small"
-                      variant="red"
-                      font="medium"
-                      mt="48"
-                      disabled={
-                        product?.availableInStock
-                          ? product.availableInStock === 0
-                          : true
-                      }
-                      onClick={e => {
-                        e.preventDefault()
-                        e.stopPropagation()
-                        setOpenBuyPopup(true)
-                      }}
-                    >
-                      Заказать в один клик
-                    </Button>
-                    <Button
-                      size="small"
-                      variant="red"
-                      font="medium"
-                      mt="48"
-                      onClick={e => {
-                        e.preventDefault()
-                        e.stopPropagation()
-                        if (me && !me?.info) {
-                          router.push(
-                            {
-                              pathname: '/login',
-                              query: { error: 'notAuthorized' },
-                            },
-                            '/login',
-                          )
-                        } else {
-                          addToCart(newItem?.product, 1)
-                        }
-                      }}
-                      disabled={
-                        product?.availableInStock
-                          ? product.availableInStock === 0
-                          : true
-                      }
-                    >
-                      Добавить в корзину
-                    </Button>
-                  </ButtonsWrapper>
-                </MobileHidden>
-                <MobileVisible>
-                  <ButtonsWrapper>
-                    <Button
-                      size="fullWidth"
-                      variant="red"
-                      font="popUp"
-                      mt="37"
-                      disabled={
-                        product?.availableInStock
-                          ? product.availableInStock === 0
-                          : true
-                      }
-                      onClick={e => {
-                        e.preventDefault()
-                        e.stopPropagation()
-                        setOpenBuyPopup(true)
-                      }}
-                    >
-                      Заказать в один клик
-                    </Button>
-                    <Button
-                      size="fullWidth"
-                      variant="red"
-                      font="popUp"
-                      mt="17"
-                      onClick={e => {
-                        e.preventDefault()
-                        e.stopPropagation()
-                        if (me && !me?.info) {
-                          router.push(
-                            {
-                              pathname: '/login',
-                              query: { error: 'notAuthorized' },
-                            },
-                            '/login',
-                          )
-                        } else {
-                          addToCart(newItem?.product, 1)
-                        }
-                      }}
-                      disabled={
-                        product?.availableInStock
-                          ? product.availableInStock === 0
-                          : true
-                      }
-                    >
-                      Добавить в корзину
-                    </Button>
-                  </ButtonsWrapper>
-                </MobileVisible>
-              </>
-            ) : (
-              <WrapButton>
-                <CustomButton
-                  disabled={
-                    newItem?.quantity &&
-                    newItem.quantity > product?.availableInStock
-                  }
-                  onClick={() => router.push(`/cart`)}
-                >
-                  <TopCustomButton>В корзине</TopCustomButton>
-                  <BottomCustomButton>Перейти</BottomCustomButton>
-                </CustomButton>
-                <QuantityWrap>
-                  <Minus onClick={() => deleteFromCart(newItem)} />
-                  <Quantity
-                    isWrongQuantity={
-                      newItem?.quantity &&
-                      newItem.quantity > product?.availableInStock
-                    }
-                  >{`${newItem?.quantity} шт.`}</Quantity>
-                  <Plus
-                    disabled={
-                      newItem?.quantity &&
-                      newItem.quantity > product?.availableInStock
-                    }
-                    onClick={() => addToCart(newItem?.product, 1)}
-                  />
-                </QuantityWrap>
-              </WrapButton>
-            )}
+            <QuantityControls
+              addToCart={addToCart}
+              deleteFromCart={deleteFromCart}
+              setOpenBuyPopup={setOpenBuyPopup}
+              item={product}
+              cartItem={cartItem}
+              quantity={quantityMap[cartItem.product?.id] ?? cartItem.quantity}
+              user={user}
+              type="page"
+            />
             <Description>
               <EntityDescription
-                description={newItem?.product?.fullDescription || null}
+                description={cartItem.product?.fullDescription || null}
               />
             </Description>
           </Right>
         </Wrap>
-        {newItem?.product?.gallery?.length ? (
+        {cartItem.product?.gallery?.length ? (
           <Slider
             noAllPadding
             city={city}
             type="photos"
-            items={newItem?.product?.gallery}
+            items={cartItem.product?.gallery}
           />
         ) : null}
         <Reviews
           setUpdatedReviews={setReviewsData}
           type="PRODUCT"
-          id={newItem?.product?.id || ''}
+          id={cartItem.product?.id || ''}
           reviewMutation={reviewMutation}
           reviews={reviewsData || []}
           loading={loading}

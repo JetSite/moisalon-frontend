@@ -14,7 +14,6 @@ import {
   NoServicesText,
 } from './styled'
 import EditIcons from '../../../../../ui/EditIcons'
-import { updateServiceMasterMutation } from '../../../../../../_graphql-legacy/master/updateServiceMasterMutation'
 import { IMaster } from 'src/types/masters'
 import EditSalonServicesForClient from '../../../../Salon/EditSalonServicesForClient'
 import { IService, IServiceCategory, IServices } from 'src/types/services'
@@ -28,8 +27,8 @@ interface Props {
   servicesData: IGroupedServices[]
   isOwner: boolean
   entries: IMaster | ISalon
-  allServices: IServiceCategory[]
-  setServices: Dispatch<SetStateAction<IServices[]>>
+  allServices?: IServiceCategory[]
+  setServices?: Dispatch<SetStateAction<IServices[]>>
   type?: 'master' | 'salon'
   serviceType?: 'default' | 'forMaster'
   title?: string
@@ -102,7 +101,7 @@ const Services: FC<Props> = ({
       const newServices = flattenStrapiResponse(
         response?.data?.updateMaster?.data?.attributes?.services,
       )
-      setServices(newServices)
+      setServices && setServices(newServices)
     } else if (response?.data?.updateSalon?.data?.id) {
       const newServices =
         serviceType === 'forMaster'
@@ -112,7 +111,7 @@ const Services: FC<Props> = ({
           : flattenStrapiResponse(
               response?.data?.updateSalon?.data?.attributes?.services,
             )
-      setServices(newServices)
+      setServices && setServices(newServices)
     }
     setIsEditing(false)
   }
@@ -126,8 +125,6 @@ const Services: FC<Props> = ({
       />
     )
   })
-
-  console.log(servicesData)
 
   const secondColumnStart = Math.round(groups?.length / 2)
 
@@ -159,13 +156,13 @@ const Services: FC<Props> = ({
           ) : (
             <NoServicesText>Мастер пока не добавил услуги</NoServicesText>
           )
-        ) : (
+        ) : allServices ? (
           <EditSalonServicesForClient
             setEntriesItems={setEntriesItems}
             entriesItems={entriesItems}
             services={allServices}
           />
-        )}
+        ) : null}
         <noindex>
           {entries?.onlineBookingUrl ? (
             <PhoneButton

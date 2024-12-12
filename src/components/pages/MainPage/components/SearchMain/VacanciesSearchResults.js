@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useQuery } from '@apollo/client'
 import Link from 'next/link'
-import { vacanciesSearch } from '../../../../../_graphql-legacy/vacancies/vacanciesSearch'
 import { MobileVisible, MobileHidden } from '../../../../../styles/common'
 import { WrapperItems, Title, LinkStyled } from './styled'
 import Button from '../../../../ui/Button'
@@ -14,19 +13,19 @@ const VacanciesSearchResults = () => {
   const [loading, setLoading] = useState(false)
   const [fetchMoreLoading, setFetchMoreLoading] = useState(false)
 
-  const { fetchMore, refetch } = useQuery(vacanciesSearch, {
-    variables: {
-      query: (query && query.query) || '',
-    },
-    skip: true,
-    notifyOnNetworkStatusChange: true,
-    onCompleted: res => {
-      setLoading(false)
-      if (res) {
-        setVacanciesSearchData(res.vacanciesSearch)
-      }
-    },
-  })
+  // const { fetchMore, refetch } = useQuery(vacanciesSearch, {
+  //   variables: {
+  //     query: (query && query.query) || '',
+  //   },
+  //   skip: true,
+  //   notifyOnNetworkStatusChange: true,
+  //   onCompleted: res => {
+  //     setLoading(false)
+  //     if (res) {
+  //       setVacanciesSearchData(res.vacanciesSearch)
+  //     }
+  //   },
+  // })
 
   const vacanciesSearchResult = vacanciesSearchData?.connection.nodes || []
   const hasNextPage = vacanciesSearchData?.connection?.pageInfo?.hasNextPage
@@ -35,37 +34,37 @@ const VacanciesSearchResults = () => {
   useEffect(() => {
     if (query?.query && query.query !== '') {
       setLoading(true)
-      refetch({
-        variables: {
-          query: (query && query.query) || '',
-          cursor: null,
-        },
-      })
+      // refetch({
+      //   variables: {
+      //     query: (query && query.query) || '',
+      //     cursor: null,
+      //   },
+      // })
     } else {
-      setVacanciesSearchData(vacanciesSearch)
+      // setVacanciesSearchData(vacanciesSearch)
     }
   }, [query])
 
   const onFetchMore = useCallback(() => {
     setFetchMoreLoading(true)
-    fetchMore({
-      variables: {
-        query: (query && query.query) || '',
-        cursor: vacanciesSearchData?.connection?.pageInfo?.endCursor,
-      },
+    // fetchMore({
+    //   variables: {
+    //     query: (query && query.query) || '',
+    //     cursor: vacanciesSearchData?.connection?.pageInfo?.endCursor,
+    //   },
 
-      updateQuery(previousResult, { fetchMoreResult }) {
-        const newNodes = fetchMoreResult.vacanciesSearch.connection.nodes
-        setFetchMoreLoading(false)
-        setVacanciesSearchData({
-          connection: {
-            ...fetchMoreResult.vacanciesSearch.connection,
-            nodes: [...vacanciesSearchData.connection.nodes, ...newNodes],
-          },
-          filterDefinition: fetchMoreResult.vacanciesSearch.filterDefinition,
-        })
-      },
-    })
+    //   updateQuery(previousResult, { fetchMoreResult }) {
+    //     const newNodes = fetchMoreResult.vacanciesSearch.connection.nodes
+    //     setFetchMoreLoading(false)
+    //     setVacanciesSearchData({
+    //       connection: {
+    //         ...fetchMoreResult.vacanciesSearch.connection,
+    //         nodes: [...vacanciesSearchData.connection.nodes, ...newNodes],
+    //       },
+    //       filterDefinition: fetchMoreResult.vacanciesSearch.filterDefinition,
+    //     })
+    //   },
+    // })
   })
 
   const fetchMoreButton = hasNextPage ? (

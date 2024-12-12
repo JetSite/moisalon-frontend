@@ -31,12 +31,6 @@ const ShowMore = styled.span`
 
 const Item = styled.div``
 
-const ucFirst = (str: string) => {
-  if (!str) return str
-
-  return str[0].toUpperCase() + str.slice(1)
-}
-
 interface Props {
   group: IGroupedCategories
   withPrice: boolean
@@ -69,7 +63,7 @@ export const CatalogGroupForClient: FC<Props> = ({ group, withPrice }) => {
 
   return (
     <Wrapper>
-      <Title>{ucFirst(group?.title)}</Title>
+      <Title>{group?.title}</Title>
       <Item>{visibleItems}</Item>
       {!collapsed && <Item>{collapsedItems}</Item>}
       {subGroups?.length > 3 && (

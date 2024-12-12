@@ -5,6 +5,7 @@ import {
   mobileBreakpoint,
   tabletBreakpoint,
   laptopBreakpoint,
+  largeLaptopBreakpoint,
 } from '../../../../../styles/variables'
 
 export const Checkbox = styled.input<{ checked: boolean }>`
@@ -59,6 +60,10 @@ export const WrapperResults = styled.div`
   margin-right: auto;
 
   @media (max-width: ${laptopBreakpoint}) {
+    padding: 0 20px;
+  }
+
+  @media (max-width: ${largeLaptopBreakpoint}) {
     padding: 0 20px;
   }
 `

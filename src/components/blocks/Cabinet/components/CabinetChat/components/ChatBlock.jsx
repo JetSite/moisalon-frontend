@@ -15,9 +15,6 @@ import {
   ChatBlockLastMessage,
   UnreadQuantity,
 } from './styles'
-import { getRoomMessages } from '../../../../../../_graphql-legacy/chat/getRoomMessages'
-import { masterQuery } from '../../../../../../_graphql-legacy/master/masterQuery'
-import { salonQuery } from '../../../../../../_graphql-legacy/salon/salonQuery'
 import { PHOTO_URL } from '../../../../../../api/variables'
 import { IChat, IChatChat } from 'src/chatContext'
 
@@ -35,29 +32,29 @@ const ChatBlock = ({ chat, chatClicked, chatClickHandler, me }) => {
   const [unreadMessages, setUnreadMessages] = useState([])
   const [originData, setOriginData] = useState(null)
 
-  const { data, refetch } = useQuery(getRoomMessages, {
-    variables: {
-      roomId: chat?.id,
-    },
-    onCompleted: res => {
-      setMessages(res?.massages)
-    },
-  })
+  // const { data, refetch } = useQuery(getRoomMessages, {
+  //   variables: {
+  //     roomId: chat?.id,
+  //   },
+  //   onCompleted: res => {
+  //     setMessages(res?.massages)
+  //   },
+  // })
 
-  const { data: origin } = useQuery(
-    chat?.origin === 'MASTER' ? masterQuery : salonQuery,
-    {
-      variables: {
-        id: chat?.originId,
-      },
-      onCompleted: res => {
-        setOriginData(chat?.origin === 'MASTER' ? res?.master : res?.salon)
-      },
-    },
-  )
+  // const { data: origin } = useQuery(
+  //   chat?.origin === 'MASTER' ? masterQuery : salonQuery,
+  //   {
+  //     variables: {
+  //       id: chat?.originId,
+  //     },
+  //     onCompleted: res => {
+  //       setOriginData(chat?.origin === 'MASTER' ? res?.master : res?.salon)
+  //     },
+  //   },
+  // )
 
   useEffect(() => {
-    refetch()
+    // refetch()
     setUnreadMessages([])
   }, [chatClicked])
 

@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import MobileCatalogItem from './MobileCatalogItem'
 import { IGroupedService } from 'src/utils/getGrupedServices'
 
 const Wrapper = styled.div`
@@ -52,7 +51,7 @@ export default function MobileCatalogSubGroup({
   return (
     <Wrapper>
       <Top>
-        <Title>{ucFirst(subGroup?.title)}</Title>
+        <Title>{subGroup?.title}</Title>
         {/* {subGroup?.price ? <Price>от {item.price}</Price> : null} */}
       </Top>
     </Wrapper>

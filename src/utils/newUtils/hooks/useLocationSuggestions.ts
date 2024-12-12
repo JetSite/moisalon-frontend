@@ -26,7 +26,7 @@ export const useLocationSuggestions = ({
   setLocationName,
   onlyCity,
 }: Props) => {
-  const { suggestions, coordinates, loading } = useAddressSuggestions(
+  const { suggestions, fullAddress, loading } = useAddressSuggestions(
     input,
     onlyCity,
   ) // получаем город или адрес
@@ -35,7 +35,6 @@ export const useLocationSuggestions = ({
   const [addCity] = useMutation(CREATE_CITY, {
     onCompleted: data => {
       const newCity = flattenStrapiResponse(data.createCity) as ICity
-      console.log(newCity)
       setCities([...cities, newCity])
       setShowInput(false)
     },
@@ -73,7 +72,7 @@ export const useLocationSuggestions = ({
   return {
     suggestions,
     locationClickHandler,
-    coordinates,
+    fullAddress,
     loading,
   }
 }

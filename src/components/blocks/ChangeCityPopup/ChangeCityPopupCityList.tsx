@@ -1,7 +1,5 @@
 import { useMutation } from '@apollo/react-hooks'
-import { changeCityMutation } from '../../../_graphql-legacy/city/changeCityMutation'
 import { useQuery } from '@apollo/client'
-import { currentUserSalonsAndMasterQuery } from '../../../_graphql-legacy/master/currentUserSalonsAndMasterQuery'
 import CitiesList from 'src/components/pages/MainPage/components/CitySelect/CitiesList'
 import { cyrToTranslit } from 'src/utils/translit'
 import { useRouter } from 'next/router'

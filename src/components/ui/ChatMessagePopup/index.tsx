@@ -6,8 +6,6 @@ import NewMessagePopup, {
 } from './components/NewMessagePopup'
 import Button from '../Button'
 import Popup from '../Popup'
-import { createRoom } from '../../../_graphql-legacy/chat/createRoom'
-import { createMessage } from '../../../_graphql-legacy/chat/createMessage'
 import { IID, ISetState, LazyType } from 'src/types/common'
 import { ISalonPage } from 'src/types/salon'
 import useAuthStore from 'src/store/authStore'
@@ -46,35 +44,35 @@ const ChatMessagePopup: FC<Props> = ({
     setOpenSuccessPopup(false)
   }, [setOpenSuccessPopup])
 
-  const [newMessage] = useMutation(createMessage, {
-    onCompleted: () => {
-      setChatMessagePopup(false)
-      setOpenSuccessPopup(true)
-    },
-  })
+  // const [newMessage] = useMutation(createMessage, {
+  //   onCompleted: () => {
+  //     setChatMessagePopup(false)
+  //     setOpenSuccessPopup(true)
+  //   },
+  // })
 
-  const [newRoom] = useMutation(createRoom)
+  // const [newRoom] = useMutation(createRoom)
 
   const onSubmit: NewMassageOnSubmit = async values => {
-    const data = await newRoom({
-      variables: {
-        input: {
-          userId,
-          origin,
-          originId: originData?.id,
-        },
-      },
-    })
-    if (data) {
-      await newMessage({
-        variables: {
-          input: {
-            roomId: data.data.createRooms.id,
-            message: values.message,
-          },
-        },
-      })
-    }
+    // const data = await newRoom({
+    //   variables: {
+    //     input: {
+    //       userId,
+    //       origin,
+    //       originId: originData?.id,
+    //     },
+    //   },
+    // })
+    // if (data) {
+    //   await newMessage({
+    //     variables: {
+    //       input: {
+    //         roomId: data.data.createRooms.id,
+    //         message: values.message,
+    //       },
+    //     },
+    //   })
+    // }
   }
 
   const newMessageTitle =

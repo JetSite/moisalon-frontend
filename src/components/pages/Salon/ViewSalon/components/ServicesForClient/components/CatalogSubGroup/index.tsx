@@ -80,7 +80,7 @@ export const CatalogSubGroup: FC<Props> = ({ subGroup, group }) => {
   return (
     <Wrapper>
       <Top>
-        <Title>{ucFirst(subGroup?.title)}</Title>
+        <Title>{subGroup?.title}</Title>
         {/* {item?.price ? <Price>от {item.price}</Price> : null} */}
       </Top>
       {/* <Item>{visibleItems}</Item>

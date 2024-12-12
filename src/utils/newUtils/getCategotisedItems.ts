@@ -14,7 +14,7 @@ interface IGetCategorisedItemsProps<T> {
 }
 
 export function getCategorisedItems<
-  T extends Record<K, any>,
+  T extends Partial<Record<K, any>>,
   K extends keyof T,
 >(arr: T[], props: IGetCategorisedItemsProps<T>): IGroupedItems<T>[] {
   const { categoryKey } = props

@@ -1,8 +1,6 @@
 import { useRouter } from 'next/router'
 import { addApolloState, initializeApollo } from '../../api/apollo-client'
 import CreateSalon from '../../components/pages/Salon/CreateSalon'
-import { salonQuery } from '../../_graphql-legacy/salon/salonQuery'
-import { salonSlugQuery } from '../../_graphql-legacy/salon/salonSlugQuery'
 import CreatePageSkeleton from '../../components/ui/ContentSkeleton/CreatePageSkeleton'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData, getStoreEvent } from 'src/store/utils'

@@ -2,6 +2,7 @@ import moment from 'moment'
 import { IPhoto } from 'src/types'
 import { IID } from 'src/types/common'
 import { IEvent } from 'src/types/event'
+import formatDate from 'src/utils/newUtils/formatDate'
 import formatTime from 'src/utils/newUtils/formatTime'
 
 type IEventFormValues = (props: IEventFormValuesProps) => IEventInitialForm
@@ -16,8 +17,6 @@ export type IEventBaseFields =
   | 'fullDescription'
   | 'timeStart'
   | 'timeEnd'
-  | 'dateEnd'
-  | 'dateStart'
   | 'address'
   | 'longitude'
   | 'latitude'
@@ -25,6 +24,8 @@ export type IEventBaseFields =
 export interface IEventInitialForm extends Pick<IEvent, IEventBaseFields> {
   cover: IPhoto | null
   publishedAt: boolean
+  dateEnd: string
+  dateStart: string
 }
 
 export interface IEventInput extends Pick<IEvent, IEventBaseFields> {
@@ -33,6 +34,8 @@ export interface IEventInput extends Pick<IEvent, IEventBaseFields> {
   brand?: IID
   salon?: IID
   master?: IID
+  dateEnd: string
+  dateStart: string
 }
 
 export const getEventInitialValues: IEventFormValues = ({ event }) => {
@@ -44,8 +47,8 @@ export const getEventInitialValues: IEventFormValues = ({ event }) => {
         address: event.address,
         cover: event.cover,
         publishedAt: false,
-        dateStart: event.dateStart,
-        dateEnd: event.dateEnd,
+        dateStart: formatDate(event.dateStart),
+        dateEnd: formatDate(event.dateEnd),
         timeStart: formatTime(event.timeStart),
         timeEnd: formatTime(event.timeEnd),
         longitude: event.longitude,

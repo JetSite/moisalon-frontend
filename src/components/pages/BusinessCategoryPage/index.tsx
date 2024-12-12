@@ -11,11 +11,6 @@ import SearchBlock from '../../blocks/SearchBlock'
 import BackButton from '../../ui/BackButton'
 import Button from '../../ui/Button'
 import Vacancy from '../../blocks/Vacancy'
-import { salesSearch } from '../../../_graphql-legacy/sales/salesSearch'
-import { educationSearch } from '../../../_graphql-legacy/education/educationSearch'
-import { eventsSearch } from '../../../_graphql-legacy/events/eventsSearch'
-import { vacanciesSearch } from '../../../_graphql-legacy/vacancies/vacanciesSearch'
-import { masterSearchQuery } from '../../../_graphql-legacy/search/masterSearch'
 import SalesSearchResults from '../MainPage/components/SearchMain/SalesSearchResults'
 import EducationsSearchResults from '../MainPage/components/SearchMain/EducationsSearchResults'
 import EventsSearchResults from '../MainPage/components/SearchMain/EventsSearchResults'
@@ -31,34 +26,34 @@ import { IVacancy } from 'src/types/vacancies'
 
 const customProps: {
   [key: string]: {
-    query: any
+    // query: any
     searchTitle?: string
     searchResultsComponent?: ReactNode
     variables?: { input: { query: string; searchWork: boolean } }
   }
 } = {
   sales: {
-    query: salesSearch,
+    // query: salesSearch,
     searchTitle: 'Найти акции',
     searchResultsComponent: <SalesSearchResults />,
   },
   educations: {
-    query: educationSearch,
+    // query: educationSearch,
     searchTitle: 'Найти курсы',
     searchResultsComponent: <EducationsSearchResults />,
   },
   events: {
-    query: eventsSearch,
+    // query: eventsSearch,
     searchTitle: 'Найти события',
     searchResultsComponent: <EventsSearchResults />,
   },
   vacancies: {
-    query: vacanciesSearch,
+    // query: vacanciesSearch,
     searchTitle: 'Найти вакансии',
     searchResultsComponent: <VacanciesSearchResults />,
   },
   resume: {
-    query: masterSearchQuery,
+    // query: masterSearchQuery,
     variables: { input: { query: '', searchWork: true } },
   },
 }

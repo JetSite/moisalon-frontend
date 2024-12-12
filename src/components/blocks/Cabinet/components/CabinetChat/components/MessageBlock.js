@@ -17,7 +17,6 @@ import {
 import { MobileHidden } from '../../../../../../styles/common'
 import { PHOTO_URL } from '../../../../../../api/variables'
 import { useChat } from '../../../../../../chatContext.tsx'
-import { changeMessageStatusMutation } from '../../../../../../_graphql-legacy/chat/changeMessageStatusMutation'
 
 moment.locale('ru', {
   calendar: {
@@ -40,17 +39,17 @@ const MessageBlock = ({
   const [messageIsRead, setMessageIsRead] = useState(message.read)
   const { setUnreadMessagesCount } = useChat()
 
-  const [changeMessageStatus] = useMutation(changeMessageStatusMutation, {
-    variables: {
-      input: {
-        id: message.id,
-      },
-    },
-    onCompleted: () => {
-      refetchMessages()
-      setUnreadMessagesCount(prevCount => prevCount - 1)
-    },
-  })
+  // const [changeMessageStatus] = useMutation(changeMessageStatusMutation, {
+  //   variables: {
+  //     input: {
+  //       id: message.id,
+  //     },
+  //   },
+  //   onCompleted: () => {
+  //     refetchMessages()
+  //     setUnreadMessagesCount(prevCount => prevCount - 1)
+  //   },
+  // })
 
   useEffect(() => {
     if (me.info.id === message.authorUserId) return
@@ -65,7 +64,7 @@ const MessageBlock = ({
     const callback = entries => {
       const [entry] = entries
       if (entry.isIntersecting && !messageIsRead) {
-        changeMessageStatus()
+        // changeMessageStatus()
         setMessageIsRead(true)
       }
     }

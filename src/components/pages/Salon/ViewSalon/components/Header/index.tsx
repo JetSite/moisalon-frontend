@@ -6,7 +6,6 @@ import {
   useMutation,
 } from '@apollo/client'
 import { MainContainer } from '../../../../../../styles/common'
-import { selectedGroupNames } from '../../../../../../utils/serviceCatalog'
 import BackButton from '../../../../../ui/BackButton'
 import RatingEdit from '../../../../../ui/RatingEdit'
 import {
@@ -38,8 +37,6 @@ import {
   ActiveSocials,
   ChatIcon,
 } from './styled'
-import { createScopesSalon } from '../../../../../../_graphql-legacy/salon/createScopesSalon'
-import { cyrToTranslit } from '../../../../../../utils/translit'
 import ChatMessagePopup from '../../../../../ui/ChatMessagePopup'
 import {
   urlPatternHttps,

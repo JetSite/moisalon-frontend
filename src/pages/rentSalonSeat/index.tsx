@@ -35,17 +35,17 @@ const RentSalonSeat: NextPage<Props> = ({
     return <CreatePageSkeleton />
   } else if (!salonData.rent) {
     router.push('/masterCabinet')
-  } else {
-    return (
-      <RentSeat
-        salonData={salonData}
-        rentalPeriods={rentalPeriods}
-        groupedEquipments={groupedEquipments}
-        paymentMethods={paymentMethods}
-        workplaceTypes={workplaceTypes}
-      />
-    )
+    return <CreatePageSkeleton />
   }
+  return (
+    <RentSeat
+      salonData={salonData}
+      rentalPeriods={rentalPeriods}
+      groupedEquipments={groupedEquipments}
+      paymentMethods={paymentMethods}
+      workplaceTypes={workplaceTypes}
+    />
+  )
 }
 
 export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async ({

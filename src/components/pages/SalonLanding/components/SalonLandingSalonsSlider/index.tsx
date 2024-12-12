@@ -1,5 +1,4 @@
 import { useQuery } from '@apollo/client'
-import { salonsRandom } from '../../../../../_graphql-legacy/salon/salonsRandom'
 import Slider from '../../../../blocks/Slider'
 import { ISalon } from 'src/types/salon'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'

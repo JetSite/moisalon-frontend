@@ -9,8 +9,8 @@ export interface IEvent {
   id: IID
   title: string
   slug: string
-  dateStart: string
-  dateEnd: string
+  dateStart: Date
+  dateEnd: Date
   address: string
   deleted: boolean
   shortDescription: string

@@ -190,22 +190,25 @@ export const customProps: ICustomProps = ({
     case 'goods':
       return {
         firstSlide: (
-          <Link
-            href={
-              router.query.id === '62fb9f7884fe720001f6771c'
-                ? `/${city.slug}/beautyFreeShop`
-                : `/${city.slug}/brand/${router.query.id}/products`
-            }
-          >
-            <SeeAllMain>
-              <SeeAllGoods>
-                <SeeAllText>Показать все товары бренда</SeeAllText>
-              </SeeAllGoods>
-              <SeeAllBody>
-                <SeeAllBodyText>Перейти в магазин</SeeAllBodyText>
-              </SeeAllBody>
-            </SeeAllMain>
-          </Link>
+          <div>
+            <Link
+              style={{ display: 'block' }}
+              href={
+                router.query.id === '62fb9f7884fe720001f6771c'
+                  ? `/${city.slug}/beautyFreeShop`
+                  : `/${city.slug}/brand/${router.query.id}/products`
+              }
+            >
+              <SeeAllMain>
+                <SeeAllGoods>
+                  <SeeAllText>Показать все товары бренда</SeeAllText>
+                </SeeAllGoods>
+                <SeeAllBody>
+                  <SeeAllBodyText>Перейти в магазин</SeeAllBodyText>
+                </SeeAllBody>
+              </SeeAllMain>
+            </Link>
+          </div>
         ),
         sliderItem: item ? (
           <GoodSlide

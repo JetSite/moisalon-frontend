@@ -87,8 +87,6 @@ const EventPage: FC<IEventPageProps> = ({
     }
   }
 
-  console.log('event', event)
-
   const eventButtonHandler = () => {
     // if (event.originId) {
     //   router.push(`${originInfo(event).originLink}`)
@@ -97,8 +95,6 @@ const EventPage: FC<IEventPageProps> = ({
     // }
     setChatMessagePopup(true)
   }
-
-  console.log(event)
 
   return (
     <MainLayout>

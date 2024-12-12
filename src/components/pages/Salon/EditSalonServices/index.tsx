@@ -5,12 +5,11 @@ import {
   RightColumn,
 } from '../../Master/ViewMaster/components/ServicesComponent/styles'
 import { Dispatch, FC, SetStateAction, useEffect } from 'react'
-import { IEntries } from '../ViewSalon/components/Services'
 import {
   IGroupedCategories,
   IGroupedService,
 } from 'src/utils/getGrupedServices'
-import { ISetState } from 'src/types/common'
+import { IID, ISetState } from 'src/types/common'
 import { useLazyQuery } from '@apollo/client'
 import { getServiceCategories } from 'src/api/graphql/service/queries/getServiceCategories'
 import useBaseStore from 'src/store/baseStore'
@@ -18,6 +17,11 @@ import { getStoreData, getStoreEvent } from 'src/store/utils'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { IServiceInForm } from 'src/types/services'
 import { getServicesForCatalog } from 'src/utils/newUtils/getServicesForCatalog'
+
+export interface IEntries {
+  id: IID
+  value: number
+}
 
 interface Props {
   groupedServices: IGroupedCategories[]

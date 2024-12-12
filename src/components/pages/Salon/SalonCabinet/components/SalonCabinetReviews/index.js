@@ -1,19 +1,18 @@
-import { useQuery } from "@apollo/client";
-import { reviewsForSalon } from "../../../../../../_graphql-legacy/salon/reviewsForSalon";
-import CabinetReviews from "../../../../../blocks/Cabinet/components/CabinetReviews";
+import { useQuery } from '@apollo/client'
+import CabinetReviewsItem from '../../../../../blocks/Cabinet/components/CabinetReviewsItem'
 
 const MasterCabinetReviews = ({ salonId, ref2 }) => {
-  const { data: reviews } = useQuery(reviewsForSalon, {
-    variables: {
-      originId: salonId,
-    },
-  });
+  // const { data: reviews } = useQuery(reviewsForSalon, {
+  //   variables: {
+  //     originId: salonId,
+  //   },
+  // })
 
   return (
     <div ref={ref2} id="reviews">
-      <CabinetReviews reviews={reviews?.reviewsForMaster} />
+      <CabinetReviewsItem reviews={[]} />
     </div>
-  );
-};
+  )
+}
 
-export default MasterCabinetReviews;
+export default MasterCabinetReviews

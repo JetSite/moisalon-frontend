@@ -110,7 +110,6 @@ const MobileServicesComponent: FC<Props> = ({
   const groups = servicesData?.map((serviceBlock, idx) => {
     return (
       <MobileCatalogGroupForClient
-        entriesItems={entriesItems}
         key={idx}
         serviceBlock={serviceBlock}
         masterPage={masterPage}

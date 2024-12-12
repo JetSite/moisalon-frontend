@@ -56,6 +56,9 @@ export const Image = styled.img`
 `
 
 export const Right = styled.div`
+  display: flex;
+  gap: 4px;
+  flex-direction: column;
   max-width: 710px;
   width: 100%;
   @media (max-width: ${laptopBreakpoint}) {
@@ -89,7 +92,6 @@ export const Price = styled.p`
   }
 `
 export const OldPrice = styled.p`
-  margin-top: 35px;
   color: #a1a1a1;
   font-weight: 600;
   font-size: 11px;
@@ -121,7 +123,7 @@ export const WrapButton = styled.div`
   margin-top: 48px;
 `
 
-export const CustomButton = styled.div<{ disabled: boolean }>`
+export const CustomButton = styled.button<{ disabled: boolean }>`
   cursor: pointer;
   position: relative;
   color: #000;
@@ -198,7 +200,7 @@ export const Quantity = styled.p<{ isWrongQuantity: boolean }>`
 export const Description = styled.div`
   font-size: 18px;
   line-height: 30px;
-  margin-top: 84px;
+  margin-top: 44px;
   margin-bottom: 43px;
   @media (max-width: ${laptopBreakpoint}) {
     font-size: 14px;
@@ -301,7 +303,6 @@ export const AvailableQuantity = styled.p<{ isWrongQuantity: boolean }>`
   font-weight: 600;
   font-size: 18px;
   line-height: 25px;
-  margin-top: 35px;
 
   @media (max-width: ${mobileBreakpoint}) {
     margin-top: 25px;
@@ -322,6 +323,7 @@ export const ButtonsWrapper = styled.div`
 
 export const Detail = styled.div`
   margin-top: 15px;
+  margin-bottom: 15px;
   font-size: 18px;
 
   @media (max-width: ${mobileBreakpoint}) {

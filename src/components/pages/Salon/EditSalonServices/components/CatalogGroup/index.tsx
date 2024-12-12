@@ -8,12 +8,12 @@ import {
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { laptopBreakpoint } from '../../../../../../styles/variables'
-import { IEntries } from '../../../ViewSalon/components/Services'
 import {
   IGroupedCategories,
   IGroupedService,
 } from 'src/utils/getGrupedServices'
 import { ISetState } from 'src/types/common'
+import { IEntries } from '../..'
 
 export const BpIcon = styledMaterial('span')(() => ({
   borderRadius: 3,

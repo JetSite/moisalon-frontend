@@ -7,12 +7,10 @@ import {
   FC,
 } from 'react'
 import { useQuery } from '@apollo/client/react'
-import { getRooms } from './_graphql-legacy/chat/getRooms'
 import { getStoreData } from './store/utils'
 import useAuthStore from './store/authStore'
 import { IChildren, IID, ISetState, LazyType } from './types/common'
 import { ICity } from './types'
-// import { getRoomMessages } from "./_graphql-legacy/chat/getRoomMessages";
 
 export interface IChatChat {
   id: IID
@@ -53,12 +51,12 @@ const useChatContext = (): IChatContext | undefined => {
   )
   const [unreadMessagesCount, setUnreadMessagesCount] = useState<number>(0)
 
-  const { data, refetch: refetchChats } = useQuery(getRooms, {
-    skip: true,
-    onCompleted: res => {
-      setChats(res?.rooms)
-    },
-  })
+  // const { data, refetch: refetchChats } = useQuery(getRooms, {
+  //   skip: true,
+  //   onCompleted: res => {
+  //     setChats(res?.rooms)
+  //   },
+  // })
   // useEffect(() => {
   //   if (!me?.info) return
   //   let count = 0
@@ -125,11 +123,11 @@ const useChatContext = (): IChatContext | undefined => {
     [messages, setMessages, chats, unreadMessagesCount, setUnreadMessagesCount],
   )
 
-  useEffect(() => {
-    if (user?.info) {
-      refetchChats()
-    }
-  }, [user?.info, refetchChats])
+  // useEffect(() => {
+  //   if (user?.info) {
+  //     refetchChats()
+  //   }
+  // }, [user?.info, refetchChats])
 
   return chatContext
 }

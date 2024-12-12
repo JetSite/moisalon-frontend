@@ -65,8 +65,6 @@ export const useWorkplaceMutate: IUseWorkplaceMutate = ({
     setSuccess,
     refetchSalon,
   }) => {
-    console.log(workplace)
-
     try {
       let response
 

@@ -27,6 +27,8 @@ const AuthProvider: FC<{
     useShallow(getStoreEvent),
   )
 
+  const skipPath = router.pathname.startsWith('/dynamic')
+
   useEffect(() => {
     if (pageCity) setCity(pageCity)
   }, [pageCity])
@@ -60,13 +62,12 @@ const AuthProvider: FC<{
   })
 
   useEffect(() => {
-    if (user || !accessToken) {
+    if (user || !accessToken || skipPath) {
       setLoading(false)
       return
     }
 
-    const pageUser = pageProps.user || null
-    const prepareUser = getPrepareUser(pageUser)
+    const prepareUser = pageProps.user ? getPrepareUser(pageProps.user) : null
 
     if (prepareUser) {
       fillAuthStore(prepareUser)
@@ -84,6 +85,10 @@ const AuthProvider: FC<{
     console.log('AuthProvider me', me)
     console.log('AuthProvider user', user)
   }, [me, router.pathname, pageProps])
+
+  if (skipPath) {
+    return <>{children}</>
+  }
 
   return <>{loading ? <MainSkeleton /> : children}</>
 }

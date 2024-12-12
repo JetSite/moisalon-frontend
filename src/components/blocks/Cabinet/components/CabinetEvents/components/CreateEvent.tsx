@@ -82,19 +82,24 @@ const CreateEvent: FC<Props> = ({
         return
       }
 
-      const validTypes = ['brand', 'salon', 'master'] as const
-      if (!validTypes.includes(type as (typeof validTypes)[number])) {
-        throw new Error(
-          `Invalid type: ${type}. Expected one of: ${validTypes.join(', ')}`,
-        )
-      }
-
       const timeStart = moment(values.timeStart, 'HH:mm').isValid()
         ? moment(values.timeStart, 'HH:mm').format('HH:mm:ss.SSS')
         : null
       const timeEnd = moment(values.timeEnd, 'HH:mm').isValid()
         ? moment(values.timeEnd, 'HH:mm').format('HH:mm:ss.SSS')
         : null
+
+      if (!timeEnd || !timeStart) {
+        setErrors(['Необходимо ввести время начала и конца события'])
+        return
+      }
+
+      const validTypes = ['brand', 'salon', 'master'] as const
+      if (!validTypes.includes(type as (typeof validTypes)[number])) {
+        throw new Error(
+          `Invalid type: ${type}. Expected one of: ${validTypes.join(', ')}`,
+        )
+      }
 
       const input: IEventInput = {
         title: values.title,

@@ -5,11 +5,12 @@ import { Wrapper, FilterColumn, BackText, ScrollDiv } from './styles'
 import ServiceFilterItem from './ServicesFilterItem'
 import { IServiceCategory, IServiceInCategory } from 'src/types/services'
 import Back from '../Back'
+import { ISetState } from 'src/types/common'
 
 interface IServicesFilterProps {
   servicesCategoriesList: IServiceCategory[]
   clickedService: IServiceInCategory | null
-  setClickedService: (service: IServiceInCategory | null) => void
+  setClickedService: ISetState<IServiceInCategory | null>
   masters: any
   setMasters: any
   salons: any
@@ -65,14 +66,19 @@ const ServicesFilter: FC<IServicesFilterProps> = ({
   //   }
   // }, [clickedService, servicesList])
 
-  const chooseHandler = (type: string, element: any) => {
+  const chooseHandler = (
+    type: string,
+    element: IServiceCategory | IServiceInCategory,
+  ) => {
     if (type === 'category') {
-      setClickedCategory(element)
-      setItems(element.services)
+      const typedItem = element as IServiceCategory
+      setClickedCategory(typedItem)
+      setItems(typedItem.services)
     }
     if (type === 'item') {
-      setClickedItem(element)
-      setClickedService(element)
+      const typedItem = element as IServiceInCategory
+      setClickedItem(typedItem)
+      setClickedService(typedItem)
     }
   }
 
@@ -100,7 +106,7 @@ const ServicesFilter: FC<IServicesFilterProps> = ({
                   clickType="category"
                   clickHandler={chooseHandler}
                   active={
-                    clickedCategory &&
+                    !!clickedCategory &&
                     serviceCategory.id === clickedCategory?.id
                   }
                 />
@@ -116,7 +122,7 @@ const ServicesFilter: FC<IServicesFilterProps> = ({
                   isEndElement
                   clickHandler={chooseHandler}
                   clickType="item"
-                  active={clickedItem && item.id === clickedItem?.id}
+                  active={!!clickedItem && item.id === clickedItem?.id}
                   withCount
                 />
               ))}
@@ -138,7 +144,7 @@ const ServicesFilter: FC<IServicesFilterProps> = ({
                   clickType="category"
                   clickHandler={chooseHandler}
                   active={
-                    clickedCategory &&
+                    !!clickedCategory &&
                     serviceCategory.id === clickedCategory?.id
                   }
                 />
@@ -154,7 +160,7 @@ const ServicesFilter: FC<IServicesFilterProps> = ({
                   isEndElement
                   clickHandler={chooseHandler}
                   clickType="item"
-                  active={clickedItem && item.id === clickedItem?.id}
+                  active={!!clickedItem && item.id === clickedItem?.id}
                   withCount
                 />
               ))}

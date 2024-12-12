@@ -1,14 +1,13 @@
 import styled from 'styled-components'
 import Button from '../../../../../../../ui/Button'
-import { deleteSeatMutation } from '../../../../../../../../_graphql-legacy/salon/deleteSeatMutation'
 import { useMutation } from '@apollo/client'
 import { laptopBreakpoint } from '../../../../../../../../styles/variables'
 import { FC, MouseEvent } from 'react'
-import { ISalonWorkplaces } from 'src/types'
 import { PHOTO_URL } from 'src/api/variables'
 import { ISalonPage } from 'src/types/salon'
 import { IApolloRefetch, IID } from 'src/types/common'
 import { DELETE_WORKPLACE } from 'src/api/graphql/salon/mutations/deleteWorkPlace'
+import { ISalonWorkplace } from 'src/types/workplace'
 
 const Wrapper = styled.div<{ url: string }>`
   height: 200px;
@@ -52,7 +51,7 @@ const Name = styled.p`
 `
 
 interface Props {
-  workplace: ISalonWorkplaces
+  workplace: ISalonWorkplace
   onClick: (e: MouseEvent<HTMLDivElement>) => void
   salon: ISalonPage
   refetchSalon: IApolloRefetch

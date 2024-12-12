@@ -78,7 +78,6 @@ const BrandsSearchResults: FC<Props> = ({
           {updateBrandData.map(brand => (
             <div
               onClick={() => {
-                console.log(brand)
                 router.push(
                   `/${
                     brand.city?.slug || city.slug || defaultValues.city.slug

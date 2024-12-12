@@ -1,4 +1,3 @@
-import { selectedGroupNamesMax } from 'src/utils/serviceCatalog'
 import { IMobileHeaderTab } from '.'
 import { ISalonPage } from 'src/types/salon'
 import { IUser } from 'src/types/me'
@@ -108,12 +107,6 @@ export const getCards: IGetCards = ({ user, router, category }) => {
         },
       ]
       subtitle = 'Кабинет'
-      // subtitle = selectedGroupNamesMax(
-      //   category?.specializations ? category?.specializations[0] : [],
-      //   masterSpecializationsCatalog,
-      //   ', ',
-      //   1,
-      // )
       break
     case '/salonCabinet':
       cards = salon

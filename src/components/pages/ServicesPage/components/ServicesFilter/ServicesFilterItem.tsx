@@ -1,6 +1,21 @@
+import { FC } from 'react'
 import { FilterItemWrapper, Text, Count, Icon } from './styles'
+import { IServiceCategory, IServiceInCategory } from 'src/types/services'
 
-const ServiceFilterItem = ({
+interface Props {
+  item: IServiceCategory | IServiceInCategory
+  clickType: string
+  clickHandler: (
+    type: string,
+    element: IServiceCategory | IServiceInCategory,
+  ) => void
+  isEndElement?: boolean
+  active: boolean
+  withCount?: boolean
+  isEmpty?: boolean
+}
+
+const ServiceFilterItem: FC<Props> = ({
   item,
   isEndElement = false,
   clickHandler,

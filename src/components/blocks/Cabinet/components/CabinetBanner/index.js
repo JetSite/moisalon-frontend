@@ -1,38 +1,36 @@
-import { useState } from "react";
-import { useMutation, useQuery } from "@apollo/client";
-import { Wrapper, TitlePage, Subtitle } from "./styles";
-import Button from "../../../../ui/Button";
-import { MobileHidden, MobileVisible } from "../../../../../styles/common";
-import { requestBannerUser } from "../../../../../_graphql-legacy/baners/requestBannerUser";
-import { deleteBannerMutation } from "../../../../../_graphql-legacy/baners/deleteBannerMutation";
-import CreateBanner from "../../../CreateBanner";
-import Banner from "../../../Banner";
+import { useState } from 'react'
+import { useMutation, useQuery } from '@apollo/client'
+import { Wrapper, TitlePage, Subtitle } from './styles'
+import Button from '../../../../ui/Button'
+import { MobileHidden, MobileVisible } from '../../../../../styles/common'
+import CreateBanner from '../../../CreateBanner'
+import Banner from '../../../Banner'
 
 const CabinetBanner = () => {
-  const [banners, setBanners] = useState([]);
-  const [, setLoading] = useState(false);
-  const [createBanner, setCreateBanner] = useState(false);
+  const [banners, setBanners] = useState([])
+  const [, setLoading] = useState(false)
+  const [createBanner, setCreateBanner] = useState(false)
 
-  const { refetch: refetchBanners } = useQuery(requestBannerUser, {
-    onCompleted: (res) => {
-      setBanners(res?.requestBannerUser);
-      setLoading(false);
-    },
-  });
+  // const { refetch: refetchBanners } = useQuery(requestBannerUser, {
+  //   onCompleted: (res) => {
+  //     setBanners(res?.requestBannerUser);
+  //     setLoading(false);
+  //   },
+  // });
 
-  const [deleteBanner] = useMutation(deleteBannerMutation, {
-    onCompleted: async () => {
-      refetchBanners();
-    },
-  });
+  // const [deleteBanner] = useMutation(deleteBannerMutation, {
+  //   onCompleted: async () => {
+  //     refetchBanners();
+  //   },
+  // });
 
-  const handleDelete = (item) => {
-    deleteBanner({
-      variables: {
-        id: item.id,
-      },
-    });
-  };
+  const handleDelete = item => {
+    // deleteBanner({
+    //   variables: {
+    //     id: item.id,
+    //   },
+    // });
+  }
 
   return (
     <Wrapper>
@@ -62,8 +60,8 @@ const CabinetBanner = () => {
           </MobileVisible>
           {banners?.length
             ? banners
-                ?.filter((el) => el.status !== "DELETED")
-                .map((item) => (
+                ?.filter(el => el.status !== 'DELETED')
+                .map(item => (
                   <Banner
                     handleDelete={handleDelete}
                     key={item.id}
@@ -75,12 +73,12 @@ const CabinetBanner = () => {
       ) : null}
       {createBanner ? (
         <CreateBanner
-          refetch={refetchBanners}
+          // refetch={refetchBanners}
           setCreateBanner={setCreateBanner}
         />
       ) : null}
     </Wrapper>
-  );
-};
+  )
+}
 
-export default CabinetBanner;
+export default CabinetBanner

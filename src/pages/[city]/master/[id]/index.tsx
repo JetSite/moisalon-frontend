@@ -158,7 +158,11 @@ const Master: FC<Props> = ({
       </Head> */}
       <>
         <SearchBlock />
-        <Header master={master} isOwner={isOwner} />
+        <Header
+          master={master}
+          isOwner={isOwner}
+          categoriesName={servicesData.map(e => e.category).join(', ')}
+        />
         <TabsSlider
           activeTab={activeTab}
           setActiveTab={setActiveTab}

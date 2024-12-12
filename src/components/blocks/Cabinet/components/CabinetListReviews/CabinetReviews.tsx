@@ -1,23 +1,10 @@
 import { FC, useState } from 'react'
-import {
-  ReviewsWrapper,
-  Review,
-  ReviewTop,
-  ReviewsName,
-  ReviewsText,
-  ReviewsButton,
-  Back,
-  SkeletonWrap,
-  Subtitle,
-} from './styles'
-import Stars from '../../../../ui/Stars'
-import nameRedact from '../../../../../utils/nameRedact'
-import { IReview } from 'src/types/reviews'
-import { parseToNumber } from 'src/utils/newUtils/common'
+import { ReviewsWrapper, ReviewsButton, SkeletonWrap, Subtitle } from './styles'
 import ProfileItem from '../CabinetSales/components/ProfileItem'
 import { ISetState } from 'src/types/common'
 import { IProfileType } from '../CabinetSales'
 import { IProfileWithReviews } from '.'
+import { CabinetReviewsItem } from '../CabinetReviewsItem'
 
 interface Props {
   loading: boolean
@@ -55,21 +42,7 @@ export const CabinetReviews: FC<Props> = ({
         <>
           {activeProfile.reviews?.slice(0, offset).map(item => {
             if (item.title || item.content) {
-              return (
-                <Review key={item.id}>
-                  <ReviewTop>
-                    <ReviewsName>
-                      {(item?.user?.username &&
-                        nameRedact(item?.user?.username)) ||
-                        (item?.user?.email && nameRedact(item?.user?.email)) ||
-                        (item?.user?.phone && nameRedact(item?.user?.phone)) ||
-                        ''}
-                    </ReviewsName>
-                    <Stars count={parseToNumber(item.rating?.id) || 0} />
-                  </ReviewTop>
-                  <ReviewsText>{item.content}</ReviewsText>
-                </Review>
-              )
+              return <CabinetReviewsItem key={item.id} item={item} />
             } else {
               return null
             }

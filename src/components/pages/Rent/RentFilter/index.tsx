@@ -98,7 +98,6 @@ const RentFilter: FC<Props> = ({
   )
 
   const onSubmit = (values: { [K: string]: string }) => {
-    console.log('values', values)
     setFilters(values as unknown as IFilters)
     setFilterOpen(false)
     const element = document.getElementById('result')

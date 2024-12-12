@@ -1,6 +1,5 @@
 import { FC, useEffect, useState } from 'react'
 import Button from '../../../../../ui/Button'
-import { selectedGroupNamesMax } from '../../../../../../utils/serviceCatalog'
 import {
   ItemWrapper,
   MasterContent,

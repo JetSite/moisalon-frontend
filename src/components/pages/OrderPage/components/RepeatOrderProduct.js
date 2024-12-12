@@ -1,5 +1,4 @@
 import { useQuery } from '@apollo/client'
-import { productSearch } from '../../../../_graphql-legacy/product'
 
 import {
   ItemChecked,
@@ -13,9 +12,10 @@ import {
 import { PHOTO_URL } from '../../../../api/variables'
 
 const RepeatOrderProduct = ({ product }) => {
-  const { data, loading } = useQuery(productSearch, {
-    variables: { id: product.id },
-  })
+  // const { data, loading } = useQuery(productSearch, {
+  //   variables: { id: product.id },
+  // })
+  const data = null
   return (
     <ItemChecked>
       <ImageWrapper>

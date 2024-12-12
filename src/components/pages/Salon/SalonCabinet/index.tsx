@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, useCallback } from 'react'
+import { useRef, useState, useEffect, useCallback, FC } from 'react'
 import { MainContainer, MobileHidden } from '../../../../styles/common'
 import Header from '../../MainPage/components/Header'
 import Controls from '../../../blocks/Form/Controls'
@@ -6,12 +6,18 @@ import CabinetForm from './components/CabinetForm'
 import { Wrapper } from './styles'
 import CabinetHeaderMobile from '../../../blocks/Cabinet/components/CabinetHeaderMobile'
 import { PHOTO_URL } from 'src/api/variables'
+import { ISalonPage } from 'src/types/salon'
+import { ISetState } from 'src/types/common'
 
-const SalonCabinet = ({ salonData }) => {
-  const allTabs = useRef()
-  const ref1 = useRef()
-  const ref2 = useRef()
-  const ref3 = useRef()
+export interface ISalonCabinetProps {
+  salonData: ISalonPage
+}
+
+const SalonCabinet: FC<ISalonCabinetProps> = ({ salonData }) => {
+  const allTabs = useRef<HTMLFormElement>(null)
+  const ref1 = useRef<HTMLDivElement>(null)
+  const ref2 = useRef<HTMLDivElement>(null)
+  const ref3 = useRef<HTMLDivElement>(null)
 
   const [tabs] = useState([
     { id: '1', value: 'Наши услуги', anchor: 'services' },
@@ -27,12 +33,17 @@ const SalonCabinet = ({ salonData }) => {
     },
   ])
 
-  const [refActive, setRefActive] = useState(false)
+  const [refActive, setRefActive] = useState<boolean | string>(false)
   const [ref1Visible, setRef1Visible] = useState(true)
   const [ref2Visible, setRef2Visible] = useState(false)
   const [ref3Visible, setRef3Visible] = useState(false)
 
-  const handleElementPosition = (element, func, top) => {
+  const handleElementPosition = (
+    element: HTMLDivElement | null,
+    func: ISetState<boolean>,
+    top: number,
+  ) => {
+    if (!element) return
     const posTop = element?.getBoundingClientRect()?.top
     if (
       posTop > 0
@@ -106,7 +117,7 @@ const SalonCabinet = ({ salonData }) => {
             ref2={ref2}
             ref3={ref3}
             salonData={salonData}
-            salonId={salonData?.id}
+            salonId={salonData.id}
           />
         </Wrapper>
       </MainContainer>

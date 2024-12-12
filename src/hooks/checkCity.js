@@ -2,37 +2,34 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { cyrToTranslit } from '../utils/translit'
 import { useQuery, useMutation } from '@apollo/client'
-import { currentUserSalonsAndMasterQuery } from '../_graphql-legacy/master/currentUserSalonsAndMasterQuery'
-import { changeCityMutation } from '../_graphql-legacy/city/changeCityMutation'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
 
 const useCheckCity = cityData => {
   const router = useRouter()
   const { setCity, setMe } = useAuthStore(getStoreEvent)
-  console.log('useCheckCity')
 
   const query = { query: '' } //TODO: query
   const setQuery = e => {} //TODO: query
 
-  const { refetch } = useQuery(currentUserSalonsAndMasterQuery, {
-    skip: true,
-    onCompleted: res => {
-      setMe({
-        info: res?.me?.info,
-        master: res?.me?.master,
-        locationByIp: res?.locationByIp,
-        salons: res?.me?.salons,
-        rentalRequests: res?.me?.rentalRequests,
-      })
-    },
-  })
+  // const { refetch } = useQuery(currentUserSalonsAndMasterQuery, {
+  //   skip: true,
+  //   onCompleted: res => {
+  //     setMe({
+  //       info: res?.me?.info,
+  //       master: res?.me?.master,
+  //       locationByIp: res?.locationByIp,
+  //       salons: res?.me?.salons,
+  //       rentalRequests: res?.me?.rentalRequests,
+  //     })
+  //   },
+  // })
 
-  const [changeCityFunc] = useMutation(changeCityMutation, {
-    onCompleted: () => {
-      refetch()
-    },
-  })
+  // const [changeCityFunc] = useMutation(changeCityMutation, {
+  //   onCompleted: () => {
+  //     refetch()
+  //   },
+  // })
 
   useEffect(() => {
     if (typeof window !== 'undefined') {

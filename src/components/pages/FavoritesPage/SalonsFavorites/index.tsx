@@ -20,13 +20,14 @@ import {
   ButtonPrev,
   NavigationWrapper,
 } from '../../../../styles/sliderBlocks'
-import SalonCard from './components/SalonCard'
 import { MobileVisible, MobileHidden } from '../../../../styles/common'
 import { getStoreData } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
 import useBaseStore from 'src/store/baseStore'
 import { ISetState } from 'src/types/common'
 import { ISalon } from 'src/types/salon'
+import SalonCard from 'src/components/blocks/SalonCard'
+import { useBeforeInit } from 'src/components/blocks/Slider/useBeforeInit'
 
 SwiperCore.use([Navigation])
 
@@ -36,7 +37,7 @@ export interface ThingsProps {
   title?: string
   setActiveTab?: ISetState<string>
   mobile?: boolean
-  handleDeleted?: ISetState<boolean>
+  handleDeleted?: () => void
 }
 
 const SalonsFavorites: FC<ThingsProps> = ({
@@ -46,22 +47,7 @@ const SalonsFavorites: FC<ThingsProps> = ({
   mobile = false,
   handleDeleted,
 }) => {
-  const navigationPrevRef = useRef(null)
-  const navigationNextRef = useRef(null)
-
-  const onBeforeInit = (Swiper: SwiperClass) => {
-    if (typeof Swiper.params.navigation !== 'boolean') {
-      const navigation = Swiper.params.navigation
-      if (
-        navigation &&
-        navigationPrevRef.current &&
-        navigationNextRef.current
-      ) {
-        navigation.prevEl = navigationPrevRef.current
-        navigation.nextEl = navigationNextRef.current
-      }
-    }
-  }
+  const { onBeforeInit, navigationPrevRef, navigationNextRef } = useBeforeInit()
 
   const { city, user } = useAuthStore(getStoreData)
   const { catalogs } = useBaseStore(getStoreData)
@@ -143,10 +129,8 @@ const SalonsFavorites: FC<ThingsProps> = ({
                           }
                         >
                           <SalonCard
-                            salon={salon}
-                            deleteItem={deleteItem}
-                            setDeleteItem={setDeleteItem}
                             handleDeleted={handleDeleted}
+                            item={salon}
                           />
                         </Link>
                         {salon.salonPhones.length && !cabinet ? (

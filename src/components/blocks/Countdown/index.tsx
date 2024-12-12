@@ -14,10 +14,10 @@ export interface ITimeLift {
 }
 
 interface Props {
-  dateStart: string
-  dateEnd: string
-  timeStart: string
-  timeEnd: string
+  dateStart: Date
+  dateEnd: Date
+  timeStart?: string
+  timeEnd?: string
   titleStart?: string
   titleEnd?: string
   text: string

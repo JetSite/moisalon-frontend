@@ -1,88 +1,62 @@
-import { FC, useEffect, useState } from 'react'
-import AutosuggestField from 'src/components/blocks/Form/AddressField/AutosuggestField'
-import { useBrandsSuggest } from 'src/hooks/inputs/useBrandsSuggest'
+import { FC } from 'react'
+import { useAutoSuggest } from 'src/components/newUI/Inputs/utils/useAutoSuggest'
+import NewAutosuggestField from 'src/components/newUI/Inputs/AutosuggestField/NewAutosuggestField'
+import { BaseTextFieldProps } from '@material-ui/core'
+import { ISetState } from 'src/types/common'
+import { useLazyQuery, useQuery } from '@apollo/client'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { BRANDS_BY_NAME } from 'src/api/graphql/brand/queries/getBrandsByName'
+import { BRANDS_TO_SHOP } from 'src/api/graphql/brand/queries/getBrandToShop'
 import { IBrand } from 'src/types/brands'
-import { IID } from 'src/types/common'
+import { onError } from '@apollo/client/link/error'
 
-export type ISuggestHandleChange = (
-  data: { id: IID; title?: string; name?: string } | null,
-  loading: boolean,
-) => void
-
-interface Props {
-  handleChange?: ISuggestHandleChange
-  initialValues: IBrand[]
+export interface ISearchBrandAutosuggest
+  extends Pick<BaseTextFieldProps, 'label' | 'fullWidth'> {
+  clearFilterTitle: string
   name: string
-  fullWidth?: boolean
-  defaultValue?: string
-  label?: string
   color?: string
-  noSearch?: boolean
-  reset?: boolean
+  setSelectBrand: ISetState<IBrand | null>
 }
 
-export const SearchBrandAutosuggest: FC<Props> = ({
-  handleChange,
-  defaultValue,
-  initialValues,
-  fullWidth = false,
-  label = 'Бренды',
+export const SearchBrandAutosuggest: FC<ISearchBrandAutosuggest> = ({
+  setSelectBrand,
+  clearFilterTitle: defaultValue,
   name,
-  color,
-  noSearch,
-  reset,
+  ...props
 }) => {
-  const initialStringArr = initialValues.map(e => e.name)
+  const [getNewValues] = useLazyQuery(BRANDS_BY_NAME)
 
-  const [value, setValue] = useState<string>(
-    defaultValue || initialStringArr[0],
+  const { data: dataInitial, loading: initialLoading } = useQuery(
+    BRANDS_TO_SHOP,
+    {
+      variables: { itemsCount: 10, isAvailableInStock: 0 },
+      onError: error => {
+        console.error('Failed to fetch initial brands:', error)
+      },
+    },
   )
 
-  useEffect(() => {
-    if (reset) {
-      setValue(defaultValue || initialStringArr[0])
-    }
-  }, [reset])
-
-  let prepareInitialValues = initialStringArr
-
-  if (defaultValue) {
-    if (initialStringArr.find(e => e === defaultValue)) {
-      const filtredValues = initialStringArr.filter(e => e !== defaultValue)
-      prepareInitialValues = [defaultValue, ...filtredValues]
-    } else {
-      prepareInitialValues = [defaultValue, ...initialStringArr]
-    }
-  }
-
-  const { suggestions, loading, data } = useBrandsSuggest(
-    value,
-    prepareInitialValues,
-  )
+  const { suggestions, loading, handleFetch, inputProps, data } =
+    useAutoSuggest<IBrand>({
+      searchKey: 'name',
+      name,
+      defaultValue,
+      dataInitial: flattenStrapiResponse(dataInitial?.brands),
+      initialLoading,
+      getNewValues,
+    })
 
   return (
-    <AutosuggestField
-      label={label}
-      suggestions={noSearch ? prepareInitialValues : suggestions}
-      color={color}
-      input={{
-        onChange: e => {
-          setValue(e)
-          const findInitialsData =
-            initialValues.find(el => el.name === e) || null
-
-          const findData = data && data.find(el => el.name === e)
-          handleChange &&
-            handleChange(
-              findInitialsData ? findInitialsData : findData ? findData : null,
-              loading,
-            )
-        },
-        name,
-        value,
+    <NewAutosuggestField
+      disabled={initialLoading}
+      {...props}
+      handleFetch={handleFetch}
+      handleSelected={(_, { suggestion }) => {
+        setSelectBrand(data.find(brand => brand.name === suggestion) ?? null)
       }}
-      loading={noSearch ? false : loading}
-      fullWidth={fullWidth}
+      suggestions={suggestions}
+      loading={loading || initialLoading}
+      input={inputProps}
     />
   )
 }

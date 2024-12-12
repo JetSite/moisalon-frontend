@@ -1,9 +1,5 @@
 import { useState, useEffect, FC, MouseEvent } from 'react'
 import {
-  getServiceCategoriesNames,
-  selectedGroupNamesMax,
-} from '../../../utils/serviceCatalog'
-import {
   favoritesInStorage,
   inStorage,
 } from '../../../utils/favoritesInStorage'
@@ -32,6 +28,7 @@ interface Props {
   shareLink: string
   loading?: boolean
   type?: string
+  handleDeleted?: () => void
 }
 
 const MasterItem: FC<Props> = ({
@@ -39,6 +36,7 @@ const MasterItem: FC<Props> = ({
   shareLink,
   type = 'slider',
   loading,
+  handleDeleted,
 }) => {
   const [isFavorite, setIsFavorit] = useState(false)
 
@@ -54,6 +52,7 @@ const MasterItem: FC<Props> = ({
   const addFavorite = (e: MouseEvent, master: IMaster | null) => {
     e.preventDefault()
     e.stopPropagation()
+    handleDeleted && handleDeleted()
     favoritesInStorage('masters', master)
     setIsFavorit(!isFavorite)
   }

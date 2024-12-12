@@ -9,7 +9,6 @@ export const formatRentalPricing: IFormatRentalPricing = arr => {
     return 'неизвестна'
   } else {
     arr.forEach(period => {
-      console.log(period.rentalCost)
       returnedArr.push({
         rentalCost: period.rentalCost,
         period: period.rental_period.title,

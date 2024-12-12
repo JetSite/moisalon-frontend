@@ -10,8 +10,7 @@ import ServicesForClient from '../../../../components/pages/Master/ViewMaster/co
 import Contacts from '../../../../components/pages/Salon/ViewSalon/components/Contacts'
 import SalonReviews from '../../../../components/pages/Salon/ViewSalon/components/SalonReviews'
 import InviteSalon from '../../../../components/pages/Salon/ViewSalon/components/Invite'
-// import MobileServicesComponent from '../../../../components/pages/Salon/ViewSalon/components/MobileServicesComponent/MobileServicesComponent'
-// import MobileServicesForClient from '../../../../components/pages/Salon/ViewSalon/components/MobileServicesComponent/MobileServicesForClient'
+
 import MobileServicesForClient from '../../../../components/pages/Master/ViewMaster/components/MobileServicesComponent/MobileServicesForClient'
 import MobileSalonPhotos from '../../../../components/pages/Salon/ViewSalon/components/MobileSalonPhotos'
 import Slider from '../../../../components/blocks/Slider'
@@ -164,14 +163,6 @@ const Salon: FC<Props> = ({
         ]}
       />
       <About salon={salon} />
-      {/* {salon.services?.length || isOwner ? (
-        <MobileServicesComponent
-          isOwner={isOwner}
-          groupedServices={groupedServicesM}
-          salon={salon}
-          refetchSalon={refetchSalon}
-        />
-      ) : null} */}
       {salon?.photos?.length > 0 && <MobileSalonPhotos salon={salon} />}
       {salon?.photos?.length || isOwner ? (
         <DecktopWrapper>

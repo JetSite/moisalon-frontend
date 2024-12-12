@@ -1,10 +1,11 @@
 import { laptopBreakpoint, red } from '../../../../../styles/variables'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { Skeleton } from '@material-ui/lab'
 import { lighten } from 'polished'
+import { IQuantityControlsType } from './conponents/QuantityControls'
 
 export const Wrapper = styled.div`
-  max-width: 175px;
+  max-width: 375px;
   width: 100%;
   height: 490px;
   display: flex;
@@ -32,7 +33,8 @@ export const Wrapper = styled.div`
 `
 
 export const SkeletonItem = styled(Skeleton)`
-  width: 175px;
+  max-width: 275px;
+  width: 100%;
   height: 365px;
 `
 
@@ -80,6 +82,7 @@ export const Content = styled.div`
   border-radius: 5px;
   position: relative;
   display: flex;
+  gap: 16px;
   flex-direction: column;
   justify-content: space-between;
   flex-grow: 1;
@@ -102,6 +105,7 @@ export const Name = styled.p`
 `
 
 export const Price = styled.div`
+  margin-top: auto;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -129,7 +133,6 @@ export const OldPrice = styled.p`
 `
 
 export const NewPrice = styled.p`
-  margin: 10px 0;
   margin-right: 5px;
   font-size: 16px;
   line-height: 20px;
@@ -141,7 +144,6 @@ export const NewPrice = styled.p`
 `
 
 export const ButtonCart = styled.button`
-  width: 48%;
   max-width: 247px;
   font-size: 10px;
   font-weight: 500;
@@ -155,7 +157,7 @@ export const ButtonCart = styled.button`
   color: white;
   border: 1px solid #f03;
   border-radius: 50px;
-  padding: 8px 0px;
+  padding: 8px 8px;
   opacity: ${({ disabled }) => (disabled ? 0.3 : 1)};
   background-color: ${({ disabled }) => (disabled ? 'gray' : '#f03')};
   border-color: ${({ disabled }) => (disabled ? 'gray' : '#f03')};
@@ -212,15 +214,23 @@ export const Plus = styled(Minus)`
   }
 `
 
-export const ButtonsWrapper = styled.div`
+export const ButtonsWrapper = styled.div<{ type: IQuantityControlsType }>`
   display: flex;
   justify-content: space-between;
   width: 100%;
+
+  ${({ type }) =>
+    type === 'page' &&
+    css`
+      gap: 16px;
+
+      @media (max-width: ${laptopBreakpoint}) {
+        flex-wrap: wrap;
+      }
+    `}
 `
 
 export const Available = styled.div<{ avaible?: boolean }>`
-  margin-top: 25px;
-  margin-bottom: 15px;
   padding-left: 7px;
   color: ${({ avaible }) => (avaible ? 'green' : red)};
   font-size: 13px;
@@ -249,14 +259,13 @@ export const Available = styled.div<{ avaible?: boolean }>`
 
 export const Description = styled.p`
   max-height: 64px;
-  margin-bottom: 15px;
   font-size: 12px;
   line-height: 16px;
   overflow: hidden;
 `
 
 export const ProductDetails = styled.div`
-  height: 58px;
+  max-height: 58px;
 `
 
 export const Detail = styled.p`

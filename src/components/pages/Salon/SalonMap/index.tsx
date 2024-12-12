@@ -69,8 +69,6 @@ const SalonMap: FC<ISalonMapProps> = ({
   const normaliseSalons = useCallback(
     (res: ApolloQueryResult<any>) => {
       const salons = flattenStrapiResponse(res.data.salons) as ISalon[]
-      console.log(salons)
-
       if (res?.data?.salons?.data) {
         const prepareData: ISalon[] = salons.map(salon => {
           const ratingRes = flattenStrapiResponse(salon.ratings)
@@ -131,8 +129,6 @@ const SalonMap: FC<ISalonMapProps> = ({
       refecthSalons()
     }
   }, [ids])
-
-  console.log(salonsList)
 
   const fetchMoreButtonMap = hasNextPage ? (
     <div style={{ position: 'relative' }}>

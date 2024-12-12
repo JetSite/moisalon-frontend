@@ -40,8 +40,6 @@ const VacancyPage = ({ vacancy, beautyCategories, beautyAllContent }) => {
   const router = useRouter()
   const { city } = useAuthStore(getStoreData)
 
-  console.log('vacancy', vacancy)
-
   const photoUrl =
     vacancy?.cover && vacancy?.cover?.url ? vacancy.cover.url : ''
 

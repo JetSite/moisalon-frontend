@@ -2,8 +2,8 @@ import { FC, useState } from 'react'
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../../../styles/variables'
 import MobileCatalogItem from './MobileCatalogItem'
-import { IService, IServiceCategory } from 'src/types/services'
-import { IGroupedServices } from 'src/types'
+import { IGroupedServices } from 'src/utils/serviceCatalog'
+import { IService, IServices } from 'src/types/services'
 
 const Wrapper = styled.div<{ masterPage?: boolean }>`
   width: ${props => (props.masterPage ? '100%' : 'initial')};
@@ -61,7 +61,6 @@ const ucFirst = (str: string) => {
 
 interface IMobileCatalogGroup {
   serviceBlock: IGroupedServices
-  entriesItems: IService[]
   masterPage?: boolean
 }
 

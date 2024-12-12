@@ -38,12 +38,12 @@ const EditSalonServices: FC<IEditSalonServices> = ({
     setEntriesItems(uniqueServices)
   }
 
-  const groups = services?.map((serviceBlock, idx) => {
+  const groups = services?.map(serviceBlock => {
     return (
       <CatalogGroup
         entriesItems={entriesItems}
         setEntriesItems={setEntriesItems}
-        key={idx}
+        key={serviceBlock.id}
         serviceBlock={serviceBlock}
         allServices={services}
         handleAddEntries={handleAddEntries}

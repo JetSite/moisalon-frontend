@@ -7,7 +7,6 @@ import { required } from '../../../../../../../utils/validations'
 import ErrorPopup from '../../../../../Form/Error'
 import { laptopBreakpoint } from '../../../../../../../styles/variables'
 import Button from '../../../../../../ui/Button'
-import { createPriorityMutation } from '../../../../../../../_graphql-legacy/priority/createPriorityMutation'
 import { useMutation } from '@apollo/client'
 
 const FieldWrap = styled.div`
@@ -33,23 +32,23 @@ const CreatePriority = ({
   const [loading, setLoading] = useState(false)
   const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
 
-  const [createPriority] = useMutation(createPriorityMutation, {
-    onError: error => {
-      const errorMessages = error.graphQLErrors.map(e => e.message)
-      setLoading(false)
-      setErrors(errorMessages)
-      setErrorPopupOpen(true)
-    },
-    onCompleted: async data => {
-      setLoading(false)
-      await refetch({
-        variables: {
-          originId: activeProfile.id,
-        },
-      })
-      setCreatePriority(false)
-    },
-  })
+  // const [createPriority] = useMutation(createPriorityMutation, {
+  //   onError: error => {
+  //     const errorMessages = error.graphQLErrors.map(e => e.message)
+  //     setLoading(false)
+  //     setErrors(errorMessages)
+  //     setErrorPopupOpen(true)
+  //   },
+  //   onCompleted: async data => {
+  //     setLoading(false)
+  //     // await refetch({
+  //     //   variables: {
+  //     //     originId: activeProfile.id,
+  //     //   },
+  //     })
+  //     setCreatePriority(false)
+  //   },
+  // })
 
   const onSubmit = useCallback(
     async values => {

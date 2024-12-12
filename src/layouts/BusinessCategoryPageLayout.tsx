@@ -5,20 +5,18 @@ import { FC } from 'react'
 
 interface BusinessCategoryPageLayoutProps {
   children: React.ReactNode
-  me?: any
   loading: boolean
 }
 
 const BusinessCategoryPageLayout: FC<BusinessCategoryPageLayoutProps> = ({
   children,
-  me,
   loading,
 }) => {
   return (
     <>
       <Header loading={loading} />
       {children}
-      <About me={me} />
+      <About />
       <Footer />
     </>
   )

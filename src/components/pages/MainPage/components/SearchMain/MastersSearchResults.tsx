@@ -1,7 +1,6 @@
 import React, { useState, useEffect, FC } from 'react'
 import Link from 'next/link'
 
-import { masterSearchQuery } from '../../../../../_graphql-legacy/search/masterSearch'
 import { pluralize } from '../../../../../utils/pluralize'
 import { MobileVisible, MobileHidden } from '../../../../../styles/common'
 import {
@@ -101,11 +100,8 @@ const MastersSearchResults: FC<Props> = ({
     onCompleted: data => {
       const prepareData = flattenStrapiResponse(data.masters)
       setUpdateMasterData(prev => prev.concat(prepareData))
-      console.log(resumeFilter)
     },
-    onError: err => {
-      console.log(err)
-    },
+    onError: err => {},
   })
 
   const onFetchMore = async () => {

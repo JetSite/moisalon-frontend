@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useQuery } from '@apollo/client'
 import Link from 'next/link'
-import { eventsSearch } from '../../../../../_graphql-legacy/events/eventsSearch'
 import { MobileVisible, MobileHidden } from '../../../../../styles/common'
 import { WrapperItems, Title, LinkStyled } from './styled'
 import Button from '../../../../ui/Button'
@@ -14,19 +13,19 @@ const EventsSearchResults = () => {
   const [loading, setLoading] = useState(false)
   const [fetchMoreLoading, setFetchMoreLoading] = useState(false)
 
-  const { fetchMore, refetch } = useQuery(eventsSearch, {
-    variables: {
-      query: (query && query.query) || '',
-    },
-    skip: true,
-    notifyOnNetworkStatusChange: true,
-    onCompleted: res => {
-      setLoading(false)
-      if (res) {
-        setEventsSearchData(res.eventsSearch)
-      }
-    },
-  })
+  // const { fetchMore, refetch } = useQuery(eventsSearch, {
+  //   variables: {
+  //     query: (query && query.query) || '',
+  //   },
+  //   skip: true,
+  //   notifyOnNetworkStatusChange: true,
+  //   onCompleted: res => {
+  //     setLoading(false)
+  //     if (res) {
+  //       setEventsSearchData(res.eventsSearch)
+  //     }
+  //   },
+  // })
 
   const eventsSearchResult = eventsSearchData?.connection.nodes || []
   const hasNextPage = eventsSearchData?.connection?.pageInfo?.hasNextPage
@@ -35,37 +34,37 @@ const EventsSearchResults = () => {
   useEffect(() => {
     if (query?.query && query.query !== '') {
       setLoading(true)
-      refetch({
-        variables: {
-          query: (query && query.query) || '',
-          cursor: null,
-        },
-      })
+      // refetch({
+      //   variables: {
+      //     query: (query && query.query) || '',
+      //     cursor: null,
+      //   },
+      // })
     } else {
-      setEventsSearchData(eventsSearch)
+      // setEventsSearchData(eventsSearch)
     }
   }, [query])
 
   const onFetchMore = useCallback(() => {
     setFetchMoreLoading(true)
-    fetchMore({
-      variables: {
-        query: (query && query.query) || '',
-        cursor: eventsSearchData?.connection?.pageInfo?.endCursor,
-      },
+    // fetchMore({
+    //   variables: {
+    //     query: (query && query.query) || '',
+    //     cursor: eventsSearchData?.connection?.pageInfo?.endCursor,
+    //   },
 
-      updateQuery(previousResult, { fetchMoreResult }) {
-        const newNodes = fetchMoreResult.eventsSearch.connection.nodes
-        setFetchMoreLoading(false)
-        setEventsSearchData({
-          connection: {
-            ...fetchMoreResult.eventsSearch.connection,
-            nodes: [...eventsSearchData.connection.nodes, ...newNodes],
-          },
-          filterDefinition: fetchMoreResult.eventsSearch.filterDefinition,
-        })
-      },
-    })
+    //   updateQuery(previousResult, { fetchMoreResult }) {
+    //     const newNodes = fetchMoreResult.eventsSearch.connection.nodes
+    //     setFetchMoreLoading(false)
+    //     setEventsSearchData({
+    //       connection: {
+    //         ...fetchMoreResult.eventsSearch.connection,
+    //         nodes: [...eventsSearchData.connection.nodes, ...newNodes],
+    //       },
+    //       filterDefinition: fetchMoreResult.eventsSearch.filterDefinition,
+    //     })
+    //   },
+    // })
   })
 
   const fetchMoreButton = hasNextPage ? (

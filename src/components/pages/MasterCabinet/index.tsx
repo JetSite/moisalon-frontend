@@ -81,8 +81,6 @@ const MasterCabinet: FC<Props> = ({ user, requests, cities }) => {
     }
   }, [router?.query?.tab])
 
-  console.log(user.owner)
-
   return (
     <>
       <Header />

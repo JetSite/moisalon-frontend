@@ -1,7 +1,4 @@
 import { addApolloState, initializeApollo } from '../../api/apollo-client'
-import { getCategories } from '../../_graphql-legacy/advices/getCategories'
-import { getAll } from '../../_graphql-legacy/advices/getAll'
-import { getAdvices } from '../../_graphql-legacy/advices/getAdvices'
 import { ITotalCount } from '../[city]/salon'
 import { getTotalCount } from 'src/utils/getTotalCount'
 import { totalSalons } from 'src/api/graphql/salon/queries/totalSalons'

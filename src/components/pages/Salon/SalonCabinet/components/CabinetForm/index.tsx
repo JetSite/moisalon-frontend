@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { FC, RefObject, useState } from 'react'
 import {
   Wrapper,
   TitleCabinet,
@@ -9,22 +9,28 @@ import AutoFocusedForm from '../../../../../blocks/Form/AutoFocusedForm'
 import ErrorPopup from '../../../../../blocks/Form/Error'
 import ServicesList from '../../../../../blocks/Form/ServicesList'
 import SalonCabinetReviews from '../SalonCabinetReviews'
-import catalogOrDefault from '../../../../../../utils/catalogOrDefault'
-import useBaseStore from 'src/store/baseStore'
-import { getStoreData } from 'src/store/utils'
+import { ISalonPage } from 'src/types/salon'
+import { IID } from 'src/types/common'
 
-const CabinetForm = ({ allTabs, ref1, ref2, ref3, salonData, salonId }) => {
-  const { catalogs } = useBaseStore(getStoreData)
+interface Props {
+  allTabs: RefObject<HTMLFormElement>
+  ref1: RefObject<HTMLDivElement>
+  ref2: RefObject<HTMLDivElement>
+  ref3: RefObject<HTMLDivElement>
+  salonData: ISalonPage
+  salonId: IID
+}
+
+const CabinetForm: FC<Props> = ({
+  allTabs,
+  ref1,
+  ref2,
+  ref3,
+  salonData,
+  salonId,
+}) => {
   const [errors, setErrors] = useState<string[] | null>(null)
   const [isErrorPopupOpen, setErrorPopupOpen] = useState(false)
-
-  const salonActivitiesCatalog = catalogOrDefault(
-    catalogs?.salonActivitiesCatalog,
-  )
-  const { groups: specializations = [] } = salonActivitiesCatalog
-  const salonSpecializations = specializations.filter(t =>
-    salonData?.activities.find(id => id === t.id),
-  )
 
   const onSubmit = () => {
     console.log('changes submitted')
@@ -48,8 +54,8 @@ const CabinetForm = ({ allTabs, ref1, ref2, ref3, salonData, salonId }) => {
             <form onSubmit={handleSubmit} ref={allTabs}>
               <TitleServicesMobile>Услуги</TitleServicesMobile>
               <ServicesList
-                specializations={salonSpecializations}
-                serviceCatalog={salonActivitiesCatalog}
+                specializations={[]}
+                serviceCatalog={{ groups: [] }}
               />
               <SalonCabinetReviews salonId={salonId} ref2={ref2} />
               {/* <SalonCabinetProfiles ref3={ref3} me={me} /> */}
