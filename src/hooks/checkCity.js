@@ -8,7 +8,6 @@ import { getStoreData, getStoreEvent } from 'src/store/utils'
 const useCheckCity = cityData => {
   const router = useRouter()
   const { setCity, setMe } = useAuthStore(getStoreEvent)
-  console.log('useCheckCity')
 
   const query = { query: '' } //TODO: query
   const setQuery = e => {} //TODO: query

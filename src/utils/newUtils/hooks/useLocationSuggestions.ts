@@ -35,7 +35,6 @@ export const useLocationSuggestions = ({
   const [addCity] = useMutation(CREATE_CITY, {
     onCompleted: data => {
       const newCity = flattenStrapiResponse(data.createCity) as ICity
-      console.log(newCity)
       setCities([...cities, newCity])
       setShowInput(false)
     },

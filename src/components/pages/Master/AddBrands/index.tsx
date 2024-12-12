@@ -62,8 +62,6 @@ const AddBrands: FC<Props> = ({ entries, brands, setBrands }) => {
     [entries],
   )
 
-  console.log('dataSearch', dataSearch)
-
   const brandsListSearch = dataSearch?.map(item => {
     return (
       <BrandItemWrapper

@@ -99,7 +99,6 @@ const CabinetForm: FC<CabinetFormProps> = ({
         data.updateUsersPermissionsUser,
       ) as IMeInfo
       if (prepareData) {
-        console.log(prepareData)
         setMe({ info: prepareData as IMeInfo })
         setUser({
           info: { ...prepareData } as IMeInfo,

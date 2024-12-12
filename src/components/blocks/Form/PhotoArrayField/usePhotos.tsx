@@ -66,8 +66,6 @@ const usePhotos: IUsePhoto = ({
             onCompleted: data => {
               const photo = flattenStrapiResponse(data.upload.data) as IPhoto
               setPhotosArray && setPhotosArray(prev => prev.concat(photo))
-              console.log(photos.length)
-
               addPhoto(1 + photos.length + i, photo)
 
               if (

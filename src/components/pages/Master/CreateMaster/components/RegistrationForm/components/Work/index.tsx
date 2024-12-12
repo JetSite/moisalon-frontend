@@ -107,8 +107,6 @@ const Work: FC<Props> = ({
 }) => {
   const [searchWork, setSearchWork] = useState(search)
 
-  console.log('searchWork', searchWork)
-
   return (
     <Wrapper ref={ref3} id="profInfo">
       <MobileTitle>Профессиональная информация</MobileTitle>

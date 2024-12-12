@@ -76,9 +76,6 @@ const Salon: FC<Props> = ({
   const servicesData = getServicesByCategory(services)
   const servicesMData = getServicesByCategory(servicesM)
 
-  console.log('servicesData', services)
-  console.log('servicesMData', servicesM)
-
   const [isBrandsEditing, setIsBrandsEditing] = useState<boolean>(false)
 
   const [updateSalon, { loading }] = useMutation(UPDATE_SALON)

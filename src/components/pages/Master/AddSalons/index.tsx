@@ -1,4 +1,11 @@
-import { Dispatch, FC, SetStateAction, useCallback, useEffect, useState } from 'react'
+import {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react'
 import { useQuery } from '@apollo/client'
 import {
   SalonsContent,
@@ -13,9 +20,9 @@ import { ISalon } from 'src/types/salon'
 import { getSalonsByName } from 'src/api/graphql/salon/queries/getSalonsByName'
 import Search from './components/Search'
 import SearchResults from './components/SearchResults'
-import debounce from 'lodash/debounce';
-import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse';
-import RotatingLoader from 'src/components/ui/RotatingLoader';
+import debounce from 'lodash/debounce'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import RotatingLoader from 'src/components/ui/RotatingLoader'
 
 interface Props {
   master: IMaster
@@ -31,25 +38,25 @@ const AddSalons: FC<Props> = ({ master, salons, setSalons }) => {
   const { loading } = useQuery(getSalonsByName, {
     skip: !debouncedInputValue,
     variables: { name: debouncedInputValue },
-    onCompleted: (data) => {
+    onCompleted: data => {
       if (data?.salons?.data) {
         const salons = flattenStrapiResponse(data.salons.data)
         setDataSearch(salons)
       }
-    }
+    },
   })
 
   const debouncedSetInputValue = useCallback(
-    debounce((value) => {
-      setDebouncedInputValue(value);
+    debounce(value => {
+      setDebouncedInputValue(value)
     }, 500),
-    []
-  );
+    [],
+  )
 
   const handleInputChange = (value: string) => {
-    setInputValue(value);
-    debouncedSetInputValue(value);
-  };
+    setInputValue(value)
+    debouncedSetInputValue(value)
+  }
 
   const handlePublish = useCallback(
     (ev: any, item: ISalon, published: boolean) => {
@@ -63,18 +70,12 @@ const AddSalons: FC<Props> = ({ master, salons, setSalons }) => {
     [master],
   )
 
-  console.log('dataSearch', dataSearch)
-
   const salonsListSearch = dataSearch?.map(item => {
     return (
       <SalonItemWrapper
         key={item?.id}
         onClick={e =>
-          handlePublish(
-            e,
-            item,
-            !!salons.find(salon => salon.id === item.id)
-          )
+          handlePublish(e, item, !!salons.find(salon => salon.id === item.id))
         }
       >
         <SalonItem item={item} />
@@ -89,9 +90,13 @@ const AddSalons: FC<Props> = ({ master, salons, setSalons }) => {
       <Search inputValue={inputValue} setInputValue={handleInputChange} />
       {inputValue.length > 0 ? (
         <>
-          {loading ? <LoaderWrapper><RotatingLoader /></LoaderWrapper> : <SearchResults
-            searchResults={salonsListSearch}
-          />}
+          {loading ? (
+            <LoaderWrapper>
+              <RotatingLoader />
+            </LoaderWrapper>
+          ) : (
+            <SearchResults searchResults={salonsListSearch} />
+          )}
         </>
       ) : null}
     </SalonsContent>

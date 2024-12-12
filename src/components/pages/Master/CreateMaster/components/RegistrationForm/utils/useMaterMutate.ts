@@ -88,7 +88,6 @@ export const useMasterMutate: IUseMasterMutate = ({
     master,
     input: initialInput,
   }) => {
-    console.log('initialInput', initialInput)
     setLoading(true)
     const { resumeInput, ...input } = initialInput
     const resumeId = master?.resume?.id || null

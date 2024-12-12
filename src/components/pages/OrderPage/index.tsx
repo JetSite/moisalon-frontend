@@ -81,10 +81,6 @@ const OrderPage: FC<IOrderPageProps> = ({
   }, [])
 
   const onSubmit = async (values: IInitialValuesOrderForm) => {
-    console.log(values)
-
-    // г Москва, Васильцовский пер, д 4
-
     if (!values.address && values.delivery_method !== '4') {
       setErrors(['Введите адресс или выберите его из выпадающего списка'])
       return

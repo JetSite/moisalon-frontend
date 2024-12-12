@@ -95,8 +95,6 @@ const ProductPage: FC<IProductPageProps> = ({ product, reviews, cart }) => {
     setOpenPopup(false)
   }
 
-  console.log('quantityMap', quantityMap)
-
   const { refetch: refetchReviews } = useQuery(GET_PRODUCT_REVIEWS, {
     variables: {
       filters: {
@@ -122,8 +120,6 @@ const ProductPage: FC<IProductPageProps> = ({ product, reviews, cart }) => {
   })
 
   const addToCart = (item: IProduct, mustGrow: boolean) => {
-    console.log(item)
-
     handleMutate({
       itemID: item.id,
       mustGrow,

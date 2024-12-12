@@ -80,8 +80,6 @@ const ServicesPage: FC<IServicesPageProps> = ({
     setClickedService(service)
   }
 
-  console.log('mastersData', mastersData)
-
   return (
     <MainContainer>
       <Wrapper>

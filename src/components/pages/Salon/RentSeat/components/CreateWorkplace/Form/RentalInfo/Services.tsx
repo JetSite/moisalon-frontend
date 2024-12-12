@@ -15,8 +15,6 @@ const Services: FC<IServicesProps> = ({
   onlyOneChoose,
   setShowSupportPopup,
 }) => {
-  console.log(services)
-
   return (
     <>
       <Desc>Выберите услуги оказываемые на рабочем месте/кабинете*</Desc>

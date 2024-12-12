@@ -100,11 +100,8 @@ const MastersSearchResults: FC<Props> = ({
     onCompleted: data => {
       const prepareData = flattenStrapiResponse(data.masters)
       setUpdateMasterData(prev => prev.concat(prepareData))
-      console.log(resumeFilter)
     },
-    onError: err => {
-      console.log(err)
-    },
+    onError: err => {},
   })
 
   const onFetchMore = async () => {
