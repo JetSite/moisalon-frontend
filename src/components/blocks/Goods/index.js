@@ -22,7 +22,8 @@ import {
   ActionPercentBlock,
 } from './styled'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import SwiperCore, { Navigation } from 'swiper'
+import SwiperCore from 'swiper' 
+import {Navigation} from 'swiper/modules'
 import Link from 'next/link'
 import {
   Bottom,
