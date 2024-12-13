@@ -22,7 +22,7 @@ export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__'
 
 let apolloClient: ApolloClient<NormalizedCacheObject>
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
+// process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 const dev = process.env.NEXT_PUBLIC_ENV !== 'production'
 const isServer = typeof window === 'undefined'
 export const server = baseUrl

@@ -11,7 +11,8 @@ import {
   ItemToggle,
 } from './styled'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import SwiperCore, { Navigation } from 'swiper/core'
+import SwiperCore from 'swiper'
+import { Navigation } from 'swiper/modules'
 import Link from 'next/link'
 import {
   ButtonNext,

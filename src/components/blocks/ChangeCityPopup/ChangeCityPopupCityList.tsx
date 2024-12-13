@@ -1,4 +1,4 @@
-import { useMutation } from '@apollo/react-hooks'
+import { useMutation } from '@apollo/client'
 import { useQuery } from '@apollo/client'
 import CitiesList from 'src/components/pages/MainPage/components/CitySelect/CitiesList'
 import { cyrToTranslit } from 'src/utils/translit'

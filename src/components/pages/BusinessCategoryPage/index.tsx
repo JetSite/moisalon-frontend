@@ -1,5 +1,5 @@
 import { useState, useCallback, FC, ReactNode } from 'react'
-import { useQuery } from '@apollo/react-hooks'
+import { useQuery } from '@apollo/client'
 import Link from 'next/link'
 import { Wrapper, Title, Content, List } from './styles'
 import {

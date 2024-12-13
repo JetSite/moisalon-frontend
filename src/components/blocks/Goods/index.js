@@ -22,7 +22,7 @@ import {
   ActionPercentBlock,
 } from './styled'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import SwiperCore, { Navigation } from 'swiper/core'
+import SwiperCore, { Navigation } from 'swiper'
 import Link from 'next/link'
 import {
   Bottom,
