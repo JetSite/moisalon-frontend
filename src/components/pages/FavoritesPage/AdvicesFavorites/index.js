@@ -9,7 +9,7 @@ import {
   SliderWrapper,
 } from './styled'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import SwiperCore, { Navigation } from 'swiper/core'
+import SwiperCore, { Navigation } from 'swiper'
 import {
   ButtonNext,
   ButtonPrev,

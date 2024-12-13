@@ -1,6 +1,6 @@
 import { useState, useEffect, FC } from 'react'
 import { useQuery } from '@apollo/client'
-import { useMutation } from '@apollo/react-hooks'
+import { useMutation } from '@apollo/client'
 import { useRouter } from 'next/router'
 import {
   Minus,

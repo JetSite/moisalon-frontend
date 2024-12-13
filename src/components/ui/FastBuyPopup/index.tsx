@@ -7,7 +7,7 @@ import {
   ChangeEventHandler,
   MouseEventHandler,
 } from 'react'
-import { useMutation } from '@apollo/react-hooks'
+import { useMutation } from '@apollo/client'
 import { PHOTO_URL } from '../../../api/variables'
 import { CSSTransition } from 'react-transition-group'
 import { formatMobileNumber } from '../../../utils/formatMobileNumber'

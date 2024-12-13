@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/react-hooks'
+import { useQuery } from '@apollo/client'
 import { getSearchCity } from 'src/api/graphql/city/getSearchCity'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { ICity } from 'src/types'
@@ -9,7 +9,6 @@ type IUseCitySuggestions = (city: string) => {
 }
 
 export const useCitySuggestions: IUseCitySuggestions = (city: string) => {
-
   const { loading, data } = useQuery(getSearchCity, {
     variables: {
       name: city,
@@ -18,7 +17,6 @@ export const useCitySuggestions: IUseCitySuggestions = (city: string) => {
   })
 
   if (!city || city?.length < 2) return { suggestions: [], loading: false }
-
 
   if (loading || !data) {
     return { suggestions: [], loading }

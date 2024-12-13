@@ -8,7 +8,7 @@ const MainHead = () => {
       <Head>
         <title>MOI salon</title>
         <meta name="theme-color" content="#000000" />
-        <meta name="yandex-verification" content="e5eb15699df5a43e" />
+        {/* <meta name="yandex-verification" content="e5eb15699df5a43e" /> */}
         <meta
           httpEquiv="Content-Security-Policy"
           content="upgrade-insecure-requests"
@@ -20,7 +20,7 @@ const MainHead = () => {
         <meta charSet="utf-8" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Script
+      {/* <Script
         strategy="afterInteractive"
         src={`https://www.googletagmanager.com/gtag/js?id=GTM-NNMCVPR`}
       />
@@ -51,7 +51,7 @@ const MainHead = () => {
     });
     `,
         }}
-      />
+      /> */}
     </>
   )
 }

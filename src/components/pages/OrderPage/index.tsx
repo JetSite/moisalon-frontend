@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, FC } from 'react'
-import { useMutation } from '@apollo/react-hooks'
+import { useMutation } from '@apollo/client'
 import MainLayout from '../../../layouts/MainLayout'
 import { MainContainer } from '../../../styles/common'
 import { useRouter } from 'next/router'

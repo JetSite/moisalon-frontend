@@ -1,5 +1,5 @@
 import { useState, useEffect, FC } from 'react'
-import { useQuery } from '@apollo/react-hooks'
+import { useQuery } from '@apollo/client'
 import Link from 'next/link'
 import { MainContainer } from '../../../../../styles/common'
 import { Wrapper, Category, Title, List, ListItem, EmptyResult } from './styled'

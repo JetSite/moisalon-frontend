@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client'
-import CabinetReviews from '../../../../../blocks/Cabinet/components/CabinetReviewsItem'
+import { CabinetReviews } from '../../../../../blocks/Cabinet/components/CabinetReviewsItem'
 
 const BrandCabinetReviews = ({ brandId, ref2 }) => {
   // const { data: reviews } = useQuery(reviewsForBrand, {
