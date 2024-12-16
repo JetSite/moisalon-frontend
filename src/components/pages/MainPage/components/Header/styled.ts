@@ -423,7 +423,7 @@ export const Count = styled.div`
 
 export const AdditionalNavWrapper = styled.div`
   position: relative;
-  top: -8px;
+  /* top: -8px; */
   cursor: pointer;
 `
 
@@ -451,12 +451,15 @@ export const AdditionalNavContent = styled.div<{
   }
 `
 
-export const MoreIconWrap = styled.div``
+export const MoreIconWrap = styled.div`
+  width: 22px;
+  height: 22px;
+`
 
 export const CloseBtn = styled.div<{ show: boolean }>`
   display: ${({ show }) => (show ? 'block' : 'none')};
-  width: 23px;
-  height: 23px;
+  width: 22px;
+  height: 22px;
   background: #fff url('/mobile-close-icon.svg') no-repeat center;
   background-size: contain;
 `
