@@ -58,21 +58,7 @@ export const SalonsSearch: FC<Props> = ({
     pageSize,
   })
 
-  const prepareTitle = rent
-    ? `Аренда кабинета, рабочего места в салонах красоты ${pluralize(
-        totalCount,
-        'найден',
-        'найдено',
-        'найдено',
-      )} ${totalCount} ${pluralize(totalCount, 'салон', 'салона', 'салонов')}`
-    : `${pluralize(
-        totalCount,
-        'Найден',
-        'Найдено',
-        'Найдено',
-      )} ${totalCount} ${pluralize(totalCount, 'салон', 'салона', 'салонов')}`
-
-  const prepareSubTitle = `${pluralize(
+  const prepareTitle = `${pluralize(
     updateSalonData.length,
     'Показан',
     'Показаны',
@@ -90,7 +76,6 @@ export const SalonsSearch: FC<Props> = ({
         <>
           <SearchResultsTitle
             prepareTitle={prepareTitle}
-            prepareSubTitle={prepareSubTitle}
             totalCount={totalCount}
             noFoundText="Салоны не найдены"
             main={main}
