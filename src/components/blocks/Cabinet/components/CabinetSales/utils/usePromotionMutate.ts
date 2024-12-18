@@ -12,7 +12,6 @@ interface IHandleCreateOrUpdateSaleProps {
   valueType: { [K: string]: IID }
   sale: IPromotions | null
   input: { [K: string]: any }
-  buttonPublish?: boolean
   promotions: IPromotions[]
 }
 
@@ -50,7 +49,6 @@ export const usePromotionMutate: IUseSaleMutate = ({ setErrors, setSales }) => {
     input,
     valueType,
     sale,
-    buttonPublish,
     promotions,
   }) => {
     setLoading(true)
@@ -59,7 +57,7 @@ export const usePromotionMutate: IUseSaleMutate = ({ setErrors, setSales }) => {
         data.createPromotion || data.updatePromotion,
       )
 
-      if (buttonPublish) {
+      if (input.publishedAt) {
         promotions.push(prepareData)
       }
 
@@ -67,7 +65,7 @@ export const usePromotionMutate: IUseSaleMutate = ({ setErrors, setSales }) => {
         const findSale = pre.find(e => e.id === prepareData.id)
         if (findSale) {
           const newArr = pre.filter(e => e.id !== findSale.id)
-          if (buttonPublish) {
+          if (input.publishedAt) {
             return newArr
           } else {
             return [prepareData, ...newArr]
@@ -80,11 +78,11 @@ export const usePromotionMutate: IUseSaleMutate = ({ setErrors, setSales }) => {
       setOpenPopup(true)
     }
     try {
-      const status = buttonPublish
+      const status = input.publishedAt
         ? IPromotionStatus.PUBLISHED
         : IPromotionStatus.DRAFT
 
-      const publishedAt = buttonPublish ? moment().toISOString() : null
+      const publishedAt = input.publishedAt ? moment().toISOString() : null
       if (sale?.id) {
         updateSale({
           variables: {

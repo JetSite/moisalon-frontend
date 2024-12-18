@@ -11,6 +11,7 @@ export const SaleWrap = styled.li<{ type: string | undefined }>`
   overflow: hidden;
   flex-shrink: 0;
   transition: 0.2s;
+  cursor: pointer;
   &:hover {
     opacity: 0.9;
     box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.3);
@@ -73,7 +74,7 @@ export const DeleteIcon = styled.button<{ visible?: boolean }>`
   height: 10px;
   top: 10px;
   right: 10px;
-
+  content: '';
   display: ${({ visible }) => (visible ? 'block' : 'none')};
 `
 

@@ -17,6 +17,7 @@ import {
   IEntityHandler,
 } from '../Cabinet/components/ActiveProfile/ProfileManager'
 import { DeleteIcon } from '../Sale/styled'
+import Link from 'next/link'
 
 interface IEducationProps extends Partial<Omit<IPhotoAddProps, 'hover'>> {
   create?: boolean
@@ -78,14 +79,8 @@ const Education: FC<IEducationProps> = ({
       }`
     : ''
 
-  return (
-    <Styled.EducationWrap
-      id={item.id}
-      onClick={handleClick}
-      onKeyDown={e => e.key === 'Enter' && handleClick?.(e)}
-      role="article"
-      tabIndex={0}
-    >
+  const renderContent = () => (
+    <>
       {!create ? (
         <Styled.EducationTop
           isDeleted={item.deleted}
@@ -100,6 +95,7 @@ const Education: FC<IEducationProps> = ({
               id={item.id}
               onClick={e => {
                 e.stopPropagation()
+                e.preventDefault()
                 handleDelete && handleDelete(item.id, !item.publishedAt)
               }}
             />
@@ -143,6 +139,24 @@ const Education: FC<IEducationProps> = ({
         </Styled.EducationBottom>
         <Rating position="start" rating={item.averageScore} />
       </Styled.EducationContent>
+    </>
+  )
+
+  return (
+    <Styled.EducationWrap
+      id={item.id}
+      onClick={handleClick}
+      onKeyDown={e => e.key === 'Enter' && handleClick?.(e)}
+      role="article"
+      tabIndex={0}
+    >
+      {item.publishedAt ? (
+        <Link shallow href={'/educations/' + item.id}>
+          {renderContent()}
+        </Link>
+      ) : (
+        renderContent()
+      )}
     </Styled.EducationWrap>
   )
 }

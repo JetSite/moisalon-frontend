@@ -10,6 +10,7 @@ import {
   IEntityDeleteHandler,
   IEntityHandler,
 } from '../Cabinet/components/ActiveProfile/ProfileManager'
+import Link from 'next/link'
 
 interface SaleProps extends Partial<Omit<IPhotoAddProps, 'hover'>> {
   create?: boolean
@@ -35,15 +36,8 @@ const Sale: FC<SaleProps> = ({
 
   const photoSrc = `${PHOTO_URL}${item?.cover?.url ?? photo?.url ?? ''}`
 
-  return (
-    <Styled.SaleWrap
-      onClick={handleClick}
-      id={item.id}
-      type={type as string}
-      onKeyDown={e => e.key === 'Enter' && handleClick?.(e)}
-      role="article"
-      tabIndex={0}
-    >
+  const renderContent = () => (
+    <>
       {!create ? (
         <Styled.SaleTop
           isDeleted={item.deleted}
@@ -54,9 +48,11 @@ const Sale: FC<SaleProps> = ({
           <Styled.Image alt="photo" src={photoSrc} />
           {imageHover ? (
             <Styled.DeleteIcon
+              visible
               id={item.id}
               onClick={e => {
                 e.stopPropagation()
+                e.preventDefault()
                 handleDelete && handleDelete(item.id)
               }}
             />
@@ -96,6 +92,25 @@ const Sale: FC<SaleProps> = ({
           ) : null}
         </Styled.SaleBottom>
       </Styled.SaleContent>
+    </>
+  )
+
+  return (
+    <Styled.SaleWrap
+      onClick={handleClick}
+      id={item.id}
+      type={type as string}
+      onKeyDown={e => e.key === 'Enter' && handleClick?.(e)}
+      role="article"
+      tabIndex={0}
+    >
+      {item.publishedAt ? (
+        <Link shallow href={'/sales/' + item.id}>
+          {renderContent()}
+        </Link>
+      ) : (
+        renderContent()
+      )}
     </Styled.SaleWrap>
   )
 }

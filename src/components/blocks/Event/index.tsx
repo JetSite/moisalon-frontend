@@ -11,6 +11,7 @@ import {
   IEntityHandler,
 } from '../Cabinet/components/ActiveProfile/ProfileManager'
 import { DeleteIcon } from '../Sale/styled'
+import Link from 'next/link'
 
 interface IEventProps extends Partial<Omit<IPhotoAddProps, 'hover'>> {
   create?: boolean
@@ -51,15 +52,8 @@ const Event: FC<IEventProps> = ({
       }`
     : ''
 
-  return (
-    <Styled.EventWrap
-      cabinetVariant={cabinet}
-      id={item.id}
-      onClick={handleClick}
-      onKeyDown={e => e.key === 'Enter' && handleClick?.(e)}
-      role="article"
-      tabIndex={0}
-    >
+  const renderContent = () => (
+    <>
       {!create ? (
         <Styled.EventTop
           isDeleted={item.deleted}
@@ -73,6 +67,7 @@ const Event: FC<IEventProps> = ({
             id={item.id}
             onClick={e => {
               e.stopPropagation()
+              e.preventDefault()
               handleDelete && handleDelete(item.id, !item.publishedAt)
             }}
           />
@@ -99,13 +94,32 @@ const Event: FC<IEventProps> = ({
           ) : null}
           <Styled.EventAddress>{item.address}</Styled.EventAddress>
           {/* {item.promo ? (
-            <Styled.Promo>
-              <Styled.PromoText>Промокод</Styled.PromoText>
-              <Styled.PromoText>{item.promo}</Styled.PromoText>
-            </Styled.Promo>
-          ) : null} */}
+          <Styled.Promo>
+            <Styled.PromoText>Промокод</Styled.PromoText>
+            <Styled.PromoText>{item.promo}</Styled.PromoText>
+          </Styled.Promo>
+        ) : null} */}
         </Styled.EventBottom>
       </Styled.EventContent>
+    </>
+  )
+
+  return (
+    <Styled.EventWrap
+      cabinetVariant={cabinet}
+      id={item.id}
+      onClick={handleClick}
+      onKeyDown={e => e.key === 'Enter' && handleClick?.(e)}
+      role="article"
+      tabIndex={0}
+    >
+      {item.publishedAt ? (
+        <Link style={{ maxWidth: 'none' }} shallow href={'/events/' + item.id}>
+          {renderContent()}
+        </Link>
+      ) : (
+        renderContent()
+      )}
     </Styled.EventWrap>
   )
 }

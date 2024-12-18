@@ -13,6 +13,7 @@ import { IProfileWithPromotions, IProfileType } from '..'
 import { IPhoto } from 'src/types'
 import { ISetState } from 'src/types/common'
 import { IPromotions } from 'src/types/promotions'
+import Checkbox from 'src/components/blocks/Form/Checkbox'
 import {
   IInitialValuesSaleForm,
   getInitialValuesSaleForm,
@@ -75,14 +76,17 @@ const CreateSale: FC<CreateSaleProps> = ({
   const [errors, setErrors] = useState<string[] | null>(null)
   const [openPopup, setOpenPopup] = useState(false)
   const [photo, setPhoto] = useState<IPhoto | null>(sale?.cover || null)
-  const [buttonPublish, setButtonPublish] = useState(false)
+  const [publishedAt, setPublishedAt] = useState(false)
   const { loading, handleCreateOrUpdate } = usePromotionMutate({
     setErrors,
     setSales,
   })
   const formRef = useRef<FormApi<IInitialValuesSaleForm>>()
   useEffect(() => {
-    formRef.current?.change('cover', photo)
+    if (formRef.current) {
+      formRef.current?.change('cover', photo)
+      formRef.current.change('publishedAt', publishedAt)
+    }
   }, [photo, formRef.current])
 
   const initialValues = useMemo(
@@ -113,6 +117,9 @@ const CreateSale: FC<CreateSaleProps> = ({
         promoCode: changetValues.promoCode,
         dateStart: changetValues.dateStart,
         dateEnd: changetValues.dateEnd,
+        ...{
+          publishedAt: values.publishedAt ? new Date().toISOString() : null,
+        },
       }
 
       handleCreateOrUpdate({
@@ -120,12 +127,17 @@ const CreateSale: FC<CreateSaleProps> = ({
         input,
         valueType: { [type as string]: activeProfile.id },
         sale,
-        buttonPublish,
         promotions: activeProfile.promotions || [],
       })
+
+      if (values.publishedAt) {
+        setCreateSale(false)
+      } else {
+        setOpenPopup(true)
+      }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [photo, activeProfile, sale, buttonPublish],
+    [photo, activeProfile, sale],
   )
 
   const closePopup = () => {
@@ -152,7 +164,7 @@ const CreateSale: FC<CreateSaleProps> = ({
             <form onSubmit={handleSubmit}>
               <ul style={{ marginBottom: 20 }}>
                 <Sale
-                  item={values as IPromotions}
+                  item={values as unknown as IPromotions}
                   photo={photo}
                   setPhoto={setPhoto}
                   type={type}
@@ -222,6 +234,14 @@ const CreateSale: FC<CreateSaleProps> = ({
                 />
                 <TextDate>Дата окончания акции</TextDate>
               </FieldWrapDate>
+              <FieldWrap>
+                <Checkbox
+                  name="publishedAt"
+                  label="Опубликовать"
+                  checked={publishedAt}
+                  setChecked={setPublishedAt}
+                />
+              </FieldWrap>
               <ErrorPopup errors={errors} setErrors={setErrors} />
 
               <ButtonWrap>
@@ -229,20 +249,9 @@ const CreateSale: FC<CreateSaleProps> = ({
                   variant="red"
                   size="width100"
                   type="submit"
-                  onClick={() => setButtonPublish(false)}
                   disabled={pristine || loading}
                 >
                   {loading ? 'Подождите' : 'Сохранить'}
-                </Button>
-                <Button
-                  value="public"
-                  variant="red"
-                  size="width100"
-                  type="submit"
-                  disabled={loading}
-                  onClick={() => setButtonPublish(true)}
-                >
-                  {loading ? 'Подождите' : 'Опубликовать'}
                 </Button>
                 <Button
                   variant="darkTransparent"

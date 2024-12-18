@@ -1,26 +1,16 @@
-import { ApolloQueryResult, useLazyQuery, useQuery } from '@apollo/client'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData, getStoreEvent } from 'src/store/utils'
-import { getCookie } from 'cookies-next'
-import { OptionsType } from 'cookies-next/lib/types'
-import { authConfig } from 'src/api/authConfig'
-import { FC, useEffect } from 'react'
 import CreatePageSkeleton from 'src/components/ui/ContentSkeleton/CreatePageSkeleton'
 import Cabinet from 'src/components/blocks/Cabinet'
 import MasterCabinet from 'src/components/pages/MasterCabinet'
 import { GetServerSideProps, NextPage } from 'next'
 import { addApolloState, initializeApollo } from 'src/api/apollo-client'
 import { RENTAL_REQUESTS_FOR_USER } from 'src/api/graphql/rentalRequest/queries/getRequestsForUser'
-import { ME } from 'src/api/graphql/me/queries/getMe'
-import {
-  StrapiDataObject,
-  flattenStrapiResponse,
-} from 'src/utils/flattenStrapiResponse'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { IID, Nullable } from 'src/types/common'
 import { IRentalRequest } from 'src/types/rentalRequest'
 import { DELETED_RENTAL_REQUESTS_FOR_USER } from 'src/api/graphql/rentalRequest/queries/getDeletedRequestsForUser'
 import { RENTAL_REQUESTS_FOR_SALON } from 'src/api/graphql/rentalRequest/queries/getRequestsForSalon'
-import { USER } from 'src/api/graphql/me/queries/getUser'
 import { ISalon } from 'src/types/salon'
 import { DELETED_RENTAL_REQUESTS_FOR_SALON } from 'src/api/graphql/rentalRequest/queries/getDeletedRequestsForSalon'
 import { getCities } from 'src/api/graphql/city/getCities'
@@ -30,6 +20,7 @@ import {
   getServerUser,
 } from 'src/api/utils/getServerUser'
 import { IAppProps } from '../_app'
+import { getPrepareData } from 'src/utils/newUtils/getPrepareData'
 
 export interface ICabinetRequestsData {
   rentalRequests: IRentalRequest[]
@@ -105,31 +96,21 @@ export const getServerSideProps: GetServerSideProps<
 
   const data = await Promise.allSettled(queries)
 
-  const cities =
-    data[0].status === 'fulfilled'
-      ? (flattenStrapiResponse(data[0].value.data.cities) as ICity[])
-      : []
+  const cities = getPrepareData<ICity[]>(data[0], 'cities') ?? []
 
   const rentalRequests =
-    data[1].status === 'fulfilled'
-      ? flattenStrapiResponse(data[1].value.data?.rentalRequests)
-      : []
+    getPrepareData<IRentalRequest[]>(data[1], 'rentalRequests') ?? []
 
   const deletedRentalRequests =
-    data[2].status === 'fulfilled'
-      ? flattenStrapiResponse(data[2].value.data?.rentalRequests)
-      : []
+    getPrepareData<IRentalRequest[]>(data[2], 'rentalRequests') ?? []
 
   const rentalRequestsSalons =
-    data[3]?.status === 'fulfilled'
-      ? flattenStrapiResponse(data[3].value.data.rentalRequests)
-      : []
-  const deletedRentalRequestsSalons =
-    data[4]?.status === 'fulfilled'
-      ? flattenStrapiResponse(data[4].value.data.rentalRequests)
-      : []
+    getPrepareData<IRentalRequest[]>(data[3], 'rentalRequests') ?? []
 
-  return addApolloState<Nullable<Props>>(apolloClient, {
+  const deletedRentalRequestsSalons =
+    getPrepareData<IRentalRequest[]>(data[4], 'rentalRequests') ?? []
+
+  return addApolloState<Props>(apolloClient, {
     props: {
       cities,
       requests: {

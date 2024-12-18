@@ -56,9 +56,9 @@ const CabinetOrders: FC<Props> = ({ user }) => {
             <Order key={order.id} order={order} />
           ))}
         </OrdersList>
-      ) : (
+      ) : !loading ? (
         <NoOrders>Нет заказов</NoOrders>
-      )}
+      ) : null}
     </Wrapper>
   )
 }

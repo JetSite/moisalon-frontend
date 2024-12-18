@@ -56,14 +56,13 @@ const Order: FC<IProps> = ({ order }) => {
       <>
         <Styled.DetailName>Связаться с менеджером</Styled.DetailName>
         <Styled.DetailsWrapper>
-          {order.cartContent?.map(
-            cart =>
-              cart.product.brand.phones.length && (
-                <BrandContacts
-                  key={cart.product.id}
-                  phone={cart.product.brand.phones[0]}
-                />
-              ),
+          {order.cartContent?.map(cart =>
+            cart.product.brand.phones.length ? (
+              <BrandContacts
+                key={cart.product.id}
+                phone={cart.product.brand.phones[0]}
+              />
+            ) : null,
           )}
         </Styled.DetailsWrapper>
       </>
@@ -116,6 +115,12 @@ const Order: FC<IProps> = ({ order }) => {
       <Styled.HiddenMobileOrderDetail>
         {brandContact()}
       </Styled.HiddenMobileOrderDetail>
+      {order.comment ? (
+        <Styled.HiddenMobileOrderDetail>
+          <Styled.DetailName>Комментарий к заказу</Styled.DetailName>
+          <Styled.DetailValue>{order.comment}</Styled.DetailValue>
+        </Styled.HiddenMobileOrderDetail>
+      ) : null}
       <Styled.OrderDetailMobile
         onClick={() => setMobileOrderProducts(!mobileOrderProducts)}
       >
