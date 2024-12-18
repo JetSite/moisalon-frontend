@@ -63,24 +63,16 @@ const ListItem = ({ type, item }: { type: string; item: any }) => {
     switch (type) {
       case 'sales':
         const itemSale = item as IPromotions
-
         return <Sale item={itemSale} noHover />
       case 'educations':
         const itemEducation = item as IEducation
-
         return <Education item={itemEducation} noHover />
       case 'events':
         const itemEvent = item as IEvent
-
         return <Event item={itemEvent} noHover />
       case 'vacancies':
         const itemVacancy = item as IVacancy
-
-        return (
-          <Link shallow href={`/vacancies/${item.id}`} passHref>
-            <Vacancy item={itemVacancy} noHover />
-          </Link>
-        )
+        return <Vacancy item={itemVacancy} noHover />
       default:
         return null
     }
