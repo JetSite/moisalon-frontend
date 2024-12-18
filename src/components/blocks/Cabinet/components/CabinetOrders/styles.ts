@@ -131,6 +131,7 @@ export const DetailValue = styled.p`
   width: 50%;
   display: flex;
   align-items: center;
+  padding-right: 8px;
 
   @media (max-width: ${laptopBreakpoint}) {
     flex-direction: column;
@@ -239,7 +240,9 @@ export const BottomButtonMobile = styled.div`
 `
 
 export const ButtonStyled = styled(Button)`
-  background: transparent;
+  &:disabled {
+    color: black;
+  }
 `
 
 export const BottomProducts = styled.div`

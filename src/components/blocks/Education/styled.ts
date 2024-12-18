@@ -10,6 +10,7 @@ export const EducationWrap = styled.li`
   flex-shrink: 0;
   transition: 0.2s;
   color: #000;
+  cursor: pointer;
   &:hover {
     opacity: 0.9;
     box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.3);

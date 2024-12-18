@@ -25,4 +25,5 @@ export interface IVacancy {
   brand: IBrand | null
   salon: ISalon | null
   user: IMeInfo
+  publishedAt: string | null
 }

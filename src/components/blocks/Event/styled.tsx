@@ -11,6 +11,7 @@ export const EventWrap = styled.li<{ cabinetVariant?: boolean }>`
   height: 100%;
   display: flex;
   flex-direction: column;
+  cursor: pointer;
   &:hover {
     opacity: 0.9;
     box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.3);

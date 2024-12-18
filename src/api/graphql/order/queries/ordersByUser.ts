@@ -4,7 +4,7 @@ import { ordersFragment } from '../../me/fragments/orders'
 
 export const ORDERS_BY_USER = gql`
   query ordersByUser($filters: OrderFiltersInput) {
-    orders(filters: $filters) {
+    orders(filters: $filters, sort: ["updatedAt:desc"]) {
       ${ordersFragment}
     }
   }

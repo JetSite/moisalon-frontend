@@ -69,7 +69,7 @@ export const getPrepareUser: IGetPrepareUser = data => {
     favorite,
     vacancies: prepareData.vacancies as IVacancy[],
     reviews: prepareData.reviews as IReview[],
-    orders: prepareData.orders as IOrder[],
+    orders: [],
     selectedCity: prepareData.selected_city,
     ownersID,
   }

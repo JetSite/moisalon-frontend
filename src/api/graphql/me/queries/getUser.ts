@@ -67,9 +67,6 @@ export const USER = gql`
               }
             }
           }
-          orders {
-            ${ordersFragment}
-          }
           reviews {
             data {
               id

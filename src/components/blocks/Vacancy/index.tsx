@@ -20,6 +20,7 @@ import {
   IEntityDeleteHandler,
   IEntityHandler,
 } from '../Cabinet/components/ActiveProfile/ProfileManager'
+import Link from 'next/link'
 
 interface Props extends Partial<Omit<IPhotoAddProps, 'hover'>> {
   create?: boolean
@@ -45,8 +46,8 @@ const Vacancy: FC<Props> = ({
 
   const photoSrc = `${PHOTO_URL}${item?.cover?.url ?? photo?.url ?? ''}`
 
-  return (
-    <VacancyWrap id={item.id} onClick={handleClick}>
+  const renderContent = () => (
+    <>
       {!create ? (
         <VacancyTop>
           <Image alt="photo" src={photoSrc} />
@@ -72,6 +73,7 @@ const Vacancy: FC<Props> = ({
             <DeleteVacancyBtn
               onClick={e => {
                 e.stopPropagation()
+                e.preventDefault()
                 handleDelete && handleDelete(item.id)
               }}
             >
@@ -80,6 +82,18 @@ const Vacancy: FC<Props> = ({
           ) : null}
         </VacancyBottom>
       </VacancyContent>
+    </>
+  )
+
+  return (
+    <VacancyWrap id={item.id} onClick={handleClick}>
+      {item.publishedAt ? (
+        <Link shallow href={'/vacancies/' + item.id}>
+          {renderContent()}
+        </Link>
+      ) : (
+        renderContent()
+      )}
     </VacancyWrap>
   )
 }

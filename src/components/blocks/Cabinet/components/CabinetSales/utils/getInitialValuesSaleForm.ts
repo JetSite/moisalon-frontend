@@ -22,6 +22,7 @@ export interface IInitialValuesSaleForm
   salon?: IID
   master?: IID
   brand?: IID
+  publishedAt: boolean
 }
 
 interface IGetInitialValuesSaleFormProps {
@@ -45,6 +46,7 @@ export const getInitialValuesSaleForm: IGetInitialValuesSaleForm = ({
         promoCode: sale.promoCode,
         dateStart: sale.dateStart,
         dateEnd: sale.dateEnd,
+        publishedAt: false,
         [type as string]: profileID,
       }
     : {
@@ -56,6 +58,7 @@ export const getInitialValuesSaleForm: IGetInitialValuesSaleForm = ({
         promoCode: '',
         dateStart: '',
         dateEnd: '',
+        publishedAt: false,
       }
   return request
 }
