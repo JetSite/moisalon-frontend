@@ -17,11 +17,11 @@ export const GroupedItems: FC<Props> = ({ data, title }) => {
         <Styled.InfoItemHorisontal key={group.id}>
           <Styled.InfoItemTitleWide>{group.title}</Styled.InfoItemTitleWide>
           <Styled.InfoItemContent>
-            {group.items.map(service => {
+            {group.items.map((service, idx) => {
               return (
-                <Styled.ItemWide key={service.id}>
+                <Styled.ItemWide key={service?.id || idx.toString()}>
                   <Styled.IconCircle src="/service-rent-icon.svg" />
-                  <Styled.Text>{service.title}</Styled.Text>
+                  <Styled.Text>{service?.title || ''}</Styled.Text>
                   {/* {service.serviceDetail.includes('шт.') ||
               service.quantity > 1 ? ( */}
                   {/* <Styled.Text>- {service.title}</Styled.Text> */}

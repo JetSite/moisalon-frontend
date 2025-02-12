@@ -60,7 +60,7 @@ const MyRequestItem: FC<Props> = ({
   //     ? user?.owner.masters[0].services.map(service => service.service?.title)
   //     : []
   const specializationsWorkplace = request.workplace.services.map(
-    service => service.title,
+    service => service?.title || '',
   )
 
   const firstButtonText = showDeleted

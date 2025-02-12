@@ -73,10 +73,10 @@ const Service: FC<Props> = ({ services, title = 'Сервис для посет�
       <Wrapper>
         <Title>{title}</Title>
         <Content>
-          {services?.map(item => (
-            <Item key={item.service.id}>
+          {services?.map((item, idx) => (
+            <Item key={item?.service?.id || idx.toString()}>
               <Icon src="/service-rent-icon.svg" />
-              <Text>{item?.service.title}</Text>
+              <Text>{item?.service?.title || item?.serviceName}</Text>
             </Item>
           ))}
         </Content>

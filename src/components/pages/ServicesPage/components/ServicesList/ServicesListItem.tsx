@@ -29,14 +29,14 @@ const ServicesListItem: FC<Props> = ({
       }
     >
       <ImageWrapper>
-        <Image src={popularService.photo} alt="service-card-image" />
+        <Image src={popularService?.photo} alt="service-card-image" />
       </ImageWrapper>
       <TextBlock>
         <TitlePriceWrap>
-          <Title>{popularService.title}</Title>
-          <Price>{popularService.price}</Price>
+          <Title>{popularService?.title || ''}</Title>
+          <Price>{popularService?.price}</Price>
         </TitlePriceWrap>
-        <Quantity>{popularService.offer}</Quantity>
+        <Quantity>{popularService?.offer}</Quantity>
       </TextBlock>
     </ListItemWrapper>
   )

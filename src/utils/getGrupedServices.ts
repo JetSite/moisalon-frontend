@@ -43,7 +43,7 @@ export const getGroupedServices: IGetGroupedServices = data => {
       // Добавляем сервис к категории
       categoriesMap.get(categoryId)!.services.push({
         id: service.id,
-        title: service.service?.title || service.title,
+        title: service.service?.title || service?.serviceName,
       })
     }
   })
