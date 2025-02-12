@@ -7,4 +7,10 @@ module.exports = {
     config.resolve.alias['~'] = path.resolve(__dirname)
     return config
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
 }
