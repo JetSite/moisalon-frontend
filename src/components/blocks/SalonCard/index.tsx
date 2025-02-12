@@ -112,9 +112,9 @@ const SalonCard: FC<Props> = ({
           <Info>
             <SalonInfo>
               <Activities>
-                {item.services?.slice(0, 3).map(servis => (
-                  <Activity key={servis.service.id}>
-                    {servis.service.title}
+                {item.services?.slice(0, 3).map((servis, idx) => (
+                  <Activity key={servis.service?.id || idx.toString()}>
+                    {servis.service?.title || servis.serviceName}
                   </Activity>
                 ))}
               </Activities>
