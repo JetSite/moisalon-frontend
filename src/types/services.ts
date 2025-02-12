@@ -30,6 +30,7 @@ export interface IServices {
   id: IID
   title: string
   service: IService
+  serviceName: string,
   price: string
   priceFrom: string
   priceTo: string
