@@ -129,8 +129,11 @@ const Services: FC<Props> = ({
   const secondColumnStart = Math.round(groups?.length / 2)
 
   const phone =
-    (entries as IMaster).phone ||
-    (entries as ISalon).salonPhones[0]?.phoneNumber
+    'phone' in entries && entries.phone
+      ? entries.phone
+      : 'salonPhones' in entries && Array.isArray(entries.salonPhones) && entries.salonPhones.length > 0
+        ? entries.salonPhones[0]?.phoneNumber
+        : '';
 
   return (
     <MainContainer id="services">
