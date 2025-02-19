@@ -10,13 +10,15 @@ import { flattenStrapiResponse } from '../flattenStrapiResponse'
  */
 
 export const getPrepareData = <T>(
-  data: PromiseSettledResult<ApolloQueryResult<Record<string, unknown>>>,
+  data:
+    | PromiseSettledResult<ApolloQueryResult<Record<string, unknown>>>
+    | undefined,
   objectName: string,
 ): T | null => {
   let response: T | null = null
 
-  if (data.status === 'rejected') {
-    console.error('Failed to fetch products:', data.reason)
+  if (!data || data.status === 'rejected') {
+    console.error('Failed to fetch products:', data?.reason)
     return null
   }
 
