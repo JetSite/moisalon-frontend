@@ -145,6 +145,8 @@ const Master: FC<Props> = ({
     setBrands(prevState => prevState.filter(e => e.id !== id))
   }
 
+  console.log(allServices)
+
   return (
     <MainLayout>
       {/* <Head>

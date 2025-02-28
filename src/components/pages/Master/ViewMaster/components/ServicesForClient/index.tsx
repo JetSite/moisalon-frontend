@@ -116,6 +116,8 @@ const Services: FC<Props> = ({
     setIsEditing(false)
   }
 
+  console.log(allServices)
+
   const groups = servicesData?.map((serviceBlock, idx) => {
     return (
       <CatalogGroupForClient
@@ -131,9 +133,11 @@ const Services: FC<Props> = ({
   const phone =
     'phone' in entries && entries.phone
       ? entries.phone
-      : 'salonPhones' in entries && Array.isArray(entries.salonPhones) && entries.salonPhones.length > 0
-        ? entries.salonPhones[0]?.phoneNumber
-        : '';
+      : 'salonPhones' in entries &&
+        Array.isArray(entries.salonPhones) &&
+        entries.salonPhones.length > 0
+      ? entries.salonPhones[0]?.phoneNumber
+      : ''
 
   return (
     <MainContainer id="services">
