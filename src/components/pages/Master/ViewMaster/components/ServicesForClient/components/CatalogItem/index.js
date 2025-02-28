@@ -25,7 +25,7 @@ export default function CatalogItem({ item }) {
   return (
     <Wrapper>
       <Top>
-        <Title>{item?.service?.title}</Title>
+        <Title>{item?.serviceName ?? item?.service?.title}</Title>
         {item?.priceFrom ? (
           <Price>
             от {item.priceFrom} {item.unitOfMeasurement}

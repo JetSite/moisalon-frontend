@@ -77,7 +77,9 @@ const MasterItem: FC<Props> = ({
               master.services
                 ?.slice(0, 3)
                 .map((service, idx) => (
-                  <Activity key={service?.id || idx.toString()}>{service.service?.title || service?.serviceName}</Activity>
+                  <Activity key={service?.id || idx.toString()}>
+                    {service?.serviceName || service.service?.title}
+                  </Activity>
                 ))}
           </Specializations>
         </div>

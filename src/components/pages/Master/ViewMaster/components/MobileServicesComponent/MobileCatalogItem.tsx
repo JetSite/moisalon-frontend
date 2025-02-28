@@ -40,7 +40,7 @@ const MobileCatalogItem: FC<IMobileCatalogItem> = ({ item, masterPage }) => {
   return (
     <Wrapper masterPage={masterPage}>
       <Top>
-        <Title>{item?.service?.title}</Title>
+        <Title>{item?.serviceName ?? item?.service?.title}</Title>
         {item?.priceFrom ? (
           <Price>
             от {item.priceFrom} {item.unitOfMeasurement}
