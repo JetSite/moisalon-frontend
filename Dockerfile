@@ -28,6 +28,8 @@ COPY . .
 # Uncomment the following line in case you want to disable telemetry during the build.
 # ENV NEXT_TELEMETRY_DISABLED=1
 
+ENV CI=true
+
 RUN \
     if [ -f yarn.lock ]; then yarn run build; \
     elif [ -f package-lock.json ]; then npm run build; \
@@ -40,6 +42,7 @@ FROM base AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
+
 # Uncomment the following line in case you want to disable telemetry during runtime.
 # ENV NEXT_TELEMETRY_DISABLED=1
 
