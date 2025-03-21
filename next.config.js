@@ -1,5 +1,4 @@
-const path = require('path')
-const webpack = require('webpack')
+const path = require('node:path')
 
 module.exports = {
   reactStrictMode: false,
@@ -13,4 +12,7 @@ module.exports = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  ...(process.env.CI && {
+    output: "standalone"
+  }),
 }
