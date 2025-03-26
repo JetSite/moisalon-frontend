@@ -84,7 +84,7 @@ const FastBuyPopup: FC<Props> = ({
     createOrder({
       variables: {
         data: {
-          title: 'Bay one click',
+          title: 'Buy one click',
           total: item.salePrice
             ? item.salePrice * quantity
             : item.regularPrice * quantity,

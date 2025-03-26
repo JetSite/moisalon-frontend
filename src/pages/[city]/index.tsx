@@ -69,6 +69,7 @@ export const getServerSideProps: GetServerSideProps<
 
   if (ctx.query.city !== cityData.slug) {
     return {
+      notFound: true,
       redirect: {
         destination: cityData.slug,
         permanent: false,

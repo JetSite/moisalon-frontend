@@ -30,9 +30,10 @@ const NewAutosuggestField: FC<AutosuggestFieldProps> = ({
   handleClear,
   handleFetch,
   handleSelected,
+  fullWidth,
   ...props
 }) => {
-  const classes = getAutosuggestStyles({ color })
+  const classes = getAutosuggestStyles({ color, fullWidth })
   const theme = {
     container: classes.container,
     suggestionsContainerOpen: classes.suggestionsContainerOpen,
@@ -77,7 +78,7 @@ const NewAutosuggestField: FC<AutosuggestFieldProps> = ({
             <AutosuggestInput
               {...renderProps}
               disabled={rest.disabled}
-              fullWidth={rest.fullWidth}
+              fullWidth={fullWidth}
               helperText={rest.helperText}
               label={rest.label}
               meta={rest.meta}
