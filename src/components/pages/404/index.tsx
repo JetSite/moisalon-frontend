@@ -5,6 +5,20 @@ import { Wrapper, Title, Text } from './styles'
 import { getStoreData } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
 import { FC } from 'react'
+import styled from 'styled-components'
+import { laptopBreakpoint } from 'src/styles/variables'
+
+const MobileHiddenWrap = styled(MobileHidden)`
+  margin: 0 auto;
+  width: fit-content;
+`
+
+const MobileVisiblenWrap = styled(MobileVisible)`
+  @media (max-width: ${laptopBreakpoint}) {
+    max-width: 335px;
+    margin: 0 auto;
+  }
+`
 
 const NotFound: FC = () => {
   const { city } = useAuthStore(getStoreData)
@@ -12,20 +26,20 @@ const NotFound: FC = () => {
     <Wrapper>
       <Title>404:</Title>
       <Text>Страница не найдена</Text>
-      <MobileHidden>
+      <MobileHiddenWrap>
         <Link href={`/${city.slug}`} passHref>
           <Button size="medium" variant="red" mt="103" z="10">
             На главную
           </Button>
         </Link>
-      </MobileHidden>
-      <MobileVisible>
+      </MobileHiddenWrap>
+      <MobileVisiblenWrap>
         <Link href={`/${city.slug}`} passHref>
           <Button size="fullWidth" variant="red" mt="300" z="10">
             На главную
           </Button>
         </Link>
-      </MobileVisible>
+      </MobileVisiblenWrap>
     </Wrapper>
   )
 }
