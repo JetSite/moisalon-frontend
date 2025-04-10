@@ -1,4 +1,4 @@
-import { useState, useEffect, FC, MouseEvent } from 'react'
+import { useState, useEffect, FC, MouseEvent } from 'react';
 import {
   Wrapper,
   ImageWrap,
@@ -18,27 +18,27 @@ import {
   SalonInfo,
   Activities,
   Activity,
-} from './styles'
-import { Skeleton } from '@material-ui/lab'
+} from './styles';
+import { Skeleton } from '@material-ui/lab';
 import {
   favoritesInStorage,
   inStorage,
-} from '../../../utils/favoritesInStorage'
-import { pluralize } from '../../../utils/pluralize'
-import Share from '../../ui/Share'
-import Rating from '../../ui/Rating'
-import { useMedia } from 'use-media'
-import HeartFullFill from '../../pages/MainPage/components/Header/icons/HeartFullFill'
-import { PHOTO_URL } from 'src/api/variables'
-import { ISalon } from 'src/types/salon'
+} from '../../../utils/favoritesInStorage';
+import { pluralize } from '../../../utils/pluralize';
+import Share from '../../ui/Share';
+import Rating from '../../ui/Rating';
+import { useMedia } from 'use-media';
+import HeartFullFill from '../../pages/MainPage/components/Header/icons/HeartFullFill';
+import { PHOTO_URL } from 'src/api/variables';
+import { ISalon } from 'src/types/salon';
 
 interface Props {
-  item: ISalon
-  loading?: boolean
-  rent?: boolean
-  seatCount?: number
-  shareLink?: string
-  handleDeleted?: () => void
+  item: ISalon;
+  loading?: boolean;
+  rent?: boolean;
+  seatCount?: number;
+  shareLink?: string;
+  handleDeleted?: () => void;
 }
 
 const SalonCard: FC<Props> = ({
@@ -49,29 +49,28 @@ const SalonCard: FC<Props> = ({
   shareLink,
   handleDeleted,
 }) => {
-  const mobileMedia = useMedia({ maxWidth: 768 })
+  const mobileMedia = useMedia({ maxWidth: 768 });
 
-  const logoUrl = item?.logo?.url ? `${PHOTO_URL}${item.logo.url}` : ''
   const imageUrl = item?.cover?.url
     ? `${PHOTO_URL}${item.cover.url}`
     : item.photos?.length
     ? `${PHOTO_URL}${item.photos[0]?.url}`
-    : ''
+    : '';
 
-  const [isFavorite, setIsFavorit] = useState<boolean>(false)
+  const [isFavorite, setIsFavorit] = useState<boolean>(false);
 
   useEffect(() => {
-    const isInStorage = inStorage('salons', item)
-    setIsFavorit(!!isInStorage)
-  }, [])
+    const isInStorage = inStorage('salons', item);
+    setIsFavorit(!!isInStorage);
+  }, []);
 
-  const addFavorite = (e: MouseEvent<HTMLButtonElement>, item: any) => {
-    e.preventDefault()
-    e.stopPropagation()
-    handleDeleted && handleDeleted()
-    favoritesInStorage('salons', item)
-    setIsFavorit(!isFavorite)
-  }
+  const addFavorite = (e: MouseEvent<HTMLButtonElement>, item: ISalon) => {
+    e.preventDefault();
+    e.stopPropagation();
+    handleDeleted && handleDeleted();
+    favoritesInStorage('salons', item);
+    setIsFavorit(!isFavorite);
+  };
 
   return loading ? (
     <SkeletonSalonItem variant="rect" />
@@ -140,7 +139,7 @@ const SalonCard: FC<Props> = ({
         </SalonShareWrap>
       )}
     </Wrapper>
-  )
-}
+  );
+};
 
-export default SalonCard
+export default SalonCard;

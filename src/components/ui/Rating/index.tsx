@@ -1,6 +1,6 @@
-import { FC } from 'react'
-import Stars from '../Stars'
-import styled from 'styled-components'
+import { FC } from 'react';
+import Stars from '../Stars';
+import styled from 'styled-components';
 
 const Wrapper = styled.div<{ position?: string }>`
   display: flex;
@@ -11,21 +11,21 @@ const Wrapper = styled.div<{ position?: string }>`
       : props?.position === 'justify'
       ? 'space-between'
       : 'center'};
-`
+`;
 
 const Count = styled.p<{ fontSize: string; fontWeight: number }>`
   color: #727272;
   font-size: ${props => props.fontSize};
   font-weight: ${props => props.fontWeight};
-`
+`;
 
 interface Props {
-  rating?: number
-  countRatings?: number
-  countReviews?: number
-  position?: string
-  fontSize?: string
-  fontWeight?: number
+  rating?: number;
+  countRatings?: number;
+  countReviews?: number;
+  position?: string;
+  fontSize?: string;
+  fontWeight?: number;
 }
 
 const Rating: FC<Props> = ({
@@ -41,15 +41,21 @@ const Rating: FC<Props> = ({
       <Wrapper>
         <Stars count={Math.round(rating || 0)} />
         <Count fontSize={fontSize} fontWeight={fontWeight}>
-          {rating ? `${rating}(${countRatings || 1})` : 0}
+          {!!rating &&
+            !!countRatings &&
+            rating > 0 &&
+            countRatings > 0 &&
+            `${rating}(${countRatings || 1})`}
         </Count>
       </Wrapper>
 
-      <Count fontSize={fontSize} fontWeight={fontWeight}>
-        {`${countReviews || 0}`}
-      </Count>
+      {!!countReviews && countReviews > 0 && (
+        <Count fontSize={fontSize} fontWeight={fontWeight}>
+          {`${countReviews || 0}`}
+        </Count>
+      )}
     </Wrapper>
-  )
-}
+  );
+};
 
-export default Rating
+export default Rating;

@@ -1,5 +1,5 @@
-import styled, { css } from 'styled-components'
-import { laptopBreakpoint, red } from '../../../styles/variables'
+import styled, { css } from 'styled-components';
+import { laptopBreakpoint, red } from '../../../styles/variables';
 
 export const EventWrap = styled.li<{ cabinetVariant?: boolean }>`
   width: ${({ cabinetVariant }) => (cabinetVariant ? '345px' : '375px')};
@@ -21,11 +21,11 @@ export const EventWrap = styled.li<{ cabinetVariant?: boolean }>`
     max-width: 375px;
     height: 280px;
   }
-`
+`;
 
 export const EventTop = styled.div<{
-  imageHover?: boolean
-  isDeleted?: boolean
+  imageHover?: boolean;
+  isDeleted?: boolean;
 }>`
   width: 100%;
   height: 280px;
@@ -61,13 +61,13 @@ export const EventTop = styled.div<{
     opacity: ${({ imageHover }) => (imageHover ? 0.4 : 0)};
     transition: opacity 0.3s ease; /* Плавный переход при наведении */
   }
-`
+`;
 
 export const Image = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-`
+`;
 
 export const EventContent = styled.div`
   padding: 24px 21px 17px 21px;
@@ -78,7 +78,7 @@ export const EventContent = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     height: 147px;
   }
-`
+`;
 
 // const EventName = styled.p`
 //   font-size: 10px;
@@ -97,10 +97,11 @@ export const EventTitle = styled.p`
     font-size: 14px;
     line-height: initial;
   }
-`
+`;
 
 export const EventBottom = styled.div`
   margin-top: 20px;
+  gap: 4px;
   display: flex;
   width: 100%;
   justify-content: space-between;
@@ -110,13 +111,13 @@ export const EventBottom = styled.div`
     font-size: 12px;
     line-height: 14px;
   }
-`
+`;
 
 export const EventData = styled.div`
   border-top: 0.5px solid #000;
   padding-top: 10px;
   width: 100%;
-`
+`;
 
 export const Date = styled.p`
   display: inline-block;
@@ -129,7 +130,11 @@ export const Date = styled.p`
     font-size: 12px;
     line-height: 14px;
   }
-`
+`;
+
+export const DateSpan = styled.span`
+  white-space: nowrap;
+`;
 
 export const EventAddress = styled.p`
   color: #727272;
@@ -140,11 +145,11 @@ export const EventAddress = styled.p`
     font-size: 12px;
     line-height: 14px;
   }
-`
+`;
 
 export const Promo = styled.div`
   margin-left: auto;
-`
+`;
 
 export const PromoText = styled.p`
   font-weight: 500;
@@ -154,4 +159,4 @@ export const PromoText = styled.p`
     font-size: 12px;
     line-height: 14px;
   }
-`
+`;

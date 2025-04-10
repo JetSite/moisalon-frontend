@@ -1,29 +1,29 @@
-import styled from 'styled-components'
-import { laptopBreakpoint } from '../../../styles/variables'
-import About from './components/About'
-import MainLayout from '../../../layouts/MainLayout'
-import MainMasterSlider from './components/MainMasterSlider'
-import MainSalonsSlider from './components/MainSalonsSlider'
-import MainBrandsSlider from './components/MainBrandsSlider'
-import MobileViewCards from './components/MobileViewCards'
-import Ribbon from './components/Ribbon'
-import useAuthStore from 'src/store/authStore'
-import { getStoreData } from 'src/store/utils'
-import { MobileHidden, MobileVisible } from '../../../styles/common'
-import SearchBlock from '../../blocks/SearchBlock'
-import Banners from '../Catalog/components/Banners'
-import { CSSTransition } from 'react-transition-group'
-import { WrapBanner } from '../Brand/AllBrands/styles'
-import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
-import MainAdsSlider from './components/MainAdsSlider'
-import { FC } from 'react'
-import { ITotalCount } from 'src/pages/[city]/salon'
-import { ICity } from 'src/types'
-import MainRentSlider from './components/MainRentSlider'
-import { IBannerHook } from 'src/types/banners'
-import { useRouter } from 'next/router'
-import SearchResults from './components/SearchMain/SearchResults'
-import { MIN_SEARCH_LENGTH } from './components/SearchMain/utils/useSearch'
+import styled from 'styled-components';
+import { laptopBreakpoint } from '../../../styles/variables';
+import About from './components/About';
+import MainLayout from '../../../layouts/MainLayout';
+import MainMasterSlider from './components/MainMasterSlider';
+import MainSalonsSlider from './components/MainSalonsSlider';
+import MainBrandsSlider from './components/MainBrandsSlider';
+import MobileViewCards from './components/MobileViewCards';
+import Ribbon from './components/Ribbon';
+import useAuthStore from 'src/store/authStore';
+import { getStoreData } from 'src/store/utils';
+import { MobileHidden, MobileVisible } from '../../../styles/common';
+import SearchBlock from '../../blocks/SearchBlock';
+import Banners from '../Catalog/components/Banners';
+import { CSSTransition } from 'react-transition-group';
+import { WrapBanner } from '../Brand/AllBrands/styles';
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse';
+import MainAdsSlider from './components/MainAdsSlider';
+import { FC } from 'react';
+import { ITotalCount } from 'src/pages/[city]/salon';
+import { ICity } from 'src/types';
+import MainRentSlider from './components/MainRentSlider';
+import { IBannerHook } from 'src/types/banners';
+import { useRouter } from 'next/router';
+import SearchResults from './components/SearchMain/SearchResults';
+import { MIN_SEARCH_LENGTH } from './components/SearchMain/utils/useSearch';
 
 const Title = styled.h1`
   max-width: 1440px;
@@ -38,14 +38,14 @@ const Title = styled.h1`
     font-size: 16px;
     text-align: center;
   }
-`
+`;
 
 export interface IMainPageProps {
-  beautyCategories: any
-  beautyAllContent: any
-  bannerHooks: IBannerHook[]
-  totalCount: ITotalCount
-  cityData: ICity
+  beautyCategories: any;
+  beautyAllContent: any;
+  bannerHooks: IBannerHook[];
+  totalCount: ITotalCount;
+  cityData: ICity;
 }
 
 const MainPage: FC<IMainPageProps> = ({
@@ -55,14 +55,14 @@ const MainPage: FC<IMainPageProps> = ({
   totalCount,
   cityData,
 }) => {
-  const { query } = useRouter()
+  const { query } = useRouter();
   const isSearch =
-    typeof query.search === 'string' &&
-    query.search?.length >= MIN_SEARCH_LENGTH
+    typeof query['search'] === 'string' &&
+    query['search']?.length >= MIN_SEARCH_LENGTH;
 
-  const bannerTopLarge = bannerHooks.find(e => e.id === '1') ?? null
-  const bannerTopSmallLeft = bannerHooks.find(e => e.id === '2') ?? null
-  const bannerTopSmallRight = bannerHooks.find(e => e.id === '3') ?? null
+  const bannerTopLarge = bannerHooks.find(e => e.id === '1') ?? null;
+  const bannerTopSmallLeft = bannerHooks.find(e => e.id === '2') ?? null;
+  const bannerTopSmallRight = bannerHooks.find(e => e.id === '3') ?? null;
 
   return (
     <MainLayout>
@@ -107,7 +107,7 @@ const MainPage: FC<IMainPageProps> = ({
           </MobileVisible>
         ) : null}
         {isSearch ? (
-          <SearchResults searchValue={query?.search as string} />
+          <SearchResults searchValue={query?.['search'] as string} />
         ) : null}
         <MainAdsSlider city={cityData} />
         {/* <MainGoodsSlider me={me} /> */}
@@ -124,7 +124,7 @@ const MainPage: FC<IMainPageProps> = ({
         />
       </>
     </MainLayout>
-  )
-}
+  );
+};
 
-export default MainPage
+export default MainPage;

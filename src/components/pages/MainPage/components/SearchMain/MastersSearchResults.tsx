@@ -1,44 +1,29 @@
-import React, { useState, useEffect, FC } from 'react'
-import Link from 'next/link'
+import React, { useState, useEffect, FC } from 'react';
 
-import { pluralize } from '../../../../../utils/pluralize'
-import { MobileVisible, MobileHidden } from '../../../../../styles/common'
-import {
-  WrapperResults,
-  WrapperItemsMasters,
-  Title,
-  LinkStyled,
-  Checkbox,
-  Label,
-} from './styled'
-import Button from '../../../../ui/Button'
+import { pluralize } from '@/utils/pluralize';
+import { MobileVisible, MobileHidden } from '@/styles/common';
+import { WrapperItemsMasters, LinkStyled, Checkbox, Label } from './styled';
+import Button from '@/components/ui/Button';
 import FilterSearchResults, {
   IFiltersType,
   ISortOrder,
   filtersType,
-} from '../../../../blocks/FilterSearchResults'
-import catalogOrDefault from '../../../../../utils/catalogOrDefault'
-import MasterItem from '../../../../blocks/MasterCard'
-import { cyrToTranslit } from '../../../../../utils/translit'
-import { useSearchHistory } from '../../../../../hooks/useSearchHistory'
-import useCheckMobileDevice from '../../../../../hooks/useCheckMobileDevice'
-import { IMaster } from 'src/types/masters'
-import { IPagination } from 'src/types'
-import useAuthStore from 'src/store/authStore'
-import { getStoreData } from 'src/store/utils'
-import { IFilters } from 'src/components/pages/Rent/RentFilter'
-import { useLazyQuery, useQuery } from '@apollo/client'
-import { getMastersTroughCity } from 'src/api/graphql/master/queries/getMastersTroughCity'
-import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
-import { defaultValues, settingsConfig } from 'src/api/authConfig'
-import { getTotalCount } from 'src/utils/getTotalCount'
-import { useRouter } from 'next/router'
-import { ISearchResults } from './SalonSearch'
-import SearchResultsTitle from './SearchResultsTitle'
+} from '@/components/blocks/FilterSearchResults';
+import { IMaster } from '@/types/masters';
+import useAuthStore from '@/store/authStore';
+import { getStoreData } from '@/store/utils';
+import { useLazyQuery } from '@apollo/client';
+import { getMastersTroughCity } from '@/api/graphql/master/queries/getMastersTroughCity';
+import { flattenStrapiResponse } from '@/utils/flattenStrapiResponse';
+import { defaultValues, settingsConfig } from '@/api/authConfig';
+import { useRouter } from 'next/router';
+import { ISearchResults } from './SalonSearch';
+import SearchResultsTitle from './SearchResultsTitle';
+import MasterItem from '@/components/blocks/MasterCard';
 
 interface Props extends ISearchResults {
-  masterData: IMaster[]
-  noFilters?: boolean
+  masterData: IMaster[];
+  noFilters?: boolean;
 }
 
 const MastersSearchResults: FC<Props> = ({
@@ -49,63 +34,66 @@ const MastersSearchResults: FC<Props> = ({
   noFilters,
   main,
 }) => {
-  const [page, setPage] = useState<number>(2)
-  const hasNextPage = pagination && pagination.pageCount + 1 !== page
-  const totalCount = pagination?.total || 0
-  const { user } = useAuthStore(getStoreData)
+  const [page, setPage] = useState<number>(2);
+  const hasNextPage = pagination && pagination.pageCount + 1 !== page;
+  const totalCount = pagination?.total || 0;
+  const { user } = useAuthStore(getStoreData);
   const [updateMasterData, setUpdateMasterData] =
-    useState<IMaster[]>(masterData)
-  const { city } = useAuthStore(getStoreData)
-  const [resumeFilter, setResumeFilter] = useState<boolean>(false)
-  const router = useRouter()
+    useState<IMaster[]>(masterData);
+  const { city } = useAuthStore(getStoreData);
+  const [resumeFilter, setResumeFilter] = useState<boolean>(false);
+  const router = useRouter();
 
   useEffect(() => {
-    setUpdateMasterData(masterData)
-  }, [masterData])
+    setUpdateMasterData(masterData);
+  }, [masterData]);
 
   useEffect(() => {
     try {
-      let storageSort
+      let storageSort;
       if (typeof window !== 'undefined') {
         storageSort =
-          localStorage.getItem(settingsConfig.masterSort) || 'viewsCount:desc'
+          localStorage.getItem(settingsConfig.masterSort) || 'viewsCount:desc';
         const storageSortProperty = storageSort.includes(
           filtersType['по отзывам'],
         )
           ? 'по отзывам'
-          : 'по рейтингу'
+          : 'по рейтингу';
 
         const storageSortOrder = storageSort.includes(':desc')
           ? ':desc'
-          : ':asc'
+          : ':asc';
 
-        setSortOrder(storageSortOrder)
-        setSortProperty(storageSortProperty)
+        setSortOrder(storageSortOrder);
+        setSortProperty(storageSortProperty);
       }
     } catch (error) {
-      console.error('Error initializing sort preferences:', error)
-      setSortOrder(':desc')
-      setSortProperty('по рейтингу')
+      console.error('Error initializing sort preferences:', error);
+      setSortOrder(':desc');
+      setSortProperty('по рейтингу');
     }
-  }, [])
+  }, []);
 
   const [sortProperty, setSortProperty] = useState<IFiltersType>(
     Object.keys(filtersType)[1] as IFiltersType,
-  )
-  const [sortOrder, setSortOrder] = useState<ISortOrder>(':desc')
+  );
+  const [sortOrder, setSortOrder] = useState<ISortOrder>(':desc');
 
   const [refetch, { loading }] = useLazyQuery(getMastersTroughCity, {
     notifyOnNetworkStatusChange: true,
     fetchPolicy: 'no-cache',
     onCompleted: data => {
-      const prepareData = flattenStrapiResponse(data.masters)
-      setUpdateMasterData(prev => prev.concat(prepareData))
+      const prepareData = flattenStrapiResponse(data.masters);
+      setUpdateMasterData(prev => prev.concat(prepareData));
     },
-    onError: err => {},
-  })
+    onError: err => {
+      console.log(err);
+    },
+  });
 
   const onFetchMore = async () => {
-    const sort = filtersType[sortProperty] + sortOrder
+    const sort = filtersType[sortProperty] + sortOrder;
+    console.log(sort);
 
     resumeFilter
       ? await refetch({
@@ -114,6 +102,7 @@ const MastersSearchResults: FC<Props> = ({
             page,
             pageSize: 10,
             searchWork: resumeFilter,
+            sort,
           },
         })
       : await refetch({
@@ -121,23 +110,23 @@ const MastersSearchResults: FC<Props> = ({
             slug: cityData?.slug,
             page,
             pageSize: 10,
+            sort,
           },
-        })
-    setPage(page + 1)
-  }
+        });
+    setPage(page + 1);
+  };
 
   const handleFilter = async (filter: keyof typeof filtersType) => {
     if (sortProperty !== filter) {
-      setSortProperty(filter)
-      setSortOrder(':asc')
+      setSortProperty(filter);
+      setSortOrder(':asc');
     } else {
-      setSortOrder(prev => (prev === ':asc' ? ':desc' : ':asc'))
+      setSortOrder(prev => (prev === ':asc' ? ':desc' : ':asc'));
     }
-    const sort = filtersType[filter] + sortOrder
-    localStorage.setItem(settingsConfig.masterSort, sort)
-    console.log('sort', sort)
+    const sort = filtersType[filter] + sortOrder;
+    localStorage.setItem(settingsConfig.masterSort, sort);
 
-    setUpdateMasterData([])
+    setUpdateMasterData([]);
     resumeFilter
       ? await refetch({
           variables: {
@@ -151,17 +140,17 @@ const MastersSearchResults: FC<Props> = ({
             slug: cityData?.slug,
             sort: [sort],
           },
-        })
+        });
 
-    setPage(2)
-  }
+    setPage(2);
+  };
 
   const prepareTitle = `${pluralize(
     totalCount,
     'Найден',
     'Найдено',
     'Найдено',
-  )} ${totalCount} ${pluralize(totalCount, 'мастер', 'мастера', 'мастеров')}`
+  )} ${totalCount} ${pluralize(totalCount, 'мастер', 'мастера', 'мастеров')}`;
 
   return (
     <>
@@ -187,17 +176,17 @@ const MastersSearchResults: FC<Props> = ({
             checked={!!resumeFilter}
             id="resume"
             onClick={async () => {
-              setUpdateMasterData([])
+              setUpdateMasterData([]);
               setResumeFilter(prevResumeFilter => {
-                const newResumeFilter = !prevResumeFilter
-                setUpdateMasterData([])
+                const newResumeFilter = !prevResumeFilter;
+                setUpdateMasterData([]);
                 if (newResumeFilter) {
                   refetch({
                     variables: {
                       searchWork: true,
                       slug: cityData?.slug,
                     },
-                  })
+                  });
                 } else {
                   // setUpdateMasterData(masterData)
                   // setTotalCount(pagination?.total || 0)
@@ -205,10 +194,10 @@ const MastersSearchResults: FC<Props> = ({
                     variables: {
                       slug: cityData?.slug,
                     },
-                  })
+                  });
                 }
-                return newResumeFilter
-              })
+                return newResumeFilter;
+              });
             }}
           />
           <Label htmlFor="resume">Найти резюме</Label>
@@ -223,7 +212,7 @@ const MastersSearchResults: FC<Props> = ({
                   `/${
                     master.city?.slug || city.slug || defaultValues.city.slug
                   }/master/${master.id}`,
-                )
+                );
               }}
               key={master.id}
             >
@@ -269,7 +258,7 @@ const MastersSearchResults: FC<Props> = ({
         </>
       ) : null}
     </>
-  )
-}
+  );
+};
 
-export default MastersSearchResults
+export default MastersSearchResults;

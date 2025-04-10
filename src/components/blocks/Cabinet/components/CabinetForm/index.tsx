@@ -1,4 +1,4 @@
-import { useMutation } from '@apollo/client'
+import { useMutation } from '@apollo/client';
 import {
   useCallback,
   useState,
@@ -7,18 +7,19 @@ import {
   FC,
   Dispatch,
   SetStateAction,
-} from 'react'
-import { Field } from 'react-final-form'
+  useMemo,
+} from 'react';
 import {
   composeValidators,
   email,
   phone,
   required,
-} from '../../../../../utils/validations'
-import Button from '../../../../ui/Button'
-import { TextField } from '../../../Form'
-import AutoFocusedForm from '../../../Form/AutoFocusedForm'
-import ErrorPopup from '../../../Form/Error'
+  validDate,
+} from '../../../../../utils/validations';
+import Button from '../../../../ui/Button';
+import { TextField } from '../../../Form';
+import AutoFocusedForm from '../../../Form/AutoFocusedForm';
+import ErrorPopup from '../../../Form/Error';
 import {
   Wrapper,
   Title,
@@ -27,51 +28,46 @@ import {
   FieldStyled,
   ButtonWrap,
   Flex,
-} from './styled'
-import CreateProfiles from '../CreateProfiles'
-import { MobileHidden } from '../../../../../styles/common'
-import useAuthStore from 'src/store/authStore'
-import { getStoreEvent } from 'src/store/utils'
-import { CHANGE_ME } from 'src/api/graphql/me/mutations/changeMe'
-import {
-  CustomWindow,
-  IID,
-  ISetState,
-  InitialValuesForm,
-} from 'src/types/common'
-import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
-import { IMeInfo, IUser } from 'src/types/me'
-import { ICity, IPhoto } from 'src/types'
-import { cyrToTranslit } from 'src/utils/translit'
-import { parseFieldsToString } from 'src/utils/newUtils/formsHelpers'
-import AddressNoSalonField from 'src/components/blocks/Form/AddressField/AddressNoSalonField'
-import { CREATE_CITY } from 'src/api/graphql/city/mutations/createCity'
-import { FormGuardPopup } from 'src/components/blocks/Form/FormGuardPopup'
-import { FormApi } from 'final-form'
+} from './styled';
+import CreateProfiles from '../CreateProfiles';
+import { MobileHidden } from '../../../../../styles/common';
+import useAuthStore from 'src/store/authStore';
+import { getStoreEvent } from 'src/store/utils';
+import { CHANGE_ME } from 'src/api/graphql/me/mutations/changeMe';
+import { IID, ISetState, InitialValuesForm } from 'src/types/common';
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse';
+import { IMeInfo, IUser } from 'src/types/me';
+import { ICity, IPhoto } from 'src/types';
+import { cyrToTranslit } from 'src/utils/translit';
+import { parseFieldsToString } from 'src/utils/newUtils/formsHelpers';
+import AddressNoSalonField from 'src/components/blocks/Form/AddressField/AddressNoSalonField';
+import { CREATE_CITY } from 'src/api/graphql/city/mutations/createCity';
+import { FormGuardPopup } from 'src/components/blocks/Form/FormGuardPopup';
+import { FormApi } from 'final-form';
 
-interface ICabinetFormIvitialValues extends InitialValuesForm {
-  phone: string
-  email: string
-  city: string
-  username: string
-  birthDate: string
+interface ICabinetFormValues extends InitialValuesForm {
+  phone: string;
+  email: string;
+  city: string;
+  username: string;
+  birthDate: string;
 }
 
 interface IUserInput extends Pick<IMeInfo, 'birthDate' | 'phone'> {
-  username?: string
-  email?: string
-  city?: IID
-  avatar?: IID
+  username?: string;
+  email?: string;
+  city?: IID;
+  avatar?: IID;
 }
 
 export interface CabinetFormProps {
-  user: IUser
-  photo: IPhoto | null
-  setNoPhotoError: Dispatch<SetStateAction<boolean>>
-  auth?: boolean
-  setDirtyForm: ISetState<boolean>
-  dirtyForm: boolean
-  cities: ICity[]
+  user: IUser;
+  photo: IPhoto | null;
+  setNoPhotoError: Dispatch<SetStateAction<boolean>>;
+  auth?: boolean;
+  setDirtyForm: ISetState<boolean>;
+  dirtyForm: boolean;
+  cities: ICity[];
 }
 
 const CabinetForm: FC<CabinetFormProps> = ({
@@ -83,124 +79,126 @@ const CabinetForm: FC<CabinetFormProps> = ({
   cities,
   user,
 }) => {
-  const { setMe, setUser, setCity } = useAuthStore(getStoreEvent)
-  const [errors, setErrors] = useState<string[] | null>(null)
-  const [loading, setLoading] = useState<boolean>(false)
-  const [isErrorPopupOpen, setErrorPopupOpen] = useState<boolean>(false)
-  const [citiesArray, setCitiesArray] = useState<ICity[]>(cities)
-  const [clickCity, setClickCity] = useState<string | null>(null)
-  const formRef = useRef<FormApi<ICabinetFormIvitialValues>>()
+  const { setMe, setUser, setCity } = useAuthStore(getStoreEvent);
+  const [errors, setErrors] = useState<string[] | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [citiesArray, setCitiesArray] = useState<ICity[]>(cities);
+  const [clickCity, setClickCity] = useState<string | null>(null);
+  const formRef = useRef<FormApi<ICabinetFormValues>>();
 
-  const [addCity] = useMutation(CREATE_CITY)
+  const [addCity] = useMutation(CREATE_CITY, {
+    onError: error => {
+      const errorMessages = error.graphQLErrors.map(e => e.message);
+      console.log(errorMessages);
+      setErrors(['Ошибка при добавлении города']);
+    },
+  });
 
   const [updateUser] = useMutation(CHANGE_ME, {
     onCompleted: async data => {
       const prepareData = flattenStrapiResponse(
         data.updateUsersPermissionsUser,
-      ) as IMeInfo
+      ) as IMeInfo;
       if (prepareData) {
-        setMe({ info: prepareData as IMeInfo })
+        setMe({ info: prepareData as IMeInfo });
         setUser({
           info: { ...prepareData } as IMeInfo,
           owner: { ...user.owner },
           favorite: { ...user.favorite },
           orders: { ...user.orders },
-        })
+        });
       }
 
-      setLoading(false)
+      setLoading(false);
     },
     onError: error => {
-      setLoading(false)
-      const errorMessages = error.graphQLErrors.map(e => e.message)
-      console.log(errorMessages)
-      setErrors(['Такие имя или почта уже существуют'])
-      setErrorPopupOpen(true)
+      setLoading(false);
+      const errorMessages = error.graphQLErrors.map(e => e.message);
+      console.log(errorMessages);
+      setErrors(['Такие имя или почта уже существуют']);
     },
-  })
+  });
+
+  const initialValues = useMemo<ICabinetFormValues>(
+    () => ({
+      phone: user.info.phone,
+      email: user.info.email,
+      city: user.info.city?.name || '',
+      username: user.info.username,
+      birthDate: user.info.birthDate || '',
+    }),
+    [user],
+  );
 
   const onSubmit = useCallback(
-    async (values: { [key: string]: string }) => {
+    async (values: ICabinetFormValues) => {
       if (!photo) {
-        setNoPhotoError(true)
-        setErrors(['Необходимо добавить фото'])
-        setErrorPopupOpen(true)
-        return
+        setNoPhotoError(true);
+        setErrors(['Необходимо добавить фото']);
+        return;
+      }
+      if (!values.city) {
+        setErrors(['Введите адресс']);
+        return;
+      }
+      if (values.city !== clickCity || !clickCity) {
+        setErrors(['Выберите город из выпадающего списка']);
+        return;
       }
 
-      const findCity = citiesArray.find(e => e.name === clickCity)
+      const findCity = citiesArray.find(e => e.name === values.city);
 
       const input: IUserInput = {
         phone: values.phone,
         birthDate: values.birthDate,
-      }
-      if (values.username !== user?.info.username) {
-        input.username = values.username
-      }
-      if (values.email !== user?.info.email) {
-        input.email = values.email
-      }
-      if (photo.id !== user?.info.avatar?.id) {
-        input.avatar = photo.id
-      }
+        username:
+          values.username !== user.info.username ? values.username : undefined,
+        email: values.email !== user.info.email ? values.email : undefined,
+        avatar: photo.id !== user.info.avatar?.id ? photo.id : undefined,
+      };
+      console.log(input);
+
+      const proceedUpdate = (city: ICity) => {
+        input.city = city.id;
+        setCity(city);
+        setLoading(true);
+        updateUser({
+          variables: {
+            id: user.info.id,
+            data: input,
+          },
+        });
+      };
 
       if (!findCity) {
         addCity({
           variables: { name: clickCity, slug: cyrToTranslit(clickCity) },
           onCompleted: data => {
-            const findCityData = flattenStrapiResponse(
+            const newCity = flattenStrapiResponse(
               data.createCity.data,
-            ) as ICity
-            input.city = findCityData.id
-            setCity(findCityData)
-            setCitiesArray(prev => prev.concat(findCityData))
-
-            setLoading(true)
-            updateUser({
-              variables: {
-                id: user?.info.id,
-                data: input,
-              },
-            })
+            ) as ICity;
+            setCitiesArray(prev => prev.concat(newCity));
+            proceedUpdate(newCity);
           },
-        })
+        });
       } else {
-        input.city = findCity.id
-        setCity(findCity)
-
-        setLoading(true)
-        updateUser({
-          variables: {
-            id: user?.info.id,
-            data: input,
-          },
-        })
+        proceedUpdate(findCity);
       }
-
-      console.log('input', input)
     },
     [photo, clickCity],
-  )
-  const initialValues: ICabinetFormIvitialValues = {
-    phone: user.info.phone,
-    email: user.info.email,
-    city: user.info.city?.name || '',
-    username: user.info.username,
-    birthDate: user.info.birthDate || '',
-  }
+  );
 
   useEffect(() => {
-    if (formRef.current) {
-      const unsubscribe = formRef.current.subscribe(
-        ({ dirty }) => {
-          const isNewLogo = !!photo && photo.id !== user.info?.avatar?.id
-          isNewLogo ? setDirtyForm(true) : setDirtyForm(dirty)
-        },
-        { dirty: true },
-      )
-      return unsubscribe
-    }
-  }, [formRef.current, photo, setDirtyForm, user.info?.avatar?.id])
+    if (!formRef.current) return;
+    const unsubscribe = formRef.current.subscribe(
+      ({ dirty }) => {
+        const isNewLogo = !!photo && photo.id !== user.info?.avatar?.id;
+        isNewLogo ? setDirtyForm(true) : setDirtyForm(dirty);
+      },
+      { dirty: true },
+    );
+    return unsubscribe;
+  }, [formRef.current, photo, setDirtyForm, user.info?.avatar?.id]);
 
   return (
     <Wrapper>
@@ -208,11 +206,11 @@ const CabinetForm: FC<CabinetFormProps> = ({
         <Title>Мои данные </Title>
         <SubTitle>Пользователь </SubTitle>
       </Flex>
-      <AutoFocusedForm<ICabinetFormIvitialValues>
+      <AutoFocusedForm<ICabinetFormValues>
         initialValues={initialValues}
         onSubmit={onSubmit}
         render={({ form, handleSubmit }) => {
-          formRef.current = form
+          formRef.current = form;
           return (
             <form onSubmit={handleSubmit}>
               <FieldWrap>
@@ -225,12 +223,12 @@ const CabinetForm: FC<CabinetFormProps> = ({
                 />
               </FieldWrap>
               <FieldWrap>
-                <Field
+                <FieldStyled
                   name="phone"
                   type="phone"
-                  component={TextField}
                   label="Телефон *"
                   validate={composeValidators(required, phone)}
+                  component={TextField}
                 />
               </FieldWrap>
               <FieldWrap>
@@ -249,9 +247,9 @@ const CabinetForm: FC<CabinetFormProps> = ({
                   name="city"
                   setClickCity={setClickCity}
                   component={AddressNoSalonField}
-                  label="Адрес"
-                  requiredField
                   onlyCity
+                  label="Город"
+                  requiredField
                   noMap
                 />
               </FieldWrap>
@@ -260,6 +258,7 @@ const CabinetForm: FC<CabinetFormProps> = ({
                   label="Дата рождения"
                   name="birthDate"
                   component={TextField}
+                  validate={validDate}
                   type="date"
                   required
                 />
@@ -277,7 +276,7 @@ const CabinetForm: FC<CabinetFormProps> = ({
                 </Button>
               </ButtonWrap>
             </form>
-          )
+          );
         }}
       />
       <FormGuardPopup setDirtyForm={setDirtyForm} dirtyForm={dirtyForm} />
@@ -287,7 +286,7 @@ const CabinetForm: FC<CabinetFormProps> = ({
         </MobileHidden>
       ) : null}
     </Wrapper>
-  )
-}
+  );
+};
 
-export default CabinetForm
+export default CabinetForm;

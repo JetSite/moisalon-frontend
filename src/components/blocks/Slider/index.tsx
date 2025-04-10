@@ -1,6 +1,6 @@
-import { Dispatch, FC, SetStateAction, useMemo, useRef, useState } from 'react'
-import { useRouter } from 'next/router'
-import { MainContainer, MobileVisible } from '../../../styles/common'
+import { FC, useMemo, useState } from 'react';
+import { useRouter } from 'next/router';
+import { MainContainer, MobileVisible } from '../../../styles/common';
 import {
   Title,
   Wrapper,
@@ -11,33 +11,33 @@ import {
   BottomMobile,
   SliderWrapper,
   TitleIconWrapper,
-} from './styles'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation } from 'swiper/modules'
-import SwiperCore from 'swiper'
+} from './styles';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from 'swiper/modules';
+import SwiperCore from 'swiper';
 import {
   Bottom,
   ButtonNext,
   ButtonPrev,
   NavigationWrapper,
-} from '../../../styles/sliderBlocks'
-import Skeleton from '../../pages/MainPage/components/SearchMain/MainSearchSkeleton'
-import EditIcons from '../../ui/EditIcons'
-import CityPingIcon from '../../pages/MainPage/components/Header/icons/CityPingIcon'
-import CitySelect from '../../pages/MainPage/components/CitySelect/CitySelect'
-import { IChildren, ISetState } from 'src/types/common'
-import { IBrand } from 'src/types/brands'
-import { IMaster } from 'src/types/masters'
-import { ISalon, ISalonPage } from 'src/types/salon'
-import { IDeleteFunction } from './components/SliderItems/BrandSlide'
-import { customProps } from './customProps'
-import { ICity, IPhoto } from 'src/types'
-import { IProduct } from 'src/types/product'
-import { IVacancy } from 'src/types/vacancies'
-import { IPromotions } from 'src/types/promotions'
-import { useBeforeInit } from './useBeforeInit'
+} from '../../../styles/sliderBlocks';
+import Skeleton from '../../pages/MainPage/components/SearchMain/MainSearchSkeleton';
+import EditIcons from '../../ui/EditIcons';
+import CityPingIcon from '../../pages/MainPage/components/Header/icons/CityPingIcon';
+import CitySelect from '../../pages/MainPage/components/CitySelect/CitySelect';
+import { IChildren, ISetState } from 'src/types/common';
+import { IBrand } from 'src/types/brands';
+import { IMaster } from 'src/types/masters';
+import { ISalon, ISalonPage } from 'src/types/salon';
+import { IDeleteFunction } from './components/SliderItems/BrandSlide';
+import { customProps } from './customProps';
+import { ICity, IPhoto } from 'src/types';
+import { IProduct } from 'src/types/product';
+import { IVacancy } from 'src/types/vacancies';
+import { IPromotions } from 'src/types/promotions';
+import { useBeforeInit } from './useBeforeInit';
 
-SwiperCore.use([Navigation])
+SwiperCore.use([Navigation]);
 export type SlideType =
   | 'masters'
   | 'salons'
@@ -48,11 +48,11 @@ export type SlideType =
   | 'vacancies'
   | 'ads'
   | 'rentSalons'
-  | 'rentWorkplaces'
+  | 'rentWorkplaces';
 
 interface Props {
-  children?: IChildren
-  type: SlideType
+  children?: IChildren;
+  type: SlideType;
   items:
     | IMaster[]
     | IBrand[]
@@ -60,29 +60,29 @@ interface Props {
     | IPhoto[]
     | IProduct[]
     | IVacancy[]
-    | IPromotions[]
-  title?: string
-  typeObject?: IMaster | IBrand | ISalon | IPhoto | IPromotions | null
-  noBottom?: boolean
-  noAll?: boolean
-  noAllButton?: boolean
-  loading?: boolean
-  bgColor?: string
-  isOwner?: boolean
-  isEditing?: boolean
-  setIsEditing?: ISetState<boolean>
-  deleteFunction?: IDeleteFunction
-  pt?: number
-  pb?: number
-  pl?: number
-  isCityChangeable?: boolean
-  noFirstSlide?: boolean
-  salon?: ISalonPage
-  mobileTitleWidth?: boolean
-  noPadding?: boolean
-  noAllPadding?: boolean
-  city: ICity
-  id?: string
+    | IPromotions[];
+  title?: string;
+  typeObject?: IMaster | IBrand | ISalon | IPhoto | IPromotions | null;
+  noBottom?: boolean;
+  noAll?: boolean;
+  noAllButton?: boolean;
+  loading?: boolean;
+  bgColor?: string;
+  isOwner?: boolean;
+  isEditing?: boolean;
+  setIsEditing?: ISetState<boolean>;
+  deleteFunction?: IDeleteFunction;
+  pt?: number;
+  pb?: number;
+  pl?: number;
+  isCityChangeable?: boolean;
+  noFirstSlide?: boolean;
+  salon?: ISalonPage;
+  mobileTitleWidth?: boolean;
+  noPadding?: boolean;
+  noAllPadding?: boolean;
+  city: ICity;
+  id?: string;
 }
 
 const Slider: FC<Props> = ({
@@ -112,13 +112,14 @@ const Slider: FC<Props> = ({
   city,
   id,
 }) => {
-  const { onBeforeInit, navigationPrevRef, navigationNextRef } = useBeforeInit()
+  const { onBeforeInit, navigationPrevRef, navigationNextRef } =
+    useBeforeInit();
 
-  const [showCitySelect, setShowCitySelect] = useState(false)
-  const router = useRouter()
-  const landingMaster = router.pathname === '/for_master'
-  const landingSalon = router.pathname === '/for_salon'
-  const landingBrand = router.pathname === '/for_brand'
+  const [showCitySelect, setShowCitySelect] = useState(false);
+  const router = useRouter();
+  const landingMaster = router.pathname === '/for_master';
+  const landingSalon = router.pathname === '/for_salon';
+  const landingBrand = router.pathname === '/for_brand';
 
   const customTypeProps = useMemo(
     () =>
@@ -131,7 +132,7 @@ const Slider: FC<Props> = ({
         router,
       }),
     [type, landingMaster, bgColor, salon, city, router],
-  )
+  );
 
   const firstSlide = useMemo(() => {
     const firstSlide = items?.length
@@ -147,9 +148,9 @@ const Slider: FC<Props> = ({
           city,
           router,
         })
-      : null
+      : null;
 
-    return firstSlide ? firstSlide.firstSlide : null
+    return firstSlide ? firstSlide.firstSlide : null;
   }, [
     type,
     items,
@@ -161,7 +162,7 @@ const Slider: FC<Props> = ({
     landingMaster,
     city,
     router,
-  ])
+  ]);
 
   return (
     <Wrapper id={id ?? type} load={loading} type={type} bgColor={bgColor}>
@@ -179,7 +180,7 @@ const Slider: FC<Props> = ({
                 <MobileVisible>
                   <TitleIconWrapper
                     onClick={() => {
-                      setShowCitySelect(true)
+                      setShowCitySelect(true);
                     }}
                   >
                     <CityPingIcon color="#fff" />
@@ -253,7 +254,7 @@ const Slider: FC<Props> = ({
                         landingMaster,
                         city,
                         router,
-                      })
+                      });
 
                       return (
                         <SwiperSlide
@@ -266,7 +267,7 @@ const Slider: FC<Props> = ({
                         >
                           {slide.sliderItem}
                         </SwiperSlide>
-                      )
+                      );
                     })}
                     {items?.length >=
                       (customTypeProps.slidesCountWhenAllShow as number) &&
@@ -310,7 +311,7 @@ const Slider: FC<Props> = ({
         setShowCitySelect={setShowCitySelect}
       />
     </Wrapper>
-  )
-}
+  );
+};
 
-export default Slider
+export default Slider;

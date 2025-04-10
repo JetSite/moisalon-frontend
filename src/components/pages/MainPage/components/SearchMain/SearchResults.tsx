@@ -1,20 +1,20 @@
-import React, { FC } from 'react'
-import { MainContainer } from '../../../../../styles/common'
-import { Title, WrapperResults } from './styled'
-import MastersSearchResults from './MastersSearchResults'
-import BrandsSearchResults from './BrandsSearchResults'
-import { SalonsSearch } from './SalonSearch'
-import useAuthStore from 'src/store/authStore'
-import { getStoreData } from 'src/store/utils'
-import { useSearch } from './utils/useSearch'
+import React, { FC } from 'react';
+import { MainContainer } from '../../../../../styles/common';
+import { Title, WrapperResults } from './styled';
+import MastersSearchResults from './MastersSearchResults';
+import BrandsSearchResults from './BrandsSearchResults';
+import { SalonsSearch } from './SalonSearch';
+import useAuthStore from 'src/store/authStore';
+import { getStoreData } from 'src/store/utils';
+import { useSearch } from './utils/useSearch';
 
 interface Props {
-  searchValue: string
+  searchValue: string;
 }
 
 const SearchResults: FC<Props> = ({ searchValue }) => {
-  const { city } = useAuthStore(getStoreData)
-  const { loading, data, pagination } = useSearch(searchValue)
+  const { city } = useAuthStore(getStoreData);
+  const { loading, data, pagination } = useSearch(searchValue, false);
 
   return (
     <MainContainer>
@@ -52,7 +52,7 @@ const SearchResults: FC<Props> = ({ searchValue }) => {
         )}
       </WrapperResults>
     </MainContainer>
-  )
-}
+  );
+};
 
-export default SearchResults
+export default SearchResults;

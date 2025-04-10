@@ -1,16 +1,16 @@
-import React, { useState, useEffect, FC } from 'react'
-import Link from 'next/link'
-import MainLayout from '../../../layouts/MainLayout'
-import SearchBlock from '../../blocks/SearchBlock'
-import BackButton from '../../ui/BackButton'
-import Ribbon from '../MainPage/components/Ribbon'
-import RatingEdit from '../../ui/RatingEdit'
-import Button from '../../ui/Button'
+import React, { useState, useEffect, FC, MouseEvent } from 'react';
+import Link from 'next/link';
+import MainLayout from '../../../layouts/MainLayout';
+import SearchBlock from '../../blocks/SearchBlock';
+import BackButton from '../../ui/BackButton';
+import Ribbon from '../MainPage/components/Ribbon';
+import RatingEdit from '../../ui/RatingEdit';
+import Button from '../../ui/Button';
 import {
   MainContainer,
   MobileHidden,
   MobileVisible,
-} from '../../../styles/common'
+} from '../../../styles/common';
 import {
   Wrapper,
   Content,
@@ -29,29 +29,25 @@ import {
   Rating,
   Count,
   Favorite,
-} from './styles'
-import moment from 'moment'
-import 'moment/locale/ru'
-import Countdown from '../../blocks/Countdown'
+} from './styles';
+import moment from 'moment';
+import 'moment/locale/ru';
+import Countdown from '../../blocks/Countdown';
 import {
   favoritesInStorage,
   inStorage,
-} from '../../../utils/favoritesInStorage'
-import ChatMessagePopup from '../../ui/ChatMessagePopup'
-import { useMutation, useQuery } from '@apollo/client'
-import { PHOTO_URL } from '../../../api/variables'
-import useAuthStore from 'src/store/authStore'
-import { getStoreData } from 'src/store/utils'
-import { IEducation } from 'src/types/education'
-import { getEducationById } from 'src/api/graphql/education/queries/getEducationById'
-import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
-import EducationReviews from './components/EducationReviews'
-import ReactMarkdown from 'react-markdown'
+} from '../../../utils/favoritesInStorage';
+import { PHOTO_URL } from '../../../api/variables';
+import useAuthStore from 'src/store/authStore';
+import { getStoreData } from 'src/store/utils';
+import { IEducation } from 'src/types/education';
+import EducationReviews from './components/EducationReviews';
+import ReactMarkdown from 'react-markdown';
 
 interface EducationPageProps {
-  educationData: IEducation
-  beautyCategories: any
-  beautyAllContent: any
+  educationData: IEducation;
+  beautyCategories: any;
+  beautyAllContent: any;
 }
 
 const EducationPage: FC<EducationPageProps> = ({
@@ -59,10 +55,9 @@ const EducationPage: FC<EducationPageProps> = ({
   beautyCategories,
   beautyAllContent,
 }) => {
-  const [isFavorite, setIsFavorit] = useState(false)
-  const { city, me } = useAuthStore(getStoreData)
-  const [chatMessagePopup, setChatMessagePopup] = useState(false)
-  const [education, setEducation] = useState<IEducation>(educationData)
+  const [isFavorite, setIsFavorit] = useState(false);
+  const { city } = useAuthStore(getStoreData);
+  const [education, setEducation] = useState<IEducation>(educationData);
 
   useEffect(() => {
     const isInStorage = inStorage('educations', {
@@ -72,17 +67,17 @@ const EducationPage: FC<EducationPageProps> = ({
       photo: education.cover,
       dateStart: education.dateStart,
       dateEnd: education.dateEnd,
-    })
-    setIsFavorit(!!isInStorage)
-  }, [])
+    });
+    setIsFavorit(!!isInStorage);
+  }, []);
 
   useEffect(() => {
-    setEducation(educationData)
-  }, [educationData])
+    setEducation(educationData);
+  }, [educationData]);
 
-  const addFavorite = (e: any) => {
-    e.preventDefault()
-    e.stopPropagation()
+  const addFavorite = (e: MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
     favoritesInStorage('educations', {
       id: education.id,
       title: education.title,
@@ -90,24 +85,9 @@ const EducationPage: FC<EducationPageProps> = ({
       photo: education.cover,
       dateStart: education.dateStart,
       dateEnd: education.dateEnd,
-    })
-    setIsFavorit(!isFavorite)
-  }
-
-  const { refetch: refetchEducation } = useQuery(getEducationById, {
-    variables: { id: education?.id },
-    skip: true,
-    onCompleted: res => {
-      const normalisedData = flattenStrapiResponse(res?.data?.education)
-      setEducation(normalisedData)
-    },
-  })
-
-  // const [createScore] = useMutation(createScopesEducation, {
-  //   onCompleted: () => {
-  //     refetchEducation()
-  //   },
-  // })
+    });
+    setIsFavorit(!isFavorite);
+  };
 
   const originInfo = (item: IEducation) => {
     if (item.master) {
@@ -118,7 +98,7 @@ const EducationPage: FC<EducationPageProps> = ({
         buttonLink: 'master',
         originLink: `/${city.slug}/master/${item?.master?.id}`,
         originUserId: item?.user?.id,
-      }
+      };
     }
     if (item.salon) {
       return {
@@ -128,7 +108,7 @@ const EducationPage: FC<EducationPageProps> = ({
         buttonLink: 'salon',
         originLink: `/${city.slug}/salon/${item?.salon?.id}`,
         originUserId: item?.user?.id,
-      }
+      };
     }
     if (item.brand) {
       return {
@@ -138,30 +118,24 @@ const EducationPage: FC<EducationPageProps> = ({
         buttonLink: 'brand',
         originLink: `/${city.slug}/brand/${item?.brand?.id}`,
         originUserId: item?.user?.id,
-      }
+      };
     }
-  }
+    return null
+  };
 
-  const handleChangeRating = (num: any) => {
+  const handleChangeRating = (num: number) => {
+    console.log(num);
+    
     // createScore({
     //   variables: {
     //     value: num,
     //     id: education?.id,
     //   },
     // })
-  }
+  };
 
   return (
     <MainLayout>
-      <ChatMessagePopup
-        open={chatMessagePopup}
-        setChatMessagePopup={setChatMessagePopup}
-        userId={originInfo(education)?.originUserId || null}
-        buttonText="Записаться"
-        successText="Заявка на запись отправлена"
-        originData={education.master || education.salon}
-        origin={education.master ? 'MASTER' : 'SALON'}
-      />
       <SearchBlock />
       <MainContainer>
         <Wrapper>
@@ -254,7 +228,6 @@ const EducationPage: FC<EducationPageProps> = ({
               ) : null} */}
               <MobileHidden>
                 <Button
-                  onClick={() => setChatMessagePopup(true)}
                   size="mediumNoPadding"
                   variant="red"
                   font="medium"
@@ -265,7 +238,6 @@ const EducationPage: FC<EducationPageProps> = ({
               </MobileHidden>
               <MobileVisible>
                 <Button
-                  onClick={() => setChatMessagePopup(true)}
                   size="mediumNoPadding"
                   variant="red"
                   font="popUp"
@@ -287,7 +259,7 @@ const EducationPage: FC<EducationPageProps> = ({
         beautyAllContent={beautyAllContent}
       />
     </MainLayout>
-  )
-}
+  );
+};
 
-export default EducationPage
+export default EducationPage;

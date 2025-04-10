@@ -5,84 +5,84 @@ import {
   KeyboardEventHandler,
   ChangeEventHandler,
   useMemo,
-} from 'react'
-import { useRouter } from 'next/router'
-import { Input, Wrapper, InputWrap, ClearIcon } from './styled'
-import useAuthStore from 'src/store/authStore'
-import { getStoreData } from 'src/store/utils'
-import Tags from '../Tags'
-import { tagsSwitch } from './utils'
-import { useQuerySearch } from './utils/useQuerySearch'
+} from 'react';
+import { useRouter } from 'next/router';
+import { Input, Wrapper, InputWrap, ClearIcon } from './styled';
+import useAuthStore from 'src/store/authStore';
+import { getStoreData } from 'src/store/utils';
+import Tags from '../Tags';
+import { tagsSwitch } from './utils';
+import { useQuerySearch } from './utils/useQuerySearch';
 
 interface Props {
-  title?: string
-  noFilters: boolean
+  title?: string;
+  noFilters: boolean;
 }
 
 const Search: FC<Props> = ({ title, noFilters }) => {
-  const { query, pathname } = useRouter()
+  const { query, pathname } = useRouter();
   const [inputValue, setInputValue] = useState<string>(
-    (query.search as string) || '',
-  )
-  const { city } = useAuthStore(getStoreData)
+    (query['search'] as string) || '',
+  );
+  const { city } = useAuthStore(getStoreData);
   const {
     isSearchablePath,
     updateSearchParam,
     redirectToMainPathSearch,
     clearSearchQuery,
-  } = useQuerySearch(city)
+  } = useQuerySearch(city);
 
   const queryHandler: ChangeEventHandler<HTMLInputElement> = e => {
-    const search = e.target.value
-    setInputValue(search)
+    const search = e.target.value;
+    setInputValue(search);
     if (isSearchablePath) {
-      updateSearchParam(search)
+      updateSearchParam(search);
     }
-    return
-  }
+    return;
+  };
 
   const queryTag = (item: string) => {
-    setInputValue(item)
+    setInputValue(item);
     if (isSearchablePath) {
-      updateSearchParam(item)
+      updateSearchParam(item);
     } else {
-      redirectToMainPathSearch(item)
+      redirectToMainPathSearch(item);
     }
-  }
+  };
 
   const inputSubmitHandler: KeyboardEventHandler<HTMLInputElement> = e => {
-    const target = e.target as HTMLInputElement
-    if (e.key !== 'Enter') return
+    const target = e.target as HTMLInputElement;
+    if (e.key !== 'Enter') return;
 
     if (isSearchablePath) {
-      target.blur()
+      target.blur();
       window.scrollTo({
         top: 300,
         behavior: 'smooth',
-      })
+      });
 
       if (inputValue === '') {
-        clearSearchQuery()
+        clearSearchQuery();
       } else {
-        updateSearchParam(inputValue)
+        updateSearchParam(inputValue);
       }
     } else {
-      redirectToMainPathSearch(inputValue)
+      redirectToMainPathSearch(inputValue);
     }
-  }
+  };
 
   useEffect(() => {
     if (isSearchablePath) {
-      setInputValue(query.search as string)
+      setInputValue(query['search'] as string);
 
-      if (query.search) {
+      if (query['search']) {
         window.scrollTo({
           top: 300,
           behavior: 'smooth',
-        })
+        });
       }
     }
-  }, [pathname])
+  }, [pathname]);
 
   return (
     <Wrapper>
@@ -96,8 +96,8 @@ const Search: FC<Props> = ({ title, noFilters }) => {
         />
         <ClearIcon
           onClick={() => {
-            setInputValue('')
-            clearSearchQuery()
+            setInputValue('');
+            clearSearchQuery();
           }}
         />
       </InputWrap>
@@ -105,7 +105,7 @@ const Search: FC<Props> = ({ title, noFilters }) => {
         <Tags tags={tagsSwitch(pathname)} queryTag={queryTag} />
       ) : null}
     </Wrapper>
-  )
-}
+  );
+};
 
-export default Search
+export default Search;
