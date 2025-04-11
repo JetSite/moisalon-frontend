@@ -61,7 +61,7 @@ export const min = (limit: number): Validator<number> =>
   hasValue(
     composeValidators(number, value => {
       const numberValue = Number(value);
-      if (!isNaN(numberValue)) return 'Ведите число';
+      if (isNaN(numberValue)) return 'Ведите число';
       return numberValue < limit
         ? `Число больше или равно ${limit}`
         : undefined;
@@ -72,7 +72,7 @@ export const max = (limit: number): Validator<number> =>
   hasValue(
     composeValidators(number, value => {
       const numberValue = Number(value);
-      if (!isNaN(numberValue)) return 'Ведите числоs';
+      if (isNaN(numberValue)) return 'Ведите числоs';
       return numberValue > limit ? `Число меньше ${limit}` : undefined;
     }),
   );

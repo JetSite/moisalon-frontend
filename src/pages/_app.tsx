@@ -3,7 +3,7 @@ import { StylesProvider } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import { ApolloProvider } from '@apollo/client';
 import ProgressBar from '@badrap/bar-of-progress';
-import '../styles/global.css';
+import '@/styles/global.css';
 import normalizeStyle from '../styles/normalize';
 import { useApollo } from '../api/apollo-client';
 import 'swiper/css';

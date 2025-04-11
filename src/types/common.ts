@@ -1,52 +1,51 @@
 import {
-  ApolloCache,
   ApolloQueryResult,
-  DefaultContext,
   LazyQueryExecFunction,
-  MutationFunctionOptions,
-  MutationResult,
   OperationVariables,
-} from '@apollo/client'
-import { GetServerSidePropsContext, PreviewData } from 'next'
-import { ParsedUrlQuery } from 'querystring'
-import { Dispatch, ReactElement, SetStateAction } from 'react'
+} from '@apollo/client';
+import { GetServerSidePropsContext, PreviewData } from 'next';
+import { ParsedUrlQuery } from 'querystring';
+import { Dispatch, ReactElement, SetStateAction } from 'react';
 
-export type Nullable<T> = { [P in keyof T]: T[P] | null }
+export type Nullable<T> = { [P in keyof T]: T[P] | null };
 
 export interface LazyType {
-  [K: string]: LazyType | string | undefined | boolean | Array<any>
+  [K: string]: LazyType | string | undefined | boolean | Array<unknown>;
 }
 
 export interface InitialValuesForm {
-  [K: string]: string
+  [K: string]: string;
 }
 
-export type ISetState<T> = Dispatch<SetStateAction<T>>
+export type ISetState<T> = Dispatch<SetStateAction<T>>;
 
-export type IID = string
+export type IID = string;
 
 export type IApolloRefetch = (
   variables?: Partial<OperationVariables> | undefined,
-) => Promise<ApolloQueryResult<any>>
+) => Promise<ApolloQueryResult<unknown>>;
 
-export type IApolloLazyRefetch = LazyQueryExecFunction<any, OperationVariables>
+export type IApolloLazyRefetch = LazyQueryExecFunction<
+  unknown,
+  OperationVariables
+>;
 
-export type IApolloOnCompleted<TData> = (data: TData) => void
+export type IApolloOnCompleted<TData> = (data: TData) => void;
 
-export type IAppoloMutationCallback = (variables?: any) => Promise<any>
+export type IAppoloMutationCallback = (variables?: unknown) => Promise<unknown>;
 
 export type IChildren =
   | Array<ReactElement | boolean | string | null>
   | ReactElement
   | boolean
   | string
-  | null
+  | null;
 
 export interface CustomWindow extends Window {
-  setFormValue?: (fieldName: string, value: any) => void
+  setFormValue?: (fieldName: string, value: unknown) => void;
 }
 
 export type INextContext = GetServerSidePropsContext<
   ParsedUrlQuery,
   PreviewData
->
+>;

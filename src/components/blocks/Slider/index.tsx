@@ -36,6 +36,7 @@ import { IProduct } from 'src/types/product';
 import { IVacancy } from 'src/types/vacancies';
 import { IPromotions } from 'src/types/promotions';
 import { useBeforeInit } from './useBeforeInit';
+import { IFeed } from '@/types/feed';
 
 SwiperCore.use([Navigation]);
 export type SlideType =
@@ -60,7 +61,8 @@ interface Props {
     | IPhoto[]
     | IProduct[]
     | IVacancy[]
-    | IPromotions[];
+    | IPromotions[]
+    | IFeed[];
   title?: string;
   typeObject?: IMaster | IBrand | ISalon | IPhoto | IPromotions | null;
   noBottom?: boolean;

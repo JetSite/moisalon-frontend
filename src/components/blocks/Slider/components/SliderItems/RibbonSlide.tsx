@@ -1,24 +1,23 @@
-import Link from 'next/link'
-import { PHOTO_URL } from '../../../../../api/variables'
+import Link from 'next/link';
+import { PHOTO_URL } from '../../../../../api/variables';
 import {
   SliderItem,
   SliderContent,
   SliderImage,
   SliderImageWrap,
   SliderText,
-} from './styles'
+} from './styles';
+import { IFeed } from '@/types/feed';
 
-const RibbonSlide = ({ item }: { item: any }) => {
-  const imageUrl = item?.attributes?.cover?.data?.attributes?.url
-    ? `${PHOTO_URL}${item?.attributes.cover.data.attributes.url}`
-    : ''
+const RibbonSlide = ({ item }: { item: IFeed }) => {
+  const imageUrl = item?.cover?.url ? `${PHOTO_URL}${item?.cover.url}` : '';
 
   return (
     <Link
       href={{
         pathname: '/advices',
         query: {
-          category: item.attributes.feed_category.data[0].id,
+          category: item.feed_category[0].id,
           item: item.id,
         },
       }}
@@ -29,11 +28,11 @@ const RibbonSlide = ({ item }: { item: any }) => {
           <SliderImageWrap imageUrl={imageUrl}>
             {/* <SliderImage alt={item.title} src={item.image} /> */}
           </SliderImageWrap>
-          <SliderText>{item?.attributes?.title}</SliderText>
+          <SliderText>{item?.title}</SliderText>
         </SliderContent>
       </SliderItem>
     </Link>
-  )
-}
+  );
+};
 
-export default RibbonSlide
+export default RibbonSlide;

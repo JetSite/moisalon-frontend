@@ -86,7 +86,7 @@ const ListItem = ({
 interface BusinessCategoryPageProps {
   type: string;
   title: string;
-  data: any;
+  data: Array<IPromotions | IEducation | IEvent | IVacancy>;
   link: string;
 }
 
@@ -191,9 +191,11 @@ const BusinessCategoryPage: FC<BusinessCategoryPageProps> = ({
         ) : (
           <Content>
             <List type={type}>
-              {slicedList?.map((item: any) => (
-                <ListItem key={item.id} type={type} item={item} />
-              ))}
+              {slicedList?.map(
+                (item: IPromotions | IEducation | IEvent | IVacancy) => (
+                  <ListItem key={item.id} type={type} item={item} />
+                ),
+              )}
             </List>
             {/* {fetchMoreButton} */}
           </Content>

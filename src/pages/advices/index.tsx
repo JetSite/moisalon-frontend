@@ -1,40 +1,47 @@
-import { addApolloState, initializeApollo } from '../../api/apollo-client'
-import { ITotalCount } from '../[city]/salon'
-import { getTotalCount } from 'src/utils/getTotalCount'
-import { totalSalons } from 'src/api/graphql/salon/queries/totalSalons'
-import { totalMasters } from 'src/api/graphql/master/queries/totalMasters'
-import { totalBrands } from 'src/api/graphql/brand/queries/totalBrands'
-import AdvicesPage from 'src/components/pages/AdvicesPage'
-import { getFeedCategories } from 'src/api/graphql/feed/queries/getFeedCategories'
-import { getFeeds } from 'src/api/graphql/feed/queries/getFeeds'
+import { addApolloState, initializeApollo } from '../../api/apollo-client';
+import { getTotalCount } from 'src/utils/getTotalCount';
+import { totalSalons } from 'src/api/graphql/salon/queries/totalSalons';
+import { totalMasters } from 'src/api/graphql/master/queries/totalMasters';
+import { totalBrands } from 'src/api/graphql/brand/queries/totalBrands';
+import AdvicesPage, {
+  IAdvicesPageProps,
+} from 'src/components/pages/AdvicesPage';
+import { getFeedCategories } from 'src/api/graphql/feed/queries/getFeedCategories';
+import { getFeeds } from 'src/api/graphql/feed/queries/getFeeds';
+import { GetServerSideProps, NextPage } from 'next';
+import { Nullable } from '@/types/common';
+import { getPrepareData } from '@/utils/newUtils/getPrepareData';
+import { IBeautyCategories, IFeed } from '@/types/feed';
 
-interface Props {
-  categories: any
-  allAdvices: any
-  categoryAdvicesEmpty: any
-  totalCount: ITotalCount
-}
-
-const Advices = ({ categories, allAdvices, totalCount }: Props) => {
+const Advices: NextPage<IAdvicesPageProps> = ({
+  categories,
+  allAdvices,
+  totalCount,
+}) => {
   return (
     <AdvicesPage
       categories={categories}
       allAdvices={allAdvices}
       totalCount={totalCount}
     />
-  )
-}
+  );
+};
 
-export async function getServerSideProps() {
-  const apolloClient = initializeApollo()
+export const getServerSideProps: GetServerSideProps<
+  Nullable<IAdvicesPageProps>
+> = async ctx => {
+  const apolloClient = initializeApollo();
 
-  const data = await Promise.all([
+  const data = await Promise.allSettled([
     apolloClient.query({
       query: getFeedCategories,
     }),
     apolloClient.query({
       query: getFeeds,
     }),
+  ]);
+
+  const countsData = await Promise.all([
     apolloClient.query({
       query: totalSalons,
     }),
@@ -44,19 +51,25 @@ export async function getServerSideProps() {
     apolloClient.query({
       query: totalBrands,
     }),
-  ])
+  ]);
+
+  const categories = getPrepareData<IBeautyCategories[]>(
+    data[0],
+    'feedCategories',
+  );
+  const allAdvices = getPrepareData<IFeed[]>(data[1], 'feeds');
 
   return addApolloState(apolloClient, {
     props: {
-      categories: data[0]?.data?.feedCategories,
-      allAdvices: data[1]?.data?.feeds,
+      categories,
+      allAdvices,
       totalCount: {
-        brands: getTotalCount(data[2].data.brands),
-        masters: getTotalCount(data[3].data.masters),
-        salons: getTotalCount(data[4].data.salons),
+        brands: getTotalCount(countsData[0].data.brands),
+        masters: getTotalCount(countsData[1].data.masters),
+        salons: getTotalCount(countsData[2].data.salons),
       },
     },
-  })
-}
+  });
+};
 
-export default Advices
+export default Advices;

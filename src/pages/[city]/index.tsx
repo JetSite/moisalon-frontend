@@ -1,22 +1,22 @@
-import { addApolloState, initializeApollo } from '../../api/apollo-client'
-import MainPage, { IMainPageProps } from '../../components/pages/MainPage'
-import { getBannerHooks } from '../../api/graphql/banner/queries/getBannerHooks'
-import { getFeeds } from '../../api/graphql/feed/queries/getFeeds'
-import { getFeedCategories } from 'src/api/graphql/feed/queries/getFeedCategories'
-import { totalSalons } from 'src/api/graphql/salon/queries/totalSalons'
-import { totalMasters } from 'src/api/graphql/master/queries/totalMasters'
-import { totalBrands } from 'src/api/graphql/brand/queries/totalBrands'
-import {} from 'src/api/graphql/master/queries/masterPage'
-import { GetServerSideProps } from 'next'
-import { ICity } from 'src/types'
-import { fetchCity } from 'src/api/utils/fetchCity'
-import { getTotalCount } from 'src/utils/getTotalCount'
-import { Nullable } from 'src/types/common'
-import { FC } from 'react'
-import { getPrepareData } from 'src/utils/newUtils/getPrepareData'
-import { IBannerHook } from 'src/types/banners'
+import { addApolloState, initializeApollo } from '../../api/apollo-client';
+import MainPage, { IMainPageProps } from '../../components/pages/MainPage';
+import { getBannerHooks } from '../../api/graphql/banner/queries/getBannerHooks';
+import { getFeeds } from '../../api/graphql/feed/queries/getFeeds';
+import { getFeedCategories } from 'src/api/graphql/feed/queries/getFeedCategories';
+import { totalSalons } from 'src/api/graphql/salon/queries/totalSalons';
+import { totalMasters } from 'src/api/graphql/master/queries/totalMasters';
+import { totalBrands } from 'src/api/graphql/brand/queries/totalBrands';
+import {} from 'src/api/graphql/master/queries/masterPage';
+import { GetServerSideProps } from 'next';
+import { ICity } from 'src/types';
+import { fetchCity } from 'src/api/utils/fetchCity';
+import { getTotalCount } from 'src/utils/getTotalCount';
+import { Nullable } from 'src/types/common';
+import { FC } from 'react';
+import { getPrepareData } from 'src/utils/newUtils/getPrepareData';
+import { IBannerHook } from 'src/types/banners';
 
-interface Props extends IMainPageProps {}
+type Props = IMainPageProps;
 
 const Main: FC<Props> = props => {
   return (
@@ -37,13 +37,13 @@ const Main: FC<Props> = props => {
       </Head> */}
       <MainPage {...props} />
     </>
-  )
-}
+  );
+};
 
 export const getServerSideProps: GetServerSideProps<
   Nullable<Props>
 > = async ctx => {
-  const apolloClient = initializeApollo()
+  const apolloClient = initializeApollo();
   const data = await Promise.allSettled([
     apolloClient.query({
       query: getFeedCategories,
@@ -63,23 +63,23 @@ export const getServerSideProps: GetServerSideProps<
     apolloClient.query({
       query: totalBrands,
     }),
-  ])
+  ]);
 
-  const cityData: ICity = await fetchCity(ctx.query.city as string, ctx)
+  const cityData: ICity = await fetchCity(ctx.query['city'] as string, ctx);
 
-  if (ctx.query.city !== cityData.slug) {
+  if (ctx.query['city'] !== cityData.slug) {
     return {
       notFound: true,
       redirect: {
         destination: cityData.slug,
         permanent: false,
       },
-    }
+    };
   }
 
-  const beautyCategories = getPrepareData(data[0], 'feedCategories')
-  const beautyAllContent = getPrepareData(data[1], 'feeds')
-  const bannerHooks = getPrepareData<IBannerHook[]>(data[2], 'bannerHooks')
+  const beautyCategories = getPrepareData(data[0], 'feedCategories');
+  const beautyAllContent = getPrepareData(data[1], 'feeds');
+  const bannerHooks = getPrepareData<IBannerHook[]>(data[2], 'bannerHooks');
 
   return addApolloState(apolloClient, {
     props: {
@@ -102,7 +102,7 @@ export const getServerSideProps: GetServerSideProps<
       },
       cityData,
     },
-  })
-}
+  });
+};
 
-export default Main
+export default Main;

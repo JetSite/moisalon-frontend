@@ -1,5 +1,5 @@
-import { ReactElement } from 'react'
-import { NextRouter, useRouter } from 'next/router'
+import { ReactElement } from 'react';
+import { NextRouter, useRouter } from 'next/router';
 import {
   ShowAll,
   ButtonWrap,
@@ -9,8 +9,8 @@ import {
   SeeAllBody,
   SeeAllText,
   SeeAllBodyText,
-} from './styles'
-import Link from 'next/link'
+} from './styles';
+import Link from 'next/link';
 import {
   MasterSlide,
   SalonSlide,
@@ -22,7 +22,7 @@ import {
   RentSalonSlide,
   WorkplaceSlide,
   RibbonSlide,
-} from './components/SliderItems'
+} from './components/SliderItems';
 import {
   AllMastersSlide,
   AllSalonsSlide,
@@ -31,7 +31,7 @@ import {
   AllAdsSlide,
   AllRentSalons,
   AllRentWorkplaces,
-} from './components/ShowAllSlides'
+} from './components/ShowAllSlides';
 import {
   MasterBottomButton,
   SalonBottomButton,
@@ -39,25 +39,26 @@ import {
   GoodBottomButton,
   AdBottomButton,
   WorkplaceBottomButton,
-} from './components/BottomButtons'
-import Button from '../../ui/Button'
-import { cyrToTranslit } from '../../../utils/translit'
+} from './components/BottomButtons';
+import Button from '../../ui/Button';
+import { cyrToTranslit } from '../../../utils/translit';
 
-import { LazyType } from 'src/types/common'
-import { IBrand } from 'src/types/brands'
-import { IMaster } from 'src/types/masters'
-import { ISalon, ISalonPage } from 'src/types/salon'
-import { IDeleteFunction } from './components/SliderItems/BrandSlide'
-import useAuthStore from 'src/store/authStore'
-import { getStoreData } from 'src/store/utils'
-import { SlideType } from '.'
-import { ICity, IPhoto } from 'src/types'
-import { IProduct } from 'src/types/product'
-import { IVacancy } from 'src/types/vacancies'
-import { IPromotions } from 'src/types/promotions'
+import { LazyType } from 'src/types/common';
+import { IBrand } from 'src/types/brands';
+import { IMaster } from 'src/types/masters';
+import { ISalon, ISalonPage } from 'src/types/salon';
+import { IDeleteFunction } from './components/SliderItems/BrandSlide';
+import useAuthStore from 'src/store/authStore';
+import { getStoreData } from 'src/store/utils';
+import { SlideType } from '.';
+import { ICity, IPhoto } from 'src/types';
+import { IProduct } from 'src/types/product';
+import { IVacancy } from 'src/types/vacancies';
+import { IPromotions } from 'src/types/promotions';
+import { IFeed } from '@/types/feed';
 
 interface PropsICustomProps {
-  type: SlideType
+  type: SlideType;
   item?:
     | IMaster
     | IBrand
@@ -66,7 +67,8 @@ interface PropsICustomProps {
     | IProduct
     | IVacancy
     | IPromotions
-    | null
+    | IFeed
+    | null;
   typeObject?:
     | IMaster
     | IBrand
@@ -75,26 +77,26 @@ interface PropsICustomProps {
     | IProduct
     | IVacancy
     | IPromotions
-    | null
-  bgColor?: string
-  isEditing?: boolean
-  deleteFunction?: IDeleteFunction
-  salon?: ISalon | null
-  landingMaster?: boolean
-  city: ICity
-  router: NextRouter
+    | null;
+  bgColor?: string;
+  isEditing?: boolean;
+  deleteFunction?: IDeleteFunction;
+  salon?: ISalon | null;
+  landingMaster?: boolean;
+  city: ICity;
+  router: NextRouter;
 }
 
 type ICustomProps = (props: PropsICustomProps) => {
-  sliderItem: ReactElement
-  isAllPage?: boolean
-  slidesCountWhenAllShow?: number
-  showAllSlide?: ReactElement
-  showAllLink?: ReactElement
-  bottom?: ReactElement
-  landingItem?: ReactElement
-  firstSlide?: ReactElement
-}
+  sliderItem: ReactElement;
+  isAllPage?: boolean;
+  slidesCountWhenAllShow?: number;
+  showAllSlide?: ReactElement;
+  showAllLink?: ReactElement;
+  bottom?: ReactElement;
+  landingItem?: ReactElement;
+  firstSlide?: ReactElement;
+};
 
 export const customProps: ICustomProps = ({
   type,
@@ -121,7 +123,7 @@ export const customProps: ICustomProps = ({
           </Link>
         ),
         bottom: <MasterBottomButton bgColor={bgColor} />,
-      }
+      };
     case 'salons':
       return {
         sliderItem: (
@@ -155,7 +157,7 @@ export const customProps: ICustomProps = ({
             </Button>
           </ButtonWrap>
         ),
-      }
+      };
     case 'brands':
       return {
         sliderItem: (
@@ -186,7 +188,7 @@ export const customProps: ICustomProps = ({
             </Button>
           </ButtonWrapBrandLanding>
         ),
-      }
+      };
     case 'goods':
       return {
         firstSlide: (
@@ -194,9 +196,9 @@ export const customProps: ICustomProps = ({
             <Link
               style={{ display: 'block' }}
               href={
-                router.query.id === '62fb9f7884fe720001f6771c'
+                router.query['id'] === '62fb9f7884fe720001f6771c'
                   ? `/${city.slug}/beautyFreeShop`
-                  : `/${city.slug}/brand/${router.query.id}/products`
+                  : `/${city.slug}/brand/${router.query['id']}/products`
               }
             >
               <SeeAllMain>
@@ -226,12 +228,12 @@ export const customProps: ICustomProps = ({
             <ShowAll bgColor={bgColor}>Показать все</ShowAll>
           </Link>
         ),
-      }
+      };
     case 'ribbon':
       return {
         sliderItem: <RibbonSlide item={item} />,
         // bottom: <RibbonBottomButton />,
-      }
+      };
     case 'photos':
       return {
         sliderItem: (
@@ -241,12 +243,12 @@ export const customProps: ICustomProps = ({
             deleteFunction={deleteFunction}
           />
         ),
-      }
+      };
 
     case 'vacancies':
       return {
         sliderItem: <VacancySlide item={item as IVacancy} />,
-      }
+      };
     case 'ads':
       return {
         sliderItem: <AdSlide item={item as IPromotions} />,
@@ -258,7 +260,7 @@ export const customProps: ICustomProps = ({
             <ShowAll bgColor={bgColor}>Показать все</ShowAll>
           </Link>
         ),
-      }
+      };
     case 'rentSalons':
       return {
         showAllLink: (
@@ -271,7 +273,7 @@ export const customProps: ICustomProps = ({
         showAllSlide: <AllRentSalons />,
 
         bottom: <SalonBottomButton bgColor={bgColor} />,
-      }
+      };
     case 'rentWorkplaces':
       return {
         sliderItem: <WorkplaceSlide item={item} salon={salon} />,
@@ -283,8 +285,8 @@ export const customProps: ICustomProps = ({
           </Link>
         ),
         bottom: <WorkplaceBottomButton bgColor={bgColor} />,
-      }
+      };
     // default:
     //   return { sliderItem: <></> }
   }
-}
+};

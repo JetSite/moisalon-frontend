@@ -43,15 +43,16 @@ import { getStoreData } from 'src/store/utils';
 import { IEducation } from 'src/types/education';
 import EducationReviews from './components/EducationReviews';
 import ReactMarkdown from 'react-markdown';
+import { IBeautyCategories, IFeed } from '@/types/feed';
 
-interface EducationPageProps {
-  educationData: IEducation;
-  beautyCategories: any;
-  beautyAllContent: any;
+export interface EducationPageProps {
+  education: IEducation;
+  beautyCategories: IBeautyCategories[];
+  beautyAllContent: IFeed[];
 }
 
 const EducationPage: FC<EducationPageProps> = ({
-  educationData,
+  education: educationData,
   beautyCategories,
   beautyAllContent,
 }) => {
@@ -120,12 +121,12 @@ const EducationPage: FC<EducationPageProps> = ({
         originUserId: item?.user?.id,
       };
     }
-    return null
+    return null;
   };
 
   const handleChangeRating = (num: number) => {
     console.log(num);
-    
+
     // createScore({
     //   variables: {
     //     value: num,
@@ -237,11 +238,7 @@ const EducationPage: FC<EducationPageProps> = ({
                 </Button>
               </MobileHidden>
               <MobileVisible>
-                <Button
-                  size="mediumNoPadding"
-                  variant="red"
-                  font="popUp"
-                >
+                <Button size="mediumNoPadding" variant="red" font="popUp">
                   Записаться на курс
                 </Button>
               </MobileVisible>

@@ -1,15 +1,15 @@
-import { useRouter } from 'next/router'
-import Link from 'next/link'
-import MainLayout from '../../../layouts/MainLayout'
-import SearchBlock from '../../blocks/SearchBlock'
-import BackButton from '../../ui/BackButton'
-import Ribbon from '../MainPage/components/Ribbon'
-import Button from '../../ui/Button'
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+import MainLayout from '../../../layouts/MainLayout';
+import SearchBlock from '../../blocks/SearchBlock';
+import BackButton from '../../ui/BackButton';
+import Ribbon from '../MainPage/components/Ribbon';
+import Button from '../../ui/Button';
 import {
   MainContainer,
   MobileHidden,
   MobileVisible,
-} from '../../../styles/common'
+} from '../../../styles/common';
 import {
   Wrapper,
   Content,
@@ -24,24 +24,23 @@ import {
   Date,
   Promo,
   SaleInfo,
-  SaleConditions,
   CountdownWrap,
-} from './styles'
-import moment from 'moment'
-import 'moment/locale/ru'
-import Countdown from '../../blocks/Countdown'
-import { cyrToTranslit } from '../../../utils/translit'
-import useAuthStore from 'src/store/authStore'
-import { getStoreData } from 'src/store/utils'
-import { PHOTO_URL } from '../../../api/variables'
-import { ISale } from 'src/types/sale'
-import { FC } from 'react'
-import ReactMarkdown from 'react-markdown'
+} from './styles';
+import moment from 'moment';
+import 'moment/locale/ru';
+import Countdown from '../../blocks/Countdown';
+import useAuthStore from 'src/store/authStore';
+import { getStoreData } from 'src/store/utils';
+import { PHOTO_URL } from '../../../api/variables';
+import { ISale } from 'src/types/sale';
+import { FC } from 'react';
+import ReactMarkdown from 'react-markdown';
+import { IBeautyCategories, IFeed } from '@/types/feed';
 
-interface SalePageProps {
-  sale: ISale
-  beautyCategories: any
-  beautyAllContent: any
+export interface SalePageProps {
+  sale: ISale;
+  beautyCategories: IBeautyCategories[];
+  beautyAllContent: IFeed[];
 }
 
 const SalePage: FC<SalePageProps> = ({
@@ -49,8 +48,8 @@ const SalePage: FC<SalePageProps> = ({
   beautyCategories,
   beautyAllContent,
 }) => {
-  const router = useRouter()
-  const { city } = useAuthStore(getStoreData)
+  const router = useRouter();
+  const { city } = useAuthStore(getStoreData);
 
   const originInfo = (item: ISale) => {
     if (item.master) {
@@ -61,7 +60,7 @@ const SalePage: FC<SalePageProps> = ({
         buttonLink: 'master',
         originLink: `/${city.slug}/master/${item?.master?.id}`,
         originUserId: item?.user?.id,
-      }
+      };
     }
     if (item.salon) {
       return {
@@ -71,7 +70,7 @@ const SalePage: FC<SalePageProps> = ({
         buttonLink: 'salon',
         originLink: `/${city.slug}/salon/${item?.salon?.id}`,
         originUserId: item?.user?.id,
-      }
+      };
     }
     if (item.brand) {
       return {
@@ -81,9 +80,9 @@ const SalePage: FC<SalePageProps> = ({
         buttonLink: 'brand',
         originLink: `/${city.slug}/brand/${item?.brand?.id}`,
         originUserId: item?.user?.id,
-      }
+      };
     }
-  }
+  };
 
   return (
     <MainLayout>
@@ -190,7 +189,7 @@ const SalePage: FC<SalePageProps> = ({
         beautyAllContent={beautyAllContent}
       />
     </MainLayout>
-  )
-}
+  );
+};
 
-export default SalePage
+export default SalePage;

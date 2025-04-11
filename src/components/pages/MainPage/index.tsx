@@ -24,6 +24,7 @@ import { IBannerHook } from 'src/types/banners';
 import { useRouter } from 'next/router';
 import SearchResults from './components/SearchMain/SearchResults';
 import { MIN_SEARCH_LENGTH } from './components/SearchMain/utils/useSearch';
+import { IBeautyCategories, IFeed } from '@/types/feed';
 
 const Title = styled.h1`
   max-width: 1440px;
@@ -41,8 +42,8 @@ const Title = styled.h1`
 `;
 
 export interface IMainPageProps {
-  beautyCategories: any;
-  beautyAllContent: any;
+  beautyCategories: IBeautyCategories[];
+  beautyAllContent: IFeed[];
   bannerHooks: IBannerHook[];
   totalCount: ITotalCount;
   cityData: ICity;

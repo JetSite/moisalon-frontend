@@ -5,31 +5,31 @@ import {
   createContext,
   useMemo,
   FC,
-} from 'react'
-import { useQuery } from '@apollo/client/react'
-import { getStoreData } from './store/utils'
-import useAuthStore from './store/authStore'
-import { IChildren, IID, ISetState, LazyType } from './types/common'
-import { ICity } from './types'
+} from 'react';
+import { useQuery } from '@apollo/client/react';
+import { getStoreData } from './store/utils';
+import useAuthStore from './store/authStore';
+import { IChildren, IID, ISetState, LazyType } from './types/common';
+import { ICity } from './types';
 
 export interface IChatChat {
-  id: IID
-  origin: 'MASTER'
+  id: IID;
+  origin: 'MASTER';
 }
 
 export interface IChat {
-  id: IID
-  noReads: boolean
-  chat: IChatChat
-  originData: { city: ICity; id: IID; name: string }
+  id: IID;
+  noReads: boolean;
+  chat: IChatChat;
+  originData: { city: ICity; id: IID; name: string };
 }
 
 interface IChatContext {
-  messages: LazyType[]
-  setMessages: ISetState<LazyType[]>
-  chats: IChat[]
-  unreadMessagesCount: number
-  setUnreadMessagesCount: ISetState<number>
+  messages: LazyType[];
+  setMessages: ISetState<LazyType[]>;
+  chats: IChat[];
+  unreadMessagesCount: number;
+  setUnreadMessagesCount: ISetState<number>;
 }
 
 const initialChatContext = {
@@ -38,18 +38,17 @@ const initialChatContext = {
   chats: [],
   unreadMessagesCount: 0,
   setUnreadMessagesCount: () => {},
-}
+};
 
-const ChatContext = createContext<IChatContext>(initialChatContext)
+const ChatContext = createContext<IChatContext>(initialChatContext);
 
 const useChatContext = (): IChatContext | undefined => {
-  const { user } = useAuthStore(getStoreData)
-  const [chats, setChats] = useState<IChat[]>([])
-  const [messages, setMessages] = useState<LazyType[]>([])
+  const [chats, setChats] = useState<IChat[]>([]);
+  const [messages, setMessages] = useState<LazyType[]>([]);
   const [websocketMessage, setWebsocketMessage] = useState<LazyType | null>(
     null,
-  )
-  const [unreadMessagesCount, setUnreadMessagesCount] = useState<number>(0)
+  );
+  const [unreadMessagesCount, setUnreadMessagesCount] = useState<number>(0);
 
   // const { data, refetch: refetchChats } = useQuery(getRooms, {
   //   skip: true,
@@ -107,10 +106,10 @@ const useChatContext = (): IChatContext | undefined => {
           message: websocketMessage.Message,
           read: websocketMessage.Read,
         },
-      ])
-      setUnreadMessagesCount(prevState => prevState + 1)
+      ]);
+      setUnreadMessagesCount(prevState => prevState + 1);
     }
-  }, [websocketMessage])
+  }, [websocketMessage]);
 
   const chatContext = useMemo(
     () => ({
@@ -121,7 +120,7 @@ const useChatContext = (): IChatContext | undefined => {
       setUnreadMessagesCount,
     }),
     [messages, setMessages, chats, unreadMessagesCount, setUnreadMessagesCount],
-  )
+  );
 
   // useEffect(() => {
   //   if (user?.info) {
@@ -129,17 +128,17 @@ const useChatContext = (): IChatContext | undefined => {
   //   }
   // }, [user?.info, refetchChats])
 
-  return chatContext
-}
+  return chatContext;
+};
 
 export const useChat = () => {
-  return useContext(ChatContext)
-}
+  return useContext(ChatContext);
+};
 
 export const ChatProvider: FC<{ children: IChildren }> = ({ children }) => {
-  const chatContext: IChatContext | undefined = useChatContext()
+  const chatContext: IChatContext | undefined = useChatContext();
 
   return chatContext ? (
     <ChatContext.Provider value={chatContext}>{children}</ChatContext.Provider>
-  ) : null
-}
+  ) : null;
+};

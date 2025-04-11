@@ -1,5 +1,4 @@
-import { FC, useState } from 'react';
-import { useRouter } from 'next/router';
+import { FC } from 'react';
 import MainLayout from '../../../layouts/MainLayout';
 import SearchBlock from '../../blocks/SearchBlock';
 import BackButton from '../../ui/BackButton';
@@ -22,27 +21,24 @@ import {
   DateWrap,
   Date,
   Address,
-  Promo,
   EventInfo,
-  EventConditions,
   CountdownWrap,
 } from './styles';
 import moment from 'moment';
 import 'moment/locale/ru';
 import Countdown from '../../blocks/Countdown';
-import { cyrToTranslit } from '../../../utils/translit';
-import ChatMessagePopup from '../../ui/ChatMessagePopup';
+
 import { PHOTO_URL } from '../../../api/variables';
-import useAuthStore from 'src/store/authStore';
-import { getStoreData } from 'src/store/utils';
+
 import { IEvent } from 'src/types/event';
 import ReactMarkdown from 'react-markdown';
 import formatTime from 'src/utils/newUtils/formatTime';
+import { IBeautyCategories, IFeed } from '@/types/feed';
 
-interface IEventPageProps {
+export interface IEventPageProps {
   event: IEvent;
-  beautyCategories: any;
-  beautyAllContent: any;
+  beautyCategories: IBeautyCategories[];
+  beautyAllContent: IFeed[];
 }
 
 const EventPage: FC<IEventPageProps> = ({
@@ -50,52 +46,6 @@ const EventPage: FC<IEventPageProps> = ({
   beautyCategories,
   beautyAllContent,
 }) => {
-  const router = useRouter();
-  const { city, me } = useAuthStore(getStoreData);
-  const [chatMessagePopup, setChatMessagePopup] = useState(false);
-
-  const originInfo = (item: IEvent) => {
-    if (item.master) {
-      return {
-        originType: 'Мастер',
-        originName: item.master?.name,
-        customTitle: `у мастера ${item.master?.name}`,
-        buttonLink: 'master',
-        originLink: `/${city.slug}/master/${item?.master?.id}`,
-        originUserId: item?.user?.id,
-      };
-    }
-    if (item.salon) {
-      return {
-        originType: 'Салон',
-        originName: item.salon?.name,
-        customTitle: `в салоне ${item.salon?.name}`,
-        buttonLink: 'salon',
-        originLink: `/${city.slug}/salon/${item?.salon?.id}`,
-        originUserId: item?.user?.id,
-      };
-    }
-    if (item.brand) {
-      return {
-        originType: 'Бренд',
-        originName: item.brand?.name,
-        customTitle: `у бренда ${item.brand?.name}`,
-        buttonLink: 'brand',
-        originLink: `/${city.slug}/brand/${item?.brand?.id}`,
-        originUserId: item?.user?.id,
-      };
-    }
-  };
-
-  const eventButtonHandler = () => {
-    // if (event.originId) {
-    //   router.push(`${originInfo(event).originLink}`)
-    // } else {
-    //   setChatMessagePopup(true)
-    // }
-    setChatMessagePopup(true);
-  };
-
   return (
     <MainLayout>
       <SearchBlock />
@@ -176,7 +126,7 @@ const EventPage: FC<IEventPageProps> = ({
               ) : null} */}
               <MobileHidden>
                 <Button
-                  onClick={eventButtonHandler}
+                  // onClick={eventButtonHandler}
                   size="mediumNoPadding"
                   variant="red"
                   font="medium"
@@ -187,7 +137,7 @@ const EventPage: FC<IEventPageProps> = ({
               </MobileHidden>
               <MobileVisible>
                 <Button
-                  onClick={eventButtonHandler}
+                  // onClick={eventButtonHandler}
                   size="mediumNoPadding"
                   variant="red"
                   font="popUp"
