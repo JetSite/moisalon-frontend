@@ -1,9 +1,9 @@
-import { FC } from 'react'
-import PhotoArray from './PhotoArray'
-import { FieldArrayRenderProps } from 'react-final-form-arrays'
-import { PhotoArrayFieldProps } from './PhotoArrayField'
-import usePhotos from './usePhotos'
-import { IPhoto } from 'src/types'
+import { FC } from 'react';
+import PhotoArray from './PhotoArray';
+import { FieldArrayRenderProps } from 'react-final-form-arrays';
+import { PhotoArrayFieldProps } from './PhotoArrayField';
+import usePhotos from './usePhotos';
+import { IPhoto } from 'src/types';
 
 interface Props
   extends Pick<FieldArrayRenderProps<IPhoto, HTMLElement>, 'fields'>,
@@ -11,8 +11,8 @@ interface Props
       PhotoArrayFieldProps,
       'variant' | 'kind' | 'photoType' | 'description' | 'setPhotosArray'
     > {
-  defaultPhotoId: string
-  onSetDefault: (value: string) => void
+  defaultPhotoId?: string;
+  onSetDefault?: (value: string) => void;
 }
 
 export const GeneratePhotoArrayProps: FC<Props> = ({
@@ -25,7 +25,7 @@ export const GeneratePhotoArrayProps: FC<Props> = ({
   setPhotosArray,
   variant,
 }) => {
-  const { value, remove, update, insert } = fields
+  const { value, remove, update, insert } = fields;
   const { onRemove, onChange, onAdd } = usePhotos({
     photos: value,
     photoType,
@@ -36,7 +36,7 @@ export const GeneratePhotoArrayProps: FC<Props> = ({
     onSetDefault,
     defaultPhotoId,
     setPhotosArray,
-  })
+  });
 
   const photoProps = {
     kind,
@@ -48,8 +48,8 @@ export const GeneratePhotoArrayProps: FC<Props> = ({
     onRemove,
     onChange,
     setPhotosArray,
-  }
+  };
   return (
     <PhotoArray variant={variant} {...photoProps} description={description} />
-  )
-}
+  );
+};

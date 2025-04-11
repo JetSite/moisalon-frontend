@@ -1,19 +1,16 @@
-import { addApolloState, initializeApollo } from '../../../api/apollo-client'
-import { getFeedCategories } from 'src/api/graphql/feed/queries/getFeedCategories'
-import { getFeeds } from 'src/api/graphql/feed/queries/getFeeds'
-import { getEventById } from 'src/api/graphql/event/queries/getEventById'
-import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
-import { IEvent } from 'src/types/event'
-import { FC } from 'react'
-import EventPage from 'src/components/pages/EventPage'
+import { addApolloState, initializeApollo } from '../../../api/apollo-client';
+import { getFeedCategories } from 'src/api/graphql/feed/queries/getFeedCategories';
+import { getFeeds } from 'src/api/graphql/feed/queries/getFeeds';
+import { getEventById } from 'src/api/graphql/event/queries/getEventById';
+import { IEvent } from 'src/types/event';
+import { FC } from 'react';
+import EventPage, { IEventPageProps } from 'src/components/pages/EventPage';
+import { getPrepareData } from '@/utils/newUtils/getPrepareData';
+import { IBeautyCategories, IFeed } from '@/types/feed';
+import { GetServerSideProps } from 'next';
+import { Nullable } from '@/types/common';
 
-interface EventDetailedProps {
-  event: IEvent
-  beautyCategories: any
-  beautyAllContent: any
-}
-
-const EventDetailed: FC<EventDetailedProps> = ({
+const EventDetailed: FC<IEventPageProps> = ({
   event,
   beautyCategories,
   beautyAllContent,
@@ -24,32 +21,52 @@ const EventDetailed: FC<EventDetailedProps> = ({
       beautyCategories={beautyCategories}
       beautyAllContent={beautyAllContent}
     />
-  )
-}
+  );
+};
 
-export async function getServerSideProps({ params }: any) {
-  const apolloClient = initializeApollo()
+export const getServerSideProps: GetServerSideProps<
+  Nullable<IEventPageProps>
+> = async ctx => {
+  const apolloClient = initializeApollo();
 
-  const eventRes = await apolloClient.query({
-    query: getEventById,
-    variables: { id: params.id },
-  })
-  const categories = await apolloClient.query({
-    query: getFeedCategories,
-  })
-  const all = await apolloClient.query({
-    query: getFeeds,
-  })
+  const id = ctx.params?.['id'];
+  if (!id)
+    return {
+      notFound: true,
+    };
 
-  const normalisedEvent = flattenStrapiResponse(eventRes?.data?.event)
+  const data = await Promise.allSettled([
+    apolloClient.query({
+      query: getEventById,
+      variables: { id },
+    }),
+    apolloClient.query({
+      query: getFeedCategories,
+    }),
+    apolloClient.query({
+      query: getFeeds,
+    }),
+  ]);
+
+  const event = getPrepareData<IEvent>(data[0], 'event');
+  if (!event) {
+    return {
+      notFound: true,
+    };
+  }
+  const beautyCategories = getPrepareData<IBeautyCategories[]>(
+    data[1],
+    'feedCategories',
+  );
+  const beautyAllContent = getPrepareData<IFeed[]>(data[2], 'feeds');
 
   return addApolloState(apolloClient, {
     props: {
-      event: normalisedEvent,
-      beautyCategories: categories?.data?.feedCategories,
-      beautyAllContent: all?.data?.feeds,
+      event,
+      beautyCategories,
+      beautyAllContent,
     },
-  })
-}
+  });
+};
 
-export default EventDetailed
+export default EventDetailed;

@@ -1,36 +1,29 @@
-import { useState, useCallback, FC, ReactNode } from 'react'
-import { useQuery } from '@apollo/client'
-import Link from 'next/link'
-import { Wrapper, Title, Content, List } from './styles'
-import {
-  MobileVisible,
-  MobileHidden,
-  MainContainer,
-} from '../../../styles/common'
-import SearchBlock from '../../blocks/SearchBlock'
-import BackButton from '../../ui/BackButton'
-import Button from '../../ui/Button'
-import Vacancy from '../../blocks/Vacancy'
-import SalesSearchResults from '../MainPage/components/SearchMain/SalesSearchResults'
-import EducationsSearchResults from '../MainPage/components/SearchMain/EducationsSearchResults'
-import EventsSearchResults from '../MainPage/components/SearchMain/EventsSearchResults'
-import VacanciesSearchResults from '../MainPage/components/SearchMain/VacanciesSearchResults'
-import { IEducation } from 'src/types/education'
-import Education from 'src/components/blocks/Education'
-import Event from 'src/components/blocks/Event'
-import { IEvent } from 'src/types/event'
-import { ISale } from 'src/types/sale'
-import Sale from 'src/components/blocks/Sale'
-import { IPromotions } from 'src/types/promotions'
-import { IVacancy } from 'src/types/vacancies'
+import { useState, FC, ReactNode } from 'react';
+
+import { Wrapper, Title, Content, List } from './styles';
+import { MainContainer } from '../../../styles/common';
+import SearchBlock from '../../blocks/SearchBlock';
+import BackButton from '../../ui/BackButton';
+import Vacancy from '../../blocks/Vacancy';
+import SalesSearchResults from '../MainPage/components/SearchMain/SalesSearchResults';
+import EducationsSearchResults from '../MainPage/components/SearchMain/EducationsSearchResults';
+import EventsSearchResults from '../MainPage/components/SearchMain/EventsSearchResults';
+import VacanciesSearchResults from '../MainPage/components/SearchMain/VacanciesSearchResults';
+import { IEducation } from 'src/types/education';
+import Education from 'src/components/blocks/Education';
+import Event from 'src/components/blocks/Event';
+import { IEvent } from 'src/types/event';
+import Sale from 'src/components/blocks/Sale';
+import { IPromotions } from 'src/types/promotions';
+import { IVacancy } from 'src/types/vacancies';
 
 const customProps: {
   [key: string]: {
     // query: any
-    searchTitle?: string
-    searchResultsComponent?: ReactNode
-    variables?: { input: { query: string; searchWork: boolean } }
-  }
+    searchTitle?: string;
+    searchResultsComponent?: ReactNode;
+    variables?: { input: { query: string; searchWork: boolean } };
+  };
 } = {
   sales: {
     // query: salesSearch,
@@ -56,35 +49,45 @@ const customProps: {
     // query: masterSearchQuery,
     variables: { input: { query: '', searchWork: true } },
   },
-}
+};
 
-const ListItem = ({ type, item }: { type: string; item: any }) => {
+const ListItem = ({
+  type,
+  item,
+}: {
+  type: string;
+  item: IPromotions | IEducation | IEvent | IVacancy;
+}) => {
   const renderSwitch = (type: string) => {
+    let renderedItem: ReactNode = null;
     switch (type) {
-      case 'sales':
-        const itemSale = item as IPromotions
-        return <Sale item={itemSale} noHover />
-      case 'educations':
-        const itemEducation = item as IEducation
-        return <Education item={itemEducation} noHover />
-      case 'events':
-        const itemEvent = item as IEvent
-        return <Event item={itemEvent} noHover />
-      case 'vacancies':
-        const itemVacancy = item as IVacancy
-        return <Vacancy item={itemVacancy} noHover />
-      default:
-        return null
+      case 'sales': {
+        renderedItem = <Sale item={item as IPromotions} noHover />;
+        break;
+      }
+      case 'educations': {
+        renderedItem = <Education item={item as IEducation} noHover />;
+        break;
+      }
+      case 'events': {
+        renderedItem = <Event item={item as IEvent} noHover />;
+        break;
+      }
+      case 'vacancies': {
+        renderedItem = <Vacancy item={item as IVacancy} noHover />;
+        break;
+      }
     }
-  }
-  return <>{renderSwitch(type)}</>
-}
+    return renderedItem;
+  };
+  return <>{renderSwitch(type)}</>;
+};
 
 interface BusinessCategoryPageProps {
-  type: string
-  title: string
-  data: any
-  link: string
+  type: string;
+  title: string;
+  data: Array<IPromotions | IEducation | IEvent | IVacancy>;
+  link: string;
 }
 
 const BusinessCategoryPage: FC<BusinessCategoryPageProps> = ({
@@ -93,12 +96,12 @@ const BusinessCategoryPage: FC<BusinessCategoryPageProps> = ({
   data,
   link,
 }) => {
-  const [listData, setListData] = useState(data)
-  const [fetchMoreLoading, setFetchMoreLoading] = useState(false)
-  const [, setLoading] = useState(false)
-  const slicedList = listData
+  const [listData, setListData] = useState(data);
+  const [fetchMoreLoading, setFetchMoreLoading] = useState(false);
+  const [, setLoading] = useState(false);
+  const slicedList = listData;
   // const hasNextPage = listData?.connection?.pageInfo?.hasNextPage
-  const query = { query: '' } //TODO: query
+  const query = { query: '' }; //TODO: query
 
   // const { fetchMore } = useQuery(customProps[type].query, {
   //   variables: customProps[type]?.variables || {
@@ -188,16 +191,18 @@ const BusinessCategoryPage: FC<BusinessCategoryPageProps> = ({
         ) : (
           <Content>
             <List type={type}>
-              {slicedList?.map((item: any) => (
-                <ListItem key={item.id} type={type} item={item} />
-              ))}
+              {slicedList?.map(
+                (item: IPromotions | IEducation | IEvent | IVacancy) => (
+                  <ListItem key={item.id} type={type} item={item} />
+                ),
+              )}
             </List>
             {/* {fetchMoreButton} */}
           </Content>
         )}
       </Wrapper>
     </>
-  )
-}
+  );
+};
 
-export default BusinessCategoryPage
+export default BusinessCategoryPage;

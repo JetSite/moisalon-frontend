@@ -1,6 +1,6 @@
-import styled from 'styled-components'
-import { Skeleton } from '@material-ui/lab'
-import { laptopBreakpoint } from '../../../styles/variables'
+import styled from 'styled-components';
+import { Skeleton } from '@material-ui/lab';
+import { laptopBreakpoint } from '../../../styles/variables';
 
 export const Wrapper = styled.div`
   position: relative;
@@ -22,7 +22,7 @@ export const Wrapper = styled.div`
     width: 280px;
     height: 340px;
   }
-`
+`;
 
 export const ImageWrap = styled.div<{ background: string }>`
   background: ${props => props.background};
@@ -35,7 +35,7 @@ export const ImageWrap = styled.div<{ background: string }>`
     height: 50%;
     flex-shrink: 0;
   }
-`
+`;
 
 export const Content = styled.div`
   position: relative;
@@ -49,7 +49,7 @@ export const Content = styled.div`
     padding: 17px 10px 8px 10px;
     height: 50%;
   }
-`
+`;
 
 export const Top = styled.div`
   display: flex;
@@ -59,12 +59,12 @@ export const Top = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     margin-bottom: 10px;
   }
-`
+`;
 
 export const Socials = styled.div`
   display: flex;
   align-items: center;
-`
+`;
 
 export const Name = styled.p`
   font-size: 18px;
@@ -84,14 +84,14 @@ export const Name = styled.p`
     line-height: 18px;
     max-width: 85%;
   }
-`
+`;
 
 export const PhoneLink = styled.a`
   width: 14.5px;
   height: 14.5px;
   background: url('/phone-icon.svg') no-repeat center;
   background-size: contain;
-`
+`;
 
 export const EmailLink = styled.a`
   width: 16.7px;
@@ -99,7 +99,7 @@ export const EmailLink = styled.a`
   background: url('/mail-icon.svg') no-repeat center;
   background-size: contain;
   margin-left: 20px;
-`
+`;
 
 export const Info = styled.div`
   display: flex;
@@ -107,11 +107,11 @@ export const Info = styled.div`
   height: 69px;
   overflow: hidden;
   margin-bottom: 10px;
-`
+`;
 
 export const Address = styled.p`
   width: 47%;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 23px;
   color: #000;
   -webkit-line-clamp: 3;
@@ -128,7 +128,7 @@ export const Address = styled.p`
     overflow: hidden;
     display: -webkit-box;
   }
-`
+`;
 
 export const Activities = styled.ul`
   line-height: 1.7;
@@ -144,24 +144,24 @@ export const Activities = styled.ul`
     font-weight: 400;
     line-height: 15px;
   }
-`
+`;
 
 export const Activity = styled.li`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-`
+`;
 
 export const SalonInfo = styled.div`
   width: 47%;
-`
+`;
 
 export const Wrap = styled.div`
   height: 131px;
   @media (max-width: ${laptopBreakpoint}) {
     height: initial;
   }
-`
+`;
 
 export const FavoriteIcon = styled.button<{ isFavorite: boolean }>`
   border: none;
@@ -177,7 +177,7 @@ export const FavoriteIcon = styled.button<{ isFavorite: boolean }>`
   @media (max-width: ${laptopBreakpoint}) {
     right: 15px;
   }
-`
+`;
 
 export const SkeletonSalonItem = styled(Skeleton)`
   width: 372px;
@@ -186,7 +186,7 @@ export const SkeletonSalonItem = styled(Skeleton)`
     width: 280px;
     height: 277px;
   }
-`
+`;
 
 export const Rent = styled.p`
   position: absolute;
@@ -203,14 +203,14 @@ export const Rent = styled.p`
     left: 7px;
     top: 7px;
   }
-`
+`;
 
 export const ShareWrap = styled.div`
   padding: 10px;
   position: absolute;
   top: 0;
   right: 0;
-`
+`;
 
 export const SalonShareWrap = styled(ShareWrap)`
   top: 160px;
@@ -219,4 +219,4 @@ export const SalonShareWrap = styled(ShareWrap)`
     top: 100px;
     right: 2px;
   }
-`
+`;

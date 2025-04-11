@@ -1,9 +1,10 @@
-import { FC } from 'react'
-import { AdvList } from '../../styles'
-import AdviceItem, { AdviceItemProps } from './AdviceItem'
+import { FC } from 'react';
+import { AdvList } from '../../styles';
+import AdviceItem, { AdviceItemProps } from './AdviceItem';
+import { IFeed } from '@/types/feed';
 
 interface Props extends Omit<AdviceItemProps, 'item'> {
-  items: any[]
+  items: IFeed[];
 }
 
 const AdvicesList: FC<Props> = ({
@@ -26,7 +27,7 @@ const AdvicesList: FC<Props> = ({
         ))}
       </AdvList>
     </>
-  )
-}
+  );
+};
 
-export default AdvicesList
+export default AdvicesList;

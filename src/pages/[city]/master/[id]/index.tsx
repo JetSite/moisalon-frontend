@@ -1,81 +1,76 @@
-import { FC, use, useCallback, useEffect, useState } from 'react'
-import Head from 'next/head'
-import { addApolloState, initializeApollo } from '../../../../api/apollo-client'
-import { useMutation, useQuery } from '@apollo/client'
-import MainLayout from '../../../../layouts/MainLayout'
-import SearchBlock from '../../../../components/blocks/SearchBlock'
-import Header from '../../../../components/pages/Master/ViewMaster/components/Header'
-import TabsSlider from '../../../../components/ui/TabsSlider'
-import About from '../../../../components/pages/Master/ViewMaster/components/About'
-import MobileServicesForClient from '../../../../components/pages/Master/ViewMaster/components/MobileServicesComponent/MobileServicesForClient'
-import ReviewsMaster from '../../../../components/pages/Master/ViewMaster/components/MasterReviews/index'
-import Line from '../../../../components/pages/MainPage/components/Line'
-import InviteMaster from '../../../../components/pages/Master/ViewMaster/components/Invite'
-import Contacts from '../../../../components/pages/Master/ViewMaster/components/Contacts'
-import ServicesForClient from '../../../../components/pages/Master/ViewMaster/components/ServicesForClient'
-import Slider from '../../../../components/blocks/Slider'
-import AddSalons from '../../../../components/pages/Master/AddSalons'
-import { NoItemsText } from '../../../../styles/common'
-import { MASTER_PAGE } from 'src/api/graphql/master/queries/masterPage'
-import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
-import { getMasters } from 'src/api/graphql/master/queries/getMasters'
+import { FC, useEffect, useState } from 'react';
+import { initializeApollo } from '../../../../api/apollo-client';
+import { useMutation } from '@apollo/client';
+import MainLayout from '../../../../layouts/MainLayout';
+import SearchBlock from '../../../../components/blocks/SearchBlock';
+import Header from '../../../../components/pages/Master/ViewMaster/components/Header';
+import TabsSlider from '../../../../components/ui/TabsSlider';
+import About from '../../../../components/pages/Master/ViewMaster/components/About';
+import MobileServicesForClient from '../../../../components/pages/Master/ViewMaster/components/MobileServicesComponent/MobileServicesForClient';
+import ReviewsMaster from '../../../../components/pages/Master/ViewMaster/components/MasterReviews/index';
+import Line from '../../../../components/pages/MainPage/components/Line';
+import InviteMaster from '../../../../components/pages/Master/ViewMaster/components/Invite';
+import Contacts from '../../../../components/pages/Master/ViewMaster/components/Contacts';
+import ServicesForClient from '../../../../components/pages/Master/ViewMaster/components/ServicesForClient';
+import Slider from '../../../../components/blocks/Slider';
+import AddSalons from '../../../../components/pages/Master/AddSalons';
+import { NoItemsText } from '../../../../styles/common';
+import { MASTER_PAGE } from 'src/api/graphql/master/queries/masterPage';
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse';
+import { getMasters } from 'src/api/graphql/master/queries/getMasters';
 import {
   IGroupedServices,
   getServicesByCategory,
-} from 'src/utils/serviceCatalog'
-import useBaseStore from 'src/store/baseStore'
-import { getStoreData, getStoreEvent } from 'src/store/utils'
-import useAuthStore from 'src/store/authStore'
-import { GetServerSideProps } from 'next'
-import { defaultValues, defaultcCitiesList } from 'src/api/authConfig'
-import { fetchCity } from 'src/api/utils/fetchCity'
-import { IMaster } from 'src/types/masters'
-import { ICity, IPhoto } from 'src/types'
-import { getRating } from 'src/utils/newUtils/getRating'
-import { Nullable } from 'src/types/common'
-import Resume from 'src/components/pages/Master/ViewMaster/components/Resume'
-import PhotoAdd from 'src/components/pages/Master/ViewMaster/components/PhotoAdd'
-import { ISalon } from 'src/types/salon'
-import { IBrand } from 'src/types/brands'
-import { UPDATE_MASTER } from 'src/api/graphql/master/mutations/updateMaster'
-import AddBrands from 'src/components/pages/Master/AddBrands'
-import { getServiceCategories } from 'src/api/graphql/service/queries/getServiceCategories'
-import { IServiceCategory, IServices } from 'src/types/services'
-import AutoFocusedForm from 'src/components/blocks/Form/AutoFocusedForm'
-import PhotoArrayField from 'src/components/blocks/Form/PhotoArrayField'
+} from 'src/utils/serviceCatalog';
+import { getStoreData } from 'src/store/utils';
+import useAuthStore from 'src/store/authStore';
+import { GetServerSideProps } from 'next';
+import { fetchCity } from 'src/api/utils/fetchCity';
+import { IMaster } from 'src/types/masters';
+import { ICity, IPhoto } from 'src/types';
+import { getRating } from 'src/utils/newUtils/getRating';
+import { Nullable } from 'src/types/common';
+import Resume from 'src/components/pages/Master/ViewMaster/components/Resume';
+import { ISalon } from 'src/types/salon';
+import { IBrand } from 'src/types/brands';
+import { UPDATE_MASTER } from 'src/api/graphql/master/mutations/updateMaster';
+import AddBrands from 'src/components/pages/Master/AddBrands';
+import { getServiceCategories } from 'src/api/graphql/service/queries/getServiceCategories';
+import { IServiceCategory, IServices } from 'src/types/services';
+import AutoFocusedForm from 'src/components/blocks/Form/AutoFocusedForm';
+import PhotoArrayField from 'src/components/blocks/Form/PhotoArrayField';
 
 interface Props {
-  masterData: IMaster
-  randomMasters: IMaster[]
-  allServices: IServiceCategory[]
-  cityData: ICity
+  masterData: IMaster;
+  randomMasters: IMaster[];
+  allServices: IServiceCategory[];
+  cityData: ICity;
 }
 
 const Master: FC<Props> = ({
-  masterData,
+  masterData: master,
   randomMasters,
   allServices,
-  cityData,
 }) => {
-  const [master, setMaster] = useState<IMaster>(masterData)
-  const { user, city } = useAuthStore(getStoreData)
-  const [activeTab, setActiveTab] = useState(0)
-  const [isBrandsEditing, setIsBrandsEditing] = useState(false)
-  const [isSalonsEditing, setIsSalonsEditing] = useState(false)
-  const [isPortfolioEditing, setIsPortfolioEditing] = useState(false)
-  const [isDiplomsEditing, setIsDiplomsEditing] = useState(false)
-  const [works, setWorks] = useState<IPhoto[]>(master?.photosWorks || [])
+  // const [master, setMaster] = useState<IMaster>(masterData)
+  const { user, city } = useAuthStore(getStoreData);
+  const [activeTab, setActiveTab] = useState(0);
+  const [isBrandsEditing, setIsBrandsEditing] = useState(false);
+  const [isSalonsEditing, setIsSalonsEditing] = useState(false);
+  const [isPortfolioEditing, setIsPortfolioEditing] = useState(false);
+  const [isDiplomsEditing, setIsDiplomsEditing] = useState(false);
+  const [works, setWorks] = useState<IPhoto[]>(master?.photosWorks || []);
   const [diplomas, setDiplomas] = useState<IPhoto[]>(
     master?.photosDiploma || [],
-  )
-  const [salons, setSalons] = useState<ISalon[]>(master?.salons || [])
-  const [brands, setBrands] = useState<IBrand[]>(master?.brands || [])
-  const [services, setServices] = useState<IServices[]>(master?.services || [])
+  );
+  const [salons, setSalons] = useState<ISalon[]>(master?.salons || []);
+  const [brands, setBrands] = useState<IBrand[]>(master?.brands || []);
+  const [services, setServices] = useState<IServices[]>(master?.services || []);
 
-  const isOwner = !!user?.owner?.masters?.find(e => e.id === master?.id)
-  const servicesData: IGroupedServices[] = getServicesByCategory(services)
+  const isOwner = !!user?.owner?.masters?.find(e => e.id === master?.id);
+  const servicesData: IGroupedServices[] = getServicesByCategory(services);
 
-  const [updateMaster] = useMutation(UPDATE_MASTER)
+  const [updateMaster] = useMutation(UPDATE_MASTER);
 
   useEffect(() => {
     if (works.length !== master.photosWorks.length) {
@@ -86,13 +81,9 @@ const Master: FC<Props> = ({
             photosWorks: [...works.map(e => e.id)],
           },
         },
-      })
+      });
     }
-  }, [works])
-
-  const addWorksHandler = async (photo: IPhoto) => {
-    setWorks(prevState => [...prevState, photo])
-  }
+  }, [works]);
 
   useEffect(() => {
     if (master?.photosDiploma?.length !== diplomas.length) {
@@ -103,13 +94,13 @@ const Master: FC<Props> = ({
             photosDiploma: [...diplomas.map(e => e.id)],
           },
         },
-      })
+      });
     }
-  }, [diplomas])
+  }, [diplomas]);
 
-  const addDiplomasHandler = (photo: IPhoto) => {
-    setDiplomas(prevState => [...prevState, photo])
-  }
+  // const addDiplomasHandler = (photo: IPhoto) => {
+  //   setDiplomas(prevState => [...prevState, photo])
+  // }
 
   useEffect(() => {
     if (salons.length !== master.salons.length) {
@@ -120,13 +111,13 @@ const Master: FC<Props> = ({
             salons: salons.map(salon => salon.id),
           },
         },
-      })
+      });
     }
-  }, [salons])
+  }, [salons]);
 
   const handleRemoveSalon = (id: string) => {
-    setSalons(prevState => prevState.filter(e => e.id !== id))
-  }
+    setSalons(prevState => prevState.filter(e => e.id !== id));
+  };
 
   useEffect(() => {
     if (brands.length !== master.brands.length) {
@@ -137,15 +128,13 @@ const Master: FC<Props> = ({
             brands: brands.map(salon => salon.id),
           },
         },
-      })
+      });
     }
-  }, [brands])
+  }, [brands]);
 
   const handleRemoveBrand = (id: string) => {
-    setBrands(prevState => prevState.filter(e => e.id !== id))
-  }
-
-  console.log(allServices)
+    setBrands(prevState => prevState.filter(e => e.id !== id));
+  };
 
   return (
     <MainLayout>
@@ -238,14 +227,12 @@ const Master: FC<Props> = ({
               title="Примеры работ"
               isEditing={isPortfolioEditing}
               setIsEditing={setIsPortfolioEditing}
-              // deleteFunction={onDelete}
               pt={52}
               pb={31}
             >
               {isPortfolioEditing ? (
                 <AutoFocusedForm
                   initialValues={{ photos: master.photosWorks }}
-                  onSubmit={() => {}}
                   render={() => {
                     return (
                       <PhotoArrayField
@@ -253,7 +240,7 @@ const Master: FC<Props> = ({
                         kind="small"
                         setPhotosArray={setWorks}
                       />
-                    )
+                    );
                   }}
                 />
               ) : null}
@@ -286,7 +273,6 @@ const Master: FC<Props> = ({
               {isDiplomsEditing ? (
                 <AutoFocusedForm
                   initialValues={{ photos: master.photosDiploma }}
-                  onSubmit={() => {}}
                   render={() => {
                     return (
                       <PhotoArrayField
@@ -294,7 +280,7 @@ const Master: FC<Props> = ({
                         kind="small"
                         setPhotosArray={setDiplomas}
                       />
-                    )
+                    );
                   }}
                 />
               ) : null}
@@ -376,7 +362,7 @@ const Master: FC<Props> = ({
             </>
           </Slider>
         ) : null}
-        {masterData?.resume ? <Resume resume={masterData.resume} /> : null}
+        {master?.resume ? <Resume resume={master.resume} /> : null}
         <ReviewsMaster reviews={master?.reviews} masterId={master?.id} />
         <Contacts
           phone={master?.phone || master?.phone}
@@ -409,17 +395,17 @@ const Master: FC<Props> = ({
         />
       </>
     </MainLayout>
-  )
-}
+  );
+};
 
 export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async ({
   params,
   query,
   res,
 }) => {
-  const apolloClient = initializeApollo()
-  const id = params?.id
-  const cityData = await fetchCity(query.city as string)
+  const apolloClient = initializeApollo();
+  const id = params?.['id'];
+  const cityData = await fetchCity(query['city'] as string);
 
   const data = await Promise.all([
     apolloClient.query({
@@ -437,24 +423,24 @@ export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async ({
     apolloClient.query({
       query: getServiceCategories,
     }),
-  ])
+  ]);
 
   const masterData: IMaster | null =
-    flattenStrapiResponse(data[0]?.data?.master?.data) || null
+    flattenStrapiResponse(data[0]?.data?.master?.data) || null;
   const randomMasters: IMaster[] =
-    flattenStrapiResponse(data[1]?.data?.masters?.data) || []
+    flattenStrapiResponse(data[1]?.data?.masters?.data) || [];
   const allServices =
-    flattenStrapiResponse(data[2]?.data?.serviceCategories?.data) || []
+    flattenStrapiResponse(data[2]?.data?.serviceCategories?.data) || [];
 
-  const reviewsCount = masterData?.reviews?.length || 0
-  const { rating, ratingCount } = getRating(masterData?.ratings)
+  const reviewsCount = masterData?.reviews?.length || 0;
+  const { rating, ratingCount } = getRating(masterData?.ratings);
 
   const salons =
     masterData?.salons.map(e => {
-      const reviewsCount = e.reviews?.length || 0
-      const { rating, ratingCount } = getRating(e.ratings)
-      return { ...e, rating, ratingCount, reviewsCount }
-    }) || []
+      const reviewsCount = e.reviews?.length || 0;
+      const { rating, ratingCount } = getRating(e.ratings);
+      return { ...e, rating, ratingCount, reviewsCount };
+    }) || [];
 
   return {
     notFound: !id || !cityData || !masterData,
@@ -463,14 +449,14 @@ export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async ({
         ? { ...masterData, salons, rating, ratingCount, reviewsCount }
         : null,
       randomMasters: randomMasters.map(e => {
-        const reviewsCount = e.reviews?.length
-        const { rating, ratingCount } = getRating(e.ratings)
-        return { ...e, rating, ratingCount, reviewsCount }
+        const reviewsCount = e.reviews?.length;
+        const { rating, ratingCount } = getRating(e.ratings);
+        return { ...e, rating, ratingCount, reviewsCount };
       }),
       allServices,
       cityData,
     },
-  }
-}
+  };
+};
 
-export default Master
+export default Master;

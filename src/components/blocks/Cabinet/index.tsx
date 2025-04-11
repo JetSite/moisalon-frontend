@@ -1,19 +1,19 @@
-import { useState, FC } from 'react'
-import Header from '../../pages/MainPage/components/Header'
-import { MainContainer, Wrapper } from './styled'
-import CabinetForm, { CabinetFormProps } from './components/CabinetForm'
-import { PHOTO_URL } from '../../../api/variables'
-import { IPhoto } from 'src/types'
-import Controls from './components/Controls'
+import { useState, FC } from 'react';
+import Header from '../../pages/MainPage/components/Header';
+import { MainContainer, Wrapper } from './styled';
+import CabinetForm, { CabinetFormProps } from './components/CabinetForm';
+import { PHOTO_URL } from '../../../api/variables';
+import { IPhoto } from 'src/types';
+import Controls from './components/Controls';
 
-interface Props extends Pick<CabinetFormProps, 'cities' | 'user'> {}
+type Props = Pick<CabinetFormProps, 'cities' | 'user'>;
 
 const Cabinet: FC<Props> = ({ cities, user }) => {
   const [avatar, setAvatar] = useState<IPhoto | null>(
-    !!user.info.avatar?.url ? user.info.avatar : null,
-  )
-  const [noPhotoError, setNoPhotoError] = useState(false)
-  const [dirtyForm, setDirtyForm] = useState(false)
+    user.info.avatar?.url ? user.info.avatar : null,
+  );
+  const [noPhotoError, setNoPhotoError] = useState(false);
+  const [dirtyForm, setDirtyForm] = useState(false);
 
   return (
     <>
@@ -36,11 +36,12 @@ const Cabinet: FC<Props> = ({ cities, user }) => {
             dirtyForm={dirtyForm}
             setNoPhotoError={setNoPhotoError}
             photo={avatar}
+            auth
           />
         </Wrapper>
       </MainContainer>
     </>
-  )
-}
+  );
+};
 
-export default Cabinet
+export default Cabinet;

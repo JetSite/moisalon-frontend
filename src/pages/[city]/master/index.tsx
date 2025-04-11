@@ -1,50 +1,49 @@
-import { initializeApollo } from '../../../api/apollo-client'
-import CategoryPageLayout from '../../../layouts/CategoryPageLayout'
+import { initializeApollo } from '../../../api/apollo-client';
+import CategoryPageLayout from '../../../layouts/CategoryPageLayout';
 import AllMastersPage, {
   IMastersPageProps,
-} from '../../../components/pages/Master/AllMasters'
-import { GetServerSideProps } from 'next'
-import { getMastersTroughCity } from 'src/api/graphql/master/queries/getMastersTroughCity'
-import { FC, useEffect } from 'react'
-import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
-import { IMaster } from 'src/types/masters'
-import { IPagination } from 'src/types'
-import { getTotalCount } from 'src/utils/getTotalCount'
-import { fetchCity } from 'src/api/utils/fetchCity'
-import { defaultValues } from 'src/api/authConfig'
-import { IBrand } from 'src/types/brands'
-import { BRANDS } from 'src/api/graphql/brand/queries/getBrands'
-import { getMasters } from 'src/api/graphql/master/queries/getMasters'
-import { getSalons } from 'src/api/graphql/salon/queries/getSalons'
-import { ISalon } from 'src/types/salon'
-import { getRating } from 'src/utils/newUtils/getRating'
-import { Nullable } from 'src/types/common'
-import { MIN_SEARCH_LENGTH } from 'src/components/pages/MainPage/components/SearchMain/utils/useSearch'
-import { getPrepareData } from 'src/utils/newUtils/getPrepareData'
+} from '../../../components/pages/Master/AllMasters';
+import { GetServerSideProps } from 'next';
+import { getMastersTroughCity } from 'src/api/graphql/master/queries/getMastersTroughCity';
+import { FC } from 'react';
+import { IMaster } from 'src/types/masters';
+import { IPagination } from 'src/types';
+import { getTotalCount } from 'src/utils/getTotalCount';
+import { fetchCity } from 'src/api/utils/fetchCity';
+import { IBrand } from 'src/types/brands';
+import { BRANDS } from 'src/api/graphql/brand/queries/getBrands';
+import { getMasters } from 'src/api/graphql/master/queries/getMasters';
+import { getSalons } from 'src/api/graphql/salon/queries/getSalons';
+import { ISalon } from 'src/types/salon';
+import { getRating } from 'src/utils/newUtils/getRating';
+import { Nullable } from 'src/types/common';
+import { MIN_SEARCH_LENGTH } from 'src/components/pages/MainPage/components/SearchMain/utils/useSearch';
+import { getPrepareData } from 'src/utils/newUtils/getPrepareData';
 
 interface Props extends IMastersPageProps {
-  brands: IBrand[] | null
-  masters: IMaster[] | null
-  salons: ISalon[] | null
+  brands: IBrand[] | null;
+  masters: IMaster[] | null;
+  salons: ISalon[] | null;
 }
 
 const AllMasters: FC<Props> = ({ masters, salons, brands, ...props }) => {
-  const layout = { brands, masters, salons }
+  const layout = { brands, masters, salons };
 
   return (
     <CategoryPageLayout {...layout}>
       <AllMastersPage {...props} />
     </CategoryPageLayout>
-  )
-}
+  );
+};
 
 export const getServerSideProps: GetServerSideProps<
   Nullable<Props>
 > = async ctx => {
-  const apolloClient = initializeApollo()
-  const cityData = await fetchCity(ctx.query.city as string, ctx)
+  const apolloClient = initializeApollo();
+  const cityParam = ctx.query['city'] as string;
+  const cityData = await fetchCity(cityParam, ctx);
 
-  const search = ctx.query.search?.length >= MIN_SEARCH_LENGTH
+  const search = ctx.query['search']?.length >= MIN_SEARCH_LENGTH;
 
   const queries = [
     apolloClient.query({
@@ -56,18 +55,18 @@ export const getServerSideProps: GetServerSideProps<
     apolloClient.query({
       query: getMasters,
       variables: {
-        slug: ctx.query.city,
+        slug: cityParam,
         itemsCount: 10,
       },
     }),
     apolloClient.query({
       query: getSalons,
       variables: {
-        slug: ctx.query.city,
+        slug: cityParam,
         itemsCount: 10,
       },
     }),
-  ]
+  ];
 
   if (!search) {
     queries.push(
@@ -75,27 +74,27 @@ export const getServerSideProps: GetServerSideProps<
         query: getMastersTroughCity,
         variables: {
           pageSize: 10,
-          slug: [ctx.query.city],
+          slug: [cityParam],
         },
       }),
-    )
+    );
   }
 
-  let masterData: IMaster[] | null = null
-  let pagination: IPagination | null = null
+  let masterData: IMaster[] | null = null;
+  let pagination: IPagination | null = null;
 
-  const data = await Promise.allSettled(queries)
+  const data = await Promise.allSettled(queries);
 
-  const brands = getPrepareData<IBrand[]>(data[0], 'brands')
-  const masters = getPrepareData<IMaster[]>(data[1], 'masters')
-  const salons = getPrepareData<ISalon[]>(data[2], 'salons')
+  const brands = getPrepareData<IBrand[]>(data[0], 'brands');
+  const masters = getPrepareData<IMaster[]>(data[1], 'masters');
+  const salons = getPrepareData<ISalon[]>(data[2], 'salons');
 
   if (data.length >= 4) {
-    masterData = getPrepareData<IMaster[]>(data[3], 'masters')
+    masterData = getPrepareData<IMaster[]>(data[3], 'masters');
     pagination =
       data[3].status === 'fulfilled'
         ? data[3].value.data.masters.meta.pagination
-        : null
+        : null;
   }
 
   return {
@@ -104,30 +103,30 @@ export const getServerSideProps: GetServerSideProps<
       masterData: !masterData
         ? null
         : masterData.map(e => {
-            const reviewsCount = e.reviews?.length || 0
-            const { rating, ratingCount } = getRating(e.ratings)
-            return { ...e, rating, ratingCount, reviewsCount }
+            const reviewsCount = e.reviews?.length || 0;
+            const { rating, ratingCount } = getRating(e.ratings);
+            return { ...e, rating, ratingCount, reviewsCount };
           }),
       brands: !brands
         ? null
         : brands.map(e => {
-            const reviewsCount = e.reviews?.length || 0
-            const { rating, ratingCount } = getRating(e.ratings)
-            return { ...e, rating, ratingCount, reviewsCount }
+            const reviewsCount = e.reviews?.length || 0;
+            const { rating, ratingCount } = getRating(e.ratings);
+            return { ...e, rating, ratingCount, reviewsCount };
           }),
       masters: !masters
         ? null
         : masters.map(e => {
-            const reviewsCount = e.reviews?.length || 0
-            const { rating, ratingCount } = getRating(e.ratings)
-            return { ...e, rating, ratingCount, reviewsCount }
+            const reviewsCount = e.reviews?.length || 0;
+            const { rating, ratingCount } = getRating(e.ratings);
+            return { ...e, rating, ratingCount, reviewsCount };
           }),
       salons: !salons
         ? null
         : salons.map(e => {
-            const reviewsCount = e.reviews?.length || 0
-            const { rating, ratingCount } = getRating(e.ratings)
-            return { ...e, rating, ratingCount, reviewsCount }
+            const reviewsCount = e.reviews?.length || 0;
+            const { rating, ratingCount } = getRating(e.ratings);
+            return { ...e, rating, ratingCount, reviewsCount };
           }),
       totalCount: {
         brands:
@@ -146,7 +145,7 @@ export const getServerSideProps: GetServerSideProps<
       cityData,
       pagination,
     },
-  }
-}
+  };
+};
 
-export default AllMasters
+export default AllMasters;

@@ -1,10 +1,10 @@
-import { useState, useEffect, FC, MouseEvent } from 'react'
+import { useState, useEffect, FC, MouseEvent } from 'react';
 import {
   favoritesInStorage,
   inStorage,
-} from '../../../utils/favoritesInStorage'
-import Share from '../../ui/Share'
-import Rating from '../../ui/Rating'
+} from '../../../utils/favoritesInStorage';
+import Share from '../../ui/Share';
+import Rating from '../../ui/Rating';
 import {
   MasterShareWrap,
   Item,
@@ -16,19 +16,18 @@ import {
   City,
   SkeletonMasterItem,
   RatingWrapper,
-} from './styles'
-import HeartFullFill from '../../pages/MainPage/components/Header/icons/HeartFullFill'
-import { red } from '../../../styles/variables'
-import { PHOTO_URL } from 'src/api/variables'
-import { IMaster } from 'src/types/masters'
-import { Activity } from '../SalonCard/styles'
+} from './styles';
+import HeartFullFill from '../../pages/MainPage/components/Header/icons/HeartFullFill';
+import { PHOTO_URL } from 'src/api/variables';
+import { IMaster } from 'src/types/masters';
+import { Activity } from '../SalonCard/styles';
 
 interface Props {
-  master: IMaster | null
-  shareLink: string
-  loading?: boolean
-  type?: string
-  handleDeleted?: () => void
+  master: IMaster | null;
+  shareLink: string;
+  loading?: boolean;
+  type?: string;
+  handleDeleted?: () => void;
 }
 
 const MasterItem: FC<Props> = ({
@@ -38,24 +37,24 @@ const MasterItem: FC<Props> = ({
   loading,
   handleDeleted,
 }) => {
-  const [isFavorite, setIsFavorit] = useState(false)
+  const [isFavorite, setIsFavorit] = useState(false);
 
   useEffect(() => {
-    const isInStorage = inStorage('masters', master)
-    setIsFavorit(!!isInStorage)
-  }, [])
+    const isInStorage = inStorage('masters', master);
+    setIsFavorit(!!isInStorage);
+  }, []);
 
   const photoUrl = master
     ? `${PHOTO_URL}${master.photo?.url || master.photo?.url}`
-    : ''
+    : '';
 
   const addFavorite = (e: MouseEvent, master: IMaster | null) => {
-    e.preventDefault()
-    e.stopPropagation()
-    handleDeleted && handleDeleted()
-    favoritesInStorage('masters', master)
-    setIsFavorit(!isFavorite)
-  }
+    e.preventDefault();
+    e.stopPropagation();
+    handleDeleted && handleDeleted();
+    favoritesInStorage('masters', master);
+    setIsFavorit(!isFavorite);
+  };
   return loading ? (
     <SkeletonMasterItem />
   ) : (
@@ -93,7 +92,7 @@ const MasterItem: FC<Props> = ({
         </RatingWrapper>
       </MasterInfo>
     </Item>
-  )
-}
+  );
+};
 
-export default MasterItem
+export default MasterItem;

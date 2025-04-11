@@ -1,8 +1,6 @@
 import { GetServerSideProps } from 'next'
-import { authConfig, defaultValues } from 'src/api/authConfig'
+import { defaultValues } from 'src/api/authConfig'
 import { FC } from 'react'
-import { getCookie } from 'cookies-next'
-import { ICity } from 'src/types'
 
 const AppContent: FC = () => {
   return null

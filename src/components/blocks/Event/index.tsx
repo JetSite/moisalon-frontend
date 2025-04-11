@@ -1,26 +1,26 @@
-import { FC, useState } from 'react'
-import * as Styled from './styled'
-import moment from 'moment'
-import 'moment/locale/ru'
-import { PHOTO_URL } from '../../../api/variables'
-import PhotoAdd, { IPhotoAddProps } from '../CreateBanner/PhotoAdd'
-import { IProfileType } from '../Cabinet/components/CabinetSales'
-import { IEvent } from 'src/types/event'
+import { FC, useState } from 'react';
+import * as Styled from './styled';
+import 'moment/locale/ru';
+import { PHOTO_URL } from '../../../api/variables';
+import PhotoAdd, { IPhotoAddProps } from '../CreateBanner/PhotoAdd';
+import { IProfileType } from '../Cabinet/components/CabinetSales';
+import { IEvent } from 'src/types/event';
 import {
   IEntityDeleteHandler,
   IEntityHandler,
-} from '../Cabinet/components/ActiveProfile/ProfileManager'
-import { DeleteIcon } from '../Sale/styled'
-import Link from 'next/link'
+} from '../Cabinet/components/ActiveProfile/ProfileManager';
+import { DeleteIcon } from '../Sale/styled';
+import Link from 'next/link';
+import { formatDateRangeWithTime } from '@/utils/formatDateRangeWithTime';
 
 interface IEventProps extends Partial<Omit<IPhotoAddProps, 'hover'>> {
-  create?: boolean
-  type?: IProfileType
-  item: IEvent
-  handleClick?: IEntityHandler
-  handleDelete?: IEntityDeleteHandler
-  noHover?: boolean
-  cabinet?: boolean
+  create?: boolean;
+  type?: IProfileType;
+  item: IEvent;
+  handleClick?: IEntityHandler;
+  handleDelete?: IEntityDeleteHandler;
+  noHover?: boolean;
+  cabinet?: boolean;
 }
 
 const Event: FC<IEventProps> = ({
@@ -34,24 +34,17 @@ const Event: FC<IEventProps> = ({
   handleDelete,
   cabinet,
 }) => {
-  const [hover, setHover] = useState(false)
-  const [imageHover, setImageHover] = useState(false)
+  const [hover, setHover] = useState(false);
+  const [imageHover, setImageHover] = useState(false);
 
-  const photoSrc = `${PHOTO_URL}${item?.cover?.url ?? photo?.url ?? ''}`
+  const photoSrc = `${PHOTO_URL}${item?.cover?.url ?? photo?.url ?? ''}`;
 
-  const dateStart = item.timeStart
-    ? `${moment(item.dateStart).format('DD MMMM ')} ${
-        item.timeStart
-          ? moment(item.timeStart, 'HH:mm:ss.SSS').format('HH:mm')
-          : ''
-      }`
-    : ''
-  const dateEnd = item.dateEnd
-    ? `${moment(item.dateEnd).format('DD MMMM YYYY')} ${
-        item.timeEnd ? moment(item.timeEnd, 'HH:mm:ss.SSS').format('HH:mm') : ''
-      }`
-    : ''
-
+  const dateText = formatDateRangeWithTime(
+    item.dateStart,
+    item.dateEnd,
+    item.timeStart,
+    item.timeEnd,
+  );
   const renderContent = () => (
     <>
       {!create ? (
@@ -66,9 +59,9 @@ const Event: FC<IEventProps> = ({
             visible={imageHover}
             id={item.id}
             onClick={e => {
-              e.stopPropagation()
-              e.preventDefault()
-              handleDelete && handleDelete(item.id, !item.publishedAt)
+              e.stopPropagation();
+              e.preventDefault();
+              handleDelete && handleDelete(item.id, !item.publishedAt);
             }}
           />
         </Styled.EventTop>
@@ -86,12 +79,18 @@ const Event: FC<IEventProps> = ({
         {/* <EventName>{name}</EventName> */}
         <Styled.EventTitle>{item.title}</Styled.EventTitle>
         <Styled.EventBottom>
-          {item.dateStart && item.dateEnd ? (
+          {dateText && (
             <Styled.EventData>
-              <Styled.Date>{dateStart} -&nbsp;</Styled.Date>
-              <Styled.Date>{dateEnd}</Styled.Date>
+              <Styled.Date>
+                {dateText.split('\n').map((str, i) => (
+                  <Styled.DateSpan key={i}>
+                    {str}
+                    <br />
+                  </Styled.DateSpan>
+                ))}
+              </Styled.Date>
             </Styled.EventData>
-          ) : null}
+          )}
           <Styled.EventAddress>{item.address}</Styled.EventAddress>
           {/* {item.promo ? (
           <Styled.Promo>
@@ -102,7 +101,7 @@ const Event: FC<IEventProps> = ({
         </Styled.EventBottom>
       </Styled.EventContent>
     </>
-  )
+  );
 
   return (
     <Styled.EventWrap
@@ -121,7 +120,7 @@ const Event: FC<IEventProps> = ({
         renderContent()
       )}
     </Styled.EventWrap>
-  )
-}
+  );
+};
 
-export default Event
+export default Event;

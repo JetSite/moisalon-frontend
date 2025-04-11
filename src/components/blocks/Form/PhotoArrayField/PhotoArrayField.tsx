@@ -1,14 +1,14 @@
-import React, { FC } from 'react'
-import { Field } from 'react-final-form'
-import { FieldArray } from 'react-final-form-arrays'
-import { IUsePhotoProps } from './usePhotos'
-import { GeneratePhotoArrayProps } from './GeneratePhotoArrayProps'
+import React, { FC } from 'react';
+import { Field } from 'react-final-form';
+import { FieldArray } from 'react-final-form-arrays';
+import { IUsePhotoProps } from './usePhotos';
+import { GeneratePhotoArrayProps } from './GeneratePhotoArrayProps';
 
 export interface PhotoArrayFieldProps
   extends Omit<IUsePhotoProps, 'onRemove' | 'onChange' | 'onAdd' | 'photos'> {
-  variant?: 'normal' | string
-  description?: string
-  name?: string
+  variant?: 'normal' | string;
+  description?: string;
+  name?: string;
 }
 
 const PhotoArrayField: FC<PhotoArrayFieldProps> = ({
@@ -22,26 +22,28 @@ const PhotoArrayField: FC<PhotoArrayFieldProps> = ({
   return (
     <Field name="defaultPhotoId">
       {({ input }) => {
-        const { value: defaultPhotoId, onChange: onSetDefault } = input
+        const { value: defaultPhotoId, onChange: onSetDefault } = input;
         return (
           <FieldArray name={name}>
-            {({ fields }) => (
-              <GeneratePhotoArrayProps
-                fields={fields}
-                defaultPhotoId={defaultPhotoId}
-                onSetDefault={onSetDefault}
-                variant={variant}
-                kind={kind}
-                photoType={photoType}
-                description={description}
-                setPhotosArray={setPhotosArray}
-              />
-            )}
+            {({ fields }) => {
+              return (
+                <GeneratePhotoArrayProps
+                  fields={fields}
+                  defaultPhotoId={defaultPhotoId}
+                  onSetDefault={onSetDefault}
+                  variant={variant}
+                  kind={kind}
+                  photoType={photoType}
+                  description={description}
+                  setPhotosArray={setPhotosArray}
+                />
+              );
+            }}
           </FieldArray>
-        )
+        );
       }}
     </Field>
-  )
-}
+  );
+};
 
-export default PhotoArrayField
+export default PhotoArrayField;

@@ -1,4 +1,4 @@
-import { MobileVisible, MobileHidden } from '../../../../../styles/common'
+import { MobileVisible, MobileHidden } from '../../../../../styles/common';
 import {
   AdvItem,
   AdvImage,
@@ -6,16 +6,18 @@ import {
   AdvDescription,
   AdvShortDescription,
   ReadMore,
-} from '../../styles'
-import { PHOTO_URL } from '../../../../../api/variables'
-import { FC } from 'react'
-import { IID, ISetState } from 'src/types/common'
+} from '../../styles';
+import { PHOTO_URL } from '../../../../../api/variables';
+import { FC } from 'react';
+import { IID, ISetState } from 'src/types/common';
+import { IFeed } from '@/types/feed';
+import DOMPurify from 'dompurify';
 
 export interface AdviceItemProps {
-  item: any
-  adviceClicked: string | null
-  setCategoryClicked: (id: IID) => void
-  setAdviceClicked: ISetState<string | null>
+  item: IFeed;
+  adviceClicked: string | null;
+  setCategoryClicked: (id: IID) => void;
+  setAdviceClicked: ISetState<string | null>;
 }
 
 const AdviceItem: FC<AdviceItemProps> = ({
@@ -39,15 +41,14 @@ const AdviceItem: FC<AdviceItemProps> = ({
   // };
 
   const clickHandler = () => {
-    if (adviceClicked && adviceClicked.length > 0) return
-    setCategoryClicked(item.attributes.feed_category.data[0].id)
-    setAdviceClicked(item.id)
-    window.scrollTo({ top: 0 })
-  }
+    if (adviceClicked && adviceClicked.length > 0) return;
+    const id = item.feed_category[0]?.id;
+    id && setCategoryClicked(id);
+    setAdviceClicked(item.id);
+    window.scrollTo({ top: 0 });
+  };
 
-  const photoUrl = item?.attributes?.cover?.data?.attributes?.url
-    ? `${PHOTO_URL}${item.attributes.cover.data.attributes.url}`
-    : ''
+  const photoUrl = item?.cover?.url ? `${PHOTO_URL}${item.cover.url}` : '';
 
   return (
     <AdvItem
@@ -57,24 +58,24 @@ const AdviceItem: FC<AdviceItemProps> = ({
       <AdvImage photoUrl={photoUrl} />
       {/* <Favorite isFavorite={isFavorite} onClick={(e) => addFavorite(e, item)} /> */}
       <MobileHidden>
-        <AdvTitle>{item.attributes.title}</AdvTitle>
+        <AdvTitle>{item.title}</AdvTitle>
       </MobileHidden>
       <MobileVisible>
-        <AdvTitle>{item.attributes.title}</AdvTitle>
+        <AdvTitle>{item.title}</AdvTitle>
       </MobileVisible>
-      {!!adviceClicked ? (
+      {adviceClicked ? (
         <AdvDescription
           dangerouslySetInnerHTML={{
-            __html: item.attributes.content,
+            __html: DOMPurify.sanitize(item.content),
           }}
         />
       ) : (
         <AdvShortDescription>
-          {item.attributes.shortDescription} <ReadMore>Далее</ReadMore>
+          {item.shortDescription} <ReadMore>Далее</ReadMore>
         </AdvShortDescription>
       )}
     </AdvItem>
-  )
-}
+  );
+};
 
-export default AdviceItem
+export default AdviceItem;

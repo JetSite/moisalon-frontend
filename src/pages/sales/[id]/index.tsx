@@ -1,19 +1,16 @@
-import { addApolloState, initializeApollo } from '../../../api/apollo-client'
-import { getFeedCategories } from 'src/api/graphql/feed/queries/getFeedCategories'
-import { getFeeds } from 'src/api/graphql/feed/queries/getFeeds'
-import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
-import { ISale } from 'src/types/sale'
-import { FC } from 'react'
-import SalePage from 'src/components/pages/SalePage'
-import { PROMOTION_BY_ID } from 'src/api/graphql/promotion/queries/getPromotionById'
+import { addApolloState, initializeApollo } from '../../../api/apollo-client';
+import { getFeedCategories } from 'src/api/graphql/feed/queries/getFeedCategories';
+import { getFeeds } from 'src/api/graphql/feed/queries/getFeeds';
+import { ISale } from 'src/types/sale';
+import { FC } from 'react';
+import SalePage, { SalePageProps } from 'src/components/pages/SalePage';
+import { PROMOTION_BY_ID } from 'src/api/graphql/promotion/queries/getPromotionById';
+import { IBeautyCategories, IFeed } from '@/types/feed';
+import { GetServerSideProps } from 'next';
+import { Nullable } from '@/types/common';
+import { getPrepareData } from '@/utils/newUtils/getPrepareData';
 
-interface SaleDetailedProps {
-  sale: ISale
-  beautyCategories: any
-  beautyAllContent: any
-}
-
-const SaleDetailed: FC<SaleDetailedProps> = ({
+const SaleDetailed: FC<SalePageProps> = ({
   sale,
   beautyCategories,
   beautyAllContent,
@@ -24,32 +21,52 @@ const SaleDetailed: FC<SaleDetailedProps> = ({
       beautyCategories={beautyCategories}
       beautyAllContent={beautyAllContent}
     />
-  )
-}
+  );
+};
 
-export async function getServerSideProps({ params }: any) {
-  const apolloClient = initializeApollo()
+export const getServerSideProps: GetServerSideProps<
+  Nullable<SalePageProps>
+> = async ctx => {
+  const apolloClient = initializeApollo();
 
-  const saleRes = await apolloClient.query({
-    query: PROMOTION_BY_ID,
-    variables: { id: params.id },
-  })
-  const categories = await apolloClient.query({
-    query: getFeedCategories,
-  })
-  const all = await apolloClient.query({
-    query: getFeeds,
-  })
+  const id = ctx.params?.['id'];
+  if (!id)
+    return {
+      notFound: true,
+    };
 
-  const normalisedSale = flattenStrapiResponse(saleRes?.data?.promotion)
+  const data = await Promise.allSettled([
+    apolloClient.query({
+      query: PROMOTION_BY_ID,
+      variables: { id },
+    }),
+    apolloClient.query({
+      query: getFeedCategories,
+    }),
+    apolloClient.query({
+      query: getFeeds,
+    }),
+  ]);
+
+  const sale = getPrepareData<ISale>(data[0], 'promotion');
+
+  if (!sale)
+    return {
+      notFound: true,
+    };
+  const beautyCategories = getPrepareData<IBeautyCategories[]>(
+    data[1],
+    'feedCategories',
+  );
+  const beautyAllContent = getPrepareData<IFeed[]>(data[2], 'feeds');
 
   return addApolloState(apolloClient, {
     props: {
-      sale: normalisedSale,
-      beautyCategories: categories?.data?.feedCategories,
-      beautyAllContent: all?.data?.feeds,
+      sale,
+      beautyCategories,
+      beautyAllContent,
     },
-  })
-}
+  });
+};
 
-export default SaleDetailed
+export default SaleDetailed;
