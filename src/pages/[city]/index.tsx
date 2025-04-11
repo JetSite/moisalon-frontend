@@ -15,6 +15,7 @@ import { Nullable } from 'src/types/common';
 import { FC } from 'react';
 import { getPrepareData } from 'src/utils/newUtils/getPrepareData';
 import { IBannerHook } from 'src/types/banners';
+import { IBeautyCategories, IFeed } from '@/types/feed';
 
 type Props = IMainPageProps;
 
@@ -77,8 +78,11 @@ export const getServerSideProps: GetServerSideProps<
     };
   }
 
-  const beautyCategories = getPrepareData(data[0], 'feedCategories');
-  const beautyAllContent = getPrepareData(data[1], 'feeds');
+  const beautyCategories = getPrepareData<IBeautyCategories[]>(
+    data[0],
+    'feedCategories',
+  );
+  const beautyAllContent = getPrepareData<IFeed[]>(data[1], 'feeds');
   const bannerHooks = getPrepareData<IBannerHook[]>(data[2], 'bannerHooks');
 
   return addApolloState(apolloClient, {

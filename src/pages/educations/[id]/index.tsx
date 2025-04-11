@@ -52,6 +52,11 @@ export const getServerSideProps: GetServerSideProps<
   ]);
 
   const education = getPrepareData<IEducation>(data[0], 'education');
+  if (!education) {
+    return {
+      notFound: true,
+    };
+  }
   const beautyCategories = getPrepareData<IBeautyCategories[]>(
     data[1],
     'feedCategories',

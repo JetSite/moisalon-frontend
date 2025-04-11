@@ -42,7 +42,8 @@ const AdviceItem: FC<AdviceItemProps> = ({
 
   const clickHandler = () => {
     if (adviceClicked && adviceClicked.length > 0) return;
-    setCategoryClicked(item.feed_category[0].id);
+    const id = item.feed_category[0]?.id;
+    id && setCategoryClicked(id);
     setAdviceClicked(item.id);
     window.scrollTo({ top: 0 });
   };

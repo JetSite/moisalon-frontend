@@ -49,6 +49,11 @@ export const getServerSideProps: GetServerSideProps<
   ]);
 
   const event = getPrepareData<IEvent>(data[0], 'event');
+  if (!event) {
+    return {
+      notFound: true,
+    };
+  }
   const beautyCategories = getPrepareData<IBeautyCategories[]>(
     data[1],
     'feedCategories',
