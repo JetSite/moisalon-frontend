@@ -29,10 +29,16 @@ export const getServerSideProps: GetServerSideProps<
 > = async ctx => {
   const apolloClient = initializeApollo();
 
+  const id = ctx.params?.['id'];
+  if (!id)
+    return {
+      notFound: true,
+    };
+
   const data = await Promise.allSettled([
     apolloClient.query({
       query: PROMOTION_BY_ID,
-      variables: { id: ctx.params?.['id'] },
+      variables: { id },
     }),
     apolloClient.query({
       query: getFeedCategories,
@@ -43,6 +49,11 @@ export const getServerSideProps: GetServerSideProps<
   ]);
 
   const sale = getPrepareData<ISale>(data[0], 'promotion');
+
+  if (!sale)
+    return {
+      notFound: true,
+    };
   const beautyCategories = getPrepareData<IBeautyCategories[]>(
     data[1],
     'feedCategories',

@@ -29,10 +29,16 @@ export const getServerSideProps: GetServerSideProps<
 > = async ctx => {
   const apolloClient = initializeApollo();
 
+  const id = ctx.params?.['id'];
+  if (!id)
+    return {
+      notFound: true,
+    };
+
   const data = await Promise.allSettled([
     apolloClient.query({
       query: getEventById,
-      variables: { id: ctx.params?.['id'] },
+      variables: { id },
     }),
     apolloClient.query({
       query: getFeedCategories,

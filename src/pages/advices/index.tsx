@@ -64,9 +64,9 @@ export const getServerSideProps: GetServerSideProps<
       categories,
       allAdvices,
       totalCount: {
-        brands: getTotalCount(countsData[0].data.brands),
+        brands: getTotalCount(countsData[2].data.brands),
         masters: getTotalCount(countsData[1].data.masters),
-        salons: getTotalCount(countsData[2].data.salons),
+        salons: getTotalCount(countsData[0].data.salons),
       },
     },
   });

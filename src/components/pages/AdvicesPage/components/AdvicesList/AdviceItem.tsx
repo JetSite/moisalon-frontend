@@ -11,6 +11,7 @@ import { PHOTO_URL } from '../../../../../api/variables';
 import { FC } from 'react';
 import { IID, ISetState } from 'src/types/common';
 import { IFeed } from '@/types/feed';
+import DOMPurify from 'dompurify';
 
 export interface AdviceItemProps {
   item: IFeed;
@@ -64,7 +65,7 @@ const AdviceItem: FC<AdviceItemProps> = ({
       {adviceClicked ? (
         <AdvDescription
           dangerouslySetInnerHTML={{
-            __html: item.content,
+            __html: DOMPurify.sanitize(item.content),
           }}
         />
       ) : (
