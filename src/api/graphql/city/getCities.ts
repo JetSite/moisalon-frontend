@@ -1,15 +1,16 @@
-import { gql } from '@apollo/client'
+import { gql } from '@apollo/client';
 
 export const getCities = gql`
   query cities($slug: [String], $itemsCount: Int) {
     cities(
-      sort: "name:asc"
+      sort: ["order:desc", "name:asc"]
       filters: { slug: { in: $slug } }
       pagination: { page: 1, pageSize: $itemsCount }
     ) {
       data {
         id
         attributes {
+          order
           name
           slug
           latitude
@@ -18,4 +19,4 @@ export const getCities = gql`
       }
     }
   }
-`
+`;
