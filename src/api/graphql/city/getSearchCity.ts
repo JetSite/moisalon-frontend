@@ -1,8 +1,8 @@
-import { gql } from '@apollo/client'
+import { gql } from '@apollo/client';
 
 export const getSearchCity = gql`
   query cities($name: String) {
-    cities(filters: { name: { containsi: $name } }) {
+    cities(sort: "order:desc", filters: { name: { containsi: $name } }) {
       data {
         id
         attributes {
@@ -12,4 +12,4 @@ export const getSearchCity = gql`
       }
     }
   }
-`
+`;
