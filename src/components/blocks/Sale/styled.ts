@@ -1,5 +1,6 @@
-import styled, { css } from 'styled-components'
-import { laptopBreakpoint } from '../../../styles/variables'
+import styled, { css } from 'styled-components';
+import { laptopBreakpoint } from '../../../styles/variables';
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
 
 export const SaleWrap = styled.li<{ type: string | undefined }>`
   max-width: 375px;
@@ -19,11 +20,11 @@ export const SaleWrap = styled.li<{ type: string | undefined }>`
   @media (max-width: ${laptopBreakpoint}) {
     width: 280px;
   }
-`
+`;
 
 export const SaleTop = styled.div<{
-  imageHover?: boolean
-  isDeleted?: boolean
+  imageHover?: boolean;
+  isDeleted?: boolean;
 }>`
   width: 100%;
   height: 163px;
@@ -60,12 +61,12 @@ export const SaleTop = styled.div<{
   @media (max-width: ${laptopBreakpoint}) {
     height: 50%;
   }
-`
-export const Image = styled.img`
+`;
+export const Image = styled(LazyImage)`
   width: 100%;
   height: 100%;
   object-fit: cover;
-`
+`;
 
 export const DeleteIcon = styled.button<{ visible?: boolean }>`
   position: absolute;
@@ -76,7 +77,7 @@ export const DeleteIcon = styled.button<{ visible?: boolean }>`
   right: 10px;
   content: '';
   display: ${({ visible }) => (visible ? 'block' : 'none')};
-`
+`;
 
 export const SaleContent = styled.div`
   padding: 30px 25px;
@@ -91,7 +92,7 @@ export const SaleContent = styled.div`
     padding: 15px 20px;
     padding-top: 8px;
   }
-`
+`;
 
 export const SaleTitle = styled.p`
   font-weight: 600;
@@ -103,7 +104,7 @@ export const SaleTitle = styled.p`
     font-size: 14px;
     line-height: initial;
   }
-`
+`;
 
 export const SaleBottom = styled.div`
   margin-top: 20px;
@@ -114,9 +115,9 @@ export const SaleBottom = styled.div`
     font-size: 12px;
     line-height: 14px;
   }
-`
+`;
 
-export const SaleData = styled.p``
+export const SaleData = styled.p``;
 
 export const Date = styled.p`
   font-weight: 500;
@@ -126,11 +127,11 @@ export const Date = styled.p`
     font-size: 12px;
     line-height: 14px;
   }
-`
+`;
 
 export const Promo = styled.div`
   margin-left: auto;
-`
+`;
 
 export const PromoText = styled.p`
   font-weight: 500;
@@ -140,4 +141,4 @@ export const PromoText = styled.p`
     font-size: 12px;
     line-height: 14px;
   }
-`
+`;

@@ -1,13 +1,14 @@
-import styled from 'styled-components'
-import { laptopBreakpoint } from '../../../../../../../styles/variables'
+import styled from 'styled-components';
+import { laptopBreakpoint } from '../../../../../../../styles/variables';
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
 
 export const BrandsContent = styled.div`
   margin-top: 40px;
-`
+`;
 
 export const OwnBrandsContent = styled.div`
   margin-top: 40px;
-`
+`;
 
 export const Title = styled.h3`
   margin-bottom: 40px;
@@ -18,11 +19,11 @@ export const Title = styled.h3`
     margin-bottom: 30px;
     min-width: 100%;
   }
-`
+`;
 
 export const MainTitle = styled(Title)`
   font-size: 22px;
-`
+`;
 
 export const ListWrapper = styled.div<{ heightLarge?: boolean }>`
   display: flex;
@@ -36,7 +37,7 @@ export const ListWrapper = styled.div<{ heightLarge?: boolean }>`
     margin-bottom: 30px;
     min-width: 100%;
   }
-`
+`;
 
 export const ItemWrapper = styled.div<{ published: boolean }>`
   position: relative;
@@ -59,18 +60,19 @@ export const ItemWrapper = styled.div<{ published: boolean }>`
     margin-left: 0;
     padding: 0 12px;
   }
-`
+`;
 
-export const Logo = styled.img`
+export const Logo = styled(LazyImage)`
+  height: auto;
   width: 100%;
-`
+`;
 
 export const TextNoBrands = styled.p`
   margin-bottom: 40px;
   font-size: 16px;
   font-weight: 400;
   line-height: 30px;
-`
+`;
 
 export const RemoveButton = styled.button<{ published: boolean }>`
   display: ${({ published }) => (published ? 'block' : 'none')};
@@ -81,4 +83,4 @@ export const RemoveButton = styled.button<{ published: boolean }>`
   top: 0;
   right: 0;
   background: url('/close-cross-red.svg') no-repeat center;
-`
+`;

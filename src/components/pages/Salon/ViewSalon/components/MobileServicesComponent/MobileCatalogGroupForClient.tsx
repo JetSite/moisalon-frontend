@@ -1,14 +1,15 @@
-import { FC, useState } from 'react'
-import styled from 'styled-components'
-import { laptopBreakpoint } from '../../../../../../styles/variables'
-import MobileCatalogSubGroup from './MobileCatalogSubGroup'
-import { IGroupedCategories } from 'src/utils/getGrupedServices'
+import { FC, useState } from 'react';
+import styled from 'styled-components';
+import { laptopBreakpoint } from '../../../../../../styles/variables';
+import MobileCatalogSubGroup from './MobileCatalogSubGroup';
+import { IGroupedCategories } from 'src/utils/getGrupedServices';
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
 
 const Wrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`
+`;
 
 const Title = styled.h4`
   @media (max-width: ${laptopBreakpoint}) {
@@ -17,19 +18,19 @@ const Title = styled.h4`
     line-height: 20px;
     text-transform: uppercase;
   }
-`
+`;
 
 const Item = styled.div`
   font-size: 18px;
   margin-bottom: 5px;
-`
+`;
 
 const TitleWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
-`
+`;
 
 const TickIcon = styled.div<{ open: boolean }>`
   display: flex;
@@ -39,50 +40,51 @@ const TickIcon = styled.div<{ open: boolean }>`
   height: 11px;
   transform: ${({ open }) => (open ? 'rotate(90deg) translateX(-2px)' : '')};
   transition: all 0.2s;
-`
+`;
 
-const Icon = styled.img`
+const Icon = styled(LazyImage)`
+  height: auto;
   width: 100%;
-`
+`;
 
 const ItemWrapper = styled.div<{ open: boolean }>`
   display: ${({ open }) => (open ? 'block' : 'none')};
   margin-bottom: ${({ open }) => (open ? '40px' : '0')};
-`
+`;
 
 const ucFirst = (str?: string) => {
-  if (!str) return str
+  if (!str) return str;
 
-  return str[0].toUpperCase() + str.slice(1)
-}
+  return str[0].toUpperCase() + str.slice(1);
+};
 
 interface Props {
-  group: IGroupedCategories
-  withPrice?: boolean
+  group: IGroupedCategories;
+  withPrice?: boolean;
 }
 
 export const MobileCatalogGroupForClient: FC<Props> = ({
   group,
   withPrice,
 }) => {
-  const [openGroup, setOpenGroup] = useState(false)
+  const [openGroup, setOpenGroup] = useState(false);
 
   if (!group.services) {
-    return null
+    return null;
   }
 
   const openGroupHandler = () => {
-    setOpenGroup(!openGroup)
-  }
+    setOpenGroup(!openGroup);
+  };
 
   const subGroups = group?.services
     ?.map((subGroup, key) => {
-      return <MobileCatalogSubGroup key={key} subGroup={subGroup} />
+      return <MobileCatalogSubGroup key={key} subGroup={subGroup} />;
     })
-    .filter(element => element !== null)
+    .filter(element => element !== null);
 
   if (subGroups?.length === 0) {
-    return null
+    return null;
   }
 
   return (
@@ -97,5 +99,5 @@ export const MobileCatalogGroupForClient: FC<Props> = ({
         <Item>{subGroups}</Item>
       </ItemWrapper>
     </Wrapper>
-  )
-}
+  );
+};

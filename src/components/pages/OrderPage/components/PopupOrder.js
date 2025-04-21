@@ -1,10 +1,11 @@
-import Link from 'next/link'
-import { Dialog } from '@material-ui/core'
-import Button from '../../../ui/Button'
-import styled from 'styled-components'
-import { useMedia } from 'use-media'
-import Steps from './Steps'
-import { laptopBreakpoint, red } from '../../../../styles/variables'
+import Link from 'next/link';
+import { Dialog } from '@material-ui/core';
+import Button from '../../../ui/Button';
+import styled from 'styled-components';
+import { useMedia } from 'use-media';
+import Steps from './Steps';
+import { laptopBreakpoint, red } from '../../../../styles/variables';
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
 
 const Content = styled.div`
   display: flex;
@@ -12,14 +13,14 @@ const Content = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     display: block;
   }
-`
+`;
 
 const Wrapper = styled.div`
   padding: 120px 100px;
   @media (max-width: ${laptopBreakpoint}) {
     padding: 50px 20px;
   }
-`
+`;
 
 const Left = styled.div`
   width: 215px;
@@ -45,7 +46,7 @@ const Left = styled.div`
       z-index: 1;
     }
   }
-`
+`;
 
 const Right = styled.div`
   max-width: 400px;
@@ -53,7 +54,7 @@ const Right = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     max-width: 100%;
   }
-`
+`;
 
 const Title = styled.p`
   font-weight: 600;
@@ -64,7 +65,7 @@ const Title = styled.p`
     font-size: 20px;
     text-align: center;
   }
-`
+`;
 
 const Text = styled.p`
   font-weight: 400;
@@ -75,7 +76,7 @@ const Text = styled.p`
     font-size: 16px;
     line-height: 25px;
   }
-`
+`;
 
 const TextLink = styled.span`
   font-weight: 700;
@@ -91,7 +92,7 @@ const TextLink = styled.span`
     font-size: 16px;
     line-height: 25px;
   }
-`
+`;
 
 const ButtonWrap = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
@@ -99,10 +100,10 @@ const ButtonWrap = styled.div`
       width: 100%;
     }
   }
-`
+`;
 
 const PopupOrder = ({ handleCloseSuccess, open }) => {
-  const mobileMedia = useMedia({ maxWidth: 768 })
+  const mobileMedia = useMedia({ maxWidth: 768 });
   return (
     <Dialog
       maxWidth="md"
@@ -110,7 +111,7 @@ const PopupOrder = ({ handleCloseSuccess, open }) => {
       fullScreen={mobileMedia ? true : false}
       open={open}
       onClose={() => {
-        handleCloseSuccess()
+        handleCloseSuccess();
       }}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
@@ -120,7 +121,7 @@ const PopupOrder = ({ handleCloseSuccess, open }) => {
           {mobileMedia ? <Title>СПАСИБО!</Title> : null}
           {mobileMedia ? <Steps active={3} /> : null}
           <Left>
-            <img src="/successPopup.svg" alt="image"></img>
+            <LazyImage src="/successPopup.svg" alt="image"></LazyImage>
           </Left>
           <Right>
             {!mobileMedia ? <Title>Спасибо!</Title> : null}
@@ -139,7 +140,7 @@ const PopupOrder = ({ handleCloseSuccess, open }) => {
             <ButtonWrap>
               <Button
                 onClick={() => {
-                  handleCloseSuccess()
+                  handleCloseSuccess();
                 }}
                 variant="red"
               >
@@ -150,7 +151,7 @@ const PopupOrder = ({ handleCloseSuccess, open }) => {
         </Content>
       </Wrapper>
     </Dialog>
-  )
-}
+  );
+};
 
-export default PopupOrder
+export default PopupOrder;

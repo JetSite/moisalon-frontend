@@ -1,23 +1,24 @@
-import { Avatar } from '@material-ui/core'
-import styled from 'styled-components'
-import { laptopBreakpoint, tabletBreakpoint } from '../../../styles/variables'
-import { SlideType } from '.'
+import { Avatar } from '@material-ui/core';
+import styled from 'styled-components';
+import { laptopBreakpoint, tabletBreakpoint } from '../../../styles/variables';
+import { SlideType } from '.';
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
 
 export const Wrapper = styled.div<{
-  load: boolean
-  bgColor: string
-  type: SlideType
+  load: boolean;
+  bgColor: string;
+  type: SlideType;
 }>`
   background: ${({ load, bgColor }) => (load ? 'transparent' : bgColor)};
   @media (max-width: ${laptopBreakpoint}) {
     background-color: ${({ type, bgColor }) =>
       type === 'ribbon' ? '#000' : bgColor};
   }
-`
+`;
 
 export const SliderWrapper = styled.div`
   display: flex;
-`
+`;
 
 export const City = styled.p`
   font-weight: 700;
@@ -29,7 +30,7 @@ export const City = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     margin-top: 10px;
   }
-`
+`;
 
 export const Top = styled.div`
   display: flex;
@@ -41,12 +42,12 @@ export const Top = styled.div`
     padding-top: 23px;
     text-align: center;
   }
-`
+`;
 
 export const Title = styled.div<{
-  empty: boolean
-  bgColor: string
-  mobileTitleWidth: boolean
+  empty: boolean;
+  bgColor: string;
+  mobileTitleWidth: boolean;
 }>`
   margin-bottom: ${({ empty }) => (empty ? 0 : '55px')};
   color: ${({ bgColor }) => (bgColor === '#000' ? '#fff' : '#000')};
@@ -64,14 +65,14 @@ export const Title = styled.div<{
     text-align: center;
     text-transform: uppercase;
   }
-`
+`;
 
 export const Content = styled.div<{
-  noPadding: boolean
-  bgWithIcons: boolean
-  pt: number
-  pb: number
-  noAllPadding: boolean
+  noPadding: boolean;
+  bgWithIcons: boolean;
+  pt: number;
+  pb: number;
+  noAllPadding: boolean;
 }>`
   padding: ${({ noAllPadding }) => (noAllPadding ? 0 : '0 140px')};
   padding-top: ${({ pt }) => pt + 'px'};
@@ -84,7 +85,7 @@ export const Content = styled.div<{
     padding: 0;
     padding-left: ${({ noPadding }) => (noPadding ? '' : '15px')};
   }
-`
+`;
 
 export const Favorite = styled.div<{ isFavorite: string }>`
   position: absolute;
@@ -97,7 +98,7 @@ export const Favorite = styled.div<{ isFavorite: string }>`
   cursor: pointer;
   right: 2px;
   top: 2px;
-`
+`;
 
 export const SwiperWrap = styled.div<{ pl: number }>`
   width: 100%;
@@ -110,7 +111,7 @@ export const SwiperWrap = styled.div<{ pl: number }>`
       padding-left: ${({ pl }) => pl + 'px'};
     }
   }
-`
+`;
 
 export const Item = styled.div`
   width: 220px;
@@ -132,7 +133,7 @@ export const Item = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`
+`;
 
 export const Image = styled(Avatar)`
   width: 140px;
@@ -143,7 +144,7 @@ export const Image = styled(Avatar)`
     width: 100px;
     height: 100px;
   }
-`
+`;
 
 export const BottomGoodWrapper = styled.div`
   padding: 12px 10px;
@@ -156,7 +157,7 @@ export const BottomGoodWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-`
+`;
 
 export const Name = styled.p`
   font-weight: 600;
@@ -172,7 +173,7 @@ export const Name = styled.p`
     font-weight: 400;
     line-height: 18px;
   }
-`
+`;
 
 export const Specializations = styled.p`
   color: #727272;
@@ -180,7 +181,7 @@ export const Specializations = styled.p`
   margin-bottom: 20px;
   font-size: 14px;
   line-height: 18px;
-`
+`;
 
 export const MasterInfo = styled.div`
   display: flex;
@@ -191,13 +192,13 @@ export const MasterInfo = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     align-items: center;
   }
-`
+`;
 
 export const ShowAllWrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     /* display: none; */
   }
-`
+`;
 
 export const ShowAll = styled.div<{ bgColor: string }>`
   display: none;
@@ -218,7 +219,7 @@ export const ShowAll = styled.div<{ bgColor: string }>`
     line-height: 16px;
     cursor: pointer;
   }
-`
+`;
 
 export const BottomMobile = styled.div`
   display: none;
@@ -233,7 +234,7 @@ export const BottomMobile = styled.div`
       background-color: #f2f0f0;
     }
   }
-`
+`;
 
 export const MasterShareWrap = styled.div`
   padding: 10px;
@@ -243,7 +244,7 @@ export const MasterShareWrap = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     top: 105px;
   }
-`
+`;
 
 export const ButtonWrap = styled.div`
   margin: 0 auto;
@@ -260,17 +261,17 @@ export const ButtonWrap = styled.div`
       padding: 0;
     }
   }
-`
+`;
 
 export const ButtonWrapBrandLanding = styled.div`
   max-width: 335px;
   margin-top: 68px;
-`
+`;
 
 export const SeeAllMain = styled.div`
   height: calc(100% - 10px);
   margin-right: 6px;
-`
+`;
 export const SeeAllGoods = styled.div`
   width: 175px;
   height: 175px;
@@ -300,7 +301,7 @@ export const SeeAllGoods = styled.div`
     width: 115px;
     height: 115px;
   }
-`
+`;
 export const SeeAllBody = styled.div`
   display: flex;
   justify-content: center;
@@ -311,7 +312,7 @@ export const SeeAllBody = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`
+`;
 
 export const SeeAllText = styled.p`
   color: #000;
@@ -327,12 +328,12 @@ export const SeeAllText = styled.p`
     font-weight: 600;
     line-height: 16px;
   }
-`
+`;
 
 export const SeeAllBodyText = styled.div`
   font-size: 14px;
   line-height: 27px;
-`
+`;
 
 export const TickIconWrap = styled.div`
   display: flex;
@@ -340,7 +341,7 @@ export const TickIconWrap = styled.div`
   width: 8px;
   height: 8px;
   margin-left: 5px;
-`
+`;
 
 export const Text = styled.p`
   font-size: 14px;
@@ -348,7 +349,7 @@ export const Text = styled.p`
   line-height: 20px;
   color: #fff;
   margin-left: 10px;
-`
+`;
 
 export const ChangeCity = styled.div`
   display: none;
@@ -359,13 +360,14 @@ export const ChangeCity = styled.div`
     justify-content: center;
     margin-bottom: 15px;
   }
-`
+`;
 
-export const TickIcon = styled.img`
+export const TickIcon = styled(LazyImage)`
+  height: auto;
   width: 100%;
-`
+`;
 
 export const TitleIconWrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
   }
-`
+`;

@@ -1,7 +1,8 @@
-import styled from 'styled-components'
-import { laptopBreakpoint, red } from '../../../../../styles/variables'
-import { IconStiled, TrashIcon } from 'src/components/ui/Icons/Trash'
-import Link from 'next/link'
+import styled from 'styled-components';
+import { laptopBreakpoint, red } from '../../../../../styles/variables';
+import { IconStiled, TrashIcon } from 'src/components/ui/Icons/Trash';
+import Link from 'next/link';
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
 
 export const Wrapper = styled.section`
   max-width: 710px;
@@ -12,7 +13,7 @@ export const Wrapper = styled.section`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`
+`;
 
 export const MobileWrapper = styled.div`
   display: none;
@@ -20,7 +21,7 @@ export const MobileWrapper = styled.div`
     display: block;
     width: 100%;
   }
-`
+`;
 
 export const Item = styled(Link)`
   display: block;
@@ -45,19 +46,19 @@ export const Item = styled(Link)`
     padding: 25px;
     padding-left: 11px;
   }
-`
+`;
 
 export const Container = styled.div`
   display: flex;
   align-items: center;
-`
+`;
 
 export const Content = styled.div`
   margin-left: 41px;
   @media (max-width: ${laptopBreakpoint}) {
     margin-left: 11px;
   }
-`
+`;
 
 export const Name = styled.p`
   font-weight: 600;
@@ -67,7 +68,7 @@ export const Name = styled.p`
     font-size: 16px;
     margin-bottom: 3px;
   }
-`
+`;
 
 export const Type = styled.p`
   font-size: 18px;
@@ -76,14 +77,14 @@ export const Type = styled.p`
     font-size: 11px;
     line-height: 17px;
   }
-`
+`;
 
-export const Avatar = styled.img`
+export const Avatar = styled(LazyImage)`
   width: 56px;
   height: 56px;
   border-radius: 100%;
   object-fit: cover;
-`
+`;
 
 export const Title = styled.p`
   font-weight: 500;
@@ -96,7 +97,7 @@ export const Title = styled.p`
     margin-bottom: 23px;
     text-transform: none;
   }
-`
+`;
 
 export const SubTitle = styled.p`
   font-weight: 600;
@@ -106,7 +107,7 @@ export const SubTitle = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`
+`;
 
 export const DeleteButton = styled.button`
   cursor: pointer;
@@ -115,7 +116,7 @@ export const DeleteButton = styled.button`
   padding: 0;
   border: none;
   margin: 0;
-`
+`;
 
 export const TrashIconStyled = styled(TrashIcon)`
   opacity: 0.5;
@@ -123,7 +124,7 @@ export const TrashIconStyled = styled(TrashIcon)`
     opacity: 0.7;
     fill: ${red};
   }
-`
+`;
 
 export const ButtonStyled = styled.button`
   border: none;
@@ -180,4 +181,4 @@ export const ButtonStyled = styled.button`
       left: 31px;
     }
   }
-`
+`;

@@ -1,5 +1,6 @@
-import styled from 'styled-components'
-import { laptopBreakpoint } from '../../../../styles/variables'
+import styled from 'styled-components';
+import { laptopBreakpoint } from '../../../../styles/variables';
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
 
 export const Wrapper = styled.div<{ cabinet: boolean }>`
   margin-top: ${props => (props.cabinet ? '0' : '60px')};
@@ -10,13 +11,13 @@ export const Wrapper = styled.div<{ cabinet: boolean }>`
     margin-top: ${props => (props.cabinet ? '0' : '30px')};
     padding: ${props => (props.cabinet ? '0' : '0 20px')};
   }
-`
+`;
 
 export const Top = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-`
+`;
 
 export const ItemToggle = styled.div<{ disabled: boolean; toggle: boolean }>`
   width: 100%;
@@ -41,7 +42,7 @@ export const ItemToggle = styled.div<{ disabled: boolean; toggle: boolean }>`
     transform: ${props =>
       props.toggle ? 'rotate(90deg) translateX(-50%)' : 'translateY(-50%)'};
   }
-`
+`;
 
 export const Title = styled.p<{ cabinet: boolean }>`
   font-size: 30px;
@@ -53,15 +54,15 @@ export const Title = styled.p<{ cabinet: boolean }>`
     margin-bottom: 20px;
     font-size: 24px;
   }
-`
+`;
 
 export const SliderWrapper = styled.div`
   display: flex;
-`
+`;
 
 export const SwiperWrap = styled.div`
   width: 100%;
-`
+`;
 
 export const WrapperItem = styled.div<{ cabinet: boolean }>`
   height: ${props => (props.cabinet ? '100%' : '85%')};
@@ -75,7 +76,7 @@ export const WrapperItem = styled.div<{ cabinet: boolean }>`
     width: 100%;
     height: 370px;
   }
-`
+`;
 
 export const TopGoodWrapper = styled.div`
   height: 175px;
@@ -88,13 +89,13 @@ export const TopGoodWrapper = styled.div`
     width: 161px;
     margin: 0 auto;
   }
-`
+`;
 
-export const Image = styled.img`
+export const Image = styled(LazyImage)`
   height: 90%;
   object-fit: contain;
   width: 90%;
-`
+`;
 
 export const Favorite = styled.div`
   position: absolute;
@@ -104,7 +105,7 @@ export const Favorite = styled.div`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`
+`;
 
 export const BottomGoodWrapper = styled.div`
   padding: 22px 10px;
@@ -117,7 +118,7 @@ export const BottomGoodWrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
   flex-grow: 1;
-`
+`;
 
 export const Name = styled.p`
   font-size: 14px;
@@ -125,13 +126,13 @@ export const Name = styled.p`
   font-weight: 500;
   text-align: center;
   color: #000;
-`
+`;
 
 export const Price = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 10px;
-`
+`;
 
 export const Wrap = styled.div`
   display: flex;
@@ -139,7 +140,7 @@ export const Wrap = styled.div`
   justify-content: space-between;
   flex-grow: 1;
   margin-bottom: 25px;
-`
+`;
 
 export const OldPrice = styled.p`
   color: #a1a1a1;
@@ -158,7 +159,7 @@ export const OldPrice = styled.p`
     top: calc(50% - 2px);
     left: 0;
   }
-`
+`;
 
 export const NewPrice = styled.p`
   font-size: 14px;
@@ -166,9 +167,9 @@ export const NewPrice = styled.p`
   color: #ff0033;
   font-weight: 600;
   position: relative;
-`
+`;
 
 export const Empty = styled.div`
   font-size: 18px;
   line-height: 30px;
-`
+`;

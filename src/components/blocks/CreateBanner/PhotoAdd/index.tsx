@@ -1,15 +1,16 @@
-import { FC, useCallback } from 'react'
-import { useDropzone } from 'react-dropzone'
-import styled from 'styled-components'
-import { laptopBreakpoint } from '../../../../styles/variables'
-import uploadPhoto from '../../../../utils/uploadPhoto'
-import { PHOTO_URL, UPLOAD_PHOTO_OPTIONS } from '../../../../api/variables'
-import { IPhoto } from 'src/types'
-import imageCompression from 'browser-image-compression'
-import { useMutation } from '@apollo/client'
-import { UPLOAD } from 'src/api/graphql/common/upload'
-import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
-import { ISetState } from 'src/types/common'
+import { FC, useCallback } from 'react';
+import { useDropzone } from 'react-dropzone';
+import styled from 'styled-components';
+import { laptopBreakpoint } from '../../../../styles/variables';
+import uploadPhoto from '../../../../utils/uploadPhoto';
+import { PHOTO_URL, UPLOAD_PHOTO_OPTIONS } from '../../../../api/variables';
+import { IPhoto } from 'src/types';
+import imageCompression from 'browser-image-compression';
+import { useMutation } from '@apollo/client';
+import { UPLOAD } from 'src/api/graphql/common/upload';
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse';
+import { ISetState } from 'src/types/common';
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
 
 const Photo = styled.div`
   width: 100%;
@@ -28,7 +29,7 @@ const Photo = styled.div`
     width: 100%;
     height: 133px;
   }
-`
+`;
 
 const PhotoBack = styled.div`
   width: 100%;
@@ -39,7 +40,7 @@ const PhotoBack = styled.div`
   top: 0;
   left: 0;
   cursor: pointer;
-`
+`;
 
 const ChangeText = styled.span`
   text-align: center;
@@ -50,55 +51,55 @@ const ChangeText = styled.span`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-`
+`;
 
-const Image = styled.img`
+const Image = styled(LazyImage)`
   width: 100%;
   height: 100%;
   object-fit: cover;
-`
+`;
 
 export interface IPhotoAddProps {
-  hover: boolean
-  photo: IPhoto | null
-  setPhoto: ISetState<IPhoto | null>
+  hover: boolean;
+  photo: IPhoto | null;
+  setPhoto: ISetState<IPhoto | null>;
 }
 
 const PhotoAdd: FC<IPhotoAddProps> = ({ hover, photo, setPhoto }) => {
-  const [uploadImage] = useMutation(UPLOAD)
+  const [uploadImage] = useMutation(UPLOAD);
 
-  const photoType = 'master'
+  const photoType = 'master';
   const onDrop = useCallback(
     (files: File[]) => {
-      const file = files[0]
+      const file = files[0];
       const uploadFile = async () => {
         const compressedFile = await imageCompression(
           file,
           UPLOAD_PHOTO_OPTIONS,
-        )
+        );
         await uploadImage({
           variables: { file: compressedFile },
           onCompleted: data => {
-            const photo = flattenStrapiResponse(data.upload.data) as IPhoto
-            setPhoto(photo)
+            const photo = flattenStrapiResponse(data.upload.data) as IPhoto;
+            setPhoto(photo);
           },
-        })
-      }
-      uploadFile()
+        });
+      };
+      uploadFile();
     },
     [photoType],
-  )
+  );
 
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*',
     onDrop,
-  })
+  });
 
   const onHoverControls = hover ? (
     <PhotoBack>
       <ChangeText>Изменить фотографию</ChangeText>
     </PhotoBack>
-  ) : null
+  ) : null;
   return (
     <>
       <div {...getRootProps()}>
@@ -108,7 +109,7 @@ const PhotoAdd: FC<IPhotoAddProps> = ({ hover, photo, setPhoto }) => {
         {onHoverControls}
       </div>
     </>
-  )
-}
+  );
+};
 
-export default PhotoAdd
+export default PhotoAdd;

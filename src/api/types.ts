@@ -4,19 +4,19 @@ import {
   DefaultContext,
   MutationFunctionOptions,
   OperationVariables,
-} from '@apollo/client'
+} from '@apollo/client';
 
 export type IRefetch = (
   variables?: Partial<OperationVariables> | undefined,
-) => Promise<ApolloQueryResult<any>>
+) => Promise<ApolloQueryResult<unknown>>;
 
 export type IMutations = (
   options?:
     | MutationFunctionOptions<
-        any,
+        unknown,
         OperationVariables,
         DefaultContext,
-        ApolloCache<any>
+        ApolloCache<unknown>
       >
     | undefined,
-) => Promise<any>
+) => Promise<unknown>;

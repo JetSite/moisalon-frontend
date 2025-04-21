@@ -1,8 +1,9 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 import {
   laptopBreakpoint,
   tabletBreakpoint,
-} from '../../../../../styles/variables'
+} from '../../../../../styles/variables';
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
 
 export const Wrapper = styled.div`
   display: flex;
@@ -18,7 +19,7 @@ export const Wrapper = styled.div`
     padding: 20px;
     flex-direction: column-reverse;
   }
-`
+`;
 
 export const LeftBlock = styled.div`
   width: 50.9%;
@@ -26,7 +27,7 @@ export const LeftBlock = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`
+`;
 
 export const Title = styled.h2`
   font-size: 30px;
@@ -43,7 +44,7 @@ export const Title = styled.h2`
     font-size: 26px;
     line-height: 34px;
   }
-`
+`;
 
 export const Text = styled.p`
   margin-top: 55px;
@@ -61,7 +62,7 @@ export const Text = styled.p`
     margin-top: 40px;
     font-size: 16px;
   }
-`
+`;
 
 export const RightBlock = styled.div`
   width: 40.8%;
@@ -69,7 +70,7 @@ export const RightBlock = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`
+`;
 
 export const ImageWrap = styled.div`
   width: 100%;
@@ -78,13 +79,15 @@ export const ImageWrap = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     min-height: 300px;
   }
-`
+`;
 
-export const Image = styled.img`
+export const Image = styled(LazyImage)`
+  height: auto;
+  width: auto;
   @media (max-width: ${tabletBreakpoint}) {
     width: 100%;
   }
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`
+`;

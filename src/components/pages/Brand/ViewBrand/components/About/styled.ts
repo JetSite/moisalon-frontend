@@ -1,5 +1,5 @@
-import styled from 'styled-components'
-import { laptopBreakpoint } from '../../../../../../styles/variables'
+import styled from 'styled-components';
+import { laptopBreakpoint } from '../../../../../../styles/variables';
 
 export const AboutContainer = styled.div`
   padding: 0 140px;
@@ -11,7 +11,7 @@ export const AboutContainer = styled.div`
     margin-top: 30px;
     margin-bottom: 30px;
   }
-`
+`;
 export const ShowMore = styled.span`
   display: block;
   width: fit-content;
@@ -25,7 +25,7 @@ export const ShowMore = styled.span`
   &:hover {
     color: #ff0033;
   }
-`
+`;
 export const FirstContainer = styled.div`
   width: 67%;
   display: flex;
@@ -34,30 +34,25 @@ export const FirstContainer = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`
+`;
 export const SecondContainer = styled.div<{ open?: boolean }>`
   display: ${props => `${props.open ? 'none' : 'block'}`};
-`
+`;
 export const FirstBlock = styled.div`
   margin: 17px;
-`
+`;
 export const FirstBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 50%;
   margin: 17px;
-`
+`;
 export const SecondBox = styled.div`
   padding: 75px 0 0 50px;
   width: 50%;
-`
-export const ImageBox = styled.div`
-  & > img {
-    width: 100%;
-    height: 100%;
-  }
-`
+`;
+
 export const MainDescriptionBox = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
@@ -67,10 +62,10 @@ export const MainDescriptionBox = styled.div`
   font-size: 14px;
   line-height: 25px;
   color: #000000;
-`
+`;
 
-export const SecondOpen = styled.div``
-export const ThirdOpen = styled.div``
+export const SecondOpen = styled.div``;
+export const ThirdOpen = styled.div``;
 export const Text = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
@@ -78,7 +73,7 @@ export const Text = styled.div`
   -webkit-line-clamp: 2; /* number of lines to show */
   line-clamp: 2;
   -webkit-box-orient: vertical;
-`
+`;
 
 export const Title = styled.p`
   font-size: 30px;
@@ -93,4 +88,4 @@ export const Title = styled.p`
     font-weight: 600;
     line-height: 25px;
   }
-`
+`;

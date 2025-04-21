@@ -1,10 +1,11 @@
-import styled from 'styled-components'
-import { formatRentalPricing } from '../../../utils/newUtils/rentalPricing'
-import { laptopBreakpoint } from '../../../styles/variables'
-import { FC } from 'react'
-import { ISalonPage } from 'src/types/salon'
-import { ISalonWorkplace } from 'src/types/workplace'
-import { PHOTO_URL } from 'src/api/variables'
+import styled from 'styled-components';
+import { formatRentalPricing } from '../../../utils/newUtils/rentalPricing';
+import { laptopBreakpoint } from '../../../styles/variables';
+import { FC } from 'react';
+import { ISalonPage } from 'src/types/salon';
+import { ISalonWorkplace } from 'src/types/workplace';
+import { PHOTO_URL } from 'src/api/variables';
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -17,17 +18,17 @@ const Wrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     width: 280px;
   }
-`
+`;
 const Top = styled.div`
   position: relative;
   height: 245px;
-`
+`;
 
-const Image = styled.img`
+const Image = styled(LazyImage)`
   width: 100%;
   height: 100%;
   object-fit: cover;
-`
+`;
 
 const Status = styled.div`
   position: absolute;
@@ -43,47 +44,47 @@ const Status = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`
+`;
 
 const Info = styled.div`
   display: flex;
   margin: 10px 0;
   align-items: center;
   margin-bottom: 9px;
-`
+`;
 
 const Bottom = styled.div`
   padding: 22px;
   padding-bottom: 14px;
   padding-top: 16px;
-`
+`;
 
-const Avatar = styled.img`
+const Avatar = styled(LazyImage)`
   width: 24px;
   height: 24px;
   border-radius: 100%;
-`
+`;
 
 const Name = styled.p`
   font-size: 14px;
   margin-left: 8px;
-`
+`;
 
 const Address = styled.p`
   font-size: 14px;
   padding-bottom: 8px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.28);
-`
+`;
 
 const Price = styled.p`
   font-weight: 600;
   font-size: 18px;
   margin-top: 8px;
-`
+`;
 
 interface Props {
-  item: ISalonWorkplace
-  salon: ISalonPage
+  item: ISalonWorkplace;
+  salon: ISalonPage;
 }
 
 const RentCard: FC<Props> = ({ item, salon }) => {
@@ -104,7 +105,7 @@ const RentCard: FC<Props> = ({ item, salon }) => {
         <Price>{formatRentalPricing(item.rentalPeriod)}</Price>
       </Bottom>
     </Wrapper>
-  )
-}
+  );
+};
 
-export default RentCard
+export default RentCard;

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { red, laptopBreakpoint } from '../../../styles/variables';
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
 
 export const Wrapper = styled.div`
   padding: 0 140px;
@@ -37,7 +38,7 @@ export const ImageWrap = styled.div`
   }
 `;
 
-export const Image = styled.img`
+export const Image = styled(LazyImage)`
   width: 100%;
   height: 100%;
   object-fit: cover;

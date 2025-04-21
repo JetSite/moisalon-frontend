@@ -1,5 +1,6 @@
-import { MainContainer } from '../../../../../../styles/common'
-import { cyrToTranslit } from '../../../../../../utils/translit'
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
+import { MainContainer } from '../../../../../../styles/common';
+import { cyrToTranslit } from '../../../../../../utils/translit';
 
 import {
   Wrapper,
@@ -9,10 +10,12 @@ import {
   Link,
   ActionDeadline,
   ActionItemImage,
-} from './styles'
+} from './styles';
+import useAuthStore from '@/store/authStore';
+import { getStoreData } from '@/store/utils';
 
 const Actions = () => {
-  const { city } = useAuthStore(getStoreData)
+  const { city } = useAuthStore(getStoreData);
   return (
     <>
       <MainContainer>
@@ -24,7 +27,7 @@ const Actions = () => {
             <Link href={`/${city.slug}`}>Записаться</Link>
             <ActionDeadline>До 1 августа</ActionDeadline>
             <ActionItemImage>
-              <img src="/master-page-woman.png" alt="woman image" />
+              <LazyImage src="/master-page-woman.png" alt="woman image" />
             </ActionItemImage>
           </ActionItem>
           <ActionDiscount>
@@ -36,7 +39,7 @@ const Actions = () => {
         </Wrapper>
       </MainContainer>
     </>
-  )
-}
+  );
+};
 
-export default Actions
+export default Actions;

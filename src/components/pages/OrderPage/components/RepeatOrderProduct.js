@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client';
 
 import {
   ItemChecked,
@@ -8,18 +8,19 @@ import {
   Bottom,
   Price,
   Quantity,
-} from './../styles'
-import { PHOTO_URL } from '../../../../api/variables'
+} from './../styles';
+import { PHOTO_URL } from '../../../../api/variables';
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
 
 const RepeatOrderProduct = ({ product }) => {
   // const { data, loading } = useQuery(productSearch, {
   //   variables: { id: product.id },
   // })
-  const data = null
+  const data = null;
   return (
     <ItemChecked>
       <ImageWrapper>
-        <img
+        <LazyImage
           src={
             data?.product?.photoIds[0]
               ? ` ${PHOTO_URL}${data?.product?.photoIds[0]}/original`
@@ -40,7 +41,7 @@ const RepeatOrderProduct = ({ product }) => {
         </Bottom>
       </ItemCheckedRight>
     </ItemChecked>
-  )
-}
+  );
+};
 
-export default RepeatOrderProduct
+export default RepeatOrderProduct;

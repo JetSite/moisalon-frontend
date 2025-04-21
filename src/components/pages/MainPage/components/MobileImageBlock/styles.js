@@ -1,5 +1,6 @@
-import styled from 'styled-components'
-import { laptopBreakpoint } from '../../../../../styles/variables'
+import styled from 'styled-components';
+import { laptopBreakpoint } from '../../../../../styles/variables';
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
 
 export const Wrapper = styled.div`
   display: none;
@@ -13,13 +14,15 @@ export const Wrapper = styled.div`
     margin-bottom: 10px;
     padding: 0 20px;
   }
-`
+`;
 
-export const Image = styled.img`
+export const Image = styled(LazyImage)`
+  height: auto;
+  width: auto;
   display: none;
 
   @media (max-width: ${laptopBreakpoint}) {
     display: block;
     width: 100%;
   }
-`
+`;

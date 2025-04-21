@@ -1,12 +1,12 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 import {
   tabletBreakpoint,
   laptopBreakpoint,
-} from '../../../../../styles/variables'
-import { PHOTO_URL } from 'src/api/variables'
-import { FC } from 'react'
-import { IBannerHook } from 'src/types/banners'
-import Link from 'next/link'
+} from '../../../../../styles/variables';
+import { PHOTO_URL } from 'src/api/variables';
+import { FC } from 'react';
+import { IBannerHook } from 'src/types/banners';
+import Link from 'next/link';
 
 const Wrapper = styled.div`
   display: flex;
@@ -23,14 +23,14 @@ const Wrapper = styled.div`
     padding-bottom: 15px;
     flex-direction: column;
   }
-`
+`;
 
 const Big = styled(Link)`
   display: flex;
   justify-content: space-between;
   color: #000;
   width: 100%;
-`
+`;
 
 const WrapBig = styled.div<{ image: string }>`
   width: 70%;
@@ -60,7 +60,7 @@ const WrapBig = styled.div<{ image: string }>`
     padding-bottom: 12px;
     background-position: left;
   }
-`
+`;
 
 const WrapSmall = styled.div<{ image: string }>`
   width: 100%;
@@ -82,14 +82,14 @@ const WrapSmall = styled.div<{ image: string }>`
     width: 100%;
     background-position: left;
   }
-`
+`;
 
 const Small = styled(Link)`
   color: #000;
   display: flex;
   justify-content: space-between;
   width: 100%;
-`
+`;
 
 const Right = styled.div`
   width: 30%;
@@ -108,21 +108,21 @@ const Right = styled.div`
       width: 49%;
     }
   }
-`
+`;
 
 const LeftBig = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-`
+`;
 
 const LeftSmall = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-`
+`;
 
 const RightBig = styled.div`
   max-width: 290px;
@@ -133,7 +133,7 @@ const RightBig = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     max-width: 45%;
   }
-`
+`;
 
 const RightSmall = styled.div`
   max-width: 120px;
@@ -145,7 +145,7 @@ const RightSmall = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     max-width: 47%;
   }
-`
+`;
 
 const Title = styled.p`
   font-weight: 600;
@@ -158,7 +158,7 @@ const Title = styled.p`
     font-size: 16px;
     text-transform: uppercase;
   }
-`
+`;
 
 const SubTitle = styled.p`
   font-size: 20px;
@@ -169,7 +169,7 @@ const SubTitle = styled.p`
     font-size: 16px;
     text-transform: uppercase;
   }
-`
+`;
 
 const TitleSmall = styled.p`
   font-weight: 600;
@@ -181,7 +181,7 @@ const TitleSmall = styled.p`
     font-size: 12px;
     text-transform: uppercase;
   }
-`
+`;
 
 const LinkStyled = styled(Link)`
   font-weight: 600;
@@ -195,18 +195,12 @@ const LinkStyled = styled(Link)`
   @media (max-width: ${laptopBreakpoint}) {
     font-size: 9px;
   }
-`
-
-const Image = styled.img`
-  width: 100%;
-  object-fit: contain;
-  height: 100%;
-`
+`;
 
 interface Props {
-  bannerLarge: IBannerHook | null
-  bannerSmallLeft: IBannerHook | null
-  bannerSmallRight: IBannerHook | null
+  bannerLarge: IBannerHook | null;
+  bannerSmallLeft: IBannerHook | null;
+  bannerSmallRight: IBannerHook | null;
 }
 
 const Banners: FC<Props> = ({
@@ -214,21 +208,21 @@ const Banners: FC<Props> = ({
   bannerSmallLeft,
   bannerSmallRight,
 }) => {
-  const banner = bannerLarge?.banners?.[0] ?? null
+  const banner = bannerLarge?.banners?.[0] ?? null;
   const bannerImage = banner?.bannerImage?.url
     ? `${PHOTO_URL}${banner.bannerImage.url}`
-    : ''
+    : '';
 
-  const bannerLeft = bannerSmallLeft?.banners?.[0] ?? null
+  const bannerLeft = bannerSmallLeft?.banners?.[0] ?? null;
 
   const bannerLeftImage = bannerLeft?.bannerImage?.url
     ? `${PHOTO_URL}${bannerLeft.bannerImage.url}`
-    : ''
+    : '';
 
-  const bannerRight = bannerSmallRight?.banners?.[0] ?? null
+  const bannerRight = bannerSmallRight?.banners?.[0] ?? null;
   const bannerRightImage = bannerRight?.bannerImage?.url
     ? `${PHOTO_URL}${bannerRight.bannerImage.url}`
-    : ''
+    : '';
 
   return (
     <Wrapper>
@@ -284,7 +278,7 @@ const Banners: FC<Props> = ({
         ) : null}
       </Right>
     </Wrapper>
-  )
-}
+  );
+};
 
-export default Banners
+export default Banners;

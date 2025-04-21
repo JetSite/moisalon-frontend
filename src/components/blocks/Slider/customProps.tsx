@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { NextRouter, useRouter } from 'next/router';
+import { NextRouter } from 'next/router';
 import {
   ShowAll,
   ButtonWrap,

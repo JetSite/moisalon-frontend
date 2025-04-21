@@ -1,8 +1,9 @@
-import styled from 'styled-components'
-import { laptopBreakpoint } from '../../../../../../styles/variables'
-import { MainContainer } from '../../../../../../styles/common'
-import { FC } from 'react'
-import { IServices } from 'src/types/services'
+import styled from 'styled-components';
+import { laptopBreakpoint } from '../../../../../../styles/variables';
+import { MainContainer } from '../../../../../../styles/common';
+import { FC } from 'react';
+import { IServices } from 'src/types/services';
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
 
 const Wrapper = styled.div`
   padding: 0 140px;
@@ -13,7 +14,7 @@ const Wrapper = styled.div`
     margin-bottom: 0px;
     padding-bottom: 10px;
   }
-`
+`;
 
 const Title = styled.p`
   font-weight: 600;
@@ -25,7 +26,7 @@ const Title = styled.p`
     padding-bottom: 16px;
     padding-top: 16px;
   }
-`
+`;
 
 const Content = styled.div`
   width: 100%;
@@ -39,7 +40,7 @@ const Content = styled.div`
     align-items: flex-start;
     padding-top: 20px;
   }
-`
+`;
 
 const Item = styled.div`
   display: flex;
@@ -50,7 +51,7 @@ const Item = styled.div`
     width: 100%;
     margin-bottom: 10px;
   }
-`
+`;
 
 const Text = styled.p`
   font-size: 18px;
@@ -58,13 +59,16 @@ const Text = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     font-size: 16px;
   }
-`
+`;
 
-const Icon = styled.img``
+const Icon = styled(LazyImage)`
+  height: auto;
+  width: auto;
+`;
 
 interface Props {
-  services: IServices[]
-  title?: string
+  services: IServices[];
+  title?: string;
 }
 
 const Service: FC<Props> = ({ services, title = 'Сервис для посетителей' }) => {
@@ -82,7 +86,7 @@ const Service: FC<Props> = ({ services, title = 'Сервис для посет�
         </Content>
       </Wrapper>
     </MainContainer>
-  )
-}
+  );
+};
 
-export default Service
+export default Service;

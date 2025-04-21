@@ -1,8 +1,9 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 import {
   laptopBreakpoint,
   tabletBreakpoint,
-} from '../../../../../styles/variables'
+} from '../../../../../styles/variables';
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
 
 export const SliderItem = styled.div`
   padding: 9px 10px;
@@ -17,7 +18,7 @@ export const SliderItem = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     width: 180px;
   }
-`
+`;
 
 export const SliderContent = styled.div`
   border-radius: 5px;
@@ -25,19 +26,20 @@ export const SliderContent = styled.div`
   padding-bottom: 22px;
   padding-left: 5px;
   padding-right: 5px;
-`
+`;
 
 export const SliderText = styled.p`
   word-break: break-word;
-`
+`;
 
-export const SliderImage = styled.img`
+export const SliderImage = styled(LazyImage)`
+  width: auto;
   height: 100%;
   object-position: right top;
-`
+`;
 
 interface SliderImageWrapProps {
-  imageUrl: string
+  imageUrl: string;
 }
 
 export const SliderImageWrap = styled.div<SliderImageWrapProps>`
@@ -53,7 +55,7 @@ export const SliderImageWrap = styled.div<SliderImageWrapProps>`
     width: 135px;
     height: 135px;
   }
-`
+`;
 
 export const ButtonClose = styled.button`
   content: '';
@@ -71,7 +73,7 @@ export const ButtonClose = styled.button`
     top: 3px;
     right: 3px;
   }
-`
+`;
 
 export const DeleteSalon = styled.div`
   width: 100%;
@@ -86,4 +88,4 @@ export const DeleteSalon = styled.div`
     bottom: 6px;
     right: 17px;
   }
-`
+`;

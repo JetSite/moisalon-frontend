@@ -1,11 +1,12 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
-import { laptopBreakpoint } from '../../../styles/variables'
-import { RefObject } from 'react'
+import { laptopBreakpoint } from '../../../styles/variables';
+import { RefObject } from 'react';
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
 
 export const Wrapper = styled.div`
   position: relative;
-`
+`;
 
 export const IconWrapper = styled.button`
   border: none;
@@ -15,13 +16,15 @@ export const IconWrapper = styled.button`
   &:hover {
     transform: scale(1.2);
   }
-`
+`;
 
-export const Icon = styled.img`
+export const Icon = styled(LazyImage)`
+  height: auto;
+  width: auto;
   width: 100%;
   height: 100%;
   object-fit: cover;
-`
+`;
 
 export const WrapperSocials = styled.div<{ ref: RefObject<HTMLDivElement> }>`
   width: 210px;
@@ -41,7 +44,7 @@ export const WrapperSocials = styled.div<{ ref: RefObject<HTMLDivElement> }>`
     left: -92px;
     padding-bottom: 6px;
   }
-`
+`;
 
 export const WrapperItems = styled.div`
   height: 42px;
@@ -64,7 +67,7 @@ export const WrapperItems = styled.div`
       height: 24px !important;
     }
   }
-`
+`;
 
 export const Title = styled.h5`
   font-weight: 700;
@@ -77,7 +80,7 @@ export const Title = styled.h5`
     margin-bottom: 6px;
     font-size: 12px;
   }
-`
+`;
 
 export const SocialItem = styled.div`
   margin-bottom: 10px;
@@ -97,7 +100,7 @@ export const SocialItem = styled.div`
       margin-right: 6px;
     }
   }
-`
+`;
 
 export const CloseBtn = styled.div`
   position: absolute;
@@ -109,10 +112,10 @@ export const CloseBtn = styled.div`
   &:hover {
     transform: scale(1.2);
   }
-`
+`;
 
-export const Close = styled.img`
+export const Close = styled(LazyImage)`
   width: 100%;
   height: 100%;
   object-fit: cover;
-`
+`;

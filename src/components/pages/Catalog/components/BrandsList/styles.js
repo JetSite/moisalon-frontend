@@ -1,8 +1,9 @@
-import styled from 'styled-components'
-import Button from '../../../../ui/Button'
-import { laptopBreakpoint, red } from '../../../../../styles/variables'
+import styled from 'styled-components';
+import Button from '../../../../ui/Button';
+import { laptopBreakpoint, red } from '../../../../../styles/variables';
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
 
-export const Wrapper = styled.div``
+export const Wrapper = styled.div``;
 
 export const Content = styled.div`
   max-width: 1440px;
@@ -12,7 +13,7 @@ export const Content = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     padding: 0 20px 0 20px;
   }
-`
+`;
 
 export const ContentBottom = styled.div`
   max-width: 1440px;
@@ -22,7 +23,7 @@ export const ContentBottom = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     padding: 0 20px 72px 20px;
   }
-`
+`;
 
 export const Title = styled.h2`
   margin-bottom: 36px;
@@ -35,11 +36,11 @@ export const Title = styled.h2`
     font-size: 24px;
     line-height: 38px;
   }
-`
+`;
 
 export const ListContent = styled.div`
   text-align: center;
-`
+`;
 
 export const ListWrapper = styled.div`
   display: grid;
@@ -53,7 +54,7 @@ export const ListWrapper = styled.div`
     justify-content: flex-start;
     gap: 38px 20px;
   }
-`
+`;
 
 export const BrandWrap = styled.div`
   display: flex;
@@ -67,7 +68,7 @@ export const BrandWrap = styled.div`
     width: 103px;
     height: 161px;
   }
-`
+`;
 
 export const Logo = styled.div`
   display: flex;
@@ -89,11 +90,12 @@ export const Logo = styled.div`
     height: 103px;
     padding: 0 15px;
   }
-`
+`;
 
-export const Image = styled.img`
+export const Image = styled(LazyImage)`
+  height: auto;
   width: 100%;
-`
+`;
 
 export const Price = styled.div`
   color: #000;
@@ -111,10 +113,10 @@ export const Price = styled.div`
     font-weight: 400;
     line-height: 17px;
   }
-`
+`;
 
 export const ButtonStyled = styled(Button)`
   @media (max-width: ${laptopBreakpoint}) {
     min-width: 102px;
   }
-`
+`;

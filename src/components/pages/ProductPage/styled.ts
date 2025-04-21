@@ -1,9 +1,10 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 import {
   laptopBreakpoint,
   mobileBreakpoint,
   red,
-} from '../../../styles/variables'
+} from '../../../styles/variables';
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
 
 export const Wrapper = styled.div`
   padding: 0 140px;
@@ -14,7 +15,7 @@ export const Wrapper = styled.div`
     margin-top: 21px;
     margin-bottom: 0;
   }
-`
+`;
 
 export const Wrap = styled.div`
   display: flex;
@@ -24,7 +25,7 @@ export const Wrap = styled.div`
     flex-direction: column;
     padding-top: 0;
   }
-`
+`;
 
 export const Left = styled.div`
   width: 334px;
@@ -32,7 +33,7 @@ export const Left = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`
+`;
 
 export const ImageBrand = styled.div`
   width: 334px;
@@ -47,13 +48,15 @@ export const ImageBrand = styled.div`
     margin: 0 auto;
     margin-bottom: 30px;
   }
-`
+`;
 
-export const Image = styled.img`
+export const Image = styled(LazyImage)`
+  height: auto;
+  width: auto;
   max-height: 100%;
   @media (max-width: ${laptopBreakpoint}) {
   }
-`
+`;
 
 export const Right = styled.div`
   display: flex;
@@ -65,7 +68,7 @@ export const Right = styled.div`
     width: 100%;
     margin: 23px auto 0 auto;
   }
-`
+`;
 
 export const Title = styled.h1`
   max-width: 614px;
@@ -80,7 +83,7 @@ export const Title = styled.h1`
     text-align: center;
     line-height: 25px;
   }
-`
+`;
 
 export const Price = styled.p`
   font-weight: 600;
@@ -90,7 +93,7 @@ export const Price = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     text-align: center;
   }
-`
+`;
 export const OldPrice = styled.p`
   color: #a1a1a1;
   font-weight: 600;
@@ -115,13 +118,13 @@ export const OldPrice = styled.p`
     top: 7px;
     left: 0;
   }
-`
+`;
 
 export const WrapButton = styled.div`
   display: flex;
   align-items: center;
   margin-top: 48px;
-`
+`;
 
 export const CustomButton = styled.button<{ disabled: boolean }>`
   cursor: pointer;
@@ -143,23 +146,23 @@ export const CustomButton = styled.button<{ disabled: boolean }>`
     border-color: ${red};
     color: #fff;
   }
-`
+`;
 
 export const TopCustomButton = styled.p`
   font-weight: 600;
   font-size: 18px;
-`
+`;
 
 export const BottomCustomButton = styled.p`
   font-size: 14px;
-`
+`;
 
 export const QuantityWrap = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-left: 33px;
-`
+`;
 
 export const Minus = styled.div`
   width: 28px;
@@ -173,7 +176,7 @@ export const Minus = styled.div`
   &:hover {
     background: #ff0033 url('/icon-minus-white.svg') no-repeat center;
   }
-`
+`;
 
 export const Plus = styled(Minus)<{ disabled: boolean }>`
   background: #f0f0f0 url('/icon-plus.svg') no-repeat center;
@@ -184,7 +187,7 @@ export const Plus = styled(Minus)<{ disabled: boolean }>`
     background: #ff0033 url('/icon-plus-white.svg') no-repeat center;
     background-size: 13px;
   }
-`
+`;
 
 export const Quantity = styled.p<{ isWrongQuantity: boolean }>`
   color: ${({ isWrongQuantity }) => (isWrongQuantity ? red : '#000')};
@@ -195,7 +198,7 @@ export const Quantity = styled.p<{ isWrongQuantity: boolean }>`
   @media (max-width: ${laptopBreakpoint}) {
     width: 40px;
   }
-`
+`;
 
 export const Description = styled.div`
   font-size: 18px;
@@ -207,7 +210,7 @@ export const Description = styled.div`
     line-height: 25px;
     margin-top: 36px;
   }
-`
+`;
 
 export const Character = styled.p`
   text-decoration: underline;
@@ -236,7 +239,7 @@ export const Character = styled.p`
       right: 0;
     }
   }
-`
+`;
 
 export const OpenCharacter = styled.p`
   font-weight: 600;
@@ -264,7 +267,7 @@ export const OpenCharacter = styled.p`
       right: 0;
     }
   }
-`
+`;
 
 export const Attributes = styled.div`
   display: flex;
@@ -272,31 +275,31 @@ export const Attributes = styled.div`
   max-width: 500px;
   width: 100%;
   margin-bottom: 15px;
-`
+`;
 
 export const Name = styled.div`
   width: 40%;
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
-`
+`;
 
 export const Value = styled.div`
   width: 40%;
   font-size: 14px;
   line-height: 20px;
-`
+`;
 
 export const WrapCharacter = styled.div`
   margin-bottom: 20px;
-`
+`;
 
 export const Terms = styled.p`
   font-size: 18px;
   line-height: 30px;
   max-width: 560px;
   width: 100%;
-`
+`;
 
 export const AvailableQuantity = styled.p<{ isWrongQuantity: boolean }>`
   color: ${({ isWrongQuantity }) => (isWrongQuantity ? red : '#000')};
@@ -308,7 +311,7 @@ export const AvailableQuantity = styled.p<{ isWrongQuantity: boolean }>`
     margin-top: 25px;
     text-align: center;
   }
-`
+`;
 
 export const ButtonsWrapper = styled.div`
   width: 500px;
@@ -319,7 +322,7 @@ export const ButtonsWrapper = styled.div`
     width: 100%;
     flex-direction: column;
   }
-`
+`;
 
 export const Detail = styled.div`
   margin-top: 15px;
@@ -328,4 +331,4 @@ export const Detail = styled.div`
 
   @media (max-width: ${mobileBreakpoint}) {
   }
-`
+`;

@@ -1,9 +1,10 @@
-import { Skeleton } from '@material-ui/lab'
-import styled from 'styled-components'
-import { laptopBreakpoint } from '../../../../../styles/variables'
-import Button from 'src/components/ui/Button'
-import { red } from '@material-ui/core/colors'
-import { Quantity } from 'src/components/blocks/Form/Tabs/style'
+import { Skeleton } from '@material-ui/lab';
+import styled from 'styled-components';
+import { laptopBreakpoint } from '../../../../../styles/variables';
+import Button from 'src/components/ui/Button';
+import { red } from '@material-ui/core/colors';
+import { Quantity } from 'src/components/blocks/Form/Tabs/style';
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
 
 export const Wrapper = styled.section`
   max-width: 710px;
@@ -18,7 +19,7 @@ export const Wrapper = styled.section`
     padding-top: 0;
     margin-bottom: 40px;
   }
-`
+`;
 
 export const ButtonWrapper = styled.div`
   display: flex;
@@ -27,7 +28,7 @@ export const ButtonWrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     margin-top: 20px;
   }
-`
+`;
 
 export const SalesTabButton = styled(Button)`
   border: none !important;
@@ -37,7 +38,7 @@ export const SalesTabButton = styled(Button)`
     background: none !important;
     color: #ff0033 !important;
   }
-`
+`;
 
 export const TitlePage = styled.h2`
   font-size: 40px;
@@ -51,7 +52,7 @@ export const TitlePage = styled.h2`
     margin-bottom: 5px;
     text-transform: none;
   }
-`
+`;
 
 export const Subtitle = styled.p`
   font-weight: 600;
@@ -64,11 +65,11 @@ export const Subtitle = styled.p`
     margin-bottom: 20px;
     line-height: 17px;
   }
-`
+`;
 
 export const AvatarContainer = styled.div`
   position: relative;
-`
+`;
 
 export const Item = styled.button<{ active?: boolean }>`
   width: 100%;
@@ -114,10 +115,10 @@ export const Item = styled.button<{ active?: boolean }>`
     opacity: 0.5;
     z-index: 2;
   }
-`
+`;
 
 export const QuantityProfileEntyties = styled(Quantity)<{
-  color?: string
+  color?: string;
 }>`
   width: 32px;
   height: 32px;
@@ -135,12 +136,12 @@ export const QuantityProfileEntyties = styled(Quantity)<{
     font-size: 8px;
     white-space: nowrap;
   }
-`
+`;
 
 export const Container = styled.div`
   display: flex;
   align-items: center;
-`
+`;
 
 export const Content = styled.div`
   margin-left: 41px;
@@ -148,7 +149,7 @@ export const Content = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     margin-left: 11px;
   }
-`
+`;
 
 export const Name = styled.p`
   font-weight: 600;
@@ -158,7 +159,7 @@ export const Name = styled.p`
     font-size: 16px;
     margin-bottom: 3px;
   }
-`
+`;
 
 export const Type = styled.p`
   font-size: 18px;
@@ -167,14 +168,14 @@ export const Type = styled.p`
     font-size: 11px;
     line-height: 17px;
   }
-`
+`;
 
-export const Avatar = styled.img`
+export const Avatar = styled(LazyImage)`
   width: 56px;
   height: 56px;
   border-radius: 100%;
   position: relative;
-`
+`;
 
 export const SkeletonWrap = styled(Skeleton)`
   width: 100%;
@@ -185,7 +186,7 @@ export const SkeletonWrap = styled(Skeleton)`
     max-width: 375px;
     height: 280px;
   }
-`
+`;
 
 export const SalesWrapper = styled.ul`
   width: 100%;
@@ -193,7 +194,7 @@ export const SalesWrapper = styled.ul`
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 20px;
-`
+`;
 
 export const Back = styled.p`
   font-size: 24px;
@@ -205,4 +206,4 @@ export const Back = styled.p`
     color: #f03;
     font-size: 16px;
   }
-`
+`;

@@ -1,13 +1,14 @@
-import Link from 'next/link'
-import styled from 'styled-components'
-import { red, laptopBreakpoint } from '../../../../../styles/variables'
+import Link from 'next/link';
+import styled from 'styled-components';
+import { red, laptopBreakpoint } from '../../../../../styles/variables';
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
 
 export const Header = styled.header<{ showSearchPopup?: boolean }>`
   position: ${({ showSearchPopup }) => (showSearchPopup ? 'fixed' : 'sticky')};
   background-color: white;
   top: 0;
   z-index: 200;
-`
+`;
 
 export const HeaderPadding = styled.div`
   height: 30px;
@@ -21,27 +22,29 @@ export const HeaderPadding = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`
+`;
 
 export const LogoWrap = styled(Link)`
   width: 83px;
   height: 100%;
   cursor: pointer;
-`
+`;
 
-export const Image = styled.img`
+export const Image = styled(LazyImage)`
+  height: auto;
+  width: auto;
   @media (max-width: ${laptopBreakpoint}) {
     height: 100%;
   }
-`
+`;
 
 export const FakeWrapper = styled.div`
   height: 112px;
-`
+`;
 
 export const Wrapper = styled.div<{
-  showSearchPopup: boolean
-  isAboutPage: boolean
+  showSearchPopup: boolean;
+  isAboutPage: boolean;
 }>`
   padding-bottom: 10px;
   padding-top: 28px;
@@ -59,7 +62,7 @@ export const Wrapper = styled.div<{
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`
+`;
 
 export const WrappperMobile = styled.div`
   display: none;
@@ -71,7 +74,7 @@ export const WrappperMobile = styled.div`
     z-index: 200;
     background-color: #fff;
   }
-`
+`;
 
 export const HeaderContent = styled.div`
   display: flex;
@@ -83,7 +86,7 @@ export const HeaderContent = styled.div`
   padding: 0 140px;
   justify-content: space-between;
   align-items: center; /* Добавлено для вертикального выравнивания */
-`
+`;
 
 export const Nav = styled.nav`
   margin-left: 30px;
@@ -96,7 +99,7 @@ export const Nav = styled.nav`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`
+`;
 
 export const HeaderMenu = styled.div`
   display: flex;
@@ -107,7 +110,7 @@ export const HeaderMenu = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`
+`;
 
 export const NavItemWrapper = styled.ul`
   display: flex;
@@ -116,13 +119,13 @@ export const NavItemWrapper = styled.ul`
   justify-content: space-between;
   width: 100%;
   align-items: center;
-`
+`;
 
 export const NavItem = styled.li<{
-  visible?: boolean
-  active?: boolean
-  isAboutPage?: boolean
-  disable?: boolean
+  visible?: boolean;
+  active?: boolean;
+  isAboutPage?: boolean;
+  disable?: boolean;
 }>`
   display: ${({ visible = true }) => (visible ? 'block' : 'none')};
   font-weight: 600;
@@ -147,7 +150,7 @@ export const NavItem = styled.li<{
       color: ${({ disable }) => (disable ? 'inhetit' : red)};
     }
   }
-`
+`;
 
 export const Links = styled.nav`
   display: flex;
@@ -162,15 +165,15 @@ export const Links = styled.nav`
     width: 100%;
     justify-content: flex-start;
   }
-`
+`;
 
-export const LinkItem = styled(Link)``
+export const LinkItem = styled(Link)``;
 
 export const TextLink = styled.p`
   margin-left: 14px;
   font-size: 14px;
   line-height: 27px;
-`
+`;
 
 export const LinkWrap = styled.div<{ mr?: string }>`
   margin-right: ${props => (props.mr ? props.mr : '50px')};
@@ -188,17 +191,17 @@ export const LinkWrap = styled.div<{ mr?: string }>`
   @media (max-width: ${laptopBreakpoint}) {
     margin-right: ${props => (props.mr ? props.mr : '32px')};
   }
-`
+`;
 
 export const CityItem = styled.div`
   display: flex;
   align-items: flex-end;
-`
+`;
 
 export const LinkItemA = styled.a`
   display: flex;
   align-items: flex-end;
-`
+`;
 
 export const CitySelectText = styled.p<{ showCitySelect: boolean }>`
   margin-right: 10px;
@@ -206,7 +209,7 @@ export const CitySelectText = styled.p<{ showCitySelect: boolean }>`
   font-weight: 600;
   line-height: 27px;
   color: ${({ showCitySelect }) => (showCitySelect ? red : '#000')};
-`
+`;
 
 export const LinkCitySelect = styled.div`
   height: 23px;
@@ -236,10 +239,10 @@ export const LinkCitySelect = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`
+`;
 
 export const LinkFavorites = styled(Link)<{
-  disabled?: boolean
+  disabled?: boolean;
 }>`
   height: 23px;
   cursor: ${({ disabled }) => (!disabled ? 'pointer' : 'default')};
@@ -251,7 +254,7 @@ export const LinkFavorites = styled(Link)<{
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`
+`;
 
 export const LinkSearch = styled.button`
   height: 23px;
@@ -268,7 +271,7 @@ export const LinkSearch = styled.button`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`
+`;
 
 export const LinkSearchMobile = styled.button`
   display: none;
@@ -278,7 +281,7 @@ export const LinkSearchMobile = styled.button`
     height: 23px;
     cursor: pointer;
   }
-`
+`;
 
 export const LinkProfile = styled(Link)<{ disabled?: boolean }>`
   height: 23px;
@@ -292,7 +295,7 @@ export const LinkProfile = styled(Link)<{ disabled?: boolean }>`
   @media (max-width: ${laptopBreakpoint}) {
     margin-right: 0;
   }
-`
+`;
 
 export const ProfilePhotoWrap = styled(Link)`
   width: 24px;
@@ -303,15 +306,15 @@ export const ProfilePhotoWrap = styled(Link)`
   @media (max-width: ${laptopBreakpoint}) {
     margin-right: 0;
   }
-`
+`;
 
-export const ProfilePhoto = styled.img`
+export const ProfilePhoto = styled(LazyImage)`
   width: 100%;
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
   object-position: top;
-`
+`;
 
 export const UnreadMessages = styled.div`
   position: absolute;
@@ -326,7 +329,7 @@ export const UnreadMessages = styled.div`
   font-size: 12px;
   background: ${red};
   border-radius: 100%;
-`
+`;
 
 export const MobileLogoLink = styled.div`
   display: none;
@@ -337,7 +340,7 @@ export const MobileLogoLink = styled.div`
     height: 32px;
     margin-top: -10px;
   }
-`
+`;
 
 export const HamburgerMenuIcon = styled.button`
   display: none;
@@ -347,7 +350,7 @@ export const HamburgerMenuIcon = styled.button`
     min-width: 22px;
     height: 19px;
   }
-`
+`;
 
 export const Line = styled.span`
   display: none;
@@ -362,7 +365,7 @@ export const Line = styled.span`
       margin-bottom: 7px;
     }
   }
-`
+`;
 
 export const HeaderMobile = styled.div<{ showSearchPopup: boolean }>`
   display: none;
@@ -378,31 +381,31 @@ export const HeaderMobile = styled.div<{ showSearchPopup: boolean }>`
     padding: 27px 20px 0 20px;
     z-index: 10;
   }
-`
+`;
 
 export const LogoMobile = styled.div`
   display: flex;
   justify-content: center;
-`
+`;
 
 export const LeftMobile = styled.div`
   display: flex;
   justify-content: space-between;
   width: 30%;
   max-width: 125px;
-`
+`;
 
 export const RightMobile = styled.div`
   display: flex;
   justify-content: space-between;
   width: 30%;
   max-width: 125px;
-`
+`;
 
 export const CartIconWrap = styled(Link)`
   position: relative;
   cursor: pointer;
-`
+`;
 
 export const Count = styled.div`
   position: absolute;
@@ -419,17 +422,17 @@ export const Count = styled.div`
   align-items: center;
   right: -6px;
   top: -7px;
-`
+`;
 
 export const AdditionalNavWrapper = styled.div`
   position: relative;
   /* top: -8px; */
   cursor: pointer;
-`
+`;
 
 export const AdditionalNavContent = styled.div<{
-  showAdditionalNav?: boolean
-  catalog?: boolean
+  showAdditionalNav?: boolean;
+  catalog?: boolean;
 }>`
   display: ${({ showAdditionalNav }) => (showAdditionalNav ? 'flex' : 'none')};
   position: absolute;
@@ -449,12 +452,12 @@ export const AdditionalNavContent = styled.div<{
     list-style: none;
     margin-bottom: 32px;
   }
-`
+`;
 
 export const MoreIconWrap = styled.div`
   width: 22px;
   height: 22px;
-`
+`;
 
 export const CloseBtn = styled.div<{ show: boolean }>`
   display: ${({ show }) => (show ? 'block' : 'none')};
@@ -462,7 +465,7 @@ export const CloseBtn = styled.div<{ show: boolean }>`
   height: 22px;
   background: #fff url('/mobile-close-icon.svg') no-repeat center;
   background-size: contain;
-`
+`;
 
 export const MobileTitle = styled.h2`
   padding: 12px 0;
@@ -470,4 +473,4 @@ export const MobileTitle = styled.h2`
   font-size: 10px;
   font-weight: 500;
   text-align: center;
-`
+`;
