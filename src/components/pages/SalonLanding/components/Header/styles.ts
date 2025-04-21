@@ -1,8 +1,9 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 import {
   laptopBreakpoint,
   tabletBreakpoint,
-} from '../../../../../styles/variables'
+} from '../../../../../styles/variables';
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
 
 export const Wrapper = styled.div`
   min-height: 868px;
@@ -16,7 +17,7 @@ export const Wrapper = styled.div`
     background-position: left;
     background-size: auto 100%;
   }
-`
+`;
 
 export const Content = styled.div`
   padding: 29px 140px 0 140px;
@@ -28,7 +29,7 @@ export const Content = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     padding: 0 20px;
   }
-`
+`;
 
 export const LogoSmallWrap = styled.div`
   width: 145px;
@@ -38,9 +39,12 @@ export const LogoSmallWrap = styled.div`
     margin: 0 auto;
     margin-top: 10px;
   }
-`
+`;
 
-export const LogoSmall = styled.img``
+export const LogoSmall = styled(LazyImage)`
+  height: auto;
+  width: auto;
+`;
 
 export const LogoSmallText = styled.p`
   width: 36.3%;
@@ -64,7 +68,7 @@ export const LogoSmallText = styled.p`
     line-height: 22px;
     text-align: center;
   }
-`
+`;
 
 export const LogoBigWrap = styled.div`
   width: 40%;
@@ -75,11 +79,12 @@ export const LogoBigWrap = styled.div`
     width: 60%;
     margin-top: 28px;
   }
-`
+`;
 
-export const LogoBig = styled.img`
+export const LogoBig = styled(LazyImage)`
+  height: auto;
   width: 100%;
-`
+`;
 
 export const LogoBigText = styled.h1`
   width: 77.7%;
@@ -105,14 +110,14 @@ export const LogoBigText = styled.h1`
     font-size: 24px;
     line-height: 42px;
   }
-`
+`;
 
 export const ButtonWrap = styled.div`
   margin-top: 65px;
   text-align: center;
   position: relative;
   z-index: 3;
-`
+`;
 
 export const Features = styled.div`
   position: absolute;
@@ -127,7 +132,7 @@ export const Features = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     flex-direction: column;
   }
-`
+`;
 
 export const FeaturesItem = styled.div`
   width: 100%;
@@ -156,4 +161,4 @@ export const FeaturesItem = styled.div`
     font-size: 16px;
     border-bottom: none;
   }
-`
+`;

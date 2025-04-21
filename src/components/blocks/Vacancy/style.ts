@@ -1,5 +1,6 @@
-import { laptopBreakpoint, red } from 'src/styles/variables'
-import styled from 'styled-components'
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
+import { laptopBreakpoint, red } from 'src/styles/variables';
+import styled from 'styled-components';
 
 export const VacancyWrap = styled.li`
   width: 218px;
@@ -20,7 +21,7 @@ export const VacancyWrap = styled.li`
     width: 100%;
     padding: 12px 10px 15px 10px;
   }
-`
+`;
 
 export const VacancyTop = styled.div`
   width: 166px;
@@ -33,9 +34,9 @@ export const VacancyTop = styled.div`
     height: auto;
     aspect-ratio: 1;
   }
-`
+`;
 
-export const Image = styled.img`
+export const Image = styled(LazyImage)`
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -43,20 +44,20 @@ export const Image = styled.img`
   @media (max-width: ${laptopBreakpoint}) {
     width: 300px;
   }
-`
+`;
 
 export const VacancyContent = styled.div`
   display: flex;
   flex-direction: column;
   @media (max-width: ${laptopBreakpoint}) {
   }
-`
+`;
 
 export const VacancyOwner = styled.p`
   font-size: 12px;
   line-height: 14px;
   text-align: center;
-`
+`;
 
 export const VacancyTitle = styled.p`
   height: 66px;
@@ -72,7 +73,7 @@ export const VacancyTitle = styled.p`
     line-height: 16px;
     height: auto;
   }
-`
+`;
 
 export const VacancyBottom = styled.div`
   padding-top: 20px;
@@ -83,7 +84,7 @@ export const VacancyBottom = styled.div`
   flex-shrink: 1;
   @media (max-width: ${laptopBreakpoint}) {
   }
-`
+`;
 
 export const VacancyAmount = styled.div`
   display: flex;
@@ -97,7 +98,7 @@ export const VacancyAmount = styled.div`
   font-size: 14px;
   font-weight: 600;
   margin-bottom: 10px;
-`
+`;
 
 export const DeleteVacancyBtn = styled.button`
   display: flex;
@@ -116,4 +117,4 @@ export const DeleteVacancyBtn = styled.button`
   &:hover {
     opacity: 0.8;
   }
-`
+`;

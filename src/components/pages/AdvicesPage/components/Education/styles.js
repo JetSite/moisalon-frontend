@@ -1,11 +1,12 @@
-import styled from 'styled-components'
-import { laptopBreakpoint } from '../../../../../styles/variables'
+import styled from 'styled-components';
+import { laptopBreakpoint } from '../../../../../styles/variables';
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
 
 export const Wrapper = styled.div`
   max-width: 690px;
   width: 100%;
   margin-bottom: 115px;
-`
+`;
 
 export const ImageWrap = styled.div`
   border: 1px solid #f0f0f0;
@@ -18,13 +19,13 @@ export const ImageWrap = styled.div`
     height: 200px;
     margin-bottom: 28px;
   }
-`
+`;
 
-export const Image = styled.img`
+export const Image = styled(LazyImage)`
   width: 100%;
   height: 100%;
   object-fit: cover;
-`
+`;
 
 export const Title = styled.p`
   font-size: 40px;
@@ -37,7 +38,7 @@ export const Title = styled.p`
     line-height: 45px;
     margin-bottom: 16px;
   }
-`
+`;
 
 export const Name = styled.p`
   font-size: 18px;
@@ -48,22 +49,22 @@ export const Name = styled.p`
     font-size: 14px;
     margin-bottom: 26px;
   }
-`
+`;
 
 export const ContentWrap = styled.div`
   display: flex;
   @media (max-width: ${laptopBreakpoint}) {
     display: block;
   }
-`
+`;
 
-export const SaleData = styled.div``
+export const SaleData = styled.div``;
 
 export const Date = styled.p`
   font-weight: 500;
   font-size: 14px;
   line-height: 16px;
-`
+`;
 
 export const Promo = styled.div`
   margin-left: 150px;
@@ -71,13 +72,13 @@ export const Promo = styled.div`
     margin: 0;
     margin-top: 16px;
   }
-`
+`;
 
 export const PromoText = styled.p`
   font-weight: 500;
   font-size: 14px;
   line-height: 16px;
-`
+`;
 
 export const Desc = styled.p`
   font-weight: 400;
@@ -89,11 +90,11 @@ export const Desc = styled.p`
     margin-top: 32px;
     margin-bottom: 32px;
   }
-`
+`;
 
 export const ButtonWrap = styled.div`
   width: 350px;
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`
+`;

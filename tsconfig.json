@@ -36,6 +36,6 @@
       }
     ]
   },
-  "include": ["src", "declaration.d.ts", ".next/types/**/*.ts"],
+  "include": ["src", "env.d.ts", "declaration.d.ts", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
 }

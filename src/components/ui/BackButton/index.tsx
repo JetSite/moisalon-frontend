@@ -1,17 +1,21 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
-import { laptopBreakpoint } from '../../../styles/variables'
-import { FC, MouseEvent } from 'react'
-import Link from 'next/link'
+import { laptopBreakpoint } from '../../../styles/variables';
+import { FC, MouseEvent } from 'react';
+import Link from 'next/link';
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
 
 const Wrapper = styled.div`
   display: flex;
   cursor: pointer;
   align-items: center;
   margin-bottom: 34px;
-`
+`;
 
-const Icon = styled.img``
+const Icon = styled(LazyImage)`
+  height: auto;
+  width: auto;
+`;
 
 const Text = styled.span`
   color: #a1a1a1;
@@ -23,16 +27,16 @@ const Text = styled.span`
     font-weight: 600;
     line-height: 16px;
   }
-`
+`;
 
 interface Props {
-  type: string
-  name?: string
-  link?: string
-  onlyType?: boolean
-  noLink?: boolean
-  queryLink?: { [K: string]: string }
-  handleClick?: () => void
+  type: string;
+  name?: string;
+  link?: string;
+  onlyType?: boolean;
+  noLink?: boolean;
+  queryLink?: { [K: string]: string };
+  handleClick?: () => void;
 }
 
 const BackButton: FC<Props> = ({
@@ -44,7 +48,7 @@ const BackButton: FC<Props> = ({
   queryLink: query,
   handleClick,
 }) => {
-  const href = noLink ? undefined : { pathname, query }
+  const href = noLink ? undefined : { pathname, query };
   return (
     <Wrapper
       as={noLink ? 'button' : Link}
@@ -52,9 +56,9 @@ const BackButton: FC<Props> = ({
       href={href}
       onClick={(e: MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
         if (href && handleClick) {
-          e.preventDefault()
+          e.preventDefault();
         }
-        handleClick?.()
+        handleClick?.();
       }}
     >
       <Icon alt="back" src="/arrow-back.svg" />
@@ -62,7 +66,7 @@ const BackButton: FC<Props> = ({
       {!onlyType ? <Text>–</Text> : null}
       {!onlyType ? <Text>{name}</Text> : null}
     </Wrapper>
-  )
-}
+  );
+};
 
-export default BackButton
+export default BackButton;

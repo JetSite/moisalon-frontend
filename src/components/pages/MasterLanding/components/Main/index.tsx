@@ -1,21 +1,22 @@
-import styled from 'styled-components'
-import Button from '../../../../ui/Button'
-import { useRouter } from 'next/router'
+import styled from 'styled-components';
+import Button from '../../../../ui/Button';
+import { useRouter } from 'next/router';
 import {
   laptopBreakpoint,
   tabletBreakpoint,
-} from '../../../../../styles/variables'
-import Link from 'next/link'
-import { cyrToTranslit } from '../../../../../utils/translit'
-import useAuthStore from 'src/store/authStore'
-import { getStoreData } from 'src/store/utils'
+} from '../../../../../styles/variables';
+import Link from 'next/link';
+import { cyrToTranslit } from '../../../../../utils/translit';
+import useAuthStore from 'src/store/authStore';
+import { getStoreData } from 'src/store/utils';
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
 
 const Wrapper = styled.div`
   height: 874px;
   position: relative;
   background: url('/master-landing-main.jpg') no-repeat center;
   background-size: cover;
-`
+`;
 
 const Top = styled.div`
   display: flex;
@@ -38,7 +39,7 @@ const Top = styled.div`
     background: #ff0033;
     transform: rotate(45deg);
   }
-`
+`;
 const Desc = styled.p`
   font-weight: 600;
   font-size: 18px;
@@ -51,10 +52,16 @@ const Desc = styled.p`
     margin-left: 20px;
     padding-right: 20px;
   }
-`
+`;
 
-const Logo = styled.img``
-const Logotype = styled.img``
+const Logo = styled(LazyImage)`
+  height: auto;
+  width: auto;
+`;
+const Logotype = styled(LazyImage)`
+  height: auto;
+  width: auto;
+`;
 
 const LogotypeWrap = styled.div`
   margin: 0 auto;
@@ -68,7 +75,7 @@ const LogotypeWrap = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     max-width: 200px;
   }
-`
+`;
 
 const ButtonWrap = styled.div`
   margin: 0 auto;
@@ -78,7 +85,7 @@ const ButtonWrap = styled.div`
       width: 90%;
     }
   }
-`
+`;
 
 const Items = styled.div`
   width: 100%;
@@ -89,7 +96,7 @@ const Items = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     flex-wrap: wrap;
   }
-`
+`;
 const Item = styled.div`
   width: 25%;
   padding: 24px 34px;
@@ -111,7 +118,7 @@ const Item = styled.div`
     width: 50%;
     padding: 14px 24px;
   }
-`
+`;
 
 const Title = styled.h1`
   margin-top: 60px;
@@ -132,23 +139,23 @@ const Title = styled.h1`
     margin-top: 50px;
     margin-bottom: 50px;
   }
-`
+`;
 
 const Main = () => {
-  const router = useRouter()
-  const { city } = useAuthStore(getStoreData)
+  const router = useRouter();
+  const { city } = useAuthStore(getStoreData);
   return (
     <Wrapper>
       <Top>
         <Link href={`/${city.slug}`}>
-          <Logo src="/master-landing-logo.svg" />
+          <Logo alt="" src="/master-landing-logo.svg" />
         </Link>
       </Top>
       <Desc>
         Выбирайте из лучших вариантов в вашем городе и ведите бизнес комфортно
       </Desc>
       <LogotypeWrap>
-        <Logotype src="/master-landing-main-logo.svg" />
+        <Logotype alt="" src="/master-landing-main-logo.svg" />
       </LogotypeWrap>
       <Title>
         новый формат аренды <br />
@@ -179,7 +186,7 @@ const Main = () => {
         </Item>
       </Items>
     </Wrapper>
-  )
-}
+  );
+};
 
-export default Main
+export default Main;

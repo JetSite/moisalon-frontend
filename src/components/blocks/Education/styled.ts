@@ -1,5 +1,6 @@
-import { laptopBreakpoint, red } from '../../../styles/variables'
-import styled, { css } from 'styled-components'
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
+import { laptopBreakpoint, red } from '../../../styles/variables';
+import styled, { css } from 'styled-components';
 
 export const EducationWrap = styled.li`
   width: 375px;
@@ -20,11 +21,11 @@ export const EducationWrap = styled.li`
     max-width: 375px;
     height: 280px;
   }
-`
+`;
 
 export const EducationTop = styled.div<{
-  imageHover?: boolean
-  isDeleted?: boolean
+  imageHover?: boolean;
+  isDeleted?: boolean;
 }>`
   width: 100%;
   height: 163px;
@@ -60,13 +61,13 @@ export const EducationTop = styled.div<{
     opacity: ${({ imageHover }) => (imageHover ? 0.4 : 0)};
     transition: opacity 0.3s ease; /* Плавный переход при наведении */
   }
-`
+`;
 
-export const Image = styled.img`
+export const Image = styled(LazyImage)`
   width: 100%;
   height: 100%;
   object-fit: cover;
-`
+`;
 
 export const EducationContent = styled.div`
   padding: 30px 25px;
@@ -80,13 +81,13 @@ export const EducationContent = styled.div`
     padding: 15px 20px;
     padding-top: 8px;
   }
-`
+`;
 
 export const EducationName = styled.p`
   font-size: 10px;
   line-height: 16px;
   text-align: center;
-`
+`;
 
 export const EducationTitle = styled.p`
   font-weight: 600;
@@ -98,7 +99,7 @@ export const EducationTitle = styled.p`
     font-size: 14px;
     line-height: initial;
   }
-`
+`;
 
 export const EducationBottom = styled.div`
   margin-top: 20px;
@@ -109,9 +110,9 @@ export const EducationBottom = styled.div`
     font-size: 12px;
     line-height: 14px;
   }
-`
+`;
 
-export const EducationData = styled.div``
+export const EducationData = styled.div``;
 
 export const Date = styled.p`
   font-weight: 500;
@@ -121,11 +122,11 @@ export const Date = styled.p`
     font-size: 12px;
     line-height: 14px;
   }
-`
+`;
 
 export const Promo = styled.div`
   margin-left: auto;
-`
+`;
 
 export const PromoText = styled.p`
   font-weight: 500;
@@ -135,7 +136,7 @@ export const PromoText = styled.p`
     font-size: 12px;
     line-height: 14px;
   }
-`
+`;
 
 export const Favorite = styled.button`
   position: absolute;
@@ -150,4 +151,4 @@ export const Favorite = styled.button`
     right: 15px;
     top: -12px;
   }
-`
+`;

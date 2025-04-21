@@ -1,6 +1,7 @@
-import styled from 'styled-components'
-import { red, laptopBreakpoint } from '../../../styles/variables'
-import Link from 'next/link'
+import styled from 'styled-components';
+import { red, laptopBreakpoint } from '../../../styles/variables';
+import Link from 'next/link';
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
 
 export const Wrapper = styled.section`
   position: relative;
@@ -11,7 +12,7 @@ export const Wrapper = styled.section`
     display: block;
     width: 100%;
   }
-`
+`;
 
 export const Info = styled.div`
   display: flex;
@@ -19,7 +20,7 @@ export const Info = styled.div`
   padding: 22px;
   color: #fff;
   background-color: ${red};
-`
+`;
 
 export const Logo = styled.div<{ url: string }>`
   flex-shrink: 0;
@@ -29,15 +30,15 @@ export const Logo = styled.div<{ url: string }>`
   border-radius: 50%;
   background: ${({ url }) => (url ? `url(${url})` : '#fff')} no-repeat center;
   background-size: cover;
-`
+`;
 
-export const Text = styled.div``
+export const Text = styled.div``;
 
 export const Title = styled.h2`
   font-size: 20px;
   font-weight: 600;
   line-height: 25px;
-`
+`;
 
 export const Subtitle = styled.p`
   max-height: 70px;
@@ -45,7 +46,7 @@ export const Subtitle = styled.p`
   font-weight: 500;
   line-height: 25px;
   overflow: hidden;
-`
+`;
 
 export const CardsWrapper = styled.nav`
   width: 100%;
@@ -57,7 +58,7 @@ export const CardsWrapper = styled.nav`
   &::-webkit-scrollbar {
     display: none;
   }
-`
+`;
 
 export const Card = styled(Link)<{ disable?: boolean }>`
   display: flex;
@@ -76,7 +77,7 @@ export const Card = styled(Link)<{ disable?: boolean }>`
   &:not(:last-child) {
     margin-right: 10px;
   }
-`
+`;
 
 export const CardTitle = styled.h3`
   width: 100%;
@@ -85,16 +86,19 @@ export const CardTitle = styled.h3`
   line-height: 16px;
   overflow: hidden;
   word-break: break-word;
-`
+`;
 
 export const CardBottom = styled.div<{ quantity?: boolean }>`
   display: flex;
   justify-content: ${({ quantity }) =>
     quantity ? 'space-between' : 'flex-start'};
   width: 100%;
-`
+`;
 
-export const Icon = styled.img``
+export const Icon = styled(LazyImage)`
+  height: auto;
+  width: auto;
+`;
 
 export const CardQuantity = styled.span`
   position: relative;
@@ -102,7 +106,7 @@ export const CardQuantity = styled.span`
   color: #a1a1a1;
   font-size: 14px;
   font-weight: 500;
-`
+`;
 
 export const ProfilesButton = styled.div<{ toggle: boolean }>`
   position: relative;
@@ -124,7 +128,7 @@ export const ProfilesButton = styled.div<{ toggle: boolean }>`
     transform: ${props => (props.toggle ? 'rotate(360deg)' : 'rotate(270deg)')};
     transition: 0.3s;
   }
-`
+`;
 
 export const Button = styled.button`
   cursor: pointer;
@@ -163,7 +167,7 @@ export const Button = styled.button`
       display: none;
     }
   }
-`
+`;
 
 export const Item = styled.div`
   width: 100%;
@@ -180,22 +184,24 @@ export const Item = styled.div`
     border: 1px solid #000000;
     background: #fff;
   }
-`
+`;
 
 export const Container = styled.div`
   display: flex;
   align-items: center;
-`
+`;
 
-export const Avatar = styled.img`
+export const Avatar = styled(LazyImage)`
+  height: auto;
+  width: auto;
   width: 56px;
   height: 56px;
   border-radius: 100%;
-`
+`;
 
 export const Content = styled.div`
   margin-left: 11px;
-`
+`;
 
 export const Name = styled.p`
   font-weight: 600;
@@ -203,12 +209,12 @@ export const Name = styled.p`
   margin-bottom: 3px;
   line-height: 25px;
   word-break: break-word;
-`
+`;
 
 export const Type = styled.p`
   font-size: 11px;
   line-height: 17px;
-`
+`;
 
 export const Wrap = styled.ul`
   width: 80%;
@@ -216,4 +222,4 @@ export const Wrap = styled.ul`
   top: -29px;
   position: relative;
   background-color: white;
-`
+`;

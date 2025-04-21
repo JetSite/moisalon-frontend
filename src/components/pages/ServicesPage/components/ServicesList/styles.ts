@@ -1,5 +1,6 @@
-import styled from 'styled-components'
-import { laptopBreakpoint } from '../../../../../styles/variables'
+import styled from 'styled-components';
+import { laptopBreakpoint } from '../../../../../styles/variables';
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
 
 export const Wrapper = styled.div`
   margin-top: 40px;
@@ -10,7 +11,7 @@ export const Wrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     margin-top: 0px;
   }
-`
+`;
 
 export const ListItemWrapper = styled.div`
   margin: 0 7px;
@@ -33,7 +34,7 @@ export const ListItemWrapper = styled.div`
     margin-bottom: 18px;
     padding: 21px 31px 0 31px;
   }
-`
+`;
 
 export const ImageWrapper = styled.div`
   display: flex;
@@ -48,9 +49,9 @@ export const ImageWrapper = styled.div`
     width: 100px;
     height: 100px;
   }
-`
+`;
 
-export const Image = styled.img`
+export const Image = styled(LazyImage)`
   width: 101.75px;
   height: 101.75px;
   object-fit: cover;
@@ -60,7 +61,7 @@ export const Image = styled.img`
     width: 74px;
     height: 74px;
   }
-`
+`;
 
 export const TextBlock = styled.div`
   margin-top: 30px;
@@ -72,11 +73,11 @@ export const TextBlock = styled.div`
     margin-top: 18px;
     height: 100px;
   }
-`
+`;
 
 export const TitlePriceWrap = styled.div`
   flex-grow: 1;
-`
+`;
 
 export const Title = styled.h3`
   min-height: 75px;
@@ -91,7 +92,7 @@ export const Title = styled.h3`
     font-weight: 400;
     line-height: 18px;
   }
-`
+`;
 
 export const Price = styled.p`
   font-size: 14px;
@@ -102,7 +103,7 @@ export const Price = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     font-size: 14px;
   }
-`
+`;
 
 export const Quantity = styled.p`
   font-size: 10px;
@@ -113,7 +114,7 @@ export const Quantity = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     font-size: 10px;
   }
-`
+`;
 
 export const WrapperItemsMasters = styled.div`
   width: 100%;
@@ -142,7 +143,7 @@ export const WrapperItemsMasters = styled.div`
     column-gap: 15px;
     margin-bottom: 40px;
   }
-`
+`;
 
 export const TitleResults = styled.h3`
   margin-bottom: 55px;
@@ -156,12 +157,12 @@ export const TitleResults = styled.h3`
     text-align: left;
     font-size: 22px;
   }
-`
+`;
 
 export const LinkStyled = styled.a`
   display: block;
   height: 100%;
-`
+`;
 
 export const SalonCardWrapper = styled.div`
   width: 373px;
@@ -171,7 +172,7 @@ export const SalonCardWrapper = styled.div`
     width: 100%;
     margin-right: 0;
   }
-`
+`;
 
 export const WrapperItems = styled.div`
   width: 100%;
@@ -194,7 +195,7 @@ export const WrapperItems = styled.div`
     column-gap: 15px;
     margin-bottom: 40px;
   }
-`
+`;
 
 export const WrapperItemsSalons = styled.div`
   width: 100%;
@@ -217,4 +218,4 @@ export const WrapperItemsSalons = styled.div`
     column-gap: 15px;
     margin-bottom: 40px;
   }
-`
+`;

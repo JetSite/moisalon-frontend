@@ -1,13 +1,14 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 import {
   laptopBreakpoint,
   tabletBreakpoint,
   red,
-} from '../../../../../styles/variables'
+} from '../../../../../styles/variables';
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
 
 export const Wrapper = styled.div`
   background: #f2f0f0;
-`
+`;
 
 export const Container = styled.div`
   display: flex;
@@ -16,7 +17,7 @@ export const Container = styled.div`
   max-width: 1440px;
   margin: 0 auto;
   background: #f2f0f0;
-`
+`;
 
 export const Content = styled.div`
   padding: 136px 140px 0 140px;
@@ -31,7 +32,7 @@ export const Content = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     padding: 40px 20px;
   }
-`
+`;
 
 export const FormWrapper = styled.div`
   max-width: 505px;
@@ -43,7 +44,7 @@ export const FormWrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     max-width: 100%;
   }
-`
+`;
 
 export const Form = styled.form`
   width: 100%;
@@ -59,7 +60,7 @@ export const Form = styled.form`
     width: auto;
     max-width: 100%;
   }
-`
+`;
 
 export const Input = styled.input`
   margin-top: 53px;
@@ -82,7 +83,7 @@ export const Input = styled.input`
     font-weight: 400;
     line-height: 25px;
   }
-`
+`;
 
 export const Label = styled.p`
   font-size: 14px;
@@ -96,7 +97,7 @@ export const Label = styled.p`
     font-weight: 500;
     line-height: 16px;
   }
-`
+`;
 
 export const CheckboxWrapper = styled.div`
   height: 21px;
@@ -108,7 +109,7 @@ export const CheckboxWrapper = styled.div`
     margin-top: 0;
     margin-bottom: 20px;
   }
-`
+`;
 
 export const Checkbox = styled.input`
   position: absolute;
@@ -132,7 +133,7 @@ export const Checkbox = styled.input`
     background: ${props =>
       props.checked ? `url("/tick-checkbox.png") no-repeat center` : ''};
   }
-`
+`;
 
 export const Title = styled.h2`
   color: ${red};
@@ -151,18 +152,18 @@ export const Title = styled.h2`
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`
+`;
 
 export const RegisterType = styled.div`
   max-width: 576px;
-`
+`;
 
 export const ButtonWrapper = styled.div`
   max-width: 335px;
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`
+`;
 
 export const ButtonMobileWrapper = styled.div`
   display: none;
@@ -171,7 +172,7 @@ export const ButtonMobileWrapper = styled.div`
     display: block;
     padding: 0 20px;
   }
-`
+`;
 
 export const NotAuthorized = styled.div`
   max-width: 400px;
@@ -183,7 +184,7 @@ export const NotAuthorized = styled.div`
     font-size: 12px;
     line-height: 18px;
   }
-`
+`;
 
 export const BottomWrapper = styled.div`
   background: #fff;
@@ -191,7 +192,7 @@ export const BottomWrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     margin-top: 60px;
   }
-`
+`;
 
 export const BottomContent = styled.div`
   max-width: 1440px;
@@ -210,7 +211,7 @@ export const BottomContent = styled.div`
     flex-direction: column-reverse;
     align-items: center;
   }
-`
+`;
 
 export const Left = styled.div`
   max-width: 580px;
@@ -218,22 +219,24 @@ export const Left = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`
+`;
 
 export const ImageWrap = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`
+`;
 
-export const Image = styled.img`
+export const Image = styled(LazyImage)`
+  height: auto;
+  width: auto;
   @media (max-width: ${tabletBreakpoint}) {
     width: 100%;
   }
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`
+`;
 
 export const Right = styled.div`
   max-width: 473px;
@@ -241,7 +244,7 @@ export const Right = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`
+`;
 
 export const TitleBottom = styled.p`
   font-weight: 600;
@@ -257,7 +260,7 @@ export const TitleBottom = styled.p`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`
+`;
 
 export const Desc = styled.p`
   font-size: 18px;
@@ -271,9 +274,9 @@ export const Desc = styled.p`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`
+`;
 
-export const Items = styled.div``
+export const Items = styled.div``;
 
 export const ButtonWrap = styled.div`
   margin-top: 100px;
@@ -281,7 +284,7 @@ export const ButtonWrap = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     margin-top: 60px;
   }
-`
+`;
 
 export const Item = styled.div`
   padding-left: 50px;
@@ -317,4 +320,4 @@ export const Item = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     padding-left: 40px;
   }
-`
+`;

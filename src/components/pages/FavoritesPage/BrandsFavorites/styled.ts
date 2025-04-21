@@ -1,22 +1,23 @@
-import styled from 'styled-components'
-import { laptopBreakpoint } from '../../../../styles/variables'
+import styled from 'styled-components';
+import { laptopBreakpoint } from '../../../../styles/variables';
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
 
 export const Wrapper = styled.section<{ cabinet: boolean }>`
   max-width: ${props => (props.cabinet ? '573px' : '100%')};
   @media (max-width: ${laptopBreakpoint}) {
     max-width: 100%;
   }
-`
+`;
 
 export const SliderWrapper = styled.div`
   display: flex;
-`
+`;
 
 export const Top = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-`
+`;
 
 export const ItemToggle = styled.div<{ disabled: boolean; toggle: boolean }>`
   width: 100%;
@@ -41,7 +42,7 @@ export const ItemToggle = styled.div<{ disabled: boolean; toggle: boolean }>`
     transform: ${props =>
       props.toggle ? 'rotate(90deg) translateX(-50%)' : 'translateY(-50%)'};
   }
-`
+`;
 
 export const Title = styled.p<{ cabinet: boolean }>`
   margin-bottom: 55px;
@@ -53,7 +54,7 @@ export const Title = styled.p<{ cabinet: boolean }>`
     margin-bottom: 20px;
     font-size: 24px;
   }
-`
+`;
 
 export const Content = styled.div<{ cabinet: boolean }>`
   padding: ${props => (props.cabinet ? '0' : '0 140px')};
@@ -63,18 +64,18 @@ export const Content = styled.div<{ cabinet: boolean }>`
   @media (max-width: ${laptopBreakpoint}) {
     padding: ${props => (props.cabinet ? '0' : '30px 20px 40px 20px')};
   }
-`
+`;
 
 export const Favorite = styled.div`
   position: absolute;
   cursor: pointer;
   right: 10px;
   top: 9px;
-`
+`;
 
 export const SwiperWrap = styled.div`
   width: 100%;
-`
+`;
 
 export const Item = styled.div`
   width: 176px;
@@ -89,11 +90,12 @@ export const Item = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-`
+`;
 
-export const Image = styled.img`
+export const Image = styled(LazyImage)`
+  height: auto;
   width: 100%;
-`
+`;
 
 export const BottomGoodWrapper = styled.div`
   padding: 12px 10px;
@@ -106,7 +108,7 @@ export const BottomGoodWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-`
+`;
 
 export const Name = styled.p`
   font-size: 18px;
@@ -115,9 +117,9 @@ export const Name = styled.p`
   color: #000;
   word-break: break-word;
   margin-bottom: 20px;
-`
+`;
 
 export const Empty = styled.div`
   font-size: 18px;
   line-height: 30px;
-`
+`;

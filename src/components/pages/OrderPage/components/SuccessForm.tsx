@@ -1,5 +1,5 @@
-import Button from '../../../ui/Button'
-import { FC, useEffect } from 'react'
+import Button from '../../../ui/Button';
+import { FC, useEffect } from 'react';
 import {
   SuccessWrapper,
   Content,
@@ -20,25 +20,26 @@ import {
   TextSumm,
   TextTotal,
   ButtonWrap,
-} from '../styles'
-import { useMedia } from 'use-media'
-import PopupOrder from './PopupOrder'
-import Steps from './Steps'
-import { PHOTO_URL } from '../../../../api/variables'
-import { ISuccessOrderValues } from '../utils/getOrderData'
-import { IDeliveryMethods, IPaymentMethods } from 'src/types'
-import BackButton from '../../../ui/BackButton'
-import { ISetState } from 'src/types/common'
+} from '../styles';
+import { useMedia } from 'use-media';
+import PopupOrder from './PopupOrder';
+import Steps from './Steps';
+import { PHOTO_URL } from '../../../../api/variables';
+import { ISuccessOrderValues } from '../utils/getOrderData';
+import { IDeliveryMethods, IPaymentMethods } from 'src/types';
+import BackButton from '../../../ui/BackButton';
+import { ISetState } from 'src/types/common';
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
 
 interface IProps {
-  successOrderValues: ISuccessOrderValues
-  onSuccess: () => void
-  open: boolean
-  loading: boolean
-  handleClose: () => void
-  paymentTitle: IPaymentMethods['title']
-  deliveryTitle: IDeliveryMethods['name']
-  setOrderForm: ISetState<boolean>
+  successOrderValues: ISuccessOrderValues;
+  onSuccess: () => void;
+  open: boolean;
+  loading: boolean;
+  handleClose: () => void;
+  paymentTitle: IPaymentMethods['title'];
+  deliveryTitle: IDeliveryMethods['name'];
+  setOrderForm: ISetState<boolean>;
 }
 
 const SuccessForm: FC<IProps> = ({
@@ -51,12 +52,12 @@ const SuccessForm: FC<IProps> = ({
   deliveryTitle,
   setOrderForm,
 }) => {
-  const mobileMedia = useMedia({ maxWidth: 768 })
+  const mobileMedia = useMedia({ maxWidth: 768 });
   useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
+    window.scrollTo(0, 0);
+  }, []);
 
-  const { cartContent, total, userInfo, address, comment } = successOrderValues
+  const { cartContent, total, userInfo, address, comment } = successOrderValues;
 
   return (
     <>
@@ -65,8 +66,8 @@ const SuccessForm: FC<IProps> = ({
         noLink
         onlyType
         handleClick={() => {
-          setOrderForm(true)
-          window.scrollTo(0, 0)
+          setOrderForm(true);
+          window.scrollTo(0, 0);
         }}
       />
       <Content>
@@ -107,7 +108,7 @@ const SuccessForm: FC<IProps> = ({
               return (
                 <ItemChecked key={cartItem.product.id}>
                   <ImageWrapper>
-                    <img
+                    <LazyImage
                       src={
                         cartItem.product.cover?.url
                           ? `${PHOTO_URL}${cartItem.product.cover.url}`
@@ -128,7 +129,7 @@ const SuccessForm: FC<IProps> = ({
                     </Bottom>
                   </ItemCheckedRight>
                 </ItemChecked>
-              )
+              );
             })}
             {/* {formValues?.product
               ? formValues?.product.map(product => (
@@ -156,7 +157,7 @@ const SuccessForm: FC<IProps> = ({
       </Content>
       <PopupOrder handleCloseSuccess={handleClose} open={open} />
     </>
-  )
-}
+  );
+};
 
-export default SuccessForm
+export default SuccessForm;

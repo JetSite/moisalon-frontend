@@ -1,16 +1,17 @@
-import { FC, useState } from 'react'
-import styled from 'styled-components'
-import { laptopBreakpoint } from '../../../../../../styles/variables'
-import MobileCatalogItem from './MobileCatalogItem'
-import { IGroupedServices } from 'src/utils/serviceCatalog'
-import { IService, IServices } from 'src/types/services'
+import { FC, useState } from 'react';
+import styled from 'styled-components';
+import { laptopBreakpoint } from '../../../../../../styles/variables';
+import MobileCatalogItem from './MobileCatalogItem';
+import { IGroupedServices } from 'src/utils/serviceCatalog';
+import { IService, IServices } from 'src/types/services';
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
 
 const Wrapper = styled.div<{ masterPage?: boolean }>`
   width: ${props => (props.masterPage ? '100%' : 'initial')};
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`
+`;
 
 const Title = styled.h4`
   @media (max-width: ${laptopBreakpoint}) {
@@ -19,12 +20,12 @@ const Title = styled.h4`
     line-height: 20px;
     text-transform: uppercase;
   }
-`
+`;
 
 const Item = styled.div`
   font-size: 18px;
   margin-bottom: 5px;
-`
+`;
 
 const TitleWrapper = styled.div<{ masterPage?: boolean }>`
   display: flex;
@@ -32,7 +33,7 @@ const TitleWrapper = styled.div<{ masterPage?: boolean }>`
   align-items: center;
   margin-bottom: 20px;
   cursor: ${props => (props.masterPage ? 'pointer' : 'initial')};
-`
+`;
 
 const TickIcon = styled.div<{ open: boolean }>`
   display: flex;
@@ -42,50 +43,51 @@ const TickIcon = styled.div<{ open: boolean }>`
   height: 11px;
   transform: ${({ open }) => (open ? 'rotate(90deg) translateX(-2px)' : '')};
   transition: all 0.2s;
-`
+`;
 
-const Icon = styled.img`
+const Icon = styled(LazyImage)`
+  height: auto;
   width: 100%;
-`
+`;
 
 const ItemWrapper = styled.div<{ open: boolean }>`
   display: ${({ open }) => (open ? 'block' : 'none')};
   margin-bottom: ${({ open }) => (open ? '40px' : '0')};
-`
+`;
 
 const ucFirst = (str: string) => {
-  if (!str) return str
+  if (!str) return str;
 
-  return str[0].toUpperCase() + str.slice(1)
-}
+  return str[0].toUpperCase() + str.slice(1);
+};
 
 interface IMobileCatalogGroup {
-  serviceBlock: IGroupedServices
-  masterPage?: boolean
+  serviceBlock: IGroupedServices;
+  masterPage?: boolean;
 }
 
 const MobileCatalogGroupForClient: FC<IMobileCatalogGroup> = ({
   serviceBlock,
   masterPage,
 }) => {
-  const [openGroup, setOpenGroup] = useState(false)
+  const [openGroup, setOpenGroup] = useState(false);
 
   if (!serviceBlock?.services) {
-    return null
+    return null;
   }
 
   const openGroupHandler = () => {
-    setOpenGroup(!openGroup)
-  }
+    setOpenGroup(!openGroup);
+  };
 
   const services = serviceBlock?.services?.map((service, idx) => {
     return (
       <MobileCatalogItem key={idx} masterPage={masterPage} item={service} />
-    )
-  })
+    );
+  });
 
   if (services?.length === 0) {
-    return null
+    return null;
   }
 
   return (
@@ -100,7 +102,7 @@ const MobileCatalogGroupForClient: FC<IMobileCatalogGroup> = ({
         <Item>{services}</Item>
       </ItemWrapper>
     </Wrapper>
-  )
-}
+  );
+};
 
-export default MobileCatalogGroupForClient
+export default MobileCatalogGroupForClient;

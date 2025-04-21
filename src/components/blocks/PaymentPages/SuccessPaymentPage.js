@@ -1,16 +1,17 @@
-import Link from 'next/link'
-import MainLayout from '../../../layouts/MainLayout'
-import { MainContainer } from '../../../styles/common'
-import styled from 'styled-components'
-import { useMedia } from 'use-media'
-import { laptopBreakpoint, red } from '../../../styles/variables'
+import Link from 'next/link';
+import MainLayout from '../../../layouts/MainLayout';
+import { MainContainer } from '../../../styles/common';
+import styled from 'styled-components';
+import { useMedia } from 'use-media';
+import { laptopBreakpoint, red } from '../../../styles/variables';
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
 
 const Wrapper = styled.div`
   padding: 120px 140px;
   @media (max-width: ${laptopBreakpoint}) {
     padding: 50px 20px;
   }
-`
+`;
 
 const Content = styled.div`
   display: flex;
@@ -18,7 +19,7 @@ const Content = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     display: block;
   }
-`
+`;
 
 const Left = styled.div`
   width: 215px;
@@ -44,7 +45,7 @@ const Left = styled.div`
       z-index: 1;
     }
   }
-`
+`;
 
 const Right = styled.div`
   max-width: 800px;
@@ -54,7 +55,7 @@ const Right = styled.div`
     max-width: 100%;
     padding-left: 0;
   }
-`
+`;
 
 const Title = styled.p`
   font-weight: 600;
@@ -65,7 +66,7 @@ const Title = styled.p`
     font-size: 20px;
     text-align: center;
   }
-`
+`;
 
 const Text = styled.p`
   font-weight: 400;
@@ -76,7 +77,7 @@ const Text = styled.p`
     font-size: 16px;
     line-height: 25px;
   }
-`
+`;
 
 const TextLink = styled.span`
   font-weight: 700;
@@ -92,7 +93,7 @@ const TextLink = styled.span`
     font-size: 16px;
     line-height: 25px;
   }
-`
+`;
 
 const ButtonWrap = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
@@ -100,10 +101,10 @@ const ButtonWrap = styled.div`
       width: 100%;
     }
   }
-`
+`;
 
 const SuccessPaymentPage = () => {
-  const mobileMedia = useMedia({ maxWidth: 768 })
+  const mobileMedia = useMedia({ maxWidth: 768 });
   return (
     <MainLayout>
       <MainContainer>
@@ -111,7 +112,7 @@ const SuccessPaymentPage = () => {
           <Content>
             {mobileMedia ? <Title>СПАСИБО!</Title> : null}
             <Left>
-              <img src="/successPopup.svg" alt="image" />
+              <LazyImage src="/successPopup.svg" alt="image" />
             </Left>
             <Right>
               {!mobileMedia ? <Title>Спасибо за ваш заказ!</Title> : null}
@@ -142,7 +143,7 @@ const SuccessPaymentPage = () => {
         </Wrapper>
       </MainContainer>
     </MainLayout>
-  )
-}
+  );
+};
 
-export default SuccessPaymentPage
+export default SuccessPaymentPage;

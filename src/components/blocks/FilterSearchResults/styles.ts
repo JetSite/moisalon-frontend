@@ -1,5 +1,6 @@
-import styled from 'styled-components'
-import { laptopBreakpoint } from '../../../styles/variables'
+import styled from 'styled-components';
+import { laptopBreakpoint } from '../../../styles/variables';
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
 
 export const Wrapper = styled.div<{ view: 'list' | string }>`
   display: flex;
@@ -11,7 +12,7 @@ export const Wrapper = styled.div<{ view: 'list' | string }>`
     flex-direction: column;
     margin-bottom: 35px;
   }
-`
+`;
 
 export const FilterItem = styled.div<{ active: boolean; salon: boolean }>`
   min-width: 187px;
@@ -36,7 +37,7 @@ export const FilterItem = styled.div<{ active: boolean; salon: boolean }>`
     padding-left: 21px;
     justify-content: flex-start;
   }
-`
+`;
 
 export const Text = styled.div<{ active: boolean }>`
   font-size: 14px;
@@ -49,7 +50,7 @@ export const Text = styled.div<{ active: boolean }>`
     font-weight: 500;
     line-height: 16px;
   }
-`
+`;
 
 export const FilterArrowWrap = styled.div<{ active: boolean }>`
   position: absolute;
@@ -66,15 +67,16 @@ export const FilterArrowWrap = styled.div<{ active: boolean }>`
     right: 9%;
     width: 11px;
   }
-`
+`;
 
-export const FilterArrow = styled.img`
+export const FilterArrow = styled(LazyImage)`
+  height: auto;
   width: 100%;
-`
+`;
 
 export const Wrap = styled.div`
   display: flex;
-`
+`;
 export const FilterWrap = styled.div<{ active: boolean; disabled?: boolean }>`
   background: #ffffff;
   border: 1px solid #000000;
@@ -104,7 +106,7 @@ export const FilterWrap = styled.div<{ active: boolean; disabled?: boolean }>`
       left: ${props => (props.active ? '0px' : '126px')};
     }
   }
-`
+`;
 
 export const TextFilter = styled.div<{ active: boolean }>`
   font-weight: 600;
@@ -122,4 +124,4 @@ export const TextFilter = styled.div<{ active: boolean }>`
   @media (max-width: ${laptopBreakpoint}) {
     font-size: 10px;
   }
-`
+`;

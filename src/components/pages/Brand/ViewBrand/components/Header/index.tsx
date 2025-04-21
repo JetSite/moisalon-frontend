@@ -1,6 +1,6 @@
-import { FC, useEffect, useState } from 'react'
-import { MainContainer } from '../../../../../../styles/common'
-import BackButton from '../../../../../ui/BackButton'
+import { FC, useEffect, useState } from 'react';
+import { MainContainer } from '../../../../../../styles/common';
+import BackButton from '../../../../../ui/BackButton';
 import {
   Wrapper,
   Photo,
@@ -14,40 +14,41 @@ import {
   Character,
   OpenCharacter,
   Terms,
-} from './styled'
-import Title from '../Title'
-import { useRouter } from 'next/router'
-import { cyrToTranslit } from '../../../../../../utils/translit'
-import { PHOTO_URL } from '../../../../../../api/variables'
-import useAuthStore from 'src/store/authStore'
-import { getStoreData } from 'src/store/utils'
-import { IBrand } from 'src/types/brands'
+} from './styled';
+import Title from '../Title';
+import { useRouter } from 'next/router';
+import { cyrToTranslit } from '../../../../../../utils/translit';
+import { PHOTO_URL } from '../../../../../../api/variables';
+import useAuthStore from 'src/store/authStore';
+import { getStoreData } from 'src/store/utils';
+import { IBrand } from 'src/types/brands';
 import {
   Logo,
   SkeletonCircle,
-} from 'src/components/pages/Salon/ViewSalon/components/Header/styled'
+} from 'src/components/pages/Salon/ViewSalon/components/Header/styled';
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
 
 interface Props {
-  brand: IBrand
-  isOwner: boolean
-  noBackButton?: boolean
+  brand: IBrand;
+  isOwner: boolean;
+  noBackButton?: boolean;
 }
 
 const Header: FC<Props> = ({ brand, isOwner, noBackButton = false }) => {
-  const [toggleTerms, setToggleTerms] = useState(false)
+  const [toggleTerms, setToggleTerms] = useState(false);
   const [myPrice, setMyPrice] = useState<string | null>(
     brand?.minimalOrderPrice?.toString() || null,
-  )
+  );
 
   useEffect(() => {
-    setMyPrice(brand?.minimalOrderPrice?.toLocaleString() || null)
-  }, [])
+    setMyPrice(brand?.minimalOrderPrice?.toLocaleString() || null);
+  }, []);
 
   const logo = brand.logo?.url ? (
-    <Logo background={`url(${PHOTO_URL}${brand.logo?.url})`} />
+    <LazyImage alt={brand.name} src={`${PHOTO_URL}${brand.logo?.url}`} />
   ) : (
     <SkeletonCircle />
-  )
+  );
 
   return (
     <>
@@ -114,7 +115,7 @@ const Header: FC<Props> = ({ brand, isOwner, noBackButton = false }) => {
         </Wrapper>
       </MainContainer>
     </>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

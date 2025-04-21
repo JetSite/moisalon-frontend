@@ -1,8 +1,9 @@
-import { laptopBreakpoint, red } from '../../../../../styles/variables'
-import styled, { css } from 'styled-components'
-import { Skeleton } from '@material-ui/lab'
-import { lighten } from 'polished'
-import { IQuantityControlsType } from './conponents/QuantityControls'
+import { laptopBreakpoint, red } from '../../../../../styles/variables';
+import styled, { css } from 'styled-components';
+import { Skeleton } from '@material-ui/lab';
+import { lighten } from 'polished';
+import { IQuantityControlsType } from './conponents/QuantityControls';
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
 
 export const Wrapper = styled.div`
   max-width: 375px;
@@ -30,18 +31,18 @@ export const Wrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
   }
-`
+`;
 
 export const SkeletonItem = styled(Skeleton)`
   max-width: 275px;
   width: 100%;
   height: 365px;
-`
+`;
 
 export const SkeletonBottom = styled(Skeleton)`
   width: 100%;
   height: 35px;
-`
+`;
 
 export const ImageWrapper = styled.div`
   display: flex;
@@ -53,9 +54,9 @@ export const ImageWrapper = styled.div`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`
+`;
 
-export const Image = styled.img`
+export const Image = styled(LazyImage)`
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -63,7 +64,7 @@ export const Image = styled.img`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`
+`;
 
 export const Favorite = styled.button`
   position: absolute;
@@ -73,7 +74,7 @@ export const Favorite = styled.button`
   cursor: pointer;
   right: 15px;
   top: -10px;
-`
+`;
 
 export const Content = styled.div`
   padding: 10px 10px 20px 10px;
@@ -89,7 +90,7 @@ export const Content = styled.div`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`
+`;
 
 export const Name = styled.p`
   max-width: 211px;
@@ -102,7 +103,7 @@ export const Name = styled.p`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`
+`;
 
 export const Price = styled.div`
   margin-top: auto;
@@ -112,7 +113,7 @@ export const Price = styled.div`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`
+`;
 
 export const OldPrice = styled.p`
   color: #a1a1a1;
@@ -130,7 +131,7 @@ export const OldPrice = styled.p`
     top: 7px;
     left: 0;
   }
-`
+`;
 
 export const NewPrice = styled.p`
   margin-right: 5px;
@@ -141,7 +142,7 @@ export const NewPrice = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     line-height: 16px;
   }
-`
+`;
 
 export const ButtonCart = styled.button`
   max-width: 247px;
@@ -170,7 +171,7 @@ export const ButtonCart = styled.button`
   @media (max-width: ${laptopBreakpoint}) {
     font-size: 9px;
   }
-`
+`;
 
 export const QuantityWrap = styled.div`
   display: flex;
@@ -183,12 +184,12 @@ export const QuantityWrap = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     width: 86.3%;
   }
-`
+`;
 
 export const Quantity = styled.p`
   font-size: 10px;
   line-height: 16px;
-`
+`;
 
 export const Minus = styled.button`
   width: 28px;
@@ -202,7 +203,7 @@ export const Minus = styled.button`
   &:hover {
     background: #ff0033 url('/icon-minus-white.svg') no-repeat center;
   }
-`
+`;
 
 export const Plus = styled(Minus)`
   background: #f0f0f0 url('/icon-plus.svg') no-repeat center;
@@ -212,7 +213,7 @@ export const Plus = styled(Minus)`
     background: #ff0033 url('/icon-plus-white.svg') no-repeat center;
     background-size: 13px;
   }
-`
+`;
 
 export const ButtonsWrapper = styled.div<{ type: IQuantityControlsType }>`
   display: flex;
@@ -228,7 +229,7 @@ export const ButtonsWrapper = styled.div<{ type: IQuantityControlsType }>`
         flex-wrap: wrap;
       }
     `}
-`
+`;
 
 export const Available = styled.div<{ avaible?: boolean }>`
   padding-left: 7px;
@@ -255,24 +256,24 @@ export const Available = styled.div<{ avaible?: boolean }>`
       top: 5px;
     }
   }
-`
+`;
 
 export const Description = styled.p`
   max-height: 64px;
   font-size: 12px;
   line-height: 16px;
   overflow: hidden;
-`
+`;
 
 export const ProductDetails = styled.div`
   max-height: 58px;
-`
+`;
 
 export const Detail = styled.p`
   margin-bottom: 3px;
   font-size: 10px;
   color: #c6c6c6;
-`
+`;
 
 export const QuantityInPack = styled.p`
   margin-bottom: 10px;
@@ -281,4 +282,4 @@ export const QuantityInPack = styled.p`
   color: #c6c6c6;
   text-transform: uppercase;
   text-align: center;
-`
+`;

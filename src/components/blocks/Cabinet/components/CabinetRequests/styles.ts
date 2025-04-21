@@ -1,12 +1,13 @@
-import styled from 'styled-components'
-import Button from '../../../../ui/Button'
-import { laptopBreakpoint, red } from '../../../../../styles/variables'
+import styled from 'styled-components';
+import Button from '../../../../ui/Button';
+import { laptopBreakpoint, red } from '../../../../../styles/variables';
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
 
 export const Text = styled.p`
   font-size: 10px;
   font-weight: 400;
   line-height: 16px;
-`
+`;
 
 export const Wrapper = styled.section`
   position: relative;
@@ -19,7 +20,7 @@ export const Wrapper = styled.section`
     padding-top: 0;
     margin-bottom: 40px;
   }
-`
+`;
 
 export const TabWrapper = styled.ul`
   display: flex;
@@ -29,13 +30,13 @@ export const TabWrapper = styled.ul`
   gap: 16px;
   @media (max-width: ${laptopBreakpoint}) {
   }
-`
+`;
 
 export const Tab = styled.li`
   position: relative;
   display: block;
   list-style: none;
-`
+`;
 
 export const TabButton = styled.button<{ active?: boolean; disable?: boolean }>`
   border: none;
@@ -53,7 +54,7 @@ export const TabButton = styled.button<{ active?: boolean; disable?: boolean }>`
   &:hover {
     color: ${props => (props.disable ? 'inherit' : red)};
   }
-`
+`;
 
 export const ListWrapper = styled.ul`
   margin-top: 40px;
@@ -61,7 +62,7 @@ export const ListWrapper = styled.ul`
   flex-wrap: wrap;
   gap: 16px;
   margin-bottom: 23px;
-`
+`;
 
 export const Comment = styled(Text)`
   position: relative;
@@ -83,11 +84,11 @@ export const Comment = styled(Text)`
     background-size: contain;
     opacity: 0.6;
   }
-`
+`;
 
 export const ItemWrapper = styled.li<{
-  noView?: boolean
-  myRequests?: boolean
+  noView?: boolean;
+  myRequests?: boolean;
 }>`
   position: relative;
   max-width: 330px;
@@ -113,7 +114,7 @@ export const ItemWrapper = styled.li<{
     background: #f03;
     ${({ noView }) => (!noView ? 'display: none;' : 'display: block;')}
   }
-`
+`;
 
 export const ShowDeletedButton = styled.button<{ active?: boolean }>`
   cursor: pointer;
@@ -145,7 +146,7 @@ export const ShowDeletedButton = styled.button<{ active?: boolean }>`
   @media (max-width: ${laptopBreakpoint}) {
     top: 0;
   }
-`
+`;
 
 export const CloseButton = styled.button`
   cursor: pointer;
@@ -163,12 +164,12 @@ export const CloseButton = styled.button`
   &:focus {
     filter: brightness(30%);
   }
-`
+`;
 
 export const MasterContent = styled.div`
   display: flex;
   margin-bottom: 16px;
-`
+`;
 
 export const MasterPhoto = styled.div`
   width: 88px;
@@ -177,25 +178,25 @@ export const MasterPhoto = styled.div`
   margin-right: 16px;
   border-radius: 50%;
   background: #e3e3e3;
-`
-export const Photo = styled.img`
+`;
+export const Photo = styled(LazyImage)`
   width: 100%;
   border-radius: 50%;
   height: 100%;
-`
-export const Info = styled.div``
+`;
+export const Info = styled.div``;
 export const Name = styled.h5`
   font-size: 14px;
   font-weight: 500;
   line-height: 20px;
-`
-export const Spec = styled(Text)``
+`;
+export const Spec = styled(Text)``;
 export const Phone = styled(Text)`
   margin-top: 21px;
   font-weight: 500;
   line-height: 18px;
   text-decoration: underline;
-`
+`;
 export const Сommunication = styled(Text)`
   margin-top: 8px;
   font-weight: 500;
@@ -203,28 +204,28 @@ export const Сommunication = styled(Text)`
   & span {
     font-weight: 400;
   }
-`
+`;
 
 export const Email = styled(Text)`
   font-weight: 500;
   line-height: 18px;
-`
+`;
 export const Request = styled.div`
   display: flex;
-`
+`;
 export const RequestInfo = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-`
+`;
 
-export const PositionWrap = styled.div``
+export const PositionWrap = styled.div``;
 
 export const Position = styled.p`
   font-size: 14px;
   font-weight: 500;
   line-height: 20px;
-`
+`;
 export const SalonPhoto = styled.div<{ photo?: string | null }>`
   width: 88px;
   height: 90px;
@@ -235,24 +236,24 @@ export const SalonPhoto = styled.div<{ photo?: string | null }>`
   background: ${({ photo }) =>
     photo ? `url(${photo}) no-repeat center` : '#e3e3e3'};
   background-size: cover;
-`
-export const SalonName = styled(Text)``
+`;
+export const SalonName = styled(Text)``;
 export const ButtonWrapper = styled.div`
   min-height: 83px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-`
+`;
 
 export const ButtonStyled = styled(Button)`
   :disabled {
     color: #000;
     background-color: #f0f0f0;
   }
-`
+`;
 
 export const NoRequestsText = styled.p`
   font-size: 18px;
   font-weight: 400;
   line-height: 30px;
-`
+`;

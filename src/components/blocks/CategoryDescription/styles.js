@@ -1,4 +1,5 @@
-import styled from "styled-components";
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
+import styled from 'styled-components';
 
 export const Wrapper = styled.div`
   padding: 0 140px;
@@ -13,7 +14,8 @@ export const DescriptionImageWrap = styled.div`
   height: 71px;
 `;
 
-export const DescriptionImage = styled.img`
+export const DescriptionImage = styled(LazyImage)`
+  height: auto;
   width: 100%;
 `;
 

@@ -1,6 +1,7 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
-import { laptopBreakpoint } from '../../../styles/variables'
+import { laptopBreakpoint } from '../../../styles/variables';
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
 
 export const Wrapper = styled.div`
   margin-top: 100px;
@@ -10,26 +11,26 @@ export const Wrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
   }
-`
+`;
 
 export const Top = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-`
+`;
 
 export const Title = styled.p`
   font-size: 30px;
   font-weight: 600;
   margin-bottom: 55px;
-`
+`;
 
 export const Good = styled.div`
   width: 175px;
   min-height: 100%;
   display: flex;
   flex-direction: column;
-`
+`;
 
 export const TopGoodWrapper = styled.div`
   height: 175px;
@@ -41,7 +42,7 @@ export const TopGoodWrapper = styled.div`
   align-items: center;
   position: relative;
   z-index: 2;
-`
+`;
 
 export const Favorite = styled.div`
   position: absolute;
@@ -51,7 +52,7 @@ export const Favorite = styled.div`
   cursor: pointer;
   right: 12px;
   top: 12px;
-`
+`;
 
 export const ActionPercentBlock = styled.div`
   display: flex;
@@ -69,18 +70,18 @@ export const ActionPercentBlock = styled.div`
   line-height: 16px;
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
-`
+`;
 
 export const SwiperWrap = styled.div`
   max-width: 963px;
   width: 100%;
-`
+`;
 
-export const Image = styled.img`
+export const Image = styled(LazyImage)`
   height: 100%;
   object-fit: contain;
   width: 100%;
-`
+`;
 
 export const BottomGoodWrapper = styled.div`
   padding: 12px 10px;
@@ -94,7 +95,7 @@ export const BottomGoodWrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
   flex-grow: 1;
-`
+`;
 
 export const Name = styled.p`
   font-size: 14px;
@@ -102,13 +103,13 @@ export const Name = styled.p`
   font-weight: 600;
   text-align: center;
   color: #000;
-`
+`;
 
 export const Price = styled.div`
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
-`
+`;
 
 export const OldPrice = styled.p`
   color: #e5e5e5;
@@ -125,14 +126,14 @@ export const OldPrice = styled.p`
     top: calc(50% - 1px);
     left: 0;
   }
-`
+`;
 
 export const NewPrice = styled.p`
   font-size: 14px;
   line-height: 27px;
   color: #ff0033;
   font-weight: 600;
-`
+`;
 
 export const AllGoods = styled.div`
   width: 176px;
@@ -165,7 +166,7 @@ export const AllGoods = styled.div`
     top: 72px;
     left: 12px;
   }
-`
+`;
 
 export const AllIcon = styled.div`
   position: absolute;
@@ -175,7 +176,7 @@ export const AllIcon = styled.div`
   height: 81px;
   top: 16px;
   right: 10px;
-`
+`;
 
 export const AllText = styled.p`
   color: #fff;
@@ -183,7 +184,7 @@ export const AllText = styled.p`
   text-align: center;
   font-size: 18px;
   line-height: 25px;
-`
+`;
 
 export const Plus = styled.div`
   width: 56px;
@@ -212,11 +213,11 @@ export const Plus = styled.div`
     margin-top: -11px;
     left: 50%;
   }
-`
+`;
 
 export const BottomText = styled.p`
   font-size: 18px;
   font-weight: 600;
   color: #000;
   line-height: 25px;
-`
+`;

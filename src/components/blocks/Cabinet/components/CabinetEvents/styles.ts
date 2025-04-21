@@ -1,6 +1,7 @@
-import { Skeleton } from '@material-ui/lab'
-import styled from 'styled-components'
-import { laptopBreakpoint } from '../../../../../styles/variables'
+import { Skeleton } from '@material-ui/lab';
+import styled from 'styled-components';
+import { laptopBreakpoint } from '../../../../../styles/variables';
+import { LazyImage } from '@/components/newUI/common/LazyIMage';
 
 export const Wrapper = styled.section`
   max-width: 710px;
@@ -12,7 +13,7 @@ export const Wrapper = styled.section`
     padding-top: 0;
     margin-bottom: 40px;
   }
-`
+`;
 
 export const TitlePage = styled.h2`
   font-size: 40px;
@@ -26,7 +27,7 @@ export const TitlePage = styled.h2`
     margin-bottom: 5px;
     text-transform: none;
   }
-`
+`;
 
 export const Subtitle = styled.p`
   font-weight: 600;
@@ -39,7 +40,7 @@ export const Subtitle = styled.p`
     margin-bottom: 20px;
     line-height: 17px;
   }
-`
+`;
 
 export const Item = styled.div`
   width: 100%;
@@ -62,19 +63,19 @@ export const Item = styled.div`
     padding: 25px;
     padding-left: 11px;
   }
-`
+`;
 
 export const Container = styled.div`
   display: flex;
   align-items: center;
-`
+`;
 
 export const Content = styled.div`
   margin-left: 41px;
   @media (max-width: ${laptopBreakpoint}) {
     margin-left: 11px;
   }
-`
+`;
 
 export const Name = styled.p`
   font-weight: 600;
@@ -85,7 +86,7 @@ export const Name = styled.p`
     font-size: 16px;
     margin-bottom: 3px;
   }
-`
+`;
 
 export const Type = styled.p`
   font-size: 18px;
@@ -94,13 +95,13 @@ export const Type = styled.p`
     font-size: 11px;
     line-height: 17px;
   }
-`
+`;
 
-export const Avatar = styled.img`
+export const Avatar = styled(LazyImage)`
   width: 56px;
   height: 56px;
   border-radius: 100%;
-`
+`;
 
 export const SkeletonWrap = styled(Skeleton)`
   width: 375px;
@@ -111,7 +112,7 @@ export const SkeletonWrap = styled(Skeleton)`
     max-width: 375px;
     height: 280px;
   }
-`
+`;
 
 export const EventsWrapper = styled.ul`
   width: 100%;
@@ -120,7 +121,7 @@ export const EventsWrapper = styled.ul`
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 20px;
-`
+`;
 
 export const Back = styled.p`
   font-size: 24px;
@@ -132,4 +133,4 @@ export const Back = styled.p`
     color: #f03;
     font-size: 16px;
   }
-`
+`;
