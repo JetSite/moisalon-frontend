@@ -106,7 +106,6 @@ export const EventBottom = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-between;
-  align-items: baseline;
 
   @media (max-width: ${laptopBreakpoint}) {
     font-size: 12px;
@@ -117,7 +116,7 @@ export const EventBottom = styled.div`
 export const EventData = styled.div`
   border-top: 0.5px solid #000;
   padding-top: 10px;
-  width: 100%;
+  width: fit-content;
 `;
 
 export const Date = styled.p`
@@ -138,11 +137,17 @@ export const DateSpan = styled.span`
 `;
 
 export const EventAddress = styled.p`
+  max-width: 50%;
+  height: 56px;
+  padding-top: 10px;
   color: #727272;
   font-size: 12px;
   font-weight: 600;
+  line-height: 14px;
+  text-align: right;
 
   @media (max-width: ${laptopBreakpoint}) {
+    /* height: auto; */
     font-size: 12px;
     line-height: 14px;
   }

@@ -1,7 +1,7 @@
-import { useRouter } from 'next/router'
-import Link from 'next/link'
-import { MainContainer } from '../../../../../styles/common'
-import Button from '../../../../ui/Button'
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+import { MainContainer } from '../../../../../styles/common';
+import Button from '../../../../ui/Button';
 import {
   Wrapper,
   Title,
@@ -24,56 +24,56 @@ import {
   MobileAssetSalon,
   MobileAssetBusiness,
   IBgImages,
-} from './styled'
-import goalIdObjects from '../../../../../lib/goalIdObjects'
-import useAuthStore from 'src/store/authStore'
-import { getStoreData } from 'src/store/utils'
-import { FC } from 'react'
+} from './styled';
+import goalIdObjects from '../../../../../lib/goalIdObjects';
+import useAuthStore from 'src/store/authStore';
+import { getStoreData } from 'src/store/utils';
+import { FC } from 'react';
 
 const About: FC = () => {
-  const { me } = useAuthStore(getStoreData)
-  let leftImage: IBgImages
-  let rightImage: IBgImages
-  let leftImageWidth
-  let rightImageWidth
-  let leftImageHeight
-  let rightImageHeight
-  let leftImageTop
-  let rightImageTop
-  const router = useRouter()
-  const type = router.pathname.substring(1)
+  const { me } = useAuthStore(getStoreData);
+  let leftImage: IBgImages;
+  let rightImage: IBgImages;
+  let leftImageWidth;
+  let rightImageWidth;
+  let leftImageHeight;
+  let rightImageHeight;
+  let leftImageTop;
+  let rightImageTop;
+  const router = useRouter();
+  const type = router.pathname.substring(1);
   if (type == '') {
-    leftImage = 'leftMain'
-    leftImageWidth = 337
-    leftImageHeight = 400
-    leftImageTop = 401
-    rightImage = 'rightMain'
-    rightImageWidth = 423
-    rightImageHeight = 358
-    rightImageTop = 329
+    leftImage = 'leftMain';
+    leftImageWidth = 337;
+    leftImageHeight = 400;
+    leftImageTop = 401;
+    rightImage = 'rightMain';
+    rightImageWidth = 423;
+    rightImageHeight = 358;
+    rightImageTop = 329;
   } else if (type == 'master') {
-    leftImage = 'leftMaster'
-    leftImageWidth = 630
-    leftImageHeight = 426
-    leftImageTop = 426
-    rightImage = 'rightMaster'
-    rightImageWidth = 490
-    rightImageHeight = 407
-    rightImageTop = 353
+    leftImage = 'leftMaster';
+    leftImageWidth = 630;
+    leftImageHeight = 426;
+    leftImageTop = 426;
+    rightImage = 'rightMaster';
+    rightImageWidth = 490;
+    rightImageHeight = 407;
+    rightImageTop = 353;
   } else {
-    leftImage = 'left'
-    leftImageWidth = 381
-    leftImageHeight = 452
-    leftImageTop = 452
-    rightImage = 'right'
-    rightImageWidth = 432
-    rightImageHeight = 358
-    rightImageTop = 326
+    leftImage = 'left';
+    leftImageWidth = 381;
+    leftImageHeight = 452;
+    leftImageTop = 452;
+    rightImage = 'right';
+    rightImageWidth = 432;
+    rightImageHeight = 358;
+    rightImageTop = 326;
   }
 
   const { regMaster, moreInfoMaster, regSalon, moreInfoSalon } = goalIdObjects(
     router.pathname,
-  )
+  );
 
   return (
     <Wrapper>
@@ -127,13 +127,13 @@ const About: FC = () => {
                   size="fullWidth"
                   variant="red"
                   onClick={() => {
-                    ;(window as any).dataLayer.push({
+                    (window as any).dataLayer.push({
                       event: 'event',
                       eventProps: {
                         category: 'click',
                         action: regMaster,
                       },
-                    })
+                    });
                   }}
                 >
                   Зарегистрироваться как мастер
@@ -145,13 +145,13 @@ const About: FC = () => {
                     size="fullWidth"
                     variant="darkTransparent"
                     onClick={() => {
-                      ;(window as any).dataLayer.push({
+                      (window as any).dataLayer.push({
                         event: 'event',
                         eventProps: {
                           category: 'click',
                           action: moreInfoMaster,
                         },
-                      })
+                      });
                     }}
                   >
                     Больше информации
@@ -180,13 +180,13 @@ const About: FC = () => {
                   size="fullWidth"
                   variant="red"
                   onClick={() => {
-                    ;(window as any).dataLayer.push({
+                    (window as any).dataLayer.push({
                       event: 'event',
                       eventProps: {
                         category: 'click',
                         action: regSalon,
                       },
-                    })
+                    });
                   }}
                 >
                   Зарегистрироваться как салон
@@ -198,13 +198,13 @@ const About: FC = () => {
                     size="fullWidth"
                     variant="darkBorder"
                     onClick={() => {
-                      ;(window as any).dataLayer.push({
+                      (window as any).dataLayer.push({
                         event: 'event',
                         eventProps: {
                           category: 'click',
                           action: moreInfoSalon,
                         },
-                      })
+                      });
                     }}
                   >
                     Больше информации
@@ -216,7 +216,7 @@ const About: FC = () => {
         </Bottom>
       </MainContainer>
     </Wrapper>
-  )
-}
+  );
+};
 
-export default About
+export default About;

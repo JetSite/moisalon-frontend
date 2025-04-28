@@ -90,12 +90,14 @@ export const EducationName = styled.p`
 `;
 
 export const EducationTitle = styled.p`
+  min-height: 50px;
   font-weight: 600;
   font-size: 18px;
   line-height: 25px;
   text-align: center;
-  margin-top: 8px;
   @media (max-width: ${laptopBreakpoint}) {
+    min-height: auto;
+    mtargin-top: 8px;
     font-size: 14px;
     line-height: initial;
   }
