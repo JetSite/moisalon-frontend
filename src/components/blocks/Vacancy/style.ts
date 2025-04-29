@@ -19,6 +19,7 @@ export const VacancyWrap = styled.li`
   }
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
+    min-height: auto;
     padding: 12px 10px 15px 10px;
   }
 `;
@@ -54,6 +55,7 @@ export const VacancyContent = styled.div`
 `;
 
 export const VacancyOwner = styled.p`
+  height: 28px;
   font-size: 12px;
   line-height: 14px;
   text-align: center;
@@ -71,7 +73,7 @@ export const VacancyTitle = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     font-size: 14px;
     line-height: 16px;
-    height: auto;
+    height: 52px;
   }
 `;
 

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import styled from 'styled-components';
-import { red, laptopBreakpoint } from '../../../../../styles/variables';
+import { red, laptopBreakpoint, largeLaptopBreakpoint } from '../../../../../styles/variables';
 import { LazyImage } from '@/components/newUI/common/LazyIMage';
 
 export const Header = styled.header<{ showSearchPopup?: boolean }>`
@@ -86,15 +86,17 @@ export const HeaderContent = styled.div`
   padding: 0 140px;
   justify-content: space-between;
   align-items: center; /* Добавлено для вертикального выравнивания */
+
+  @media (max-width: ${largeLaptopBreakpoint}) {
+    justify-content: center;
+  }
 `;
 
 export const Nav = styled.nav`
-  margin-left: 30px;
   position: relative;
   display: flex;
-  gap: 20px;
-  flex: 1 1 0%;
   align-items: center;
+  margin-left: 50px;
 
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
@@ -103,7 +105,6 @@ export const Nav = styled.nav`
 
 export const HeaderMenu = styled.div`
   display: flex;
-  flex: 1 1 0%;
   height: 43px;
   align-items: center;
 
@@ -114,7 +115,7 @@ export const HeaderMenu = styled.div`
 
 export const NavItemWrapper = styled.ul`
   display: flex;
-  gap: 20px;
+  gap: 35px;
   flex: 1 1 0%;
   justify-content: space-between;
   width: 100%;
@@ -164,6 +165,10 @@ export const Links = styled.nav`
     display: flex;
     width: 100%;
     justify-content: flex-start;
+  }
+
+  @media (max-width: ${largeLaptopBreakpoint}) {
+    margin-left: 0;
   }
 `;
 

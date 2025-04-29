@@ -347,6 +347,7 @@ export const BottomContentTitle = styled.p`
 `
 
 export const BottomContentText = styled.p`
+  height: 108px;
   text-align: center;
   font-size: 14px;
   line-height: 27px;

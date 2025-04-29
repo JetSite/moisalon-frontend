@@ -70,13 +70,10 @@ export const Item = styled.div<{ type: string }>`
 `
 
 export const MasterInfo = styled.div`
-  display: grid;
-  grid-auto-columns: 1fr;
-  grid-template-rows: 7.5rem 5.6rem 5rem;
-  gap: 0px 0px;
-  @media (max-width: ${laptopBreakpoint}) {
-    grid-template-rows: 4.5rem 5rem 4.1rem;
-  }
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 `
 
 export const Image = styled(Avatar)`
@@ -92,12 +89,12 @@ export const Image = styled(Avatar)`
 `
 
 export const Name = styled.p`
+  min-height: 5rem;
   font-weight: 600;
   font-size: 1.8rem;
   line-height: 2.5rem;
   text-align: center;
   color: #000;
-  margin-bottom: 2rem;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
@@ -113,9 +110,9 @@ export const Name = styled.p`
 `
 
 export const Specializations = styled.ul`
+  min-height: 5rem;
   color: #727272;
   text-align: center;
-  margin-bottom: 2rem;
   font-size: 1.4rem;
   font-weight: 400;
   line-height: 1.8rem;
