@@ -21,6 +21,7 @@ import HeartFullFill from '../../pages/MainPage/components/Header/icons/HeartFul
 import { PHOTO_URL } from 'src/api/variables';
 import { IMaster } from 'src/types/masters';
 import { Activity } from '../SalonCard/styles';
+import { getRandomArrayItems } from '@/utils/newUtils/common/getRandomArrayItems';
 
 interface Props {
   master: IMaster | null;
@@ -55,6 +56,12 @@ const MasterItem: FC<Props> = ({
     favoritesInStorage('masters', master);
     setIsFavorit(!isFavorite);
   };
+
+  const random3Services: string[] = getRandomArrayItems(
+    master?.services || [],
+    3,
+  ).map(svc => svc.serviceName ?? svc.service?.title ?? 'Unnamed Service');
+
   return loading ? (
     <SkeletonMasterItem />
   ) : (
@@ -73,13 +80,9 @@ const MasterItem: FC<Props> = ({
         <div>
           <Specializations>
             {master &&
-              master.services
-                ?.slice(0, 3)
-                .map((service, idx) => (
-                  <Activity key={service?.id || idx.toString()}>
-                    {service?.serviceName || service.service?.title}
-                  </Activity>
-                ))}
+              random3Services.map(serviceName => (
+                <Activity key={serviceName}>{serviceName}</Activity>
+              ))}
           </Specializations>
         </div>
         <RatingWrapper>

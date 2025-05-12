@@ -21,6 +21,6 @@ price
 priceTo
 priceFrom
 unitOfMeasurement
-`
+`;
 
-export default servicesFragment
+export default servicesFragment;
