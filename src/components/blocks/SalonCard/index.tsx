@@ -31,6 +31,7 @@ import { useMedia } from 'use-media';
 import HeartFullFill from '../../pages/MainPage/components/Header/icons/HeartFullFill';
 import { PHOTO_URL } from 'src/api/variables';
 import { ISalon } from 'src/types/salon';
+import { getRandomArrayItems } from '@/utils/newUtils/common/getRandomArrayItems';
 
 interface Props {
   item: ISalon;
@@ -72,6 +73,10 @@ const SalonCard: FC<Props> = ({
     setIsFavorit(!isFavorite);
   };
 
+  const random3Services: string[] = getRandomArrayItems(item.services, 3).map(
+    svc => svc.serviceName ?? svc.service?.title ?? 'Unnamed Service',
+  );
+
   return loading ? (
     <SkeletonSalonItem variant="rect" />
   ) : (
@@ -111,10 +116,8 @@ const SalonCard: FC<Props> = ({
           <Info>
             <SalonInfo>
               <Activities>
-                {item.services?.slice(0, 3).map((servis, idx) => (
-                  <Activity key={servis.service?.id || idx.toString()}>
-                    {servis.service?.title || servis.serviceName}
-                  </Activity>
+                {random3Services.map(serviceName => (
+                  <Activity key={serviceName}>{serviceName}</Activity>
                 ))}
               </Activities>
             </SalonInfo>
