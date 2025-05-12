@@ -30,6 +30,21 @@ const Image = styled(LazyImage)`
   object-fit: cover;
 `;
 
+const Title = styled.div`
+  position: absolute;
+  left: 16px;
+  top: 16px;
+  max-width: calc(100% - 32px);
+  padding: 6px 10px;
+  background: #fff;
+  border-radius: 100px;
+  font-weight: 500;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const Status = styled.div`
   position: absolute;
   left: 16px;
@@ -94,6 +109,7 @@ const RentCard: FC<Props> = ({ item, salon }) => {
         {item.cover ? (
           <Image alt={item.cover.name} src={PHOTO_URL + item.cover.url} />
         ) : null}
+        <Title>{item.title}</Title>
         <Status>{item.isAvailableForRent ? 'Свободно' : 'Занято'}</Status>
       </Top>
       <Bottom>
