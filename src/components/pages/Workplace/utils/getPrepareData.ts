@@ -39,7 +39,7 @@ export const getPrepareData: IGetPrepareData = workplace => {
     },
     {
       title: workplace.floor ? 'Этаж' : null,
-      item: workplace.floor ? workplace.floor + ' м2' : '',
+      item: workplace.floor ? workplace.floor.toString() : '',
     },
     { title: 'Окна', item: workplace.hasWindows ? 'да' : 'нет' },
     {
