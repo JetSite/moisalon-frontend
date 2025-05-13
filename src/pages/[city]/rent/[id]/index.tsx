@@ -119,6 +119,17 @@ const Rent: FC<Props> = ({
         <Wrapper>
           <EntityDescription description={salon.description} />
         </Wrapper>
+        {rentData?.photos?.length ? (
+          <Slider
+            city={salon.city}
+            type="photos"
+            items={rentData.photos}
+            isOwner={false}
+            title="Фото салона"
+            pt={52}
+            pb={31}
+          />
+        ) : null}
         {workplaces?.length ? (
           <RentSlider title="Аренда рабочих мест" salon={salon} />
         ) : null}
