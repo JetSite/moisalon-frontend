@@ -75,6 +75,12 @@ const Header: FC<Props> = ({ isOwner, salon, setActiveTab }) => {
     socials[e.title] = e.link
   })
 
+  const salonCoverUrl = salon?.cover?.url
+    ? salon.cover.url
+    : salon?.photos?.length
+    ? salon.photos[0].url
+    : null
+
   const handleAnchorClick = () => {
     setActiveTab(4)
     const element = document.getElementById('rent')
@@ -278,11 +284,8 @@ const Header: FC<Props> = ({ isOwner, salon, setActiveTab }) => {
             </noindex>
           </Info>
           <ImageContent>
-            {salon?.photos[0]?.url && (
-              <Image
-                alt={salon.photos[0].name}
-                src={PHOTO_URL + salon?.photos[0]?.url}
-              />
+            {salonCoverUrl && (
+              <Image alt={salon.name} src={PHOTO_URL + salonCoverUrl} />
             )}
             <noindex>
               <OnlineBookingButton salon={salon}>
