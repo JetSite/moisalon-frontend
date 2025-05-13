@@ -1,7 +1,6 @@
-import { FC, useState } from 'react'
+import { FC } from 'react'
 import * as Styled from './styles'
 import { OnlineBookingButton } from 'src/components/blocks/OnlineBookingButton'
-import { ISalonWorkplace } from 'src/types/workplace'
 import { Header, IWorkplacePageHeaderProps } from './components/Header'
 import { About } from './components/About'
 import { Payments } from './components/Payments'
@@ -9,7 +8,7 @@ import { GroupedItems } from './components/GroupedItems'
 import { TechnicalItems } from './components/TechnicalItems'
 import { getPrepareData } from './utils/getPrepareData'
 
-interface IWorkplacePageProps extends IWorkplacePageHeaderProps {}
+type IWorkplacePageProps = IWorkplacePageHeaderProps
 
 export const WorkplacePage: FC<IWorkplacePageProps> = ({
   workplace,

@@ -13,9 +13,8 @@ import { EQUIPMENT } from 'src/api/graphql/equipment/quries/getEquipment'
 import { getGroupedServices } from 'src/utils/getGrupedServices'
 import { Nullable } from 'src/types/common'
 import { WORKPLACE_TYPES } from 'src/api/graphql/salon/queries/getWorkplaceTypes'
-import { useQuery } from '@apollo/client'
 
-interface Props extends IRentSeatProps {}
+type Props = IRentSeatProps
 
 const RentSalonSeat: NextPage<Props> = ({
   salonData,

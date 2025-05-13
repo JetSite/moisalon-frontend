@@ -1,6 +1,5 @@
 import { IID } from 'src/types/common'
 import { IEquipment } from 'src/types/equipment'
-import { IServiceCategories } from 'src/types/services'
 
 export interface IGroupedService {
   id: IID
@@ -43,7 +42,7 @@ export const getGroupedServices: IGetGroupedServices = data => {
       // Добавляем сервис к категории
       categoriesMap.get(categoryId)!.services.push({
         id: service.id,
-        title: service.service?.title || service?.serviceName,
+        title: service.service?.title || service?.serviceName || service?.title,
       })
     }
   })

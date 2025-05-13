@@ -7,7 +7,7 @@ import CabinetHeaderMobile from '../../../blocks/Cabinet/components/CabinetHeade
 import RentWorkplaceForm from './components/RentWorkplaceForm'
 import { PHOTO_URL } from 'src/api/variables'
 import { ISalonPage } from 'src/types/salon'
-import { useLazyQuery, useQuery } from '@apollo/client'
+import { useLazyQuery } from '@apollo/client'
 import { getSalonPage } from 'src/api/graphql/salon/queries/getSalon'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import {

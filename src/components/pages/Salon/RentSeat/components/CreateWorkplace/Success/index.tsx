@@ -1,6 +1,5 @@
 import { FC, useEffect } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 import {
   Wrapper,
   TopBlock,
@@ -19,12 +18,11 @@ import {
   AddWorkplaceButton,
   BackLink,
 } from './styles'
-import { cyrToTranslit } from '../../../../../../../utils/translit'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 import { ISalonPage } from 'src/types/salon'
 import { ISalonWorkplace } from 'src/types/workplace'
-import { IID, ISetState } from 'src/types/common'
+import { ISetState } from 'src/types/common'
 import { PHOTO_URL } from 'src/api/variables'
 
 export interface ISuccessProps {
@@ -43,8 +41,6 @@ const Success: FC<ISuccessProps> = ({
   setWorkplace,
 }) => {
   const { city } = useAuthStore(getStoreData)
-
-  const seatActivity = salon.services.map(e => e.service)
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
@@ -89,9 +85,7 @@ const Success: FC<ISuccessProps> = ({
         </MediumTitle>
         {workplace?.cover?.url ? (
           <WorkplacePreview url={PHOTO_URL + workplace?.cover?.url}>
-            {seatActivity[0]?.title ? (
-              <Name>{seatActivity[0]?.title}</Name>
-            ) : null}
+            {workplace?.title ? <Name>{workplace.title}</Name> : null}
             <EditButton onClick={editButtonHandler}>
               Редактировать рабочее место в <br /> личном кабинете
             </EditButton>
