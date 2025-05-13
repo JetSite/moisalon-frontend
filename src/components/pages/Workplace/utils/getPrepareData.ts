@@ -18,6 +18,16 @@ export const getPrepareData: IGetPrepareData = workplace => {
     categoryKey: 'category',
   })
 
+  if (workplace?.hasWindows) {
+    equipment.unshift({
+      id: '100',
+      title: 'Удобства',
+      items: [
+        { id: '1000', title: 'Наличие окон', category: { id: '', title: '' } },
+      ],
+    })
+  }
+
   const services = getCategorisedItems(workplace.services, {
     categoryKey: 'service_categories',
   })
