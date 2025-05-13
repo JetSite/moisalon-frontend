@@ -39,8 +39,10 @@ const Tabs: FC<Props> = ({ tabs, refActive }) => {
   return (
     <Wrapper>
       {tabs.map(item => {
-        const link =
-          item.href && item.link ? item.href + '?id=' + item.link : null
+        const link = item.href ? item.href : null
+        if (link && item.link) {
+          link + '?id=' + item.link
+        }
 
         return (
           <Tab key={item.id}>

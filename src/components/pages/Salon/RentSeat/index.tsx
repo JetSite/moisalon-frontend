@@ -18,6 +18,8 @@ import {
 } from 'src/types'
 import { IGroupedCategories } from 'src/utils/getGrupedServices'
 import { quantityFieldsConfig } from './config'
+import { getStoreData } from '@/store/utils'
+import useAuthStore from '@/store/authStore'
 
 export interface IRentSeatProps {
   salonData: ISalonPage
@@ -34,6 +36,7 @@ const RentSeat: FC<IRentSeatProps> = ({
   paymentMethods,
   workplaceTypes,
 }) => {
+  const { city } = useAuthStore(getStoreData)
   const [salon, setSalon] = useState<ISalonPage>(salonData)
   const quantityFields = useMemo(() => quantityFieldsConfig, [])
   const [refetchSalon, { loading }] = useLazyQuery(getSalonPage, {
@@ -51,8 +54,8 @@ const RentSeat: FC<IRentSeatProps> = ({
         id: '1',
         value: 'Данные салона',
         anchor: 'cabinet',
-        href: '/rentSalonSeat',
-        link: salonData.id,
+        href: `/${city.slug}/rent/${salonData.id}`,
+        link: '',
         back: true,
       },
     ],
