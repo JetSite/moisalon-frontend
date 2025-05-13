@@ -1,49 +1,52 @@
-import { FC, useState } from 'react';
-import { useQuery } from '@apollo/client';
-import MainLayout from '../../../../layouts/MainLayout';
-import { initializeApollo } from '../../../../api/apollo-client';
-import SearchBlock from '../../../../components/blocks/SearchBlock';
-import TabsSlider from '../../../../components/ui/TabsSlider';
-import Contacts from '../../../../components/pages/Salon/ViewSalon/components/Contacts';
-import SalonReviews from '../../../../components/pages/Salon/ViewSalon/components/SalonReviews';
-import Ribbon from '../../../../components/pages/MainPage/components/Ribbon';
-import RentSlider from '../../../../components/pages/Rent/ViewRent/components/RentSlider';
-import Service from '../../../../components/pages/Rent/ViewRent/components/Service';
-import Slider from '../../../../components/blocks/Slider';
-import { getStoreData } from 'src/store/utils';
-import useAuthStore from 'src/store/authStore';
-import { GetServerSideProps } from 'next';
-import { Nullable } from 'src/types/common';
-import { fetchCity } from 'src/api/utils/fetchCity';
-import { ICity } from 'src/types';
-import { ISalon, ISalonPage } from 'src/types/salon';
-import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse';
-import { getRating } from 'src/utils/newUtils/getRating';
-import { GET_RENT_SALONS } from 'src/api/graphql/salon/queries/getRentSalons';
-import { getSalonPage } from 'src/api/graphql/salon/queries/getSalon';
-import Header from '../../../../components/pages/Rent/ViewRent/components/Header';
-import { getFeedCategories } from 'src/api/graphql/feed/queries/getFeedCategories';
-import { getFeeds } from 'src/api/graphql/feed/queries/getFeeds';
-import Head from 'next/head';
-import EntityDescription from 'src/components/newUI/EntityDescription';
-import styled from 'styled-components';
-import { laptopBreakpoint } from 'src/styles/variables';
-import { IBeautyCategories, IFeed } from '@/types/feed';
+import { FC, useState } from 'react'
+import { useQuery } from '@apollo/client'
+import MainLayout from '../../../../layouts/MainLayout'
+import { initializeApollo } from '../../../../api/apollo-client'
+import SearchBlock from '../../../../components/blocks/SearchBlock'
+import TabsSlider from '../../../../components/ui/TabsSlider'
+import Contacts from '../../../../components/pages/Salon/ViewSalon/components/Contacts'
+import SalonReviews from '../../../../components/pages/Salon/ViewSalon/components/SalonReviews'
+import Ribbon from '../../../../components/pages/MainPage/components/Ribbon'
+import RentSlider from '../../../../components/pages/Rent/ViewRent/components/RentSlider'
+import Service from '../../../../components/pages/Rent/ViewRent/components/Service'
+import Slider from '../../../../components/blocks/Slider'
+import { getStoreData } from 'src/store/utils'
+import useAuthStore from 'src/store/authStore'
+import { GetServerSideProps } from 'next'
+import { Nullable } from 'src/types/common'
+import { fetchCity } from 'src/api/utils/fetchCity'
+import { ICity } from 'src/types'
+import { ISalon, ISalonPage } from 'src/types/salon'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { getRating } from 'src/utils/newUtils/getRating'
+import { GET_RENT_SALONS } from 'src/api/graphql/salon/queries/getRentSalons'
+import { getSalonPage } from 'src/api/graphql/salon/queries/getSalon'
+import Header from '../../../../components/pages/Rent/ViewRent/components/Header'
+import { getFeedCategories } from 'src/api/graphql/feed/queries/getFeedCategories'
+import { getFeeds } from 'src/api/graphql/feed/queries/getFeeds'
+import Head from 'next/head'
+import EntityDescription from 'src/components/newUI/EntityDescription'
+import styled from 'styled-components'
+import { laptopBreakpoint } from 'src/styles/variables'
+import { IBeautyCategories, IFeed } from '@/types/feed'
 
 const Wrapper = styled.div`
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
   padding: 0 140px;
 
   @media (max-width: ${laptopBreakpoint}) {
     padding: 0 20px;
   }
-`;
+`
 
 interface Props {
-  cityData: ICity;
-  rentData: ISalonPage;
-  othersSalons: ISalon[];
-  beautyCategories: IBeautyCategories[];
-  beautyAllContent: IFeed[];
+  cityData: ICity
+  rentData: ISalonPage
+  othersSalons: ISalon[]
+  beautyCategories: IBeautyCategories[]
+  beautyAllContent: IFeed[]
 }
 
 const Rent: FC<Props> = ({
@@ -53,20 +56,20 @@ const Rent: FC<Props> = ({
   beautyCategories,
   beautyAllContent,
 }) => {
-  const [activeTab, setActiveTab] = useState<number>(0);
-  const [salon, setSalon] = useState<ISalonPage>(rentData);
-  const { user } = useAuthStore(getStoreData);
-  const isOwner = !!user?.owner?.salons?.find(item => item.id === salon.id);
+  const [activeTab, setActiveTab] = useState<number>(0)
+  const [salon, setSalon] = useState<ISalonPage>(rentData)
+  const { user } = useAuthStore(getStoreData)
+  const isOwner = !!user?.owner?.salons?.find(item => item.id === salon.id)
 
-  const [workplaces, setWorkplaces] = useState(salon.workplaces);
+  const [workplaces, setWorkplaces] = useState(salon.workplaces)
 
   const { refetch: refetchRentSalon } = useQuery(getSalonPage, {
     variables: { id: salon.id },
     skip: true,
     onCompleted: res => {
-      setSalon(flattenStrapiResponse(res.data.salon) as unknown as ISalonPage);
+      setSalon(flattenStrapiResponse(res.data.salon) as unknown as ISalonPage)
     },
-  });
+  })
 
   return (
     <MainLayout>
@@ -150,17 +153,17 @@ const Rent: FC<Props> = ({
         />
       </>
     </MainLayout>
-  );
-};
+  )
+}
 
 export const getServerSideProps: GetServerSideProps<
   Nullable<Props>
 > = async ctx => {
-  const { params, query } = ctx;
-  const id = params?.['id'];
-  const apolloClient = initializeApollo();
+  const { params, query } = ctx
+  const id = params?.['id']
+  const apolloClient = initializeApollo()
 
-  const cityData = await fetchCity(query['city'] as string);
+  const cityData = await fetchCity(query['city'] as string)
 
   const data = await Promise.all([
     apolloClient.query({
@@ -177,24 +180,24 @@ export const getServerSideProps: GetServerSideProps<
     apolloClient.query({
       query: getFeeds,
     }),
-  ]);
+  ])
 
   const rentData: ISalonPage | null =
-    flattenStrapiResponse(data[0]?.data?.salon) || null;
+    flattenStrapiResponse(data[0]?.data?.salon) || null
 
   const othersSalons: ISalon[] =
-    flattenStrapiResponse(data[1]?.data?.salons) || [];
+    flattenStrapiResponse(data[1]?.data?.salons) || []
 
-  const reviewsCount = rentData?.reviews.length || 0;
+  const reviewsCount = rentData?.reviews.length || 0
   const { rating, ratingCount } = getRating(rentData?.ratings)
     ? getRating(rentData?.ratings)
     : {
         rating: rentData?.rating || 0,
         ratingCount: rentData?.ratingCount || 0,
-      };
+      }
 
-  const beautyCategories = flattenStrapiResponse(data[2]?.data?.feedCategories);
-  const beautyAllContent = flattenStrapiResponse(data[3]?.data?.feeds);
+  const beautyCategories = flattenStrapiResponse(data[2]?.data?.feedCategories)
+  const beautyAllContent = flattenStrapiResponse(data[3]?.data?.feeds)
 
   return {
     notFound: !id || !cityData || !rentData,
@@ -208,15 +211,15 @@ export const getServerSideProps: GetServerSideProps<
           }
         : null,
       othersSalons: othersSalons.map(e => {
-        const reviewsCount = e.reviews.length || 0;
-        const { rating, ratingCount } = getRating(e.ratings);
-        return { ...e, rating, ratingCount, reviewsCount };
+        const reviewsCount = e.reviews.length || 0
+        const { rating, ratingCount } = getRating(e.ratings)
+        return { ...e, rating, ratingCount, reviewsCount }
       }),
       cityData,
       beautyCategories,
       beautyAllContent,
     },
-  };
-};
+  }
+}
 
-export default Rent;
+export default Rent
