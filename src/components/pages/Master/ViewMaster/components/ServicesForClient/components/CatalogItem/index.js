@@ -1,3 +1,4 @@
+import { formatServicePrice } from '@/utils/formatServicePrice'
 import styled from 'styled-components'
 
 const Wrapper = styled.div`
@@ -22,13 +23,15 @@ const Price = styled.p`
 `
 
 export default function CatalogItem({ item }) {
+  const priceText = formatServicePrice(item)
+  
   return (
     <Wrapper>
       <Top>
         <Title>{item?.serviceName ?? item?.service?.title}</Title>
-        {item?.priceFrom ? (
+        {priceText ? (
           <Price>
-            от {item.priceFrom} {item.unitOfMeasurement}
+            {priceText}
           </Price>
         ) : null}
       </Top>

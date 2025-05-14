@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../../../styles/variables'
 import { FC } from 'react'
 import { IServices } from 'src/types/services'
+import { formatServicePrice } from '@/utils/formatServicePrice'
 
 const Wrapper = styled.div<{ masterPage?: boolean }>`
   width: 100%;
@@ -37,15 +38,13 @@ interface IMobileCatalogItem {
 }
 
 const MobileCatalogItem: FC<IMobileCatalogItem> = ({ item, masterPage }) => {
+  const priceText = formatServicePrice(item)
+
   return (
     <Wrapper masterPage={masterPage}>
       <Top>
         <Title>{item?.serviceName ?? item?.service?.title}</Title>
-        {item?.priceFrom ? (
-          <Price>
-            от {item.priceFrom} {item.unitOfMeasurement}
-          </Price>
-        ) : null}
+        {priceText ? <Price>{priceText}</Price> : null}
       </Top>
     </Wrapper>
   )
