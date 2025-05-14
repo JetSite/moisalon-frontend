@@ -33,7 +33,7 @@ const FastBuyPopup: FC<Props> = ({
 }) => {
   const [quantity, setQuantity] = useState(1)
   const [phone, setPhone] = useState('')
-  const [name, setName] = useState('')
+  const [name, setName] = useState(user?.info?.username || '')
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const popupRef = useRef<HTMLDivElement>(null)
@@ -72,6 +72,10 @@ const FastBuyPopup: FC<Props> = ({
   })
 
   const buyProduct = () => {
+    if (!/^[A-Za-z ]+$/.test(name)) {
+      setError('В поле Имя разрешены только буквы и пробелы')
+      return
+    }
     if (!name || name.length < 2) {
       setError('Некорректное имя')
       return
@@ -147,7 +151,7 @@ const FastBuyPopup: FC<Props> = ({
               <Styled.Left>
                 <Styled.Image
                   src={
-                    !!productImage ? productImage : '/cosmetic_placeholder.jpg'
+                    productImage ? productImage : '/cosmetic_placeholder.jpg'
                   }
                 />
               </Styled.Left>
@@ -162,15 +166,17 @@ const FastBuyPopup: FC<Props> = ({
                           ? 'Проверьте данные формы'
                           : 'Заполните форму'
                       }, чтобы наш менеджер связался с Вами по
-                      поводу заказа`}
+                      поводу заказа. Все поля обязательны для заполнения.`}
                     </Styled.Title>
-                    <Styled.PopupInput
-                      type="text"
-                      required
-                      placeholder="Имя"
-                      value={name || user?.info?.username || ''}
-                      onChange={nameChangeHandler}
-                    />
+                    <Styled.NameInputWrap>
+                      <Styled.PopupInput
+                        type="text"
+                        required
+                        placeholder="Имя"
+                        value={name}
+                        onChange={nameChangeHandler}
+                      />
+                    </Styled.NameInputWrap>
                     <Styled.PhoneInputWrap>
                       <Styled.PhoneCode>+7</Styled.PhoneCode>
                       <Styled.PopupInput
@@ -182,6 +188,7 @@ const FastBuyPopup: FC<Props> = ({
                         maxLength={13}
                       />
                     </Styled.PhoneInputWrap>
+                    <Styled.Error>{error ? error : ''}</Styled.Error>
                     <Styled.TitleWrap>
                       <Styled.ProductDescription>
                         {item?.shortDescription}
@@ -214,7 +221,6 @@ const FastBuyPopup: FC<Props> = ({
                         />
                       </Styled.QuantityButtons>
                     </Styled.QuantityWrap>
-                    <Styled.Error>{error ? error : ''}</Styled.Error>
                     <Styled.ButtonPopup onClick={buyProduct} variant="red">
                       Отправить заказ
                     </Styled.ButtonPopup>
