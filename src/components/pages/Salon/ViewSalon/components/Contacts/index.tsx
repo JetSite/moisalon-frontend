@@ -1,27 +1,27 @@
-import { useState, useEffect, FC } from 'react';
-import { MainContainer } from '../../../../../../styles/common';
-import Map from '../../../../../blocks/Map';
-import * as Styled from './styled';
-import { Schedule } from '../../../../../ui/Shedule';
-import defaultNumber from '../../../../../../utils/defaultNumber';
-import SubwayStation from '../../../../../ui/SubwayStation';
+import { useState, useEffect, FC } from 'react'
+import { MainContainer } from '../../../../../../styles/common'
+import Map from '../../../../../blocks/Map'
+import * as Styled from './styled'
+import { Schedule } from '../../../../../ui/Shedule'
+import defaultNumber from '../../../../../../utils/defaultNumber'
+import SubwayStation from '../../../../../ui/SubwayStation'
 import {
   IMetroStations,
   ISalonPhones,
   ISocialNetworks,
   IWorkingHours,
-} from 'src/types';
-import { PHOTO_URL } from 'src/api/variables';
+} from 'src/types'
+import { PHOTO_URL } from 'src/api/variables'
 
 interface Props {
-  phones: ISalonPhones[];
-  email: string;
-  workingHours: IWorkingHours[];
-  address: string;
-  socialNetworkUrls: ISocialNetworks[];
-  metroStations?: IMetroStations[];
-  locationDirections: string;
-  coordinates: { longitude: number; latitude: number };
+  phones: ISalonPhones[]
+  email: string
+  workingHours: IWorkingHours[]
+  address: string
+  socialNetworkUrls: ISocialNetworks[]
+  metroStations?: IMetroStations[]
+  locationDirections: string
+  coordinates: { longitude: number; latitude: number }
 }
 
 const Contacts: FC<Props> = ({
@@ -34,7 +34,7 @@ const Contacts: FC<Props> = ({
   locationDirections,
   coordinates,
 }) => {
-  const [openPhone, setOpenPhone] = useState<boolean>(true);
+  const [openPhone, setOpenPhone] = useState<boolean>(true)
 
   return (
     <MainContainer id="contacts">
@@ -128,9 +128,10 @@ const Contacts: FC<Props> = ({
               {coordinates?.longitude && coordinates?.latitude ? (
                 <Map
                   address={{
-                    longitude: coordinates?.longitude,
+                    longitude: coordinates.longitude,
                     latitude: coordinates.latitude,
                   }}
+                  view
                 />
               ) : null}
             </Styled.ContentWrapperElement>
@@ -161,7 +162,7 @@ const Contacts: FC<Props> = ({
         </Styled.Bottom>
       </Styled.Wrapper>
     </MainContainer>
-  );
-};
+  )
+}
 
-export default Contacts;
+export default Contacts
