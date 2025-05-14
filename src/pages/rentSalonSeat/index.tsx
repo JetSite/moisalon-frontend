@@ -27,6 +27,7 @@ const RentSalonSeat: NextPage<Props> = ({
   const { me } = useAuthStore(getStoreData)
 
   if (me === null) {
+    router.push('/login')
     return <CreatePageSkeleton />
   }
   if (me && !me.info) {
@@ -36,6 +37,13 @@ const RentSalonSeat: NextPage<Props> = ({
     router.push('/masterCabinet')
     return <CreatePageSkeleton />
   }
+
+  const ownedSalonIds = me?.owner?.salons?.map(s => String(s.id)) || []
+  if (!ownedSalonIds.includes(salonData.id)) {
+    router.push('/masterCabinet')
+    return <CreatePageSkeleton />
+  }
+
   return (
     <RentSeat
       salonData={salonData}
