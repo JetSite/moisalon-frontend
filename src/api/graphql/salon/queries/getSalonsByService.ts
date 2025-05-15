@@ -12,8 +12,8 @@ import { phonesFragment } from '../../fragments/phones'
 import { contactPersonWHFragment } from '../../fragments/contactPersonWH'
 
 export const getSalonsByService = gql`
-  query salons($serviceId: ID!) {
-    salons(filters: { services: {service: { id: { eq: $serviceId } } } }, pagination: { page: 1, pageSize: 100 }) {
+  query salons($serviceId: ID!, $page: Int!, $pageSize: Int!) {
+    salons(filters: { services: {service: { id: { eq: $serviceId } } } }, pagination: { page: $page, pageSize: $pageSize }) {
       data {
         id
         attributes {

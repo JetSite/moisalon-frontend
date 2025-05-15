@@ -7,8 +7,8 @@ import { ratingsFragment } from '../../fragments/ratings'
 import servicesFragment from '../../fragments/services'
 
 export const getMastersByService = gql`
-  query masters($serviceId: ID!) {
-    masters(filters: { services: {service: { id: { eq: $serviceId } } } }, pagination: { page: 1, pageSize: 100 }) {
+  query masters($serviceId: ID!, $page: Int!, $pageSize: Int!) {
+    masters(filters: { services: {service: { id: { eq: $serviceId } } } }, pagination: { page: $page, pageSize: $pageSize }) {
       data {
         id
         attributes {
