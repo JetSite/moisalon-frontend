@@ -5,7 +5,7 @@ import Catalog from '../Catalog'
 import { ICart, IProduct } from 'src/types/product'
 import { IPagination } from 'src/types'
 import Button from 'src/components/ui/Button'
-import { Wrapper } from 'src/components/pages/Catalog/styled'
+import { Wrapper, WrapperButton } from './styles'
 
 export interface IBeautyFreeShopPageProps {
   dataProducts: IProduct[]
@@ -49,7 +49,7 @@ const BeautyFreeShopPage: FC<IBeautyFreeShopPageProps> = ({
       </Wrapper>
       <Catalog products={productsData} loading={loading} noTitle cart={cart} />
       {nextPage !== pagination.pageCount && (
-        <Wrapper>
+        <WrapperButton>
           <Button
             disabled={loading}
             onClick={() => setNextPage(prev => prev + 1)}
@@ -57,7 +57,7 @@ const BeautyFreeShopPage: FC<IBeautyFreeShopPageProps> = ({
           >
             {loading ? 'Загрузка...' : 'Ещё'}
           </Button>
-        </Wrapper>
+        </WrapperButton>
       )}
     </>
   )

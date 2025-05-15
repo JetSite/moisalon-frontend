@@ -5,7 +5,15 @@ import { laptopBreakpoint } from '../../../styles/variables'
 export const Wrapper = styled.div`
   max-width: 1440px;
   margin: 0 auto;
-  padding: 0 140px;
+  padding: 40px 140px 0 140px;
+
+  @media (max-width: ${laptopBreakpoint}) {
+    padding: 0 20px;
+  }
+`
+
+export const WrapperButton = styled(Wrapper)`
+  padding: 0 140px 40px 140px;
 
   @media (max-width: ${laptopBreakpoint}) {
     padding: 0 20px;
