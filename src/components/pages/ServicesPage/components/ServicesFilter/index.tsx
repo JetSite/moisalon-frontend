@@ -6,25 +6,26 @@ import ServiceFilterItem from './ServicesFilterItem'
 import { IServiceCategory, IServiceInCategory } from 'src/types/services'
 import Back from '../Back'
 import { ISetState } from 'src/types/common'
+import { IMaster } from 'src/types/masters'
+import { ISalon } from 'src/types/salon'
 
 interface IServicesFilterProps {
   servicesCategoriesList: IServiceCategory[]
   clickedService: IServiceInCategory | null
   setClickedService: ISetState<IServiceInCategory | null>
-  masters: any
-  setMasters: any
-  salons: any
-  setSalons: any
+  masters: IMaster[]
+  setMasters: ISetState<IMaster[]>
+  salons: ISalon[]
+  setSalons: ISetState<ISalon[]>
+  resetMeta?: () => void
 }
 
 const ServicesFilter: FC<IServicesFilterProps> = ({
   servicesCategoriesList,
   setClickedService,
-  clickedService,
   masters,
-  setMasters,
   salons,
-  setSalons,
+  resetMeta,
 }) => {
   const [clickedCategory, setClickedCategory] =
     useState<IServiceCategory | null>(null)
@@ -41,30 +42,15 @@ const ServicesFilter: FC<IServicesFilterProps> = ({
   }, [clickedCategory])
 
   const resetFilters = () => {
-    setMasters(null)
-    setSalons(null)
     setItems(null)
     setClickedCategory(null)
     setClickedItem(null)
     setClickedService(null)
-  }
 
-  // useEffect(() => {
-  //   if (clickedService?.id) {
-  //     setClickedItem(null)
-  //     servicesList?.groups?.map(el => {
-  //       const elSubgroups = el.subGroups.find(
-  //         subGroup => subGroup.id === clickedService?.id,
-  //       )
-  //       if (elSubgroups) {
-  //         setSubgroups(el.subGroups)
-  //         setItems(elSubgroups?.items)
-  //         setClickedSubgroup([elSubgroups])
-  //         setClickedGroup([el])
-  //       }
-  //     })
-  //   }
-  // }, [clickedService, servicesList])
+    if (resetMeta) {
+      resetMeta()
+    }
+  }
 
   const chooseHandler = (
     type: string,

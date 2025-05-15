@@ -12,41 +12,22 @@ import { getMasters } from 'src/api/graphql/master/queries/getMasters'
 import { BRANDS } from 'src/api/graphql/brand/queries/getBrands'
 import { getSalons } from 'src/api/graphql/salon/queries/getSalons'
 import { IBrand } from 'src/types/brands'
-import { GetServerSideProps, GetServerSidePropsContext } from 'next'
-import { ParsedUrlQuery } from 'querystring'
-import { getMastersByService } from '@/api/graphql/master/queries/getMastersByService'
-import { getSalonsByService } from '@/api/graphql/salon/queries/getSalonsByService'
+import { GetServerSideProps } from 'next'
 
 interface IServicesPageProps {
   servicesWithCategories: IServiceCategory[]
-  mastersData: IMaster[]
-  salonsData: ISalon[]
   brandsRandom: IBrand[]
   mastersRandom: IMaster[]
   salonsRandom: ISalon[]
-  serviceId?: string | null
-  hasMoreMasters: boolean
-  hasMoreSalons: boolean
+  serviceId: string | null
 }
-
-interface CategoryParams extends ParsedUrlQuery {
-  city?: string
-  category?: string[]
-}
-
-const MASTERS_PER_PAGE = 10
-const SALONS_PER_PAGE = 6
 
 const Services: FC<IServicesPageProps> = ({
   servicesWithCategories,
-  mastersData,
-  salonsData,
   brandsRandom,
   mastersRandom,
   salonsRandom,
   serviceId,
-  hasMoreMasters,
-  hasMoreSalons,
 }) => {
   return (
     <CategoryPageLayout
@@ -57,67 +38,35 @@ const Services: FC<IServicesPageProps> = ({
       <SearchBlock />
       <ServicesPage
         servicesWithCategories={servicesWithCategories}
-        mastersData={mastersData}
-        salonsData={salonsData}
         serviceId={serviceId}
-        hasMoreMasters={hasMoreMasters}
-        hasMoreSalons={hasMoreSalons}
+        mastersData={[]}
+        salonsData={[]}
       />
     </CategoryPageLayout>
   )
 }
 
-export const getServerSideProps: GetServerSideProps<
-  IServicesPageProps
-> = async (context: GetServerSidePropsContext<CategoryParams>) => {
+export const getServerSideProps: GetServerSideProps = async context => {
   const { params, query } = context
   const apolloClient = initializeApollo()
-  let mastersData: IMaster[] = []
-  let salonsData: ISalon[] = []
-  let hasMoreMasters = false
-  let hasMoreSalons = false
 
-  const view = params?.category?.length > 1 ? params?.category[0] : undefined
-  const serviceId =
-    params?.category?.length > 1
-      ? params?.category[1]
-      : params?.category?.length
-      ? params?.category[0]
-      : undefined
+  // Extract service ID from URL parameters
+  const categoryParam = params?.['category']
+  let serviceId: string | null = null
 
-  if (params?.category?.length) {
-    // Use paginated queries for masters and salons
-    const dataMasters = await apolloClient.query({
-      query: getMastersByService,
-      variables: {
-        serviceId: serviceId || null,
-        page: 1,
-        pageSize: MASTERS_PER_PAGE + 1, // +1 to check if there are more
-      },
-    })
-
-    const dataSalons = await apolloClient.query({
-      query: getSalonsByService,
-      variables: {
-        serviceId: serviceId || null,
-        page: 1,
-        pageSize: SALONS_PER_PAGE + 1, // +1 to check if there are more
-      },
-    })
-
-    const masters = flattenStrapiResponse(dataMasters?.data?.masters) || []
-    const salons = flattenStrapiResponse(dataSalons?.data?.salons) || []
-
-    // Check if we have more items than what we need to display initially
-    hasMoreMasters = masters && masters.length > MASTERS_PER_PAGE
-    hasMoreSalons = salons && salons.length > SALONS_PER_PAGE
-
-    // Only return the initial page limit
-    mastersData = masters.slice(0, MASTERS_PER_PAGE)
-    salonsData = salons.slice(0, SALONS_PER_PAGE)
+  if (categoryParam) {
+    if (Array.isArray(categoryParam) && categoryParam.length > 0) {
+      serviceId = categoryParam.length > 1 ? categoryParam[1] : categoryParam[0]
+    } else if (typeof categoryParam === 'string') {
+      serviceId = categoryParam
+    }
   }
 
-  const citySlug = (query.city as string) || ''
+  const citySlug = query['city']
+    ? Array.isArray(query['city'])
+      ? query['city'][0]
+      : query['city']
+    : ''
 
   const data = await Promise.all([
     apolloClient.query({
@@ -145,22 +94,19 @@ export const getServerSideProps: GetServerSideProps<
     }),
   ])
 
-  const normalisedData = flattenStrapiResponse(data[0]?.data?.serviceCategories)
-  const brands: IBrand[] = flattenStrapiResponse(data[1].data.brands)
-  const masters: IMaster[] = flattenStrapiResponse(data[2].data.masters)
-  const salons: ISalon[] = flattenStrapiResponse(data[3]?.data.salons)
+  const normalisedData =
+    flattenStrapiResponse(data[0]?.data?.serviceCategories) || []
+  const brands = flattenStrapiResponse(data[1]?.data?.brands) || []
+  const masters = flattenStrapiResponse(data[2]?.data?.masters) || []
+  const salons = flattenStrapiResponse(data[3]?.data?.salons) || []
 
   return addApolloState(apolloClient, {
     props: {
       servicesWithCategories: normalisedData,
-      mastersData,
-      salonsData,
       brandsRandom: brands,
       mastersRandom: masters,
       salonsRandom: salons,
-      serviceId: serviceId || null,
-      hasMoreMasters,
-      hasMoreSalons,
+      serviceId,
     },
   })
 }

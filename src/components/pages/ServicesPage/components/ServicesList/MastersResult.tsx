@@ -2,42 +2,27 @@ import React, { FC } from 'react'
 import Link from 'next/link'
 import { pluralize } from '../../../../../utils/pluralize'
 import { WrapperItemsMasters, TitleResults, LinkStyled } from './styles'
-import catalogOrDefault from '../../../../../utils/catalogOrDefault'
 import MasterItem from '../../../../blocks/MasterCard'
-import { cyrToTranslit } from '../../../../../utils/translit'
 import { getStoreData } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
-import useBaseStore from 'src/store/baseStore'
 import { IMaster } from 'src/types/masters'
 
 interface IMastersResultProps {
   masters: IMaster[]
+  totalItems?: number
 }
 
-const MastersResult: FC<IMastersResultProps> = ({ masters }) => {
-  const { catalogs } = useBaseStore(getStoreData)
+const MastersResult: FC<IMastersResultProps> = ({ masters, totalItems }) => {
   const { city } = useAuthStore(getStoreData)
-
-  // const masterSpecializationsCatalog = catalogOrDefault(
-  //   catalogs?.masterSpecializationsCatalog,
-  // )
 
   return (
     <>
       {masters?.length ? (
         <>
           <TitleResults>
-            {`${pluralize(
-              masters.length || 0,
-              'Найден',
-              'Найдено',
-              'Найдено',
-            )} ${masters.length || 0} ${pluralize(
-              masters.length || 0,
-              'мастер',
-              'мастера',
-              'мастеров',
-            )}`}
+            {`${pluralize(totalItems || 0, 'Найден', 'Найдено', 'Найдено')} ${
+              totalItems || 0
+            } ${pluralize(totalItems || 0, 'мастер', 'мастера', 'мастеров')}`}
           </TitleResults>
           <WrapperItemsMasters>
             {masters?.map(master => (

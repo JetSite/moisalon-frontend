@@ -22,16 +22,32 @@ interface IServicesPageProps {
   hasMoreSalons?: boolean
 }
 
+interface MetaData {
+  pagination: {
+    page: number
+    pageSize: number
+    pageCount: number
+    total: number
+  }
+}
+
+interface QueryResponse<T> {
+  data: {
+    [key: string]: {
+      data: T[]
+      meta: MetaData
+    }
+  }
+}
+
 const MASTERS_PER_PAGE = 10
 const SALONS_PER_PAGE = 6
 
 const ServicesPage: FC<IServicesPageProps> = ({
   servicesWithCategories,
-  mastersData,
-  salonsData,
+  mastersData = [],
+  salonsData = [],
   serviceId,
-  hasMoreMasters = false,
-  hasMoreSalons = false,
 }) => {
   const [view, setView] = useState('all')
   const [masters, setMasters] = useState<IMaster[]>([])
@@ -40,66 +56,161 @@ const ServicesPage: FC<IServicesPageProps> = ({
     useState<IServiceInCategory | null>(null)
   const router = useRouter()
 
-  // Pagination states
   const [mastersPage, setMastersPage] = useState(1)
   const [salonsPage, setSalonsPage] = useState(1)
   const [isMastersLoading, setIsMastersLoading] = useState(false)
   const [isSalonsLoading, setIsSalonsLoading] = useState(false)
-  const [noMoreMasters, setNoMoreMasters] = useState(!hasMoreMasters)
-  const [noMoreSalons, setNoMoreSalons] = useState(!hasMoreSalons)
+  const [mastersMeta, setMastersMeta] = useState<MetaData['pagination'] | null>(
+    null,
+  )
+  const [salonsMeta, setSalonsMeta] = useState<MetaData['pagination'] | null>(
+    null,
+  )
 
-  // GraphQL queries for loading more
+  const resetResultData = () => {
+    setMasters([])
+    setSalons([])
+    setMastersMeta(null)
+    setSalonsMeta(null)
+    setMastersPage(1)
+    setSalonsPage(1)
+  }
+
+  const [fetchMasters] = useLazyQuery(getMastersByService, {
+    onCompleted(data: QueryResponse<IMaster>['data']) {
+      const mastersData = data?.['masters'] || {
+        data: [],
+        meta: { pagination: { page: 1, pageSize: 0, pageCount: 0, total: 0 } },
+      }
+      const fetchedMasters = flattenStrapiResponse(mastersData.data) || []
+      const meta = mastersData.meta?.pagination
+
+      setMasters(fetchedMasters)
+      setMastersMeta(meta)
+      setIsMastersLoading(false)
+    },
+    onError(error) {
+      console.error('Error loading masters:', error)
+      setIsMastersLoading(false)
+      setMasters([])
+      setMastersMeta(null)
+    },
+  })
+
+  const [fetchSalons] = useLazyQuery(getSalonsByService, {
+    onCompleted(data: QueryResponse<ISalon>['data']) {
+      const salonsData = data?.['salons'] || {
+        data: [],
+        meta: { pagination: { page: 1, pageSize: 0, pageCount: 0, total: 0 } },
+      }
+      const fetchedSalons = flattenStrapiResponse(salonsData.data) || []
+      const meta = salonsData.meta?.pagination
+
+      setSalons(fetchedSalons)
+      setSalonsMeta(meta)
+      setIsSalonsLoading(false)
+    },
+    onError(error) {
+      console.error('Error loading salons:', error)
+      setIsSalonsLoading(false)
+      setSalons([])
+      setSalonsMeta(null)
+    },
+  })
+
   const [fetchMoreMasters] = useLazyQuery(getMastersByService, {
-    onCompleted(data: any) {
-      console.log('data', data)
-      const newMasters = flattenStrapiResponse(data?.masters) || []
+    onCompleted(data: QueryResponse<IMaster>['data']) {
+      const mastersData = data?.['masters'] || {
+        data: [],
+        meta: { pagination: { page: 1, pageSize: 0, pageCount: 0, total: 0 } },
+      }
+      const newMasters = flattenStrapiResponse(mastersData.data) || []
+      const meta = mastersData.meta?.pagination
 
       if (newMasters && newMasters.length > 0) {
-        setMasters(prev => [...prev, ...newMasters.slice(0, MASTERS_PER_PAGE)])
-        setNoMoreMasters(newMasters.length <= MASTERS_PER_PAGE)
-      } else {
-        setNoMoreMasters(true)
+        setMasters(prev => [...prev, ...newMasters])
+        setMastersMeta(meta)
       }
       setIsMastersLoading(false)
     },
-    onError(error: any) {
+    onError(error) {
       console.error('Error loading more masters:', error)
       setIsMastersLoading(false)
     },
   })
 
   const [fetchMoreSalons] = useLazyQuery(getSalonsByService, {
-    onCompleted(data: any) {
-      const newSalons = flattenStrapiResponse(data?.salons) || []
+    onCompleted(data: QueryResponse<ISalon>['data']) {
+      const salonsData = data?.['salons'] || {
+        data: [],
+        meta: { pagination: { page: 1, pageSize: 0, pageCount: 0, total: 0 } },
+      }
+      const newSalons = flattenStrapiResponse(salonsData.data) || []
+      const meta = salonsData.meta?.pagination
+
       if (newSalons && newSalons.length > 0) {
-        setSalons(prev => [...prev, ...newSalons.slice(0, SALONS_PER_PAGE)])
-        setNoMoreSalons(newSalons.length <= SALONS_PER_PAGE)
-      } else {
-        setNoMoreSalons(true)
+        setSalons(prev => [...prev, ...newSalons])
+        setSalonsMeta(meta)
       }
       setIsSalonsLoading(false)
     },
-    onError(error: any) {
+    onError(error) {
       console.error('Error loading more salons:', error)
       setIsSalonsLoading(false)
     },
   })
 
   useEffect(() => {
-    if (mastersData) {
-      setMasters(mastersData)
-      setMastersPage(1)
-      setNoMoreMasters(!hasMoreMasters)
+    if (serviceId) {
+      const service = servicesWithCategories
+        .flatMap(category => category.services)
+        .find(service => service.id === serviceId)
+
+      if (service) {
+        setClickedService(service)
+      }
+      loadInitialData(serviceId)
+    } else {
+      resetResultData()
     }
-  }, [mastersData, hasMoreMasters])
+  }, [serviceId])
+
+  const loadInitialData = (serviceIdToFetch: string) => {
+    setIsMastersLoading(true)
+    setIsSalonsLoading(true)
+    setMastersPage(1)
+    setSalonsPage(1)
+
+    fetchMasters({
+      variables: {
+        serviceId: serviceIdToFetch || '',
+        page: 1,
+        pageSize: MASTERS_PER_PAGE,
+      },
+    })
+
+    fetchSalons({
+      variables: {
+        serviceId: serviceIdToFetch || '',
+        page: 1,
+        pageSize: SALONS_PER_PAGE,
+      },
+    })
+  }
 
   useEffect(() => {
-    if (salonsData) {
+    if (mastersData && mastersData.length > 0) {
+      setMasters(mastersData)
+      setMastersPage(1)
+    }
+  }, [mastersData])
+
+  useEffect(() => {
+    if (salonsData && salonsData.length > 0) {
       setSalons(salonsData)
       setSalonsPage(1)
-      setNoMoreSalons(!hasMoreSalons)
     }
-  }, [salonsData, hasMoreSalons])
+  }, [salonsData])
 
   useEffect(() => {
     if (clickedService) {
@@ -110,14 +221,14 @@ const ServicesPage: FC<IServicesPageProps> = ({
             view !== 'all' ? [view, clickedService?.id] : clickedService?.id,
         },
       })
-
-      // Reset pagination when service changes
-      setMastersPage(1)
-      setSalonsPage(1)
+      if (clickedService.id !== serviceId) {
+        loadInitialData(clickedService.id)
+      }
     } else {
       router.replace({
         query: { ...router.query, category: undefined },
       })
+      resetResultData()
     }
   }, [clickedService])
 
@@ -144,7 +255,6 @@ const ServicesPage: FC<IServicesPageProps> = ({
       })
     }
 
-    // Reset pagination when view changes
     setMastersPage(1)
     setSalonsPage(1)
   }, [view])
@@ -154,7 +264,12 @@ const ServicesPage: FC<IServicesPageProps> = ({
   }
 
   const loadMoreMasters = () => {
-    if (isMastersLoading || noMoreMasters) return
+    if (
+      isMastersLoading ||
+      !mastersMeta ||
+      mastersMeta.page >= mastersMeta.pageCount
+    )
+      return
 
     setIsMastersLoading(true)
     const nextPage = mastersPage + 1
@@ -164,13 +279,18 @@ const ServicesPage: FC<IServicesPageProps> = ({
       variables: {
         serviceId: serviceId || clickedService?.id || '',
         page: nextPage,
-        pageSize: MASTERS_PER_PAGE + 1,
+        pageSize: MASTERS_PER_PAGE,
       },
     })
   }
 
   const loadMoreSalons = () => {
-    if (isSalonsLoading || noMoreSalons) return
+    if (
+      isSalonsLoading ||
+      !salonsMeta ||
+      salonsMeta.page >= salonsMeta.pageCount
+    )
+      return
 
     setIsSalonsLoading(true)
     const nextPage = salonsPage + 1
@@ -180,10 +300,17 @@ const ServicesPage: FC<IServicesPageProps> = ({
       variables: {
         serviceId: serviceId || clickedService?.id || '',
         page: nextPage,
-        pageSize: SALONS_PER_PAGE + 1,
+        pageSize: SALONS_PER_PAGE,
       },
     })
   }
+
+  const hasMoreMastersToLoad = mastersMeta
+    ? mastersMeta.page < mastersMeta.pageCount
+    : false
+  const hasMoreSalonsToLoad = salonsMeta
+    ? salonsMeta.page < salonsMeta.pageCount
+    : false
 
   return (
     <MainContainer>
@@ -196,8 +323,12 @@ const ServicesPage: FC<IServicesPageProps> = ({
           setMasters={setMasters}
           salons={salons}
           setSalons={setSalons}
+          resetMeta={() => {
+            setMastersMeta(null)
+            setSalonsMeta(null)
+          }}
         />
-        {clickedService?.id && (mastersData || salonsData) ? (
+        {clickedService?.id ? (
           <FilterWrap active={view}>
             <TextFilter active={view === 'all'} onClick={() => setView('all')}>
               Все
@@ -206,13 +337,13 @@ const ServicesPage: FC<IServicesPageProps> = ({
               active={view === 'master'}
               onClick={() => setView('master')}
             >
-              Мастера
+              Мастера {mastersMeta?.total ? `(${mastersMeta.total})` : ''}
             </TextFilter>
             <TextFilter
               active={view === 'salon'}
               onClick={() => setView('salon')}
             >
-              Салоны
+              Салоны {salonsMeta?.total ? `(${salonsMeta.total})` : ''}
             </TextFilter>
           </FilterWrap>
         ) : null}
@@ -222,7 +353,6 @@ const ServicesPage: FC<IServicesPageProps> = ({
             <ServicesList
               setClickedService={setClickedService}
               popularServiceHandler={(id: string) => {
-                // Find the service by ID and pass it to the handler
                 const service = servicesWithCategories
                   .flatMap(category => category.services)
                   .find(service => service.id === id)
@@ -238,8 +368,8 @@ const ServicesPage: FC<IServicesPageProps> = ({
         masters.length > 0 &&
         (view === 'master' || view === 'all') ? (
           <>
-            <ServicesList masters={masters} />
-            {!noMoreMasters && (
+            <ServicesList masters={masters} totalItems={mastersMeta?.total} />
+            {hasMoreMastersToLoad && (
               <div
                 style={{
                   display: 'flex',
@@ -260,8 +390,8 @@ const ServicesPage: FC<IServicesPageProps> = ({
         ) : null}
         {salons && salons.length > 0 && (view === 'salon' || view === 'all') ? (
           <>
-            <ServicesList salons={salons} />
-            {!noMoreSalons && (
+            <ServicesList salons={salons} totalItems={salonsMeta?.total} />
+            {hasMoreSalonsToLoad && (
               <div
                 style={{
                   display: 'flex',

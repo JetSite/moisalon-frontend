@@ -5,14 +5,14 @@ import { getStoreData } from 'src/store/utils'
 import { WrapperItemsSalons, TitleResults, SalonCardWrapper } from './styles'
 import SalonCard from '../../../../blocks/SalonCard'
 import { pluralize } from '../../../../../utils/pluralize'
-import { cyrToTranslit } from '../../../../../utils/translit'
 import { ISalon } from 'src/types/salon'
 
 interface ISalonsResultProps {
   salons: ISalon[]
+  totalItems?: number
 }
 
-const SalonsResult: FC<ISalonsResultProps> = ({ salons }) => {
+const SalonsResult: FC<ISalonsResultProps> = ({ salons, totalItems }) => {
   const { city } = useAuthStore(getStoreData)
 
   return (
@@ -20,9 +20,17 @@ const SalonsResult: FC<ISalonsResultProps> = ({ salons }) => {
       {salons?.length ? (
         <>
           <TitleResults>
-            {`${pluralize(salons.length, 'Найден', 'Найдено', 'Найдено')} ${
-              salons.length
-            } ${pluralize(salons.length, 'салон', 'салона', 'салонов')}`}
+            {`${pluralize(
+              totalItems,
+              'Найден',
+              'Найдено',
+              'Найдено',
+            )} ${totalItems} ${pluralize(
+              totalItems,
+              'салон',
+              'салона',
+              'салонов',
+            )}`}
           </TitleResults>
           <WrapperItemsSalons>
             {salons?.map(salon => (

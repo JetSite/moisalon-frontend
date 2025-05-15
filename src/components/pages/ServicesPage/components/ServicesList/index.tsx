@@ -5,7 +5,7 @@ import ServicesListItem from './ServicesListItem'
 import { Wrapper } from './styles'
 import { IMaster } from 'src/types/masters'
 import { ISalon } from 'src/types/salon'
-import { IServiceCategory, IServiceInCategory } from 'src/types/services'
+import { IServiceInCategory } from 'src/types/services'
 import { ISetState } from 'src/types/common'
 
 const popularServices = [
@@ -84,6 +84,7 @@ const popularServices = [
 interface IServicesListProps {
   masters?: IMaster[]
   salons?: ISalon[]
+  totalItems?: number
   setClickedService?: ISetState<IServiceInCategory | null>
   popularServiceHandler?: (id: string) => void
 }
@@ -91,6 +92,7 @@ interface IServicesListProps {
 const ServicesList: FC<IServicesListProps> = ({
   masters = null,
   salons = null,
+  totalItems,
   popularServiceHandler,
 }) => {
   return (
@@ -104,8 +106,10 @@ const ServicesList: FC<IServicesListProps> = ({
             />
           ))
         : null}
-      {masters ? <MastersResult masters={masters} /> : null}
-      {salons ? <SalonsResult salons={salons} /> : null}
+      {masters ? (
+        <MastersResult masters={masters} totalItems={totalItems} />
+      ) : null}
+      {salons ? <SalonsResult salons={salons} totalItems={totalItems} /> : null}
     </Wrapper>
   )
 }
