@@ -12,6 +12,8 @@ import { useLazyQuery } from '@apollo/client'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { getMastersByService } from '@/api/graphql/master/queries/getMastersByService'
 import { getSalonsByService } from '@/api/graphql/salon/queries/getSalonsByService'
+import styled from 'styled-components'
+import RotatingLoader from '@/components/ui/RotatingLoader'
 
 interface IServicesPageProps {
   servicesWithCategories: IServiceCategory[]
@@ -42,6 +44,15 @@ interface QueryResponse<T> {
 
 const MASTERS_PER_PAGE = 10
 const SALONS_PER_PAGE = 6
+
+// Add loader styles
+const LoaderContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+  width: 100%;
+`
 
 const ServicesPage: FC<IServicesPageProps> = ({
   servicesWithCategories,
@@ -214,49 +225,66 @@ const ServicesPage: FC<IServicesPageProps> = ({
 
   useEffect(() => {
     if (clickedService) {
-      router.replace({
-        query: {
-          ...router.query,
-          category:
-            view !== 'all' ? [view, clickedService?.id] : clickedService?.id,
+      router.replace(
+        {
+          query: {
+            ...router.query,
+            category:
+              view !== 'all' ? [view, clickedService?.id] : clickedService?.id,
+          },
         },
-      })
+        undefined,
+        { shallow: true },
+      )
       if (clickedService.id !== serviceId) {
         loadInitialData(clickedService.id)
       }
     } else {
-      router.replace({
-        query: { ...router.query, category: undefined },
-      })
+      router.replace(
+        {
+          query: { ...router.query, category: undefined },
+        },
+        undefined,
+        { shallow: true },
+      )
       resetResultData()
     }
   }, [clickedService])
 
   useEffect(() => {
     if (view === 'master') {
-      router.replace({
-        query: {
-          ...router.query,
-          category: ['master', clickedService?.id] as string[],
+      router.replace(
+        {
+          query: {
+            ...router.query,
+            category: ['master', clickedService?.id] as string[],
+          },
         },
-      })
+        undefined,
+        { shallow: true },
+      )
     }
     if (view === 'salon') {
-      router.replace({
-        query: {
-          ...router.query,
-          category: ['salon', clickedService?.id] as string[],
+      router.replace(
+        {
+          query: {
+            ...router.query,
+            category: ['salon', clickedService?.id] as string[],
+          },
         },
-      })
+        undefined,
+        { shallow: true },
+      )
     }
     if (view === 'all') {
-      router.replace({
-        query: { ...router.query, category: clickedService?.id },
-      })
+      router.replace(
+        {
+          query: { ...router.query, category: clickedService?.id },
+        },
+        undefined,
+        { shallow: true },
+      )
     }
-
-    setMastersPage(1)
-    setSalonsPage(1)
   }, [view])
 
   const popularServiceHandler = (service: IServiceInCategory) => {
@@ -347,6 +375,13 @@ const ServicesPage: FC<IServicesPageProps> = ({
             </TextFilter>
           </FilterWrap>
         ) : null}
+
+        {(isMastersLoading || isSalonsLoading) && clickedService?.id ? (
+          <LoaderContainer>
+            <RotatingLoader />
+          </LoaderContainer>
+        ) : null}
+
         {!masters.length && !salons.length && !clickedService?.id ? (
           <>
             <Title>Популярные услуги</Title>
@@ -374,15 +409,15 @@ const ServicesPage: FC<IServicesPageProps> = ({
                 style={{
                   display: 'flex',
                   justifyContent: 'center',
-                  margin: '20px 0',
+                  margin: '0 0 80px 0',
                 }}
               >
                 <Button
                   onClick={loadMoreMasters}
                   disabled={isMastersLoading}
-                  variant="dark"
+                  variant="darkTransparent"
                 >
-                  {isMastersLoading ? 'Загрузка...' : 'Загрузить еще'}
+                  {isMastersLoading ? 'Загрузка...' : 'Показать еще'}
                 </Button>
               </div>
             )}
@@ -396,15 +431,15 @@ const ServicesPage: FC<IServicesPageProps> = ({
                 style={{
                   display: 'flex',
                   justifyContent: 'center',
-                  margin: '20px 0',
+                  margin: '0 0 80px 0',
                 }}
               >
                 <Button
                   onClick={loadMoreSalons}
                   disabled={isSalonsLoading}
-                  variant="dark"
+                  variant="darkTransparent"
                 >
-                  {isSalonsLoading ? 'Загрузка...' : 'Загрузить еще'}
+                  {isSalonsLoading ? 'Загрузка...' : 'Показать еще'}
                 </Button>
               </div>
             )}
