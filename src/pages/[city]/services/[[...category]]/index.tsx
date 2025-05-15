@@ -4,33 +4,30 @@ import SearchBlock from '../../../../components/blocks/SearchBlock'
 import ServicesPage from '../../../../components/pages/ServicesPage'
 import { getServiceCategories } from 'src/api/graphql/service/queries/getServiceCategories'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
-import { IServiceCategory, IServiceInCategory } from 'src/types/services'
+import { IServiceCategory } from 'src/types/services'
 import { FC } from 'react'
-import { getMastersByService } from 'src/api/graphql/master/queries/getMastersByService'
-import { getSalonsByService } from 'src/api/graphql/salon/queries/getSalonsByService'
 import { IMaster } from 'src/types/masters'
 import { ISalon } from 'src/types/salon'
 import { getMasters } from 'src/api/graphql/master/queries/getMasters'
 import { BRANDS } from 'src/api/graphql/brand/queries/getBrands'
 import { getSalons } from 'src/api/graphql/salon/queries/getSalons'
 import { IBrand } from 'src/types/brands'
+import { GetServerSideProps } from 'next'
 
 interface IServicesPageProps {
   servicesWithCategories: IServiceCategory[]
-  mastersData: IMaster[]
-  salonsData: ISalon[]
   brandsRandom: IBrand[]
   mastersRandom: IMaster[]
   salonsRandom: ISalon[]
+  serviceId: string | null
 }
 
 const Services: FC<IServicesPageProps> = ({
   servicesWithCategories,
-  mastersData,
-  salonsData,
   brandsRandom,
   mastersRandom,
   salonsRandom,
+  serviceId,
 }) => {
   return (
     <CategoryPageLayout
@@ -41,42 +38,35 @@ const Services: FC<IServicesPageProps> = ({
       <SearchBlock />
       <ServicesPage
         servicesWithCategories={servicesWithCategories}
-        mastersData={mastersData}
-        salonsData={salonsData}
+        serviceId={serviceId}
+        mastersData={[]}
+        salonsData={[]}
       />
     </CategoryPageLayout>
   )
 }
 
-export async function getServerSideProps({ params, query }: any) {
+export const getServerSideProps: GetServerSideProps = async context => {
+  const { params, query } = context
   const apolloClient = initializeApollo()
-  let mastersData = null
-  let salonsData = null
 
-  const view = params?.category?.length > 1 ? params?.category[0] : undefined
-  const serviceId =
-    params?.category?.length > 1
-      ? params?.category[1]
-      : params?.category?.length
-      ? params?.category[0]
-      : undefined
+  // Extract service ID from URL parameters
+  const categoryParam = params?.['category']
+  let serviceId: string | null = null
 
-  if (params?.category?.length) {
-    const dataMasters = await apolloClient.query({
-      query: getMastersByService,
-      variables: {
-        serviceId: serviceId || null,
-      },
-    })
-    const dataSalons = await apolloClient.query({
-      query: getSalonsByService,
-      variables: {
-        serviceId: serviceId || null,
-      },
-    })
-    mastersData = flattenStrapiResponse(dataMasters?.data?.masters)
-    salonsData = flattenStrapiResponse(dataSalons?.data?.salons)
+  if (categoryParam) {
+    if (Array.isArray(categoryParam) && categoryParam.length > 0) {
+      serviceId = categoryParam.length > 1 ? categoryParam[1] : categoryParam[0]
+    } else if (typeof categoryParam === 'string') {
+      serviceId = categoryParam
+    }
   }
+
+  const citySlug = query['city']
+    ? Array.isArray(query['city'])
+      ? query['city'][0]
+      : query['city']
+    : ''
 
   const data = await Promise.all([
     apolloClient.query({
@@ -91,32 +81,32 @@ export async function getServerSideProps({ params, query }: any) {
     apolloClient.query({
       query: getMasters,
       variables: {
-        slug: query.city,
+        slug: citySlug,
         itemsCount: 10,
       },
     }),
     apolloClient.query({
       query: getSalons,
       variables: {
-        slug: query.city,
+        slug: citySlug,
         itemsCount: 10,
       },
     }),
   ])
 
-  const normalisedData = flattenStrapiResponse(data[0]?.data?.serviceCategories)
-  const brands: IBrand[] = flattenStrapiResponse(data[1].data.brands)
-  const masters: IMaster[] = flattenStrapiResponse(data[2].data.masters)
-  const salons: ISalon[] = flattenStrapiResponse(data[3]?.data.salons)
+  const normalisedData =
+    flattenStrapiResponse(data[0]?.data?.serviceCategories) || []
+  const brands = flattenStrapiResponse(data[1]?.data?.brands) || []
+  const masters = flattenStrapiResponse(data[2]?.data?.masters) || []
+  const salons = flattenStrapiResponse(data[3]?.data?.salons) || []
 
   return addApolloState(apolloClient, {
     props: {
       servicesWithCategories: normalisedData,
-      mastersData,
-      salonsData,
       brandsRandom: brands,
       mastersRandom: masters,
       salonsRandom: salons,
+      serviceId,
     },
   })
 }
