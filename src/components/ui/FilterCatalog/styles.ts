@@ -138,6 +138,55 @@ export const SelectStyled = styled(Select)`
   }
 `
 
+export const FiltersContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 24px;
+  width: 100%;
+  margin-bottom: 24px;
+  background-color: white;
+
+  @media (max-width: ${laptopBreakpoint}) {
+    margin-top: 50px;
+    margin-bottom: 0;
+    flex-direction: column;
+    gap: 0;
+  }
+`
+
+export const SelectWrapper = styled.div`
+  width: 30%;
+  min-width: 250px;
+  margin-bottom: 16px;
+
+  @media (max-width: ${laptopBreakpoint}) {
+    width: 100%;
+  }
+`
+
+export const SelectFilter = styled.div`
+  width: 100%;
+`
+
+export const SearchInputWrapper = styled.div`
+  padding: 8px 8px;
+  border-bottom: 1px solid #eaeaea;
+`
+
+export const MenuListWrapper = styled.div`
+  max-height: 300px;
+  overflow-y: auto;
+`
+
+export const ChipLabel = styled.div`
+  font-weight: 500;
+  color: #fff;
+  font-size: 14px;
+  padding: 0 4px;
+`
+
 const colors = {
   black: '#000',
   white: '#fff',
