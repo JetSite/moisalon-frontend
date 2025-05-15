@@ -3,8 +3,9 @@ import { laptopBreakpoint, red } from '../../../styles/variables'
 
 export const Wrapper = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  margin-top: 97px;
+  margin-top: 40px;
   margin-bottom: 90px;
   padding: 0 140px;
 
@@ -19,12 +20,12 @@ export const BackWrapper = styled.button`
 
   @media (max-width: ${laptopBreakpoint}) {
     margin-top: 28px;
-    padding: 0 20px;
   }
 `
 
 export const Navigation = styled.div`
-  width: 33.9%;
+  width: 100%;
+  margin-bottom: 30px;
 
   @media (max-width: ${laptopBreakpoint}) {
     display: none;
@@ -117,7 +118,7 @@ export const Icon = styled.div<{ opened?: boolean }>`
 `
 
 export const Content = styled.div`
-  width: 59.2%;
+  width: 100%;
   min-height: 90vh;
 
   @media (max-width: ${laptopBreakpoint}) {
