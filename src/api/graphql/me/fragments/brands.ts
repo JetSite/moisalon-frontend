@@ -1,5 +1,6 @@
 import { imageInfo } from '../../common/imageInfo'
 import { promotionFragment } from '../../fragments/promotion'
+import { reviewsFragment } from '../../fragments/reviews'
 
 export const brandsFragment = `
 data {
@@ -21,6 +22,9 @@ data {
       }
       promotions {
         ${promotionFragment}
+      }
+      reviews {
+        ${reviewsFragment}
       }
   }
 }`
