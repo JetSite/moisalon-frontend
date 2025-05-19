@@ -1,18 +1,26 @@
-import SalonLanding from 'src/components/pages/SalonLanding'
-import MainHead from '../MainHead'
-import { Fragment } from 'react'
+import React, { Fragment } from 'react'
+import SalonLanding from '../../components/pages/SalonLanding'
 
 const ForSalon = () => {
   return (
     <Fragment>
-      <MainHead
-        title="Для салонов | MOI salon"
-        description="MOI salon - платформа для салонов красоты. Продвигайте услуги, находите клиентов и развивайте свой бизнес"
-        image="/salons-page-bg.jpg"
-      />
       <SalonLanding />
     </Fragment>
   )
+}
+
+export const getStaticProps = () => {
+  return {
+    props: {
+      meta: {
+        title: 'Для салонов | MOI salon',
+        description:
+          'MOI salon - платформа для салонов красоты. Автоматизируйте бизнес, привлекайте клиентов и развивайте свой салон',
+        image: '/salons-page-bg.jpg',
+        url: 'https://moi.salon/for_salon',
+      },
+    },
+  }
 }
 
 export default ForSalon

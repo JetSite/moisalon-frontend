@@ -5,7 +5,7 @@ import AllMastersPage, {
 } from '../../../components/pages/Master/AllMasters'
 import { GetServerSideProps } from 'next'
 import { getMastersTroughCity } from 'src/api/graphql/master/queries/getMastersTroughCity'
-import { FC, Fragment } from 'react'
+import { FC } from 'react'
 import { IMaster } from 'src/types/masters'
 import { IPagination } from 'src/types'
 import { getTotalCount } from 'src/utils/getTotalCount'
@@ -19,7 +19,6 @@ import { getRating } from 'src/utils/newUtils/getRating'
 import { Nullable } from 'src/types/common'
 import { MIN_SEARCH_LENGTH } from 'src/components/pages/MainPage/components/SearchMain/utils/useSearch'
 import { getPrepareData } from 'src/utils/newUtils/getPrepareData'
-import MainHead from '../../MainHead'
 
 interface Props extends IMastersPageProps {
   brands: IBrand[] | null
@@ -31,16 +30,9 @@ const AllMasters: FC<Props> = ({ masters, salons, brands, ...props }) => {
   const layout = { brands, masters, salons }
 
   return (
-    <Fragment>
-      <MainHead
-        title={`Мастера красоты в ${props.cityData.name} | MOI salon`}
-        description={`Каталог мастеров красоты в ${props.cityData.name}. Поиск по услугам, ценам и отзывам на платформе MOI salon`}
-        image="/masters-page-right.png"
-      />
-      <CategoryPageLayout {...layout}>
-        <AllMastersPage {...props} />
-      </CategoryPageLayout>
-    </Fragment>
+    <CategoryPageLayout {...layout}>
+      <AllMastersPage {...props} />
+    </CategoryPageLayout>
   )
 }
 
@@ -152,6 +144,12 @@ export const getServerSideProps: GetServerSideProps<
       },
       cityData,
       pagination,
+      meta: {
+        title: `Мастера красоты в ${cityData.name} | MOI salon`,
+        description: `Каталог мастеров красоты в ${cityData.name}. Поиск по услугам, ценам и отзывам на платформе MOI salon`,
+        image: '/masters-page-right.png',
+        url: `https://moi.salon/${cityData.slug}/master`,
+      },
     },
   }
 }

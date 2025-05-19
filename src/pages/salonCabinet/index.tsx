@@ -10,8 +10,6 @@ import { getSalonPage } from 'src/api/graphql/salon/queries/getSalon'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { Nullable } from 'src/types/common'
 import { GetServerSideProps, NextPage } from 'next'
-import { Fragment } from 'react'
-import MainHead from '../MainHead'
 
 type Props = ISalonCabinetProps
 
@@ -20,40 +18,13 @@ const SalonCabinetPage: NextPage<Props> = ({ salonData }) => {
   const { me } = useAuthStore(getStoreData)
 
   if (me === null) {
-    return (
-      <Fragment>
-        <MainHead
-          title="Личный кабинет салона | MOI salon"
-          description="Управление профилем салона на платформе MOI salon"
-          image="/salons-page-bg.jpg"
-        />
-        <CreatePageSkeleton />
-      </Fragment>
-    )
+    return <CreatePageSkeleton />
   }
   if (me && !me.info) {
     router.push('/login')
-    return (
-      <Fragment>
-        <MainHead
-          title="Личный кабинет салона | MOI salon"
-          description="Управление профилем салона на платформе MOI salon"
-          image="/salons-page-bg.jpg"
-        />
-        <CreatePageSkeleton />
-      </Fragment>
-    )
+    return <CreatePageSkeleton />
   } else {
-    return (
-      <Fragment>
-        <MainHead
-          title={`Личный кабинет ${salonData?.name || 'салона'} | MOI salon`}
-          description="Управление профилем салона, услугами и расписанием на платформе MOI salon"
-          image={salonData?.photo?.url || '/salons-page-bg.jpg'}
-        />
-        <SalonCabinet salonData={salonData} />
-      </Fragment>
-    )
+    return <SalonCabinet salonData={salonData} />
   }
 }
 
@@ -81,7 +52,16 @@ export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async ({
   const salonData = flattenStrapiResponse(data.data.salon) || null
 
   return addApolloState(apolloClient, {
-    props: { salonData },
+    props: {
+      salonData,
+      meta: {
+        title: `Личный кабинет ${salonData?.name || 'салона'} | MOI salon`,
+        description:
+          'Управление профилем салона, услугами и расписанием на платформе MOI salon',
+        image: salonData?.photo?.url || '/salons-page-bg.jpg',
+        url: `https://moi.salon/salonCabinet?id=${query?.id}`,
+      },
+    },
   })
 }
 

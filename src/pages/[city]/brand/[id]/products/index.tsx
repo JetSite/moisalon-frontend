@@ -14,8 +14,6 @@ import { getPrepareData } from 'src/utils/newUtils/getPrepareData'
 import { PRODUCTS } from 'src/api/graphql/product/queries/getProducts'
 import { IProduct } from 'src/types/product'
 import { useFetchCartByUser } from 'src/hooks/useFetchCartByUser'
-import { Fragment } from 'react'
-import MainHead from '../../../../MainHead'
 
 type Props = Omit<IBrandProductsPageProps, 'cart'>
 
@@ -24,16 +22,9 @@ const BrandProducts: NextPage<Props> = props => {
 
   return (
     <MainLayout>
-      <Fragment>
-        <MainHead
-          title={`${props.brand.name} - Продукция | MOI salon`}
-          description={`Каталог продукции бренда ${props.brand.name} на платформе MOI salon. Широкий выбор товаров для салонов красоты`}
-          image={props.brand.logo?.url || '/mobile-main-bg.jpg'}
-        />
-        <MainContainer>
-          <BrandProductsPage cart={storeCart} {...props} />
-        </MainContainer>
-      </Fragment>
+      <MainContainer>
+        <BrandProductsPage cart={storeCart} {...props} />
+      </MainContainer>
     </MainLayout>
   )
 }
@@ -70,6 +61,12 @@ export const getServerSideProps: GetServerSideProps<
     ? products.find(product => product.brand.id === brandID)?.brand ?? null
     : null
 
+  if (!brand) {
+    return {
+      notFound: true,
+    }
+  }
+
   return addApolloState<Nullable<Props>>(apolloClient, {
     props: {
       products,
@@ -79,6 +76,12 @@ export const getServerSideProps: GetServerSideProps<
         data[0].status === 'fulfilled'
           ? data[0].value.data.products?.meta.pagination
           : null,
+      meta: {
+        title: `${brand.name} - Продукция | MOI salon`,
+        description: `Каталог продукции бренда ${brand.name} на платформе MOI salon. Широкий выбор товаров для салонов красоты`,
+        image: brand.logo?.url || '/mobile-main-bg.jpg',
+        url: `https://moi.salon/${ctx.query['city']}/brand/${brand.id}/products`,
+      },
     },
   })
 }

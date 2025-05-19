@@ -1,18 +1,22 @@
-import React, { Fragment } from "react";
-import FailPaymentPage from "../../components/blocks/PaymentPages/FailPaymentPage";
-import MainHead from "../MainHead";
+import FailPaymentPage from "@/components/blocks/PaymentPages/FailPaymentPage";
 
-const FailPayment = () => {
+const Fail = () => {
   return (
-    <Fragment>
-      <MainHead
-        title="Ошибка оплаты | MOI salon"
-        description="К сожалению, произошла ошибка при обработке платежа на платформе MOI salon"
-        image="/master-landing-login.jpg"
-      />
       <FailPaymentPage />
-    </Fragment>
   );
 };
 
-export default FailPayment;
+export const getStaticProps = () => {
+  return {
+    props: {
+      meta: {
+        title: "Ошибка оплаты | MOI salon",
+        description: "Произошла ошибка при обработке платежа на платформе MOI salon",
+        image: "/mobile-main-bg.jpg",
+        url: "https://moi.salon/payment/fail",
+      },
+    },
+  };
+};
+
+export default Fail;

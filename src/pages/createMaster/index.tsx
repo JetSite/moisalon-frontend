@@ -15,7 +15,6 @@ import { IMaster } from 'src/types/masters'
 import { ICity, ISNetwork } from 'src/types'
 import { getCities } from 'src/api/graphql/city/getCities'
 import { S_NETWORKS } from 'src/api/graphql/common/queries/sNetworks'
-import MainHead from '../MainHead'
 
 interface Props {
   serviceCategories: IServiceCategories[]
@@ -35,68 +34,19 @@ const CreateOrEditMaster: FC<Props> = ({
   const isEditMode = !!master
 
   if (user === null) {
-    return (
-      <Fragment>
-        <MainHead
-          title={
-            isEditMode
-              ? 'Редактирование мастера | MOI salon'
-              : 'Создание профиля мастера | MOI salon'
-          }
-          description={
-            isEditMode
-              ? 'Редактирование информации о мастере в системе MOI salon'
-              : 'Создайте профиль мастера на платформе MOI salon и начните привлекать новых клиентов'
-          }
-          image="/masters-page-right.png"
-        />
-        <CreatePageSkeleton />
-      </Fragment>
-    )
+    return <CreatePageSkeleton />
   }
   if (user && !user.info) {
     router.push('/login')
-    return (
-      <Fragment>
-        <MainHead
-          title={
-            isEditMode
-              ? 'Редактирование мастера | MOI salon'
-              : 'Создание профиля мастера | MOI salon'
-          }
-          description={
-            isEditMode
-              ? 'Редактирование информации о мастере в системе MOI salon'
-              : 'Создайте профиль мастера на платформе MOI salon и начните привлекать новых клиентов'
-          }
-          image="/masters-page-right.png"
-        />
-        <CreatePageSkeleton />
-      </Fragment>
-    )
+    return <CreatePageSkeleton />
   } else {
     return (
-      <Fragment>
-        <MainHead
-          title={
-            isEditMode
-              ? 'Редактирование мастера | MOI salon'
-              : 'Создание профиля мастера | MOI salon'
-          }
-          description={
-            isEditMode
-              ? 'Редактирование информации о мастере в системе MOI salon'
-              : 'Создайте профиль мастера на платформе MOI salon и начните привлекать новых клиентов'
-          }
-          image="/masters-page-right.png"
-        />
-        <CreateMaster
-          master={master}
-          serviceCategories={serviceCategories}
-          cities={cities}
-          sNetworks={sNetworks}
-        />
-      </Fragment>
+      <CreateMaster
+        master={master}
+        serviceCategories={serviceCategories}
+        cities={cities}
+        sNetworks={sNetworks}
+      />
     )
   }
 }
@@ -136,12 +86,24 @@ export const getServerSideProps: GetServerSideProps<
       ? flattenStrapiResponse(data[2].value.data.sNetworks) || []
       : []
 
+  const isEditMode = !!master
+
   return {
     props: {
       serviceCategories,
       master,
       cities,
       sNetworks,
+      meta: {
+        title: isEditMode
+          ? 'Редактирование мастера | MOI salon'
+          : 'Создание профиля мастера | MOI salon',
+        description: isEditMode
+          ? 'Редактирование информации о мастере в системе MOI salon'
+          : 'Создайте профиль мастера на платформе MOI salon и начните привлекать новых клиентов',
+        image: '/masters-page-right.png',
+        url: `/createMaster${id ? `?id=${id}` : ''}`,
+      },
     },
   }
 }

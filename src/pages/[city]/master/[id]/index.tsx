@@ -39,7 +39,6 @@ import { getServiceCategories } from 'src/api/graphql/service/queries/getService
 import { IServiceCategory, IServices } from 'src/types/services'
 import AutoFocusedForm from 'src/components/blocks/Form/AutoFocusedForm'
 import PhotoArrayField from 'src/components/blocks/Form/PhotoArrayField'
-import MainHead from '../../../MainHead'
 import MasterPage from 'src/components/pages/MasterPage'
 
 interface Props {
@@ -47,6 +46,12 @@ interface Props {
   randomMasters: IMaster[]
   allServices: IServiceCategory[]
   cityData: ICity
+  meta: {
+    title: string
+    description: string
+    image: string
+    url: string
+  }
 }
 
 const Master: FC<Props> = ({
@@ -140,15 +145,7 @@ const Master: FC<Props> = ({
 
   return (
     <MainLayout>
-      <Fragment>
-        <MainHead
-          title={master.name || `${master.name} | MOI salon`}
-          description={
-            master.seoDescription ||
-            `${master.name} в ${city.name}. Услуги, портфолио, отзывы и контакты на MOI salon`
-          }
-          image={master.photo?.url || '/masters-page-right.png'}
-        />
+      <>
         <SearchBlock />
         <Header
           master={master}
@@ -394,7 +391,7 @@ const Master: FC<Props> = ({
           pb={91}
           city={city}
         />
-      </Fragment>
+      </>
     </MainLayout>
   )
 }
@@ -456,6 +453,14 @@ export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async ({
       }),
       allServices,
       cityData,
+      meta: {
+        title: masterData?.name || `Мастер | MOI salon`,
+        description:
+          masterData?.seoDescription ||
+          `Мастер в ${cityData.name}. Услуги, портфолио, отзывы и контакты на MOI salon`,
+        image: masterData?.photo?.url || '/masters-page-right.png',
+        url: `https://moi.salon/${cityData.name}/master/${masterData?.id}`,
+      },
     },
   }
 }

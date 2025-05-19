@@ -5,7 +5,6 @@ import { EDUCATIONS } from 'src/api/graphql/education/queries/getEducations'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { IEducation } from 'src/types/education'
 import { FC, Fragment } from 'react'
-import MainHead from '../MainHead'
 
 interface EducationsProps {
   educations: IEducation[]
@@ -14,11 +13,6 @@ interface EducationsProps {
 const Educations: FC<EducationsProps> = ({ educations }) => {
   return (
     <Fragment>
-      <MainHead
-        title="Обучение и курсы | MOI salon"
-        description="Профессиональные курсы и программы обучения для мастеров индустрии красоты на платформе MOI salon"
-        image="/services-page-photo6.jpg"
-      />
       <BusinessCategoryPageLayout loading={false}>
         <BusinessCategoryPage
           title="Обучение"
@@ -45,6 +39,13 @@ export async function getServerSideProps() {
   return addApolloState(apolloClient, {
     props: {
       educations: normalisedEducations,
+      meta: {
+        title: 'Обучение и курсы | MOI salon',
+        description:
+          'Профессиональные курсы и программы обучения для мастеров индустрии красоты на платформе MOI salon',
+        image: '/services-page-photo6.jpg',
+        url: 'https://moi.salon/educations',
+      },
     },
   })
 }

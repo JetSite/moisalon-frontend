@@ -10,8 +10,6 @@ import { Nullable } from 'src/types/common'
 import { IProduct } from 'src/types/product'
 import { getPrepareData } from 'src/utils/newUtils/getPrepareData'
 import { useFetchCartByUser } from 'src/hooks/useFetchCartByUser'
-import { Fragment } from 'react'
-import MainHead from '../../../pages/MainHead'
 
 type Props = Omit<IBeautyFreeShopPageProps, 'cart'>
 
@@ -19,16 +17,9 @@ const BeautyFreeShop: NextPage<Props> = props => {
   const { storeCart } = useFetchCartByUser()
   return (
     <MainLayout>
-      <Fragment>
-        <MainHead
-          title="Интернет-магазин BeautyFreeShop | MOI salon"
-          description="Профессиональная косметика и товары для индустрии красоты. Широкий ассортимент продукции для салонов и мастеров."
-          image="/stock3.png"
-        />
-        <MainContainer>
-          <BeautyFreeShopPage cart={storeCart} {...props} />
-        </MainContainer>
-      </Fragment>
+      <MainContainer>
+        <BeautyFreeShopPage cart={storeCart} {...props} />
+      </MainContainer>
     </MainLayout>
   )
 }
@@ -58,6 +49,13 @@ export const getServerSideProps: GetServerSideProps<
         data[0].status === 'fulfilled'
           ? data[0].value.data.products?.meta.pagination
           : null,
+      meta: {
+        title: 'Интернет-магазин BeautyFreeShop | MOI salon',
+        description:
+          'Профессиональная косметика и товары для индустрии красоты. Широкий ассортимент продукции для салонов и мастеров.',
+        image: '/stock3.png',
+        url: `https://moi.salon/${ctx.query['city']}/beautyFreeShop`,
+      },
     },
   })
 }

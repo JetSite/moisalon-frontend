@@ -24,24 +24,14 @@ import { authConfig } from 'src/api/authConfig'
 import { ME } from 'src/api/graphql/me/queries/getMe'
 import { ApolloQueryResult } from '@apollo/client'
 import { Fragment } from 'react'
-import MainHead from '../../../../pages/MainHead'
 
 type Props = IProductPageProps
 
 const Product: NextPage<Props> = ({ product, reviews, cart }) => {
   return (
     <MainLayout>
-      <Fragment>
-        <MainHead
-          title={`${product.name} | MOI salon`}
-          description={`${product.name} - ${
-            product.brand?.name || 'Товар'
-          } на платформе MOI salon. Описание, характеристики и отзывы.`}
-          image={product.cover?.url || '/stock3.png'}
-        />
-        <SearchBlock />
-        <ProductPage product={product} reviews={reviews} cart={cart} />
-      </Fragment>
+      <SearchBlock />
+      <ProductPage product={product} reviews={reviews} cart={cart} />
     </MainLayout>
   )
 }
@@ -92,11 +82,25 @@ export const getServerSideProps: GetServerSideProps<
     reviews?.data?.reviews,
   )
 
+  if (!normalisedProduct) {
+    return {
+      notFound: true,
+    }
+  }
+
   return addApolloState(apolloClient, {
     props: {
       product: normalisedProduct,
       reviews: normalisedReviews,
       cart,
+      meta: {
+        title: `${normalisedProduct.name} | MOI salon`,
+        description: `${normalisedProduct.name} - ${
+          normalisedProduct.brand?.name || 'Товар'
+        } на платформе MOI salon. Описание, характеристики и отзывы.`,
+        image: normalisedProduct.cover?.url || '/stock3.png',
+        url: `https://moi.salon/${ctx.params?.['city']}/product/${normalisedProduct.id}`,
+      },
     },
   })
 }

@@ -37,7 +37,6 @@ import { getServiceCategories } from 'src/api/graphql/service/queries/getService
 import { IServiceCategory, IServices } from 'src/types/services'
 import { getServicesByCategory } from 'src/utils/serviceCatalog'
 import { GET_SERVICES_M_CAT } from 'src/api/graphql/service/queries/getServicesMCat'
-import MainHead from '../../../MainHead'
 
 const DecktopWrapper = styled.div`
   display: block;
@@ -124,16 +123,6 @@ const Salon: FC<Props> = ({
 
   return (
     <MainLayout>
-      <Fragment>
-        <MainHead
-          title={salon.seoTitle || `${salon.name} | MOI salon`}
-          description={
-            salon.seoDescription ||
-            `Салон красоты ${salon.name} в ${cityData.name}. Услуги, мастера, отзывы и контакты на MOI salon`
-          }
-          image={salon.cover?.url || '/salons-page-bg.jpg'}
-        />
-      </Fragment>
       <SearchBlock />
       <Header salon={salon} isOwner={isOwner} />
       <TabsSlider
@@ -414,6 +403,14 @@ export const getServerSideProps: GetServerSideProps<
       services,
       servicesM,
       cityData,
+      meta: {
+        title: salonData?.seoTitle || `${salonData?.name} | MOI salon`,
+        description:
+          salonData?.seoDescription ||
+          `Салон красоты ${salonData?.name} в ${cityData.name}. Услуги, мастера, отзывы и контакты на MOI salon`,
+        image: salonData?.cover?.url || '/salons-page-bg.jpg',
+        url: `https://moi.salon/${cityData.slug}/salon/${salonData?.id}`,
+      },
     },
   }
 }

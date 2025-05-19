@@ -1,21 +1,27 @@
-import MainLayout from 'src/layouts/MainLayout'
+import { FC } from 'react'
 import NotFound from '../components/pages/404'
-import MainHead from './MainHead'
-import { Fragment } from 'react'
+import MainLayout from 'src/layouts/MainLayout'
 
-const Custom404 = () => {
+const Custom404: FC = () => {
   return (
-    <Fragment>
-      <MainHead
-        title="Страница не найдена | MOI salon"
-        description="К сожалению, запрашиваемая страница не найдена на сайте MOI salon"
-        image="/mobile-main-bg.jpg"
-      />
-      <MainLayout noMobileFooter>
-        <NotFound />
-      </MainLayout>
-    </Fragment>
+    <MainLayout noMobileFooter>
+      <NotFound />
+    </MainLayout>
   )
+}
+
+export const getStaticProps = () => {
+  return {
+    props: {
+      meta: {
+        title: '404 - Страница не найдена | MOI salon',
+        description:
+          'К сожалению, запрашиваемая страница не найдена на платформе MOI salon',
+        image: '/mobile-main-bg.jpg',
+        url: 'https://moi.salon/404',
+      },
+    },
+  }
 }
 
 export default Custom404

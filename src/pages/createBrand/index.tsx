@@ -14,8 +14,6 @@ import { Nullable } from 'src/types/common'
 import { COUNTRIES } from 'src/api/graphql/country/queries/getCountries'
 import { ISNetwork } from 'src/types'
 import { S_NETWORKS } from 'src/api/graphql/common/queries/sNetworks'
-import MainHead from '../MainHead'
-import { Fragment } from 'react'
 
 const CreateOrEditBrand: NextPage<CreateBrandProps> = ({
   brand,
@@ -28,68 +26,19 @@ const CreateOrEditBrand: NextPage<CreateBrandProps> = ({
   const isEditMode = !!brand
 
   if (user === null) {
-    return (
-      <Fragment>
-        <MainHead
-          title={
-            isEditMode
-              ? 'Редактирование бренда | MOI salon'
-              : 'Создание бренда | MOI salon'
-          }
-          description={
-            isEditMode
-              ? 'Редактирование информации о бренде в системе MOI salon'
-              : 'Создайте профиль вашего бренда на платформе MOI salon'
-          }
-          image="/ribbon-3.jpg"
-        />
-        <CreatePageSkeleton />
-      </Fragment>
-    )
+    return <CreatePageSkeleton />
   }
   if (user && !user.info) {
     router.push('/login')
-    return (
-      <Fragment>
-        <MainHead
-          title={
-            isEditMode
-              ? 'Редактирование бренда | MOI salon'
-              : 'Создание бренда | MOI salon'
-          }
-          description={
-            isEditMode
-              ? 'Редактирование информации о бренде в системе MOI salon'
-              : 'Создайте профиль вашего бренда на платформе MOI salon'
-          }
-          image="/ribbon-3.jpg"
-        />
-        <CreatePageSkeleton />
-      </Fragment>
-    )
+    return <CreatePageSkeleton />
   } else {
     return (
-      <Fragment>
-        <MainHead
-          title={
-            isEditMode
-              ? 'Редактирование бренда | MOI salon'
-              : 'Создание бренда | MOI salon'
-          }
-          description={
-            isEditMode
-              ? 'Редактирование информации о бренде в системе MOI salon'
-              : 'Создайте профиль вашего бренда на платформе MOI salon'
-          }
-          image="/ribbon-3.jpg"
-        />
-        <CreateBrand
-          cities={cities}
-          sNetworks={sNetworks}
-          brand={brand}
-          countries={countries}
-        />
-      </Fragment>
+      <CreateBrand
+        cities={cities}
+        sNetworks={sNetworks}
+        brand={brand}
+        countries={countries}
+      />
     )
   }
 }
@@ -118,13 +67,24 @@ export const getServerSideProps: GetServerSideProps<
   const cities = flattenStrapiResponse(data[0].data.cities) || null
   const countries = flattenStrapiResponse(data[1].data.countries) || null
   const sNetworks: ISNetwork[] = flattenStrapiResponse(data[2].data.sNetworks)
+  const flattenedBrand = flattenStrapiResponse(brand) || null
 
   return addApolloState(apolloClient, {
     props: {
-      brand: flattenStrapiResponse(brand) || null,
+      brand: flattenedBrand,
       cities,
       countries,
       sNetworks,
+      meta: {
+        title: flattenedBrand
+          ? 'Редактирование бренда | MOI salon'
+          : 'Создание бренда | MOI salon',
+        description: flattenedBrand
+          ? 'Редактирование информации о бренде в системе MOI salon'
+          : 'Создайте профиль вашего бренда на платформе MOI salon',
+        image: '/ribbon-3.jpg',
+        url: `/createBrand${ctx.query?.id ? `?id=${ctx.query.id}` : ''}`,
+      },
     },
   })
 }

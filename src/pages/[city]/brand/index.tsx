@@ -25,7 +25,6 @@ import { getRating } from 'src/utils/newUtils/getRating'
 import { Nullable } from 'src/types/common'
 import { MIN_SEARCH_LENGTH } from 'src/components/pages/MainPage/components/SearchMain/utils/useSearch'
 import { getPrepareData } from 'src/utils/newUtils/getPrepareData'
-import MainHead from '../../MainHead'
 import { ICity } from 'src/types'
 
 interface Props extends IBrandPageProps {
@@ -55,19 +54,11 @@ const AllBrands: FC<Props> = ({
     }) || null
 
   const layout = { brands, masters, salons }
-  const cityName = props.cityData?.name || 'вашем городе'
 
   return (
-    <Fragment>
-      <MainHead
-        title={`Бренды для индустрии красоты в ${cityName} | MOI salon`}
-        description={`Каталог брендов для салонов красоты и мастеров в ${cityName} на платформе MOI salon`}
-        image="/ribbon-1.jpg"
-      />
-      <CategoryPageLayout {...layout}>
-        <AllBrandsPage {...props} />
-      </CategoryPageLayout>
-    </Fragment>
+    <CategoryPageLayout {...layout}>
+      <AllBrandsPage {...props} />
+    </CategoryPageLayout>
   )
 }
 
@@ -130,6 +121,8 @@ export const getServerSideProps: GetServerSideProps<
         : null
   }
 
+  const cityName = cityData?.name || 'вашем городе'
+
   return {
     notFound: !cityData?.name,
     props: {
@@ -154,6 +147,12 @@ export const getServerSideProps: GetServerSideProps<
       },
       cityData,
       pagination,
+      meta: {
+        title: `Бренды для индустрии красоты в ${cityName} | MOI salon`,
+        description: `Каталог брендов для салонов красоты и мастеров в ${cityName} на платформе MOI salon`,
+        image: '/ribbon-1.jpg',
+        url: `https://moi.salon/${cityData?.slug}/brand`,
+      },
     },
   }
 }

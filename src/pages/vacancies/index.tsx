@@ -3,9 +3,8 @@ import BusinessCategoryPageLayout from '../../layouts/BusinessCategoryPageLayout
 import { VACANCIES } from 'src/api/graphql/vacancy/queries/getVacancies'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { IVacancy } from 'src/types/vacancies'
-import { FC, Fragment } from 'react'
+import { FC } from 'react'
 import BusinessCategoryPage from 'src/components/pages/BusinessCategoryPage'
-import MainHead from '../MainHead'
 
 interface VacanciesProps {
   vacancies: IVacancy[]
@@ -13,21 +12,14 @@ interface VacanciesProps {
 
 const Vacancies: FC<VacanciesProps> = ({ vacancies }) => {
   return (
-    <Fragment>
-      <MainHead
-        title="Вакансии в индустрии красоты | MOI salon"
-        description="Актуальные вакансии и предложения о работе в салонах красоты на платформе MOI salon"
-        image="/ribbon-3.jpg"
+    <BusinessCategoryPageLayout loading={false}>
+      <BusinessCategoryPage
+        title="Вакансии"
+        type="vacancies"
+        data={vacancies}
+        link={'/vacancies'}
       />
-      <BusinessCategoryPageLayout loading={false}>
-        <BusinessCategoryPage
-          title="Вакансии"
-          type="vacancies"
-          data={vacancies}
-          link={'/vacancies'}
-        />
-      </BusinessCategoryPageLayout>
-    </Fragment>
+    </BusinessCategoryPageLayout>
   )
 }
 
@@ -45,6 +37,13 @@ export async function getServerSideProps() {
   return addApolloState(apolloClient, {
     props: {
       vacancies: normalisedVacancies,
+      meta: {
+        title: 'Вакансии в индустрии красоты | MOI salon',
+        description:
+          'Актуальные вакансии и предложения о работе в салонах красоты на платформе MOI salon',
+        image: '/ribbon-3.jpg',
+        url: 'https://moi.salon/vacancies',
+      },
     },
   })
 }

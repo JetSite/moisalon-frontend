@@ -1,6 +1,5 @@
 import { addApolloState, initializeApollo } from '../../api/apollo-client'
 import AdvicesPage from '../../components/pages/AdvicesPage'
-import MainHead from '../MainHead'
 import { Fragment } from 'react'
 
 const Trends = ({
@@ -13,11 +12,6 @@ const Trends = ({
 }) => {
   return (
     <Fragment>
-      <MainHead 
-        title="Лента красоты | MOI salon"
-        description="Актуальные новости, тренды и события из мира красоты на платформе MOI salon"
-        image="/services-page-photo5.jpg"
-      />
       <AdvicesPage
         beauty
         categories={categories}
@@ -31,7 +25,7 @@ const Trends = ({
   )
 }
 
-export async function getServerSideProps() {
+export const getServerSideProps = async () => {
   const apolloClient = initializeApollo()
 
   // const data = await Promise.all([
@@ -78,6 +72,12 @@ export async function getServerSideProps() {
       // totalSalons: data[3].data.totalSalons,
       // totalBrands: data[4].data.totalBrands,
       // totalMasters: data[5].data.totalMasters,
+      meta: {
+        title: "Лента красоты | MOI salon",
+        description: "Актуальные новости, тренды и события из мира красоты на платформе MOI salon",
+        image: "/services-page-photo5.jpg",
+        url: "https://moi.salon/beauty-feed",
+      },
     },
   })
 }

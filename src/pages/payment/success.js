@@ -1,18 +1,22 @@
-import React, { Fragment } from "react";
-import SuccessPaymentPage from "../../components/blocks/PaymentPages/SuccessPaymentPage";
-import MainHead from "../MainHead";
+import SuccessPaymentPage from "@/components/blocks/PaymentPages/SuccessPaymentPage";
 
-const SuccessPayment = () => {
+const Success = () => {
   return (
-    <Fragment>
-      <MainHead
-        title="Успешная оплата | MOI salon"
-        description="Ваш платеж успешно обработан на платформе MOI salon"
-        image="/master-landing-login.jpg"
-      />
       <SuccessPaymentPage />
-    </Fragment>
   );
 };
 
-export default SuccessPayment;
+export const getStaticProps = () => {
+  return {
+    props: {
+      meta: {
+        title: "Успешная оплата | MOI salon",
+        description: "Ваш платеж успешно обработан на платформе MOI salon",
+        image: "/mobile-main-bg.jpg",
+        url: "https://moi.salon/payment/success",
+      },
+    },
+  };
+};
+
+export default Success;

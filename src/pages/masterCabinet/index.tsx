@@ -22,7 +22,6 @@ import {
 import { IAppProps } from '../_app'
 import { getPrepareData } from 'src/utils/newUtils/getPrepareData'
 import { Fragment } from 'react'
-import MainHead from '../MainHead'
 
 export interface ICabinetRequestsData {
   rentalRequests: IRentalRequest[]
@@ -42,11 +41,6 @@ const CabinetPage: NextPage<Props> = ({ requests, cities }) => {
   if (loading || !user)
     return (
       <Fragment>
-        <MainHead
-          title="Личный кабинет мастера | MOI salon"
-          description="Управление профилем мастера на платформе MOI salon"
-          image="/masters-page-right.png"
-        />
         <CreatePageSkeleton />
       </Fragment>
     )
@@ -57,20 +51,10 @@ const CabinetPage: NextPage<Props> = ({ requests, cities }) => {
     !user.info.birthDate ||
     !user.info?.email ? (
     <Fragment>
-      <MainHead
-        title="Личный кабинет мастера | MOI salon"
-        description="Управление профилем мастера на платформе MOI salon"
-        image="/masters-page-right.png"
-      />
       <Cabinet user={user} cities={cities} />
     </Fragment>
   ) : (
     <Fragment>
-      <MainHead
-        title={`Личный кабинет ${user.info?.username || 'мастера'} | MOI salon`}
-        description="Управление профилем мастера, услугами и расписанием на платформе MOI salon"
-        image={user.info?.photo?.url || '/paul-oscar-1.jpg'}
-      />
       <MasterCabinet user={user} requests={requests} cities={cities} />
     </Fragment>
   )
@@ -136,6 +120,8 @@ export const getServerSideProps: GetServerSideProps<
   const deletedRentalRequestsSalons =
     getPrepareData<IRentalRequest[]>(data[4], 'rentalRequests') ?? []
 
+  const preparedUser = flattenStrapiResponse(user)
+
   return addApolloState<Props>(apolloClient, {
     props: {
       cities,
@@ -146,6 +132,16 @@ export const getServerSideProps: GetServerSideProps<
         deletedRentalRequestsSalons,
       },
       user,
+      meta: {
+        title: preparedUser?.info?.username
+          ? `Личный кабинет ${preparedUser.info.username} | MOI salon`
+          : 'Личный кабинет мастера | MOI salon',
+        description: preparedUser?.info?.username
+          ? 'Управление профилем мастера, услугами и расписанием на платформе MOI salon'
+          : 'Управление профилем мастера на платформе MOI salon',
+        image: preparedUser?.info?.photo?.url || '/masters-page-right.png',
+        url: 'https://moi.salon/masterCabinet',
+      },
     },
   })
 }

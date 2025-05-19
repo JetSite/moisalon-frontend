@@ -19,22 +19,19 @@ import { ORDERS_DELIVERY_METHODS } from 'src/api/graphql/order/queries/orderDeli
 import { GET_CART_BY_USER } from 'src/api/graphql/cart/queries/getCartByUser'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
-import MainHead from '../MainHead'
+import { useRouter } from 'next/router'
 
 interface Props extends Omit<IOrderPageProps, 'user'>, IAppProps {}
 
-const Order: FC<Props> = ({ cart, paymentMethods, deliveryMethods }) => {
+const Order: FC<Props> = ({ cart, paymentMethods, deliveryMethods, user }) => {
+  const preparedUser = user ? flattenStrapiResponse(user) : null
   return (
     <Fragment>
-      <MainHead
-        title="Оформление заказа | MOI salon"
-        description="Оформите заказ на платформе MOI salon - выберите способ оплаты и доставки"
-        image="/master-landing-login.jpg"
-      />
       <OrderPage
         cart={cart}
         paymentMethods={paymentMethods}
         deliveryMethods={deliveryMethods}
+        user={preparedUser}
       />
     </Fragment>
   )
@@ -103,6 +100,13 @@ export const getServerSideProps: GetServerSideProps<
       user,
       paymentMethods,
       deliveryMethods,
+      meta: {
+        title: 'Оформление заказа | MOI salon',
+        description:
+          'Оформите заказ на платформе MOI salon - выберите способ оплаты и доставки',
+        image: '/master-landing-login.jpg',
+        url: 'https://moi.salon/order',
+      },
     },
   })
 }

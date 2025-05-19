@@ -23,7 +23,6 @@ import { Nullable } from 'src/types/common'
 import { getPrepareData } from 'src/utils/newUtils/getPrepareData'
 import { MIN_SEARCH_LENGTH } from 'src/components/pages/MainPage/components/SearchMain/utils/useSearch'
 import MainLayout from '../../../layouts/MainLayout'
-import MainHead from '../../MainHead'
 
 export interface ITotalCount {
   brands: number | null
@@ -50,11 +49,6 @@ const AllSalons: FC<Props> = ({
 
   return (
     <CategoryPageLayout {...layout}>
-      <MainHead
-        title={`Салоны красоты в ${cityData.name} | MOI salon`}
-        description={`Каталог салонов красоты в ${cityData.name}. Поиск по услугам, ценам и отзывам на платформе MOI salon`}
-        image="/salons-page-bg.jpg"
-      />
       <AllSalonsPage {...props} />
     </CategoryPageLayout>
   )
@@ -160,6 +154,12 @@ export const getServerSideProps: GetServerSideProps<
       cityData,
       pagination,
       pageSize,
+      meta: {
+        title: `Салоны красоты в ${cityData.name} | MOI salon`,
+        description: `Каталог салонов красоты в ${cityData.name}. Поиск по услугам, ценам и отзывам на платформе MOI salon`,
+        image: '/salons-page-bg.jpg',
+        url: `https://moi.salon/${cityData.slug}/salon`,
+      },
     },
   }
 }

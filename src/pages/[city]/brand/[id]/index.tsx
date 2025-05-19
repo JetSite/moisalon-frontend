@@ -21,12 +21,17 @@ import { fetchCity } from 'src/api/utils/fetchCity'
 import { ICity } from 'src/types'
 import { Nullable } from 'src/types/common'
 import { getRating } from 'src/utils/newUtils/getRating'
-import MainHead from '../../../MainHead'
 
 interface Props {
   brandData: IBrand
   othersBrands: IBrand[]
   cityData: ICity
+  meta: {
+    title: string
+    description: string
+    image: string
+    url: string
+  }
 }
 
 const Brand: FC<Props> = ({ brandData, othersBrands }) => {
@@ -90,14 +95,6 @@ const Brand: FC<Props> = ({ brandData, othersBrands }) => {
   return (
     <MainLayout>
       <>
-        <MainHead
-          title={brand.seoTitle || `${brand.name} | MOI salon`}
-          description={
-            brand.seoDescription ||
-            `Бренд ${brand.name} на платформе MOI salon - продукция, услуги и контакты`
-          }
-          image={brand.logo?.url || '/mobile-main-bg.jpg'}
-        />
         <SearchBlock />
         <Header brand={brand} isOwner={isOwner} />
         <TabsSlider
@@ -132,7 +129,7 @@ const Brand: FC<Props> = ({ brandData, othersBrands }) => {
             noBottom
             noAll
             noAllButton
-            city={brand.masters[0].city}
+            city={masters[0].city}
           />
         ) : null}
         {salons.length ? (
@@ -179,9 +176,9 @@ export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async ({
   query,
 }) => {
   const apolloClient = initializeApollo()
-  const cityData = await fetchCity(query.city as string)
+  const cityData = await fetchCity(query['city'] as string)
 
-  const id = params?.id
+  const id = params?.['id']
 
   const data = await Promise.all([
     apolloClient.query({
@@ -201,12 +198,25 @@ export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async ({
   const othersBrands: IBrand[] =
     flattenStrapiResponse(data[1]?.data?.brands?.data) || []
 
+  if (!brandData || !id || !cityData) {
+    return {
+      notFound: true,
+    }
+  }
+
   return {
-    notFound: !brandData || !id || !cityData,
     props: {
       cityData,
       brandData,
       othersBrands,
+      meta: {
+        title: brandData.seoTitle || `${brandData.name} | MOI salon`,
+        description:
+          brandData.seoDescription ||
+          `Бренд ${brandData.name} на платформе MOI salon - продукция, услуги и контакты`,
+        image: brandData.logo?.url || '/mobile-main-bg.jpg',
+        url: `https://moi.salon/${cityData.name}/brand/${brandData.id}`,
+      },
     },
   }
 }

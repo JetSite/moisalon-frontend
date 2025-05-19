@@ -13,7 +13,7 @@ import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { ISalonActivity, ISalonPage } from 'src/types/salon'
 import { getSalonPage } from 'src/api/graphql/salon/queries/getSalon'
 import { getServiceCategories } from 'src/api/graphql/service/queries/getServiceCategories'
-import { FC, useEffect, Fragment } from 'react'
+import { FC, useEffect } from 'react'
 import useBaseStore from 'src/store/baseStore'
 import { IServiceCategories } from 'src/types/services'
 import { GET_SALON_ACTIVITIES } from 'src/api/graphql/salon/queries/getSalonActivities'
@@ -21,7 +21,6 @@ import { getCities } from 'src/api/graphql/city/getCities'
 import { ICity, ISNetwork } from 'src/types'
 import { GET_SERVICES_M_CAT } from 'src/api/graphql/service/queries/getServicesMCat'
 import { S_NETWORKS } from 'src/api/graphql/common/queries/sNetworks'
-import MainHead from '../MainHead'
 
 interface Props {
   salon: ISalonPage
@@ -52,43 +51,14 @@ const CreateOrEditLessorSalon: FC<Props> = ({
   }, [])
 
   if (me === null) {
-    return (
-      <Fragment>
-        <MainHead
-          title="Создание профиля арендодателя | MOI salon"
-          description="Создайте профиль арендодателя на платформе MOI salon и сдавайте рабочие места в аренду"
-          image="/salons-page-bg.jpg"
-        />
-        <CreatePageSkeleton />
-      </Fragment>
-    )
+    return <CreatePageSkeleton />
   }
   if (me && !me.info) {
     router.push('/login')
-    return (
-      <Fragment>
-        <MainHead
-          title="Создание профиля арендодателя | MOI salon"
-          description="Создайте профиль арендодателя на платформе MOI salon и сдавайте рабочие места в аренду"
-          image="/salons-page-bg.jpg"
-        />
-        <CreatePageSkeleton />
-      </Fragment>
-    )
+    return <CreatePageSkeleton />
   } else {
     return (
-      <Fragment>
-        <MainHead
-          title={
-            salon
-              ? `Редактирование салона-арендодателя ${salon.name} | MOI salon`
-              : 'Создание профиля арендодателя | MOI salon'
-          }
-          description="Управляйте профилем арендодателя, добавляйте рабочие места и привлекайте мастеров на платформе MOI salon"
-          image={salon?.cover?.url || '/salons-page-bg.jpg'}
-        />
-        <CreateSalon sNetworks={sNetworks} cities={cities} rent salon={salon} />
-      </Fragment>
+      <CreateSalon sNetworks={sNetworks} cities={cities} rent salon={salon} />
     )
   }
 }
@@ -124,7 +94,23 @@ export const getServerSideProps: GetServerSideProps<
   const salon = salonData ? flattenStrapiResponse(salonData.data.salon) : null
 
   return {
-    props: { salon, services, activities, cities, servicesM, sNetworks },
+    props: {
+      salon,
+      services,
+      activities,
+      cities,
+      servicesM,
+      sNetworks,
+      meta: {
+        title: salon
+          ? `Редактирование салона-арендодателя ${salon.name} | MOI salon`
+          : 'Создание профиля арендодателя | MOI salon',
+        description:
+          'Управляйте профилем арендодателя, добавляйте рабочие места и привлекайте мастеров на платформе MOI salon',
+        image: salon?.cover?.url || '/salons-page-bg.jpg',
+        url: `/createLessorSalon${id ? `?id=${id}` : ''}`,
+      },
+    },
   }
 }
 

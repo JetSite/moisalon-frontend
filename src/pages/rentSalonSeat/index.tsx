@@ -13,8 +13,6 @@ import { EQUIPMENT } from 'src/api/graphql/equipment/quries/getEquipment'
 import { getGroupedServices } from 'src/utils/getGrupedServices'
 import { Nullable } from 'src/types/common'
 import { WORKPLACE_TYPES } from 'src/api/graphql/salon/queries/getWorkplaceTypes'
-import MainHead from '../MainHead'
-import { Fragment } from 'react'
 
 type Props = IRentSeatProps
 
@@ -30,73 +28,30 @@ const RentSalonSeat: NextPage<Props> = ({
 
   if (me === null) {
     router.push('/login')
-    return (
-      <Fragment>
-        <MainHead
-          title="Аренда места в салоне | MOI salon"
-          description="Управление арендой рабочего места в салоне красоты на платформе MOI salon"
-          image="/rent-salon-bg.png"
-        />
-        <CreatePageSkeleton />
-      </Fragment>
-    )
+    return <CreatePageSkeleton />
   }
   if (me && !me.info) {
     router.push('/login')
-    return (
-      <Fragment>
-        <MainHead
-          title="Аренда места в салоне | MOI salon"
-          description="Управление арендой рабочего места в салоне красоты на платформе MOI salon"
-          image="/salons-page-bg.png"
-        />
-        <CreatePageSkeleton />
-      </Fragment>
-    )
+    return <CreatePageSkeleton />
   } else if (!salonData.rent) {
     router.push('/masterCabinet')
-    return (
-      <Fragment>
-        <MainHead
-          title="Аренда места в салоне | MOI salon"
-          description="Управление арендой рабочего места в салоне красоты на платформе MOI salon"
-          image="/salons-page-bg.png"
-        />
-        <CreatePageSkeleton />
-      </Fragment>
-    )
+    return <CreatePageSkeleton />
   }
 
   const ownedSalonIds = me?.owner?.salons?.map(s => String(s.id)) || []
   if (!ownedSalonIds.includes(salonData.id)) {
     router.push('/masterCabinet')
-    return (
-      <Fragment>
-        <MainHead
-          title="Аренда места в салоне | MOI salon"
-          description="Управление арендой рабочего места в салоне красоты на платформе MOI salon"
-          image="/rent-salon-bg.png"
-        />
-        <CreatePageSkeleton />
-      </Fragment>
-    )
+    return <CreatePageSkeleton />
   }
 
   return (
-    <Fragment>
-      <MainHead
-        title={`Аренда места в салоне ${salonData.name} | MOI salon`}
-        description={`Управление арендой рабочего места в салоне красоты ${salonData.name} на платформе MOI salon`}
-        image="/salons-page-bg.png"
-      />
-      <RentSeat
-        salonData={salonData}
-        rentalPeriods={rentalPeriods}
-        groupedEquipments={groupedEquipments}
-        paymentMethods={paymentMethods}
-        workplaceTypes={workplaceTypes}
-      />
-    </Fragment>
+    <RentSeat
+      salonData={salonData}
+      rentalPeriods={rentalPeriods}
+      groupedEquipments={groupedEquipments}
+      paymentMethods={paymentMethods}
+      workplaceTypes={workplaceTypes}
+    />
   )
 }
 
@@ -150,6 +105,14 @@ export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async ({
       rentalPeriods,
       groupedEquipments,
       workplaceTypes,
+      meta: {
+        title: `Аренда места в салоне ${salonData?.name || ''} | MOI salon`,
+        description: `Управление арендой рабочего места в салоне красоты ${
+          salonData?.name || ''
+        } на платформе MOI salon`,
+        image: '/salons-page-bg.png',
+        url: `https://moi.salon/rentSalonSeat?id=${query?.id}`,
+      },
     },
   })
 }
