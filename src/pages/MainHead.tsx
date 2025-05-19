@@ -2,11 +2,27 @@ import Head from 'next/head'
 import Script from 'next/script'
 import React from 'react'
 
-const MainHead = () => {
+interface MainHeadProps {
+  title?: string
+  description?: string
+  image?: string
+  url?: string
+}
+
+const MainHead: React.FC<MainHeadProps> = ({
+  title = 'MOI salon',
+  description = 'MOI salon - платформа для салонов и мастеров',
+  image = '/mobile-main-bg.jpg',
+  url = 'https://moi.salon/',
+}) => {
+  const fullImageUrl = image.startsWith('http')
+    ? image
+    : `https://moi.salon${image}`
+
   return (
     <>
       <Head>
-        <title>MOI salon</title>
+        <title>{title}</title>
         <meta name="theme-color" content="#000000" />
         {/* <meta name="yandex-verification" content="e5eb15699df5a43e" /> */}
         <meta
@@ -20,6 +36,20 @@ const MainHead = () => {
         <meta charSet="utf-8" />
         <link rel="icon" href="/favicon.ico" />
         <meta name="robots" content="noindex, nofollow" />
+
+        {/* Open Graph / Social Media Meta Tags */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={url} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={fullImageUrl} />
+        <meta property="og:site_name" content="MOI salon" />
+
+        {/* Twitter Card data */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={fullImageUrl} />
       </Head>
       {/* <Script
         strategy="afterInteractive"

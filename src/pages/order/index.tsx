@@ -1,5 +1,5 @@
 import { GetServerSideProps } from 'next'
-import { FC } from 'react'
+import { FC, Fragment } from 'react'
 import { addApolloState } from 'src/api/apollo-client'
 import {
   IGetServerUserSuccess,
@@ -19,15 +19,25 @@ import { ORDERS_DELIVERY_METHODS } from 'src/api/graphql/order/queries/orderDeli
 import { GET_CART_BY_USER } from 'src/api/graphql/cart/queries/getCartByUser'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
+import MainHead from '../MainHead'
 
 interface Props extends Omit<IOrderPageProps, 'user'>, IAppProps {}
 
-const Order: FC<Props> = ({ user: userData, ...props }) => {
-  const { user } = useAuthStore(getStoreData)
-
-  if (!user) return null
-
-  return <OrderPage user={user} {...props} />
+const Order: FC<Props> = ({ cart, paymentMethods, deliveryMethods }) => {
+  return (
+    <Fragment>
+      <MainHead
+        title="Оформление заказа | MOI salon"
+        description="Оформите заказ на платформе MOI salon - выберите способ оплаты и доставки"
+        image="/master-landing-login.jpg"
+      />
+      <OrderPage
+        cart={cart}
+        paymentMethods={paymentMethods}
+        deliveryMethods={deliveryMethods}
+      />
+    </Fragment>
+  )
 }
 
 export const getServerSideProps: GetServerSideProps<

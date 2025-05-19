@@ -5,7 +5,7 @@ import ServicesPage from '../../../../components/pages/ServicesPage'
 import { getServiceCategories } from 'src/api/graphql/service/queries/getServiceCategories'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { IServiceCategory } from 'src/types/services'
-import { FC } from 'react'
+import { FC, Fragment } from 'react'
 import { IMaster } from 'src/types/masters'
 import { ISalon } from 'src/types/salon'
 import { getMasters } from 'src/api/graphql/master/queries/getMasters'
@@ -13,6 +13,7 @@ import { BRANDS } from 'src/api/graphql/brand/queries/getBrands'
 import { getSalons } from 'src/api/graphql/salon/queries/getSalons'
 import { IBrand } from 'src/types/brands'
 import { GetServerSideProps } from 'next'
+import MainHead from '../../../../pages/MainHead'
 
 interface IServicesPageProps {
   servicesWithCategories: IServiceCategory[]
@@ -29,20 +30,51 @@ const Services: FC<IServicesPageProps> = ({
   salonsRandom,
   serviceId,
 }) => {
+  // Find selected service category if serviceId is provided
+  const selectedCategory = serviceId
+    ? servicesWithCategories.find(
+        category =>
+          category.id === serviceId ||
+          category.services.some(service => service.id === serviceId),
+      )
+    : null
+
+  const selectedService =
+    selectedCategory && serviceId
+      ? selectedCategory.services.find(service => service.id === serviceId)
+      : null
+
+  const title = selectedService
+    ? `${selectedService.servicName} | MOI salon`
+    : selectedCategory
+    ? `${selectedCategory.title} | MOI salon`
+    : 'Услуги | MOI salon'
+
+  const description = selectedService
+    ? `${selectedService.servicName} - услуги для индустрии красоты на платформе MOI salon`
+    : 'Каталог услуг для индустрии красоты. Найдите лучших специалистов на платформе MOI salon'
+
   return (
-    <CategoryPageLayout
-      brands={brandsRandom}
-      masters={mastersRandom}
-      salons={salonsRandom}
-    >
-      <SearchBlock />
-      <ServicesPage
-        servicesWithCategories={servicesWithCategories}
-        serviceId={serviceId}
-        mastersData={[]}
-        salonsData={[]}
+    <Fragment>
+      <MainHead
+        title={title}
+        description={description}
+        image="/services-page-photo1.jpg"
       />
-    </CategoryPageLayout>
+      <CategoryPageLayout
+        brands={brandsRandom}
+        masters={mastersRandom}
+        salons={salonsRandom}
+      >
+        <SearchBlock />
+        <ServicesPage
+          servicesWithCategories={servicesWithCategories}
+          serviceId={serviceId}
+          mastersData={[]}
+          salonsData={[]}
+        />
+      </CategoryPageLayout>
+    </Fragment>
   )
 }
 

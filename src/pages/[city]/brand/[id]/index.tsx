@@ -1,39 +1,39 @@
-import { FC, useMemo, useState } from 'react';
-import Head from 'next/head';
-import MainLayout from '../../../../layouts/MainLayout';
-import { initializeApollo } from '../../../../api/apollo-client';
-import SearchBlock from '../../../../components/blocks/SearchBlock';
-import Header from '../../../../components/pages/Brand/ViewBrand/components/Header';
-import TabsSlider from '../../../../components/ui/TabsSlider';
-import About from '../../../../components/pages/Brand/ViewBrand/components/About';
-import Contacts from '../../../../components/pages/Brand/ViewBrand/components/Contacts';
-import BrandReviews from '../../../../components/pages/Brand/ViewBrand/components/BrandReviews/index';
-import InviteBrand from '../../../../components/pages/Brand/ViewBrand/components/Invite';
-import Line from '../../../../components/pages/MainPage/components/Line';
-import Slider from '../../../../components/blocks/Slider';
-import { BRAND } from 'src/api/graphql/brand/queries/getBrand';
-import { BRANDS } from 'src/api/graphql/brand/queries/getBrands';
-import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse';
-import { getStoreData } from 'src/store/utils';
-import useAuthStore from 'src/store/authStore';
-import { IBrand } from 'src/types/brands';
-import { GetServerSideProps } from 'next';
-import { fetchCity } from 'src/api/utils/fetchCity';
-import { ICity } from 'src/types';
-import { Nullable } from 'src/types/common';
-import { getRating } from 'src/utils/newUtils/getRating';
+import { FC, useMemo, useState, Fragment } from 'react'
+import MainLayout from '../../../../layouts/MainLayout'
+import { initializeApollo } from '../../../../api/apollo-client'
+import SearchBlock from '../../../../components/blocks/SearchBlock'
+import Header from '../../../../components/pages/Brand/ViewBrand/components/Header'
+import TabsSlider from '../../../../components/ui/TabsSlider'
+import About from '../../../../components/pages/Brand/ViewBrand/components/About'
+import Contacts from '../../../../components/pages/Brand/ViewBrand/components/Contacts'
+import BrandReviews from '../../../../components/pages/Brand/ViewBrand/components/BrandReviews/index'
+import InviteBrand from '../../../../components/pages/Brand/ViewBrand/components/Invite'
+import Line from '../../../../components/pages/MainPage/components/Line'
+import Slider from '../../../../components/blocks/Slider'
+import { BRAND } from 'src/api/graphql/brand/queries/getBrand'
+import { BRANDS } from 'src/api/graphql/brand/queries/getBrands'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { getStoreData } from 'src/store/utils'
+import useAuthStore from 'src/store/authStore'
+import { IBrand } from 'src/types/brands'
+import { GetServerSideProps } from 'next'
+import { fetchCity } from 'src/api/utils/fetchCity'
+import { ICity } from 'src/types'
+import { Nullable } from 'src/types/common'
+import { getRating } from 'src/utils/newUtils/getRating'
+import MainHead from '../../../MainHead'
 
 interface Props {
-  brandData: IBrand;
-  othersBrands: IBrand[];
-  cityData: ICity;
+  brandData: IBrand
+  othersBrands: IBrand[]
+  cityData: ICity
 }
 
 const Brand: FC<Props> = ({ brandData, othersBrands }) => {
-  const [brand] = useState(brandData);
-  const { user } = useAuthStore(getStoreData);
-  const [activeTab, setActiveTab] = useState<number>(0);
-  const isOwner = !!user?.owner?.brands?.find(e => e.id === brand.id);
+  const [brand] = useState(brandData)
+  const { user } = useAuthStore(getStoreData)
+  const [activeTab, setActiveTab] = useState<number>(0)
+  const isOwner = !!user?.owner?.brands?.find(e => e.id === brand.id)
 
   const tabs = useMemo(
     () => [
@@ -74,31 +74,30 @@ const Brand: FC<Props> = ({ brandData, othersBrands }) => {
       },
     ],
     [brand],
-  );
+  )
 
   const salons = brand.salons.map(e => {
-    const reviewsCount = e.reviews.length;
-    const { rating, ratingCount } = getRating(e.ratings);
-    return { ...e, rating, ratingCount, reviewsCount };
-  });
+    const reviewsCount = e.reviews.length
+    const { rating, ratingCount } = getRating(e.ratings)
+    return { ...e, rating, ratingCount, reviewsCount }
+  })
   const masters = brand.masters.map(e => {
-    const reviewsCount = e.reviews.length;
-    const { rating, ratingCount } = getRating(e.ratings);
-    return { ...e, rating, ratingCount, reviewsCount };
-  });
+    const reviewsCount = e.reviews.length
+    const { rating, ratingCount } = getRating(e.ratings)
+    return { ...e, rating, ratingCount, reviewsCount }
+  })
 
   return (
     <MainLayout>
-      <Head>
-        {brand.seoTitle ? <title>{brand.seoTitle}</title> : null}
-        {brand.seoDescription ? (
-          <meta name="description" content={brand.seoDescription} />
-        ) : null}
-        {brand.logo?.url ? (
-          <meta property="og:image" content={brand.logo.url} />
-        ) : null}
-      </Head>
       <>
+        <MainHead
+          title={brand.seoTitle || `${brand.name} | MOI salon`}
+          description={
+            brand.seoDescription ||
+            `Бренд ${brand.name} на платформе MOI salon - продукция, услуги и контакты`
+          }
+          image={brand.logo?.url || '/mobile-main-bg.jpg'}
+        />
         <SearchBlock />
         <Header brand={brand} isOwner={isOwner} />
         <TabsSlider
@@ -172,17 +171,17 @@ const Brand: FC<Props> = ({ brandData, othersBrands }) => {
         />
       </>
     </MainLayout>
-  );
-};
+  )
+}
 
 export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async ({
   params,
   query,
 }) => {
-  const apolloClient = initializeApollo();
-  const cityData = await fetchCity(query.city as string);
+  const apolloClient = initializeApollo()
+  const cityData = await fetchCity(query.city as string)
 
-  const id = params?.id;
+  const id = params?.id
 
   const data = await Promise.all([
     apolloClient.query({
@@ -195,12 +194,12 @@ export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async ({
         itemsCount: 10,
       },
     }),
-  ]);
+  ])
 
   const brandData: IBrand | null =
-    flattenStrapiResponse(data[0]?.data?.brand?.data) || null;
+    flattenStrapiResponse(data[0]?.data?.brand?.data) || null
   const othersBrands: IBrand[] =
-    flattenStrapiResponse(data[1]?.data?.brands?.data) || [];
+    flattenStrapiResponse(data[1]?.data?.brands?.data) || []
 
   return {
     notFound: !brandData || !id || !cityData,
@@ -209,7 +208,7 @@ export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async ({
       brandData,
       othersBrands,
     },
-  };
-};
+  }
+}
 
-export default Brand;
+export default Brand

@@ -1,11 +1,12 @@
 import styled from 'styled-components'
 import Link from 'next/link'
-import React from 'react'
+import React, { Fragment } from 'react'
 import MainLayout from '../../layouts/MainLayout'
 import Button from '../../components/ui/Button'
 import { cyrToTranslit } from '../../utils/translit'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
+import MainHead from '../MainHead'
 
 const Wrapper = styled.div`
   display: flex;
@@ -22,18 +23,25 @@ const CtalogPage = () => {
   const { me, city } = useAuthStore(getStoreData)
 
   return (
-    <MainLayout me={me}>
-      <Wrapper>
-        <Wrap>
+    <Fragment>
+      <MainHead 
+        title="Каталог | MOI salon"
+        description="Каталог товаров для индустрии красоты на платформе MOI salon"
+        image="/stock1.png"
+      />
+      <MainLayout me={me}>
+        <Wrapper>
+          <Wrap>
+            <Link href={`/${city.slug}/beautyFreeShop`}>
+              <Button variant="red">B2B магазин</Button>
+            </Link>
+          </Wrap>
           <Link href={`/${city.slug}/beautyFreeShop`}>
-            <Button variant="red">B2B магазин</Button>
+            <Button variant="red">B2C магазин</Button>
           </Link>
-        </Wrap>
-        <Link href={`/${city.slug}/beautyFreeShop`}>
-          <Button variant="red">B2C магазин</Button>
-        </Link>
-      </Wrapper>
-    </MainLayout>
+        </Wrapper>
+      </MainLayout>
+    </Fragment>
   )
 }
 

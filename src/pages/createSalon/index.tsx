@@ -18,6 +18,8 @@ import { useEffect } from 'react'
 import useBaseStore from 'src/store/baseStore'
 import { GET_SERVICES_M_CAT } from 'src/api/graphql/service/queries/getServicesMCat'
 import { S_NETWORKS } from 'src/api/graphql/common/queries/sNetworks'
+import MainHead from '../MainHead'
+import { Fragment } from 'react'
 
 interface Props {
   salon: ISalonPage
@@ -40,6 +42,7 @@ const CreateOrEditSalon: NextPage<Props> = ({
   const { me } = useAuthStore(getStoreData)
   const { setServices, setSalonActivities, setServicesM } =
     useBaseStore(getStoreEvent)
+  const isEditMode = !!salon
 
   useEffect(() => {
     setServices(services)
@@ -48,13 +51,64 @@ const CreateOrEditSalon: NextPage<Props> = ({
   }, [])
 
   if (me === null) {
-    return <CreatePageSkeleton />
+    return (
+      <Fragment>
+        <MainHead
+          title={
+            isEditMode
+              ? 'Редактирование салона | MOI salon'
+              : 'Создание салона | MOI salon'
+          }
+          description={
+            isEditMode
+              ? 'Редактирование информации о салоне красоты в системе MOI salon'
+              : 'Создайте профиль вашего салона красоты на платформе MOI salon'
+          }
+          image="/salons-page-bg.jpg"
+        />
+        <CreatePageSkeleton />
+      </Fragment>
+    )
   }
   if (me && !me.info) {
     router.push('/login')
-    return <CreatePageSkeleton />
+    return (
+      <Fragment>
+        <MainHead
+          title={
+            isEditMode
+              ? 'Редактирование салона | MOI salon'
+              : 'Создание салона | MOI salon'
+          }
+          description={
+            isEditMode
+              ? 'Редактирование информации о салоне красоты в системе MOI salon'
+              : 'Создайте профиль вашего салона красоты на платформе MOI salon'
+          }
+          image="/salons-page-bg.jpg"
+        />
+        <CreatePageSkeleton />
+      </Fragment>
+    )
   } else {
-    return <CreateSalon sNetworks={sNetworks} cities={cities} salon={salon} />
+    return (
+      <Fragment>
+        <MainHead
+          title={
+            isEditMode
+              ? 'Редактирование салона | MOI salon'
+              : 'Создание салона | MOI salon'
+          }
+          description={
+            isEditMode
+              ? 'Редактирование информации о салоне красоты в системе MOI salon'
+              : 'Создайте профиль вашего салона красоты на платформе MOI salon'
+          }
+          image="/salons-page-bg.jpg"
+        />
+        <CreateSalon sNetworks={sNetworks} cities={cities} salon={salon} />
+      </Fragment>
+    )
   }
 }
 

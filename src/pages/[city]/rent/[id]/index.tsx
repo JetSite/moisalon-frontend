@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC, useState, Fragment } from 'react'
 import { useQuery } from '@apollo/client'
 import MainLayout from '../../../../layouts/MainLayout'
 import { initializeApollo } from '../../../../api/apollo-client'
@@ -24,11 +24,11 @@ import { getSalonPage } from 'src/api/graphql/salon/queries/getSalon'
 import Header from '../../../../components/pages/Rent/ViewRent/components/Header'
 import { getFeedCategories } from 'src/api/graphql/feed/queries/getFeedCategories'
 import { getFeeds } from 'src/api/graphql/feed/queries/getFeeds'
-import Head from 'next/head'
 import EntityDescription from 'src/components/newUI/EntityDescription'
 import styled from 'styled-components'
 import { laptopBreakpoint } from 'src/styles/variables'
 import { IBeautyCategories, IFeed } from '@/types/feed'
+import MainHead from '../../../MainHead'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -73,16 +73,17 @@ const Rent: FC<Props> = ({
 
   return (
     <MainLayout>
-      <Head>
-        {salon.seoTitle ? <title>{salon.seoTitle}</title> : null}
-        {salon.seoDescription ? (
-          <meta name="description" content={salon.seoDescription} />
-        ) : null}
-        {salon.logo?.url ? (
-          <meta property="og:image" content={salon.logo.url} />
-        ) : null}
-      </Head>
-      <>
+      <Fragment>
+        <MainHead
+          title={
+            rentData.seoTitle || `Аренда помещения ${rentData.name} | MOI salon`
+          }
+          description={
+            rentData.seoDescription ||
+            `Аренда помещения ${rentData.name} в ${cityData.name}. Условия, цены и контакты на MOI salon`
+          }
+          image={rentData.photos?.[0]?.url || '/salons-page-bg.jpg'}
+        />
         <SearchBlock />
         <Header salon={salon} isOwner={isOwner} setActiveTab={setActiveTab} />
         <TabsSlider
@@ -162,7 +163,7 @@ const Rent: FC<Props> = ({
           beautyCategories={beautyCategories}
           beautyAllContent={beautyAllContent}
         />
-      </>
+      </Fragment>
     </MainLayout>
   )
 }

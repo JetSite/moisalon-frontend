@@ -14,6 +14,8 @@ import { Nullable } from 'src/types/common'
 import { COUNTRIES } from 'src/api/graphql/country/queries/getCountries'
 import { ISNetwork } from 'src/types'
 import { S_NETWORKS } from 'src/api/graphql/common/queries/sNetworks'
+import MainHead from '../MainHead'
+import { Fragment } from 'react'
 
 const CreateOrEditBrand: NextPage<CreateBrandProps> = ({
   brand,
@@ -23,21 +25,71 @@ const CreateOrEditBrand: NextPage<CreateBrandProps> = ({
 }) => {
   const router = useRouter()
   const { user } = useAuthStore(getStoreData)
+  const isEditMode = !!brand
 
   if (user === null) {
-    return <CreatePageSkeleton />
+    return (
+      <Fragment>
+        <MainHead
+          title={
+            isEditMode
+              ? 'Редактирование бренда | MOI salon'
+              : 'Создание бренда | MOI salon'
+          }
+          description={
+            isEditMode
+              ? 'Редактирование информации о бренде в системе MOI salon'
+              : 'Создайте профиль вашего бренда на платформе MOI salon'
+          }
+          image="/ribbon-3.jpg"
+        />
+        <CreatePageSkeleton />
+      </Fragment>
+    )
   }
   if (user && !user.info) {
     router.push('/login')
-    return <CreatePageSkeleton />
+    return (
+      <Fragment>
+        <MainHead
+          title={
+            isEditMode
+              ? 'Редактирование бренда | MOI salon'
+              : 'Создание бренда | MOI salon'
+          }
+          description={
+            isEditMode
+              ? 'Редактирование информации о бренде в системе MOI salon'
+              : 'Создайте профиль вашего бренда на платформе MOI salon'
+          }
+          image="/ribbon-3.jpg"
+        />
+        <CreatePageSkeleton />
+      </Fragment>
+    )
   } else {
     return (
-      <CreateBrand
-        cities={cities}
-        sNetworks={sNetworks}
-        brand={brand}
-        countries={countries}
-      />
+      <Fragment>
+        <MainHead
+          title={
+            isEditMode
+              ? 'Редактирование бренда | MOI salon'
+              : 'Создание бренда | MOI salon'
+          }
+          description={
+            isEditMode
+              ? 'Редактирование информации о бренде в системе MOI salon'
+              : 'Создайте профиль вашего бренда на платформе MOI salon'
+          }
+          image="/ribbon-3.jpg"
+        />
+        <CreateBrand
+          cities={cities}
+          sNetworks={sNetworks}
+          brand={brand}
+          countries={countries}
+        />
+      </Fragment>
     )
   }
 }

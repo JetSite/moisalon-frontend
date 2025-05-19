@@ -23,16 +23,25 @@ import { getCookie } from 'cookies-next'
 import { authConfig } from 'src/api/authConfig'
 import { ME } from 'src/api/graphql/me/queries/getMe'
 import { ApolloQueryResult } from '@apollo/client'
+import { Fragment } from 'react'
+import MainHead from '../../../../pages/MainHead'
 
-interface Props extends IProductPageProps {}
+type Props = IProductPageProps
 
 const Product: NextPage<Props> = ({ product, reviews, cart }) => {
   return (
     <MainLayout>
-      <>
+      <Fragment>
+        <MainHead
+          title={`${product.name} | MOI salon`}
+          description={`${product.name} - ${
+            product.brand?.name || 'Товар'
+          } на платформе MOI salon. Описание, характеристики и отзывы.`}
+          image={product.cover?.url || '/stock3.png'}
+        />
         <SearchBlock />
         <ProductPage product={product} reviews={reviews} cart={cart} />
-      </>
+      </Fragment>
     </MainLayout>
   )
 }

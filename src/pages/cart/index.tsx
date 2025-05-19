@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, Fragment } from 'react'
 import MainLayout from '../../layouts/MainLayout'
 import Cart, { ICartProps } from 'src/components/pages/Cart'
 import { GetServerSideProps } from 'next'
@@ -15,14 +15,22 @@ import {
 } from 'src/api/utils/getServerUser'
 import { addApolloState } from 'src/api/apollo-client'
 import { IAppProps } from '../_app'
+import MainHead from '../MainHead'
 
 interface Props extends IAppProps, ICartProps {}
 
 const CartPage: FC<Props> = ({ data }) => {
   return (
-    <MainLayout>
-      <Cart data={data} />
-    </MainLayout>
+    <Fragment>
+      <MainHead
+        title="Корзина | MOI salon"
+        description="Ваша корзина покупок на платформе MOI salon"
+        image="/stock1.png"
+      />
+      <MainLayout>
+        <Cart data={data} />
+      </MainLayout>
+    </Fragment>
   )
 }
 

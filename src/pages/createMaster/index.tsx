@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, Fragment } from 'react'
 import { useRouter } from 'next/router'
 import CreatePageSkeleton from '../../components/ui/ContentSkeleton/CreatePageSkeleton'
 import { getStoreData } from 'src/store/utils'
@@ -15,6 +15,7 @@ import { IMaster } from 'src/types/masters'
 import { ICity, ISNetwork } from 'src/types'
 import { getCities } from 'src/api/graphql/city/getCities'
 import { S_NETWORKS } from 'src/api/graphql/common/queries/sNetworks'
+import MainHead from '../MainHead'
 
 interface Props {
   serviceCategories: IServiceCategories[]
@@ -31,21 +32,71 @@ const CreateOrEditMaster: FC<Props> = ({
 }) => {
   const router = useRouter()
   const { user } = useAuthStore(getStoreData)
+  const isEditMode = !!master
 
   if (user === null) {
-    return <CreatePageSkeleton />
+    return (
+      <Fragment>
+        <MainHead
+          title={
+            isEditMode
+              ? 'Редактирование мастера | MOI salon'
+              : 'Создание профиля мастера | MOI salon'
+          }
+          description={
+            isEditMode
+              ? 'Редактирование информации о мастере в системе MOI salon'
+              : 'Создайте профиль мастера на платформе MOI salon и начните привлекать новых клиентов'
+          }
+          image="/masters-page-right.png"
+        />
+        <CreatePageSkeleton />
+      </Fragment>
+    )
   }
   if (user && !user.info) {
     router.push('/login')
-    return <CreatePageSkeleton />
+    return (
+      <Fragment>
+        <MainHead
+          title={
+            isEditMode
+              ? 'Редактирование мастера | MOI salon'
+              : 'Создание профиля мастера | MOI salon'
+          }
+          description={
+            isEditMode
+              ? 'Редактирование информации о мастере в системе MOI salon'
+              : 'Создайте профиль мастера на платформе MOI salon и начните привлекать новых клиентов'
+          }
+          image="/masters-page-right.png"
+        />
+        <CreatePageSkeleton />
+      </Fragment>
+    )
   } else {
     return (
-      <CreateMaster
-        master={master}
-        serviceCategories={serviceCategories}
-        cities={cities}
-        sNetworks={sNetworks}
-      />
+      <Fragment>
+        <MainHead
+          title={
+            isEditMode
+              ? 'Редактирование мастера | MOI salon'
+              : 'Создание профиля мастера | MOI salon'
+          }
+          description={
+            isEditMode
+              ? 'Редактирование информации о мастере в системе MOI salon'
+              : 'Создайте профиль мастера на платформе MOI salon и начните привлекать новых клиентов'
+          }
+          image="/masters-page-right.png"
+        />
+        <CreateMaster
+          master={master}
+          serviceCategories={serviceCategories}
+          cities={cities}
+          sNetworks={sNetworks}
+        />
+      </Fragment>
     )
   }
 }
@@ -56,7 +107,7 @@ export const getServerSideProps: GetServerSideProps<
   const apolloClient = initializeApollo()
 
   let master: IMaster | null = null
-  const id = ctx.query.id
+  const id = ctx.query['id']
 
   if (id) {
     const masterRes = await apolloClient.query({

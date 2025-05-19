@@ -1,5 +1,4 @@
-import Head from 'next/head'
-import React, { FC } from 'react'
+import React, { FC, Fragment } from 'react'
 import { initializeApollo } from '../../../api/apollo-client'
 import CategoryPageLayout from '../../../layouts/CategoryPageLayout'
 import AllRentPage, {
@@ -23,6 +22,7 @@ import { Nullable } from 'src/types/common'
 import { GetServerSideProps } from 'next'
 import { getPrepareData } from 'src/utils/newUtils/getPrepareData'
 import { MIN_SEARCH_LENGTH } from 'src/components/pages/MainPage/components/SearchMain/utils/useSearch'
+import MainHead from '../../MainHead'
 
 interface Props extends IRentsPageProps {
   brands: IBrand[] | null
@@ -34,13 +34,11 @@ const AllRent: FC<Props> = ({ brands, masters, salons, ...props }) => {
 
   return (
     <>
-      <Head>
-        <title>{`Аренда кабинета косметолога, мастера маникюра, бровиста, тату мастера, массажиста, парикмахера, барбера - ${props.cityData.name} - снять кабинет или рабочее место с moi.salon.`}</title>
-        <meta
-          name="description"
-          content={`✔️ Найдите и арендуйте на выгодных условиях с почасовой или помесячной оплатой кабинет косметолога, мастера маникюра и педикюра, бровиста, тату мастера, массажиста, парикмахера и колориста, барбера, стилиста и визажиста в городе ${props.cityData.name} - снять кабинет или рабочее место с moi.salon ⭐️ Подберите лучшее место для работы в вашем городе ✅ Делайте правильный выбор с помощью сервиса moi.salon.`}
-        />
-      </Head>
+      <MainHead
+        title={`Аренда помещений в ${props.cityData.name} | MOI salon`}
+        description={`Каталог помещений для аренды в ${props.cityData.name}. Поиск по условиям, ценам и расположению на платформе MOI salon`}
+        image="/salons-page-bg.jpg"
+      />
       <CategoryPageLayout {...layout} rent>
         <AllRentPage {...props} />
       </CategoryPageLayout>

@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, Fragment } from 'react'
 import { addApolloState, initializeApollo } from '../../../api/apollo-client'
 import CategoryPageLayout from '../../../layouts/CategoryPageLayout'
 import AllBrandsPage, {
@@ -25,11 +25,14 @@ import { getRating } from 'src/utils/newUtils/getRating'
 import { Nullable } from 'src/types/common'
 import { MIN_SEARCH_LENGTH } from 'src/components/pages/MainPage/components/SearchMain/utils/useSearch'
 import { getPrepareData } from 'src/utils/newUtils/getPrepareData'
+import MainHead from '../../MainHead'
+import { ICity } from 'src/types'
 
 interface Props extends IBrandPageProps {
   brands: IBrand[] | null
   masters: IMaster[] | null
   salons: ISalon[] | null
+  cityData: ICity
 }
 
 const AllBrands: FC<Props> = ({
@@ -52,11 +55,19 @@ const AllBrands: FC<Props> = ({
     }) || null
 
   const layout = { brands, masters, salons }
+  const cityName = props.cityData?.name || 'вашем городе'
 
   return (
-    <CategoryPageLayout {...layout}>
-      <AllBrandsPage {...props} />
-    </CategoryPageLayout>
+    <Fragment>
+      <MainHead
+        title={`Бренды для индустрии красоты в ${cityName} | MOI salon`}
+        description={`Каталог брендов для салонов красоты и мастеров в ${cityName} на платформе MOI salon`}
+        image="/ribbon-1.jpg"
+      />
+      <CategoryPageLayout {...layout}>
+        <AllBrandsPage {...props} />
+      </CategoryPageLayout>
+    </Fragment>
   )
 }
 
