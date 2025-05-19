@@ -35,8 +35,7 @@ const MainHead: React.FC<MainHeadProps> = ({
         />
         <meta charSet="utf-8" />
         <link rel="icon" href="/favicon.ico" />
-        {/* <meta name="robots" content="noindex, nofollow" /> */}
-        <meta name="robots" content="index, follow" />
+        <meta name="robots" content="noindex, nofollow" />
 
         {/* Open Graph / Social Media Meta Tags */}
         <meta property="og:type" content="website" />
