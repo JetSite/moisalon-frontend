@@ -10,19 +10,48 @@ import { GetServerSideProps, NextPage } from 'next'
 import { Nullable } from 'src/types/common'
 import { BRAND } from 'src/api/graphql/brand/queries/getBrand'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { Fragment } from 'react'
+import MainHead from '../MainHead'
 
 const BrandCabinetPage: NextPage<IBrandCabinetProps> = ({ brand }) => {
   const { user } = useAuthStore(getStoreData)
   const router = useRouter()
 
   if (user === null) {
-    return <CreatePageSkeleton />
+    return (
+      <Fragment>
+        <MainHead
+          title="Личный кабинет бренда | MOI salon"
+          description="Управление профилем бренда на платформе MOI salon"
+          image="/ribbon-3.jpg"
+        />
+        <CreatePageSkeleton />
+      </Fragment>
+    )
   }
   if (user && !user.info) {
     router.push('/login')
-    return <CreatePageSkeleton />
+    return (
+      <Fragment>
+        <MainHead
+          title="Личный кабинет бренда | MOI salon"
+          description="Управление профилем бренда на платформе MOI salon"
+          image="/ribbon-3.jpg"
+        />
+        <CreatePageSkeleton />
+      </Fragment>
+    )
   } else {
-    return <BrandCabinet brand={brand} />
+    return (
+      <Fragment>
+        <MainHead
+          title={`Личный кабинет ${brand.name} | MOI salon`}
+          description="Управление профилем бренда на платформе MOI salon"
+          image={brand.logo?.url || '/ribbon-3.jpg'}
+        />
+        <BrandCabinet brand={brand} />
+      </Fragment>
+    )
   }
 }
 

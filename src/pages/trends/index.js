@@ -1,5 +1,7 @@
 import { addApolloState, initializeApollo } from '../../api/apollo-client'
 import AdvicesPage from '../../components/pages/AdvicesPage'
+import MainHead from '../MainHead'
+import { Fragment } from 'react'
 
 const Trends = ({
   categories,
@@ -10,15 +12,22 @@ const Trends = ({
   totalMasters,
 }) => {
   return (
-    <AdvicesPage
-      trends
-      categories={categories}
-      allAdvices={allAdvices}
-      categoryAdvicesEmpty={categoryAdvicesEmpty}
-      totalSalons={totalSalons}
-      totalBrands={totalBrands}
-      totalMasters={totalMasters}
-    />
+    <Fragment>
+      <MainHead 
+        title="Тренды красоты | MOI salon"
+        description="Актуальные тренды и тенденции в индустрии красоты на платформе MOI salon"
+        image="/services-page-photo2.jpg"
+      />
+      <AdvicesPage
+        trends
+        categories={categories}
+        allAdvices={allAdvices}
+        categoryAdvicesEmpty={categoryAdvicesEmpty}
+        totalSalons={totalSalons}
+        totalBrands={totalBrands}
+        totalMasters={totalMasters}
+      />
+    </Fragment>
   )
 }
 

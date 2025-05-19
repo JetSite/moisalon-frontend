@@ -14,17 +14,26 @@ import { getPrepareData } from 'src/utils/newUtils/getPrepareData'
 import { PRODUCTS } from 'src/api/graphql/product/queries/getProducts'
 import { IProduct } from 'src/types/product'
 import { useFetchCartByUser } from 'src/hooks/useFetchCartByUser'
+import { Fragment } from 'react'
+import MainHead from '../../../../MainHead'
 
-interface Props extends Omit<IBrandProductsPageProps, 'cart'> {}
+type Props = Omit<IBrandProductsPageProps, 'cart'>
 
 const BrandProducts: NextPage<Props> = props => {
   const { storeCart } = useFetchCartByUser()
 
   return (
     <MainLayout>
-      <MainContainer>
-        <BrandProductsPage cart={storeCart} {...props} />
-      </MainContainer>
+      <Fragment>
+        <MainHead
+          title={`${props.brand.name} - Продукция | MOI salon`}
+          description={`Каталог продукции бренда ${props.brand.name} на платформе MOI salon. Широкий выбор товаров для салонов красоты`}
+          image={props.brand.logo?.url || '/mobile-main-bg.jpg'}
+        />
+        <MainContainer>
+          <BrandProductsPage cart={storeCart} {...props} />
+        </MainContainer>
+      </Fragment>
     </MainLayout>
   )
 }

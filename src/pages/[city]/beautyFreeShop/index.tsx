@@ -9,18 +9,26 @@ import { GetServerSideProps, NextPage } from 'next'
 import { Nullable } from 'src/types/common'
 import { IProduct } from 'src/types/product'
 import { getPrepareData } from 'src/utils/newUtils/getPrepareData'
-
 import { useFetchCartByUser } from 'src/hooks/useFetchCartByUser'
+import { Fragment } from 'react'
+import MainHead from '../../../pages/MainHead'
 
-interface Props extends Omit<IBeautyFreeShopPageProps, 'cart'> {}
+type Props = Omit<IBeautyFreeShopPageProps, 'cart'>
 
 const BeautyFreeShop: NextPage<Props> = props => {
   const { storeCart } = useFetchCartByUser()
   return (
     <MainLayout>
-      <MainContainer>
-        <BeautyFreeShopPage cart={storeCart} {...props} />
-      </MainContainer>
+      <Fragment>
+        <MainHead
+          title="Интернет-магазин BeautyFreeShop | MOI salon"
+          description="Профессиональная косметика и товары для индустрии красоты. Широкий ассортимент продукции для салонов и мастеров."
+          image="/stock3.png"
+        />
+        <MainContainer>
+          <BeautyFreeShopPage cart={storeCart} {...props} />
+        </MainContainer>
+      </Fragment>
     </MainLayout>
   )
 }

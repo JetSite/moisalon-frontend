@@ -21,6 +21,8 @@ import {
 } from 'src/api/utils/getServerUser'
 import { IAppProps } from '../_app'
 import { getPrepareData } from 'src/utils/newUtils/getPrepareData'
+import { Fragment } from 'react'
+import MainHead from '../MainHead'
 
 export interface ICabinetRequestsData {
   rentalRequests: IRentalRequest[]
@@ -37,16 +39,40 @@ interface Props extends IAppProps {
 const CabinetPage: NextPage<Props> = ({ requests, cities }) => {
   const { user, loading, me } = useAuthStore(getStoreData)
 
-  if (loading || !user) return <CreatePageSkeleton />
+  if (loading || !user)
+    return (
+      <Fragment>
+        <MainHead
+          title="Личный кабинет мастера | MOI salon"
+          description="Управление профилем мастера на платформе MOI salon"
+          image="/masters-page-right.png"
+        />
+        <CreatePageSkeleton />
+      </Fragment>
+    )
 
   return !user.info?.username ||
     !user.info?.city?.name ||
     !user.info?.phone ||
     !user.info.birthDate ||
     !user.info?.email ? (
-    <Cabinet user={user} cities={cities} />
+    <Fragment>
+      <MainHead
+        title="Личный кабинет мастера | MOI salon"
+        description="Управление профилем мастера на платформе MOI salon"
+        image="/masters-page-right.png"
+      />
+      <Cabinet user={user} cities={cities} />
+    </Fragment>
   ) : (
-    <MasterCabinet user={user} requests={requests} cities={cities} />
+    <Fragment>
+      <MainHead
+        title={`Личный кабинет ${user.info?.username || 'мастера'} | MOI salon`}
+        description="Управление профилем мастера, услугами и расписанием на платформе MOI salon"
+        image={user.info?.photo?.url || '/paul-oscar-1.jpg'}
+      />
+      <MasterCabinet user={user} requests={requests} cities={cities} />
+    </Fragment>
   )
 }
 

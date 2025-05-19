@@ -4,7 +4,8 @@ import BusinessCategoryPage from '../../components/pages/BusinessCategoryPage'
 import { EVENTS } from 'src/api/graphql/event/queries/getEvents'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { IEvent } from 'yandex-maps'
-import { FC } from 'react'
+import { FC, Fragment } from 'react'
+import MainHead from '../MainHead'
 
 interface EventsProps {
   events: IEvent[]
@@ -12,14 +13,21 @@ interface EventsProps {
 
 const Events: FC<EventsProps> = ({ events }) => {
   return (
-    <BusinessCategoryPageLayout loading={false}>
-      <BusinessCategoryPage
-        title="События"
-        link={'/events'}
-        type="events"
-        data={events}
+    <Fragment>
+      <MainHead
+        title="Мероприятия и события | MOI salon"
+        description="Актуальные мероприятия и события в индустрии красоты на платформе MOI salon"
+        image="/services-page-photo3.jpg"
       />
-    </BusinessCategoryPageLayout>
+      <BusinessCategoryPageLayout loading={false}>
+        <BusinessCategoryPage
+          title="Мероприятия"
+          type="events"
+          data={events}
+          link={'/events'}
+        />
+      </BusinessCategoryPageLayout>
+    </Fragment>
   )
 }
 

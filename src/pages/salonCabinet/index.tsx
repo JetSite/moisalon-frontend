@@ -10,21 +10,50 @@ import { getSalonPage } from 'src/api/graphql/salon/queries/getSalon'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { Nullable } from 'src/types/common'
 import { GetServerSideProps, NextPage } from 'next'
+import { Fragment } from 'react'
+import MainHead from '../MainHead'
 
-interface Props extends ISalonCabinetProps {}
+type Props = ISalonCabinetProps
 
 const SalonCabinetPage: NextPage<Props> = ({ salonData }) => {
   const router = useRouter()
   const { me } = useAuthStore(getStoreData)
 
   if (me === null) {
-    return <CreatePageSkeleton />
+    return (
+      <Fragment>
+        <MainHead
+          title="Личный кабинет салона | MOI salon"
+          description="Управление профилем салона на платформе MOI salon"
+          image="/salons-page-bg.jpg"
+        />
+        <CreatePageSkeleton />
+      </Fragment>
+    )
   }
   if (me && !me.info) {
     router.push('/login')
-    return <CreatePageSkeleton />
+    return (
+      <Fragment>
+        <MainHead
+          title="Личный кабинет салона | MOI salon"
+          description="Управление профилем салона на платформе MOI salon"
+          image="/salons-page-bg.jpg"
+        />
+        <CreatePageSkeleton />
+      </Fragment>
+    )
   } else {
-    return <SalonCabinet salonData={salonData} />
+    return (
+      <Fragment>
+        <MainHead
+          title={`Личный кабинет ${salonData?.name || 'салона'} | MOI salon`}
+          description="Управление профилем салона, услугами и расписанием на платформе MOI salon"
+          image={salonData?.photo?.url || '/salons-page-bg.jpg'}
+        />
+        <SalonCabinet salonData={salonData} />
+      </Fragment>
+    )
   }
 }
 
