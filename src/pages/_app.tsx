@@ -99,15 +99,15 @@ function MyApp({ Component, pageProps }: AppProps<IAppProps>) {
         <link rel="icon" href="/favicon.ico" />
         <meta name="robots" content="noindex, nofollow" />
 
-        {/* Open Graph / Social Media Meta Tags */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content={meta.url} />
         <meta property="og:title" content={meta.title} />
         <meta property="og:description" content={meta.description} />
         <meta property="og:image" content={fullImageUrl} />
         <meta property="og:site_name" content="MOI salon" />
+        <meta property="og:locale" content="ru_RU" />
+        <meta property="og:logo" content="/logo.png" />
 
-        {/* Twitter Card data */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={meta.title} />
         <meta name="twitter:description" content={meta.description} />
