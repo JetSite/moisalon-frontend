@@ -16,7 +16,6 @@ import { FC, Fragment } from 'react'
 import { getPrepareData } from 'src/utils/newUtils/getPrepareData'
 import { IBannerHook } from 'src/types/banners'
 import { IBeautyCategories, IFeed } from '@/types/feed'
-import MainHead from '../MainHead'
 
 type Props = IMainPageProps
 
@@ -25,11 +24,6 @@ const Main: FC<Props> = props => {
 
   return (
     <Fragment>
-      <MainHead
-        title={`Салоны красоты в ${cityData.name} | MOI salon`}
-        description={`Все салоны красоты и spa (спа) в городе ${cityData.name}. Выбирайте лучшие салоны по рейтингам и отзывам на MOI salon.`}
-        image="/salons-page-bg.jpg"
-      />
       <MainPage {...props} />
     </Fragment>
   )
@@ -99,6 +93,12 @@ export const getServerSideProps: GetServerSideProps<
             : null,
       },
       cityData,
+      meta: {
+        title: `Салоны красоты в ${cityData.name} | MOI salon`,
+        description: `Все салоны красоты и spa (спа) в городе ${cityData.name}. Выбирайте лучшие салоны по рейтингам и отзывам на MOI salon.`,
+        image: '/salons-page-bg.jpg',
+        url: 'https://moi.salon/',
+      },
     },
   })
 }

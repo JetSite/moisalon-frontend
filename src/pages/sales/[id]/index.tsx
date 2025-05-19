@@ -9,7 +9,6 @@ import { IBeautyCategories, IFeed } from '@/types/feed'
 import { GetServerSideProps } from 'next'
 import { Nullable } from '@/types/common'
 import { getPrepareData } from '@/utils/newUtils/getPrepareData'
-import MainHead from '../../MainHead'
 import { PHOTO_URL } from '../../../api/variables'
 
 const SaleDetailed: FC<SalePageProps> = ({
@@ -18,23 +17,11 @@ const SaleDetailed: FC<SalePageProps> = ({
   beautyAllContent,
 }) => {
   return (
-    <>
-      <MainHead
-        title={sale.seoTitle || `${sale.title} | Акции MOI salon`}
-        description={
-          sale.seoDescription ||
-          sale.shortDescription ||
-          'Акция на платформе MOI salon'
-        }
-        image={`${PHOTO_URL}${sale?.cover?.url}` || '/mobile-main-bg.jpg'}
-        url={`https://moi.salon/sales/${sale.id}`}
-      />
-      <SalePage
-        sale={sale}
-        beautyCategories={beautyCategories}
-        beautyAllContent={beautyAllContent}
-      />
-    </>
+    <SalePage
+      sale={sale}
+      beautyCategories={beautyCategories}
+      beautyAllContent={beautyAllContent}
+    />
   )
 }
 
@@ -79,6 +66,15 @@ export const getServerSideProps: GetServerSideProps<
       sale,
       beautyCategories,
       beautyAllContent,
+      meta: {
+        title: sale.seoTitle || `${sale.title} | Акции MOI salon`,
+        description:
+          sale.seoDescription ||
+          sale.shortDescription ||
+          'Акция на платформе MOI salon',
+        image: `${PHOTO_URL}${sale?.cover?.url}` || '/mobile-main-bg.jpg',
+        url: `https://moi.salon/sales/${sale.id}`,
+      },
     },
   })
 }

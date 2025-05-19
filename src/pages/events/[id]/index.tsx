@@ -9,7 +9,6 @@ import { getPrepareData } from '@/utils/newUtils/getPrepareData'
 import { IBeautyCategories, IFeed } from '@/types/feed'
 import { GetServerSideProps } from 'next'
 import { Nullable } from '@/types/common'
-import MainHead from '../../MainHead'
 import { PHOTO_URL } from '../../../api/variables'
 
 const EventDetailed: FC<IEventPageProps> = ({
@@ -18,21 +17,11 @@ const EventDetailed: FC<IEventPageProps> = ({
   beautyAllContent,
 }) => {
   return (
-    <>
-      <MainHead
-        title={`${event.title} | MOI salon`}
-        description={
-          event.seoDescription || 'Мероприятие на платформе MOI salon'
-        }
-        image={`${PHOTO_URL}${event?.cover?.url}` || '/mobile-main-bg.jpg'}
-        url={`https://moi.salon/events/${event.id}`}
-      />
-      <EventPage
-        event={event}
-        beautyCategories={beautyCategories}
-        beautyAllContent={beautyAllContent}
-      />
-    </>
+    <EventPage
+      event={event}
+      beautyCategories={beautyCategories}
+      beautyAllContent={beautyAllContent}
+    />
   )
 }
 
@@ -77,6 +66,13 @@ export const getServerSideProps: GetServerSideProps<
       event,
       beautyCategories,
       beautyAllContent,
+      meta: {
+        title: `${event.title} | MOI salon`,
+        description:
+          event.seoDescription || 'Мероприятие на платформе MOI salon',
+        image: `${PHOTO_URL}${event?.cover?.url}` || '/mobile-main-bg.jpg',
+        url: `https://moi.salon/events/${event.id}`,
+      },
     },
   })
 }

@@ -20,7 +20,6 @@ import {
 import Header from 'src/components/pages/Master/ViewMaster/components/Header'
 import About from 'src/components/pages/Master/ViewMaster/components/About'
 import Contacts from 'src/components/pages/Master/ViewMaster/components/Contacts'
-import MainHead from '@/pages/MainHead'
 
 const DynamicPage: NextPage<StaticProps<IMaster>> = ({ city, id, entity }) => {
   const router = useRouter()
@@ -34,14 +33,6 @@ const DynamicPage: NextPage<StaticProps<IMaster>> = ({ city, id, entity }) => {
 
   return entity ? (
     <MainLayout>
-      <MainHead
-        title={entity.name || `Мастер | MOI salon`}
-        description={
-          entity.seoDescription ||
-          `Услуги, портфолио, отзывы и контакты на MOI salon`
-        }
-        image={entity.photo?.url || '/paul-oscar-1.jpg'}
-      />
       <Header
         master={entity}
         isOwner={false}
@@ -101,6 +92,19 @@ export const getStaticPaths = getEntityStaticPaths<IMaster>(
 export const getStaticProps = getStaticPropsForEntityPage<IMaster>(
   MASTER_PAGE,
   'master',
+  props => ({
+    ...props,
+    meta: props.entity
+      ? {
+          title: props.entity.name || `Мастер | MOI salon`,
+          description:
+            props.entity.seoDescription ||
+            `Услуги, портфолио, отзывы и контакты на MOI salon`,
+          image: props.entity.photo?.url || '/paul-oscar-1.jpg',
+          url: `https://moi.salon/${props.city}/master/${props.id}`,
+        }
+      : null,
+  }),
 )
 
 export default DynamicPage

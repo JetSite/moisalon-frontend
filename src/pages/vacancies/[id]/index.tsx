@@ -10,7 +10,6 @@ import { IVacancy } from 'src/types/vacancies'
 import { Nullable } from 'src/types/common'
 import { IBeautyCategories, IFeed } from '@/types/feed'
 import { getPrepareData } from '@/utils/newUtils/getPrepareData'
-import MainHead from '../../MainHead'
 import { PHOTO_URL } from '../../../api/variables'
 
 interface Props {
@@ -25,21 +24,11 @@ const VacancyDetailed: NextPage<Props> = ({
   beautyAllContent,
 }) => {
   return (
-    <>
-      <MainHead
-        title={`${vacancy.title} | Вакансии MOI salon`}
-        description={
-          vacancy.shortDescription || 'Вакансия на платформе MOI salon'
-        }
-        image={`${PHOTO_URL}${vacancy?.cover?.url}` || '/mobile-main-bg.jpg'}
-        url={`https://moi.salon/vacancies/${vacancy.id}`}
-      />
-      <VacancyPage
-        vacancy={vacancy}
-        beautyCategories={beautyCategories}
-        beautyAllContent={beautyAllContent}
-      />
-    </>
+    <VacancyPage
+      vacancy={vacancy}
+      beautyCategories={beautyCategories}
+      beautyAllContent={beautyAllContent}
+    />
   )
 }
 

@@ -28,7 +28,6 @@ import EntityDescription from 'src/components/newUI/EntityDescription'
 import styled from 'styled-components'
 import { laptopBreakpoint } from 'src/styles/variables'
 import { IBeautyCategories, IFeed } from '@/types/feed'
-import MainHead from '../../../MainHead'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -74,16 +73,6 @@ const Rent: FC<Props> = ({
   return (
     <MainLayout>
       <Fragment>
-        <MainHead
-          title={
-            rentData.seoTitle || `Аренда помещения ${rentData.name} | MOI salon`
-          }
-          description={
-            rentData.seoDescription ||
-            `Аренда помещения ${rentData.name} в ${cityData.name}. Условия, цены и контакты на MOI salon`
-          }
-          image={rentData.photos?.[0]?.url || '/salons-page-bg.jpg'}
-        />
         <SearchBlock />
         <Header salon={salon} isOwner={isOwner} setActiveTab={setActiveTab} />
         <TabsSlider
@@ -230,6 +219,16 @@ export const getServerSideProps: GetServerSideProps<
       cityData,
       beautyCategories,
       beautyAllContent,
+      meta: {
+        title:
+          rentData?.seoTitle ||
+          `Аренда помещения ${rentData?.name} | MOI salon`,
+        description:
+          rentData?.seoDescription ||
+          `Аренда помещения ${rentData?.name} в ${cityData.name}. Условия, цены и контакты на MOI salon`,
+        image: rentData?.photos?.[0]?.url || '/salons-page-bg.jpg',
+        url: `https://moi.salon/${cityData.slug}/rent/${rentData?.id}`,
+      },
     },
   }
 }

@@ -1,4 +1,4 @@
-import React, { FC, Fragment } from 'react'
+import React, { FC } from 'react'
 import { initializeApollo } from '../../../api/apollo-client'
 import CategoryPageLayout from '../../../layouts/CategoryPageLayout'
 import AllRentPage, {
@@ -22,7 +22,6 @@ import { Nullable } from 'src/types/common'
 import { GetServerSideProps } from 'next'
 import { getPrepareData } from 'src/utils/newUtils/getPrepareData'
 import { MIN_SEARCH_LENGTH } from 'src/components/pages/MainPage/components/SearchMain/utils/useSearch'
-import MainHead from '../../MainHead'
 
 interface Props extends IRentsPageProps {
   brands: IBrand[] | null
@@ -33,16 +32,9 @@ const AllRent: FC<Props> = ({ brands, masters, salons, ...props }) => {
   const layout = { brands, masters, salons }
 
   return (
-    <>
-      <MainHead
-        title={`Аренда помещений в ${props.cityData.name} | MOI salon`}
-        description={`Каталог помещений для аренды в ${props.cityData.name}. Поиск по условиям, ценам и расположению на платформе MOI salon`}
-        image="/salons-page-bg.jpg"
-      />
-      <CategoryPageLayout {...layout} rent>
-        <AllRentPage {...props} />
-      </CategoryPageLayout>
-    </>
+    <CategoryPageLayout {...layout} rent>
+      <AllRentPage {...props} />
+    </CategoryPageLayout>
   )
 }
 
@@ -52,7 +44,7 @@ export const getServerSideProps: GetServerSideProps<
   const apolloClient = initializeApollo()
   const pageSize = 9
 
-  const search = ctx.query.search?.length >= MIN_SEARCH_LENGTH
+  const search = ctx.query['search']?.length >= MIN_SEARCH_LENGTH
 
   const queries = [
     apolloClient.query({
@@ -64,14 +56,14 @@ export const getServerSideProps: GetServerSideProps<
     apolloClient.query({
       query: getMasters,
       variables: {
-        slug: ctx.query.city,
+        slug: ctx.query['city'],
         itemsCount: 10,
       },
     }),
     apolloClient.query({
       query: getSalons,
       variables: {
-        slug: ctx.query.city,
+        slug: ctx.query['city'],
         itemsCount: 10,
       },
     }),
@@ -81,7 +73,7 @@ export const getServerSideProps: GetServerSideProps<
     queries.push(
       apolloClient.query({
         query: GET_RENT_SALONS,
-        variables: { slug: ctx.query.city, pageSize, sort: ['rating:asc'] },
+        variables: { slug: ctx.query['city'], pageSize, sort: ['rating:asc'] },
       }),
     )
   }
@@ -91,7 +83,7 @@ export const getServerSideProps: GetServerSideProps<
 
   const data = await Promise.allSettled(queries)
 
-  const cityData = await fetchCity(ctx.query.city as string, ctx)
+  const cityData = await fetchCity(ctx.query['city'] as string, ctx)
 
   const brands = getPrepareData<IBrand[]>(data[0], 'brands')
   const masters = getPrepareData<IMaster[]>(data[1], 'masters')
@@ -147,6 +139,12 @@ export const getServerSideProps: GetServerSideProps<
       cityData,
       pagination,
       pageSize,
+      meta: {
+        title: `Аренда помещений в ${cityData.name} | MOI salon`,
+        description: `Каталог помещений для аренды в ${cityData.name}. Поиск по условиям, ценам и расположению на платформе MOI salon`,
+        image: '/salons-page-bg.jpg',
+        url: `https://moi.salon/${cityData.slug}/rent`,
+      },
     },
   }
 }

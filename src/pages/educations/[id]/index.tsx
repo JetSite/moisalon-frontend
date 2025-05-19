@@ -12,7 +12,6 @@ import { GetServerSideProps } from 'next'
 import { Nullable } from '@/types/common'
 import { getPrepareData } from '@/utils/newUtils/getPrepareData'
 import { IEducation } from '@/types/education'
-import MainHead from '../../MainHead'
 import { PHOTO_URL } from '../../../api/variables'
 
 const EducationDetailed: FC<EducationPageProps> = ({
@@ -21,21 +20,11 @@ const EducationDetailed: FC<EducationPageProps> = ({
   beautyAllContent,
 }) => {
   return (
-    <>
-      <MainHead
-        title={`${education.title} | Обучение MOI salon`}
-        description={
-          education.shortDescription || 'Обучение на платформе MOI salon'
-        }
-        image={`${PHOTO_URL}${education?.cover?.url}` || '/mobile-main-bg.jpg'}
-        url={`https://moi.salon/educations/${education.id}`}
-      />
-      <EducationPage
-        education={education}
-        beautyCategories={beautyCategories}
-        beautyAllContent={beautyAllContent}
-      />
-    </>
+    <EducationPage
+      education={education}
+      beautyCategories={beautyCategories}
+      beautyAllContent={beautyAllContent}
+    />
   )
 }
 
@@ -80,6 +69,13 @@ export const getServerSideProps: GetServerSideProps<
       education,
       beautyCategories,
       beautyAllContent,
+      meta: {
+        title: `${education.title} | Обучение MOI salon`,
+        description:
+          education.shortDescription || 'Обучение на платформе MOI salon',
+        image: `${PHOTO_URL}${education?.cover?.url}` || '/mobile-main-bg.jpg',
+        url: `https://moi.salon/educations/${education.id}`,
+      },
     },
   })
 }

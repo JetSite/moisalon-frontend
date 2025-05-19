@@ -1,21 +1,25 @@
 import MainLayout from "../../layouts/MainLayout"
 import LegalsPage from "../../components/pages/LegalsPage"
-import MainHead from "../MainHead"
-import { Fragment } from "react"
 
 const Legals = () => {
   return (
-    <Fragment>
-      <MainHead
-        title="Правовая информация | MOI salon"
-        description="Юридическая информация, условия использования и политика конфиденциальности MOI salon"
-        image="/brands-page-bg.jpg"
-      />
-      <MainLayout>
-        <LegalsPage />
-      </MainLayout>
-    </Fragment>
+    <MainLayout>
+      <LegalsPage />
+    </MainLayout>
   )
 }
+
+export const getStaticProps = () => {
+  return {
+    props: {
+      meta: {
+        title: "Правовая информация | MOI salon",
+        description: "Правовая информация, условия использования и политика конфиденциальности платформы MOI salon",
+        image: "/mobile-main-bg.jpg",
+        url: "https://moi.salon/legals",
+      },
+    },
+  };
+};
 
 export default Legals

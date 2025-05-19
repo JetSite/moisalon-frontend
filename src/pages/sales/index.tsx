@@ -4,8 +4,7 @@ import BusinessCategoryPage from '../../components/pages/BusinessCategoryPage'
 import { PROMOTIONS } from 'src/api/graphql/promotion/queries/getPromotions'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { ISale } from 'src/types/sale'
-import { FC, Fragment } from 'react'
-import MainHead from '../MainHead'
+import { FC } from 'react'
 
 interface SalesProps {
   sales: ISale[]
@@ -13,21 +12,14 @@ interface SalesProps {
 
 const Sales: FC<SalesProps> = ({ sales }) => {
   return (
-    <Fragment>
-      <MainHead
-        title="Акции и специальные предложения | MOI salon"
-        description="Выгодные акции и специальные предложения от салонов красоты и мастеров на платформе MOI salon"
-        image="/services-page-photo4.jpg"
+    <BusinessCategoryPageLayout loading={false}>
+      <BusinessCategoryPage
+        title="Акции"
+        type="sales"
+        data={sales}
+        link={'/sales'}
       />
-      <BusinessCategoryPageLayout loading={false}>
-        <BusinessCategoryPage
-          title="Акции"
-          type="sales"
-          data={sales}
-          link={'/sales'}
-        />
-      </BusinessCategoryPageLayout>
-    </Fragment>
+    </BusinessCategoryPageLayout>
   )
 }
 
@@ -43,6 +35,13 @@ export async function getServerSideProps() {
   return addApolloState(apolloClient, {
     props: {
       sales: normalisedSales,
+      meta: {
+        title: 'Акции и специальные предложения | MOI salon',
+        description:
+          'Выгодные акции и специальные предложения от салонов красоты и мастеров на платформе MOI salon',
+        image: '/services-page-photo4.jpg',
+        url: 'https://moi.salon/sales',
+      },
     },
   })
 }
