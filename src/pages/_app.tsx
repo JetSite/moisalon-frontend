@@ -77,9 +77,7 @@ function MyApp({ Component, pageProps }: AppProps<IAppProps>) {
     url: 'https://moi.salon/',
   }
 
-  const fullImageUrl = meta.image?.startsWith('http')
-    ? meta.image
-    : `https://moi.salon${meta.image}`
+  const fullImageUrl = `${process.env.NEXT_PUBLIC_PHOTO_URL}${meta.image}`
 
   return (
     <div style={{ overflowX: mobileMedia ? 'hidden' : undefined }}>
