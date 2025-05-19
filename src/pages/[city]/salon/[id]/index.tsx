@@ -384,6 +384,12 @@ export const getServerSideProps: GetServerSideProps<
         ratingCount: salonData?.ratingCount || 0,
       }
 
+  const seoImage = salonData?.cover?.url
+    ? salonData.cover.url
+    : salonData?.photos[0]?.url
+    ? salonData?.photos[0].url
+    : '/salons-page-bg.jpg'
+
   return {
     notFound: !id || !cityData || !salonData,
     props: {
@@ -408,7 +414,7 @@ export const getServerSideProps: GetServerSideProps<
         description:
           salonData?.seoDescription ||
           `Салон красоты ${salonData?.name} в ${cityData.name}. Услуги, мастера, отзывы и контакты на MOI salon`,
-        image: salonData?.cover?.url || '/salons-page-bg.jpg',
+        image: seoImage,
         url: `https://moi.salon/${cityData.slug}/salon/${salonData?.id}`,
       },
     },
