@@ -1,7 +1,7 @@
 import { FC, useState, Fragment } from 'react'
 import { useQuery } from '@apollo/client'
 import MainLayout from '../../../../layouts/MainLayout'
-import { initializeApollo, addApolloState } from '../../../../api/apollo-client'
+import { initializeApollo } from '../../../../api/apollo-client'
 import SearchBlock from '../../../../components/blocks/SearchBlock'
 import TabsSlider from '../../../../components/ui/TabsSlider'
 import Contacts from '../../../../components/pages/Salon/ViewSalon/components/Contacts'
@@ -24,13 +24,11 @@ import { getSalonPage } from 'src/api/graphql/salon/queries/getSalon'
 import Header from '../../../../components/pages/Rent/ViewRent/components/Header'
 import { getFeedCategories } from 'src/api/graphql/feed/queries/getFeedCategories'
 import { getFeeds } from 'src/api/graphql/feed/queries/getFeeds'
-import Head from 'next/head'
 import EntityDescription from 'src/components/newUI/EntityDescription'
 import styled from 'styled-components'
 import { laptopBreakpoint } from 'src/styles/variables'
 import { IBeautyCategories, IFeed } from '@/types/feed'
 import MainHead from '../../../MainHead'
-import RentPage from 'src/components/pages/RentPage'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -165,7 +163,6 @@ const Rent: FC<Props> = ({
           beautyCategories={beautyCategories}
           beautyAllContent={beautyAllContent}
         />
-        <RentPage rent={rentData} />
       </Fragment>
     </MainLayout>
   )

@@ -14,6 +14,8 @@ import { Nullable } from 'src/types/common'
 import { ICity } from 'src/types'
 import { ISalonWorkplace } from 'src/types/workplace'
 import { WorkplacePage } from 'src/components/pages/Workplace'
+import MainHead from '../../../../../MainHead'
+import { PHOTO_URL } from '../../../../../../api/variables'
 
 interface Props {
   salonData: ISalonPage
@@ -24,23 +26,29 @@ interface Props {
 const Workplace: NextPage<Props> = ({ salonData, city, workplaceData }) => {
   return (
     <MainLayout>
-      {/* <Head>
-        {seoData?.title ? <title>{seoData?.title}</title> : null}
-        {seoData?.description ? (
-          <meta name="description" content={seoData?.description} />
-        ) : null}
-        {salonData?.logo?.url ? (
-          <meta property="og:image" content={salonData?.logo?.url} />
-        ) : null}
-      </Head> */}
-      <>
-        <SearchBlock />
-        <WorkplacePage
-          city={city}
-          salonData={salonData}
-          workplace={workplaceData}
-        />
-      </>
+      <MainHead
+        title={`${workplaceData.title} в ${salonData.name} | Аренда рабочего места MOI salon`}
+        description={
+          workplaceData.description ||
+          `Аренда рабочего места ${workplaceData.title} в салоне ${
+            salonData.name
+          }. ${workplaceData.workspaces_types.map(t => t.title).join(', ')}`
+        }
+        image={
+          `${PHOTO_URL}${
+            workplaceData?.cover?.url ||
+            workplaceData?.gallery?.[0]?.url ||
+            salonData?.logo?.url
+          }` || '/mobile-main-bg.jpg'
+        }
+        url={`https://moi.salon/${city.slug}/rent/${salonData.id}/workplace/${workplaceData.id}`}
+      />
+      <SearchBlock />
+      <WorkplacePage
+        city={city}
+        salonData={salonData}
+        workplace={workplaceData}
+      />
     </MainLayout>
   )
 }
@@ -56,9 +64,9 @@ export const getServerSideProps: GetServerSideProps<
     }
   }
 
-  const city = await fetchCity(ctx.params.city as string)
-  const salonID = ctx.params.id
-  const workpaceID = ctx.params.workpaceId
+  const city = await fetchCity(ctx.params['city'] as string)
+  const salonID = ctx.params['id']
+  const workpaceID = ctx.params['workpaceId']
 
   const data = await Promise.all([
     apolloClient.query({
@@ -76,7 +84,7 @@ export const getServerSideProps: GetServerSideProps<
   if (
     !salonID ||
     !workplaceData ||
-    (salonData?.city && salonData.city.slug !== ctx.query?.city)
+    (salonData?.city && salonData.city.slug !== ctx.query?.['city'])
   ) {
     return {
       notFound: true,

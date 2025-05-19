@@ -13,11 +13,11 @@ const MainHead: React.FC<MainHeadProps> = ({
   title = 'MOI salon',
   description = 'MOI salon - платформа для салонов и мастеров',
   image = '/mobile-main-bg.jpg',
-  url = 'https://moisalon.com/',
+  url = 'https://moi.salon/',
 }) => {
   const fullImageUrl = image.startsWith('http')
     ? image
-    : `https://moisalon.com${image}`
+    : `https://moi.salon${image}`
 
   return (
     <>

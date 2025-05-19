@@ -89,7 +89,7 @@ const Brand: FC<Props> = ({ brandData, othersBrands }) => {
 
   return (
     <MainLayout>
-      <Fragment>
+      <>
         <MainHead
           title={brand.seoTitle || `${brand.name} | MOI salon`}
           description={

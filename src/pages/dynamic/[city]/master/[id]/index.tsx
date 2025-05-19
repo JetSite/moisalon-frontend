@@ -1,4 +1,5 @@
-import { useEffect, Fragment } from 'react'
+import { useEffect } from 'react'
+
 import { useRouter } from 'next/router'
 import {
   StaticProps,
@@ -19,7 +20,7 @@ import {
 import Header from 'src/components/pages/Master/ViewMaster/components/Header'
 import About from 'src/components/pages/Master/ViewMaster/components/About'
 import Contacts from 'src/components/pages/Master/ViewMaster/components/Contacts'
-import MainHead from '../../../../MainHead'
+import MainHead from '@/pages/MainHead'
 
 const DynamicPage: NextPage<StaticProps<IMaster>> = ({ city, id, entity }) => {
   const router = useRouter()
@@ -27,73 +28,67 @@ const DynamicPage: NextPage<StaticProps<IMaster>> = ({ city, id, entity }) => {
     ? getServicesByCategory(entity.services)
     : null
 
-  useEffect(() => {
-    router.replace(`/${city}/master/${id}`)
-  }, [])
+  // useEffect(() => {
+  //   router.push(`/${city}/entity/${id}`)
+  // })
 
   return entity ? (
     <MainLayout>
-      <Fragment>
-        <MainHead
-          title={
-            entity.seoTitle ||
-            `${entity.name} - ${entity.specialization} | MOI salon`
-          }
-          description={
-            entity.seoDescription ||
-            `${entity.name} - ${entity.specialization}. Услуги, портфолио, отзывы и контакты на MOI salon`
-          }
-          image={entity.photo?.url || '/paul-oscar-1.jpg'}
-        />
-        <Header
-          master={entity}
-          isOwner={false}
-          categoriesName={servicesData?.map(e => e.category).join(', ')}
-        />
-        <About master={entity} />
-        {entity.services?.length ? (
-          <Service services={entity.services} />
-        ) : null}
+      <MainHead
+        title={entity.name || `Мастер | MOI salon`}
+        description={
+          entity.seoDescription ||
+          `Услуги, портфолио, отзывы и контакты на MOI salon`
+        }
+        image={entity.photo?.url || '/paul-oscar-1.jpg'}
+      />
+      <Header
+        master={entity}
+        isOwner={false}
+        categoriesName={servicesData?.map(e => e.category).join(', ')}
+      />
+      {entity.description ? <About master={entity} /> : null}
 
-        {entity.salons.length ? (
-          <Slider
-            city={entity.city}
-            type="salons"
-            items={entity.salons}
-            isOwner={false}
-            title="Салоны, в которых я работаю"
-            pt={52}
-            pb={31}
-          />
-        ) : null}
-        {entity.brands.length ? (
-          <Slider
-            city={entity.city}
-            type="brands"
-            items={entity.brands}
-            isOwner={false}
-            title="Бренды, с которыми я работаю"
-            pt={52}
-            pb={31}
-            noAll
-            noAllButton
-            noBottom
-          />
-        ) : null}
-        <Contacts
-          phone={entity.phone}
-          email={entity.email}
-          address={entity.address}
-          addressCoordinates={{
-            latitude: entity.latitude,
-            longitude: entity.longitude,
-          }}
-          socials={entity.socialNetworks}
-          haveTelegram={entity.haveTelegram}
-          haveWhatsApp={entity.haveWhatsApp}
-          haveViber={entity.haveViber}
+      {entity.services?.length ? <Service services={entity.services} /> : null}
+
+      {entity.salons.length ? (
+        <Slider
+          city={entity.city}
+          type="salons"
+          items={entity.salons}
+          isOwner={false}
+          title="Салоны, в которых я работаю"
+          pt={52}
+          pb={31}
         />
-      </Fragment>
+      ) : null}
+      {entity.brands.length ? (
+        <Slider
+          city={entity.city}
+          type="brands"
+          items={entity.brands}
+          isOwner={false}
+          title="Бренды, с которыми я работаю"
+          pt={52}
+          pb={31}
+          noAll
+          noAllButton
+          noBottom
+        />
+      ) : null}
+      <Contacts
+        phone={entity.phone}
+        email={entity.email}
+        address={entity.address}
+        addressCoordinates={{
+          latitude: entity.latitude,
+          longitude: entity.longitude,
+        }}
+        socials={entity.socialNetworks}
+        haveTelegram={entity.haveTelegram}
+        haveWhatsApp={entity.haveWhatsApp}
+        haveViber={entity.haveViber}
+      />
     </MainLayout>
   ) : null
 }

@@ -37,7 +37,6 @@ import { getServiceCategories } from 'src/api/graphql/service/queries/getService
 import { IServiceCategory, IServices } from 'src/types/services'
 import { getServicesByCategory } from 'src/utils/serviceCatalog'
 import { GET_SERVICES_M_CAT } from 'src/api/graphql/service/queries/getServicesMCat'
-import SalonPage from 'src/components/pages/SalonPage'
 import MainHead from '../../../MainHead'
 
 const DecktopWrapper = styled.div`
@@ -134,7 +133,6 @@ const Salon: FC<Props> = ({
           }
           image={salon.cover?.url || '/salons-page-bg.jpg'}
         />
-        <SalonPage salon={salon} />
       </Fragment>
       <SearchBlock />
       <Header salon={salon} isOwner={isOwner} />

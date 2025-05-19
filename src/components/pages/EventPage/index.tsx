@@ -1,14 +1,14 @@
-import { FC } from 'react';
-import MainLayout from '../../../layouts/MainLayout';
-import SearchBlock from '../../blocks/SearchBlock';
-import BackButton from '../../ui/BackButton';
-import Ribbon from '../MainPage/components/Ribbon';
-import Button from '../../ui/Button';
+import { FC } from 'react'
+import MainLayout from '../../../layouts/MainLayout'
+import SearchBlock from '../../blocks/SearchBlock'
+import BackButton from '../../ui/BackButton'
+import Ribbon from '../MainPage/components/Ribbon'
+import Button from '../../ui/Button'
 import {
   MainContainer,
   MobileHidden,
   MobileVisible,
-} from '../../../styles/common';
+} from '../../../styles/common'
 import {
   Wrapper,
   Content,
@@ -23,22 +23,22 @@ import {
   Address,
   EventInfo,
   CountdownWrap,
-} from './styles';
-import moment from 'moment';
-import 'moment/locale/ru';
-import Countdown from '../../blocks/Countdown';
+} from './styles'
+import moment from 'moment'
+import 'moment/locale/ru'
+import Countdown from '../../blocks/Countdown'
 
-import { PHOTO_URL } from '../../../api/variables';
+import { PHOTO_URL } from '../../../api/variables'
 
-import { IEvent } from 'src/types/event';
-import ReactMarkdown from 'react-markdown';
-import formatTime from 'src/utils/newUtils/formatTime';
-import { IBeautyCategories, IFeed } from '@/types/feed';
+import { IEvent } from 'src/types/event'
+import ReactMarkdown from 'react-markdown'
+import formatTime from 'src/utils/newUtils/formatTime'
+import { IBeautyCategories, IFeed } from '@/types/feed'
 
 export interface IEventPageProps {
-  event: IEvent;
-  beautyCategories: IBeautyCategories[];
-  beautyAllContent: IFeed[];
+  event: IEvent
+  beautyCategories: IBeautyCategories[]
+  beautyAllContent: IFeed[]
 }
 
 const EventPage: FC<IEventPageProps> = ({
@@ -155,7 +155,7 @@ const EventPage: FC<IEventPageProps> = ({
         beautyAllContent={beautyAllContent}
       />
     </MainLayout>
-  );
-};
+  )
+}
 
-export default EventPage;
+export default EventPage

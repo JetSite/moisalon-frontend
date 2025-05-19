@@ -23,7 +23,6 @@ import { Nullable } from 'src/types/common'
 import { getPrepareData } from 'src/utils/newUtils/getPrepareData'
 import { MIN_SEARCH_LENGTH } from 'src/components/pages/MainPage/components/SearchMain/utils/useSearch'
 import MainLayout from '../../../layouts/MainLayout'
-import SalonsPage from 'src/components/pages/SalonsPage'
 import MainHead from '../../MainHead'
 
 export interface ITotalCount {
@@ -45,21 +44,19 @@ const AllSalons: FC<Props> = ({
   masters,
   salons,
   cityData,
-  pagination,
+  ...props
 }) => {
   const layout = { brands, masters, salons }
 
   return (
-    <MainLayout>
-      <Fragment>
-        <MainHead
-          title={`Салоны красоты в ${cityData.name} | MOI salon`}
-          description={`Каталог салонов красоты в ${cityData.name}. Поиск по услугам, ценам и отзывам на платформе MOI salon`}
-          image="/salons-page-bg.jpg"
-        />
-        <SalonsPage salons={salons} pagination={pagination} />
-      </Fragment>
-    </MainLayout>
+    <CategoryPageLayout {...layout}>
+      <MainHead
+        title={`Салоны красоты в ${cityData.name} | MOI salon`}
+        description={`Каталог салонов красоты в ${cityData.name}. Поиск по услугам, ценам и отзывам на платформе MOI salon`}
+        image="/salons-page-bg.jpg"
+      />
+      <AllSalonsPage {...props} />
+    </CategoryPageLayout>
   )
 }
 
