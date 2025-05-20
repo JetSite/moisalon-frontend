@@ -73,6 +73,28 @@ export const getServerSideProps: GetServerSideProps<
         image: `${PHOTO_URL}${event?.cover?.url}` || '/mobile-main-bg.jpg',
         url: `https://moi.salon/events/${event.id}`,
       },
+      schema: {
+        type: 'Event',
+        data: {
+          '@context': 'https://schema.org',
+          '@type': 'Event',
+          name: event.title,
+          description:
+            event.shortDescription ||
+            event.seoDescription ||
+            'Мероприятие на платформе MOI salon',
+          startDate: event.dateStart,
+          endDate: event.dateEnd,
+          image: event?.cover?.url
+            ? `${PHOTO_URL}${event.cover.url}`
+            : 'https://moi.salon/mobile-main-bg.jpg',
+          url: `https://moi.salon/events/${event.id}`,
+          location: {
+            '@type': 'Place',
+            name: event.address,
+          },
+        },
+      },
     },
   })
 }

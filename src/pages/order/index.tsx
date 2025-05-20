@@ -107,6 +107,40 @@ export const getServerSideProps: GetServerSideProps<
         image: '/master-landing-login.jpg',
         url: 'https://moi.salon/order',
       },
+      schema: {
+        type: 'CheckoutPage',
+        data: {
+          name: 'Оформление заказа | MOI salon',
+          description:
+            'Оформите заказ на платформе MOI salon - выберите способ оплаты и доставки',
+          url: 'https://moi.salon/order',
+          image: 'https://moi.salon/master-landing-login.jpg',
+          publisher: {
+            '@type': 'Organization',
+            name: 'MOI salon',
+            url: 'https://moi.salon',
+          },
+          mainEntity: {
+            '@type': 'Order',
+            orderStatus: 'https://schema.org/OrderCreated',
+            orderedItem:
+              cart?.cartContent?.map(item => ({
+                '@type': 'Product',
+                name: item.product.name,
+                description: item.product.shortDescription,
+                image: item.product.cover?.url
+                  ? `${process.env.NEXT_PUBLIC_PHOTO_URL}${item.image.url}`
+                  : undefined,
+                offers: {
+                  '@type': 'Offer',
+                  price: item.product.regularPrice || item.product.salePrice,
+                  priceCurrency: 'RUB',
+                  availability: 'https://schema.org/InStock',
+                },
+              })) || [],
+          },
+        },
+      },
     },
   })
 }

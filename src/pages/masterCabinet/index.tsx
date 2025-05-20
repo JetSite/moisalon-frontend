@@ -139,8 +139,38 @@ export const getServerSideProps: GetServerSideProps<
         description: preparedUser?.info?.username
           ? 'Управление профилем мастера, услугами и расписанием на платформе MOI salon'
           : 'Управление профилем мастера на платформе MOI salon',
-        image: preparedUser?.info?.photo?.url || '/masters-page-right.png',
+        image:
+          process.env.NEXT_PUBLIC_PHOTO_URL + preparedUser?.info?.photo?.url ||
+          '/masters-page-right.png',
         url: 'https://moi.salon/masterCabinet',
+      },
+      schema: {
+        type: 'ProfilePage',
+        data: {
+          name: preparedUser?.info?.username
+            ? `Личный кабинет ${preparedUser.info.username} | MOI salon`
+            : 'Личный кабинет мастера | MOI salon',
+          description: preparedUser?.info?.username
+            ? 'Управление профилем мастера, услугами и расписанием на платформе MOI salon'
+            : 'Управление профилем мастера на платформе MOI salon',
+          url: 'https://moi.salon/masterCabinet',
+          image: preparedUser?.info?.photo?.url
+            ? `${process.env.NEXT_PUBLIC_PHOTO_URL}${preparedUser.info.photo.url}`
+            : 'https://moi.salon/masters-page-right.png',
+          publisher: {
+            '@type': 'Organization',
+            name: 'MOI salon',
+            url: 'https://moi.salon',
+          },
+          mainEntity: {
+            '@type': 'Person',
+            name: preparedUser?.info?.username,
+            image: preparedUser?.info?.photo?.url
+              ? `${process.env.NEXT_PUBLIC_PHOTO_URL}${preparedUser.info.photo.url}`
+              : 'https://moi.salon/masters-page-right.png',
+            jobTitle: 'Beauty Professional',
+          },
+        },
       },
     },
   })

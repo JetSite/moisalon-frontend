@@ -13,6 +13,7 @@ import { EQUIPMENT } from 'src/api/graphql/equipment/quries/getEquipment'
 import { getGroupedServices } from 'src/utils/getGrupedServices'
 import { Nullable } from 'src/types/common'
 import { WORKPLACE_TYPES } from 'src/api/graphql/salon/queries/getWorkplaceTypes'
+import { ISalonPage } from '@/types/salon'
 
 type Props = IRentSeatProps
 
@@ -90,7 +91,7 @@ export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async ({
     }),
   ])
 
-  const salonData = flattenStrapiResponse(data[0].data.salon)
+  const salonData: ISalonPage = flattenStrapiResponse(data[0].data.salon)
   const paymentMethods = flattenStrapiResponse(data[1].data.paymentMethods)
   const rentalPeriods = flattenStrapiResponse(data[2].data.rentalPeriods)
   const equipments = flattenStrapiResponse(data[3].data.equipments)
@@ -112,6 +113,50 @@ export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async ({
         } на платформе MOI salon`,
         image: '/salons-page-bg.png',
         url: `https://moi.salon/rentSalonSeat?id=${query?.id}`,
+      },
+      schema: {
+        type: 'RealEstateListing',
+        data: {
+          name: `Аренда места в салоне ${salonData?.name || ''} | MOI salon`,
+          description: `Управление арендой рабочего места в салоне красоты ${
+            salonData?.name || ''
+          } на платформе MOI salon`,
+          url: `https://moi.salon/rentSalonSeat?id=${query?.id}`,
+          image: 'https://moi.salon/salons-page-bg.png',
+          publisher: {
+            '@type': 'Organization',
+            name: 'MOI salon',
+            url: 'https://moi.salon',
+          },
+          address: {
+            '@type': 'PostalAddress',
+            addressLocality: salonData?.city?.name,
+            addressCountry: 'RU',
+            streetAddress: salonData?.address,
+          },
+          offers: {
+            '@type': 'Offer',
+            priceCurrency: 'RUB',
+            availability: 'https://schema.org/InStock',
+            validFrom: salonData?.createdAt,
+          },
+          amenityFeature: [
+            ...(salonData?.workingHours
+              ? [
+                  {
+                    '@type': 'LocationFeatureSpecification',
+                    name: 'Working Hours',
+                    value: salonData.workingHours
+                      .map(
+                        hours =>
+                          `${hours.dayOfWeek}: ${hours.startTime}-${hours.endTime}`,
+                      )
+                      .join(', '),
+                  },
+                ]
+              : []),
+          ],
+        },
       },
     },
   })

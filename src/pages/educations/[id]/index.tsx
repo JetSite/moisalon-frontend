@@ -70,11 +70,29 @@ export const getServerSideProps: GetServerSideProps<
       beautyCategories,
       beautyAllContent,
       meta: {
-        title: `${education.title} | Обучение MOI salon`,
+        title: education.title || 'Обучение | MOI salon',
         description:
-          education.shortDescription || 'Обучение на платформе MOI salon',
-        image: `${PHOTO_URL}${education?.cover?.url}` || '/mobile-main-bg.jpg',
+          education.shortDescription ||
+          'Курсы и обучение на платформе MOI salon',
+        image: education.cover?.url || '/services-page-photo1.jpg',
         url: `https://moi.salon/educations/${education.id}`,
+      },
+      schema: {
+        type: 'Course',
+        data: {
+          name: education.title,
+          description: education.shortDescription,
+          provider: {
+            '@type': 'Organization',
+            name: 'MOI salon',
+            url: 'https://moi.salon',
+          },
+          image: education.cover?.url
+            ? `https://moi.salon${education.cover.url}`
+            : 'https://moi.salon/services-page-photo1.jpg',
+          url: `https://moi.salon/educations/${education.id}`,
+          datePublished: education.publishedAt,
+        },
       },
     },
   })

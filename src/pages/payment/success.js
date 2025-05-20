@@ -15,6 +15,20 @@ export const getStaticProps = () => {
         image: "/mobile-main-bg.jpg",
         url: "https://moi.salon/payment/success",
       },
+      schema: {
+        type: 'WebPage',
+        data: {
+          name: "Успешная оплата | MOI salon",
+          description: "Ваш платеж успешно обработан на платформе MOI salon",
+          url: "https://moi.salon/payment/success",
+          image: "https://moi.salon/mobile-main-bg.jpg",
+          publisher: {
+            '@type': 'Organization',
+            name: 'MOI salon',
+            url: 'https://moi.salon',
+          }
+        }
+      }
     },
   };
 };

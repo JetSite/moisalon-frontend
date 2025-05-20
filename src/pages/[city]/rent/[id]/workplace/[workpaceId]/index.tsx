@@ -1,4 +1,3 @@
-import Head from 'next/head'
 import {
   addApolloState,
   initializeApollo,
@@ -14,7 +13,6 @@ import { Nullable } from 'src/types/common'
 import { ICity } from 'src/types'
 import { ISalonWorkplace } from 'src/types/workplace'
 import { WorkplacePage } from 'src/components/pages/Workplace'
-import { PHOTO_URL } from '../../../../../../api/variables'
 
 interface Props {
   salonData: ISalonPage
@@ -79,19 +77,42 @@ export const getServerSideProps: GetServerSideProps<
       workplaceData,
       city,
       meta: {
-        title: `${workplaceData.title} в ${salonData.name} | Аренда рабочего места MOI salon`,
+        title: `${workplaceData.title} в ${salonData?.name} | Аренда рабочего места MOI salon`,
         description:
           workplaceData.description ||
           `Аренда рабочего места ${workplaceData.title} в салоне ${
-            salonData.name
+            salonData?.name
           }. ${workplaceData.workspaces_types.map(t => t.title).join(', ')}`,
         image:
-          `${PHOTO_URL}${
+          `${process.env.NEXT_PUBLIC_PHOTO_URL}${
             workplaceData?.cover?.url ||
             workplaceData?.gallery?.[0]?.url ||
             salonData?.logo?.url
           }` || '/mobile-main-bg.jpg',
         url: `https://moi.salon/${city.slug}/rent/${salonData.id}/workplace/${workplaceData.id}`,
+      },
+      schema: {
+        type: 'Place',
+        data: {
+          name: `${workplaceData.title} в ${salonData?.name}`,
+          description:
+            workplaceData.description ||
+            `Аренда рабочего места ${workplaceData.title} в салоне ${
+              salonData?.name
+            }. ${workplaceData.workspaces_types.map(t => t.title).join(', ')}`,
+          url: `https://moi.salon/${city.slug}/rent/${salonData.id}/workplace/${workplaceData.id}`,
+          image:
+            `${process.env.NEXT_PUBLIC_PHOTO_URL}${
+              workplaceData?.cover?.url ||
+              workplaceData?.gallery?.[0]?.url ||
+              salonData?.logo?.url
+            }` || 'https://moi.salon/mobile-main-bg.jpg',
+          address: {
+            '@type': 'PostalAddress',
+            addressLocality: city.name,
+            streetAddress: salonData?.address || '',
+          },
+        },
       },
     },
   })

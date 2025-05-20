@@ -55,11 +55,56 @@ export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async ({
     props: {
       salonData,
       meta: {
-        title: `Личный кабинет ${salonData?.name || 'салона'} | MOI salon`,
+        title: salonData?.name
+          ? `Личный кабинет салона ${salonData.name} | MOI salon`
+          : 'Личный кабинет салона | MOI salon',
         description:
-          'Управление профилем салона, услугами и расписанием на платформе MOI salon',
-        image: salonData?.photo?.url || '/salons-page-bg.jpg',
+          salonData?.description ||
+          'Управление профилем салона на платформе MOI salon',
+        image: salonData?.photos?.[0]?.url || '/salons-page-bg.jpg',
         url: `https://moi.salon/salonCabinet?id=${query?.id}`,
+      },
+      schema: {
+        type: 'ProfilePage',
+        data: {
+          name: salonData?.name
+            ? `Личный кабинет салона ${salonData.name} | MOI salon`
+            : 'Личный кабинет салона | MOI salon',
+          description:
+            salonData?.description ||
+            'Управление профилем салона на платформе MOI salon',
+          url: `https://moi.salon/salonCabinet?id=${query?.id}`,
+          image: salonData?.photos?.[0]?.url
+            ? `${process.env.NEXT_PUBLIC_PHOTO_URL}${salonData.photos[0].url}`
+            : 'https://moi.salon/salons-page-bg.jpg',
+          publisher: {
+            '@type': 'Organization',
+            name: 'MOI salon',
+            url: 'https://moi.salon',
+          },
+          mainEntity: {
+            '@type': 'BeautySalon',
+            name: salonData?.name,
+            description: salonData?.description,
+            image: salonData?.photos?.[0]?.url
+              ? `${process.env.NEXT_PUBLIC_PHOTO_URL}${salonData.photos[0].url}`
+              : 'https://moi.salon/salons-page-bg.jpg',
+            address: {
+              '@type': 'PostalAddress',
+              addressLocality: salonData?.city?.name,
+              addressCountry: 'RU',
+              streetAddress: salonData?.address,
+            },
+            aggregateRating: salonData?.rating
+              ? {
+                  '@type': 'AggregateRating',
+                  ratingValue: salonData.rating,
+                  ratingCount: salonData.ratingCount,
+                  reviewCount: salonData.reviews?.length || 0,
+                }
+              : undefined,
+          },
+        },
       },
     },
   })

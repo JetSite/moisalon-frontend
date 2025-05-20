@@ -94,12 +94,51 @@ export const getServerSideProps: GetServerSideProps<
       reviews: normalisedReviews,
       cart,
       meta: {
-        title: `${normalisedProduct.name} | MOI salon`,
-        description: `${normalisedProduct.name} - ${
-          normalisedProduct.brand?.name || 'Товар'
-        } на платформе MOI salon. Описание, характеристики и отзывы.`,
-        image: normalisedProduct.cover?.url || '/stock3.png',
+        title: normalisedProduct.name || 'Товар | MOI salon',
+        description:
+          normalisedProduct.shortDescription || 'Товар на платформе MOI salon',
+        image:
+          process.env.NEXT_PUBLIC_PHOTO_URL +
+            normalisedProduct.gallery?.[0]?.url || '/mobile-main-bg.jpg',
         url: `https://moi.salon/${ctx.params?.['city']}/product/${normalisedProduct.id}`,
+      },
+      schema: {
+        type: 'Product',
+        data: {
+          name: normalisedProduct.name,
+          description: normalisedProduct.shortDescription,
+          image: normalisedProduct.gallery
+            ?.map(photo =>
+              photo.url
+                ? `${process.env.NEXT_PUBLIC_PHOTO_URL}${photo.url}`
+                : undefined,
+            )
+            .filter(Boolean) || ['https://moi.salon/mobile-main-bg.jpg'],
+          url: `https://moi.salon/${ctx.params?.['city']}/product/${normalisedProduct.id}`,
+          brand: normalisedProduct.brand
+            ? {
+                '@type': 'Brand',
+                name: normalisedProduct.brand.name,
+                url: `https://moi.salon/${ctx.params?.['city']}/brand/${normalisedProduct.brand.id}`,
+              }
+            : undefined,
+          offers: {
+            '@type': 'Offer',
+            price:
+              normalisedProduct.regularPrice ||
+              normalisedProduct.salePrice ||
+              0,
+            priceCurrency: 'RUB',
+            availability: normalisedProduct.availableInStock
+              ? 'https://schema.org/InStock'
+              : 'https://schema.org/OutOfStock',
+            seller: {
+              '@type': 'Organization',
+              name: 'MOI salon',
+              url: 'https://moi.salon',
+            },
+          },
+        },
       },
     },
   })

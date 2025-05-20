@@ -35,6 +35,10 @@ export interface IAppProps {
     image?: string
     url?: string
   }
+  schema?: {
+    type: string
+    data: Record<string, any>
+  }
 }
 
 function MyApp({ Component, pageProps }: AppProps<IAppProps>) {
@@ -79,6 +83,14 @@ function MyApp({ Component, pageProps }: AppProps<IAppProps>) {
 
   const fullImageUrl = `${process.env.NEXT_PUBLIC_PHOTO_URL}${meta.image}`
 
+  const schemaData = pageProps.schema
+    ? {
+        '@context': 'https://schema.org',
+        '@type': pageProps.schema.type,
+        ...pageProps.schema.data,
+      }
+    : null
+
   return (
     <div style={{ overflowX: mobileMedia ? 'hidden' : undefined }}>
       <style global jsx>{`
@@ -112,6 +124,13 @@ function MyApp({ Component, pageProps }: AppProps<IAppProps>) {
         <meta name="twitter:title" content={meta.title} />
         <meta name="twitter:description" content={meta.description} />
         <meta name="twitter:image" content={fullImageUrl} />
+
+        {schemaData && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
+          />
+        )}
       </Head>
       <ApolloProvider client={apolloClient}>
         <ThemeProvider theme={theme}>

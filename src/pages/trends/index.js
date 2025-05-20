@@ -78,6 +78,20 @@ export const getServerSideProps = async () => {
         image: "/services-page-photo2.jpg",
         url: "https://moi.salon/trends",
       },
+      schema: {
+        type: 'CollectionPage',
+        data: {
+          name: "Тренды красоты | MOI salon",
+          description: "Актуальные тренды и тенденции в индустрии красоты на платформе MOI salon",
+          url: "https://moi.salon/trends",
+          image: "https://moi.salon/services-page-photo2.jpg",
+          publisher: {
+            '@type': 'Organization',
+            name: 'MOI salon',
+            url: 'https://moi.salon',
+          },
+        }
+      }
     },
   })
 }

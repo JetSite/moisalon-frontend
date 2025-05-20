@@ -156,9 +156,54 @@ export const getServerSideProps: GetServerSideProps<
       pageSize,
       meta: {
         title: `Салоны красоты в ${cityData.name} | MOI salon`,
-        description: `Каталог салонов красоты в ${cityData.name}. Поиск по услугам, ценам и отзывам на платформе MOI salon`,
+        description: `Все салоны красоты и spa (спа) в городе ${cityData.name}. Выбирайте лучшие салоны по рейтингам и отзывам на MOI salon.`,
         image: '/salons-page-bg.jpg',
         url: `https://moi.salon/${cityData.slug}/salon`,
+      },
+      schema: {
+        type: 'CollectionPage',
+        data: {
+          name: `Салоны красоты в ${cityData.name} | MOI salon`,
+          description: `Все салоны красоты и spa (спа) в городе ${cityData.name}. Выбирайте лучшие салоны по рейтингам и отзывам на MOI salon.`,
+          url: `https://moi.salon/${cityData.slug}/salon`,
+          image: 'https://moi.salon/salons-page-bg.jpg',
+          publisher: {
+            '@type': 'Organization',
+            name: 'MOI salon',
+            url: 'https://moi.salon',
+          },
+          mainEntity: {
+            '@type': 'ItemList',
+            itemListElement:
+              salonData?.map((salon, index) => ({
+                '@type': 'ListItem',
+                position: index + 1,
+                item: {
+                  '@type': 'BeautySalon',
+                  name: salon.name,
+                  description: salon.description,
+                  image:
+                    process.env.NEXT_PUBLIC_PHOTO_URL +
+                      salon.photos?.[0]?.url || '/salons-page-bg.jpg',
+                  url: `https://moi.salon/${cityData.slug}/salon/${salon.id}`,
+                  address: {
+                    '@type': 'PostalAddress',
+                    addressLocality: cityData.name,
+                    addressCountry: 'RU',
+                    streetAddress: salon.address,
+                  },
+                  aggregateRating: salon.rating
+                    ? {
+                        '@type': 'AggregateRating',
+                        ratingValue: salon.rating,
+                        ratingCount: salon.ratingCount,
+                        reviewCount: salon.reviewsCount,
+                      }
+                    : undefined,
+                },
+              })) || [],
+          },
+        },
       },
     },
   }

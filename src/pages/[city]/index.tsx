@@ -99,6 +99,22 @@ export const getServerSideProps: GetServerSideProps<
         image: '/salons-page-bg.jpg',
         url: 'https://moi.salon/',
       },
+      schema: {
+        type: 'WebSite',
+        data: {
+          name: 'MOI salon',
+          description: `Все салоны красоты и spa (спа) в городе ${cityData.name}. Выбирайте лучшие салоны по рейтингам и отзывам на MOI salon.`,
+          url: 'https://moi.salon',
+          potentialAction: {
+            '@type': 'SearchAction',
+            target: {
+              '@type': 'EntryPoint',
+              urlTemplate: 'https://moi.salon/search?q={search_term_string}',
+            },
+            'query-input': 'required name=search_term_string',
+          },
+        },
+      },
     },
   })
 }
