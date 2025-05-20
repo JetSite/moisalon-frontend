@@ -104,6 +104,24 @@ export const getServerSideProps: GetServerSideProps<
         image: '/masters-page-right.png',
         url: `/createMaster${id ? `?id=${id}` : ''}`,
       },
+      schema: {
+        type: 'WebPage',
+        data: {
+          name: isEditMode
+            ? 'Редактирование мастера | MOI salon'
+            : 'Создание профиля мастера | MOI salon',
+          description: isEditMode
+            ? 'Редактирование информации о мастере в системе MOI salon'
+            : 'Создайте профиль мастера на платформе MOI salon и начните привлекать новых клиентов',
+          url: `https://moi.salon/createMaster${id ? `?id=${id}` : ''}`,
+          image: 'https://moi.salon/masters-page-right.png',
+          publisher: {
+            '@type': 'Organization',
+            name: 'MOI salon',
+            url: 'https://moi.salon',
+          },
+        },
+      },
     },
   }
 }

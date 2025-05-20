@@ -145,6 +145,39 @@ export const getServerSideProps: GetServerSideProps<
         image: '/salons-page-bg.jpg',
         url: `https://moi.salon/${cityData.slug}/rent`,
       },
+      schema: {
+        type: 'CollectionPage',
+        data: {
+          name: `Аренда помещений в ${cityData.name} | MOI salon`,
+          description: `Каталог помещений для аренды в ${cityData.name}. Поиск по условиям, ценам и расположению на платформе MOI salon`,
+          url: `https://moi.salon/${cityData.slug}/rent`,
+          image: 'https://moi.salon/salons-page-bg.jpg',
+          publisher: {
+            '@type': 'Organization',
+            name: 'MOI salon',
+            url: 'https://moi.salon',
+          },
+          numberOfItems: rentData?.length || 0,
+          itemListElement: rentData?.map((salon, index) => ({
+            '@type': 'ListItem',
+            position: index + 1,
+            item: {
+              '@type': 'Place',
+              name: salon.name,
+              description: salon.description || '',
+              address: {
+                '@type': 'PostalAddress',
+                addressLocality: cityData.name,
+                streetAddress: salon.address || '',
+              },
+              url: `https://moi.salon/${cityData.slug}/rent/${salon.id}`,
+              image: salon.photos?.[0]?.url
+                ? `https://moi.salon${salon.photos[0].url}`
+                : 'https://moi.salon/salons-page-bg.jpg',
+            },
+          })),
+        },
+      },
     },
   }
 }

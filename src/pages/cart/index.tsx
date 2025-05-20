@@ -69,6 +69,42 @@ export const getServerSideProps: GetServerSideProps<
         image: '/stock1.png',
         url: 'https://moi.salon/cart',
       },
+      schema: {
+        type: 'ItemPage',
+        data: {
+          name: 'Корзина | MOI salon',
+          description: 'Ваша корзина покупок на платформе MOI salon',
+          url: 'https://moi.salon/cart',
+          image: 'https://moi.salon/stock1.png',
+          publisher: {
+            '@type': 'Organization',
+            name: 'MOI salon',
+            url: 'https://moi.salon',
+          },
+          mainEntity: {
+            '@type': 'ItemList',
+            itemListElement:
+              cart?.cartContent?.map((item, index) => ({
+                '@type': 'ListItem',
+                position: index + 1,
+                item: {
+                  '@type': 'Product',
+                  name: item.product.name,
+                  description: item.product.shortDescription,
+                  image: item.product.cover?.url
+                    ? `${process.env.NEXT_PUBLIC_PHOTO_URL}${item.product.cover.url}`
+                    : undefined,
+                  offers: {
+                    '@type': 'Offer',
+                    price: item.product.regularPrice || item.product.salePrice,
+                    priceCurrency: 'RUB',
+                    availability: 'https://schema.org/InStock',
+                  },
+                },
+              })) || [],
+          },
+        },
+      },
     },
   })
 }

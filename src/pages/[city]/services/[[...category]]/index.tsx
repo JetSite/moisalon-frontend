@@ -141,6 +141,22 @@ export const getServerSideProps: GetServerSideProps = async context => {
           serviceId ? `/${serviceId}` : ''
         }`,
       },
+      schema: {
+        type: 'CollectionPage',
+        data: {
+          name: title,
+          description,
+          url: `https://moi.salon/${citySlug}/services${
+            serviceId ? `/${serviceId}` : ''
+          }`,
+          image: 'https://moi.salon/services-page-photo1.jpg',
+          publisher: {
+            '@type': 'Organization',
+            name: 'MOI salon',
+            url: 'https://moi.salon',
+          },
+        },
+      },
     },
   })
 }

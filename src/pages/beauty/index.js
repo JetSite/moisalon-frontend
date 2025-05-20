@@ -18,6 +18,26 @@ export const getStaticProps = () => {
         image: "/services-page-photo8.jpg",
         url: "https://moi.salon/beauty",
       },
+      schema: {
+        type: 'CollectionPage',
+        data: {
+          name: "Красота и стиль | MOI salon",
+          description: "Все о красоте, стиле и уходе за собой на платформе MOI salon",
+          url: "https://moi.salon/beauty",
+          image: "https://moi.salon/services-page-photo8.jpg",
+          publisher: {
+            '@type': 'Organization',
+            name: 'MOI salon',
+            url: 'https://moi.salon',
+          },
+          mainEntity: {
+            '@type': 'WebPage',
+            name: "Красота и стиль",
+            description: "Все о красоте, стиле и уходе за собой на платформе MOI salon",
+            url: "https://moi.salon/beauty",
+          }
+        }
+      }
     },
   };
 };

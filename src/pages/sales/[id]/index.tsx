@@ -49,7 +49,7 @@ export const getServerSideProps: GetServerSideProps<
     }),
   ])
 
-  const sale = getPrepareData<ISale>(data[0], 'promotion')
+  const sale: ISale | null = getPrepareData<ISale>(data[0], 'promotion')
 
   if (!sale)
     return {
@@ -74,6 +74,26 @@ export const getServerSideProps: GetServerSideProps<
           'Акция на платформе MOI salon',
         image: `${PHOTO_URL}${sale?.cover?.url}` || '/mobile-main-bg.jpg',
         url: `https://moi.salon/sales/${sale.id}`,
+      },
+      schema: {
+        type: 'Offer',
+        data: {
+          '@context': 'https://schema.org',
+          '@type': 'Offer',
+          name: sale.title,
+          description:
+            sale.seoDescription ||
+            sale.shortDescription ||
+            'Акция на платформе MOI salon',
+          image: sale?.cover?.url
+            ? `${process.env.NEXT_PUBLIC_PHOTO_URL}${sale.cover.url}`
+            : 'https://moi.salon/mobile-main-bg.jpg',
+          url: `https://moi.salon/sales/${sale.id}`,
+          availability: 'https://schema.org/InStock',
+          validFrom: sale.dateStart,
+          validThrough: sale.dateEnd,
+          itemCondition: 'https://schema.org/NewCondition',
+        },
       },
     },
   })

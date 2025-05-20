@@ -75,6 +75,40 @@ export const getServerSideProps: GetServerSideProps<
         vacancy,
         beautyCategories,
         beautyAllContent,
+        meta: {
+          title: vacancy.title || 'Вакансия | MOI salon',
+          description:
+            vacancy.shortDescription || 'Вакансия на платформе MOI salon',
+          image:
+            process.env.NEXT_PUBLIC_PHOTO_URL + vacancy.cover?.url ||
+            '/services-page-photo1.jpg',
+          url: `https://moi.salon/vacancies/${vacancy.id}`,
+        },
+        schema: {
+          type: 'JobPosting',
+          data: {
+            title: vacancy.title,
+            description: vacancy.shortDescription,
+            datePosted: vacancy.publishedAt,
+            hiringOrganization: {
+              '@type': 'Organization',
+              name: vacancy.salon?.name || 'MOI salon',
+              url: vacancy.salon
+                ? `https://moi.salon/${vacancy.salon.city.slug}/salon/${vacancy.salon.id}`
+                : 'https://moi.salon',
+            },
+            baseSalary: {
+              '@type': 'MonetaryAmount',
+              currency: 'RUB',
+              value: {
+                '@type': 'QuantitativeValue',
+                minValue: vacancy.amountFrom,
+                maxValue: vacancy.amountTo,
+                unitText: 'MONTH',
+              },
+            },
+          },
+        },
       },
     })
   } catch (error) {

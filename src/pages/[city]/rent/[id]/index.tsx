@@ -220,14 +220,74 @@ export const getServerSideProps: GetServerSideProps<
       beautyCategories,
       beautyAllContent,
       meta: {
-        title:
-          rentData?.seoTitle ||
-          `Аренда помещения ${rentData?.name} | MOI salon`,
+        title: rentData?.name || 'Аренда салона | MOI salon',
         description:
-          rentData?.seoDescription ||
-          `Аренда помещения ${rentData?.name} в ${cityData.name}. Условия, цены и контакты на MOI salon`,
+          rentData?.description ||
+          'Аренда салона красоты на платформе MOI salon',
         image: rentData?.photos?.[0]?.url || '/salons-page-bg.jpg',
         url: `https://moi.salon/${cityData.slug}/rent/${rentData?.id}`,
+      },
+      schema: {
+        type: 'RealEstateListing',
+        data: {
+          name: rentData?.name,
+          description: rentData?.description,
+          url: `https://moi.salon/${cityData.slug}/rent/${rentData?.id}`,
+          image: rentData?.photos
+            ?.map(photo =>
+              photo.url
+                ? `${process.env.NEXT_PUBLIC_PHOTO_URL}${photo.url}`
+                : undefined,
+            )
+            .filter(Boolean) || ['https://moi.salon/salons-page-bg.jpg'],
+          datePosted: rentData?.createdAt,
+          address: {
+            '@type': 'PostalAddress',
+            addressLocality: cityData.name,
+            addressCountry: 'RU',
+            streetAddress: rentData?.address,
+          },
+          amenityFeature: [
+            ...(rentData?.workingHours
+              ? [
+                  {
+                    '@type': 'LocationFeatureSpecification',
+                    name: 'Working Hours',
+                    value: rentData.workingHours
+                      .map(
+                        hours =>
+                          `${hours.dayOfWeek}: ${hours.startTime}-${hours.endTime}`,
+                      )
+                      .join(', '),
+                  },
+                ]
+              : []),
+            ...(rentData?.metro_stations
+              ? [
+                  {
+                    '@type': 'LocationFeatureSpecification',
+                    name: 'Metro Stations',
+                    value: rentData.metro_stations
+                      .map(station => station.title)
+                      .join(', '),
+                  },
+                ]
+              : []),
+          ],
+          geo: {
+            '@type': 'GeoCoordinates',
+            latitude: rentData?.latitude,
+            longitude: rentData?.longitude,
+          },
+          aggregateRating: rating
+            ? {
+                '@type': 'AggregateRating',
+                ratingValue: rating,
+                ratingCount: ratingCount,
+                reviewCount: reviewsCount,
+              }
+            : undefined,
+        },
       },
     },
   }

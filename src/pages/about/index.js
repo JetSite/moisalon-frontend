@@ -18,6 +18,25 @@ export const getStaticProps = () => {
         image: "/mobile-about-woman.jpg",
         url: "https://moi.salon/about",
       },
+      schema: {
+        type: 'Organization',
+        data: {
+          name: 'MOI salon',
+          description: 'MOI salon - инновационное решение для салонов красоты и мастеров',
+          url: 'https://moi.salon',
+          logo: 'https://moi.salon/logo.png',
+          image: 'https://moi.salon/mobile-about-woman.jpg',
+          address: {
+            '@type': 'PostalAddress',
+            addressCountry: 'RU'
+          },
+          contactPoint: {
+            '@type': 'ContactPoint',
+            contactType: 'customer service',
+            email: 'info@moi.salon'
+          }
+        }
+      }
     },
   };
 };

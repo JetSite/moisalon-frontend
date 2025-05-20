@@ -30,7 +30,9 @@ export async function getServerSideProps() {
     query: PROMOTIONS,
   })
 
-  const normalisedSales = flattenStrapiResponse(salesRes?.data?.promotions)
+  const normalisedSales: ISale[] = flattenStrapiResponse(
+    salesRes?.data?.promotions,
+  )
 
   return addApolloState(apolloClient, {
     props: {
@@ -41,6 +43,39 @@ export async function getServerSideProps() {
           'Выгодные акции и специальные предложения от салонов красоты и мастеров на платформе MOI salon',
         image: '/services-page-photo4.jpg',
         url: 'https://moi.salon/sales',
+      },
+      schema: {
+        type: 'CollectionPage',
+        data: {
+          name: 'Акции и специальные предложения | MOI salon',
+          description:
+            'Выгодные акции и специальные предложения от салонов красоты и мастеров на платформе MOI salon',
+          url: 'https://moi.salon/sales',
+          image: 'https://moi.salon/services-page-photo4.jpg',
+          publisher: {
+            '@type': 'Organization',
+            name: 'MOI salon',
+            url: 'https://moi.salon',
+          },
+          mainEntity: {
+            '@type': 'ItemList',
+            itemListElement:
+              normalisedSales?.map((sale, index) => ({
+                '@type': 'ListItem',
+                position: index + 1,
+                item: {
+                  '@type': 'Offer',
+                  name: sale.title,
+                  description: sale.shortDescription,
+                  validFrom: sale.dateStart,
+                  validThrough: sale.dateEnd,
+                  image: sale.cover?.url
+                    ? `${process.env.NEXT_PUBLIC_PHOTO_URL}${sale.cover.url}`
+                    : undefined,
+                },
+              })) || [],
+          },
+        },
       },
     },
   })

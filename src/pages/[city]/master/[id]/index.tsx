@@ -444,7 +444,13 @@ export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async ({
     notFound: !id || !cityData || !masterData,
     props: {
       masterData: masterData
-        ? { ...masterData, salons, rating, ratingCount, reviewsCount }
+        ? {
+            ...masterData,
+            salons,
+            rating,
+            ratingCount,
+            reviewsCount,
+          }
         : null,
       randomMasters: randomMasters.map(e => {
         const reviewsCount = e.reviews?.length
@@ -454,12 +460,57 @@ export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async ({
       allServices,
       cityData,
       meta: {
-        title: masterData?.name || `Мастер | MOI salon`,
-        description:
-          masterData?.seoDescription ||
-          `Мастер в ${cityData.name}. Услуги, портфолио, отзывы и контакты на MOI salon`,
+        title: masterData?.name || 'Мастер | MOI salon',
+        description: masterData?.description || 'Мастер на платформе MOI salon',
         image: masterData?.photo?.url || '/masters-page-right.png',
-        url: `https://moi.salon/${cityData.name}/master/${masterData?.id}`,
+        url: `https://moi.salon/${cityData.slug}/master/${masterData?.id}`,
+      },
+      schema: {
+        type: 'Person',
+        data: {
+          name: masterData?.name,
+          description: masterData?.description,
+          image: masterData?.photo?.url
+            ? `${process.env.NEXT_PUBLIC_PHOTO_URL}${masterData.photo.url}`
+            : 'https://moi.salon/masters-page-right.png',
+          url: `https://moi.salon/${cityData.slug}/master/${masterData?.id}`,
+          jobTitle: 'Beauty Professional',
+          worksFor: salons.map(salon => ({
+            '@type': 'Organization',
+            name: salon.name,
+            url: `https://moi.salon/${salon.city.slug}/salon/${salon.id}`,
+          })),
+          makesOffer: masterData?.services?.map(service => ({
+            '@type': 'Offer',
+            itemOffered: {
+              '@type': 'Service',
+              name: service.serviceName,
+              price: service.price,
+              priceCurrency: 'RUB',
+            },
+          })),
+          aggregateRating: rating
+            ? {
+                '@type': 'AggregateRating',
+                ratingValue: rating,
+                ratingCount: ratingCount,
+                reviewCount: reviewsCount,
+              }
+            : undefined,
+          review: masterData?.reviews?.map(review => ({
+            '@type': 'Review',
+            reviewRating: {
+              '@type': 'Rating',
+              ratingValue: review.rating,
+            },
+            author: {
+              '@type': 'Person',
+              name: review.user.username || 'Анонимный пользователь',
+            },
+            reviewBody: review.content,
+            datePublished: review.publishedAt,
+          })),
+        },
       },
     },
   }

@@ -102,7 +102,9 @@ export const getServerSideProps: GetServerSideProps<
       ? flattenStrapiResponse(data[3].value.data.servicesMCat)
       : []
 
-  const salon = salonData ? flattenStrapiResponse(salonData.data.salon) : null
+  const salon: ISalonPage = salonData
+    ? flattenStrapiResponse(salonData.data.salon)
+    : null
   const isEditMode = !!salon
 
   return addApolloState(apolloClient, {
@@ -122,6 +124,43 @@ export const getServerSideProps: GetServerSideProps<
           : 'Создайте профиль вашего салона красоты на платформе MOI salon',
         image: '/salons-page-bg.jpg',
         url: `https://moi.salon/createSalon${id ? `?id=${id}` : ''}`,
+      },
+      schema: {
+        type: 'WebPage',
+        data: {
+          name: isEditMode
+            ? 'Редактирование салона | MOI salon'
+            : 'Создание салона | MOI salon',
+          description: isEditMode
+            ? 'Редактирование информации о салоне красоты в системе MOI salon'
+            : 'Создайте профиль вашего салона красоты на платформе MOI salon',
+          url: `https://moi.salon/createSalon${id ? `?id=${id}` : ''}`,
+          image: 'https://moi.salon/salons-page-bg.jpg',
+          publisher: {
+            '@type': 'Organization',
+            name: 'MOI salon',
+            url: 'https://moi.salon',
+          },
+          mainEntity: {
+            '@type': 'BeautySalon',
+            name: salon?.name,
+            description: salon?.description,
+            address: salon?.address
+              ? {
+                  '@type': 'PostalAddress',
+                  addressLocality: salon.city?.name,
+                  addressCountry: 'RU',
+                  streetAddress: salon.address,
+                }
+              : undefined,
+            image: salon?.cover?.url
+              ? `${process.env.NEXT_PUBLIC_PHOTO_URL}${salon.cover.url}`
+              : undefined,
+            openingHours: salon?.workingHours?.map(
+              hours => `${hours.dayOfWeek} ${hours.startTime}-${hours.endTime}`,
+            ),
+          },
+        },
       },
     },
   })

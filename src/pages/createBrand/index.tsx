@@ -85,6 +85,26 @@ export const getServerSideProps: GetServerSideProps<
         image: '/ribbon-3.jpg',
         url: `/createBrand${ctx.query?.id ? `?id=${ctx.query.id}` : ''}`,
       },
+      schema: {
+        type: 'WebPage',
+        data: {
+          name: flattenedBrand
+            ? 'Редактирование бренда | MOI salon'
+            : 'Создание бренда | MOI salon',
+          description: flattenedBrand
+            ? 'Редактирование информации о бренде в системе MOI salon'
+            : 'Создайте профиль вашего бренда на платформе MOI salon',
+          url: `https://moi.salon/createBrand${
+            ctx.query?.id ? `?id=${ctx.query.id}` : ''
+          }`,
+          image: 'https://moi.salon/ribbon-3.jpg',
+          publisher: {
+            '@type': 'Organization',
+            name: 'MOI salon',
+            url: 'https://moi.salon',
+          },
+        },
+      },
     },
   })
 }

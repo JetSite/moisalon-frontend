@@ -410,12 +410,64 @@ export const getServerSideProps: GetServerSideProps<
       servicesM,
       cityData,
       meta: {
-        title: salonData?.seoTitle || `${salonData?.name} | MOI salon`,
+        title: salonData?.name || 'Салон красоты | MOI salon',
         description:
-          salonData?.seoDescription ||
-          `Салон красоты ${salonData?.name} в ${cityData.name}. Услуги, мастера, отзывы и контакты на MOI salon`,
+          salonData?.description || 'Салон красоты на платформе MOI salon',
         image: seoImage,
         url: `https://moi.salon/${cityData.slug}/salon/${salonData?.id}`,
+      },
+      schema: {
+        type: 'BeautySalon',
+        data: {
+          name: salonData?.name,
+          description: salonData?.description,
+          url: `https://moi.salon/${cityData.slug}/salon/${salonData?.id}`,
+          image: salonData?.photos
+            ?.map(photo =>
+              photo.url
+                ? `${process.env.NEXT_PUBLIC_PHOTO_URL}${photo.url}`
+                : undefined,
+            )
+            .filter(Boolean) || ['https://moi.salon/salons-page-bg.jpg'],
+          address: {
+            '@type': 'PostalAddress',
+            addressLocality: cityData.name,
+            addressCountry: 'RU',
+            streetAddress: salonData?.address,
+          },
+          telephone: salonData?.salonPhones
+            ?.map(phone => phone.phoneNumber)
+            .join(', '),
+          email: salonData?.email,
+          openingHoursSpecification: salonData?.workingHours?.map(hours => ({
+            '@type': 'OpeningHoursSpecification',
+            dayOfWeek: hours.dayOfWeek,
+            opens: hours.startTime,
+            closes: hours.endTime,
+          })),
+          priceRange: '₽₽₽',
+          aggregateRating: rating
+            ? {
+                '@type': 'AggregateRating',
+                ratingValue: rating,
+                ratingCount: ratingCount,
+                reviewCount: reviewsCount,
+              }
+            : undefined,
+          review: salonData?.reviews?.map(review => ({
+            '@type': 'Review',
+            reviewRating: {
+              '@type': 'Rating',
+              ratingValue: review.rating,
+            },
+            author: {
+              '@type': 'Person',
+              name: review.user.username || 'Анонимный пользователь',
+            },
+            reviewBody: review.content,
+            datePublished: review.publishedAt,
+          })),
+        },
       },
     },
   }

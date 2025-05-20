@@ -75,6 +75,33 @@ export const getServerSideProps: GetServerSideProps = async () => {
         image: '/services-page-photo1.jpg',
         url: '/advices',
       },
+      schema: {
+        type: 'Blog',
+        data: {
+          name: 'Советы и статьи MOI salon',
+          description:
+            'Полезные советы, статьи и рекомендации от экспертов индустрии красоты на платформе MOI salon',
+          url: 'https://moi.salon/advices',
+          publisher: {
+            '@type': 'Organization',
+            name: 'MOI salon',
+            url: 'https://moi.salon',
+          },
+          blogPost: allAdvices.map(post => ({
+            '@type': 'BlogPosting',
+            headline: post.title,
+            description: post.shortDescription,
+            image:
+              process.env.NEXT_PUBLIC_PHOTO_URL + post.cover?.url ||
+              '/services-page-photo1.jpg',
+            datePublished: post.createdAt,
+            author: {
+              '@type': 'Organization',
+              name: 'MOI salon',
+            },
+          })),
+        },
+      },
       categories,
       allAdvices,
       totalCount,

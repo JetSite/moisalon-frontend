@@ -32,7 +32,7 @@ export async function getServerSideProps() {
     query: EDUCATIONS,
   })
 
-  const normalisedEducations = flattenStrapiResponse(
+  const normalisedEducations: IEducation[] = flattenStrapiResponse(
     educationsRes?.data?.educations,
   )
 
@@ -45,6 +45,39 @@ export async function getServerSideProps() {
           'Профессиональные курсы и программы обучения для мастеров индустрии красоты на платформе MOI salon',
         image: '/services-page-photo6.jpg',
         url: 'https://moi.salon/educations',
+      },
+      schema: {
+        type: 'CollectionPage',
+        data: {
+          name: 'Обучение и курсы | MOI salon',
+          description:
+            'Профессиональные курсы и программы обучения для мастеров индустрии красоты на платформе MOI salon',
+          url: 'https://moi.salon/educations',
+          image: 'https://moi.salon/services-page-photo6.jpg',
+          publisher: {
+            '@type': 'Organization',
+            name: 'MOI salon',
+            url: 'https://moi.salon',
+          },
+          mainEntity: {
+            '@type': 'ItemList',
+            itemListElement:
+              normalisedEducations?.map((education, index) => ({
+                '@type': 'ListItem',
+                position: index + 1,
+                item: {
+                  '@type': 'Course',
+                  name: education.title,
+                  description: education.shortDescription,
+                  image: education.cover?.url
+                    ? `${process.env.NEXT_PUBLIC_PHOTO_URL}${education.cover.url}`
+                    : undefined,
+                  startDate: education.dateStart,
+                  endDate: education.dateEnd,
+                },
+              })) || [],
+          },
+        },
       },
     },
   })

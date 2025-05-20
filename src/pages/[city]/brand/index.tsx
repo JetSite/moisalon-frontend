@@ -153,6 +153,31 @@ export const getServerSideProps: GetServerSideProps<
         image: '/ribbon-1.jpg',
         url: `https://moi.salon/${cityData?.slug}/brand`,
       },
+      schema: {
+        type: 'CollectionPage',
+        data: {
+          name: `Бренды для индустрии красоты в ${cityName} | MOI salon`,
+          description: `Каталог брендов для салонов красоты и мастеров в ${cityName} на платформе MOI salon`,
+          url: `https://moi.salon/${cityData?.slug}/brand`,
+          image: 'https://moi.salon/ribbon-1.jpg',
+          publisher: {
+            '@type': 'Organization',
+            name: 'MOI salon',
+            url: 'https://moi.salon',
+          },
+          numberOfItems: brands?.length || 0,
+          itemListElement: brands?.map((brand, index) => ({
+            '@type': 'ListItem',
+            position: index + 1,
+            item: {
+              '@type': 'Brand',
+              name: brand.name,
+              description: brand.description || '',
+              url: `https://moi.salon/${cityData?.slug}/brand/${brand.slug}`,
+            },
+          })),
+        },
+      },
     },
   }
 }

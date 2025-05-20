@@ -145,10 +145,49 @@ export const getServerSideProps: GetServerSideProps<
       cityData,
       pagination,
       meta: {
-        title: `Мастера красоты в ${cityData.name} | MOI salon`,
-        description: `Каталог мастеров красоты в ${cityData.name}. Поиск по услугам, ценам и отзывам на платформе MOI salon`,
+        title: `Мастера в ${cityData.name} | MOI salon`,
+        description: `Все мастера индустрии красоты в ${cityData.name}. Выбирайте лучших мастеров по рейтингам и отзывам на MOI salon.`,
         image: '/masters-page-right.png',
         url: `https://moi.salon/${cityData.slug}/master`,
+      },
+      schema: {
+        type: 'CollectionPage',
+        data: {
+          name: `Мастера в ${cityData.name} | MOI salon`,
+          description: `Все мастера индустрии красоты в ${cityData.name}. Выбирайте лучших мастеров по рейтингам и отзывам на MOI salon.`,
+          url: `https://moi.salon/${cityData.slug}/master`,
+          image: 'https://moi.salon/masters-page-right.png',
+          publisher: {
+            '@type': 'Organization',
+            name: 'MOI salon',
+            url: 'https://moi.salon',
+          },
+          mainEntity: {
+            '@type': 'ItemList',
+            itemListElement: masterData?.map((master, index) => ({
+              '@type': 'ListItem',
+              position: index + 1,
+              item: {
+                '@type': 'Person',
+                name: master.name,
+                description: master.description,
+                image: master.photo?.url
+                  ? `${process.env.NEXT_PUBLIC_PHOTO_URL}${master.photo.url}`
+                  : 'https://moi.salon/masters-page-right.png',
+                url: `https://moi.salon/${cityData.slug}/master/${master.id}`,
+                jobTitle: 'Beauty Professional',
+                aggregateRating: master.rating
+                  ? {
+                      '@type': 'AggregateRating',
+                      ratingValue: master.rating,
+                      ratingCount: master.ratingCount,
+                      reviewCount: master.reviewsCount,
+                    }
+                  : undefined,
+              },
+            })),
+          },
+        },
       },
     },
   }
