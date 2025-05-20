@@ -72,7 +72,7 @@ const FastBuyPopup: FC<Props> = ({
   })
 
   const buyProduct = () => {
-    if (!/^[^\d!@#№$%^&*(),.?":{}|<>[]+-~0-9]+$/.test(name)) {
+    if (!/^[^\d!@#$%^&*()_+=\-[\]{}|\\:;"'<>,.?/~`№]+$/.test(name)) {
       setError('В поле Имя разрешены только буквы и пробелы')
       return
     }
