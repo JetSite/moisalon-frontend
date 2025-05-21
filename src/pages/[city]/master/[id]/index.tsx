@@ -486,7 +486,6 @@ export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async ({
               '@type': 'Service',
               name: service.serviceName,
               price: service.price,
-              priceCurrency: 'RUB',
             },
           })),
           aggregateRating: rating

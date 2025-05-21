@@ -164,7 +164,7 @@ export const getServerSideProps: GetServerSideProps<
           },
           mainEntity: {
             '@type': 'Person',
-            name: preparedUser?.info?.username,
+            name: preparedUser?.info?.username || '',
             image: preparedUser?.info?.photo?.url
               ? `${process.env.NEXT_PUBLIC_PHOTO_URL}${preparedUser.info.photo.url}`
               : 'https://moi.salon/masters-page-right.png',

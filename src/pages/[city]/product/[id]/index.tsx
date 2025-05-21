@@ -128,7 +128,6 @@ export const getServerSideProps: GetServerSideProps<
               normalisedProduct.regularPrice ||
               normalisedProduct.salePrice ||
               0,
-            priceCurrency: 'RUB',
             availability: normalisedProduct.availableInStock
               ? 'https://schema.org/InStock'
               : 'https://schema.org/OutOfStock',

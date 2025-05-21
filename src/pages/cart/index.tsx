@@ -97,7 +97,6 @@ export const getServerSideProps: GetServerSideProps<
                   offers: {
                     '@type': 'Offer',
                     price: item.product.regularPrice || item.product.salePrice,
-                    priceCurrency: 'RUB',
                     availability: 'https://schema.org/InStock',
                   },
                 },

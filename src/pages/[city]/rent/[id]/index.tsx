@@ -241,44 +241,6 @@ export const getServerSideProps: GetServerSideProps<
             )
             .filter(Boolean) || ['https://moi.salon/salons-page-bg.jpg'],
           datePosted: rentData?.createdAt,
-          address: {
-            '@type': 'PostalAddress',
-            addressLocality: cityData.name,
-            addressCountry: 'RU',
-            streetAddress: rentData?.address,
-          },
-          amenityFeature: [
-            ...(rentData?.workingHours
-              ? [
-                  {
-                    '@type': 'LocationFeatureSpecification',
-                    name: 'Working Hours',
-                    value: rentData.workingHours
-                      .map(
-                        hours =>
-                          `${hours.dayOfWeek}: ${hours.startTime}-${hours.endTime}`,
-                      )
-                      .join(', '),
-                  },
-                ]
-              : []),
-            ...(rentData?.metro_stations
-              ? [
-                  {
-                    '@type': 'LocationFeatureSpecification',
-                    name: 'Metro Stations',
-                    value: rentData.metro_stations
-                      .map(station => station.title)
-                      .join(', '),
-                  },
-                ]
-              : []),
-          ],
-          geo: {
-            '@type': 'GeoCoordinates',
-            latitude: rentData?.latitude,
-            longitude: rentData?.longitude,
-          },
           aggregateRating: rating
             ? {
                 '@type': 'AggregateRating',

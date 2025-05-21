@@ -72,8 +72,6 @@ export async function getServerSideProps() {
                   image: education.cover?.url
                     ? `${process.env.NEXT_PUBLIC_PHOTO_URL}${education.cover.url}`
                     : undefined,
-                  startDate: education.dateStart,
-                  endDate: education.dateEnd,
                 },
               })) || [],
           },

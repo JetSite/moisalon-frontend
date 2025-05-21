@@ -1,3 +1,4 @@
+import { cityInfo } from '../common/cityInfo'
 import { imageInfo } from '../common/imageInfo'
 
 export const vacancyFragment = `
@@ -34,6 +35,9 @@ data {
               id
               attributes {
                   name
+                  city {
+                   ${cityInfo}
+                  }
               }
           }
       }

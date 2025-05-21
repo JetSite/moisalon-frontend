@@ -9,7 +9,6 @@ export const getFeedCategories = gql`
         id
         attributes {
             title
-            title
             feeds {
               data {
                 id

@@ -176,14 +176,6 @@ export const getServerSideProps: GetServerSideProps<
                   : 'https://moi.salon/masters-page-right.png',
                 url: `https://moi.salon/${cityData.slug}/master/${master.id}`,
                 jobTitle: 'Beauty Professional',
-                aggregateRating: master.rating
-                  ? {
-                      '@type': 'AggregateRating',
-                      ratingValue: master.rating,
-                      ratingCount: master.ratingCount,
-                      reviewCount: master.reviewsCount,
-                    }
-                  : undefined,
               },
             })),
           },

@@ -165,17 +165,6 @@ export const getServerSideProps: GetServerSideProps<
             name: 'MOI salon',
             url: 'https://moi.salon',
           },
-          numberOfItems: brands?.length || 0,
-          itemListElement: brands?.map((brand, index) => ({
-            '@type': 'ListItem',
-            position: index + 1,
-            item: {
-              '@type': 'Brand',
-              name: brand.name,
-              description: brand.description || '',
-              url: `https://moi.salon/${cityData?.slug}/brand/${brand.slug}`,
-            },
-          })),
         },
       },
     },
