@@ -11,6 +11,7 @@ import { Nullable } from 'src/types/common'
 import { IBeautyCategories, IFeed } from '@/types/feed'
 import { getPrepareData } from '@/utils/newUtils/getPrepareData'
 import { PHOTO_URL } from '../../../api/variables'
+import { fetchCity } from '@/api/utils/fetchCity'
 
 interface Props {
   vacancy: IVacancy
@@ -93,9 +94,10 @@ export const getServerSideProps: GetServerSideProps<
             hiringOrganization: {
               '@type': 'Organization',
               name: vacancy.salon?.name || 'MOI salon',
-              url: vacancy.salon
-                ? `https://moi.salon/${vacancy.salon.city.slug}/salon/${vacancy.salon.id}`
-                : 'https://moi.salon',
+              url:
+                vacancy?.salon?.id && vacancy?.salon?.city?.slug
+                  ? `https://moi.salon/${vacancy.salon.city.slug}/salon/${vacancy.salon.id}`
+                  : 'https://moi.salon',
             },
             baseSalary: {
               '@type': 'MonetaryAmount',

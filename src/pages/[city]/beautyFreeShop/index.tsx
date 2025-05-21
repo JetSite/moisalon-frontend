@@ -65,37 +65,6 @@ export const getServerSideProps: GetServerSideProps<
           url: `https://moi.salon/${ctx.query['city']}/beautyFreeShop`,
           image: 'https://moi.salon/stock3.png',
           '@type': 'Store',
-          publisher: {
-            '@type': 'Organization',
-            name: 'MOI salon',
-            url: 'https://moi.salon',
-          },
-          offers: {
-            '@type': 'AggregateOffer',
-            itemOffered:
-              products?.map(product => ({
-                '@type': 'Product',
-                name: product.name,
-                description: product.shortDescription,
-                image: product.cover?.url
-                  ? `${process.env.NEXT_PUBLIC_PHOTO_URL}${product.cover?.url}`
-                  : undefined,
-                brand: product.brand
-                  ? {
-                      '@type': 'Brand',
-                      name: product.brand.name,
-                    }
-                  : undefined,
-                offers: {
-                  '@type': 'Offer',
-                  price: product.regularPrice || product.salePrice,
-                  priceCurrency: 'RUB',
-                  availability: product.availableInStock
-                    ? 'https://schema.org/InStock'
-                    : 'https://schema.org/OutOfStock',
-                },
-              })) || [],
-          },
         },
       },
     },

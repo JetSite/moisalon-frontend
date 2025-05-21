@@ -72,7 +72,6 @@ interface Props {
           offers: {
             '@type': string
             price: number
-            priceCurrency: string
             availability: string
           }
         }[]
@@ -318,7 +317,6 @@ export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async ({
               offers: {
                 '@type': 'Offer',
                 price: product.price,
-                priceCurrency: 'RUB',
                 availability: product.inStock
                   ? 'https://schema.org/InStock'
                   : 'https://schema.org/OutOfStock',

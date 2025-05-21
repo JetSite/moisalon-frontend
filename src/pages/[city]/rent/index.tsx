@@ -157,25 +157,6 @@ export const getServerSideProps: GetServerSideProps<
             name: 'MOI salon',
             url: 'https://moi.salon',
           },
-          numberOfItems: rentData?.length || 0,
-          itemListElement: rentData?.map((salon, index) => ({
-            '@type': 'ListItem',
-            position: index + 1,
-            item: {
-              '@type': 'Place',
-              name: salon.name,
-              description: salon.description || '',
-              address: {
-                '@type': 'PostalAddress',
-                addressLocality: cityData.name,
-                streetAddress: salon.address || '',
-              },
-              url: `https://moi.salon/${cityData.slug}/rent/${salon.id}`,
-              image: salon.photos?.[0]?.url
-                ? `https://moi.salon${salon.photos[0].url}`
-                : 'https://moi.salon/salons-page-bg.jpg',
-            },
-          })),
         },
       },
     },

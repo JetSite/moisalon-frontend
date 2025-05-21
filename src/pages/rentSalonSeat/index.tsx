@@ -136,7 +136,6 @@ export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async ({
           },
           offers: {
             '@type': 'Offer',
-            priceCurrency: 'RUB',
             availability: 'https://schema.org/InStock',
             validFrom: salonData?.createdAt,
           },

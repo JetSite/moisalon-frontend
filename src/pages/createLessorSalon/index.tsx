@@ -121,10 +121,9 @@ export const getServerSideProps: GetServerSideProps<
           description:
             'Управляйте профилем арендодателя, добавляйте рабочие места и привлекайте мастеров на платформе MOI salon',
           url: `https://moi.salon/createLessorSalon${id ? `?id=${id}` : ''}`,
-          image:
-            process.env.NEXT_PUBLIC_PHOTO_URL + salon?.cover?.url
-              ? `https://moi.salon${salon.cover.url}`
-              : 'https://moi.salon/salons-page-bg.jpg',
+          image: salon?.cover?.url
+            ? `${process.env.NEXT_PUBLIC_PHOTO_URL}${salon.cover.url}`
+            : 'https://moi.salon/salons-page-bg.jpg',
           publisher: {
             '@type': 'Organization',
             name: 'MOI salon',
