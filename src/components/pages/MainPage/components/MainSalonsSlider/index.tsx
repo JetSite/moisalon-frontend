@@ -1,11 +1,11 @@
 import { useLazyQuery, useQuery } from '@apollo/client'
-import { getSalons } from '../../../../../api/graphql/salon/queries/getSalons'
 import Slider from '../../../../blocks/Slider'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { ISalon } from 'src/types/salon'
 import { FC, useEffect, useState } from 'react'
 import { MainSlider } from '../MainMasterSlider'
 import { getRating } from 'src/utils/newUtils/getRating'
+import { getSalons } from '@/api/graphql/salon/queries/getSalons'
 
 interface Props extends MainSlider {
   rent?: boolean

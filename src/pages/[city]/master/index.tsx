@@ -170,7 +170,6 @@ export const getServerSideProps: GetServerSideProps<
               item: {
                 '@type': 'Person',
                 name: master.name,
-                description: master.description,
                 image: master.photo?.url
                   ? `${process.env.NEXT_PUBLIC_PHOTO_URL}${master.photo.url}`
                   : 'https://moi.salon/masters-page-right.png',

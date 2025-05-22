@@ -1,12 +1,11 @@
-import styled from 'styled-components';
-import { Skeleton } from '@material-ui/lab';
+import styled from 'styled-components'
+import { Skeleton } from '@material-ui/lab'
 import {
   laptopBreakpoint,
   tabletBreakpoint,
   mobileBreakpoint,
-} from '../../../styles/variables';
-import { IID } from 'src/types/common';
-import { LazyImage } from '@/components/newUI/common/LazyIMage';
+} from '../../../styles/variables'
+import { LazyImage } from '@/components/newUI/common/LazyIMage'
 
 export const BItem = styled.div<{ type: string }>`
   width: ${({ type }) => (type === 'slider' ? '17.7rem' : '100%')};
@@ -35,12 +34,13 @@ export const BItem = styled.div<{ type: string }>`
 
   @media (max-width: ${mobileBreakpoint}) {
   }
-`;
+`
 
 export const BrandImage = styled(LazyImage)`
   height: auto;
   width: 100%;
-`;
+  object-fit: cover;
+`
 
 export const Favorite = styled.div`
   position: absolute;
@@ -53,7 +53,7 @@ export const Favorite = styled.div`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const SkeletonItem = styled(Skeleton)`
   width: 173px;
@@ -63,14 +63,14 @@ export const SkeletonItem = styled(Skeleton)`
     width: 100%;
     height: 13rem;
   }
-`;
+`
 
 export const ShareWrap = styled.div`
   padding: 10px;
   position: absolute;
   top: 0;
   right: 0;
-`;
+`
 
 export const BrandShareWrap = styled(ShareWrap)`
   top: unset;
@@ -79,4 +79,4 @@ export const BrandShareWrap = styled(ShareWrap)`
   @media (max-width: ${laptopBreakpoint}) {
     right: -2px;
   }
-`;
+`

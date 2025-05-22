@@ -22,12 +22,12 @@ import { getRating } from 'src/utils/newUtils/getRating'
 import { GET_RENT_SALONS } from 'src/api/graphql/salon/queries/getRentSalons'
 import { getSalonPage } from 'src/api/graphql/salon/queries/getSalon'
 import Header from '../../../../components/pages/Rent/ViewRent/components/Header'
-import { getFeedCategories } from 'src/api/graphql/feed/queries/getFeedCategories'
-import { getFeeds } from 'src/api/graphql/feed/queries/getFeeds'
 import EntityDescription from 'src/components/newUI/EntityDescription'
 import styled from 'styled-components'
 import { laptopBreakpoint } from 'src/styles/variables'
 import { IBeautyCategories, IFeed } from '@/types/feed'
+import { getFeedCategoriesForSlider } from '@/api/graphql/feed/queries/getFeedCategoriesForSlider'
+import { getFeedsForSlider } from '@/api/graphql/feed/queries/getFeedsForSlider'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -176,10 +176,10 @@ export const getServerSideProps: GetServerSideProps<
       variables: { id, pageSize: 10, slug: cityData?.slug },
     }),
     apolloClient.query({
-      query: getFeedCategories,
+      query: getFeedCategoriesForSlider,
     }),
     apolloClient.query({
-      query: getFeeds,
+      query: getFeedsForSlider,
     }),
   ])
 

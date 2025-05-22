@@ -1,8 +1,6 @@
 import { addApolloState, initializeApollo } from '../../api/apollo-client'
 import MainPage, { IMainPageProps } from '../../components/pages/MainPage'
 import { getBannerHooks } from '../../api/graphql/banner/queries/getBannerHooks'
-import { getFeeds } from '../../api/graphql/feed/queries/getFeeds'
-import { getFeedCategories } from 'src/api/graphql/feed/queries/getFeedCategories'
 import { totalSalons } from 'src/api/graphql/salon/queries/totalSalons'
 import { totalMasters } from 'src/api/graphql/master/queries/totalMasters'
 import { totalBrands } from 'src/api/graphql/brand/queries/totalBrands'
@@ -12,21 +10,17 @@ import { ICity } from 'src/types'
 import { fetchCity } from 'src/api/utils/fetchCity'
 import { getTotalCount } from 'src/utils/getTotalCount'
 import { Nullable } from 'src/types/common'
-import { FC, Fragment } from 'react'
+import { FC } from 'react'
 import { getPrepareData } from 'src/utils/newUtils/getPrepareData'
 import { IBannerHook } from 'src/types/banners'
 import { IBeautyCategories, IFeed } from '@/types/feed'
+import { getFeedCategoriesForSlider } from '@/api/graphql/feed/queries/getFeedCategoriesForSlider'
+import { getFeedsForSlider } from '@/api/graphql/feed/queries/getFeedsForSlider'
 
 type Props = IMainPageProps
 
 const Main: FC<Props> = props => {
-  const { cityData } = props
-
-  return (
-    <Fragment>
-      <MainPage {...props} />
-    </Fragment>
-  )
+  return <MainPage {...props} />
 }
 
 export const getServerSideProps: GetServerSideProps<
@@ -35,10 +29,10 @@ export const getServerSideProps: GetServerSideProps<
   const apolloClient = initializeApollo()
   const data = await Promise.allSettled([
     apolloClient.query({
-      query: getFeedCategories,
+      query: getFeedCategoriesForSlider,
     }),
     apolloClient.query({
-      query: getFeeds,
+      query: getFeedsForSlider,
     }),
     apolloClient.query({
       query: getBannerHooks,

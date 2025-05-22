@@ -446,14 +446,6 @@ export const getServerSideProps: GetServerSideProps<
             closes: hours.endTime,
           })),
           priceRange: '₽₽₽',
-          aggregateRating: rating
-            ? {
-                '@type': 'AggregateRating',
-                ratingValue: rating,
-                ratingCount: ratingCount,
-                reviewCount: reviewsCount,
-              }
-            : undefined,
           review: salonData?.reviews?.map(review => ({
             '@type': 'Review',
             reviewRating: {

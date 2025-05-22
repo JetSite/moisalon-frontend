@@ -1,10 +1,10 @@
 import { useQuery } from '@apollo/client'
 import Slider from '../../../../blocks/Slider'
-import { PROMOTIONS } from 'src/api/graphql/promotion/queries/getPromotions'
 import { FC } from 'react'
 import { ICity } from 'src/types'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { IPromotions } from 'src/types/promotions'
+import { PROMOTIONS } from '@/api/graphql/promotion/queries/getPromotions'
 
 interface Props {
   city: ICity

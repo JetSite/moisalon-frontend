@@ -47,7 +47,9 @@ const Product: FC<IProductProps> = ({
           <Styled.ImageWrapper>
             <Styled.Image
               alt="image"
-              src={!!productImage ? productImage : '/cosmetic_placeholder.jpg'}
+              src={productImage ? productImage : '/cosmetic_placeholder.jpg'}
+              width={200}
+              height={140}
             />
             <AddFavoriteButton item={item} />
           </Styled.ImageWrapper>

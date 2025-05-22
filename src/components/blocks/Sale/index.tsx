@@ -1,7 +1,7 @@
 import { FC, useState } from 'react'
 import * as Styled from './styled'
-import moment from 'moment'
-import 'moment/locale/ru'
+import { format, parseISO } from 'date-fns'
+import { ru } from 'date-fns/locale'
 import { PHOTO_URL } from '../../../api/variables'
 import { IProfileType } from '../Cabinet/components/CabinetSales'
 import PhotoAdd, { IPhotoAddProps } from '../CreateBanner/PhotoAdd'
@@ -45,7 +45,7 @@ const Sale: FC<SaleProps> = ({
           onMouseOver={() => !noHover && setImageHover(true)}
           onMouseLeave={() => setImageHover(false)}
         >
-          <Styled.Image alt="photo" src={photoSrc} />
+          <Styled.Image alt="photo" src={photoSrc} width={400} height={200} />
           {imageHover ? (
             <Styled.DeleteIcon
               visible
@@ -77,10 +77,16 @@ const Sale: FC<SaleProps> = ({
           {item?.dateStart && item?.dateEnd ? (
             <Styled.SaleData>
               <Styled.Date>
-                {moment(item?.dateStart).format('DD MMMM YYYY')} - <br />
+                {format(parseISO(item?.dateStart), 'dd MMMM yyyy', {
+                  locale: ru,
+                })}{' '}
+                - <br />
               </Styled.Date>
               <Styled.Date>
-                {moment(item?.dateEnd).format('DD MMMM YYYY')} <br />
+                {format(parseISO(item?.dateEnd), 'dd MMMM yyyy', {
+                  locale: ru,
+                })}{' '}
+                <br />
               </Styled.Date>
             </Styled.SaleData>
           ) : null}

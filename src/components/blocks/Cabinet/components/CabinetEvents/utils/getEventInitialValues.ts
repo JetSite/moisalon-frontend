@@ -1,4 +1,3 @@
-import moment from 'moment'
 import { IPhoto } from 'src/types'
 import { IID } from 'src/types/common'
 import { IEvent } from 'src/types/event'

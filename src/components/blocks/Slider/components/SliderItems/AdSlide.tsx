@@ -1,13 +1,7 @@
 import Link from 'next/link'
 import AdCard from '../../../AdCard'
-import styled from 'styled-components'
 import { FC } from 'react'
 import { IPromotions } from 'src/types/promotions'
-
-const LinkStyled = styled.a`
-  color: #000;
-  cursor: pointer;
-`
 
 interface Props {
   item: IPromotions

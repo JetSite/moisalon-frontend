@@ -3,8 +3,8 @@ import { useQuery } from '@apollo/client'
 import Slider from '../../../../blocks/Slider'
 import { ICity } from 'src/types'
 import { FC } from 'react'
-import { GET_RENT_SALONS } from 'src/api/graphql/salon/queries/getRentSalons'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { GET_RENT_SALONS } from '@/api/graphql/salon/queries/getRentSalons'
 
 interface Props {
   city: ICity

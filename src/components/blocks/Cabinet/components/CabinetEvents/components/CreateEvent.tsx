@@ -9,7 +9,7 @@ import Button from '../../../../../ui/Button'
 import Event from '../../../../Event'
 import Checkbox from 'src/components/blocks/Form/Checkbox'
 import Popup from '../../../../../ui/Popup'
-import moment from 'moment'
+import { parse, isValid, format } from 'date-fns'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
 import { IPhoto } from 'src/types'
@@ -82,12 +82,13 @@ const CreateEvent: FC<Props> = ({
         return
       }
 
-      const timeStart = moment(values.timeStart, 'HH:mm').isValid()
-        ? moment(values.timeStart, 'HH:mm').format('HH:mm:ss.SSS')
-        : null
-      const timeEnd = moment(values.timeEnd, 'HH:mm').isValid()
-        ? moment(values.timeEnd, 'HH:mm').format('HH:mm:ss.SSS')
-        : null
+      const parseTime = (timeStr: string) => {
+        const parsedTime = parse(timeStr, 'HH:mm', new Date())
+        return isValid(parsedTime) ? format(parsedTime, 'HH:mm:ss.SSS') : null
+      }
+
+      const timeStart = parseTime(values.timeStart)
+      const timeEnd = parseTime(values.timeEnd)
 
       if (!timeEnd || !timeStart) {
         setErrors(['Необходимо ввести время начала и конца события'])

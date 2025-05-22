@@ -24,7 +24,7 @@ import {
   getEducationInitialValues,
 } from '../utils/getEducationInitialValues'
 import Checkbox from 'src/components/blocks/Form/Checkbox'
-import moment from 'moment'
+import { parse, isValid, format } from 'date-fns'
 import { FormApi } from 'final-form'
 import { IActiveProfile } from '../../ActiveProfile/ProfileManager'
 
@@ -76,12 +76,13 @@ const CreateEducation: FC<Props> = ({
         return
       }
 
-      const timeStart = moment(values.timeStart, 'HH:mm').isValid()
-        ? moment(values.timeStart, 'HH:mm').format('HH:mm:ss.SSS')
-        : null
-      const timeEnd = moment(values.timeEnd, 'HH:mm').isValid()
-        ? moment(values.timeEnd, 'HH:mm').format('HH:mm:ss.SSS')
-        : null
+      const parseTime = (timeStr: string) => {
+        const parsedTime = parse(timeStr, 'HH:mm', new Date())
+        return isValid(parsedTime) ? format(parsedTime, 'HH:mm:ss.SSS') : null
+      }
+
+      const timeStart = parseTime(values.timeStart)
+      const timeEnd = parseTime(values.timeEnd)
 
       if (!timeEnd || !timeStart) {
         setErrors(['Необходимо ввести время начала и конца обучения'])

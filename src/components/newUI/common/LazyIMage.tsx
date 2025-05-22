@@ -1,5 +1,5 @@
-import Image, { ImageProps } from 'next/image';
-import { FC } from 'react';
+import Image, { ImageProps } from 'next/image'
+import { FC } from 'react'
 
 export const LazyImage: FC<ImageProps> = ({
   width = 56,
@@ -14,8 +14,7 @@ export const LazyImage: FC<ImageProps> = ({
       height={height}
       alt={alt}
       loading={loading}
-      objectFit="cover"
       {...rest}
     />
-  );
-};
+  )
+}

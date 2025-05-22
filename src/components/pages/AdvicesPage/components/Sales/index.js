@@ -12,8 +12,8 @@ import {
   Desc,
   ButtonWrap,
 } from './styles'
-import moment from 'moment'
-import 'moment/locale/ru'
+import { format, parseISO } from 'date-fns'
+import { ru } from 'date-fns/locale'
 import Button from '../../../../ui/Button'
 import Link from 'next/link'
 import { cyrToTranslit } from '../../../../../utils/translit'
@@ -45,10 +45,10 @@ const Sales = ({ item }) => {
       <ContentWrap>
         <SaleData>
           <Date>
-            {moment(item.dateStart).format('DD MMMM YYYY')} - <br />
+            {format(parseISO(item.dateStart), 'dd MMMM yyyy', { locale: ru })} - <br />
           </Date>
           <Date>
-            {moment(item.dateEnd).format('DD MMMM YYYY')} <br />
+            {format(parseISO(item.dateEnd), 'dd MMMM yyyy', { locale: ru })} <br />
           </Date>
         </SaleData>
         {item?.value ? (

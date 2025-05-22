@@ -4,7 +4,6 @@ import { getMasters } from 'src/api/graphql/master/queries/getMasters'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 
 import { IMaster } from 'src/types/masters'
-import { defaultValues } from 'src/api/authConfig'
 import { FC } from 'react'
 import { ICity } from 'src/types'
 import { IBrand } from 'src/types/brands'

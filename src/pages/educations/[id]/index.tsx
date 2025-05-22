@@ -1,8 +1,5 @@
 import { addApolloState, initializeApollo } from '../../../api/apollo-client'
-import { getFeedCategories } from 'src/api/graphql/feed/queries/getFeedCategories'
-import { getFeeds } from 'src/api/graphql/feed/queries/getFeeds'
 import { getEducationById } from 'src/api/graphql/education/queries/getEducationById'
-import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { FC } from 'react'
 import EducationPage, {
   EducationPageProps,
@@ -12,7 +9,8 @@ import { GetServerSideProps } from 'next'
 import { Nullable } from '@/types/common'
 import { getPrepareData } from '@/utils/newUtils/getPrepareData'
 import { IEducation } from '@/types/education'
-import { PHOTO_URL } from '../../../api/variables'
+import { getFeedCategoriesForSlider } from '@/api/graphql/feed/queries/getFeedCategoriesForSlider'
+import { getFeedsForSlider } from '@/api/graphql/feed/queries/getFeedsForSlider'
 
 const EducationDetailed: FC<EducationPageProps> = ({
   education,
@@ -45,10 +43,10 @@ export const getServerSideProps: GetServerSideProps<
       variables: { id },
     }),
     apolloClient.query({
-      query: getFeedCategories,
+      query: getFeedCategoriesForSlider,
     }),
     apolloClient.query({
-      query: getFeeds,
+      query: getFeedsForSlider,
     }),
   ])
 

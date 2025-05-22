@@ -1,6 +1,4 @@
 import { addApolloState, initializeApollo } from '../../../api/apollo-client'
-import { getFeedCategories } from 'src/api/graphql/feed/queries/getFeedCategories'
-import { getFeeds } from 'src/api/graphql/feed/queries/getFeeds'
 import { ISale } from 'src/types/sale'
 import { FC } from 'react'
 import SalePage, { SalePageProps } from 'src/components/pages/SalePage'
@@ -10,6 +8,8 @@ import { GetServerSideProps } from 'next'
 import { Nullable } from '@/types/common'
 import { getPrepareData } from '@/utils/newUtils/getPrepareData'
 import { PHOTO_URL } from '../../../api/variables'
+import { getFeedCategoriesForSlider } from '@/api/graphql/feed/queries/getFeedCategoriesForSlider'
+import { getFeedsForSlider } from '@/api/graphql/feed/queries/getFeedsForSlider'
 
 const SaleDetailed: FC<SalePageProps> = ({
   sale,
@@ -42,10 +42,10 @@ export const getServerSideProps: GetServerSideProps<
       variables: { id },
     }),
     apolloClient.query({
-      query: getFeedCategories,
+      query: getFeedCategoriesForSlider,
     }),
     apolloClient.query({
-      query: getFeeds,
+      query: getFeedsForSlider,
     }),
   ])
 
