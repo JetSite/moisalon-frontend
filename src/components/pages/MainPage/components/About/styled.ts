@@ -287,7 +287,7 @@ export const BottomContentLeft = styled.div<{
   &:before {
     position: absolute;
     content: '';
-    background: url('/all-circle-red.svg') no-repeat center;
+    background: url('/all-circle-red.png') no-repeat center;
     background-size: contain;
     width: 282px;
     height: 282px;

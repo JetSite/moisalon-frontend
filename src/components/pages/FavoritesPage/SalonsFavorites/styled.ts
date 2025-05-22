@@ -131,7 +131,7 @@ export const AllIcon = styled.div`
   &:after {
     content: '';
     position: absolute;
-    background: url('/all-circle-red.svg') no-repeat center;
+    background: url('/all-circle-red.png') no-repeat center;
     background-size: cover;
     width: 132px;
     height: 132px;

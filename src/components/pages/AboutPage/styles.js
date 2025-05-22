@@ -333,7 +333,7 @@ export const RedCircle = styled.div`
   position: absolute;
   top: 11%;
   right: 6%;
-  background: url('/all-circle-red.svg') no-repeat center;
+  background: url('/all-circle-red.png') no-repeat center;
   background-size: contain;
 
   @media (max-width: ${laptopBreakpoint}) {
