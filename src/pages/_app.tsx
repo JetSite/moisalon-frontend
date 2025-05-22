@@ -21,6 +21,7 @@ import { StyledEngineProvider } from '@mui/material'
 import { CacheProvider } from '@emotion/react'
 import { createEmotionCache } from '../utils/createEmotionCache'
 import { EmotionCache } from '@emotion/cache'
+import { YMInitializer } from 'react-yandex-metrika'
 
 const clientSideEmotionCache = createEmotionCache()
 
@@ -58,6 +59,18 @@ function MyApp({
   useEffect(() => {
     const handleRouteChange = (url: string) => {
       gtag.pageView(url)
+    }
+    router.events.on('routeChangeComplete', handleRouteChange)
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange)
+    }
+  }, [router.events])
+
+  useEffect(() => {
+    const handleRouteChange = (url: string) => {
+      if (typeof window.ym !== 'undefined') {
+        window.ym(56585698, 'hit', url)
+      }
     }
     router.events.on('routeChangeComplete', handleRouteChange)
     return () => {
@@ -146,11 +159,17 @@ function MyApp({
           <ThemeProvider theme={theme}>
             <ApolloProvider client={apolloClient}>
               <AuthProvider pageProps={pageProps}>
-                {/* <YMInitializer
+                <YMInitializer
                   accounts={[56585698]}
-                  options={{ webvisor: true }}
+                  options={{
+                    defer: true,
+                    clickmap: true,
+                    trackLinks: true,
+                    accurateTrackBounce: true,
+                    webvisor: true,
+                  }}
                   version="2"
-                /> */}
+                />
                 <Component {...pageProps} />
               </AuthProvider>
             </ApolloProvider>
@@ -159,6 +178,12 @@ function MyApp({
       </CacheProvider>
     </div>
   )
+}
+
+declare global {
+  interface Window {
+    ym: (counterId: number, action: string, url: string) => void
+  }
 }
 
 export default MyApp
