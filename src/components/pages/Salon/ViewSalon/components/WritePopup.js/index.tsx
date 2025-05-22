@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { Dialog, DialogActions, DialogContent } from '@material-ui/core'
+import { Dialog, DialogActions, DialogContent } from '@mui/material'
 import { Field } from 'react-final-form'
 import AutoFocusedForm from '../../../../../blocks/Form/AutoFocusedForm'
 import TextField from '../../../../../blocks/Form/TextField'

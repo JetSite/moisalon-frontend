@@ -1,8 +1,10 @@
+import React from "react";
+import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import MainLayout from "../../../layouts/MainLayout";
-import { withStyles } from "@material-ui/core/styles";
-import { Tab, Typography } from "@material-ui/core";
+import { withStyles } from "@mui/styles";
+import { Tab, Typography } from "@mui/material";
 import { MainContainer } from "../../../styles/common";
 import {
   Title,

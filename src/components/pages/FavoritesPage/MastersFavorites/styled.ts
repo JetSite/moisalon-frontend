@@ -1,4 +1,4 @@
-import { Avatar } from '@material-ui/core'
+import { Avatar } from '@mui/material'
 import { lighten } from 'polished'
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../styles/variables'

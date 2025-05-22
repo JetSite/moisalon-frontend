@@ -1,13 +1,13 @@
 import { useRouter } from "next/router";
 import { memo } from "react";
-import Accordion from "@material-ui/core/Accordion";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import AccordionDetails from "@material-ui/core/AccordionActions";
-import { makeStyles } from "@material-ui/core/styles";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import { makeStyles } from "@mui/styles";
 import { Field } from "react-final-form";
 import CatalogGroupItem from "../CatalogGroupItem";
 import IconArrow from "./IconArrow";
-import { styled } from "@material-ui/core";
+import { styled } from "@mui/material/styles";
 
 const BpIcon = styled("span")(() => ({
   borderRadius: 3,

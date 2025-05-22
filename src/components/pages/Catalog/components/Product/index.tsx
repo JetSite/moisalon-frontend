@@ -30,7 +30,7 @@ const Product: FC<IProductProps> = ({
     : ''
 
   return loadingItems ? (
-    <Styled.SkeletonItem variant="rect" />
+    <Styled.SkeletonItem variant="rectangular" />
   ) : (
     <li>
       <FastBuyPopup

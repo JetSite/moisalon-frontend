@@ -1,4 +1,4 @@
-import { Tabs } from '@material-ui/core'
+import { Tabs } from '@mui/material'
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../styles/variables'
 

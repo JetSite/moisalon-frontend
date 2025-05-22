@@ -22,7 +22,7 @@ export const CabinetReviews: FC<Props> = ({
   const [offset, setOffset] = useState(4)
 
   if (loading) {
-    return <SkeletonWrap variant="rect" />
+    return <SkeletonWrap variant="rectangular" />
   }
 
   const typeString =

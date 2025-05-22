@@ -1,10 +1,10 @@
 import useAuthStore from 'src/store/authStore'
-import { getStoreData, getStoreEvent } from 'src/store/utils'
+import { getStoreData } from 'src/store/utils'
 import CreatePageSkeleton from 'src/components/ui/ContentSkeleton/CreatePageSkeleton'
 import Cabinet from 'src/components/blocks/Cabinet'
 import MasterCabinet from 'src/components/pages/MasterCabinet'
 import { GetServerSideProps, NextPage } from 'next'
-import { addApolloState, initializeApollo } from 'src/api/apollo-client'
+import { addApolloState } from 'src/api/apollo-client'
 import { RENTAL_REQUESTS_FOR_USER } from 'src/api/graphql/rentalRequest/queries/getRequestsForUser'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { IID, Nullable } from 'src/types/common'
@@ -36,7 +36,7 @@ interface Props extends IAppProps {
 }
 
 const CabinetPage: NextPage<Props> = ({ requests, cities }) => {
-  const { user, loading, me } = useAuthStore(getStoreData)
+  const { user, loading } = useAuthStore(getStoreData)
 
   if (loading || !user)
     return (

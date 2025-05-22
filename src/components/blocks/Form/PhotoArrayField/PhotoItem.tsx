@@ -1,6 +1,6 @@
 import React, { FC, MouseEvent, useCallback, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
-import { makeStyles } from '@material-ui/core'
+import { makeStyles } from '@mui/styles'
 import { PHOTO_URL } from 'src/api/variables'
 import { IUsePhotoResult } from './usePhotos'
 import { IPhoto } from 'src/types'

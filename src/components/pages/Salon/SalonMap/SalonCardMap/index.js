@@ -16,7 +16,7 @@ import {
   FavoriteIcon,
   SkeletonSalonItem,
 } from './styles'
-import { Skeleton } from '@material-ui/lab'
+import { Skeleton } from '@mui/material'
 import catalogOrDefault from '../../../../../utils/catalogOrDefault'
 import {
   favoritesInStorage,

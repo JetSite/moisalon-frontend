@@ -1,5 +1,4 @@
 import { FC, useState } from 'react'
-import Head from 'next/head'
 import FilterCatalog from '../../ui/FilterCatalog'
 import Catalog from '../Catalog'
 import { ICart, IProduct } from 'src/types/product'

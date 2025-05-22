@@ -1,4 +1,4 @@
-import { Avatar } from '@material-ui/core';
+import { Avatar } from '@mui/material';
 import styled from 'styled-components';
 import { laptopBreakpoint, tabletBreakpoint } from '../../../styles/variables';
 import { SlideType } from '.';

@@ -1,5 +1,5 @@
-import { Avatar } from '@material-ui/core';
-import { Skeleton } from '@material-ui/lab';
+import { Avatar } from '@mui/material';
+import { Skeleton } from '@mui/material';
 import styled from 'styled-components';
 import {
   mobileBreakpoint,

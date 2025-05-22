@@ -1,4 +1,4 @@
-import { Skeleton } from '@material-ui/lab'
+import { Skeleton } from '@mui/material'
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../../styles/variables'
 

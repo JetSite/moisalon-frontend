@@ -1,16 +1,13 @@
 import React, { useState, useEffect, Dispatch, SetStateAction, FC } from 'react'
 import styled from 'styled-components'
-import {
-  Checkbox,
-  FormControlLabel,
-  styled as styledMaterial,
-} from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Checkbox, FormControlLabel } from '@mui/material'
+import { makeStyles } from '@mui/styles'
+import { styled as muiStyled } from '@mui/material/styles'
 import { laptopBreakpoint } from '../../../../../../styles/variables'
 import CatalogItem from '../CatalogItem'
 import { IService, IServiceCategory } from 'src/types/services'
 
-export const BpIcon = styledMaterial('span')(() => ({
+export const BpIcon = muiStyled('span')(() => ({
   borderRadius: 3,
   width: 23,
   height: 23,
@@ -22,7 +19,7 @@ export const BpIcon = styledMaterial('span')(() => ({
   },
 }))
 
-export const BpCheckedIcon = styledMaterial(BpIcon)({
+export const BpCheckedIcon = muiStyled(BpIcon)({
   backgroundColor: '#E3E3E3',
   border: '1px solid #E3E3E3',
   '&:before': {
@@ -91,8 +88,8 @@ interface ICatalogGroup {
   entriesItems: IService[]
   allServices: IServiceCategory[]
   setEntriesItems: Dispatch<SetStateAction<IService[]>>
-  handleDeleteEntries: (serviceBlock: IServiceCategory) => void;
-  handleAddEntries: (serviceBlock: IServiceCategory) => void;
+  handleDeleteEntries: (serviceBlock: IServiceCategory) => void
+  handleAddEntries: (serviceBlock: IServiceCategory) => void
 }
 
 const CatalogGroup: FC<ICatalogGroup> = ({
@@ -153,7 +150,15 @@ const CatalogGroup: FC<ICatalogGroup> = ({
   }
 
   const services = serviceBlock?.services?.map((service, idx) => {
-    return <CatalogItem key={idx} item={service} entriesItems={entriesItems} setEntriesItems={setEntriesItems} allServices={allServices} />
+    return (
+      <CatalogItem
+        key={idx}
+        item={service}
+        entriesItems={entriesItems}
+        setEntriesItems={setEntriesItems}
+        allServices={allServices}
+      />
+    )
   })
 
   if (services?.length === 0) {
@@ -201,4 +206,4 @@ const CatalogGroup: FC<ICatalogGroup> = ({
   )
 }
 
-export default CatalogGroup;
+export default CatalogGroup

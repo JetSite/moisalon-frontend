@@ -1,4 +1,4 @@
-import { Checkbox, CheckboxProps } from '@material-ui/core'
+import { Checkbox, CheckboxProps } from '@mui/material'
 import { FC, ReactElement } from 'react'
 import styled from 'styled-components'
 

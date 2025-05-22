@@ -1,5 +1,5 @@
 import React from 'react'
-import { FormControlLabel, Radio } from '@material-ui/core'
+import { FormControlLabel, Radio } from '@mui/material'
 import { FieldRenderProps } from 'react-final-form'
 
 interface RadioButtonProps extends FieldRenderProps<string, HTMLElement> {

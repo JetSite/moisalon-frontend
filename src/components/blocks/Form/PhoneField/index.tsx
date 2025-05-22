@@ -1,7 +1,7 @@
 import { forwardRef } from 'react'
 import styled from 'styled-components'
 import { Field, FieldRenderProps } from 'react-final-form'
-import Grid from '@material-ui/core/Grid'
+import Grid from '@mui/material/Grid'
 import { TextField } from '..'
 import {
   composeValidators,

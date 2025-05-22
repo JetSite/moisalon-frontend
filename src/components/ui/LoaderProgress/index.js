@@ -1,12 +1,12 @@
-import { LinearProgress, withStyles } from "@material-ui/core";
+import { LinearProgress, styled } from "@mui/material";
 
-const ColorLinearProgress = withStyles({
+const ColorLinearProgress = styled(LinearProgress)({
   colorPrimary: {
     backgroundColor: "#FF0033",
   },
   barColorPrimary: {
     backgroundColor: "#F696A3",
   },
-})(LinearProgress);
+});
 
 export default ColorLinearProgress;

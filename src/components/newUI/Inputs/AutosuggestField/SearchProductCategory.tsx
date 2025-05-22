@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { useAutoSuggest } from 'src/components/newUI/Inputs/utils/useAutoSuggest'
 import NewAutosuggestField from 'src/components/newUI/Inputs/AutosuggestField/NewAutosuggestField'
-import { BaseTextFieldProps } from '@material-ui/core'
+import { BaseTextFieldProps } from '@mui/material'
 import { ISetState } from 'src/types/common'
 import { useLazyQuery, useQuery } from '@apollo/client'
 import { PRODUCT_CATEGORIES_BY_TITLE } from 'src/api/graphql/product/queries/getProductCategoriesByTitle'

@@ -3,37 +3,34 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  makeStyles,
-  useTheme,
-} from '@material-ui/core'
+  styled,
+} from '@mui/material'
 import { Title, City } from './styles'
 import { FC, ReactElement } from 'react'
 import { IChildren } from 'src/types/common'
 
-const useStyles = makeStyles(theme => ({
-  paperWidthSm: {
+const StyledDialog = styled(Dialog)(({ theme }) => ({
+  '& .MuiDialog-paperWidthSm': {
     minWidth: '376px',
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       maxWidth: 'none',
     },
   },
-  dialogContentText: {
+  '& .MuiDialogContentText-root': {
     padding: '24px 24px 0',
     fontSize: '14px',
     textAlign: 'center',
   },
-  dialogContent: {
+  '& .MuiDialogContent-root': {
     padding: '0',
   },
-  divider: {
-    margin: '24px',
-  },
-  actions: {
-    padding: '0 20px 20px 20px',
-    display: 'flex',
-    justifyContent: 'space-between',
-  },
-  actionsSingle: {
+}))
+
+const StyledDialogActions = styled(DialogActions)(() => ({
+  padding: '0 20px 20px 20px',
+  display: 'flex',
+  justifyContent: 'space-between',
+  '&.actionsSingle': {
     justifyContent: 'center',
   },
 }))
@@ -57,18 +54,13 @@ const Popup: FC<Props> = ({
   children,
   onClose,
 }) => {
-  // const fullScreenDialog = useMediaQuery(theme.breakpoints.down("xs"));
-  const classes = useStyles()
-
   return (
-    <Dialog
+    <StyledDialog
       open={isOpen}
       onClose={() => (onClose ? onClose() : () => {})}
-      // fullScreen={fullScreenDialog}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
       scroll="paper"
-      classes={{ paperWidthSm: classes.paperWidthSm }}
     >
       {title ? (
         <>
@@ -79,12 +71,8 @@ const Popup: FC<Props> = ({
         </>
       ) : null}
       {description || content ? (
-        <DialogContent classes={{ root: classes.dialogContent }}>
-          <DialogContentText
-            component="div"
-            id="alert-dialog-description"
-            classes={{ root: classes.dialogContentText }}
-          >
+        <DialogContent>
+          <DialogContentText component="div" id="alert-dialog-description">
             {description ? description : null}
             {content ? content() : null}
           </DialogContentText>
@@ -92,18 +80,16 @@ const Popup: FC<Props> = ({
       ) : null}
       {children ? (
         <>
-          <DialogActions
-            className={`${classes.actions} ${
-              Array.isArray(children) && children.length
-                ? ''
-                : classes.actionsSingle
-            }`}
+          <StyledDialogActions
+            className={
+              Array.isArray(children) && children.length ? '' : 'actionsSingle'
+            }
           >
             {children}
-          </DialogActions>
+          </StyledDialogActions>
         </>
       ) : null}
-    </Dialog>
+    </StyledDialog>
   )
 }
 

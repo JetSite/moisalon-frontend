@@ -3,12 +3,12 @@ import styled from 'styled-components'
 import {
   Checkbox,
   FormControlLabel,
-  styled as styledMaterial,
-} from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+} from '@mui/material'
+import { makeStyles } from '@mui/styles'
+import { styled as muiStyled } from '@mui/material/styles'
 import { laptopBreakpoint } from '../../../../../../styles/variables'
 
-export const BpIcon = styledMaterial('span')(() => ({
+export const BpIcon = muiStyled('span')(() => ({
   borderRadius: 3,
   width: 23,
   height: 23,
@@ -20,7 +20,7 @@ export const BpIcon = styledMaterial('span')(() => ({
   },
 }))
 
-export const BpCheckedIcon = styledMaterial(BpIcon)({
+export const BpCheckedIcon = muiStyled(BpIcon)({
   backgroundColor: '#E3E3E3',
   border: '1px solid #E3E3E3',
   '&:before': {

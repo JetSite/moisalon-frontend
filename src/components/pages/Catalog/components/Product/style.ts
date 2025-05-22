@@ -1,6 +1,6 @@
 import { laptopBreakpoint, red } from '../../../../../styles/variables'
 import styled, { css } from 'styled-components'
-import { Skeleton } from '@material-ui/lab'
+import { Skeleton } from '@mui/material'
 import { lighten } from 'polished'
 import { IQuantityControlsType } from './conponents/QuantityControls'
 import { LazyImage } from '@/components/newUI/common/LazyIMage'

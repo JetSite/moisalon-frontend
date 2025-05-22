@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
-import { StylesProvider } from '@material-ui/core/styles'
-import { ThemeProvider } from '@material-ui/styles'
+import { ThemeProvider } from '@mui/material/styles'
 import { ApolloProvider } from '@apollo/client'
 import ProgressBar from '@badrap/bar-of-progress'
 import '@/styles/global.css'
@@ -18,6 +17,12 @@ import AuthProvider from 'src/api/AuthProvider'
 import { StrapiDataObject } from 'src/utils/flattenStrapiResponse'
 import { ICity } from 'src/types'
 import Head from 'next/head'
+import { StyledEngineProvider } from '@mui/material'
+import { CacheProvider } from '@emotion/react'
+import { createEmotionCache } from '../utils/createEmotionCache'
+import { EmotionCache } from '@emotion/cache'
+
+const clientSideEmotionCache = createEmotionCache()
 
 const progress = new ProgressBar({
   size: 2,
@@ -41,7 +46,11 @@ export interface IAppProps {
   }
 }
 
-function MyApp({ Component, pageProps }: AppProps<IAppProps>) {
+function MyApp({
+  Component,
+  pageProps,
+  emotionCache = clientSideEmotionCache,
+}: AppProps & { emotionCache?: EmotionCache }) {
   const mobileMedia = useMedia({ maxWidth: 768 })
   const apolloClient = useApollo({ props: pageProps })
   const router = useRouter()
@@ -132,20 +141,22 @@ function MyApp({ Component, pageProps }: AppProps<IAppProps>) {
           />
         )}
       </Head>
-      <ApolloProvider client={apolloClient}>
-        <ThemeProvider theme={theme}>
-          <StylesProvider injectFirst>
-            <AuthProvider pageProps={pageProps}>
-              {/* <YMInitializer
-                accounts={[56585698]}
-                options={{ webvisor: true }}
-                version="2"
-              /> */}
-              <Component {...pageProps} />
-            </AuthProvider>
-          </StylesProvider>
-        </ThemeProvider>
-      </ApolloProvider>
+      <CacheProvider value={emotionCache}>
+        <StyledEngineProvider injectFirst>
+          <ThemeProvider theme={theme}>
+            <ApolloProvider client={apolloClient}>
+              <AuthProvider pageProps={pageProps}>
+                {/* <YMInitializer
+                  accounts={[56585698]}
+                  options={{ webvisor: true }}
+                  version="2"
+                /> */}
+                <Component {...pageProps} />
+              </AuthProvider>
+            </ApolloProvider>
+          </ThemeProvider>
+        </StyledEngineProvider>
+      </CacheProvider>
     </div>
   )
 }

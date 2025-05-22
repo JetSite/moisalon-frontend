@@ -48,7 +48,7 @@ const Catalog: FC<ICatalogProps> = ({ products, loading, noTitle, cart }) => {
       {products?.length ? (
         <>
           <Content>
-            {products?.map((item, i) => {
+            {products?.map(item => {
               const cartItem: IProductCart = cart?.cartContent?.find(
                 el => el?.product?.id === item.id,
               ) || { product: { ...item }, quantity: 0, id: `temp_${item.id}` }

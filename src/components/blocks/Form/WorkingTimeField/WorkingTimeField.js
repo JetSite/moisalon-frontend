@@ -2,7 +2,7 @@ import React, { forwardRef } from 'react'
 import { Field } from 'react-final-form'
 import SelectField from '../SelectField'
 import TimeInputField from '../TimeInputField'
-import Grid from '@material-ui/core/Grid'
+import Grid from '@mui/material/Grid'
 import { workingTime } from '../../../../utils/validations'
 import { workingHoursOptions } from 'src/config/workingTime'
 

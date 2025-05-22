@@ -4,9 +4,9 @@ import {
   Checkbox,
   FormControlLabel,
   styled as styledMaterial,
-} from '@material-ui/core'
-import TextField from '@material-ui/core/TextField'
-import { makeStyles } from '@material-ui/core/styles'
+} from '@mui/material'
+import TextField from '@mui/material/TextField'
+import { makeStyles } from '@mui/styles'
 import { laptopBreakpoint } from '../../../../../../styles/variables'
 import { IService, IServiceCategory } from 'src/types/services'
 import { ISetState } from 'src/types/common'

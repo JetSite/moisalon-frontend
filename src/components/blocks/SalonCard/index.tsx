@@ -20,7 +20,7 @@ import {
   Activities,
   Activity,
 } from './styles'
-import { Skeleton } from '@material-ui/lab'
+import { Skeleton } from '@mui/material'
 import {
   favoritesInStorage,
   inStorage,
@@ -87,7 +87,7 @@ const SalonCard: FC<Props> = ({
           <Image src={imageUrl} alt="salon cover" width={400} height={200} />
         </ImageWrap>
       ) : (
-        <Skeleton variant="rect" height="195px" animation={false} />
+        <Skeleton variant="rectangular" height="195px" animation={false} />
       )}
       {rent && seatCount !== undefined ? (
         <Rent>{`Доступно ${seatCount} ${pluralize(

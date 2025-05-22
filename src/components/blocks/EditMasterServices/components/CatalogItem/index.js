@@ -4,8 +4,8 @@ import {
   Checkbox,
   FormControlLabel,
   styled as styledMaterial,
-} from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+} from '@mui/material'
+import { makeStyles } from '@mui/styles'
 import { laptopBreakpoint } from '../../../../../styles/variables'
 
 export const BpIcon = styledMaterial('span')(() => ({
