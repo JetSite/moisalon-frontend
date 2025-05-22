@@ -26,67 +26,9 @@ interface Props {
   brandData: IBrand
   othersBrands: IBrand[]
   cityData: ICity
-  meta: {
-    title: string
-    description: string
-    image: string
-    url: string
-  }
-  schema: {
-    type: string
-    data: {
-      '@type': string[]
-      name: string
-      description: string
-      url: string
-      image: string
-      logo?: string
-      sameAs?: string[]
-      aggregateRating?: {
-        '@type': string
-        ratingValue: number
-        ratingCount: number
-        reviewCount: number
-      }
-      review?: {
-        '@type': string
-        reviewRating: {
-          '@type': string
-          ratingValue: number
-        }
-        author: {
-          '@type': string
-          name: string
-        }
-        reviewBody: string
-        datePublished: string
-      }
-      hasOfferCatalog?: {
-        '@type': string
-        name: string
-        itemListElement: {
-          '@type': string
-          name: string
-          description: string
-          image?: string
-          offers: {
-            '@type': string
-            price: number
-            availability: string
-          }
-        }[]
-      }
-    }
-  }
 }
 
-const Brand: FC<Props> = ({
-  brandData,
-  othersBrands,
-  cityData,
-  meta,
-  schema,
-}) => {
+const Brand: FC<Props> = ({ brandData, othersBrands, cityData }) => {
   const [brand] = useState(brandData)
   const { user } = useAuthStore(getStoreData)
   const [activeTab, setActiveTab] = useState<number>(0)
@@ -256,8 +198,6 @@ export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async ({
     }
   }
 
-  const { rating, ratingCount, reviewsCount } = getRating(brandData.ratings)
-
   return {
     props: {
       cityData,
@@ -266,7 +206,9 @@ export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async ({
       meta: {
         title: brandData?.name || 'Бренд | MOI salon',
         description: brandData?.description || 'Бренд на платформе MOI salon',
-        image: brandData?.photo?.url || '/brands-page-bg.jpg',
+        image:
+          process.env.NEXT_PUBLIC_PHOTO_URL + brandData?.logo?.url ||
+          '/brands-page-bg.jpg',
         url: `https://moi.salon/${cityData.slug}/brand/${brandData?.id}`,
       },
       schema: {
@@ -276,53 +218,20 @@ export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async ({
           name: brandData?.name,
           description: brandData?.description,
           url: `https://moi.salon/${cityData.slug}/brand/${brandData?.id}`,
-          image: brandData?.photo?.url
-            ? `https://moi.salon${brandData.photo.url}`
+          image: brandData?.logo?.url
+            ? `${process.env.NEXT_PUBLIC_PHOTO_URL}${brandData.logo.url}`
             : 'https://moi.salon/brands-page-bg.jpg',
           logo: brandData?.logo?.url
             ? `https://moi.salon${brandData.logo.url}`
             : undefined,
-          sameAs: brandData?.socialNetworks?.map(social => social.url),
-          aggregateRating: rating
-            ? {
-                '@type': 'AggregateRating',
-                ratingValue: rating,
-                ratingCount: ratingCount,
-                reviewCount: reviewsCount,
-              }
-            : undefined,
           review: brandData?.reviews?.map(review => ({
             '@type': 'Review',
-            reviewRating: {
-              '@type': 'Rating',
-              ratingValue: review.rating,
-            },
             author: {
               '@type': 'Person',
-              name: review.author?.name || 'Анонимный пользователь',
+              name: review.user?.username || 'Анонимный пользователь',
             },
-            reviewBody: review.text,
-            datePublished: review.createdAt,
+            reviewBody: review.content,
           })),
-          hasOfferCatalog: {
-            '@type': 'OfferCatalog',
-            name: `${brandData?.name} - Каталог продукции`,
-            itemListElement: brandData?.products?.map(product => ({
-              '@type': 'Product',
-              name: product.name,
-              description: product.description,
-              image: product.photos?.[0]?.url
-                ? `https://moi.salon${product.photos[0].url}`
-                : undefined,
-              offers: {
-                '@type': 'Offer',
-                price: product.price,
-                availability: product.inStock
-                  ? 'https://schema.org/InStock'
-                  : 'https://schema.org/OutOfStock',
-              },
-            })),
-          },
         },
       },
     },
