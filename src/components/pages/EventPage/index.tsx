@@ -24,8 +24,8 @@ import {
   EventInfo,
   CountdownWrap,
 } from './styles'
-import moment from 'moment'
-import 'moment/locale/ru'
+import { format } from 'date-fns'
+import { ru } from 'date-fns/locale'
 import Countdown from '../../blocks/Countdown'
 
 import { PHOTO_URL } from '../../../api/variables'
@@ -60,7 +60,12 @@ const EventPage: FC<IEventPageProps> = ({
           <Content>
             <Left>
               <ImageWrap>
-                <Image alt="photo" src={`${PHOTO_URL}${event?.cover.url}`} />
+                <Image
+                  alt="photo"
+                  src={`${PHOTO_URL}${event?.cover.url}`}
+                  width={350}
+                  height={350}
+                />
               </ImageWrap>
               <CountdownWrap>
                 <Countdown
@@ -95,13 +100,17 @@ const EventPage: FC<IEventPageProps> = ({
                 <DateWrap>
                   <Date>
                     Дата начала:&nbsp;
-                    {moment(event?.dateStart).format('DD MMMM YYYY') +
+                    {format(event?.dateStart, 'dd MMMM yyyy', {
+                      locale: ru,
+                    }) +
                       ' ' +
                       formatTime(event.timeStart)}
                   </Date>
                   <Date>
                     Дата окончания:&nbsp;
-                    {moment(event?.dateEnd).format('DD MMMM YYYY') +
+                    {format(event?.dateEnd, 'dd MMMM yyyy', {
+                      locale: ru,
+                    }) +
                       ' ' +
                       formatTime(event.timeEnd)}
                   </Date>

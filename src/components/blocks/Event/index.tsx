@@ -1,26 +1,25 @@
-import { FC, useState } from 'react';
-import * as Styled from './styled';
-import 'moment/locale/ru';
-import { PHOTO_URL } from '../../../api/variables';
-import PhotoAdd, { IPhotoAddProps } from '../CreateBanner/PhotoAdd';
-import { IProfileType } from '../Cabinet/components/CabinetSales';
-import { IEvent } from 'src/types/event';
+import { FC, useState } from 'react'
+import * as Styled from './styled'
+import { PHOTO_URL } from '../../../api/variables'
+import PhotoAdd, { IPhotoAddProps } from '../CreateBanner/PhotoAdd'
+import { IProfileType } from '../Cabinet/components/CabinetSales'
+import { IEvent } from 'src/types/event'
 import {
   IEntityDeleteHandler,
   IEntityHandler,
-} from '../Cabinet/components/ActiveProfile/ProfileManager';
-import { DeleteIcon } from '../Sale/styled';
-import Link from 'next/link';
-import { formatDateRangeWithTime } from '@/utils/formatDateRangeWithTime';
+} from '../Cabinet/components/ActiveProfile/ProfileManager'
+import { DeleteIcon } from '../Sale/styled'
+import Link from 'next/link'
+import { formatDateRangeWithTime } from '@/utils/formatDateRangeWithTime'
 
 interface IEventProps extends Partial<Omit<IPhotoAddProps, 'hover'>> {
-  create?: boolean;
-  type?: IProfileType;
-  item: IEvent;
-  handleClick?: IEntityHandler;
-  handleDelete?: IEntityDeleteHandler;
-  noHover?: boolean;
-  cabinet?: boolean;
+  create?: boolean
+  type?: IProfileType
+  item: IEvent
+  handleClick?: IEntityHandler
+  handleDelete?: IEntityDeleteHandler
+  noHover?: boolean
+  cabinet?: boolean
 }
 
 const Event: FC<IEventProps> = ({
@@ -34,17 +33,17 @@ const Event: FC<IEventProps> = ({
   handleDelete,
   cabinet,
 }) => {
-  const [hover, setHover] = useState(false);
-  const [imageHover, setImageHover] = useState(false);
+  const [hover, setHover] = useState(false)
+  const [imageHover, setImageHover] = useState(false)
 
-  const photoSrc = `${PHOTO_URL}${item?.cover?.url ?? photo?.url ?? ''}`;
+  const photoSrc = `${PHOTO_URL}${item?.cover?.url ?? photo?.url ?? ''}`
 
   const dateText = formatDateRangeWithTime(
     item.dateStart,
     item.dateEnd,
     item.timeStart,
     item.timeEnd,
-  );
+  )
   const renderContent = () => (
     <>
       {!create ? (
@@ -54,14 +53,14 @@ const Event: FC<IEventProps> = ({
           onMouseOver={() => !noHover && setImageHover(true)}
           onMouseLeave={() => setImageHover(false)}
         >
-          <Styled.Image alt="photo" src={photoSrc} />
+          <Styled.Image alt="photo" src={photoSrc} width={400} height={200} />
           <DeleteIcon
             visible={imageHover}
             id={item.id}
             onClick={e => {
-              e.stopPropagation();
-              e.preventDefault();
-              handleDelete && handleDelete(item.id, !item.publishedAt);
+              e.stopPropagation()
+              e.preventDefault()
+              handleDelete && handleDelete(item.id, !item.publishedAt)
             }}
           />
         </Styled.EventTop>
@@ -101,7 +100,7 @@ const Event: FC<IEventProps> = ({
         </Styled.EventBottom>
       </Styled.EventContent>
     </>
-  );
+  )
 
   return (
     <Styled.EventWrap
@@ -120,7 +119,7 @@ const Event: FC<IEventProps> = ({
         renderContent()
       )}
     </Styled.EventWrap>
-  );
-};
+  )
+}
 
-export default Event;
+export default Event

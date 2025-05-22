@@ -1,4 +1,5 @@
-import moment from 'moment';
+import { format, parse, isSameDay, isSameMonth, isSameYear, parseISO } from 'date-fns';
+import { ru } from 'date-fns/locale';
 
 export const formatDateRangeWithTime = (
   dateStart?: Date,
@@ -6,29 +7,35 @@ export const formatDateRangeWithTime = (
   timeStart?: string,
   timeEnd?: string,
 ): string => {
-  const start = dateStart ? moment(dateStart) : null;
-  const end = dateEnd ? moment(dateEnd) : null;
+  const start = dateStart ? (typeof dateStart === 'string' ? parseISO(dateStart) : dateStart) : null;
+  const end = dateEnd ? (typeof dateEnd === 'string' ? parseISO(dateEnd) : dateEnd) : null;
   const startTime = timeStart
-    ? moment(timeStart, 'HH:mm:ss.SSS').format('HH:mm')
+    ? format(parse(timeStart, 'HH:mm:ss.SSS', new Date()), 'HH:mm')
     : '';
   const endTime = timeEnd
-    ? moment(timeEnd, 'HH:mm:ss.SSS').format('HH:mm')
+    ? format(parse(timeEnd, 'HH:mm:ss.SSS', new Date()), 'HH:mm')
     : '';
 
   if (start && end) {
-    if (start.isSame(end, 'day')) {
-      return `${start.format('DD MMMM YYYY')}\nс ${startTime} до ${endTime}`;
-    } else if (start.isSame(end, 'month')) {
-      return `с ${start.format('DD MMMM')} ${startTime} до\n${end.format(
-        'DD MMMM YYYY',
+    if (isSameDay(start, end)) {
+      return `${format(start, 'dd MMMM yyyy', { locale: ru })}\nс ${startTime} до ${endTime}`;
+    } else if (isSameMonth(start, end)) {
+      return `с ${format(start, 'dd MMMM', { locale: ru })} ${startTime} до\n${format(
+        end,
+        'dd MMMM yyyy',
+        { locale: ru },
       )} ${endTime}`;
-    } else if (start.isSame(end, 'year')) {
-      return `с ${start.format('DD MMMM')} ${startTime} до\n${end.format(
-        'DD MMMM YYYY',
+    } else if (isSameYear(start, end)) {
+      return `с ${format(start, 'dd MMMM', { locale: ru })} ${startTime} до\n${format(
+        end,
+        'dd MMMM yyyy',
+        { locale: ru },
       )} ${endTime}`;
     } else {
-      return `с ${start.format('DD MMMM YYYY')} ${startTime} до\n${end.format(
-        'DD MMMM YYYY',
+      return `с ${format(start, 'dd MMMM yyyy', { locale: ru })} ${startTime} до\n${format(
+        end,
+        'dd MMMM yyyy',
+        { locale: ru },
       )} ${endTime}`;
     }
   }

@@ -1,6 +1,4 @@
 import { addApolloState, initializeApollo } from '../../../api/apollo-client'
-import { getFeedCategories } from 'src/api/graphql/feed/queries/getFeedCategories'
-import { getFeeds } from 'src/api/graphql/feed/queries/getFeeds'
 import { getEventById } from 'src/api/graphql/event/queries/getEventById'
 import { IEvent } from 'src/types/event'
 import { FC } from 'react'
@@ -10,6 +8,8 @@ import { IBeautyCategories, IFeed } from '@/types/feed'
 import { GetServerSideProps } from 'next'
 import { Nullable } from '@/types/common'
 import { PHOTO_URL } from '../../../api/variables'
+import { getFeedCategoriesForSlider } from '@/api/graphql/feed/queries/getFeedCategoriesForSlider'
+import { getFeedsForSlider } from '@/api/graphql/feed/queries/getFeedsForSlider'
 
 const EventDetailed: FC<IEventPageProps> = ({
   event,
@@ -42,10 +42,10 @@ export const getServerSideProps: GetServerSideProps<
       variables: { id },
     }),
     apolloClient.query({
-      query: getFeedCategories,
+      query: getFeedCategoriesForSlider,
     }),
     apolloClient.query({
-      query: getFeeds,
+      query: getFeedsForSlider,
     }),
   ])
 

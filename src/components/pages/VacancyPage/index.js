@@ -27,8 +27,8 @@ import {
   VacancyConditions,
   Salary,
 } from './styles'
-import moment from 'moment'
-import 'moment/locale/ru'
+import { format, parseISO } from 'date-fns'
+import { ru } from 'date-fns/locale'
 import { cyrToTranslit } from '../../../utils/translit'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
@@ -89,7 +89,7 @@ const VacancyPage = ({ vacancy, beautyCategories, beautyAllContent }) => {
           <Content>
             <Left>
               <ImageWrap>
-                <Image alt="photo" src={`${PHOTO_URL}${photoUrl}`} />
+                <Image alt="photo" src={`${PHOTO_URL}${photoUrl}`} width={350} height={350} />
               </ImageWrap>
             </Left>
             <Right>
@@ -118,11 +118,11 @@ const VacancyPage = ({ vacancy, beautyCategories, beautyAllContent }) => {
                 <DateWrap>
                   <Date>
                     Дата публикации:&nbsp;
-                    {moment(vacancy.createdAt).format('DD MMMM YYYY')}
+                    {format(parseISO(vacancy.createdAt), 'dd MMMM yyyy', { locale: ru })}
                   </Date>
                   {/* <Date>
                     Дата окончания:&nbsp;
-                    {moment(sale.dateEnd).format("DD MMMM YYYY")}
+                    {format(parseISO(sale.dateEnd), 'dd MMMM yyyy', { locale: ru })}
                   </Date> */}
                 </DateWrap>
                 {vacancy?.promo ? (

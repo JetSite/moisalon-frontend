@@ -1,6 +1,7 @@
 import {
   Wrapper,
   ImageWrap,
+  Image,
   Content,
   Top,
   Name,
@@ -11,7 +12,6 @@ import {
   BottomLeft,
   BottomRight,
   Address,
-  Category,
   SkeletonSalonItem,
   AdShareWrap,
 } from './styles'
@@ -19,12 +19,7 @@ import { Skeleton } from '@material-ui/lab'
 import Share from '../../ui/Share'
 import { PHOTO_URL } from '../../../api/variables'
 import { FC } from 'react'
-import {
-  IPromoBrand,
-  IPromoMaster,
-  IPromoSalon,
-  IPromotions,
-} from 'src/types/promotions'
+import { IPromotions } from 'src/types/promotions'
 
 interface Props {
   item: IPromotions
@@ -82,7 +77,9 @@ const AdCard: FC<Props> = ({ item, loading, shareLink }) => {
   ) : (
     <Wrapper>
       {imageUrl ? (
-        <ImageWrap background={`url(${imageUrl})`} />
+        <ImageWrap>
+          <Image src={imageUrl} alt="ad cover" width={400} height={200} />
+        </ImageWrap>
       ) : (
         <Skeleton variant="rect" height="195px" animation={false} />
       )}

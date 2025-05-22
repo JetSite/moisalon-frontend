@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from 'react'
 import { useMutation } from '@apollo/client'
-import moment from 'moment'
-import 'moment/locale/ru'
+import { format, formatDistanceToNow, isYesterday, isToday, parseISO } from 'date-fns'
+import { ru } from 'date-fns/locale'
 import {
   MessageBlockWrapper,
   AvatarBlock,
@@ -18,14 +18,19 @@ import { MobileHidden } from '../../../../../../styles/common'
 import { PHOTO_URL } from '../../../../../../api/variables'
 import { useChat } from '../../../../../../chatContext.tsx'
 
-moment.locale('ru', {
-  calendar: {
-    lastDay: '[Вчера в] LT',
-    sameDay: 'LT',
-    lastWeek: 'll',
-    sameElse: 'L',
-  },
-})
+const formatMessageDate = (date) => {
+  const messageDate = typeof date === 'string' ? parseISO(date) : date
+  
+  if (isToday(messageDate)) {
+    return format(messageDate, 'HH:mm', { locale: ru })
+  } else if (isYesterday(messageDate)) {
+    return `Вчера в ${format(messageDate, 'HH:mm', { locale: ru })}`
+  } else if (messageDate > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)) {
+    return format(messageDate, 'dd.MM.yyyy', { locale: ru })
+  } else {
+    return format(messageDate, 'dd.MM.yyyy', { locale: ru })
+  }
+}
 
 const MessageBlock = ({
   chat,
@@ -104,13 +109,13 @@ const MessageBlock = ({
           </AvatarWrapper>
         </AvatarBlock>
         <Name>{name}</Name>
-        <Time>{moment(message?.createAt).calendar()}</Time>
+        <Time>{formatMessageDate(message?.createAt)}</Time>
       </MobileTopWrapper>
       <Content>
         <MobileHidden>
           <Row>
             <Name>{name}</Name>
-            <Time>{moment(message?.createAt).calendar()}</Time>
+            <Time>{formatMessageDate(message?.createAt)}</Time>
           </Row>
         </MobileHidden>
         <Row>

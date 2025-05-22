@@ -1,6 +1,5 @@
 import { FC, useState } from 'react'
 import { useRouter } from 'next/router'
-import 'moment/locale/ru'
 import { PHOTO_URL } from '../../../api/variables'
 import {
   DeleteVacancyBtn,
@@ -50,7 +49,7 @@ const Vacancy: FC<Props> = ({
     <>
       {!create ? (
         <VacancyTop>
-          <Image alt="photo" src={photoSrc} />
+          <Image alt="photo" src={photoSrc} width={200} height={200} />
         </VacancyTop>
       ) : (
         <VacancyTop

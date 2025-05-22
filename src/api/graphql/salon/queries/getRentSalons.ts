@@ -27,64 +27,20 @@ export const GET_RENT_SALONS = gql`
             name
             address
             rent
-            webSiteUrl
             email
             latitude
             longitude
-            videoReviewUrl
             salonPhones {
               ${phonesFragment}
             }
-            ownerConfirmed
-            onlineBookingUrl
-            workingHours {
-              endTime
-              startTime
-              dayOfWeek
-            }
-            metro_stations {
-              data {
-                id
-                attributes {
-                  title
-                }
-              }
-            }
-            description
-            contactPersonName
-            contactPersonPhone
-            contactPersonEmail
-            contactPersonWH {
-              ${contactPersonWHFragment}
-            }
-            workplacesCount
-            mastersCount
-            brandsCount
-            createdAt
-            updatedAt
             reviewsCount
             ratingCount
             rating
             cover {
               ${imageInfo}
             }
-            logo {
-              ${imageInfo}
-            }
             photos {
               ${imageInfo}
-            }
-            socialNetworks {
-              ${socialNetworksFragment}
-            }
-            masters {
-              ${masterFragment}
-            }
-            administrators {
-              ${salonAdministratorsFragment}
-            }
-            brands {
-              ${brandsFragment}
             }
             services {
             ${salonServicesFragment}

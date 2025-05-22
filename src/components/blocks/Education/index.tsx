@@ -1,32 +1,31 @@
-import { useState, useEffect, FC, MouseEvent } from 'react';
-import * as Styled from './styled';
-import PhotoAdd, { IPhotoAddProps } from '../CreateBanner/PhotoAdd';
-import 'moment/locale/ru';
-import Rating from '../../ui/Rating';
+import { useState, useEffect, FC, MouseEvent } from 'react'
+import * as Styled from './styled'
+import PhotoAdd, { IPhotoAddProps } from '../CreateBanner/PhotoAdd'
+import Rating from '../../ui/Rating'
 import {
   favoritesInStorage,
   inStorage,
-} from '../../../utils/favoritesInStorage.js';
-import { PHOTO_URL } from '../../../api/variables';
-import HeartFullFill from '../../pages/MainPage/components/Header/icons/HeartFullFill';
-import { IProfileType } from '../Cabinet/components/CabinetSales';
-import { IEducation } from 'src/types/education';
+} from '../../../utils/favoritesInStorage.js'
+import { PHOTO_URL } from '../../../api/variables'
+import HeartFullFill from '../../pages/MainPage/components/Header/icons/HeartFullFill'
+import { IProfileType } from '../Cabinet/components/CabinetSales'
+import { IEducation } from 'src/types/education'
 import {
   IEntityDeleteHandler,
   IEntityHandler,
-} from '../Cabinet/components/ActiveProfile/ProfileManager';
-import { DeleteIcon } from '../Sale/styled';
-import Link from 'next/link';
-import { formatDateRangeWithTime } from '@/utils/formatDateRangeWithTime';
+} from '../Cabinet/components/ActiveProfile/ProfileManager'
+import { DeleteIcon } from '../Sale/styled'
+import Link from 'next/link'
+import { formatDateRangeWithTime } from '@/utils/formatDateRangeWithTime'
 
 interface IEducationProps extends Partial<Omit<IPhotoAddProps, 'hover'>> {
-  create?: boolean;
-  type?: IProfileType;
-  item: IEducation;
-  handleClick?: IEntityHandler;
-  handleDelete?: IEntityDeleteHandler;
-  noHover?: boolean;
-  cabinet?: boolean;
+  create?: boolean
+  type?: IProfileType
+  item: IEducation
+  handleClick?: IEntityHandler
+  handleDelete?: IEntityDeleteHandler
+  noHover?: boolean
+  cabinet?: boolean
 }
 
 const Education: FC<IEducationProps> = ({
@@ -40,38 +39,38 @@ const Education: FC<IEducationProps> = ({
   handleDelete,
   cabinet,
 }) => {
-  const [hover, setHover] = useState(false);
-  const [isFavorite, setIsFavorit] = useState(false);
-  const [imageHover, setImageHover] = useState(false);
+  const [hover, setHover] = useState(false)
+  const [isFavorite, setIsFavorit] = useState(false)
+  const [imageHover, setImageHover] = useState(false)
 
-  const photoSrc = `${PHOTO_URL}${item?.cover?.url ?? photo?.url ?? ''}`;
+  const photoSrc = `${PHOTO_URL}${item?.cover?.url ?? photo?.url ?? ''}`
 
   useEffect(() => {
     if (!create) {
       const isInStorage = inStorage('educations', {
         id: item.id,
         title: item.title,
-      });
-      setIsFavorit(!!isInStorage);
+      })
+      setIsFavorit(!!isInStorage)
     }
-  }, [item]);
+  }, [item])
 
   const addFavorite = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
+    e.preventDefault()
+    e.stopPropagation()
     favoritesInStorage('educations', {
       id: item.id,
       title: item.title,
-    });
-    setIsFavorit(!isFavorite);
-  };
+    })
+    setIsFavorit(!isFavorite)
+  }
 
   const dateText = formatDateRangeWithTime(
     item.dateStart,
     item.dateEnd,
     item.timeStart,
     item.timeEnd,
-  );
+  )
 
   const renderContent = () => (
     <>
@@ -82,15 +81,17 @@ const Education: FC<IEducationProps> = ({
           onMouseOver={() => !noHover && setImageHover(true)}
           onMouseLeave={() => setImageHover(false)}
         >
-          {photoSrc && <Styled.Image alt="photo" src={photoSrc} />}
+          {photoSrc && (
+            <Styled.Image alt="photo" src={photoSrc} width={400} height={200} />
+          )}
           {cabinet ? (
             <DeleteIcon
               visible={imageHover}
               id={item.id}
               onClick={e => {
-                e.stopPropagation();
-                e.preventDefault();
-                handleDelete && handleDelete(item.id, !item.publishedAt);
+                e.stopPropagation()
+                e.preventDefault()
+                handleDelete && handleDelete(item.id, !item.publishedAt)
               }}
             />
           ) : (
@@ -137,7 +138,7 @@ const Education: FC<IEducationProps> = ({
         <Rating position="start" rating={item.averageScore} />
       </Styled.EducationContent>
     </>
-  );
+  )
 
   return (
     <Styled.EducationWrap
@@ -155,7 +156,7 @@ const Education: FC<IEducationProps> = ({
         renderContent()
       )}
     </Styled.EducationWrap>
-  );
-};
+  )
+}
 
-export default Education;
+export default Education

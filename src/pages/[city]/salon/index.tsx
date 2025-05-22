@@ -192,14 +192,6 @@ export const getServerSideProps: GetServerSideProps<
                     addressCountry: 'RU',
                     streetAddress: salon.address,
                   },
-                  aggregateRating: salon.rating
-                    ? {
-                        '@type': 'AggregateRating',
-                        ratingValue: salon.rating,
-                        ratingCount: salon.ratingCount,
-                        reviewCount: salon.reviewsCount,
-                      }
-                    : undefined,
                 },
               })) || [],
           },

@@ -2,7 +2,8 @@ import { FC, useEffect, useState } from 'react'
 import { pluralize } from '../../../utils/pluralize'
 import { Wrapper, Title, CountWrapper, Value, Days, Dots, End } from './styles'
 import { FlexAlign } from 'src/styles/variables'
-import moment from 'moment-timezone'
+import { format, parseISO, differenceInMilliseconds } from 'date-fns'
+import { formatInTimeZone, toZonedTime } from 'date-fns-tz'
 
 const TIME_ZONE = 'Europe/Moscow'
 
@@ -44,20 +45,33 @@ const Countdown: FC<Props> = ({
 
   const calculateDistance = () => {
     try {
-      const now = moment.tz(TIME_ZONE).valueOf()
-      const start = moment
-        .tz(timeStart ? `${dateStart}T${timeStart}` : dateStart, TIME_ZONE)
-        .valueOf()
-      const end = moment
-        .tz(timeEnd ? `${dateEnd}T${timeEnd}` : dateEnd, TIME_ZONE)
-        .valueOf()
+      // Get current time in Moscow timezone
+      const now = new Date()
 
-      if (now < start) {
+      // Parse start and end dates/times in Moscow timezone
+      const startDate =
+        typeof dateStart === 'string' ? parseISO(dateStart) : dateStart
+      const endDate = typeof dateEnd === 'string' ? parseISO(dateEnd) : dateEnd
+
+      const start = timeStart
+        ? toZonedTime(
+            `${format(startDate, 'yyyy-MM-dd')}T${timeStart}`,
+            TIME_ZONE,
+          )
+        : toZonedTime(startDate, TIME_ZONE)
+
+      const end = timeEnd
+        ? toZonedTime(`${format(endDate, 'yyyy-MM-dd')}T${timeEnd}`, TIME_ZONE)
+        : toZonedTime(endDate, TIME_ZONE)
+
+      const moscowNow = toZonedTime(now, TIME_ZONE)
+
+      if (moscowNow < start) {
         setIsStarted(false)
-        return start - now
-      } else if (now >= start && now <= end) {
+        return differenceInMilliseconds(start, moscowNow)
+      } else if (moscowNow >= start && moscowNow <= end) {
         setIsStarted(true)
-        return end - now
+        return differenceInMilliseconds(end, moscowNow)
       } else {
         return 0
       }
@@ -69,12 +83,19 @@ const Countdown: FC<Props> = ({
 
   const updateTime = (distance: number) => {
     if (distance > 0) {
-      const duration = moment.duration(distance)
+      // Calculate days, hours, minutes, seconds
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24))
+      const hours = Math.floor(
+        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+      )
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000)
+
       setTimeLeft({
-        days: duration.days(),
-        hours: duration.hours(),
-        minutes: duration.minutes(),
-        seconds: duration.seconds(),
+        days,
+        hours,
+        minutes,
+        seconds,
       })
     }
   }

@@ -1,7 +1,6 @@
 import { FC } from 'react'
 import Link from 'next/link'
 import BrandItem from '../../../BrandCard/index'
-import { cyrToTranslit } from '../../../../../utils/translit'
 import { ButtonClose } from './styles'
 import { IBrand } from 'src/types/brands'
 import { IID } from 'src/types/common'

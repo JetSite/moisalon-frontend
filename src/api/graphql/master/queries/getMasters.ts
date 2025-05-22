@@ -13,28 +13,14 @@ export const getMasters = gql`
         id
         attributes {
             name
-            phone
-            email
-            searchWork
             rating 
             ratingCount 
             reviewsCount
-            salons {
-              data {
-                id
-                attributes {
-                    name
-                }
-              }
-            }
             services {
              ${servicesFragment}
             }
             city {
               ${cityInfo}
-            }
-            photo {
-              ${imageInfo}
             }
             photo {
               ${imageInfo}

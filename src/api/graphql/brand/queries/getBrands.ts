@@ -19,21 +19,6 @@ export const BRANDS = gql`
         id
         attributes {
           name
-          rating
-          ratingCount
-          reviewsCount
-          socialNetworks {
-            ${socialNetworksFragment}
-          }
-          reviews {
-            ${reviewsFragment}
-          }
-          ratings {
-            ${ratingsFragment}
-          }
-          city {
-            ${cityFragment}
-          }
           logo {
             ${imageInfo}
           }

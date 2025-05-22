@@ -488,14 +488,6 @@ export const getServerSideProps: GetServerSideProps<Nullable<Props>> = async ({
               price: service.price,
             },
           })),
-          aggregateRating: rating
-            ? {
-                '@type': 'AggregateRating',
-                ratingValue: rating,
-                ratingCount: ratingCount,
-                reviewCount: reviewsCount,
-              }
-            : undefined,
           review: masterData?.reviews?.map(review => ({
             '@type': 'Review',
             reviewRating: {

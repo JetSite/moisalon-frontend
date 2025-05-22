@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { Skeleton } from '@material-ui/lab'
 import { laptopBreakpoint, red } from '../../../styles/variables'
 import Link from 'next/link'
+import { LazyImage } from '@/components/newUI/common/LazyIMage'
 
 export const Wrapper = styled.div`
   position: relative;
@@ -27,17 +28,21 @@ export const Wrapper = styled.div`
   }
 `
 
-export const ImageWrap = styled.div<{ background: string }>`
-  background: ${props => props.background};
+export const ImageWrap = styled.div`
+  width: 100%;
   height: 195px;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
+  position: relative;
 
   @media (max-width: ${laptopBreakpoint}) {
-    height: 140px;
+    height: 50%;
     flex-shrink: 0;
   }
+`
+
+export const Image = styled(LazyImage)`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 `
 
 export const Content = styled.div`

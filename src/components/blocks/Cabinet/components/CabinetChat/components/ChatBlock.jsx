@@ -1,7 +1,7 @@
 import { useState, useEffect, FC } from 'react'
 import { useQuery } from '@apollo/client/react'
-import moment from 'moment'
-import 'moment/locale/ru'
+import { format, isToday, isYesterday, parseISO } from 'date-fns'
+import { ru } from 'date-fns/locale'
 import {
   ChatBlockWrapper,
   ChatAvatarWrapper,
@@ -18,14 +18,19 @@ import {
 import { PHOTO_URL } from '../../../../../../api/variables'
 import { IChat, IChatChat } from 'src/chatContext'
 
-moment.locale('ru', {
-  calendar: {
-    lastDay: '[Вчера в] LT',
-    sameDay: 'LT',
-    lastWeek: 'll',
-    sameElse: 'L',
-  },
-})
+const formatMessageDate = (date) => {
+  const parsedDate = parseISO(date)
+  if (isToday(parsedDate)) {
+    return format(parsedDate, 'HH:mm', { locale: ru })
+  }
+  if (isYesterday(parsedDate)) {
+    return `Вчера в ${format(parsedDate, 'HH:mm', { locale: ru })}`
+  }
+  if (new Date().getFullYear() === parsedDate.getFullYear()) {
+    return format(parsedDate, 'd MMMM', { locale: ru })
+  }
+  return format(parsedDate, 'dd.MM.yyyy', { locale: ru })
+}
 
 const ChatBlock = ({ chat, chatClicked, chatClickHandler, me }) => {
   const [messages, setMessages] = useState([])
