@@ -10,7 +10,7 @@ import {
   NoItemsText,
   NoItemsTextRed,
 } from './styled'
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles'
 import Product from './components/Product'
 import BackButton from '../../ui/BackButton'
 import useAuthStore from 'src/store/authStore'

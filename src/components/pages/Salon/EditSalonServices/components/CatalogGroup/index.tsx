@@ -1,12 +1,9 @@
-import React, { useState, useEffect, FC, Dispatch, SetStateAction } from 'react'
+import React, { useState, useEffect, FC } from 'react'
 import styled from 'styled-components'
 import { CatalogItem } from '../CatalogItem'
-import {
-  Checkbox,
-  FormControlLabel,
-  styled as styledMaterial,
-} from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Checkbox, FormControlLabel } from '@mui/material'
+import { makeStyles } from '@mui/styles'
+import { styled as styledMaterial } from '@mui/material/styles'
 import { laptopBreakpoint } from '../../../../../../styles/variables'
 import {
   IGroupedCategories,

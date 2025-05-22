@@ -1,10 +1,9 @@
-import { Skeleton } from '@material-ui/lab'
 import styled from 'styled-components'
-import { laptopBreakpoint } from '../../../../../styles/variables'
+import { laptopBreakpoint, red } from '../../../../../styles/variables'
 import Button from 'src/components/ui/Button'
-import { red } from '@material-ui/core/colors'
 import { Quantity } from 'src/components/blocks/Form/Tabs/style'
 import { LazyImage } from '@/components/newUI/common/LazyIMage'
+import { Skeleton } from '@mui/material'
 
 export const Wrapper = styled.section`
   max-width: 710px;

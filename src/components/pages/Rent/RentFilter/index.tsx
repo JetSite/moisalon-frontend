@@ -1,5 +1,5 @@
 import { Field, FieldRenderProps } from 'react-final-form'
-import Collapse from '@material-ui/core/Collapse'
+import Collapse from '@mui/material/Collapse'
 import AutoFocusedForm from '../../../blocks/Form/AutoFocusedForm'
 import TextField from '../../../blocks/Form/TextField'
 import SelectField from '../../../blocks/Form/SelectField'

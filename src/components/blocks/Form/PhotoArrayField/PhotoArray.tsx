@@ -1,7 +1,7 @@
 import React, { FC, useCallback } from 'react'
 import PhotoAdd from './PhotoAdd'
 import PhotoItem from './PhotoItem'
-import { Grid } from '@material-ui/core'
+import { Grid } from '@mui/material'
 import usePhotos, { IUsePhotoProps, IUsePhotoResult } from './usePhotos'
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../../styles/variables'
@@ -9,6 +9,7 @@ import { useMutation } from '@apollo/client'
 import { IPhoto } from 'src/types'
 import { PhotoArrayFieldProps } from './PhotoArrayField'
 import { IID } from 'src/types/common'
+import { Field } from 'react-final-form'
 
 const Description = styled.p`
   font-size: 14px;

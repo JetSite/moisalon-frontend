@@ -6,32 +6,46 @@ import Document, {
   DocumentContext,
 } from 'next/document'
 import { ServerStyleSheet } from 'styled-components'
-import { ServerStyleSheets } from '@material-ui/styles'
 import Script from 'next/script'
+import createEmotionServer from '@emotion/server/create-instance'
+import { createEmotionCache } from '../utils/createEmotionCache'
+import React from 'react'
 
 export default class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
     const styledComponentsSheet = new ServerStyleSheet()
-    const materialSheets = new ServerStyleSheets()
     const originalRenderPage = ctx.renderPage
+    const cache = createEmotionCache()
+    const { extractCriticalToChunks } = createEmotionServer(cache)
+
     try {
       ctx.renderPage = () =>
         originalRenderPage({
-          enhanceApp: App => props =>
-            styledComponentsSheet.collectStyles(
-              materialSheets.collect(<App {...props} />),
-            ),
+          enhanceApp: App =>
+            function EnhanceApp(props) {
+              return styledComponentsSheet.collectStyles(
+                <App {...(props as any)} emotionCache={cache} />,
+              )
+            },
         })
 
       const initialProps = await Document.getInitialProps(ctx)
+      const emotionStyles = extractCriticalToChunks(initialProps.html)
+      const emotionStyleTags = emotionStyles.styles.map(style => (
+        <style
+          data-emotion={`${style.key} ${style.ids.join(' ')}`}
+          key={style.key}
+          dangerouslySetInnerHTML={{ __html: style.css }}
+        />
+      ))
 
       return {
         ...initialProps,
         styles: (
           <>
             {initialProps.styles}
-            {materialSheets.getStyleElement()}
             {styledComponentsSheet.getStyleElement()}
+            {emotionStyleTags}
           </>
         ),
       }
@@ -60,6 +74,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           `,
             }}
           />
+          <meta name="emotion-insertion-point" content="" />
         </Head>
         <body>
           <noscript>

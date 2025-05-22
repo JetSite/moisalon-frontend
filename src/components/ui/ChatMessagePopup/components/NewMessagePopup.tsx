@@ -1,5 +1,5 @@
 import React, { Dispatch, FC, FormEventHandler, SetStateAction } from 'react'
-import { Dialog, DialogContent } from '@material-ui/core'
+import { Dialog, DialogContent } from '@mui/material'
 import { Field, FormRenderProps } from 'react-final-form'
 import AutoFocusedForm from '../../../blocks/Form/AutoFocusedForm'
 import TextField from '../../../blocks/Form/TextField'

@@ -1,5 +1,5 @@
 import { FC, useCallback } from 'react'
-import { Paper } from '@material-ui/core'
+import { Paper } from '@mui/material'
 import { FieldInputProps } from 'react-final-form'
 import AutosuggestInput, { AutosuggestInputProps } from './AutosuggestInput'
 import { StyledMenuItem, getAutosuggestStyles } from './AutosuggestStyles'

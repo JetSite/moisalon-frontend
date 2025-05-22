@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Dialog } from '@material-ui/core';
+import { Dialog } from '@mui/material';
 import Button from '../../../ui/Button';
 import styled from 'styled-components';
 import { useMedia } from 'use-media';

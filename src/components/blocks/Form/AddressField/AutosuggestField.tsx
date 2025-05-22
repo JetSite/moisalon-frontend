@@ -14,10 +14,12 @@ import {
   InputAdornment,
   CircularProgress,
   BaseTextFieldProps,
-} from '@material-ui/core'
-import { Theme, makeStyles, withStyles } from '@material-ui/core/styles'
+  styled,
+} from '@mui/material'
+import { Theme } from '@mui/material/styles'
+import { makeStyles, withStyles } from '@mui/styles'
 import { FieldInputProps, FieldMetaState } from 'react-final-form'
-import { ClassNameMap } from '@material-ui/core/styles/withStyles'
+import { ClassNameMap } from '@mui/styles'
 
 type CustomInputProps = Omit<Partial<FieldInputProps<string>>, 'onChange'> & {
   onChange: FieldInputProps<string>['onChange']
@@ -47,14 +49,14 @@ const InputComponent = forwardRef<HTMLInputElement, RenderInputProps>(
         helperText={(helperText || meta?.submitError) ?? undefined}
         InputLabelProps={{
           classes: {
-            root: classes.label,
-            focused: classes.label,
+            root: classes['label'],
+            focused: classes['label'],
           },
         }}
         InputProps={{
           classes: {
-            input: classes.input,
-            focused: classes.input,
+            input: classes['input'],
+            focused: classes['input'],
           },
           inputRef: ref,
           endAdornment: loading ? (
@@ -118,7 +120,7 @@ const useStyles = makeStyles<Theme, { color?: string }>(theme => ({
   suggestionsContainerOpen: {
     position: 'absolute',
     zIndex: 3,
-    marginTop: theme.spacing(1),
+    marginTop: '8px',
     left: 0,
     right: 0,
   },
@@ -131,7 +133,7 @@ const useStyles = makeStyles<Theme, { color?: string }>(theme => ({
     listStyleType: 'none',
   },
   divider: {
-    height: theme.spacing(2),
+    height: '16px',
   },
   paper: {
     position: 'absolute',
@@ -212,7 +214,7 @@ const AutosuggestField: FC<AutosuggestFieldProps> = ({
   }
 
   return (
-    <div className={classes.root}>
+    <div className={classes['root']}>
       <Autosuggest
         renderInputComponent={props => (
           <InputComponent
@@ -233,13 +235,17 @@ const AutosuggestField: FC<AutosuggestFieldProps> = ({
           ...rest,
         }}
         theme={{
-          container: classes.container,
-          suggestionsContainerOpen: classes.suggestionsContainerOpen,
-          suggestionsList: classes.suggestionsList,
-          suggestion: classes.suggestion,
+          container: classes['container'],
+          suggestionsContainerOpen: classes['suggestionsContainerOpen'],
+          suggestionsList: classes['suggestionsList'],
+          suggestion: classes['suggestion'],
         }}
         renderSuggestionsContainer={options => (
-          <Paper {...options.containerProps} square className={classes.paper}>
+          <Paper
+            {...options.containerProps}
+            square
+            className={classes['paper']}
+          >
             {options.children}
           </Paper>
         )}

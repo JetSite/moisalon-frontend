@@ -1,6 +1,6 @@
 import React, { useCallback, memo } from "react";
-import { FormControlLabel, Checkbox, styled } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { FormControlLabel, Checkbox, styled } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles({
   root: {

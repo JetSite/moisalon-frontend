@@ -3,8 +3,8 @@ import {
   InputAdornment,
   TextField,
   BaseTextFieldProps,
-} from '@material-ui/core'
-import { ClassNameMap } from '@material-ui/core/styles/withStyles'
+} from '@mui/material'
+import { ClassNameMap } from '@mui/styles'
 import { forwardRef } from 'react'
 import { FieldMetaState } from 'react-final-form'
 

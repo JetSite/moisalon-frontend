@@ -1,4 +1,4 @@
-import { RadioGroup } from "@material-ui/core";
+import { RadioGroup } from "@mui/material";
 
 const RadioButtonGroup = ({ name, children, ...rest }) => {
   return (

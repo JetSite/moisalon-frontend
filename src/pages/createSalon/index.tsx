@@ -40,7 +40,6 @@ const CreateOrEditSalon: NextPage<Props> = ({
   const { me } = useAuthStore(getStoreData)
   const { setServices, setSalonActivities, setServicesM } =
     useBaseStore(getStoreEvent)
-  const isEditMode = !!salon
 
   useEffect(() => {
     setServices(services)
@@ -143,8 +142,8 @@ export const getServerSideProps: GetServerSideProps<
           },
           mainEntity: {
             '@type': 'BeautySalon',
-            name: salon?.name,
-            description: salon?.description,
+            name: salon?.name || null,
+            description: salon?.description || null,
             address: salon?.address
               ? {
                   '@type': 'PostalAddress',
@@ -152,13 +151,10 @@ export const getServerSideProps: GetServerSideProps<
                   addressCountry: 'RU',
                   streetAddress: salon.address,
                 }
-              : undefined,
+              : null,
             image: salon?.cover?.url
               ? `${process.env.NEXT_PUBLIC_PHOTO_URL}${salon.cover.url}`
-              : undefined,
-            openingHours: salon?.workingHours?.map(
-              hours => `${hours.dayOfWeek} ${hours.startTime}-${hours.endTime}`,
-            ),
+              : null,
           },
         },
       },

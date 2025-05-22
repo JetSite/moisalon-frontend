@@ -1,8 +1,8 @@
-import React, { ChangeEvent, forwardRef, MouseEvent } from 'react';
-import TextField from '@material-ui/core/TextField';
-import styled from 'styled-components';
-import { laptopBreakpoint } from '../../../../styles/variables';
-import { FieldInputProps, FieldMetaState } from 'react-final-form';
+import React, { ChangeEvent, forwardRef, MouseEvent } from 'react'
+import TextField from '@mui/material/TextField'
+import styled from 'styled-components'
+import { laptopBreakpoint } from '../../../../styles/variables'
+import { FieldInputProps, FieldMetaState } from 'react-final-form'
 
 const TextFieldStyled = styled(TextField)`
   .MuiInputBase-input {
@@ -25,16 +25,16 @@ const TextFieldStyled = styled(TextField)`
       line-height: 12px;
     }
   }
-`;
+`
 
 interface Props<T> {
-  input: FieldInputProps<T, HTMLElement>;
-  meta: FieldMetaState<T>;
-  label?: string;
-  placeholder?: string;
-  maxLength?: number | string;
-  inputMode?: React.HTMLAttributes<HTMLInputElement>['inputMode'];
-  fullWidth?: boolean;
+  input: FieldInputProps<T, HTMLElement>
+  meta: FieldMetaState<T>
+  label?: string
+  placeholder?: string
+  maxLength?: number | string
+  inputMode?: React.HTMLAttributes<HTMLInputElement>['inputMode']
+  fullWidth?: boolean
 }
 
 const TextFieldAdapter = forwardRef(
@@ -46,29 +46,29 @@ const TextFieldAdapter = forwardRef(
       maxLength = '99',
       inputMode,
       ...rest
-    } = props;
+    } = props
     const showError =
       ((meta?.submitError && !meta?.dirtySinceLastSubmit) || meta?.error) &&
-      meta?.touched;
+      meta?.touched
     const {
       value,
       type = 'text',
       onChange: inputResOnChange,
       ...inputRest
-    } = input;
+    } = input
 
     const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-      const inputValue = e.target.value;
+      const inputValue = e.target.value
       if (['number', 'numeric', 'phone'].includes(type)) {
         if (/^\d*$/.test(inputValue)) {
-          console.log(/^\d*$/.test(inputValue));
+          console.log(/^\d*$/.test(inputValue))
 
-          inputResOnChange(e);
+          inputResOnChange(e)
         }
       } else {
-        inputResOnChange(e);
+        inputResOnChange(e)
       }
-    };
+    }
 
     // console.log(type);
 
@@ -78,7 +78,7 @@ const TextFieldAdapter = forwardRef(
         {...rest}
         onWheel={e => {
           if (type === 'number') {
-            (e.target as HTMLInputElement).blur();
+            ;(e.target as HTMLInputElement).blur()
           }
         }}
         fullWidth={fullWidth}
@@ -94,8 +94,8 @@ const TextFieldAdapter = forwardRef(
         error={showError}
         helperText={showError ? meta.error || meta.submitError : undefined}
       />
-    );
+    )
   },
-);
+)
 
-export default TextFieldAdapter;
+export default TextFieldAdapter

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Skeleton } from '@material-ui/lab'
+import { Skeleton } from '@mui/material'
 import { laptopBreakpoint, red } from '../../../styles/variables'
 import Link from 'next/link'
 import { LazyImage } from '@/components/newUI/common/LazyIMage'

@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Skeleton } from '@material-ui/lab'
+import { Skeleton } from '@mui/material'
 import MainLayout from '../../../layouts/MainLayout'
 import { MainContainer } from '../../../styles/common'
 import { laptopBreakpoint } from '../../../styles/variables'

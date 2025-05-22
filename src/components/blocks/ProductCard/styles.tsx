@@ -1,8 +1,8 @@
-import styled from 'styled-components';
-import { lighten } from 'polished';
-import { Skeleton } from '@material-ui/lab';
-import { laptopBreakpoint } from '../../../styles/variables';
-import { LazyImage } from '@/components/newUI/common/LazyIMage';
+import styled from 'styled-components'
+import { lighten } from 'polished'
+import { Skeleton } from '@mui/material'
+import { laptopBreakpoint } from '../../../styles/variables'
+import { LazyImage } from '@/components/newUI/common/LazyIMage'
 
 export const Wrapper = styled.div`
   width: 175px;
@@ -32,7 +32,7 @@ export const Wrapper = styled.div`
       flex: 0 0 135px;
     }
   }
-`;
+`
 
 export const SkeletonItem = styled(Skeleton)`
   width: 175px;
@@ -40,12 +40,12 @@ export const SkeletonItem = styled(Skeleton)`
   @media (max-width: ${laptopBreakpoint}) {
     width: 161px;
   }
-`;
+`
 
 export const SkeletonBottom = styled(Skeleton)`
   width: 100%;
   height: 35px;
-`;
+`
 
 export const TopGoodWrapper = styled.div`
   height: 175px;
@@ -59,13 +59,13 @@ export const TopGoodWrapper = styled.div`
     width: 129px;
     height: 129px;
   }
-`;
+`
 
 export const Image = styled(LazyImage)`
   height: 90%;
   object-fit: contain;
   width: 90%;
-`;
+`
 
 export const Favorite = styled.button`
   border: none;
@@ -79,7 +79,7 @@ export const Favorite = styled.button`
   @media (max-width: ${laptopBreakpoint}) {
     right: 5px;
   }
-`;
+`
 
 export const BottomGoodWrapper = styled.div`
   padding: 22px 10px;
@@ -97,7 +97,7 @@ export const BottomGoodWrapper = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     min-height: 170px;
   }
-`;
+`
 
 export const Name = styled.p`
   max-width: 211px;
@@ -112,7 +112,7 @@ export const Name = styled.p`
   @media (max-width: ${laptopBreakpoint}) {
     max-height: 40px;
   }
-`;
+`
 
 export const Price = styled.div`
   display: flex;
@@ -121,7 +121,7 @@ export const Price = styled.div`
   margin-top: 10px;
   position: relative;
   width: 100%;
-`;
+`
 
 export const Wrap = styled.div`
   width: 100%;
@@ -131,7 +131,7 @@ export const Wrap = styled.div`
   align-items: center;
   flex-grow: 1;
   margin-bottom: 25px;
-`;
+`
 
 export const OldPrice = styled.p`
   color: #a1a1a1;
@@ -142,14 +142,14 @@ export const OldPrice = styled.p`
 
   @media (max-width: ${laptopBreakpoint}) {
   }
-`;
+`
 
 export const NewPrice = styled.p`
   font-size: 14px;
   line-height: 20px;
   color: #ff0033;
   font-weight: 600;
-`;
+`
 
 export const ButtonCart = styled.button`
   width: 48%;
@@ -176,7 +176,7 @@ export const ButtonCart = styled.button`
   @media (max-width: ${laptopBreakpoint}) {
     font-size: 9px;
   }
-`;
+`
 
 export const QuantityWrap = styled.div`
   display: flex;
@@ -188,12 +188,12 @@ export const QuantityWrap = styled.div`
   @media (max-width: ${laptopBreakpoint}) {
     width: 90%;
   }
-`;
+`
 
 export const Quantity = styled.p`
   font-size: 10px;
   line-height: 16px;
-`;
+`
 
 export const Minus = styled.div`
   width: 28px;
@@ -207,7 +207,7 @@ export const Minus = styled.div`
   &:hover {
     background: #ff0033 url('/icon-minus-white.svg') no-repeat center;
   }
-`;
+`
 
 export const Plus = styled(Minus)`
   background: #f0f0f0 url('/icon-plus.svg') no-repeat center;
@@ -217,10 +217,10 @@ export const Plus = styled(Minus)`
     background: #ff0033 url('/icon-plus-white.svg') no-repeat center;
     background-size: 13px;
   }
-`;
+`
 
 export const ButtonsWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
-`;
+`

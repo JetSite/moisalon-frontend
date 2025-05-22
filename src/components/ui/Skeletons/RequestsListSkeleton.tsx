@@ -1,4 +1,4 @@
-import { Skeleton } from '@material-ui/lab'
+import { Skeleton } from '@mui/material'
 import { FC } from 'react'
 import { ListWrapper } from 'src/components/blocks/Cabinet/components/CabinetRequests/styles'
 import { laptopBreakpoint } from 'src/styles/variables'

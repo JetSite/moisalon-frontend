@@ -20,8 +20,8 @@ import {
   ClickAwayListener,
   Popper,
   Grow,
-  makeStyles,
-} from '@material-ui/core'
+} from '@mui/material'
+import { makeStyles } from '@mui/styles'
 import { IBrand } from 'src/types/brands'
 import { useQuery } from '@apollo/client'
 import { PRODUCT_CATEGORIES } from 'src/api/graphql/product/queries/getProductCategories'
@@ -260,7 +260,6 @@ const FilterCatalog: FC<Props> = ({
   noBrands,
   brand,
 }) => {
-  const classes = useStyles()
   const { selectCategory, selectBrand, setSelectCategory, setSelectBrand } =
     useFiltredProducts({
       setProductsData,

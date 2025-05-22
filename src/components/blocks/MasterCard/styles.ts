@@ -1,6 +1,5 @@
 import styled from 'styled-components'
-import { Avatar } from '@material-ui/core'
-import { Skeleton } from '@material-ui/lab'
+import { Avatar, Skeleton } from '@mui/material'
 import {
   laptopBreakpoint,
   tabletBreakpoint,

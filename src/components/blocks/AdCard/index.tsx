@@ -15,7 +15,7 @@ import {
   SkeletonSalonItem,
   AdShareWrap,
 } from './styles'
-import { Skeleton } from '@material-ui/lab'
+import { Skeleton } from '@mui/material'
 import Share from '../../ui/Share'
 import { PHOTO_URL } from '../../../api/variables'
 import { FC } from 'react'
@@ -81,7 +81,7 @@ const AdCard: FC<Props> = ({ item, loading, shareLink }) => {
           <Image src={imageUrl} alt="ad cover" width={400} height={200} />
         </ImageWrap>
       ) : (
-        <Skeleton variant="rect" height="195px" animation={false} />
+        <Skeleton variant="rectangular" height="195px" animation={false} />
       )}
       <Content>
         <Top>

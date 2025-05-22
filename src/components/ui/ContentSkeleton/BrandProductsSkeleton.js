@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Skeleton } from '@material-ui/lab'
+import { Skeleton } from '@mui/material'
 import Header from '../../pages/Brand/ViewBrand/components/Header'
 import { laptopBreakpoint } from '../../../styles/variables'
 import FilterCatalog from '../../ui/FilterCatalog'

@@ -1,10 +1,12 @@
-import { withStyles } from "@material-ui/core";
-import { createTheme } from "@material-ui/core/styles";
+import { createTheme } from "@mui/material/styles";
+import { withStyles } from '@mui/styles';
 
 const theme = createTheme({
-  props: {
+  components: {
     MuiButtonBase: {
-      disableRipple: true
+      defaultProps: {
+        disableRipple: true
+      }
     }
   },
 
