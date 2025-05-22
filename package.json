@@ -19,7 +19,7 @@
     "@emotion/react": "^11.14.0",
     "@emotion/server": "^11.11.0",
     "@emotion/styled": "^11.14.0",
-    "@mui/lab": "^5.0.0",
+    "@mui/lab": "^5.0.0-alpha.165",
     "@mui/material": "^5.15.11",
     "@mui/styles": "^6.4.11",
     "@pbe/react-yandex-maps": "^1.2.5",
