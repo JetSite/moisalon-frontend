@@ -1,39 +1,38 @@
 import { NextRouter } from 'next/router'
 
 export const redirectCityRoutes = (slug: string, router: NextRouter) => {
-  if (router.pathname === '/[city]/salon/[id]' && router?.query?.city) {
-    router.push(`/${slug}/salon`)
+  if (router.query['city'] === slug) {
     return
   }
-  if (
-    router.pathname === '/[city]/brand/[id]/products' &&
-    router?.query?.city
-  ) {
-    router.push(`/${slug}/brand`)
-    return
+
+  const newPath = `/${slug}`
+
+  const specialRoutes: Record<string, string> = {
+    '/[city]/salon/[id]': '/salon',
+    '/[city]/brand/[id]/products': '/brand',
+    '/[city]/brand/[id]': '/brand',
+    '/[city]/rent/[id]': '/rent',
+    '/[city]/rent/[id]room/[roomId]/seat/[seatId]': '/rent',
+    '/[city]/master/[id]': '/master'
   }
-  if (router.pathname === '/[city]/rent/[id]' && router?.query?.city) {
-    router.push(`/${slug}/rent`)
-    return
-  }
-  if (
-    router.pathname === '/[city]/rent/[id]room/[roomId]/seat/[seatId]' &&
-    router?.query?.city
-  ) {
-    router.push(`/${slug}/rent`)
-    return
-  }
-  if (router.pathname === '/[city]/master/[id]' && router?.query?.city) {
-    router.push(`/${slug}/master`)
-    return
-  }
-  if (router.pathname === '/[city]/brand/[id]' && router?.query?.city) {
-    router.push(`/${slug}/brand`)
-    return
-  }
-  if (router?.query?.city) {
-    router.replace({
-      query: { ...router.query, city: slug },
+
+  if (specialRoutes[router.pathname]) {
+    router.push(`${newPath}${specialRoutes[router.pathname]}`, undefined, {
+      shallow: true
     })
+    return
+  }
+
+  if (router.query['city']) {
+    router.replace(
+      {
+        ...router,
+        query: { ...router.query, city: slug }
+      },
+      undefined,
+      { shallow: true }
+    )
+  } else {
+    router.replace(newPath, undefined, { shallow: true })
   }
 }
