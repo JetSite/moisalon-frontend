@@ -7,6 +7,7 @@ import { PHOTO_URL } from 'src/api/variables'
 import { FC } from 'react'
 import { IBannerHook } from 'src/types/banners'
 import Link from 'next/link'
+import { LazyImage } from '@/components/newUI/common/LazyIMage'
 
 const Wrapper = styled.div`
   display: flex;
@@ -30,57 +31,59 @@ const Big = styled(Link)`
   justify-content: space-between;
   color: #000;
   width: 100%;
+  height: 100%;
+  padding: 40px;
+  position: absolute;
+  z-index: 100;
 `
 
-const WrapBig = styled.div<{ image: string }>`
+const WrapBig = styled.div`
   width: 70%;
   max-width: 785px;
   height: 275px;
-  background: ${props => `url(${props.image}) no-repeat center`};
-  background-size: cover;
   border-radius: 5px;
   display: flex;
   justify-content: space-between;
-  padding-left: 43px;
-  padding-right: 90px;
   color: #000;
-  padding-top: 30px;
-  padding-bottom: 30px;
   overflow: hidden;
   transition: 0.3s;
+  position: relative;
+
   &:hover {
     box-shadow: 0px 0px 24px 1px rgba(0, 0, 0, 0.2);
   }
+
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
     height: 161px;
-    padding-right: 24px;
-    padding-left: 12px;
-    padding-top: 12px;
-    padding-bottom: 12px;
-    background-position: left;
   }
 `
 
-const WrapSmall = styled.div<{ image: string }>`
+const BannerImage = styled(LazyImage)`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  object-fit: cover;
+  z-index: 50;
+`
+
+const WrapSmall = styled.div`
   width: 100%;
   height: 125px;
   color: #000;
-  background: ${props => `url(${props.image}) no-repeat center`};
-  background-size: cover;
   display: flex;
-  padding: 15px;
-  padding-right: 25px;
   justify-content: space-between;
   border-radius: 5px;
+  position: relative;
   overflow: hidden;
   transition: 0.3s;
+
   &:hover {
     box-shadow: 0px 0px 24px 1px rgba(0, 0, 0, 0.2);
   }
+
   @media (max-width: ${laptopBreakpoint}) {
     width: 100%;
-    background-position: left;
   }
 `
 
@@ -89,6 +92,10 @@ const Small = styled(Link)`
   display: flex;
   justify-content: space-between;
   width: 100%;
+  height: 100%;
+  padding: 15px;
+  position: absolute;
+  z-index: 100;
 `
 
 const Right = styled.div`
@@ -179,7 +186,16 @@ const Banners: FC<Props> = ({
   return (
     <Wrapper>
       {banner ? (
-        <WrapBig image={bannerImage}>
+        <WrapBig>
+          <BannerImage
+            alt={banner?.title || 'big banner'}
+            src={bannerImage}
+            width={785}
+            height={275}
+            priority
+            sizes="(max-width: 768px) 100vw, 70vw"
+            quality={85}
+          />
           <noindex>
             <Big href={banner.linkUrl ?? '#'} rel="nofollow" target="_blank">
               <LeftBig>
@@ -196,7 +212,16 @@ const Banners: FC<Props> = ({
       <Right>
         {bannerLeft ? (
           <noindex>
-            <WrapSmall image={bannerLeftImage}>
+            <WrapSmall>
+              <BannerImage
+                alt={bannerLeft?.title || 'top small banner'}
+                src={bannerLeftImage}
+                width={350}
+                height={125}
+                sizes="(max-width: 768px) 49vw, 30vw"
+                quality={85}
+                priority
+              />
               <Small
                 href={bannerLeft?.linkUrl ? bannerLeft.linkUrl : '#'}
                 target="_blank"
@@ -213,7 +238,16 @@ const Banners: FC<Props> = ({
         ) : null}
         {bannerRight ? (
           <noindex>
-            <WrapSmall image={bannerRightImage}>
+            <WrapSmall>
+              <BannerImage
+                alt={bannerRight?.title || 'bottom small banner'}
+                src={bannerRightImage}
+                width={350}
+                height={125}
+                sizes="(max-width: 768px) 49vw, 30vw"
+                quality={85}
+                priority
+              />
               <Small
                 href={bannerRight.linkUrl ? bannerRight.linkUrl : '#'}
                 target="_blank"

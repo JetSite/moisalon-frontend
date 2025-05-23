@@ -79,12 +79,19 @@ const SalonCard: FC<Props> = ({
   )
 
   return loading ? (
-    <SkeletonSalonItem variant="rect" />
+    <SkeletonSalonItem variant="rectangular" />
   ) : (
     <Wrapper>
       {imageUrl ? (
         <ImageWrap>
-          <Image src={imageUrl} alt="salon cover" width={400} height={200} />
+          <Image
+            src={imageUrl}
+            alt="salon cover"
+            width={372}
+            height={195}
+            sizes="(max-width: 768px) 280px, 372px"
+            quality={85}
+          />
         </ImageWrap>
       ) : (
         <Skeleton variant="rectangular" height="195px" animation={false} />

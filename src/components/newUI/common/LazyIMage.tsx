@@ -5,7 +5,7 @@ export const LazyImage: FC<ImageProps> = ({
   width = 56,
   height = 56,
   alt = '',
-  loading = 'lazy',
+  priority,
   ...rest
 }) => {
   return (
@@ -13,7 +13,8 @@ export const LazyImage: FC<ImageProps> = ({
       width={width}
       height={height}
       alt={alt}
-      loading={loading}
+      loading={priority ? undefined : 'lazy'}
+      priority={priority}
       {...rest}
     />
   )
