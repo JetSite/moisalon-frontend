@@ -81,6 +81,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             href="https://mc.yandex.ru"
             crossOrigin="anonymous"
           />
+          <link
+            rel="preload"
+            href="https://mc.yandex.ru/metrika/tag.js"
+            as="script"
+            crossOrigin="anonymous"
+          />
         </Head>
         <body>
           <noscript>
