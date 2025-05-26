@@ -193,8 +193,9 @@ const Banners: FC<Props> = ({
             width={785}
             height={275}
             priority
-            sizes="(max-width: 768px) 100vw, 70vw"
-            quality={85}
+            sizes="(max-width: 768px) 100vw, 785px"
+            quality={75}
+            loading="eager"
           />
           <noindex>
             <Big href={banner.linkUrl ?? '#'} rel="nofollow" target="_blank">
@@ -216,10 +217,11 @@ const Banners: FC<Props> = ({
               <BannerImage
                 alt={bannerLeft?.title || 'top small banner'}
                 src={bannerLeftImage}
-                width={350}
+                width={357}
                 height={125}
-                sizes="(max-width: 768px) 49vw, 30vw"
-                quality={85}
+                sizes="(max-width: 768px) 49vw, 357px"
+                quality={75}
+                loading="eager"
                 priority
               />
               <Small
@@ -242,10 +244,11 @@ const Banners: FC<Props> = ({
               <BannerImage
                 alt={bannerRight?.title || 'bottom small banner'}
                 src={bannerRightImage}
-                width={350}
+                width={357}
                 height={125}
-                sizes="(max-width: 768px) 49vw, 30vw"
-                quality={85}
+                sizes="(max-width: 768px) 49vw, 357px"
+                quality={75}
+                loading="eager"
                 priority
               />
               <Small

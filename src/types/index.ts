@@ -1,7 +1,4 @@
-import { IBrand } from './brands'
 import { IID } from './common'
-import { IMaster } from './masters'
-import { IServices } from './services'
 
 export interface IPagination {
   total: number
@@ -23,6 +20,20 @@ export interface IPhoto {
   id: IID
   name: string
   url: string
+  formats: {
+    large: {
+      url: string
+    }
+    medium: {
+      url: string
+    }
+    small: {
+      url: string
+    }
+    thumbnail: {
+      url: string
+    }
+  }
 }
 export interface ISalonPhones {
   phoneNumber: string

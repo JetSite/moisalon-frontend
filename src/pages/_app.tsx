@@ -163,10 +163,10 @@ function MyApp({
                   accounts={[56585698]}
                   options={{
                     defer: true,
-                    clickmap: true,
+                    clickmap: false,
                     trackLinks: true,
                     accurateTrackBounce: true,
-                    webvisor: true,
+                    webvisor: false,
                   }}
                   version="2"
                 />
