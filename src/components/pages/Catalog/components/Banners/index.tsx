@@ -167,29 +167,58 @@ const Banners: FC<Props> = ({
   bannerSmallLeft,
   bannerSmallRight,
 }) => {
-  const banner = bannerLarge?.banners?.[0] ?? null
-  const bannerImage = banner?.bannerImage?.url
-    ? `${PHOTO_URL}${banner.bannerImage.url}`
+  const bannerLeft = bannerLarge?.banners?.[0] ?? null
+
+  const optimizedBannerLeftImageFormat = bannerLeft?.bannerImage?.formats?.large
+    ?.url
+    ? bannerLeft.bannerImage.formats.large.url
+    : bannerLeft?.bannerImage?.url
+    ? bannerLeft.bannerImage.url
+    : null
+
+  const bannerLeftImage = optimizedBannerLeftImageFormat
+    ? `${PHOTO_URL}${optimizedBannerLeftImageFormat}`
     : ''
 
-  const bannerLeft = bannerSmallLeft?.banners?.[0] ?? null
+  const bannerRightTop = bannerSmallLeft?.banners?.[0] ?? null
 
-  const bannerLeftImage = bannerLeft?.bannerImage?.url
-    ? `${PHOTO_URL}${bannerLeft.bannerImage.url}`
+  console.log('bannerRightTop', bannerRightTop)
+
+  const optimizedBannerRightTopImageFormat = bannerRightTop?.bannerImage
+    ?.formats?.medium?.url
+    ? bannerRightTop?.bannerImage.formats.medium.url
+    : bannerRightTop?.bannerImage?.formats?.large?.url
+    ? bannerRightTop?.bannerImage.formats.large.url
+    : bannerRightTop?.bannerImage?.url
+    ? bannerRightTop?.bannerImage.url
+    : null
+
+  const bannerRightTopImage = optimizedBannerRightTopImageFormat
+    ? `${PHOTO_URL}${optimizedBannerRightTopImageFormat}`
     : ''
 
-  const bannerRight = bannerSmallRight?.banners?.[0] ?? null
-  const bannerRightImage = bannerRight?.bannerImage?.url
-    ? `${PHOTO_URL}${bannerRight.bannerImage.url}`
+  const bannerRightBottom = bannerSmallRight?.banners?.[0] ?? null
+
+  const optimizedBannerRightBottomImageFormat = bannerRightBottom?.bannerImage
+    ?.formats?.medium?.url
+    ? bannerRightBottom?.bannerImage.formats.medium.url
+    : bannerRightBottom?.bannerImage?.formats?.large?.url
+    ? bannerRightBottom?.bannerImage.formats.large.url
+    : bannerRightBottom?.bannerImage?.url
+    ? bannerRightBottom?.bannerImage.url
+    : null
+
+  const bannerRightBottomImage = optimizedBannerRightBottomImageFormat
+    ? `${PHOTO_URL}${optimizedBannerRightBottomImageFormat}`
     : ''
 
   return (
     <Wrapper>
-      {banner ? (
+      {bannerLeft ? (
         <WrapBig>
           <BannerImage
-            alt={banner?.title || 'big banner'}
-            src={bannerImage}
+            alt={bannerLeft?.title || 'big banner'}
+            src={bannerLeftImage}
             width={785}
             height={275}
             priority
@@ -198,11 +227,15 @@ const Banners: FC<Props> = ({
             loading="eager"
           />
           <noindex>
-            <Big href={banner.linkUrl ?? '#'} rel="nofollow" target="_blank">
+            <Big
+              href={bannerLeft.linkUrl ?? '#'}
+              rel="nofollow"
+              target="_blank"
+            >
               <LeftBig>
-                {banner.linkText ? (
+                {bannerLeft.linkText ? (
                   <div>
-                    <Title>{banner.linkText}</Title>
+                    <Title>{bannerLeft.linkText}</Title>
                   </div>
                 ) : null}
               </LeftBig>
@@ -211,12 +244,12 @@ const Banners: FC<Props> = ({
         </WrapBig>
       ) : null}
       <Right>
-        {bannerLeft ? (
+        {bannerRightTop ? (
           <noindex>
             <WrapSmall>
               <BannerImage
-                alt={bannerLeft?.title || 'top small banner'}
-                src={bannerLeftImage}
+                alt={bannerRightTop?.title || 'top small banner'}
+                src={bannerRightTopImage}
                 width={357}
                 height={125}
                 sizes="(max-width: 768px) 49vw, 357px"
@@ -230,20 +263,20 @@ const Banners: FC<Props> = ({
                 rel="nofollow"
               >
                 <LeftSmall>
-                  {bannerLeft.linkText ? (
-                    <TitleSmall>{bannerLeft.linkText}</TitleSmall>
+                  {bannerRightTop.linkText ? (
+                    <TitleSmall>{bannerRightTop.linkText}</TitleSmall>
                   ) : null}
                 </LeftSmall>
               </Small>
             </WrapSmall>
           </noindex>
         ) : null}
-        {bannerRight ? (
+        {bannerRightBottom ? (
           <noindex>
             <WrapSmall>
               <BannerImage
-                alt={bannerRight?.title || 'bottom small banner'}
-                src={bannerRightImage}
+                alt={bannerRightBottom?.title || 'bottom small banner'}
+                src={bannerRightBottomImage}
                 width={357}
                 height={125}
                 sizes="(max-width: 768px) 49vw, 357px"
@@ -252,13 +285,15 @@ const Banners: FC<Props> = ({
                 priority
               />
               <Small
-                href={bannerRight.linkUrl ? bannerRight.linkUrl : '#'}
+                href={
+                  bannerRightBottom.linkUrl ? bannerRightBottom.linkUrl : '#'
+                }
                 target="_blank"
                 rel="nofollow"
               >
                 <LeftSmall>
-                  {bannerRight.linkText ? (
-                    <TitleSmall>{bannerRight.linkText}</TitleSmall>
+                  {bannerRightBottom.linkText ? (
+                    <TitleSmall>{bannerRightBottom.linkText}</TitleSmall>
                   ) : null}
                 </LeftSmall>
               </Small>

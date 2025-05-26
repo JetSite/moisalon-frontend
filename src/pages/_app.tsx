@@ -9,7 +9,6 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import theme from '../theme'
 import { useRouter } from 'next/router'
-import * as gtag from '../lib/gtag'
 import { useMedia } from 'use-media'
 import { red } from '../styles/variables'
 import { AppProps } from 'next/app'
@@ -22,6 +21,7 @@ import { CacheProvider } from '@emotion/react'
 import { createEmotionCache } from '../utils/createEmotionCache'
 import { EmotionCache } from '@emotion/cache'
 import { YMInitializer } from 'react-yandex-metrika'
+import { trackPageView } from '../utils/analytics'
 
 const clientSideEmotionCache = createEmotionCache()
 
@@ -58,19 +58,7 @@ function MyApp({
 
   useEffect(() => {
     const handleRouteChange = (url: string) => {
-      gtag.pageView(url)
-    }
-    router.events.on('routeChangeComplete', handleRouteChange)
-    return () => {
-      router.events.off('routeChangeComplete', handleRouteChange)
-    }
-  }, [router.events])
-
-  useEffect(() => {
-    const handleRouteChange = (url: string) => {
-      if (typeof window.ym !== 'undefined') {
-        window.ym(56585698, 'hit', url)
-      }
+      trackPageView(url)
     }
     router.events.on('routeChangeComplete', handleRouteChange)
     return () => {
@@ -162,11 +150,13 @@ function MyApp({
                 <YMInitializer
                   accounts={[56585698]}
                   options={{
-                    defer: true,
                     clickmap: false,
                     trackLinks: true,
-                    accurateTrackBounce: true,
+                    accurateTrackBounce: false,
                     webvisor: false,
+                    triggerEvent: true,
+                    ecommerce: false,
+                    childIframe: false,
                   }}
                   version="2"
                 />
