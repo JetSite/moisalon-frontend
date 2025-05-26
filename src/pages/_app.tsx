@@ -157,6 +157,8 @@ function MyApp({
                     triggerEvent: true,
                     ecommerce: false,
                     childIframe: false,
+                    type: 2,
+                    defer: false,
                   }}
                   version="2"
                 />
