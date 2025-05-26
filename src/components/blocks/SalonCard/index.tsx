@@ -53,10 +53,18 @@ const SalonCard: FC<Props> = ({
 }) => {
   const mobileMedia = useMedia({ maxWidth: 768 })
 
-  const imageUrl = item?.cover?.url
-    ? `${PHOTO_URL}${item.cover.url}`
-    : item.photos?.length
-    ? `${PHOTO_URL}${item.photos[0]?.url}`
+  const optimizedImageFormat = item.photos[0]?.formats?.medium?.url
+    ? item.photos[0].formats.medium.url
+    : item.photos[0]?.formats?.large?.url
+    ? item.photos[0].formats.large.url
+    : item.photos[0]?.url
+    ? item.photos[0].url
+    : null
+
+  const imageUrl = optimizedImageFormat
+    ? `${PHOTO_URL}${optimizedImageFormat}`
+    : item?.cover?.url
+    ? item.cover.url
     : ''
 
   const [isFavorite, setIsFavorit] = useState<boolean>(false)
