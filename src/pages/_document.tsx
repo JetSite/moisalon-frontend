@@ -75,6 +75,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             }}
           />
           <meta name="emotion-insertion-point" content="" />
+          <link rel="dns-prefetch" href="https://mc.yandex.ru" />
+          <link
+            rel="preconnect"
+            href="https://mc.yandex.ru"
+            crossOrigin="anonymous"
+          />
         </Head>
         <body>
           <noscript>
