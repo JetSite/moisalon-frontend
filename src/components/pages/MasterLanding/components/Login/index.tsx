@@ -45,7 +45,11 @@ const Login = () => {
 
   const [Login] = useMutation(login, {
     onCompleted: data => {
-      setCookie(authConfig.tokenKeyName, data.login.jwt)
+      setCookie(
+        authConfig.tokenKeyName,
+        data.login.jwt,
+        authConfig.cookieOptions,
+      )
       setMe({ info: { ...data.login.user } })
       console.log(data.login.jwt)
 

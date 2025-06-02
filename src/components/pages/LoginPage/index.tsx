@@ -45,7 +45,11 @@ const LoginPage: FC = () => {
   const dev = process.env.NEXT_PUBLIC_ENV !== 'production'
   const [Login] = useMutation(login, {
     onCompleted: data => {
-      setCookie(authConfig.tokenKeyName, data.login.jwt)
+      setCookie(
+        authConfig.tokenKeyName,
+        data.login.jwt,
+        authConfig.cookieOptions,
+      )
       setMe({ info: { ...data.login.user } })
       const nextUrl =
         typeof router.query.next === 'string' &&
@@ -70,7 +74,11 @@ const LoginPage: FC = () => {
   const [registerMutation] = useMutation(register, {
     onCompleted: data => {
       if (data) {
-        setCookie(authConfig.tokenKeyName, data.register.jwt)
+        setCookie(
+          authConfig.tokenKeyName,
+          data.register.jwt,
+          authConfig.cookieOptions,
+        )
         setMe({ info: { ...data.register.user } })
         router.push('/masterCabinet')
       }

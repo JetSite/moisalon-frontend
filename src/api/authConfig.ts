@@ -22,6 +22,13 @@ export const authConfig = {
   notAuthLink: '/login',
   cityKeyName: 'city',
   meKeyName: 'me',
+  cookieOptions: {
+    maxAge: 60 * 60 * 24 * 7,
+    httpOnly: false,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax' as const,
+    path: '/',
+  },
 }
 
 export const settingsConfig = {

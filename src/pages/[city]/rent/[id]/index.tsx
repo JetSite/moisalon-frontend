@@ -241,14 +241,6 @@ export const getServerSideProps: GetServerSideProps<
             )
             .filter(Boolean) || ['https://moi.salon/salons-page-bg.jpg'],
           datePosted: rentData?.createdAt,
-          aggregateRating: rating
-            ? {
-                '@type': 'AggregateRating',
-                ratingValue: rating,
-                ratingCount: ratingCount,
-                reviewCount: reviewsCount,
-              }
-            : undefined,
         },
       },
     },
