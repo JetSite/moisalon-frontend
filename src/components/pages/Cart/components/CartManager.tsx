@@ -16,6 +16,7 @@ import {
 } from '../utils'
 import { IBrand } from 'src/types/brands'
 import LinkButton from 'src/components/newUI/buttons/LinkButton'
+import { IGuestCart } from 'src/utils/guestCart'
 
 interface Props {
   selectedProducts: IProductCart[]
@@ -23,6 +24,7 @@ interface Props {
   isLogin: boolean
   loading: boolean
   underMinOrderBrands: ICheckUnderMinOrderBrandsResult[]
+  guestCart?: IGuestCart
 }
 
 export const CartManager: FC<Props> = ({
@@ -31,13 +33,25 @@ export const CartManager: FC<Props> = ({
   brands,
   isLogin,
   loading,
+  guestCart,
 }) => {
-  const disabledButton =
-    !selectedProducts?.length || underMinOrderBrands.length > 0
-  const totalOrderSumm = useMemo(
-    () => totalSumm(selectedProducts),
-    [selectedProducts],
-  )
+  const disabledButton = isLogin
+    ? !selectedProducts?.length || underMinOrderBrands.length > 0
+    : !guestCart?.items?.length
+
+  const totalOrderSumm = useMemo(() => {
+    if (isLogin) {
+      return totalSumm(selectedProducts)
+    } else {
+      // Calculate total for ALL guest cart items (not just selected)
+      return (
+        guestCart?.items?.reduce(
+          (total, item) => total + item.price * item.quantity,
+          0,
+        ) || 0
+      )
+    }
+  }, [selectedProducts, guestCart, isLogin])
 
   return (
     <OrderWrap>
@@ -73,6 +87,14 @@ export const CartManager: FC<Props> = ({
                 items: [selectedProducts],
                 brands: [filterCheckedBrands(selectedProducts, brands)],
               }),
+            )
+          } else {
+            // Store flag to redirect to order after login
+            sessionStorage.setItem('redirectToOrderAfterLogin', 'true')
+            // Store ALL guest items for after login (not just selected)
+            sessionStorage.setItem(
+              'guestCartItems',
+              JSON.stringify(guestCart?.items || []),
             )
           }
         }}

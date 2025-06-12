@@ -129,7 +129,7 @@ export const getServerSideProps: GetServerSideProps<
                 name: item.product.name,
                 description: item.product.shortDescription,
                 image: item.product.cover?.url
-                  ? `${process.env.NEXT_PUBLIC_PHOTO_URL}${item.image.url}`
+                  ? `${process.env.NEXT_PUBLIC_PHOTO_URL}${item.product.cover.url}`
                   : undefined,
                 offers: {
                   '@type': 'Offer',

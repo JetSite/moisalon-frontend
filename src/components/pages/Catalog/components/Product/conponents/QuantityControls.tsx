@@ -1,6 +1,5 @@
 import { FC } from 'react'
 import * as Styled from '../style'
-import { useRouter } from 'next/router'
 import { IProduct, IProductCart } from 'src/types/product'
 import { Minus, Plus } from 'src/components/ui/FastBuyPopup/styles'
 import { IUser } from 'src/types/me'
@@ -32,11 +31,8 @@ export const QuantityControls: FC<IQuantityControlsProps> = ({
   addToCart,
   deleteFromCart,
   item,
-  user,
   type = 'card',
 }) => {
-  const router = useRouter()
-
   const ButtonComponent = ComponentsMap[type] || Styled.ButtonCart
 
   return quantity === 0 && cartItem.quantity === 0 ? (
@@ -66,14 +62,7 @@ export const QuantityControls: FC<IQuantityControlsProps> = ({
         onClick={e => {
           e.preventDefault()
           e.stopPropagation()
-          if (!user?.info) {
-            router.replace({
-              pathname: '/login',
-              query: { next: router.asPath },
-            })
-          } else {
-            addToCart(cartItem.product, true)
-          }
+          addToCart(cartItem.product, true)
         }}
       >
         В корзину

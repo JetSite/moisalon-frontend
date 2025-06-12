@@ -32,7 +32,7 @@ import { ADD_REVIEW_PRODUCT } from 'src/api/graphql/product/mutations/addReviewP
 import { GET_PRODUCT_REVIEWS } from 'src/api/graphql/product/queries/getProductReviews'
 import EntityDescription from 'src/components/newUI/EntityDescription'
 import Slider from 'src/components/blocks/Slider'
-import { useMutationCart } from '../Catalog/utils/useMutationCart'
+import { useCartManager } from 'src/hooks/useCartManager'
 import { QuantityControls } from '../Catalog/components/Product/conponents/QuantityControls'
 import BackButton from 'src/components/ui/BackButton'
 
@@ -46,13 +46,17 @@ const ProductPage: FC<IProductPageProps> = ({ product, reviews, cart }) => {
   const { user } = useAuthStore(getStoreData)
   const [reviewsData, setReviewsData] = useState(reviews)
   const { city } = useAuthStore(getStoreData)
-  const [toggleCharacter, setToggleCharacter] = useState(false)
   const [openPopup, setOpenPopup] = useState(false)
   const [openBuyPopup, setOpenBuyPopup] = useState(false)
   const [loading, setLoading] = useState<boolean>(false)
-  const { handleMutate, quantityMap, errors, setErrors } = useMutationCart({
+
+  const {
+    addToCart: cartAddToCart,
+    removeFromCart,
+    getItemQuantity,
+  } = useCartManager({
+    user,
     cart,
-    userID: user?.info.id || null,
   })
 
   const [cartItem, setCartItem] = useState<IProductCart>(
@@ -67,11 +71,11 @@ const ProductPage: FC<IProductPageProps> = ({ product, reviews, cart }) => {
     setCartItem(
       cart?.cartContent?.find(el => el?.product?.id === product.id) || {
         product: { ...product },
-        quantity: 0,
+        quantity: getItemQuantity(product.id),
         id: `temp_${product.id}`,
       },
     )
-  }, [cart?.cartContent])
+  }, [cart?.cartContent, getItemQuantity, product.id])
 
   const closePopup = () => {
     setOpenPopup(false)
@@ -102,17 +106,15 @@ const ProductPage: FC<IProductPageProps> = ({ product, reviews, cart }) => {
   })
 
   const addToCart = (item: IProduct, mustGrow: boolean) => {
-    handleMutate({
-      itemID: item.id,
-      mustGrow,
-    })
+    if (mustGrow) {
+      cartAddToCart(item.id, 1, item)
+    } else {
+      removeFromCart(item.id)
+    }
   }
 
   const deleteFromCart = (item: IProduct) => {
-    handleMutate({
-      itemID: item.id,
-      mustGrow: false,
-    })
+    removeFromCart(item.id)
   }
 
   const productImage = cartItem.product?.cover?.url
@@ -131,7 +133,7 @@ const ProductPage: FC<IProductPageProps> = ({ product, reviews, cart }) => {
       />
       <Wrapper>
         <BackButton
-          type={router?.query?.catalog ? 'Магазин' : 'Бренд'}
+          type={router?.query?.['catalog'] ? 'Магазин' : 'Бренд'}
           name={product?.brand?.name}
           link={`/${product.brand.city.slug || city.slug}/brand/${
             product?.brand.id || product?.brand?.id
@@ -195,7 +197,7 @@ const ProductPage: FC<IProductPageProps> = ({ product, reviews, cart }) => {
               setOpenBuyPopup={setOpenBuyPopup}
               item={product}
               cartItem={cartItem}
-              quantity={quantityMap[cartItem.product?.id] ?? cartItem.quantity}
+              quantity={getItemQuantity(product.id)}
               user={user}
               type="page"
             />

@@ -2,7 +2,6 @@ import { IDeliveryMethods, IPaymentMethods } from 'src/types'
 import { totalSumm } from '../../Cart/utils'
 import { IMeInfo, IUser } from 'src/types/me'
 import { ICart, IProductCart } from 'src/types/product'
-import { IAddressSuggestion } from 'src/components/blocks/Form/AddressField/useAddressSuggestions'
 
 export interface IOrderAddressInput {
   firstName: string
@@ -45,10 +44,10 @@ export const getInitialValues: GetInitialValues = ({
     city: successOrderValues?.city ?? null,
   }
   return {
-    name: successOrderValues?.userInfo.username || user.info.username,
+    name: successOrderValues?.userInfo.username || user.info?.username,
     address: successOrderValues?.address ?? '',
-    email: successOrderValues?.userInfo.email || user.info.email,
-    phone: successOrderValues?.userInfo.phone || user.info.phone,
+    email: successOrderValues?.userInfo.email || user.info?.email,
+    phone: successOrderValues?.userInfo.phone || user.info?.phone,
     comment: successOrderValues?.comment ?? '',
     ...hiddenVallues,
   }

@@ -22,6 +22,7 @@ import getMainPageHeaderLinks from './config'
 import ym from 'react-yandex-metrika'
 import { authConfig } from 'src/api/authConfig'
 import { getCookie } from 'cookies-next'
+import { useCartManager } from 'src/hooks/useCartManager'
 
 const activeLink = (path: string, link?: string[]) => {
   return link?.find(item => item === path)
@@ -30,8 +31,6 @@ const activeLink = (path: string, link?: string[]) => {
 const Header = ({ loading = false }) => {
   const cityCookie = getCookie(authConfig.cityKeyName)
   const { user, city } = useAuthStore(getStoreData)
-  const b2bClient =
-    !!user?.owner?.masters?.length || !!user?.owner?.salons?.length
   const router = useRouter()
   const isAboutPage = router.pathname === '/about'
   const [openPopup, setPopupOpen] = useState<boolean>(!cityCookie)
@@ -48,11 +47,15 @@ const Header = ({ loading = false }) => {
   const [showCatalogMenu, setShowCatalogMenu] = useState(false)
   const [showSearchPopup, setShowSearchPopup] = useState(false)
   // const { unreadMessagesCount } = useChat();
-  const quantity =
-    user?.owner.cart?.cartContent?.reduce(
-      (acc, item) => acc + item.quantity,
-      0,
-    ) || 0
+
+  // Use the new cart manager to get total items for both guest and authenticated users
+  const { getTotalItems } = useCartManager({
+    user,
+    cart: user?.owner?.cart || null,
+  })
+
+  // Get quantity that updates reactively for both guest and authenticated users
+  const quantity = getTotalItems()
 
   const searchIconClickHandler = () => {
     setShowSearchPopup(!showSearchPopup)
@@ -176,9 +179,10 @@ const Header = ({ loading = false }) => {
               >
                 <SearchIcon fill={fillSearch} />
               </Styled.LinkSearch>
-              {!!user?.info ? (
+              {user?.info ? (
                 <Styled.ProfilePhotoWrap href="/masterCabinet">
                   <Styled.ProfilePhoto
+                    alt="Фото профиля"
                     src={
                       user?.info?.avatar
                         ? `${PHOTO_URL}${user?.info?.avatar.url}`
@@ -198,7 +202,10 @@ const Header = ({ loading = false }) => {
                   }
                   onClick={() => {
                     ym('reachGoal', 'click_login_head')
-                    ;(window as any).dataLayer.push({
+                    ;(
+                      window as Window &
+                        typeof globalThis & { dataLayer: unknown[] }
+                    ).dataLayer.push({
                       event: 'event',
                       eventProps: {
                         category: 'click',

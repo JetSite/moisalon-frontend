@@ -140,7 +140,7 @@ export const useMutationCart: IUseMutationCart = ({
 
   const handleMutate: IHandleMutateCart = ({ mustGrow, itemID }) => {
     const itemInCart =
-      cart?.cartContent.find(el => el.product.id === itemID) || null
+      cart?.cartContent.find(el => el?.product?.id === itemID) || null
     setLoading(true)
 
     if (itemInCart) {

@@ -6,7 +6,7 @@ import Popup from '../../ui/Popup'
 import { ICart, IProduct, IProductCart } from 'src/types/product'
 import { getStoreData } from 'src/store/utils'
 import useAuthStore from 'src/store/authStore'
-import { useMutationCart } from './utils/useMutationCart'
+import { useCartManager } from 'src/hooks/useCartManager'
 import ErrorPopup from 'src/components/blocks/Form/Error'
 
 interface ICatalogProps {
@@ -19,23 +19,27 @@ interface ICatalogProps {
 const Catalog: FC<ICatalogProps> = ({ products, loading, noTitle, cart }) => {
   const { user } = useAuthStore(getStoreData)
   const [openPopup, setOpenPopup] = useState(false)
-  const { handleMutate, quantityMap, errors, setErrors } = useMutationCart({
+  const {
+    addToCart: cartAddToCart,
+    removeFromCart,
+    getItemQuantity,
+    errors,
+    setErrors,
+  } = useCartManager({
+    user,
     cart,
-    userID: user?.info.id || null,
   })
 
   const addToCart = (item: IProduct, mustGrow: boolean) => {
-    handleMutate({
-      itemID: item.id,
-      mustGrow,
-    })
+    if (mustGrow) {
+      cartAddToCart(item.id, 1, item)
+    } else {
+      removeFromCart(item.id)
+    }
   }
 
   const deleteFromCart = (item: IProduct) => {
-    handleMutate({
-      itemID: item.id,
-      mustGrow: false,
-    })
+    removeFromCart(item.id)
   }
 
   const closePopup = () => {
@@ -51,11 +55,15 @@ const Catalog: FC<ICatalogProps> = ({ products, loading, noTitle, cart }) => {
             {products?.map(item => {
               const cartItem: IProductCart = cart?.cartContent?.find(
                 el => el?.product?.id === item.id,
-              ) || { product: { ...item }, quantity: 0, id: `temp_${item.id}` }
+              ) || {
+                product: { ...item },
+                quantity: getItemQuantity(item.id),
+                id: `temp_${item.id}`,
+              }
 
               return (
                 <Product
-                  quantity={quantityMap[item.id] ?? cartItem.quantity}
+                  quantity={getItemQuantity(item.id)}
                   user={user}
                   addToCart={addToCart}
                   loadingItems={loading}

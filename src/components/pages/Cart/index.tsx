@@ -10,8 +10,8 @@ import {
   NoItemsText,
   NoItemsTextRed,
 } from './styled'
-import { makeStyles } from '@mui/styles'
 import Product from './components/Product'
+import GuestCartProduct from './components/GuestCartProduct'
 import BackButton from '../../ui/BackButton'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
@@ -23,13 +23,22 @@ import { CartManager } from './components/CartManager'
 import Popup from 'src/components/ui/Popup'
 import Button from 'src/components/newUI/buttons/Button'
 import ErrorPopup from 'src/components/blocks/Form/Error'
+import { useCartManager as useGlobalCartManager } from 'src/hooks/useCartManager'
+import { IGuestCartItem, removeFromGuestCart } from 'src/utils/guestCart'
+import useCartStore from 'src/store/cartStore'
 
 export interface ICartProps {
-  data: ICart
+  data: ICart | null
 }
 
 const Cart: FC<ICartProps> = ({ data }) => {
   const { user, city } = useAuthStore(getStoreData)
+  const isLoggedIn = !!user?.info
+
+  // Use global cart manager for guest cart functionality
+  const { guestCart } = useGlobalCartManager({ user, cart: data })
+  const { refreshGuestCart } = useCartStore()
+
   const {
     cart,
     brands,
@@ -43,23 +52,86 @@ const Cart: FC<ICartProps> = ({ data }) => {
     errors,
     setErrors,
   } = useCartManager({ data, user })
-  const [checkAll, setCheckAll] = useState(true)
+
+  // Guest cart selection state
+  const [selectedGuestItems, setSelectedGuestItems] = useState<
+    IGuestCartItem[]
+  >([])
+  const [checkAll, setCheckAll] = useState(false)
   const [openPopup, setOpenPopup] = useState(false)
 
+  // Clear guest selection when user logs in
   useEffect(() => {
-    if (selectedProducts?.length === cart?.cartContent?.length) {
-      setCheckAll(true)
-    } else {
-      setCheckAll(false)
+    if (isLoggedIn) {
+      setSelectedGuestItems([])
     }
-  }, [selectedProducts, cart])
+  }, [isLoggedIn])
+
+  // Sync selectedGuestItems when guest cart items change (cleanup deleted items)
+  useEffect(() => {
+    if (!isLoggedIn && selectedGuestItems.length > 0) {
+      const validSelectedItems = selectedGuestItems.filter(selectedItem =>
+        guestCart?.items?.some(
+          cartItem => cartItem.productId === selectedItem.productId,
+        ),
+      )
+      if (validSelectedItems.length !== selectedGuestItems.length) {
+        setSelectedGuestItems(validSelectedItems)
+      }
+    }
+  }, [isLoggedIn, selectedGuestItems, guestCart?.items])
+
+  // Determine if cart has items (either server cart or guest cart)
+  const hasItems = isLoggedIn
+    ? (cart?.cartContent?.length || 0) > 0
+    : (guestCart?.items?.length || 0) > 0
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      if (
+        selectedProducts?.length === cart?.cartContent?.length &&
+        cart?.cartContent?.length > 0
+      ) {
+        setCheckAll(true)
+      } else {
+        setCheckAll(false)
+      }
+    } else {
+      if (
+        selectedGuestItems?.length === guestCart?.items?.length &&
+        guestCart?.items?.length > 0
+      ) {
+        setCheckAll(true)
+      } else {
+        setCheckAll(false)
+      }
+    }
+  }, [selectedProducts, cart, selectedGuestItems, guestCart, isLoggedIn])
 
   const handleCheckAll = () => {
-    if (checkAll) {
-      setSelectedProducts([])
+    if (isLoggedIn) {
+      if (checkAll) {
+        setSelectedProducts([])
+      } else {
+        setSelectedProducts(cart?.cartContent || [])
+      }
     } else {
-      setSelectedProducts(cart?.cartContent || [])
+      if (checkAll) {
+        setSelectedGuestItems([])
+      } else {
+        setSelectedGuestItems(guestCart?.items || [])
+      }
     }
+  }
+
+  const handleDeleteCheckedGuest = () => {
+    // Completely remove selected items (not just decrease quantity)
+    selectedGuestItems.forEach(item => {
+      removeFromGuestCart(item.productId)
+    })
+    // Refresh the cart state
+    refreshGuestCart()
+    setSelectedGuestItems([])
   }
 
   const addToCart = (item: IProduct, mustGrow: boolean) => {
@@ -83,7 +155,7 @@ const Cart: FC<ICartProps> = ({ data }) => {
         onlyType
         link={`/${city.slug}/beautyFreeShop`}
       />
-      {!cart?.cartContent?.length ? (
+      {!hasItems ? (
         <>
           <NoItemsText>Ваша корзина пуста, наполните её товарами.</NoItemsText>
           <NoItemsTextRed href={`/${city.slug}/beautyFreeShop`}>
@@ -92,9 +164,16 @@ const Cart: FC<ICartProps> = ({ data }) => {
         </>
       ) : (
         <>
-          <Title>Корзина ({countProduct(cart?.cartContent)})</Title>
+          <Title>
+            Корзина (
+            {isLoggedIn
+              ? countProduct(cart?.cartContent || [])
+              : guestCart?.items?.length || 0}
+            )
+          </Title>
           <Wrap>
             <ProductsWrap>
+              {/* Show checkbox controls for both logged-in and guest users */}
               <CheckAndDelete>
                 <CheckboxStyled
                   id="checkAll"
@@ -104,38 +183,59 @@ const Cart: FC<ICartProps> = ({ data }) => {
                     handleCheckAll()
                   }}
                 />
-                {selectedProducts?.length ? (
+                {(
+                  isLoggedIn
+                    ? selectedProducts?.length
+                    : selectedGuestItems?.length
+                ) ? (
                   <Delete onClick={() => setOpenPopup(true)}>
                     Удалить выбранные
                   </Delete>
                 ) : null}
               </CheckAndDelete>
+
               <Content>
-                {cart?.cartContent?.map(item => {
-                  return (
-                    <Product
-                      quantity={quantityMap[item.product.id] ?? item.quantity}
-                      user={user}
-                      addToCart={addToCart}
-                      loadingItems={loading}
-                      deleteFromCart={deleteFromCart}
-                      cartItem={item}
-                      item={item.product}
-                      key={item.id}
-                      selectedProducts={selectedProducts}
-                      setSelectedProducts={setSelectedProducts}
-                      city={city}
-                    />
-                  )
-                })}
+                {isLoggedIn
+                  ? // Render server cart for logged in users
+                    cart?.cartContent?.map(item => {
+                      return (
+                        <Product
+                          quantity={
+                            quantityMap[item.product.id] ?? item.quantity
+                          }
+                          user={user}
+                          addToCart={addToCart}
+                          loadingItems={loading}
+                          deleteFromCart={deleteFromCart}
+                          cartItem={item}
+                          item={item.product}
+                          key={item.id}
+                          selectedProducts={selectedProducts}
+                          setSelectedProducts={setSelectedProducts}
+                          city={city}
+                        />
+                      )
+                    })
+                  : // Render guest cart items with same layout
+                    guestCart?.items?.map(item => (
+                      <GuestCartProduct
+                        key={item.productId}
+                        item={item}
+                        selectedItems={selectedGuestItems}
+                        setSelectedItems={setSelectedGuestItems}
+                      />
+                    ))}
               </Content>
             </ProductsWrap>
+
+            {/* Show CartManager for both logged-in and guest users */}
             <CartManager
               loading={loading}
-              underMinOrderBrands={underMinOrderBrands}
-              isLogin={!!user?.info}
-              brands={brands}
-              selectedProducts={selectedProducts}
+              underMinOrderBrands={isLoggedIn ? underMinOrderBrands : []}
+              isLogin={isLoggedIn}
+              brands={isLoggedIn ? brands : []}
+              selectedProducts={isLoggedIn ? selectedProducts : []}
+              guestCart={!isLoggedIn ? guestCart : undefined}
             />
           </Wrap>
         </>
@@ -156,7 +256,11 @@ const Cart: FC<ICartProps> = ({ data }) => {
         <Button
           style={{ marginTop: 20 }}
           onClick={() => {
-            handleDeleteChecked()
+            if (isLoggedIn) {
+              handleDeleteChecked()
+            } else {
+              handleDeleteCheckedGuest()
+            }
             setOpenPopup(false)
           }}
           variant="gray"
