@@ -113,6 +113,9 @@ export const Email = styled.a`
     font-size: 14px;
     font-weight: 400;
     line-height: 25px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 `
 

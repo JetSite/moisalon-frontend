@@ -1,4 +1,4 @@
-import { useState, useEffect, FC } from 'react'
+import { useState, FC } from 'react'
 import { MainContainer } from '../../../../../../styles/common'
 import Map from '../../../../../blocks/Map'
 import * as Styled from './styled'
