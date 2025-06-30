@@ -1,6 +1,5 @@
 import { gql } from '@apollo/client'
 import { metaInfo } from '../../common/metaInfo'
-import { imageInfo } from '../../common/imageInfo'
 import { productFragment } from '../fragment/product'
 
 export const PRODUCT_CATEGORIES_BY_TITLE = gql`

@@ -8,9 +8,6 @@ export const searchMasterFragment = `data {
   id
   attributes {
       name
-      phone
-      email
-      description
       reviewsCount
       ratingCount
       rating
@@ -28,8 +25,7 @@ export const searchMasterFragment = `data {
       }
       reviews {
         ${reviewsFragment}
-      }
-      
+      } 
   }
 }
 `

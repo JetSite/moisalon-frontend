@@ -24,10 +24,10 @@ import {
 import { makeStyles } from '@mui/styles'
 import { IBrand } from 'src/types/brands'
 import { useQuery } from '@apollo/client'
-import { PRODUCT_CATEGORIES } from 'src/api/graphql/product/queries/getProductCategories'
-import { BRANDS_TO_SHOP } from 'src/api/graphql/brand/queries/getBrandToShop'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { IProductCategories } from 'src/types/product'
+import { PRODUCT_CATEGORIES_FOR_SHOP_FILTER } from '@/api/graphql/product/queries/getProductCategoriesForShopFilter'
+import { BRANDS_FOR_SHOP_FILTER } from '@/api/graphql/brand/queries/getBrandsForShopFilter'
 
 type Props = IUseFiltredProductsProps
 
@@ -138,7 +138,7 @@ const CustomSelect: FC<{
     setOpen(prevOpen => !prevOpen)
   }
 
-  const handleClose = (event: React.MouseEvent<EventTarget>) => {
+  const handleClose = (event: MouseEvent | TouchEvent) => {
     if (
       anchorRef.current &&
       anchorRef.current.contains(event.target as HTMLElement)
@@ -272,15 +272,18 @@ const FilterCatalog: FC<Props> = ({
       brand,
     })
 
-  const { data: categoriesData } = useQuery(PRODUCT_CATEGORIES, {
-    variables: { itemsCount: 50, isAvailableInStock: 0 },
-    onError: error => {
-      console.error('Failed to fetch product categories:', error)
+  const { data: categoriesData } = useQuery(
+    PRODUCT_CATEGORIES_FOR_SHOP_FILTER,
+    {
+      variables: { itemsCount: 100, isAvailableInStock: 0 },
+      onError: error => {
+        console.error('Failed to fetch product categories:', error)
+      },
     },
-  })
+  )
 
-  const { data: brandsData } = useQuery(BRANDS_TO_SHOP, {
-    variables: { itemsCount: 50, isAvailableInStock: 0 },
+  const { data: brandsData } = useQuery(BRANDS_FOR_SHOP_FILTER, {
+    variables: { itemsCount: 100, isAvailableInStock: 0 },
     onError: error => {
       console.error('Failed to fetch brands:', error)
     },
