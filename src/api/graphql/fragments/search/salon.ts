@@ -6,28 +6,12 @@ export const searchSalonFragment = `data {
   id
   attributes {
       name
-      latitude
-      longitude
-      locationDirections
       rating
       ratingCount
       reviewsCount
       city {
         ${cityFragment}
       }
-      user {
-        data {
-          id
-        }
-      }
-      activities {
-          data {
-            id
-            attributes {
-              title
-            }
-          }
-        }
       address    
       rent
       email
@@ -38,8 +22,11 @@ export const searchSalonFragment = `data {
       cover {
         ${imageInfo}
       }
+      photos {
+        ${imageInfo}
+      }
       services {
-      ${salonServicesFragment}
+        ${salonServicesFragment}
       }
   }
 }`
