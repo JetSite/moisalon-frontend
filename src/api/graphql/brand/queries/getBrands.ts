@@ -1,7 +1,4 @@
 import { gql } from '@apollo/client'
-import { imageInfo } from '../../common/imageInfo'
-import { cityFragment } from '../../fragments/city'
-import { metaInfo } from '../../common/metaInfo'
 
 export const BRANDS = gql`
   query brands($itemsCount: Int, $page: Int) {
@@ -11,15 +8,9 @@ export const BRANDS = gql`
         attributes {
           name
           logo {
-            ${imageInfo}
-          }
-          city {
-            ${cityFragment}
+            url
           }
         }
-      }
-      meta {
-        ${metaInfo}
       }
     }
   }
