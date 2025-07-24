@@ -1,27 +1,58 @@
 import styled from 'styled-components'
 import { laptopBreakpoint } from '../../../styles/variables'
-import About from './components/About'
 import MainLayout from '../../../layouts/MainLayout'
-import MainMasterSlider from './components/MainMasterSlider'
-import MainSalonsSlider from './components/MainSalonsSlider'
-import MainBrandsSlider from './components/MainBrandsSlider'
 import MobileViewCards from './components/MobileViewCards'
-import Ribbon from './components/Ribbon'
 import { MobileHidden, MobileVisible } from '../../../styles/common'
 import SearchBlock from '../../blocks/SearchBlock'
 import Banners from '../Catalog/components/Banners'
 import { CSSTransition } from 'react-transition-group'
 import { WrapBanner } from '../Brand/AllBrands/styles'
-import MainAdsSlider from './components/MainAdsSlider'
-import { FC } from 'react'
+import { FC, Suspense } from 'react'
 import { ITotalCount } from 'src/pages/[city]/salon'
 import { ICity } from 'src/types'
-import MainRentSlider from './components/MainRentSlider'
 import { IBannerHook } from 'src/types/banners'
 import { useRouter } from 'next/router'
 import SearchResults from './components/SearchMain/SearchResults'
 import { MIN_SEARCH_LENGTH } from './components/SearchMain/utils/useSearch'
 import { IBeautyCategories, IFeed } from '@/types/feed'
+import dynamic from 'next/dynamic'
+import LoadingComponent from './components/LoadingComponent'
+import MainAdsSlider from './components/MainAdsSlider'
+import MainRentSlider from './components/MainRentSlider'
+
+const MainMasterSlider = dynamic(
+  () => import('./components/MainMasterSlider'),
+  {
+    loading: () => <LoadingComponent />,
+    ssr: false,
+  },
+)
+
+const MainSalonsSlider = dynamic(
+  () => import('./components/MainSalonsSlider'),
+  {
+    loading: () => <LoadingComponent />,
+    ssr: false,
+  },
+)
+
+const MainBrandsSlider = dynamic(
+  () => import('./components/MainBrandsSlider'),
+  {
+    loading: () => <LoadingComponent />,
+    ssr: false,
+  },
+)
+
+const About = dynamic(() => import('./components/About'), {
+  loading: () => <LoadingComponent />,
+  ssr: false,
+})
+
+const Ribbon = dynamic(() => import('./components/Ribbon'), {
+  loading: () => <LoadingComponent />,
+  ssr: false,
+})
 
 const Title = styled.h1`
   max-width: 1440px;
@@ -91,10 +122,7 @@ const MainPage: FC<IMainPageProps> = ({
             </CSSTransition>
           </>
         ) : null}
-        <MobileViewCards
-          totalCount={totalCount}
-          // totalSales={sales?.salesSearch?.connection?.nodes?.length}
-        />
+        <MobileViewCards totalCount={totalCount} />
         {!isSearch && bannerHooks?.length ? (
           <MobileVisible>
             <Banners
@@ -107,19 +135,19 @@ const MainPage: FC<IMainPageProps> = ({
         {isSearch ? (
           <SearchResults searchValue={query?.['search'] as string} />
         ) : null}
-        <MainAdsSlider city={cityData} />
-        {/* <MainGoodsSlider me={me} /> */}
-        <MainRentSlider city={cityData} />
-        {/* <MainWorkplacesSlider me={me} /> */}
-        <MainMasterSlider city={cityData} />
-        <MainSalonsSlider city={cityData} />
-        <MainBrandsSlider city={cityData} />
-        <About />
-        <Ribbon
-          title="Бьюти-лента"
-          beautyCategories={beautyCategories}
-          beautyAllContent={beautyAllContent}
-        />
+        <Suspense fallback={<div>Loading...</div>}>
+          <MainAdsSlider city={cityData} />
+          <MainRentSlider city={cityData} />
+          <MainMasterSlider city={cityData} />
+          <MainSalonsSlider city={cityData} />
+          <MainBrandsSlider city={cityData} />
+          <About />
+          <Ribbon
+            title="Бьюти-лента"
+            beautyCategories={beautyCategories}
+            beautyAllContent={beautyAllContent}
+          />
+        </Suspense>
       </>
     </MainLayout>
   )
