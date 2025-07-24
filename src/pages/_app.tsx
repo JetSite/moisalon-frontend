@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { Suspense, useEffect } from 'react'
 import { ThemeProvider } from '@mui/material/styles'
 import { ApolloProvider } from '@apollo/client'
 import ProgressBar from '@badrap/bar-of-progress'
@@ -20,8 +20,8 @@ import { StyledEngineProvider } from '@mui/material'
 import { CacheProvider } from '@emotion/react'
 import { createEmotionCache } from '../utils/createEmotionCache'
 import { EmotionCache } from '@emotion/cache'
-import { YMInitializer } from 'react-yandex-metrika'
 import { trackPageView } from '../utils/analytics'
+import { YandexMetrika } from '@/lib/yandex-metrika'
 
 const clientSideEmotionCache = createEmotionCache()
 
@@ -147,21 +147,9 @@ function MyApp({
           <ThemeProvider theme={theme}>
             <ApolloProvider client={apolloClient}>
               <AuthProvider pageProps={pageProps}>
-                <YMInitializer
-                  accounts={[56585698]}
-                  options={{
-                    clickmap: false,
-                    trackLinks: true,
-                    accurateTrackBounce: false,
-                    webvisor: false,
-                    triggerEvent: true,
-                    ecommerce: false,
-                    childIframe: false,
-                    type: 2,
-                    defer: false,
-                  }}
-                  version="2"
-                />
+                <Suspense>
+                  <YandexMetrika />
+                </Suspense>
                 <Component {...pageProps} />
               </AuthProvider>
             </ApolloProvider>
