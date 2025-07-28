@@ -1,17 +1,9 @@
-import { useState, useEffect, FC, MouseEvent } from 'react'
+import { useState, FC, MouseEvent } from 'react'
 import { useRouter } from 'next/router'
-import {
-  ApolloQueryResult,
-  OperationVariables,
-  useMutation,
-} from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { MainContainer } from '../../../../../../styles/common'
 import BackButton from '../../../../../ui/BackButton'
 import RatingEdit from '../../../../../ui/RatingEdit'
-import {
-  favoritesInStorage,
-  inStorage,
-} from '../../../../../../utils/favoritesInStorage'
 import {
   Wrapper,
   Socials,
@@ -36,6 +28,7 @@ import {
   More,
   ActiveSocials,
   ChatIcon,
+  BackButtonWrapper,
 } from './styled'
 import ChatMessagePopup from '../../../../../ui/ChatMessagePopup'
 import {
@@ -44,8 +37,6 @@ import {
 } from '../../../../../../utils/newUtils/common/checkUrls'
 import { numberForSocials } from '../../../../../../utils/formatNumber'
 import { ISalonPage } from 'src/types/salon'
-import { IApolloRefetch } from 'src/types/common'
-import { ICatalog } from 'src/utils/catalogOrDefault'
 import { PHOTO_URL } from 'src/api/variables'
 import useAuthStore from 'src/store/authStore'
 import { getStoreData } from 'src/store/utils'
@@ -76,7 +67,7 @@ const Header: FC<Props> = ({ salon, isOwner }) => {
 
   const { rating, ratingCount } = getRating(salon.ratings, newRating)
 
-  const addFavorite = (e: MouseEvent<HTMLDivElement>, salon: ISalonPage) => {
+  const addFavorite = (e: MouseEvent<HTMLDivElement>) => {
     e.preventDefault()
     e.stopPropagation()
     // favoritesInStorage('salons', salon)
@@ -108,13 +99,13 @@ const Header: FC<Props> = ({ salon, isOwner }) => {
           origin="SALON"
           originData={salon}
         />
-        <div style={{ padding: '0 140px' }}>
+        <BackButtonWrapper>
           <BackButton
             type="Салон"
             link={isOwner ? '/masterCabinet' : `/${city.slug}/salon`}
             name={salon.name}
           />
-        </div>
+        </BackButtonWrapper>
         <Wrapper url={salon.cover?.url || salon.photos[0]?.url || ''}>
           <Socials>
             <noindex>
@@ -202,10 +193,7 @@ const Header: FC<Props> = ({ salon, isOwner }) => {
                   __html: salon.name,
                 }}
               />
-              <Favorite
-                isFavorite={isFavorite}
-                onClick={e => addFavorite(e, salon)}
-              />
+              <Favorite isFavorite={isFavorite} onClick={e => addFavorite(e)} />
               <Bell />
             </NameContent>
             {isOwner ? (

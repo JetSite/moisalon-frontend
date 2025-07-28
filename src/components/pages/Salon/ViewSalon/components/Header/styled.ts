@@ -14,6 +14,14 @@ export const Wrapper = styled.div<{ url: string }>`
   }
 `
 
+export const BackButtonWrapper = styled.div`
+  padding: 0 140px;
+
+  @media (max-width: ${laptopBreakpoint}) {
+    padding: 0 20px;
+  }
+`
+
 export const Count = styled.p`
   font-size: 10px;
 `
