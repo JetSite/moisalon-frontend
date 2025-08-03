@@ -5,7 +5,7 @@ import { metaInfo } from '../../common/metaInfo'
 
 export const BRANDS = gql`
   query brands($itemsCount: Int, $page: Int) {
-    brands(pagination: { page: $page, pageSize: $itemsCount }) {
+    brands(filters: {products: { id: { notNull: true }} }, pagination: { page: $page, pageSize: $itemsCount }) {
       data {
         id
         attributes {
