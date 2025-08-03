@@ -1,13 +1,10 @@
 # *
 User-agent: *
-Disallow: /
+Allow: /
 
-# undefined
-User-agent: undefined
+# *
+User-agent: *
 Disallow: /dynamic
 
 # Host
-Host: https://redesign.moi.salon/
-
-# Sitemaps
-Sitemap: https://redesign.moi.salon/sitemap.xml
+Host: https://moi.salon/
