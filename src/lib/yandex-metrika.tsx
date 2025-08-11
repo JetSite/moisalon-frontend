@@ -3,17 +3,14 @@ import { YMInitializer } from 'react-yandex-metrika'
 export function YandexMetrika() {
   return (
     <YMInitializer
-      accounts={[56585698]}
+      accounts={[103667977]}
       options={{
-        clickmap: false,
+        ssr: true,
+        webvisor: true,
+        clickmap: true,
+        ecommerce: 'dataLayer',
+        accurateTrackBounce: true,
         trackLinks: true,
-        accurateTrackBounce: false,
-        webvisor: false,
-        triggerEvent: true,
-        ecommerce: false,
-        childIframe: false,
-        type: 2,
-        defer: false,
       }}
       version="2"
     />
