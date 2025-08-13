@@ -30,8 +30,6 @@ const activeLink = (path: string, link?: string[]) => {
 const Header = ({ loading = false }) => {
   const cityCookie = getCookie(authConfig.cityKeyName)
   const { user, city } = useAuthStore(getStoreData)
-  const b2bClient =
-    !!user?.owner?.masters?.length || !!user?.owner?.salons?.length
   const router = useRouter()
   const isAboutPage = router.pathname === '/about'
   const [openPopup, setPopupOpen] = useState<boolean>(!cityCookie)
@@ -176,7 +174,7 @@ const Header = ({ loading = false }) => {
               >
                 <SearchIcon fill={fillSearch} />
               </Styled.LinkSearch>
-              {!!user?.info ? (
+              {user?.info ? (
                 <Styled.ProfilePhotoWrap href="/masterCabinet">
                   <Styled.ProfilePhoto
                     src={

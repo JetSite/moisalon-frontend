@@ -1,13 +1,6 @@
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  FC,
-  RefObject,
-  ChangeEvent,
-} from 'react';
-import { useMutation } from '@apollo/client';
-import CitiesList from './CitiesList';
+import React, { useState, useRef, useEffect, FC, ChangeEvent } from 'react'
+import { useMutation } from '@apollo/client'
+import CitiesList from './CitiesList'
 import {
   Wrapper,
   TitleWrapper,
@@ -17,34 +10,34 @@ import {
   CityInput,
   CityPingWrap,
   Blur,
-} from './styles';
-import CityPingIcon from '../Header/icons/CityPingIcon';
-import { useLazyQuery } from '@apollo/client';
-import { cyrToTranslit } from '../../../../../utils/translit';
-import useAuthStore from 'src/store/authStore';
-import { getStoreData, getStoreEvent } from 'src/store/utils';
-import { authConfig, defaultcCitiesList } from 'src/api/authConfig';
-import { ICity } from 'src/types';
-import { getCities } from 'src/api/graphql/city/getCities';
-import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse';
-import { UpdatedList } from './UpdatedList';
-import { CHANGE_ME } from 'src/api/graphql/me/mutations/changeMe';
-import { setCookie } from 'cookies-next';
-import { redirectCityRoutes } from 'src/utils/newUtils/redirectCityRoutes';
-import { useRouter } from 'next/router';
-import { ISetState } from 'src/types/common';
-import useBaseStore from 'src/store/baseStore';
+} from './styles'
+import CityPingIcon from '../Header/icons/CityPingIcon'
+import { useLazyQuery } from '@apollo/client'
+import { cyrToTranslit } from '../../../../../utils/translit'
+import useAuthStore from 'src/store/authStore'
+import { getStoreData, getStoreEvent } from 'src/store/utils'
+import { authConfig, defaultcCitiesList } from 'src/api/authConfig'
+import { ICity } from 'src/types'
+import { getCities } from 'src/api/graphql/city/getCities'
+import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
+import { UpdatedList } from './UpdatedList'
+import { CHANGE_ME } from 'src/api/graphql/me/mutations/changeMe'
+import { setCookie } from 'cookies-next'
+import { redirectCityRoutes } from 'src/utils/newUtils/redirectCityRoutes'
+import { useRouter } from 'next/router'
+import { ISetState } from 'src/types/common'
+import useBaseStore from 'src/store/baseStore'
 
 const prepareCitiesList: ICity[] = defaultcCitiesList.map((city, i) => ({
   name: city,
   slug: cyrToTranslit(city) as string,
   id: (i + 1).toString(),
-}));
+}))
 
 interface Props {
-  showCitySelect: boolean;
-  setShowCitySelect: ISetState<boolean>;
-  setShowHamburgerMenu?: ISetState<boolean>;
+  showCitySelect: boolean
+  setShowCitySelect: ISetState<boolean>
+  setShowHamburgerMenu?: ISetState<boolean>
 }
 
 const CitySelect: FC<Props> = ({
@@ -52,31 +45,31 @@ const CitySelect: FC<Props> = ({
   setShowCitySelect,
   setShowHamburgerMenu,
 }) => {
-  const { setCity } = useAuthStore(getStoreEvent);
-  const { me } = useAuthStore(getStoreData);
-  const { cities } = useBaseStore(getStoreData);
-  const { setCities } = useBaseStore(getStoreEvent);
-  const [citiesList, setCitiesList] = useState<ICity[]>(cities || []);
-  const router = useRouter();
+  const { setCity } = useAuthStore(getStoreEvent)
+  const { me } = useAuthStore(getStoreData)
+  const { cities } = useBaseStore(getStoreData)
+  const { setCities } = useBaseStore(getStoreEvent)
+  const [citiesList, setCitiesList] = useState<ICity[]>(cities || [])
+  const router = useRouter()
   const [refetch, { loading }] = useLazyQuery(getCities, {
     variables: { itemsCount: 100 },
     onCompleted: data => {
-      const prepareData = flattenStrapiResponse(data.cities) as ICity[];
-      setCitiesList(prepareData.length ? prepareData : prepareCitiesList);
-      setCities(prepareData);
+      const prepareData = flattenStrapiResponse(data.cities) as ICity[]
+      setCitiesList(prepareData.length ? prepareData : prepareCitiesList)
+      setCities(prepareData)
     },
     onError: err => {
-      console.log(err);
-      setCitiesList(prepareCitiesList);
+      console.log(err)
+      setCitiesList(prepareCitiesList)
     },
     notifyOnNetworkStatusChange: true,
-  });
+  })
 
   useEffect(() => {
     if (!cities.length && showCitySelect) {
-      refetch();
+      refetch()
     }
-  }, [showCitySelect, cities]);
+  }, [showCitySelect, cities])
 
   // useEffect(() => {
   //   if (showCitySelect) {
@@ -89,57 +82,57 @@ const CitySelect: FC<Props> = ({
   //   }
   // })
 
-  const [cityInput, setCityInput] = useState('');
-  const wrapperRef = useRef<HTMLDivElement>(null);
+  const [cityInput, setCityInput] = useState('')
+  const wrapperRef = useRef<HTMLDivElement>(null)
 
   const [changeCityFunc] = useMutation(CHANGE_ME, {
     onCompleted: res => {
       const newCity: ICity = flattenStrapiResponse(
         res.updateUsersPermissionsUser,
-      ).selected_city;
-      setCity(newCity);
+      ).selected_city
+      setCity(newCity)
     },
-  });
+  })
 
   useEffect(() => {
     const clickOutsideHandler = (e: MouseEvent | TouchEvent) => {
-      const target = e.target as Node | null;
+      const target = e.target as Node | null
       if (
         wrapperRef.current &&
         target &&
         !wrapperRef.current.contains(target)
       ) {
-        setShowCitySelect(false);
+        setShowCitySelect(false)
       }
-    };
-    document.addEventListener('mousedown', clickOutsideHandler);
-    document.addEventListener('touchstart', clickOutsideHandler);
+    }
+    document.addEventListener('mousedown', clickOutsideHandler)
+    document.addEventListener('touchstart', clickOutsideHandler)
     return () => {
-      document.removeEventListener('mousedown', clickOutsideHandler);
-      document.removeEventListener('touchstart', clickOutsideHandler);
-    };
-  }, [wrapperRef, setShowCitySelect]);
+      document.removeEventListener('mousedown', clickOutsideHandler)
+      document.removeEventListener('touchstart', clickOutsideHandler)
+    }
+  }, [wrapperRef, setShowCitySelect])
 
   const closeHandler = () => {
-    setShowCitySelect(false);
-  };
+    setShowCitySelect(false)
+  }
 
   const changeCity = (e: ChangeEvent<HTMLInputElement>) => {
-    setCityInput(e.target.value);
-  };
+    setCityInput(e.target.value)
+  }
 
   const cityClickHandler = async (city: ICity) => {
-    setShowCitySelect(false);
-    setShowHamburgerMenu && setShowHamburgerMenu(false);
-    setCookie(authConfig.cityKeyName, city.slug);
+    setShowCitySelect(false)
+    setShowHamburgerMenu && setShowHamburgerMenu(false)
+    setCookie(authConfig.cityKeyName, city.slug)
     if (me?.info.id) {
       changeCityFunc({
         variables: { id: me.info.id, data: { selected_city: city.id } },
-      });
+      })
     }
-    setCity(city || null);
-    redirectCityRoutes(city.slug, router);
-  };
+    setCity(city || null)
+    redirectCityRoutes(city.slug, router)
+  }
 
   let component = (
     <CitiesList
@@ -147,7 +140,7 @@ const CitySelect: FC<Props> = ({
       cityClickHandler={cityClickHandler}
       loading={loading}
     />
-  );
+  )
 
   if (cityInput.length >= 2) {
     component = (
@@ -159,7 +152,7 @@ const CitySelect: FC<Props> = ({
         setShowCitySelect={setShowCitySelect}
         setShowHamburgerMenu={setShowHamburgerMenu}
       />
-    );
+    )
   }
 
   return (
@@ -189,7 +182,7 @@ const CitySelect: FC<Props> = ({
         {!loading ? component : null}
       </Wrapper>
     </>
-  );
-};
+  )
+}
 
-export default CitySelect;
+export default CitySelect

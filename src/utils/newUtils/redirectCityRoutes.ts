@@ -13,13 +13,11 @@ export const redirectCityRoutes = (slug: string, router: NextRouter) => {
     '/[city]/brand/[id]': '/brand',
     '/[city]/rent/[id]': '/rent',
     '/[city]/rent/[id]room/[roomId]/seat/[seatId]': '/rent',
-    '/[city]/master/[id]': '/master'
+    '/[city]/master/[id]': '/master',
   }
 
   if (specialRoutes[router.pathname]) {
-    router.push(`${newPath}${specialRoutes[router.pathname]}`, undefined, {
-      shallow: true
-    })
+    router.push(`${newPath}${specialRoutes[router.pathname]}`)
     return
   }
 
@@ -27,12 +25,11 @@ export const redirectCityRoutes = (slug: string, router: NextRouter) => {
     router.replace(
       {
         ...router,
-        query: { ...router.query, city: slug }
+        query: { ...router.query, city: slug },
       },
       undefined,
-      { shallow: true }
     )
   } else {
-    router.replace(newPath, undefined, { shallow: true })
+    router.replace(newPath)
   }
 }
