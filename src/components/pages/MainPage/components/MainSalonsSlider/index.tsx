@@ -1,4 +1,4 @@
-import { useLazyQuery, useQuery } from '@apollo/client'
+import { useLazyQuery } from '@apollo/client'
 import Slider from '../../../../blocks/Slider'
 import { flattenStrapiResponse } from 'src/utils/flattenStrapiResponse'
 import { ISalon } from 'src/types/salon'
@@ -11,7 +11,7 @@ interface Props extends MainSlider {
   rent?: boolean
 }
 
-const MainSalonsSlider: FC<Props> = ({ city, rent, data }) => {
+const MainSalonsSlider: FC<Props> = ({ city, data }) => {
   const [fetchSalon, { data: salons, loading }] = useLazyQuery(getSalons, {
     variables: {
       slug: city.slug,
