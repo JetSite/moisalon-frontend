@@ -1,5 +1,3 @@
-const dev = process.env.NEXT_PUBLIC_ENV !== 'production';
-
 export const dadataAdressUrl =
   'http://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address';
 
